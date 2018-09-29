@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/seventh/Dev/river_sim/main.cpp
+iostream
+-
+river_sim.hpp
+/home/seventh/Dev/river_sim/river_sim.hpp
+
+/home/seventh/Dev/river_sim/river_sim.hpp
+
