@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/seventh/Dev/river_sim/main.cpp" "/home/seventh/Dev/river_sim_build/CMakeFiles/river_sim.dir/main.cpp.o"
+  "/home/seventh/Dev/river_sim/dealii/main.cpp" "/home/seventh/Dev/river_sim/dealii_build/CMakeFiles/river_sim.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

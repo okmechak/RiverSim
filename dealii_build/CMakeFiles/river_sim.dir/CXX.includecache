@@ -6,11 +6,27 @@
 
 #IncludeRegexTransform: 
 
-/home/seventh/Dev/river_sim/main.cpp
+/home/seventh/Dev/river_sim/dealii/main.cpp
 iostream
 -
+fstream
+-
+cmath
+-
+deal.II/grid/tria.h
+-
+deal.II/grid/tria_accessor.h
+-
+deal.II/grid/tria_iterator.h
+-
+deal.II/grid/grid_generator.h
+-
+deal.II/grid/manifold_lib.h
+-
+deal.II/grid/grid_out.h
+-
 river_sim.hpp
-/home/seventh/Dev/river_sim/river_sim.hpp
+/home/seventh/Dev/river_sim/dealii/river_sim.hpp
 
-/home/seventh/Dev/river_sim/river_sim.hpp
+/home/seventh/Dev/river_sim/dealii/river_sim.hpp
 

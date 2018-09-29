@@ -1,4 +1,4 @@
-# Install script for directory: /home/seventh/Dev/river_sim
+# Install script for directory: /home/seventh/Dev/river_sim/dealii
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/seventh/Dev/river_sim_build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/seventh/Dev/river_sim/dealii_build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
