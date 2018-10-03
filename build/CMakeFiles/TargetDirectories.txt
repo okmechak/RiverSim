@@ -1,2 +1,0 @@
-/home/seventh/Dev/river_sim/build/CMakeFiles/rebuild_cache.dir
-/home/seventh/Dev/river_sim/build/CMakeFiles/edit_cache.dir
