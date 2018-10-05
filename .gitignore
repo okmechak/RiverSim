@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+#folders
+bin/*
+build/*
+lib/*
+
+#vscode project file
+*.code-workspace
+.vscode/*

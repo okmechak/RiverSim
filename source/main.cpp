@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
 {
     dealii_test();
     boost_test();
+    gmsh_test();
     cout << "Hello" << endl;
     return 0;
 }

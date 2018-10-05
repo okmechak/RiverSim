@@ -10,3 +10,9 @@ void boost_test()
     boost::program_options::options_description desc("All options");
 
 }
+
+void gmsh_test()
+{
+    gmsh::initialize();
+    gmsh::finalize();
+}
