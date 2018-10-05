@@ -16,3 +16,8 @@ void gmsh_test()
     gmsh::initialize();
     gmsh::finalize();
 }
+
+void tethex_test()
+{
+    tethex::Point();
+}
