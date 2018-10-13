@@ -13,7 +13,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 message("========================================")
 message("Deal II setup")
-find_package(deal.II REQUIRED)
+find_package(deal.II REQUIRED HINTS /usr/local/dealii)
 deal_ii_initialize_cached_variables()
 
 

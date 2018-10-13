@@ -1,6 +1,10 @@
-include_directories(/usr/local/include)
+
+message("GMSH setup")
+include_directories(/usr/local/gmsh/include)
+link_directories(/usr/local/gmsh/lib)
+
+
 include_directories(source)
-include_directories(${Boost_INCLUDE_DIRS})
 
 
 file(GLOB sources ${CMAKE_SOURCE_DIR}/source/*.cpp)
