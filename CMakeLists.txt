@@ -11,6 +11,15 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 
+#FIXME
+#message("========================================")
+#message("GMSH setup")
+#find_package(gmsh HINTS /usr/local/gmsh)
+
+#message("========================================")
+#message("TetGEN setup")
+#find_package(tetgen HINTS /usr)
+
 message("========================================")
 message("Deal II setup")
 find_package(deal.II REQUIRED HINTS /usr/local/dealii)
