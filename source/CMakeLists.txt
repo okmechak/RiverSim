@@ -1,6 +1,10 @@
-message("Tetgen setup")
+message("Tetgen setup")#FIXME remove these absolute paths
 include_directories(/usr/local/tetgen)
 link_directories(/usr/local/tetgen)
+
+message("GMSH setup")#FIXME remove these absolute paths
+include_directories(/usr/local/gmsh_build/include)
+link_directories(/usr/local/gmsh_build/lib)
 
 include_directories(source)
 
@@ -10,4 +14,5 @@ add_executable(riversim ${sources})
 
 deal_ii_setup_target(riversim)
 target_link_libraries(riversim ${Boost_LIBRARIES})
-target_link_libraries(riversim libtetgen.a)
+target_link_libraries(riversim libtetgen.so)#FIXME is there possibility not to use exact names?
+target_link_libraries(riversim libgmsh.so)

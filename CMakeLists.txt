@@ -10,18 +10,9 @@ set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
 find_package(Boost COMPONENTS program_options REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
-
-#FIXME
-#message("========================================")
-#message("GMSH setup")
-#find_package(gmsh HINTS /usr/local/gmsh)
-
-#message("========================================")
-#message("TetGEN setup")
-#find_package(tetgen HINTS /usr)
-
 message("========================================")
 message("Deal II setup")
+set(deal.II_USE_STATIC_LIBS "OFF")
 find_package(deal.II REQUIRED HINTS /usr/local/dealii)
 deal_ii_initialize_cached_variables()
 
