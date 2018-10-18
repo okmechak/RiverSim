@@ -16,16 +16,11 @@ void boost_test(int argc, char *argv[])
 
 }
 
-void gmsh_test()
-{
-    //gmsh::initialize();
-    //gmsh::finalize();
-}
-
 void tethex_test()
-{
+{  
     tethex::Point();
 }
+
 
 void tetgen_test()
 {

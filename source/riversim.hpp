@@ -3,7 +3,6 @@
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/grid_tools.h>
 #include <boost/program_options.hpp>
-#include <gmsh.h>
 #include "tethex.hpp"
 #include <tetgen.h>
 #include <iostream>
