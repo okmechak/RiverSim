@@ -3,8 +3,8 @@ include_directories(/usr/local/tetgen)
 link_directories(/usr/local/tetgen)
 
 message("GMSH setup")#FIXME remove these absolute paths
-include_directories(/usr/local/gmsh_build/include)
-link_directories(/usr/local/gmsh_build/lib)
+include_directories(/usr/local/gmsh/include)
+link_directories(/usr/local/gmsh/lib)
 
 include_directories(source)
 
