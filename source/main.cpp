@@ -216,6 +216,7 @@ int main(int argc, char *argv[])
         ("suppress-signature", "suppress signature printing")
         ("draw-mesh,d", po::value<bool>()->default_value(true), "draw mesh using gmsh fltk submodule")
         ("output,o", po::value<string>()->default_value("out_mesh.mesh"), "save output mesh")
+        ("gmsh-log", po::value<bool>()->default_value(false), "print Gmsh log to terminal")
     ;
     
     po::positional_options_description p;
@@ -247,7 +248,7 @@ int main(int argc, char *argv[])
     gmsh::option::setNumber("Mesh.RecombineAll", 1);
     gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
     gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
-    gmsh::option::setNumber("General.Terminal", 1);
+    gmsh::option::setNumber("General.Terminal", (int)vm["gmsh-log"].as<bool>());
     
     mdl::add("square");
 
