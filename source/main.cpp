@@ -3,6 +3,81 @@
 
 using namespace std;
 
+void print_ascii_signature()
+{
+    cout << "     _)                    _)           " << endl;
+    cout << "  __| |\\ \\   / _ \\  __| __| | __ `__ \\  " << endl;
+    cout << " |    | \\ \\ /  __/ |  \\__ \\ | |   |   | " << endl;
+    cout << "_|   _|  \\_/ \\___|_|  ____/_|_|  _|  _| " << endl;                     
+}
+
+void dealii_custom_triangulation(Triangulation<2> &coarse_grid)
+{
+    const unsigned int dim = 2;
+    static const Point<dim> vertices_1[]
+        = {  Point<dim> (-1.,   -1.),
+             Point<dim> (-1./2, -1.),
+             Point<dim> (0.,    -1.),
+             Point<dim> (+1./2, -1.),
+             Point<dim> (+1,    -1.),
+             Point<dim> (-1.,   -1./2.),
+             Point<dim> (-1./2, -1./2.),
+             Point<dim> (0.,    -1./2.),
+             Point<dim> (+1./2, -1./2.),
+             Point<dim> (+1,    -1./2.),
+             Point<dim> (-1.,   0.),
+             Point<dim> (-1./2, 0.),
+             Point<dim> (+1./2, 0.),
+             Point<dim> (+1,    0.),
+             Point<dim> (-1.,   1./2.),
+             Point<dim> (-1./2, 1./2.),
+             Point<dim> (0.,    1./2.),
+             Point<dim> (+1./2, 1./2.),
+             Point<dim> (+1,    1./2.),
+             Point<dim> (-1.,   1.),
+             Point<dim> (-1./2, 1.),
+             Point<dim> (0.,    1.),
+             Point<dim> (+1./2, 1.),
+             Point<dim> (+1,    1.)
+          };
+    const unsigned int
+    n_vertices = sizeof(vertices_1) / sizeof(vertices_1[0]);
+    const std::vector<Point<dim> > vertices (&vertices_1[0],
+                                             &vertices_1[n_vertices]);
+    static const int cell_vertices[][GeometryInfo<dim>::vertices_per_cell]
+      = {{0, 1, 5, 6},
+        {1, 2, 6, 7},
+        {2, 3, 7, 8},
+        {3, 4, 8, 9},
+        {5, 6, 10, 11},
+        {8, 9, 12, 13},
+        {10, 11, 14, 15},
+        {12, 13, 17, 18},
+        {14, 15, 19, 20},
+        {15, 16, 20, 21},
+        {16, 17, 21, 22},
+        {17, 18, 22, 23}
+    };
+    const unsigned int
+    n_cells = sizeof(cell_vertices) / sizeof(cell_vertices[0]);
+
+    std::vector<CellData<dim> > cells (n_cells, CellData<dim>());
+
+    for (unsigned int i=0; i<n_cells; ++i)
+    {
+        for (unsigned int j=0;
+             j < GeometryInfo<dim>::vertices_per_cell;
+             ++j)
+            cells[i].vertices[j] = cell_vertices[i][j];
+        cells[i].material_id = 0;
+    }
+    
+    coarse_grid.create_triangulation (vertices,
+                                        cells,
+                                        SubCellData());
+    //coarse_grid.refine_global (1);
+}
+
 void geogeneration()
 {
     geo::addPoint(0, 0, 0, 0.1, 1);
@@ -27,7 +102,6 @@ void geogeneration()
 
 void basicgeneration()
 {
-
     //TODO: implement right workwflow 
     cout << "List of models: " << mdl::list << endl;
 
@@ -115,12 +189,50 @@ void print_nodes_and_elements()
         cout << "dim - " <<  el.first << " dim - " << el.second << endl;
 }
 
+
 int main(int argc, char *argv[])
 {
-    cout << "=================================" << endl;
-    cout << "=================================" << endl;
-    cout << "=================================" << endl << endl;
-    process_input_options(argc, argv);
+    /*
+        program options
+    */
+    po::options_description desc("Allowed options");
+    po::positional_options_description p;
+    
+    // Declare the supported options
+    desc.add_options()
+        ("help,h", "produce help message")
+        ("test,t", po::value<string>(), "test option")
+        ("switc_1,sw1", po::value<int>()->default_value(0), "used for custom switch between different flows")
+        ("switc_2,sw2", po::value<int>()->default_value(1), "used for custom switch between different flows")
+        ("switc_3,sw3", po::value<int>()->default_value(3), "used for custom switch between different flows")
+        ("bool_1,b1", "used for custom switch between different flows" )
+        ("bool_2,b2", "used for custom switch between different flows" )
+        ("bool_3,b3", "used for custom switch between different flows" )
+        ("input-mesh,f",po::value<vector<string>>(), "input mesh file")
+        ("suppress-signature, ss", "suppress signature printing")
+    ;
+
+    p.add("input-mesh", -1);
+   
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);    
+
+    if (!vm.count("suppress-signature"))
+        print_ascii_signature();
+    
+    if (vm.count("help")) {
+        cout << desc << endl;
+        return 0;
+    }
+    
+    
+    if (vm.count("test")) {
+        cout << "test option was set to " 
+             << vm["test"].as<string>() << endl;
+    } else {
+        cout << "test was not set." << endl;
+    }
 
     dealii_test();
 

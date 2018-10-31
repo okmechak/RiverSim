@@ -106,30 +106,3 @@ void dealii_test()
     grid_out.write_eps (triangulation, out);
     cout << "Grid written to grid-1.eps" << endl;
 }
-
-void process_input_options(int argc, char *argv[])
-{
-    po::options_description desc("Allowed options");
-    
-    // Declare the supported options
-    desc.add_options()
-        ("help,h", po::value<string>(), "produce help message")
-        ("lala,la", po::value<string>(), "testing option")
-    ;
-
-    po::variables_map vm;
-    po::store(po::parse_command_line(argc, argv, desc), vm);
-    po::notify(vm);    
-
-    if (vm.count("help")) {
-        cout << desc << endl;
-        return ;
-    }
-
-    if (vm.count("lala")) {
-        cout << "lala level was set to " 
-    << vm["lala"].as<string>() << endl;
-    } else {
-        cout << "lala level was not set." << endl;
-    }
-}
