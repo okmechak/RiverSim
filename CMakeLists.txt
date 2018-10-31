@@ -1,21 +1,22 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(riversim C CXX)
+cmake_minimum_required(VERSION 3.2)
 
-message("========================================")
-message("Deal II setup")
-set(deal.II_USE_STATIC_LIBS "OFF")
-find_package(deal.II REQUIRED HINTS /usr/local/dealii)
-deal_ii_initialize_cached_variables()
+set(${CMAKE_BUILD_TYPE} "Debug")
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
+set(riversim_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(riversim_INSTALL_BIN_DIR ${CMAKE_INSTALL_PREFIX})
+set(riversim_INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+set(tetgen_DIRECTORY /usr/local/tetgen)
+set(gmsh_DIRECTORY /usr/local/gmsh)
 
+include_directories(
+    ${gmsh_DIRECTORY}/include
+    ${tetgen_DIRECTORY}
+)
 
-message("========================================")
-message("Boost setup")
-set(BOOST_ROOT "/usr")
-set(Boost_USE_STATIC_LIBS "ON")
-set(BOOST_INCLUDEDIR "/usr/include")
-set(BOOST_LIBRARYDIR "/usr/lib/x86_64-linux-gnu")
-set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
-find_package(Boost COMPONENTS program_options log REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
+link_directories(
+    ${tetgen_DIRECTORY}
+    ${gmsh_DIRECTORY}/lib
+    )
+
 
 add_subdirectory(source)

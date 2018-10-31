@@ -122,6 +122,8 @@ int main(int argc, char *argv[])
     cout << "=================================" << endl << endl;
     process_input_options(argc, argv);
 
+    dealii_test();
+
     gmsh::initialize();
     gmsh::option::setNumber("Mesh.RecombineAll", 1);
     gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
@@ -135,8 +137,7 @@ int main(int argc, char *argv[])
     cout << "mesh generation" << endl;
     mdl::mesh::generate(2);
 
-    gmsh::graphics::draw();
-    print_nodes_and_elements();
+    //print_nodes_and_elements();
          
     gmsh::fltk::run();
     gmsh::write("test.mesh");

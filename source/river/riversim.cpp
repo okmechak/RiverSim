@@ -25,7 +25,6 @@ void gmsh_possibilites(int argc, char *argv[])
     mdl::addDiscreteEntity(meshDimension, geomTag);
     
     //node points
-    auto nodesTag = {1, 2, 3, 4};
     cout << "set nodes" << endl;
     msh::setNodes(
         meshDimension, 

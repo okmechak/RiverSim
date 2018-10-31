@@ -35,6 +35,7 @@
 bin/*
 build/*
 lib/*
+install/*
 
 #vscode project file
 *.code-workspace
