@@ -194,24 +194,26 @@ void print_nodes_and_elements()
 
 int main(int argc, char *argv[])
 {
+
     /*
-        program options
+        Boost program options
     */
 
-    // Declaring group of options that will be allowed on both
+    //Declaring group of options that will be allowed on both
     //command line and config file
     po::options_description config("Configuration");
+
     //declare supported options
     config.add_options()
         ("help,h", "produce help message")
         ("version,v", "print version string")
         ("test,t", po::value<string>(), "test option")
-        ("sw1,s", po::value<int>()->default_value(0), "used for custom switch between different flows")
-        ("sw2", po::value<int>()->default_value(1), "used for custom switch between different flows")
-        ("sw2", po::value<int>()->default_value(3), "used for custom switch between different flows")
-        ("b1,b", "used for custom switch between different flows" )
-        ("b2", "used for custom switch between different flows" )
-        ("b3", "used for custom switch between different flows" )
+        ("sw1,s", po::value<int>()->default_value(0), "custom switch between different flows")
+        ("sw2", po::value<int>()->default_value(1), "custom switch between different flows")
+        ("sw2", po::value<int>()->default_value(3), "custom switch between different flows")
+        ("b1,b", "custom switch between different flows" )
+        ("b2", "custom switch between different flows" )
+        ("b3", "custom switch between different flows" )
         ("input-mesh,f",po::value<vector<string>>(), "input mesh file")
         ("suppress-signature", "suppress signature printing")
         ("draw-mesh,d", po::value<bool>()->default_value(true), "draw mesh using gmsh fltk submodule")
@@ -242,7 +244,10 @@ int main(int argc, char *argv[])
         cout << "test was not set." << endl;
     }
 
-    dealii_test();
+
+    /*
+        Gmsh
+    */
 
     gmsh::initialize();
     gmsh::option::setNumber("Mesh.RecombineAll", 1);
@@ -260,13 +265,29 @@ int main(int argc, char *argv[])
 
     cout << "mesh generation" << endl;
     mdl::mesh::generate(2);
-
-    //print_nodes_and_elements();
     
     if (vm["draw-mesh"].as<bool>())
         gmsh::fltk::run();
     if(vm.count("output"))
         gmsh::write(vm["output"].as<string>());
+
+
+    /*
+        Deal.II section
+    */
+
+    Triangulation<2> tria;
+    dealii_custom_triangulation(tria);
+
+    if(vm.count("b2"))
+        tria.refine_global(1);
+
+    ofstream out ("deal_grid.eps");
+    GridOut grid_out;
+
+    cout << "Grid written to grid-1.eps" << endl;
+    grid_out.write_eps (tria, out);
+    
 
     gmsh::finalize();
     
