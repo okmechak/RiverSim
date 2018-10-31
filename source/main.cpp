@@ -5,10 +5,12 @@ using namespace std;
 
 void print_ascii_signature()
 {
+    cout << endl;
     cout << "     _)                    _)           " << endl;
     cout << "  __| |\\ \\   / _ \\  __| __| | __ `__ \\  " << endl;
     cout << " |    | \\ \\ /  __/ |  \\__ \\ | |   |   | " << endl;
-    cout << "_|   _|  \\_/ \\___|_|  ____/_|_|  _|  _| " << endl;                     
+    cout << "_|   _|  \\_/ \\___|_|  ____/_|_|  _|  _| " << endl;         
+    cout << endl;            
 }
 
 void dealii_custom_triangulation(Triangulation<2> &coarse_grid)
@@ -195,34 +197,39 @@ int main(int argc, char *argv[])
     /*
         program options
     */
-    po::options_description desc("Allowed options");
-    po::positional_options_description p;
-    
-    // Declare the supported options
-    desc.add_options()
-        ("help,h", "produce help message")
-        ("test,t", po::value<string>(), "test option")
-        ("switc_1,sw1", po::value<int>()->default_value(0), "used for custom switch between different flows")
-        ("switc_2,sw2", po::value<int>()->default_value(1), "used for custom switch between different flows")
-        ("switc_3,sw3", po::value<int>()->default_value(3), "used for custom switch between different flows")
-        ("bool_1,b1", "used for custom switch between different flows" )
-        ("bool_2,b2", "used for custom switch between different flows" )
-        ("bool_3,b3", "used for custom switch between different flows" )
-        ("input-mesh,f",po::value<vector<string>>(), "input mesh file")
-        ("suppress-signature, ss", "suppress signature printing")
-    ;
 
+    // Declaring group of options that will be allowed on both
+    //command line and config file
+    po::options_description config("Configuration");
+    //declare supported options
+    config.add_options()
+        ("help,h", "produce help message")
+        ("version,v", "print version string")
+        ("test,t", po::value<string>(), "test option")
+        ("sw1,s", po::value<int>()->default_value(0), "used for custom switch between different flows")
+        ("sw2", po::value<int>()->default_value(1), "used for custom switch between different flows")
+        ("sw2", po::value<int>()->default_value(3), "used for custom switch between different flows")
+        ("b1,b", "used for custom switch between different flows" )
+        ("b2", "used for custom switch between different flows" )
+        ("b3", "used for custom switch between different flows" )
+        ("input-mesh,f",po::value<vector<string>>(), "input mesh file")
+        ("suppress-signature", "suppress signature printing")
+        ("draw-mesh,d", po::value<bool>()->default_value(true), "draw mesh using gmsh fltk submodule")
+        ("output,o", po::value<string>()->default_value("out_mesh.mesh"), "save output mesh")
+    ;
+    
+    po::positional_options_description p;
     p.add("input-mesh", -1);
    
     po::variables_map vm;
-    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::store(po::parse_command_line(argc, argv, config), vm);
     po::notify(vm);    
 
     if (!vm.count("suppress-signature"))
         print_ascii_signature();
     
     if (vm.count("help")) {
-        cout << desc << endl;
+        cout << config << endl;
         return 0;
     }
     
@@ -243,16 +250,23 @@ int main(int argc, char *argv[])
     gmsh::option::setNumber("General.Terminal", 1);
     
     mdl::add("square");
-    geogeneration();
-    //basicgeneration();
+
+    if (vm.count("b1"))
+        basicgeneration();
+    else
+        geogeneration();
+        
 
     cout << "mesh generation" << endl;
     mdl::mesh::generate(2);
 
     //print_nodes_and_elements();
-         
-    gmsh::fltk::run();
-    gmsh::write("test.mesh");
+    
+    if (vm["draw-mesh"].as<bool>())
+        gmsh::fltk::run();
+    if(vm.count("output"))
+        gmsh::write(vm["output"].as<string>());
+
     gmsh::finalize();
     
     return 0;
