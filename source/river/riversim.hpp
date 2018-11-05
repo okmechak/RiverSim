@@ -6,6 +6,10 @@
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/grid_in.h>
+#include <deal.II/dofs/dof_handler.h>
+#include <deal.II/dofs/dof_tools.h>
+#include <deal.II/dofs/dof_renumbering.h>
+#include <deal.II/fe/fe_q.h>
 
 #include <iostream>
 #include <fstream>
@@ -26,7 +30,4 @@ namespace mdl = gmsh::model;
 namespace msh = gmsh::model::mesh;
 namespace geo = gmsh::model::geo;
 
-void dealii_test();
-void process_input_options(int argc, char *argv[]);
 void gmsh_possibilites(int argc, char *argv[]);
-void gmsh_reverse(int argc, char *argv[]);
