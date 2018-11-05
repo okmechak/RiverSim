@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 
-
-set(${CMAKE_BUILD_TYPE} "Debug")
+set(CMAKE_POLICY_DEFAULT_CMP0054 NEW)
+set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
 set(riversim_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
 set(riversim_INSTALL_BIN_DIR ${CMAKE_INSTALL_PREFIX})

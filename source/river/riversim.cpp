@@ -13,8 +13,12 @@ void gmsh_possibilites(int argc, char *argv[])
     //create new test model
     cout << "add" << endl;
     mdl::add("test");
-    cout << "List of models: " << mdl::list << endl;
-    //cout << "Model dimenssions: " << mdl::getDimension() << endl;
+    vector<string> model_list;
+    mdl::list(model_list);
+    cout << "List of models" << endl;
+    for(auto m : model_list)
+        cout << m << endl;
+    cout << "Model dimenssions: " << mdl::getDimension() << endl;
 
     
     /*

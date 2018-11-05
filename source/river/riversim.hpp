@@ -30,7 +30,4 @@ namespace mdl = gmsh::model;
 namespace msh = gmsh::model::mesh;
 namespace geo = gmsh::model::geo;
 
-void dealii_test();
-void process_input_options(int argc, char *argv[]);
 void gmsh_possibilites(int argc, char *argv[]);
-void gmsh_reverse(int argc, char *argv[]);
