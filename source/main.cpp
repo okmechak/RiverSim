@@ -13,136 +13,6 @@ void print_ascii_signature()
     cout << endl;            
 }
 
-void dealii_custom_triangulation(Triangulation<2> &coarse_grid)
-{
-    const unsigned int dim = 2;
-
-    static const Point<2> vertices_1[]
-      = {  Point<2> (-1.,   -1.),
-           Point<2> (-1./2, -1.),
-           Point<2> (0.,    -1.),
-           Point<2> (+1./2, -1.),
-           Point<2> (+1,    -1.),
-           Point<2> (-1.,   -1./2.),
-           Point<2> (-1./2, -1./2.),
-           Point<2> (0.,    -1./2.),
-           Point<2> (+1./2, -1./2.),
-           Point<2> (+1,    -1./2.),
-           Point<2> (-1.,   0.),
-           Point<2> (-1./2, 0.),
-           Point<2> (+1./2, 0.),
-           Point<2> (+1,    0.),
-           Point<2> (-1.,   1./2.),
-           Point<2> (-1./2, 1./2.),
-           Point<2> (0.,    1./2.),
-           Point<2> (+1./2, 1./2.),
-           Point<2> (+1,    1./2.),
-           Point<2> (-1.,   1.),
-           Point<2> (-1./2, 1.),
-           Point<2> (0.,    1.),
-           Point<2> (+1./2, 1.),
-           Point<2> (+1,    1.)
-        };
-
-    const unsigned int
-    n_vertices = sizeof(vertices_1) / sizeof(vertices_1[0]);
-
-    const std::vector<Point<dim> > vertices (&vertices_1[0],
-                                             &vertices_1[n_vertices]);
-
-    static const int cell_vertices[][GeometryInfo<dim>::vertices_per_cell]
-    = {{0, 1, 5, 6},
-      {1, 2, 6, 7},
-      {2, 3, 7, 8},
-      {3, 4, 8, 9},
-      {5, 6, 10, 11},
-      {8, 9, 12, 13},
-      {10, 11, 14, 15},
-      {12, 13, 17, 18},
-      {14, 15, 19, 20},
-      {15, 16, 20, 21},
-      {16, 17, 21, 22},
-      {17, 18, 22, 23}
-    };
-
-    const unsigned int
-    n_cells = sizeof(cell_vertices) / sizeof(cell_vertices[0]);
-
-    std::vector<CellData<dim> > cells (n_cells, CellData<dim>());
-
-    for (unsigned int i=0; i<n_cells; ++i){
-        for (unsigned int j=0;
-             j<GeometryInfo<dim>::vertices_per_cell;
-             ++j)
-            cells[i].vertices[j] = cell_vertices[i][j];
-        cells[i].material_id = 0;
-    }
-
-    coarse_grid.create_triangulation (vertices,
-                                      cells,
-                                      SubCellData());
-
-    coarse_grid.refine_global (1);
-}
-
-void geogeneration()
-{
-    geo::addPoint(0, 0, 0, 0.1, 1);
-    geo::addPoint(0.5, 0, 0, 0.1, 2);
-    geo::addPoint(1, 0, 0, 0.1, 3);
-    geo::addPoint(1, 1, 0, 0.1, 4);
-    geo::addPoint(0, 1, 0, 0.1, 5);
-    geo::addPoint(0.5, 0.2, 0, 0.1, 6);
-
-    geo::addLine(1, 2, 1);
-    geo::addLine(2, 3, 2);
-    geo::addLine(3, 4, 3);
-    geo::addLine(4, 5, 4);
-    geo::addLine(5, 1, 5);
-    geo::addLine(2, 6, 6);
-    geo::addLine(6, 2, 7);
-
-    geo::addCurveLoop({1, 2, 3, 4, 5, 6, 7}, 1);
-    geo::addPlaneSurface({1}, 6);
-    geo::synchronize();
-}
-
-void basicgeneration()
-{
-    //TODO: implement right workwflow 
-
-    const int meshDimension = 2; 
-    
-    /*
-        defining of geometry
-    */
-    const int geomTag = 1;
-    cout << "discr entity" << endl;
-    
-    mdl::addDiscreteEntity(meshDimension, geomTag);
-    
-    //node points
-    //auto nodesTag = {1, 2, 3, 4, 5};
-    cout << "set nodes" << endl;
-    msh::setNodes(meshDimension, geomTag, 
-        {1, 2, 3, 4, 5, 6, 7, 8, 9}, 
-        {0.,  0.,  0.,   //node 1 
-         1.,  0.,  0.,   //node 2
-         1.,  1.,  0.,   //node 3
-         0.,  1.,  0.,   //node 4
-
-         0.5, 0.,  0.,   //node 5
-         1.,  0.2, 0.,   //node 6
-         0.5, 1.,  0.,   //node 7
-         0.,  0.2, 0.,   //node 8
-         0.5, 0.2, 0.}); // node 9           
-
-    cout << "set elements" << endl;
-    msh::setElements( meshDimension, geomTag, 
-        {15}, 
-        {{1, 5, 9}},
-        {{1, 5, 9}});
-}
 
 void print_nodes_and_elements()
 {
@@ -239,66 +109,14 @@ int main(int argc, char *argv[])
         cout << config << endl;
         return 0;
     }
-    
-    
-    if (vm.count("test")) {
-        cout << "test option was set to " 
-             << vm["test"].as<string>() << endl;
-    } else {
-        cout << "test was not set." << endl;
-    }
-
 
     /*
-        Gmsh
+        Main River Class initializtion
     */
-
-    gmsh::initialize();
-    gmsh::option::setNumber("Mesh.RecombineAll", 1);
-    gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
-    gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
-    gmsh::option::setNumber("General.Terminal", (int)vm["gmsh-log"].as<bool>());
+    deallog.depth_console (2);
     
-    mdl::add("square");
+    RiverSim River(vm);    
+    River.run();    
 
-    if (vm.count("b1"))
-        basicgeneration();
-    else
-        geogeneration();
-        
-
-    cout << "mesh generation" << endl;
-    mdl::mesh::generate(2);
-    
-    if (vm["draw-mesh"].as<bool>())
-        gmsh::fltk::run();
-    if(vm.count("output"))
-        gmsh::write(vm["output"].as<string>());
-
-
-    /*
-        Deal.II section
-    */
-
-    Triangulation<2> tria;
-    dealii_custom_triangulation(tria);
-    DoFHandler<2> dof_handler (tria);
-    const FE_Q<2> finite_element(1);
-    dof_handler.distribute_dofs (finite_element);
-
-    DoFRenumbering::Cuthill_McKee (dof_handler);
-
-    if(vm.count("b2"))
-        tria.refine_global(3);
-
-    ofstream out ("deal_grid.eps");
-    GridOut grid_out;
-
-    cout << "Grid written to grid-1.eps" << endl;
-    grid_out.write_eps (tria, out);
-    
-
-    gmsh::finalize();
-    
     return 0;
 }
