@@ -115,7 +115,7 @@ void Step3::make_custom_grid()
   triangulation.create_triangulation (vertices,
                                       cells,
                                       SubCellData());
-  triangulation.refine_global (1);
+  triangulation.refine_global (5);
 }
 
 
@@ -215,8 +215,8 @@ void Step3::output_results () const
   data_out.attach_dof_handler (dof_handler);
   data_out.add_data_vector (solution, "solution");
   data_out.build_patches ();
-  std::ofstream output ("solution.gpl");
-  data_out.write_gnuplot (output);
+  std::ofstream output ("solution.vtk");
+  data_out.write_vtk (output);
 }
 
 
