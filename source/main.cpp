@@ -110,7 +110,6 @@ void geogeneration()
 void basicgeneration()
 {
     //TODO: implement right workwflow 
-    cout << "List of models: " << mdl::list << endl;
 
     const int meshDimension = 2; 
     
