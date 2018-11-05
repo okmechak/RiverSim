@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.10)
 
 project(riversim C CXX)
 
 message("========================================")
 message("Deal II setup")
 set(deal.II_USE_STATIC_LIBS "OFF")
-find_package(deal.II REQUIRED HINTS /usr/local/dealii)
+find_package(deal.II REQUIRED HINTS ${dealii_DIRECTORY})
 deal_ii_initialize_cached_variables()
 
 
