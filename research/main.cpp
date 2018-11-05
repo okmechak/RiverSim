@@ -1,24 +1,25 @@
 
 #include <deal.II/grid/tria.h>
-#include <deal.II/dofs/dof_handler.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
+
+#include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_accessor.h>
-#include <deal.II/fe/fe_q.h>
 #include <deal.II/dofs/dof_tools.h>
+#include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/function.h>
 #include <deal.II/numerics/vector_tools.h>
 #include <deal.II/numerics/matrix_tools.h>
+#include <deal.II/numerics/data_out.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/sparse_matrix.h>
 #include <deal.II/lac/dynamic_sparsity_pattern.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/precondition.h>
-#include <deal.II/numerics/data_out.h>
 #include <fstream>
 #include <iostream>
 
@@ -51,54 +52,26 @@ class Step3
 };
 
 
+
 Step3::Step3 (): fe (1), dof_handler (triangulation){}
+
+
 
 void Step3::make_custom_grid()
 {
   static const Point<2> vertices_1[]
-    = {  Point<2> (-1.,   -1.),
-         Point<2> (-1./2, -1.),
-         Point<2> (0.,    -1.),
-         Point<2> (+1./2, -1.),
-         Point<2> (+1,    -1.),
-         Point<2> (-1.,   -1./2.),
-         Point<2> (-1./2, -1./2.),
-         Point<2> (0.,    -1./2.),
-         Point<2> (+1./2, -1./2.),
-         Point<2> (+1,    -1./2.),
-         Point<2> (-1.,    0.),
-         Point<2> (-1./2,  0.),
-         Point<2> (+1./2,  0.),
-         Point<2> (+1,     0.),
-         Point<2> (-1.,    1./2.),
-         Point<2> (-1./2,  1./2.),
-         Point<2> (0.,     1./2.),
-         Point<2> (+1./2,  1./2.),
-         Point<2> (+1,     1./2.),
-         Point<2> (-1.,    1.),
-         Point<2> (-1./2,  1.),
-         Point<2> (0.,     1.),
-         Point<2> (+1./2,  1.),
-         Point<2> (+1,     1.)
+    = {  Point<2> (0., 0.),
+         Point<2> (1,  0.),
+         Point<2> (0,  1.),
+         Point<2> (1., 1.)
       }; 
   const unsigned int
   n_vertices = sizeof(vertices_1) / sizeof(vertices_1[0]);
   const vector<Point<dim> > vertices (&vertices_1[0],
                                            &vertices_1[n_vertices]);
   static const int cell_vertices[][GeometryInfo<dim>::vertices_per_cell]
-  = {{0, 1, 5, 6},
-    {1, 2, 6, 7},
-    {2, 3, 7, 8},
-    {3, 4, 8, 9},
-    {5, 6, 10, 11},
-    {8, 9, 12, 13},
-    {10, 11, 14, 15},
-    {12, 13, 17, 18},
-    {14, 15, 19, 20},
-    {15, 16, 20, 21},
-    {16, 17, 21, 22},
-    {17, 18, 22, 23}
-  };
+  = {{0, 1, 2, 3}};
+
   const unsigned int
   n_cells = sizeof(cell_vertices) / sizeof(cell_vertices[0]);
 
@@ -119,6 +92,7 @@ void Step3::make_custom_grid()
 }
 
 
+
 void Step3::make_grid ()
 {
   GridGenerator::hyper_cube (triangulation, -1, 1);
@@ -127,6 +101,7 @@ void Step3::make_grid ()
             << triangulation.n_active_cells()
             << std::endl;
 }
+
 
 
 void Step3::setup_system ()
@@ -143,6 +118,7 @@ void Step3::setup_system ()
   solution.reinit (dof_handler.n_dofs());
   system_rhs.reinit (dof_handler.n_dofs());
 }
+
 
 
 void Step3::assemble_system ()
