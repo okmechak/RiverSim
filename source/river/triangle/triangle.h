@@ -248,6 +248,27 @@
 /*                                                                           */
 /*****************************************************************************/
 
+/* The next line is used to outsmart some very stupid compilers.  If your    */
+/*   compiler is smarter, feel free to replace the "int" with "void".        */
+/*   Not that it matters.                                                    */
+
+#define VOID void
+
+#define TRILIBRARY
+
+/* #define SINGLE */
+#ifdef SINGLE
+#define REAL float
+#else /* not SINGLE */
+#define REAL double
+#endif /* not SINGLE */
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct triangulateio {
   REAL *pointlist;                                               /* In / out */
   REAL *pointattributelist;                                      /* In / out */
@@ -279,11 +300,11 @@ struct triangulateio {
   int numberofedges;                                             /* Out only */
 };
 
-#ifdef ANSI_DECLARATORS
 void triangulate(char *, struct triangulateio *, struct triangulateio *,
                  struct triangulateio *);
-void trifree(VOID *memptr);
-#else /* not ANSI_DECLARATORS */
-void triangulate();
-void trifree();
-#endif /* not ANSI_DECLARATORS */
+                 
+void trifree(void *memptr);
+
+#ifdef __cplusplus
+}
+#endif
