@@ -13,59 +13,6 @@ void print_ascii_signature()
     cout << endl;            
 }
 
-
-void print_nodes_and_elements()
-{
-    /*
-        Nodes
-    */
-    vector<int> nodeTags;
-    vector<double> coords, parametricCoords;
-    const int dim = 2, tag = -1;
-    bool bIncludeBoundary = true;
-
-    
-    msh::getNodes(nodeTags, coords, parametricCoords, dim, tag, bIncludeBoundary);
-
-    cout << "With boundaries" << endl;
-    for(unsigned int i = 0; i < nodeTags.size(); ++i)
-        cout << i << "  tag: " << nodeTags[i] << "  coords: " 
-        << coords[3*i] << "  " << coords[3*i + 1] << "  " << coords[3*i + 2] << endl;
-
-    /*
-        Elements
-    */
-    vector<int> elementTypes;
-    vector<vector<int>> elementTags, elemNodeTags;
-
-    msh::getElements(elementTypes, elementTags, elemNodeTags);
-
-    cout << endl << endl << "Element Types" << endl;
-    for(unsigned int i = 0; i < elementTags.size(); ++i){
-        cout << "Element Types - " << elementTypes[i] << endl;
-        for(unsigned int j = 0; j < elementTags[i].size(); ++j)
-            cout << "  " << elementTags[i][j];
-        cout << endl;
-    }
-
-    cout << endl << endl << "Element Tags and Node Tags" << endl;
-    for(unsigned int i = 0; i < elemNodeTags.size(); ++i){
-        cout << "Element Types - " << elementTypes[i] << endl;
-        for(unsigned int j = 0; j < elemNodeTags[i].size(); ++j)
-            cout << "  " << elemNodeTags[i][j];
-        cout << endl;
-    }
-
-    //what about get boundaries?
-    gmsh::vectorpair inDimTag, outDimTag;
-    mdl::getEntities(inDimTag);
-    mdl::getBoundary(inDimTag, outDimTag, true, true, true);
-    cout << "Boundary entities" << endl;
-    for(auto el: outDimTag)
-        cout << "dim - " <<  el.first << " dim - " << el.second << endl;
-}
-
-
 int main(int argc, char *argv[])
 {
 
@@ -93,6 +40,8 @@ int main(int argc, char *argv[])
         ("draw-mesh,d", po::value<bool>()->default_value(true), "draw mesh using gmsh fltk submodule")
         ("output,o", po::value<string>()->default_value("out_mesh.mesh"), "save output mesh")
         ("gmsh-log", po::value<bool>()->default_value(false), "print Gmsh log to terminal")
+        ("sm", "suppress mesh")
+        ("ss", "suppress solver")
     ;
     
     po::positional_options_description p;
@@ -111,12 +60,26 @@ int main(int argc, char *argv[])
     }
 
     /*
+        Mesh class test
+    */
+    if(!vm.count("sm"))
+    {
+        Mesh m;
+        if(!vm.count("b2"))
+            m.TriangleGeneratorExample();
+        else
+            m.TriangleGenerator();
+    }
+
+    /*
         Main River Class initializtion
     */
-    deallog.depth_console (2);
-    
-    RiverSim River(vm);    
-    River.run();    
+    if(!vm.count("ss"))
+    {
+        deallog.depth_console (2);
+        RiverSim River(vm);    
+        River.run();    
+    }
 
     return 0;
 }

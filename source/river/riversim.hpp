@@ -44,6 +44,286 @@ namespace mdl = gmsh::model;
 namespace msh = gmsh::model::mesh;
 namespace geo = gmsh::model::geo;
 
+class Mesh
+{
+    public:
+        int dim = 2;
+
+        Mesh();
+        ~Mesh();
+        void TriangleGenerator();
+        void TriangleGeneratorExample();
+
+    private:
+
+};
+
+Mesh::Mesh(){}
+
+void Mesh::TriangleGeneratorExample()
+{
+    /*
+        z - numbering starts from zero
+        Q - quite
+        V - verbose
+        r - refine previously generated mesh
+        q - quality(minimu 20 degree).. also angle can be specified by q30
+        a - maximum triangle area constrain. a0.1
+        u - impose user defined constrain
+        A - asign regional attribute to each triangle
+        c - enclose convex hullwith segments
+        D - all triangles will be delaunay. Not just constrained delaunay
+
+        e - outputs list of edges
+        v - outputs voronoi diagram
+        n - outputs neighbours
+        
+        b - suppress boundary markers
+        p - suppress output poly file
+        n - suppress node file
+        E - suppress ele file
+
+        X - suppress exact arithmetics
+        o2 - generates second order mesh
+        Y - prohibits stainer points on edge segmets
+        YY - ------ on any segment
+        S - specify max num of steiner points
+        i - use incremental algorithm instead of divide and conqure
+        F - fortune algorithm instead of delaunay
+        C - check final mesh if it was conf with X
+        Q - quite
+        V - verbose
+        h - help
+    
+        numbering starts from 1 unless z is specified
+
+        pointlist: array of point coordinates, each point ocupies two reals
+        pointattributelist: array of point attributes
+            each point occupies 'numberofpointattributes' REALs
+
+        pointmarkerlist: array of point markers; one int per point
+
+        trianglelist: array of triangle corner list
+        triangleattributelist
+        trianglearealist - area constrains
+        neighborlist
+
+        segmentlist - array of segment endpoints, two per segment
+        segmentmarkerlist - array of segment markers, one int per segment
+        holelist - array of holes
+
+        regionlist - array regional attributes and area constrains
+
+        edgelist - output only
+        edgemarkerlist - output
+    */
+    struct triangulateio in, mid, out, vorout;
+
+    /* Define input points. */
+
+    in.numberofpoints = 4;
+    in.numberofpointattributes = 1;
+    in.pointlist = (REAL *) malloc(in.numberofpoints * 2 * sizeof(REAL));
+    in.pointlist[0] = 0.0;
+    in.pointlist[1] = 0.0;
+    in.pointlist[2] = 1.0;
+    in.pointlist[3] = 0.0;
+    in.pointlist[4] = 1.0;
+    in.pointlist[5] = 10.0;
+    in.pointlist[6] = 0.0;
+    in.pointlist[7] = 10.0;
+    in.pointattributelist = (REAL *) malloc(in.numberofpoints *
+                                            in.numberofpointattributes *
+                                            sizeof(REAL));
+    in.pointattributelist[0] = 0.0;
+    in.pointattributelist[1] = 1.0;
+    in.pointattributelist[2] = 11.0;
+    in.pointattributelist[3] = 10.0;
+    in.pointmarkerlist = (int *) malloc(in.numberofpoints * sizeof(int));
+    in.pointmarkerlist[0] = 0;
+    in.pointmarkerlist[1] = 2;
+    in.pointmarkerlist[2] = 0;
+    in.pointmarkerlist[3] = 0;
+
+    in.numberofsegments = 0;
+    in.numberofholes = 0;
+    in.numberofregions = 1;
+    in.regionlist = (REAL *) malloc(in.numberofregions * 4 * sizeof(REAL));
+    in.regionlist[0] = 0.5;
+    in.regionlist[1] = 5.0;
+    in.regionlist[2] = 7.0;            /* Regional attribute (for whole mesh). */
+    in.regionlist[3] = 0.1;          /* Area constraint that will not be used. */
+
+    printf("Input point set:\n\n");
+
+    /* Make necessary initializations so that Triangle can return a */
+    /*   triangulation in `mid' and a voronoi diagram in `vorout'.  */
+
+    mid.pointlist = (REAL *) NULL;            /* Not needed if -N switch used. */
+    /* Not needed if -N switch used or number of point attributes is zero: */
+    mid.pointattributelist = (REAL *) NULL;
+    mid.pointmarkerlist = (int *) NULL; /* Not needed if -N or -B switch used. */
+    mid.trianglelist = (int *) NULL;          /* Not needed if -E switch used. */
+    /* Not needed if -E switch used or number of triangle attributes is zero: */
+    mid.triangleattributelist = (REAL *) NULL;
+    mid.neighborlist = (int *) NULL;         /* Needed only if -n switch used. */
+    /* Needed only if segments are output (-p or -c) and -P not used: */
+    mid.segmentlist = (int *) NULL;
+    /* Needed only if segments are output (-p or -c) and -P and -B not used: */
+    mid.segmentmarkerlist = (int *) NULL;
+    mid.edgelist = (int *) NULL;             /* Needed only if -e switch used. */
+    mid.edgemarkerlist = (int *) NULL;   /* Needed if -e used and -B not used. */
+
+    vorout.pointlist = (REAL *) NULL;        /* Needed only if -v switch used. */
+    /* Needed only if -v switch used and number of attributes is not zero: */
+    vorout.pointattributelist = (REAL *) NULL;
+    vorout.edgelist = (int *) NULL;          /* Needed only if -v switch used. */
+    vorout.normlist = (REAL *) NULL;         /* Needed only if -v switch used. */
+
+    /* Triangulate the points.  Switches are chosen to read and write a  */
+    /*   PSLG (p), preserve the convex hull (c), number everything from  */
+    /*   zero (z), assign a regional attribute to each element (A), and  */
+    /*   produce an edge list (e), a Voronoi diagram (v), and a triangle */
+    /*   neighbor list (n).                                              */
+
+    triangulate("pczAevn", &in, &mid, &vorout);
+
+    printf("Initial triangulation:\n\n");
+    printf("Initial Voronoi diagram:\n\n");
+
+    /* Attach area constraints to the triangles in preparation for */
+    /*   refining the triangulation.                               */
+
+    /* Needed only if -r and -a switches used: */
+    mid.trianglearealist = (REAL *) malloc(mid.numberoftriangles * sizeof(REAL));
+    mid.trianglearealist[0] = 3.0;
+    mid.trianglearealist[1] = 1.0;
+
+    /* Make necessary initializations so that Triangle can return a */
+    /*   triangulation in `out'.                                    */
+
+    out.pointlist = (REAL *) NULL;            /* Not needed if -N switch used. */
+    /* Not needed if -N switch used or number of attributes is zero: */
+    out.pointattributelist = (REAL *) NULL;
+    out.trianglelist = (int *) NULL;          /* Not needed if -E switch used. */
+    /* Not needed if -E switch used or number of triangle attributes is zero: */
+    out.triangleattributelist = (REAL *) NULL;
+
+    /* Refine the triangulation according to the attached */
+    /*   triangle area constraints.                       */
+
+    triangulate("prazBP", &mid, &out, (struct triangulateio *) NULL);
+
+    printf("Refined triangulation:\n\n");
+
+    /* Free all allocated arrays, including those allocated by Triangle. */
+
+    free(in.pointlist);
+    free(in.pointattributelist);
+    free(in.pointmarkerlist);
+    free(in.regionlist);
+    free(mid.pointlist);
+    free(mid.pointattributelist);
+    free(mid.pointmarkerlist);
+    free(mid.trianglelist);
+    free(mid.triangleattributelist);
+    free(mid.trianglearealist);
+    free(mid.neighborlist);
+    free(mid.segmentlist);
+    free(mid.segmentmarkerlist);
+    free(mid.edgelist);
+    free(mid.edgemarkerlist);
+    free(vorout.pointlist);
+    free(vorout.pointattributelist);
+    free(vorout.edgelist);
+    free(vorout.normlist);
+    free(out.pointlist);
+    free(out.pointattributelist);
+    free(out.trianglelist);
+    free(out.triangleattributelist);
+}   
+
+void Mesh::TriangleGenerator()
+{
+    
+    triangulateio in, out, vorout;
+
+
+
+    //input data
+    /*
+
+    */
+    char triswitches[] = {'p','z', 'V', 'A', 'q', '2', '0', 'D', 'C',  'e', 'c', '\0'};
+
+    vector <double> pointList = 
+        {0., 0.,  //0
+         1., 0.,  //2
+         1., 1.,  //3
+         0., 1.,  //4
+        };
+
+    vector <double> pointAttributeList = 
+        {1., 1., 1., 1.};
+    
+    vector <int> pointMarkerList = 
+        {0, 1, 2, 3};
+
+    vector <int> segmentList = 
+        {
+        //0, 1, //1
+        //1, 2, //2
+        //2, 3, //3
+        //3, 1
+        };
+    
+    vector <int> segmentMarkerList = 
+        {
+        //    0, 1, 2, 3
+        };
+
+    //points
+    in.numberofpoints = pointList.size();
+    in.numberofpointattributes = 1;
+    in.pointlist = &pointList[0];
+    in.pointattributelist = &pointAttributeList[0];
+    in.pointmarkerlist = &pointMarkerList[0];
+
+    //triangles
+    in.numberoftriangles = 0;
+    in.numberofcorners = 0;
+    in.numberoftriangleattributes = 0;
+    in.trianglelist = NULL;
+    in.triangleattributelist = NULL;
+    in.trianglearealist = NULL;
+
+    //segments
+    in.numberofsegments = segmentList.size();
+    in.segmentlist = &segmentList[0];
+    in.segmentmarkerlist = &segmentMarkerList[0];
+
+    //holes
+    in.numberofholes = 0;
+    in.holelist = NULL;
+
+    //region
+    in.numberofregions = 0;
+    in.regionlist = NULL;
+
+    //edge - read only
+
+    //mesh generation main call
+    triangulate(triswitches, &in, &out, &vorout);
+
+
+}
+
+Mesh::~Mesh()
+{
+
+    trifree(NULL);
+}
+
 class RiverSim
 {
     public:
@@ -84,6 +364,7 @@ RiverSim::RiverSim (po::variables_map &vm): fe (1), dof_handler(triangulation)
     /*
         GMSH intialization
     */
+
     gmsh::initialize();
     gmsh::option::setNumber("Mesh.RecombineAll", 1);
     gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
@@ -130,27 +411,34 @@ void RiverSim::gmsh_mesh_generator()
     /*
         defining of geometry
     */
-    const int geomTag = 1;
     cout << "discr entity" << endl;
     
-    mdl::addDiscreteEntity(dim, geomTag);
+    mdl::addDiscreteEntity(1, 1);
     
-    //node points
-    //auto nodesTag = {1, 2, 3, 4, 5};
+    
     cout << "set nodes" << endl;
-    msh::setNodes(dim, geomTag, 
-        {1, 2, 3, 4}, 
-        {0.,  0.,  0.,   //node 1 
-         1.,  0.,  0.,   //node 2
-         1.,  1.,  0.,   //node 3
-         0.,  1.,  0.}); //node 4           
+    msh::setNodes(1, 1, 
+        {1, 2, 3, 4, 5, 6, 7}, 
+        {0.,  0.,  0.,   //node 1
+         0.5, 0.,  0.,   //node 2
+         1.,  0.,  0.,   //node 3
+         1.,  1.,  0.,   //node 4
+         0.,  1.,  0.,   //node 5
+         0.5, 0.2, 0.,   //node 6
+         0.5, 0.6,  0.   //node 7
+        });
 
     cout << "set elements" << endl;
-    msh::setElements( dim, geomTag, 
+    msh::setElements(1, 1, 
         {1},//line element 
-        {{1,2,3,4}},//line tags
-        {{1,2,2,3,3,4,4,1}}); //lines
-    
+        {{1, 2, 3, 4, 5, 6, 7}},//line tags
+        {{1, 2, 2, 6, 6, 2, 2, 3, 3, 4, 4, 5, 5, 1}}); //lines
+
+    geo::addPoint(0.5, 0.6, 0., 0.01, 99);
+    geo::addCurveLoop({1}, 100);
+    geo::addPlaneSurface({100}, 101);
+    geo::synchronize();
+
     mdl::mesh::generate(2);
 }
 
@@ -294,6 +582,11 @@ void RiverSim::run ()
     assemble_system ();
     solve ();
     output_results ();
+
+    if(option_map.count("b1"))
+        gmsh_mesh_generator();
+    else
+        geo_mesh_generator();
 
     if (option_map["draw-mesh"].as<bool>())
         gmsh::fltk::run();
