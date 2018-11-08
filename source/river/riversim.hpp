@@ -28,6 +28,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string.h>
 
 #include <tetgen.h>
 #include <gmsh.h>
@@ -53,6 +54,7 @@ class Mesh
         void TriangleGeneratorExample();
         void Print(
             struct triangulateio &io,
+            char * options,
             bool markers = true,
             bool reporttriangles = true,
             bool reportneighbors = true,
@@ -68,6 +70,7 @@ Mesh::Mesh(){}
 
 void Mesh::Print(
     struct triangulateio &io,
+    char * options,
     bool markers,
     bool reporttriangles,
     bool reportneighbors,
@@ -76,6 +79,65 @@ void Mesh::Print(
     bool reportnorms)
 {
     int i, j;
+
+    cout << endl << endl << "Triangle Print" << endl;
+    cout << "Options: " << endl;
+    if (strchr(options, 'p'))
+        cout << " -p - read PSLG" << endl;
+    if (strchr(options, 'z'))
+        cout << " -z - numbering starts from zero" << endl;
+    if (strchr(options, 'u'))
+        cout << " -u - user defined constrain" << endl;
+    if (strchr(options, 'r'))
+        cout << " -r - refine" << endl;
+    if (strchr(options, 'q'))
+        cout << " -q - quality min 20 degree" << endl;
+    if (strchr(options, 'a'))
+        cout << " -a - maximum triangle area constrain" << endl;
+    if (strchr(options, 'D'))
+        cout << " -D - all traingles will be Delaunay" << endl;
+    if (strchr(options, 'c'))
+        cout << " -c - enclose convex hull" << endl;
+    if (strchr(options, 'C'))
+        cout << " -C - check final mesh" << endl;
+    if (strchr(options, 'A'))
+        cout << " -A - assign additional attribute to each triangle which specifies segment which it belongs too" << endl;
+    if (strchr(options, 'e'))
+        cout << " -e - output list of edges" << endl;
+
+    if (strchr(options, 'v'))
+        cout << " -v - outputs voronoi diagram" << endl;
+    if (strchr(options, 'n'))
+        cout << " -n - outputs neighboors" << endl;
+    if (strchr(options, 'B'))
+        cout << " -B - suppress boundary markers" << endl;
+    if (strchr(options, 'P'))
+        cout << " -P - suppress output poly file" << endl;
+    if (strchr(options, 'N'))
+        cout << " -N - suppress output nodes file" << endl;
+    if (strchr(options, 'E'))
+        cout << " -E - suppress output elements file" << endl;
+    if (strchr(options, 'O'))
+        cout << " -O - suppress holes" << endl;
+
+    if (strchr(options, 'o'))
+        cout << " -o2 - second order mesh" << endl;
+    if (strchr(options, 'Y'))
+        cout << " -Y - prohibits stainer points on boundary" << endl;
+    if (strchr(options, 'S'))
+        cout << " -S - specify max number off added Steiner points" << endl;
+
+    if (strchr(options, 'i'))
+        cout << " -i - use incremental algorithm" << endl;
+    if (strchr(options, 'F'))
+        cout << " -F - use Fortune algorithm" << endl;
+    
+    if (strchr(options, 'Q'))
+        cout << " -Q - quite" << endl;
+    if (strchr(options, 'V'))
+        cout << " -V - verbose" << endl;
+
+
 
     if (io.numberofpoints > 0 && io.pointlist != NULL){
         cout << "Total of points     : " << io.numberofpoints << endl;
@@ -127,7 +189,7 @@ void Mesh::Print(
                     }
                     else
                         cout << " no attributes ";
-                        
+
                     if (io.trianglearealist != NULL)
                         cout << " area constrain " << io.trianglearealist[i];
                     else
@@ -199,34 +261,51 @@ void Mesh::Print(
 void Mesh::TriangleGeneratorExample()
 {
     /*
+        p - reads PSLG.. 
+                1) will generate Constrained Delaunay. 
+        
+                2) if are used -s(theoretical interest), 
+                    -q(angles greter than 20, quality q23), -a maximum triangle area(a0.1) or 
+                    -u.. will generate 
+                        conforming constrained Delaunay
+                3) if -D - conforming Delaunay triangulation(every triangle is Delaunay)
+                4) if -r(refine) then segments of prev coarser mesh will be preserved
+
+        u - user-defined constraint, see triumsuitetable() for more details
+
         z - numbering starts from zero
-        Q - quite
-        V - verbose
-        r - refine previously generated mesh
+        r - refine previously generated mesh, with preserving of segments
         q - quality(minimu 20 degree).. also angle can be specified by q30
         a - maximum triangle area constrain. a0.1
-        u - impose user defined constrain
-        A - asign regional attribute to each triangle
+        D - all triangles will be delaunay. Not just constrained delaunay.
+        
         c - enclose convex hullwith segments
-        D - all triangles will be delaunay. Not just constrained delaunay
-
+        C - check final mesh if it was conf with X
+        
+        A - asign additional regional attribute to each triangle, and itspecifies to
+            each closed segment region it belongs. (has effect with -p and without -r)
         e - outputs list of edges
         v - outputs voronoi diagram
         n - outputs neighbours
         
-        b - suppress boundary markers
-        p - suppress output poly file
-        n - suppress node file
+        B - suppress boundary markers in output file
+        P - suppress output poly file
+        N - suppress node file
         E - suppress ele file
-
+        I - suppress file mesh iteration number
+        O - suppress holes
         X - suppress exact arithmetics
+
         o2 - generates second order mesh
-        Y - prohibits stainer points on edge segmets
-        YY - ------ on any segment
-        S - specify max num of steiner points
+        Y - prohibits stainer points on mesh boundary
+        YY -                  ------ on any segment
+        S - specify max num of added steiner points
+
+
         i - use incremental algorithm instead of divide and conqure
-        F - fortune algorithm instead of delaunay
-        C - check final mesh if it was conf with X
+        F - fortune algorithm instead of delauna
+
+
         Q - quite
         V - verbose
         h - help
@@ -293,7 +372,7 @@ void Mesh::TriangleGeneratorExample()
     in.regionlist[0] = 0.5;
     in.regionlist[1] = 5.0;
     in.regionlist[2] = 7.0;            /* Regional attribute (for whole mesh). */
-    in.regionlist[3] = 0.1;          /* Area constraint that will not be used. */
+    in.regionlist[3] = 0.1;            /* Area constraint that will not be used. */
 
 
     /* Make necessary initializations so that Triangle can return a */
@@ -330,9 +409,9 @@ void Mesh::TriangleGeneratorExample()
     triangulate(triswitches1, &in, &mid, &vorout);
 
     printf("Output triangulation:\n\n");
-    Print(mid);
+    Print(mid, triswitches1);
     printf("Initial Voronoi diagram:\n\n");
-    Print(vorout);
+    Print(vorout, triswitches1);
 
     /* Attach area constraints to the triangles in preparation for */
     /*   refining the triangulation.                               */
@@ -359,7 +438,7 @@ void Mesh::TriangleGeneratorExample()
     triangulate(triswitches2, &mid, &out, (struct triangulateio *) NULL);
 
     printf("Refined triangulation:\n\n");
-    Print(out);
+    Print(out, triswitches2);
 
     /* Free all allocated arrays, including those allocated by Triangle. */
 
@@ -446,17 +525,17 @@ void Mesh::TriangleGenerator()
     //edge - read only
 
     cout << endl << endl << "Input point set:" << endl << endl;
-    Print(in);
+    Print(in, triswitches);
 
     //mesh generation main call
     cout << endl << "Triangulation Started" << endl << endl;
     triangulate(triswitches, &in, &out, &vorout);
 
     cout << endl << endl << "Output triangulation:" << endl << endl;
-    Print(out);
+    Print(out, triswitches);
 
     cout << endl << endl << " Voronoi diagram:" << endl << endl;
-    Print(vorout);
+    Print(vorout, triswitches);
 }
 
 Mesh::~Mesh()
