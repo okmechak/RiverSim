@@ -77,12 +77,6 @@ void Mesh::Print(
 {
     int i, j;
 
-    if(false){//FIXME: how to test &io??
-        cout << "Input triangulate structure is invalid! " << endl;
-        return;
-    }
-
-
     if (io.numberofpoints > 0 && io.pointlist != NULL){
         cout << "Total of points     : " << io.numberofpoints << endl;
         cout << "      of attributes : " << io.numberofpointattributes << endl;
@@ -132,7 +126,12 @@ void Mesh::Print(
                                                     io.numberoftriangleattributes + j];
                     }
                     else
-                        cout << "attributes aren't set";
+                        cout << " no attributes ";
+                        
+                    if (io.trianglearealist != NULL)
+                        cout << " area constrain " << io.trianglearealist[i];
+                    else
+                        cout << " no area constrain";
                 }
 
                 if (reportneighbors) {
