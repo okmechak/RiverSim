@@ -208,7 +208,13 @@
 /*   recommend double precision unless you want to generate a mesh for which */
 /*   you do not have enough memory.                                          */
 
+/* #define SINGLE */
 
+#ifdef SINGLE
+#define REAL float
+#else /* not SINGLE */
+#define REAL double
+#endif /* not SINGLE */
 
 /* If yours is not a Unix system, define the NO_TIMER compiler switch to     */
 /*   remove the Unix-specific timing code.                                   */
@@ -226,7 +232,9 @@
 /* To compile Triangle as a callable object library (triangle.o), define the */
 /*   TRILIBRARY symbol.  Read the file triangle.h for details on how to call */
 /*   the procedure triangulate() that results.                               */
+
 #define TRILIBRARY
+
 /* It is possible to generate a smaller version of Triangle using one or     */
 /*   both of the following symbols.  Define the REDUCED symbol to eliminate  */
 /*   all features that are primarily of research interest; specifically, the */
@@ -237,7 +245,7 @@
 /*   generating an object library (triangle.o) by defining the TRILIBRARY    */
 /*   symbol.                                                                 */
 
-/* #define REDUCED */
+#define REDUCED
 /* #define CDT_ONLY */
 
 /* On some machines, my exact arithmetic routines might be defeated by the   */
@@ -259,7 +267,7 @@
 /*   available as Section 6.6 of my dissertation).                           */
 
 /* #define CPU86 */
-/* #define LINUX */
+#define LINUX
 
 #define INEXACT /* Nothing */
 /* #define INEXACT volatile */
@@ -299,6 +307,12 @@
 #define FREEVERTEX 2
 #define DEADVERTEX -32768
 #define UNDEADVERTEX -32767
+
+/* The next line is used to outsmart some very stupid compilers.  If your    */
+/*   compiler is smarter, feel free to replace the "int" with "void".        */
+/*   Not that it matters.                                                    */
+
+#define VOID void
 
 /* Two constants for algorithms based on random sampling.  Both constants    */
 /*   have been chosen empirically to optimize their respective algorithms.   */
@@ -1322,6 +1336,39 @@ int minus1mod3[3] = {2, 0, 1};
 /**                                                                         **/
 /**                                                                         **/
 
+void set_tria_to_default(struct triangulateio * io)
+{
+  io->pointlist = NULL;                                               /* In / out */
+  io->pointattributelist = NULL;                                      /* In / out */
+  io->pointmarkerlist = NULL;                                          /* In / out */
+  io->numberofpoints = 0;                                            /* In / out */
+  io->numberofpointattributes = 0;                                   /* In / out */
+  
+  io->trianglelist = NULL;                                             /* In / out */
+  io->triangleattributelist = NULL;                                   /* In / out */
+  io->trianglearealist = NULL;                                         /* In only */
+  io->neighborlist = NULL;                                             /* Out only */
+  io->numberoftriangles = 0;                                         /* In / out */
+  io->numberofcorners = 3;                                           /* In / out */
+  io->numberoftriangleattributes = 0;                                /* In / out */
+  
+  io->segmentlist = NULL;                                              /* In / out */
+  io->segmentmarkerlist = NULL;                                        /* In / out */
+  io->numberofsegments = 0;                                          /* In / out */
+  
+  io->holelist = NULL;                        /* In / pointer to array copied out */
+  io->numberofholes = 0;                                      /* In / copied out */
+  
+  io->regionlist = NULL;                      /* In / pointer to array copied out */
+  io->numberofregions = 0;                                    /* In / copied out */
+  
+  io->edgelist = NULL;                                                 /* Out only */
+  io->edgemarkerlist = NULL;            /* Not used with Voronoi diagram; out only */
+  io->normlist = NULL;                /* Used only with Voronoi diagram; out only */
+  io->numberofedges = 0;                                             /* Out only */
+};
+
+
 /*****************************************************************************/
 /*                                                                           */
 /*  triunsuitable()   Determine if a triangle is unsuitable, and thus must   */
@@ -1428,10 +1475,12 @@ int size;
 }
 
 #ifdef ANSI_DECLARATORS
-void trifree(void *memptr)
+void trifree(VOID *memptr)
 #else /* not ANSI_DECLARATORS */
-void trifree(void *memptr)
+void trifree(memptr)
+VOID *memptr;
 #endif /* not ANSI_DECLARATORS */
+
 {
   free(memptr);
 }
@@ -3976,7 +4025,7 @@ struct memorypool *pool;
 {
   while (pool->firstblock != (VOID **) NULL) {
     pool->nowblock = (VOID **) *(pool->firstblock);
-    trifree((void *) pool->firstblock);
+    trifree((VOID *) pool->firstblock);
     pool->firstblock = pool->nowblock;
   }
 }
@@ -4614,10 +4663,10 @@ struct behavior *b;
 
 {
   pooldeinit(&m->triangles);
-  trifree((void *) m->dummytribase);
+  trifree((VOID *) m->dummytribase);
   if (b->usesegments) {
     pooldeinit(&m->subsegs);
-    trifree((void *) m->dummysubbase);
+    trifree((VOID *) m->dummysubbase);
   }
   pooldeinit(&m->vertices);
 #ifndef CDT_ONLY
@@ -10018,7 +10067,7 @@ struct behavior *b;
 
   /* Form the Delaunay triangulation. */
   divconqrecurse(m, b, sortarray, i, 0, &hullleft, &hullright);
-  trifree((void *) sortarray);
+  trifree((VOID *) sortarray);
 
   return removeghosts(m, b, &hullleft);
 }
@@ -10189,9 +10238,9 @@ struct behavior *b;
   }
   triangledealloc(m, finaledge.tri);
 
-  trifree((void *) m->infvertex1);  /* Deallocate the bounding box vertices. */
-  trifree((void *) m->infvertex2);
-  trifree((void *) m->infvertex3);
+  trifree((VOID *) m->infvertex1);  /* Deallocate the bounding box vertices. */
+  trifree((VOID *) m->infvertex2);
+  trifree((VOID *) m->infvertex3);
 
   return hullsize;
 }
@@ -11547,7 +11596,7 @@ FILE *polyfile;
     }
   }
 
-  trifree((void *) vertexarray);
+  trifree((VOID *) vertexarray);
   return hullsize;
 }
 
@@ -13139,7 +13188,7 @@ int regions;
     pooldeinit(&m->viri);
   }
   if (regions > 0) {
-    trifree((void *) regiontris);
+    trifree((VOID *) regiontris);
   }
 }
 
@@ -15933,11 +15982,11 @@ char **argv;
 #ifndef TRILIBRARY
 #ifndef CDT_ONLY
   if (m.regions > 0) {
-    trifree((void *) regionarray);
+    trifree((VOID *) regionarray);
   }
 #endif /* not CDT_ONLY */
   if (m.holes > 0) {
-    trifree((void *) holearray);
+    trifree((VOID *) holearray);
   }
   if (b.geomview) {
     writeoff(&m, &b, b.offfilename, argc, argv);

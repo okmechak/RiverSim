@@ -248,22 +248,11 @@
 /*                                                                           */
 /*****************************************************************************/
 
-/* The next line is used to outsmart some very stupid compilers.  If your    */
-/*   compiler is smarter, feel free to replace the "int" with "void".        */
-/*   Not that it matters.                                                    */
-
-#define VOID void
-
 #define TRILIBRARY
-
-/* #define SINGLE */
-#ifdef SINGLE
-#define REAL float
-#else /* not SINGLE */
+#define REDUCED
+#define LINUX
+#define VOID void
 #define REAL double
-#endif /* not SINGLE */
-
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -302,9 +291,9 @@ struct triangulateio {
 
 void triangulate(char *, struct triangulateio *, struct triangulateio *,
                  struct triangulateio *);
-                 
 void trifree(void *memptr);
 
+void set_tria_to_default(struct triangulateio * io);
 #ifdef __cplusplus
 }
 #endif

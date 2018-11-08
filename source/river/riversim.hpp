@@ -25,7 +25,6 @@
 #include <deal.II/lac/precondition.h>
 
 #include <boost/program_options.hpp>
-#include <boost/log/trivial.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -44,21 +43,159 @@ namespace mdl = gmsh::model;
 namespace msh = gmsh::model::mesh;
 namespace geo = gmsh::model::geo;
 
+
 class Mesh
 {
     public:
-        int dim = 2;
-
         Mesh();
         ~Mesh();
         void TriangleGenerator();
         void TriangleGeneratorExample();
+        void Print(
+            struct triangulateio &io,
+            bool markers = true,
+            bool reporttriangles = true,
+            bool reportneighbors = true,
+            bool reportsegments = true,
+            bool reportedges = true,
+            bool reportnorms = true);
 
     private:
 
 };
 
 Mesh::Mesh(){}
+
+void Mesh::Print(
+    struct triangulateio &io,
+    bool markers,
+    bool reporttriangles,
+    bool reportneighbors,
+    bool reportsegments,
+    bool reportedges,
+    bool reportnorms)
+{
+    int i, j;
+
+    if(false){//FIXME: how to test &io??
+        cout << "Input triangulate structure is invalid! " << endl;
+        return;
+    }
+
+
+    if (io.numberofpoints > 0 && io.pointlist != NULL){
+        cout << "Total of points     : " << io.numberofpoints << endl;
+        cout << "      of attributes : " << io.numberofpointattributes << endl;
+        if (io.pointmarkerlist == NULL) 
+            cout << "Markers aren't set " << endl;
+
+        for (i = 0; i < io.numberofpoints; i++) {
+            cout << "Point " << i << ": ";
+
+            for (j = 0; j < 2; j++)
+                cout << io.pointlist[i * 2 + j] << " ";
+
+            if (io.numberofpointattributes > 0 && io.pointattributelist != NULL){ 
+                cout << "   attributes  ";
+                for (j = 0; j < io.numberofpointattributes; j++) 
+                    cout << io.pointattributelist[i * io.numberofpointattributes + j] << " ";
+            }
+            else
+                cout << " point attributes aren't set" << endl;
+
+            if (io.pointmarkerlist != NULL) 
+                cout << "   marker " << io.pointmarkerlist[i];
+
+            cout << endl;
+        }        
+    }
+    else
+        cout << "Points aren't set";
+
+    cout << endl;
+
+    if (reporttriangles || reportneighbors) {
+        cout << "Total of triangles:  " << io.numberoftriangles << endl;
+        cout << "      of attributes: " << io.numberoftriangleattributes << endl;
+        cout << "      of corners:    " << io.numberofcorners << endl;
+        if (io.numberoftriangles > 0 && io.trianglelist != NULL){
+            cout << "Number of triangles: " << io.numberoftriangles << endl;
+            for (i = 0; i < io.numberoftriangles; i++) {
+                if (reporttriangles) {
+                    cout << "Triangle " << i << " points: ";
+                    for (j = 0; j < io.numberofcorners; j++) 
+                        cout << io.trianglelist[i * io.numberofcorners + j] << " ";
+                    if (io.numberoftriangleattributes > 0 && io.triangleattributelist != NULL) {
+                        cout << "   attributes";
+                        for (j = 0; j < io.numberoftriangleattributes; j++) 
+                            cout << "  " << io.triangleattributelist[i *
+                                                    io.numberoftriangleattributes + j];
+                    }
+                    else
+                        cout << "attributes aren't set";
+                }
+
+                if (reportneighbors) {
+                    cout << "  " << " neighbors";
+                    for (j = 0; j < 3; j++)
+                        cout << " " << io.neighborlist[i * 3 + j];
+                }
+                cout << endl;
+            }
+        }
+        else
+            cout << "Triangles aren't set";
+    }
+    cout << endl;
+
+    cout << "Total of holes   : " << io.numberofholes << endl;
+    cout << "Total of regions : " << io.numberofregions << endl;
+
+
+    if (reportsegments){
+        cout << "Total of segments:  " << io.numberofsegments << endl;
+        if (io.numberofsegments > 0 && io.segmentlist != NULL)
+            for (i = 0; i < io.numberofsegments; i++) {
+                cout << "Segment " << i << " points: ";
+
+                for (j = 0; j < 2; j++)
+                    cout << "  " << io.segmentlist[i * 2 + j];
+
+                if (markers && io.segmentmarkerlist != NULL)
+                    cout << "   marker " << io.segmentmarkerlist[i];
+                else 
+                    cout << " no marker" << endl;
+                
+                cout << endl;   
+            }
+        else
+            cout << "Segments aren't set";
+    }
+    cout << endl;
+
+    if (reportedges){
+        cout << "Total of edges:  " << io.numberofedges << endl;
+        if(io.numberofedges > 0 && io.edgelist != NULL)
+            for (i = 0; i < io.numberofedges; i++) {
+                cout << "Edge " << i << " points:";
+                for (j = 0; j < 2; j++) 
+                    cout << "  " << io.edgelist[i * 2 + j];
+                if (reportnorms && (io.edgelist[i * 2 + 1] == -1)) 
+                    for (j = 0; j < 2; j++) 
+                        cout << "  " << io.normlist[i * 2 + j];
+                if (markers && io.edgemarkerlist != NULL)
+                    cout << "   marker " << io.edgemarkerlist[i];
+                else
+                    cout << " no marker";
+                    
+                
+                cout << endl;
+            }
+        else
+            cout << "Edges aren't set";
+    }
+    cout << endl;
+}
 
 void Mesh::TriangleGeneratorExample()
 {
@@ -118,6 +255,11 @@ void Mesh::TriangleGeneratorExample()
         edgemarkerlist - output
     */
     struct triangulateio in, mid, out, vorout;
+    set_tria_to_default(&in);
+    set_tria_to_default(&mid);
+    set_tria_to_default(&out);
+    set_tria_to_default(&vorout);
+
 
     /* Define input points. */
 
@@ -154,7 +296,6 @@ void Mesh::TriangleGeneratorExample()
     in.regionlist[2] = 7.0;            /* Regional attribute (for whole mesh). */
     in.regionlist[3] = 0.1;          /* Area constraint that will not be used. */
 
-    printf("Input point set:\n\n");
 
     /* Make necessary initializations so that Triangle can return a */
     /*   triangulation in `mid' and a voronoi diagram in `vorout'.  */
@@ -186,10 +327,13 @@ void Mesh::TriangleGeneratorExample()
     /*   produce an edge list (e), a Voronoi diagram (v), and a triangle */
     /*   neighbor list (n).                                              */
 
-    triangulate("pczAevn", &in, &mid, &vorout);
+    char triswitches1[] = {'p','c', 'z', 'A', 'e', 'v', 'b', '\0'};
+    triangulate(triswitches1, &in, &mid, &vorout);
 
-    printf("Initial triangulation:\n\n");
+    printf("Output triangulation:\n\n");
+    Print(mid);
     printf("Initial Voronoi diagram:\n\n");
+    Print(vorout);
 
     /* Attach area constraints to the triangles in preparation for */
     /*   refining the triangulation.                               */
@@ -212,9 +356,11 @@ void Mesh::TriangleGeneratorExample()
     /* Refine the triangulation according to the attached */
     /*   triangle area constraints.                       */
 
-    triangulate("prazBP", &mid, &out, (struct triangulateio *) NULL);
+    char triswitches2[] = {'p','r', 'a', 'z', 'B', 'P', '\0'};
+    triangulate(triswitches2, &mid, &out, (struct triangulateio *) NULL);
 
     printf("Refined triangulation:\n\n");
+    Print(out);
 
     /* Free all allocated arrays, including those allocated by Triangle. */
 
@@ -247,27 +393,27 @@ void Mesh::TriangleGenerator()
 {
     
     triangulateio in, out, vorout;
-
-
-
+    set_tria_to_default(&in);
+    set_tria_to_default(&out);
+    set_tria_to_default(&vorout);
     //input data
     /*
 
     */
-    char triswitches[] = {'p','z', 'V', 'A', 'q', '2', '0', 'D', 'C',  'e', 'c', '\0'};
+    char triswitches[] = {'p','z', 'V', 'A', 'q', '2', '0', 'D', 'C',  'e', 'c', 'v', 'n',  '\0'};
 
     vector <double> pointList = 
-        {0., 0.,  //0
-         1., 0.,  //2
-         1., 1.,  //3
-         0., 1.,  //4
+        {0.0, 0.0,  //0
+         1.0, 0.0,  //2
+         1.0, 10.0,  //3
+         0.0, 10.0  //4
         };
 
     vector <double> pointAttributeList = 
-        {1., 1., 1., 1.};
+        {0.0, 1.0, 11.0, 10.0};
     
     vector <int> pointMarkerList = 
-        {0, 1, 2, 3};
+        {0, 2, 0, 0};
 
     vector <int> segmentList = 
         {
@@ -281,46 +427,41 @@ void Mesh::TriangleGenerator()
         {
         //    0, 1, 2, 3
         };
+    
+    vector <double> regionList = 
+        {0.5, 5.0, 7.0, 0.1};
 
     //points
-    in.numberofpoints = pointList.size();
+    in.numberofpoints = 4;
     in.numberofpointattributes = 1;
     in.pointlist = &pointList[0];
     in.pointattributelist = &pointAttributeList[0];
     in.pointmarkerlist = &pointMarkerList[0];
 
-    //triangles
-    in.numberoftriangles = 0;
-    in.numberofcorners = 0;
-    in.numberoftriangleattributes = 0;
-    in.trianglelist = NULL;
-    in.triangleattributelist = NULL;
-    in.trianglearealist = NULL;
 
-    //segments
-    in.numberofsegments = segmentList.size();
-    in.segmentlist = &segmentList[0];
-    in.segmentmarkerlist = &segmentMarkerList[0];
-
-    //holes
-    in.numberofholes = 0;
-    in.holelist = NULL;
 
     //region
-    in.numberofregions = 0;
-    in.regionlist = NULL;
+    in.numberofregions = 1;
+    in.regionlist = &regionList[0];
 
     //edge - read only
 
+    cout << endl << endl << "Input point set:" << endl << endl;
+    Print(in);
+
     //mesh generation main call
+    cout << endl << "Triangulation Started" << endl << endl;
     triangulate(triswitches, &in, &out, &vorout);
 
+    cout << endl << endl << "Output triangulation:" << endl << endl;
+    Print(out);
 
+    cout << endl << endl << " Voronoi diagram:" << endl << endl;
+    Print(vorout);
 }
 
 Mesh::~Mesh()
 {
-
     trifree(NULL);
 }
 
