@@ -62,14 +62,12 @@ int main(int argc, char *argv[])
     /*
         Mesh class test
     */
-    if(!vm.count("sm"))
-    {
-        Mesh m;
-        if(!vm.count("b2"))
-            m.TriangleGeneratorExample();
-        else
-            m.TriangleGenerator();
-    }
+    
+    Mesh::Options triangleOptions;
+    triangleOptions.Print(true); 
+
+    Mesh::Mesh m;
+    m.TriangleGenerator();
 
     /*
         Main River Class initializtion
