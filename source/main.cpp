@@ -15,7 +15,6 @@ void print_ascii_signature()
 
 int main(int argc, char *argv[])
 {
-
     /*
         Boost program options
     */
@@ -63,19 +62,10 @@ int main(int argc, char *argv[])
         Mesh class test
     */
     
-    //Options
-    Mesh::Options meshOpt;
-    meshOpt.Verbose = true;
-    meshOpt.EncloseConvexHull = true;
-    meshOpt.VoronoiDiagram = true;
-    meshOpt.Print(true);
-
-    //Mesh
-    Mesh::Mesh m;
-    m.SetMeshOptions(meshOpt);
 
     //Geomerty
-    m.points = vector<double>
+    struct Mesh::vecTriangulateIO geom;
+    geom.points = vector<double>
         {
             0.0, 0.0,  //0
             1.0, 0.0,  //2
@@ -83,14 +73,14 @@ int main(int argc, char *argv[])
             0.0, 10.0  //4
         };
     
-    m.numOfAttrPerPoint = 1;
-    m.pointAttributes = vector<double>
+    geom.numOfAttrPerPoint = 1;
+    geom.pointAttributes = vector<double>
         {0.0, 1.0, 11.0, 10.0};
 
-    m.pointMarkers = vector<int>
+    geom.pointMarkers = vector<int>
         {0, 2, 0, 0};
 
-    m.segments = vector<int> 
+    geom.segments = vector<int> 
         {
             //0, 1, //1
             //1, 2, //2
@@ -98,18 +88,30 @@ int main(int argc, char *argv[])
             //3, 1
         };
 
-    m.segmentMarkers = vector<int>
+    geom.segmentMarkers = vector<int>
         {
             //    0, 1, 2, 3
         };
 
-    m.numOfRegions = 1;
+    geom.numOfRegions = 1;
     vector<double> regionList =
         {0.5, 5.0, 7.0, 0.1};
     
+
+    //Triangle
+    Mesh::Triangle tria;
+    tria.Verbose = true;
+    tria.EncloseConvexHull = true;
+    tria.VoronoiDiagram = true;
+    tria.Generate(geom);
+
     
 
-    m.TriangleGenerator();
+
+    
+    
+    
+
 
     /*
         Main River Class initializtion

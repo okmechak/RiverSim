@@ -48,7 +48,34 @@ namespace geo = gmsh::model::geo;
 
 namespace Mesh
 {
-  class Point
+  struct vecTriangulateIO
+  {
+    vector<double> points = {};
+    int numOfAttrPerPoint = 0;
+    vector<double> pointAttributes = {};
+    vector<int> pointMarkers = {};
+    vector<int> segments = {};
+    vector<int> segmentMarkers = {};
+    vector<int> triangles = {};
+    int numOfAttrPerTriangle = 0;
+    vector<double> triangleAttributes = {};
+    vector<double> triangleAreas = {};
+    vector<int> neighbors = {};
+    //array of coordiantes
+    vector<double> holes = {};
+    //array of array of coordinates
+    int numOfRegions = 1;
+    vector<double> regions = {};
+    //out only
+    vector<double> edges = {};
+    vector<double> edgeMarkers = {};
+  };
+
+
+
+
+
+  class Geometry
   {
     public:
       int index;
@@ -64,15 +91,17 @@ namespace Mesh
       vector<double> data;
   };
 
-  class Options
+
+
+
+
+
+  class Triangle
   {
     private:
-      string TriangleOptStr;
-      //NOTE: not implemented yet
-      string LibMesh;
-      string GmshOpt;
-      string TetGenOpt;
+      string options;
 
+      struct triangulateio in, out, vorout;
       //z - numbering starts from zero
       bool StartNumberingFromZero = true;
       //p - reads PSLG..
@@ -108,6 +137,24 @@ namespace Mesh
       bool SteinerPointsOnSegments = false;
       //S - specify max num of added steiner points
       int MaxNumOfSteinerPoints = -1;
+
+
+      
+
+      void SetAllValuesToDefault();
+      void FreeAllocatedMemory();
+
+      string updateOptions();
+
+      void PrintOptions(bool qDetailedDescription = true);
+      void PrintGeometry(struct triangulateio &io);
+      
+      void SetGeometry(struct triangulateio);
+      void SetGeometry(struct vecTriangulateIO &geom);
+      struct triangulateio* GetGeometry();
+      struct vecTriangulateIO toVectorStructure(struct triangulateio*);
+      struct triangulateio toTriaStructure(struct vecTriangulateIO&);
+      struct triangulateio* GetVoronoi();
 
     public:
       enum algorithm
@@ -149,13 +196,10 @@ namespace Mesh
       //V - verbose
       bool Verbose = false;
 
-      void Print(bool qDetailedDescription = true);
+      Triangle();
+      ~Triangle();
+      struct vecTriangulateIO Generate(struct vecTriangulateIO &geom);
 
-      string getTriangleOptions();
-
-      void getTetgenOptions();
-      void getGmshOptions();
-      void getLibMeshOptions();
   };
 
   class Mesh
@@ -206,13 +250,11 @@ namespace Mesh
       Mesh();
       ~Mesh();
       void SetGeometryDescription();
-      void SetMeshOptions(Options &meshOpt);
       void TriangleGenerator();
       void Print(
           struct triangulateio &io);
 
     private:
-      Options meshOpt;
       struct triangulateio GetTriangulateIO();
   };
 } //namespace mesh
