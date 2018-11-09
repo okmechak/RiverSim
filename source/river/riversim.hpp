@@ -67,7 +67,7 @@ namespace Mesh
   class Options
   {
     private:
-      string triaOpt;
+      string TriangleOptStr;
       //NOTE: not implemented yet
       string LibMesh;
       string GmshOpt;
@@ -87,23 +87,21 @@ namespace Mesh
       //B - suppress boundary markers in output file
       bool SuppressBoundaryMarkers = false;
       //P - suppress output poly file
-      bool SuppressPolyFile = true;
+      bool SuppressPolyFile = false;
       //N - suppress node file
-      bool SuppressNodeFile = true;
+      bool SuppressNodeFile = false;
       //E - suppress ele file
-      bool SuppressEleFile = true;
+      bool SuppressEleFile = false;
       //e - outputs list of edges
       bool OutputEdges = true;
       //n - outputs neighbours
       bool ComputeNeighbours = true;
       //I - suppress file mesh iteration number
-      bool SuppressMehsFileNumbering = true;
+      bool SuppressMehsFileNumbering = false;
       //O - suppress holes
       bool SuppressHoles = false;
       //X - suppress exact arithmetics
       bool SuppressExactArithmetics = false;
-      //o2 - generates second order mesh
-      bool SecondOrderMesh = false;
       //Y - prohibits stainer points on mesh boundary
       bool SteinerPointsOnBoundary = false;
       //YY -                  ------ on any segment
@@ -141,6 +139,8 @@ namespace Mesh
       bool AssignRegionalAttributes = true;
       //v - outputs voronoi diagram
       bool VoronoiDiagram = false;
+      //o2 - generates second order mesh
+      bool SecondOrderMesh = false;
       //i - use incremental algorithm instead of divide and conqure
       //F - fortune algorithm instead of delauna
       algorithm Algorithm = CONQUER;
@@ -178,29 +178,30 @@ namespace Mesh
       //edgemarkerlist - output
       ////permanent Triangle options
 
-      vector<double> pointList;
-      int numOfPointAttributes = 0;
-      vector<double> pointAttributes;
-      vector<int> pointMarkesList;
+      vector<double> points = {};
+      int numOfAttrPerPoint = 0;
+      vector<double> pointAttributes = {};
+      vector<int> pointMarkers = {};
 
-      vector<int> segmentList;
-      vector<int> segmentMarkerList;
+      vector<int> segments = {};
+      vector<int> segmentMarkers = {};
 
-      vector<int> triangleList;
-      int numOfTriangleAttributes = 0;
-      vector<double> triangleAttributeList;
-      vector<double> triangleAreaList;
-      vector<int> neighborList;
+      vector<int> triangles = {};
+      int numOfAttrPerTriangle = 0;
+      vector<double> triangleAttributes = {};
+      vector<double> triangleAreas = {};
+      vector<int> neighbors = {};
 
       //array of coordiantes
-      vector<double> holeList;
+      vector<double> holes = {};
 
       //array of array of coordinates
-      vector<vector<double>> regionList;
+      int numOfRegions = 1;
+      vector<double> regions = {};
 
       //out only
-      vector<double> edgeList;
-      vector<double> edgeMarkerList;
+      vector<double> edges = {};
+      vector<double> edgeMarkers = {};
 
       Mesh();
       ~Mesh();
@@ -212,8 +213,9 @@ namespace Mesh
 
     private:
       Options meshOpt;
+      struct triangulateio GetTriangulateIO();
   };
-} // namespace Mesh
+} //namespace mesh
 
 
 

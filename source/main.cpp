@@ -63,12 +63,52 @@ int main(int argc, char *argv[])
         Mesh class test
     */
     
+    //Options
     Mesh::Options meshOpt;
     meshOpt.Verbose = true;
+    meshOpt.EncloseConvexHull = true;
+    meshOpt.VoronoiDiagram = true;
     meshOpt.Print(true);
 
+    //Mesh
     Mesh::Mesh m;
     m.SetMeshOptions(meshOpt);
+
+    //Geomerty
+    m.points = vector<double>
+        {
+            0.0, 0.0,  //0
+            1.0, 0.0,  //2
+            1.0, 10.0, //3
+            0.0, 10.0  //4
+        };
+    
+    m.numOfAttrPerPoint = 1;
+    m.pointAttributes = vector<double>
+        {0.0, 1.0, 11.0, 10.0};
+
+    m.pointMarkers = vector<int>
+        {0, 2, 0, 0};
+
+    m.segments = vector<int> 
+        {
+            //0, 1, //1
+            //1, 2, //2
+            //2, 3, //3
+            //3, 1
+        };
+
+    m.segmentMarkers = vector<int>
+        {
+            //    0, 1, 2, 3
+        };
+
+    m.numOfRegions = 1;
+    vector<double> regionList =
+        {0.5, 5.0, 7.0, 0.1};
+    
+    
+
     m.TriangleGenerator();
 
     /*

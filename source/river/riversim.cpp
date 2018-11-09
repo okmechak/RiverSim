@@ -67,64 +67,64 @@ void Mesh::Options::Print(bool qDetailedDescription)
 
 string Mesh::Options::getTriangleOptions()
 {
-    triaOpt = "";
+    TriangleOptStr = "";
 
     if (AngleQuality > 0 && AngleQuality < 35)
-        triaOpt += "q" + to_string(AngleQuality);
+        TriangleOptStr += "q" + to_string(AngleQuality);
     else if (AngleQuality >= 35)
         throw invalid_argument("Triangle quality angle should be less then 35");
     if (Refine)
-        triaOpt += "r";
+        TriangleOptStr += "r";
     if (MaxTriaArea > 0)
-        triaOpt = +"a" + to_string(MaxTriaArea);
+        TriangleOptStr = +"a" + to_string(MaxTriaArea);
     if (DelaunayTriangles)
-        triaOpt += "D";
+        TriangleOptStr += "D";
     if (EncloseConvexHull)
-        triaOpt += "c";
+        TriangleOptStr += "c";
     if (CheckFinalMesh)
-        triaOpt += "C";
+        TriangleOptStr += "C";
     if (AssignRegionalAttributes)
-        triaOpt += "A";
+        TriangleOptStr += "A";
     if (VoronoiDiagram)
-        triaOpt += "v";
+        TriangleOptStr += "v";
     if (Quite)
-        triaOpt += "Q";
+        TriangleOptStr += "Q";
     else if (Verbose)
-        triaOpt += "V";
+        TriangleOptStr += "V";
     if (Algorithm == FORUNE)
-        triaOpt += "F";
+        TriangleOptStr += "F";
     else if (Algorithm == ITERATOR)
-        triaOpt += "i";
+        TriangleOptStr += "i";
     if (ReadPSLG)
-        triaOpt += "p";
+        TriangleOptStr += "p";
     if (SuppressBoundaryMarkers)
-        triaOpt += "B";
+        TriangleOptStr += "B";
     if (SuppressPolyFile)
-        triaOpt += "P";
+        TriangleOptStr += "P";
     if (SuppressNodeFile)
-        triaOpt += "N";
+        TriangleOptStr += "N";
     if (SuppressEleFile)
-        triaOpt += "E";
+        TriangleOptStr += "E";
     if (OutputEdges)
-        triaOpt += "e";
+        TriangleOptStr += "e";
     if (ComputeNeighbours)
-        triaOpt += "n";
+        TriangleOptStr += "n";
     if (SuppressMehsFileNumbering)
-        triaOpt += "I";
+        TriangleOptStr += "I";
     if (SuppressExactArithmetics)
-        triaOpt += "X";
+        TriangleOptStr += "X";
     if (SuppressHoles)
-        triaOpt += "O";
+        TriangleOptStr += "O";
     if (SecondOrderMesh)
-        triaOpt += "o2";
+        TriangleOptStr += "o2";
     if (SteinerPointsOnBoundary)
-        triaOpt += "Y";
+        TriangleOptStr += "Y";
     if (SteinerPointsOnSegments)
-        triaOpt += "YY";
+        TriangleOptStr += "YY";
     if (MaxNumOfSteinerPoints > 0)
-        triaOpt += "S" + to_string(MaxNumOfSteinerPoints);
+        TriangleOptStr += "S" + to_string(MaxNumOfSteinerPoints);
 
-    return triaOpt;
+    return TriangleOptStr;
 }
 
 
@@ -136,11 +136,17 @@ string Mesh::Options::getTriangleOptions()
 
 Mesh::Mesh::Mesh()
 {
-
+    gmsh::initialize();
+    gmsh::option::setNumber("Mesh.RecombineAll", 1);
+    gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
+    gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
+    gmsh::option::setNumber("General.Terminal", 1);
+    mdl::add("square");
 }
 
 Mesh::Mesh::~Mesh()
 {
+    gmsh::finalize();
     trifree(NULL);
 }
 
@@ -157,7 +163,7 @@ void Mesh::Mesh::Print(
     if (io.numberofpoints > 0 && io.pointlist != NULL)
     {
         cout << "Total of points     : " << io.numberofpoints << endl;
-        cout << "      of attributes : " << io.numberofpointattributes << endl;
+        cout << "         attributes : " << io.numberofpointattributes << endl;
         if (io.pointmarkerlist == NULL)
             cout << "Markers aren't set " << endl;
 
@@ -189,8 +195,8 @@ void Mesh::Mesh::Print(
     cout << endl;
 
     cout << "Total of triangles:  " << io.numberoftriangles << endl;
-    cout << "      of attributes: " << io.numberoftriangleattributes << endl;
-    cout << "      of corners:    " << io.numberofcorners << endl;
+    cout << "         attributes: " << io.numberoftriangleattributes << endl;
+    cout << "         corners:    " << io.numberofcorners << endl;
     if (io.numberoftriangles > 0 && io.trianglelist != NULL)
     {
         cout << "Number of triangles: " << io.numberoftriangles << endl;
@@ -270,84 +276,72 @@ void Mesh::Mesh::Print(
 }
 
 
+struct triangulateio Mesh::Mesh::GetTriangulateIO()
+{
+  struct triangulateio io;
+  
+  set_tria_to_default(&io);
+
+  if(!points.empty())
+  {
+    io.pointlist = &points[0];                            /* In / out */
+    io.pointattributelist = &pointAttributes[0];          /* In / out */
+    io.pointmarkerlist = &pointMarkers[0];                /* In / out */
+    io.numberofpoints = points.size()/dim;                /* In / out */
+    io.numberofpointattributes = numOfAttrPerPoint;       /* In / out */
+  }
+
+  if(!triangles.empty())
+  {
+    io.trianglelist = &triangles[0];                      /* In / out */
+    io.triangleattributelist = &triangleAttributes[0];    /* In / out */
+    io.trianglearealist = &triangleAreas[0];              /* In only */
+    io.neighborlist = NULL;                               /* Out only */
+    io.numberoftriangles = triangles.size()/3;            /* In / out */
+    if (meshOpt.SecondOrderMesh)
+      io.numberoftriangles = triangles.size()/6;
+    io.numberofcorners = 3;                               /* In / out */
+    io.numberoftriangleattributes = numOfAttrPerTriangle; /* In / out */
+  }
+
+  if(!segments.empty())
+  {
+    io.segmentlist = &segments[0];                        /* In / out */
+    io.segmentmarkerlist = &segmentMarkers[0];            /* In / out */
+    io.numberofsegments = segments.size() / 2;            /* In / out */
+  }
+
+  if(!holes.empty())
+  {
+    io.holelist = &holes[0];               /* In / pointer to array copied out */
+    io.numberofholes = holes.size() / dim; /* In / copied out */
+  }
+
+  if(!regions.empty())
+  {
+    io.regionlist = &regions[0];           /* In / pointer to array copied out */
+    io.numberofregions = numOfRegions;     /* In / copied out */
+  }    
+
+  return io;
+}
+
 void Mesh::Mesh::TriangleGenerator()
 {
-    triangulateio in, out, vorout;
-    set_tria_to_default(&in);
+    triangulateio in = GetTriangulateIO(), out, vorout;
     set_tria_to_default(&out);
     set_tria_to_default(&vorout);
-    //input data
-    /*
-
-    */
-    char triswitches[] = {'p', 'z', 'V', 'A', 'q', '2', '0', 'D', 'C', 'e', 'c', 'v', 'n', '\0'};
-
-    vector<double> pointList =
-        {
-            0.0, 0.0,  //0
-            1.0, 0.0,  //2
-            1.0, 10.0, //3
-            0.0, 10.0  //4
-        };
-
-    vector<double> pointAttributeList =
-        {0.0, 1.0, 11.0, 10.0};
-
-    vector<int> pointMarkerList =
-        {0, 2, 0, 0};
-
-    vector<int> segmentList =
-        {
-            //0, 1, //1
-            //1, 2, //2
-            //2, 3, //3
-            //3, 1
-        };
-
-    vector<int> segmentMarkerList =
-        {
-            //    0, 1, 2, 3
-        };
-
-    vector<double> regionList =
-        {0.5, 5.0, 7.0, 0.1};
-
-    //points
-    in.numberofpoints = 4;
-    in.numberofpointattributes = 1;
-    in.pointlist = &pointList[0];
-    in.pointattributelist = &pointAttributeList[0];
-    in.pointmarkerlist = &pointMarkerList[0];
-
-    //region
-    in.numberofregions = 1;
-    in.regionlist = &regionList[0];
-
-    //edge - read only
-
-    cout << endl
-         << endl
-         << "Input point set:" << endl
-         << endl;
     Print(in);
-
-    //mesh generation main call
-    cout << endl
-         << "Triangulation Started" << endl
-         << endl;
-    triangulate(triswitches, &in, &out, &vorout);
-
-    cout << endl
-         << endl
-         << "Output triangulation:" << endl
-         << endl;
+    triangulate(meshOpt.getTriangleOptions().c_str(), &in, &out, &vorout);
+    
+    cout << "Output mesh: " << endl << endl;
     Print(out);
-
-    cout << endl
-         << endl
-         << " Voronoi diagram:" << endl
-         << endl;
+    cout << "Voronoi diagram: " << endl << endl;
     Print(vorout);
+
+    //free allocated memory
+    triangulateiofree(&out);
+    triangulateiofree(&vorout);
 }
 
 
