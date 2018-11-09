@@ -246,6 +246,7 @@
 /*   symbol.                                                                 */
 
 #define REDUCED
+#define ANSI_DECLARATORS
 /* #define CDT_ONLY */
 
 /* On some machines, my exact arithmetic routines might be defeated by the   */
@@ -1508,7 +1509,27 @@ void trifree(memptr)
 
 /********* User interaction routines begin here                      *********/
 /**                                                                         **/
-/**                                                                         **/
+/**                
+ * 
+ * 
+ *                                                          **/
+
+void triangulateiofree(struct triangulateio * io)
+{
+  free(io->pointlist);
+  free(io->pointattributelist);
+  free(io->pointmarkerlist);
+  free(io->regionlist);
+  free(io->trianglelist);
+  free(io->triangleattributelist);
+  free(io->trianglearealist);
+  free(io->neighborlist);
+  free(io->segmentlist);
+  free(io->segmentmarkerlist);
+  free(io->edgelist);
+  free(io->edgemarkerlist);
+  free(io->normlist);
+}
 
 /*****************************************************************************/
 /*                                                                           */
@@ -3129,7 +3150,7 @@ void internalerror()
 /*****************************************************************************/
 
 #ifdef ANSI_DECLARATORS
-void parsecommandline(int argc, char **argv, struct behavior *b)
+void parsecommandline(int argc, const char **argv, struct behavior *b)
 #else  /* not ANSI_DECLARATORS */
 void parsecommandline(argc, argv, b) int argc;
 char **argv;
@@ -16818,7 +16839,7 @@ struct behavior *b;
 #ifdef TRILIBRARY
 
 #ifdef ANSI_DECLARATORS
-void triangulate(char *triswitches, struct triangulateio *in,
+void triangulate(const char *triswitches, struct triangulateio *in,
                  struct triangulateio *out, struct triangulateio *vorout)
 #else  /* not ANSI_DECLARATORS */
   void triangulate(triswitches, in, out, vorout) char *triswitches;

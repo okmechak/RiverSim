@@ -253,6 +253,7 @@
 #define LINUX
 #define VOID void
 #define REAL double
+#define ANSI_DECLARATORS
 
 #ifdef __cplusplus
 extern "C" {
@@ -289,10 +290,10 @@ struct triangulateio {
   int numberofedges;                                             /* Out only */
 };
 
-void triangulate(char *, struct triangulateio *, struct triangulateio *,
+void triangulate(const char *, struct triangulateio *, struct triangulateio *,
                  struct triangulateio *);
 void trifree(void *memptr);
-
+void triangulateiofree(struct triangulateio *);
 void set_tria_to_default(struct triangulateio * io);
 #ifdef __cplusplus
 }
