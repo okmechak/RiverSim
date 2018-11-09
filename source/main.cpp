@@ -63,10 +63,12 @@ int main(int argc, char *argv[])
         Mesh class test
     */
     
-    Mesh::Options triangleOptions;
-    triangleOptions.Print(true); 
+    Mesh::Options meshOpt;
+    meshOpt.Verbose = true;
+    meshOpt.Print(true);
 
     Mesh::Mesh m;
+    m.SetMeshOptions(meshOpt);
     m.TriangleGenerator();
 
     /*
