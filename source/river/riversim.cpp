@@ -344,13 +344,17 @@ struct triangulateio Triangle::toTriaStructure(struct vecTriangulateIO& geom)
   return triaStr;
 }
 
-struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaStr)
+struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaStr, bool b3D)
 {
   struct vecTriangulateIO vecOut;
   int i;
-
+  double z0 = 0.;
+  if(b3D) dim = 3;
+  //Triangle generates two dimensional data, but almost all packages need three dimmnesion
+  //so we have such possibility
   //reserve memory for vector containers
-  vecOut.points.reserve(2 * triaStr->numberofpoints);
+  
+  vecOut.points.reserve(dim * triaStr->numberofpoints);
   vecOut.pointAttributes.reserve(triaStr->numberofpoints * triaStr->numberofpointattributes);
   vecOut.pointMarkers.reserve(triaStr->numberofpoints);
   vecOut.numOfAttrPerPoint = triaStr->numberofpointattributes;
@@ -363,19 +367,22 @@ struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaSt
   vecOut.triangleAttributes.reserve(triaStr->numberoftriangles * triaStr->numberoftriangleattributes);
   vecOut.numOfAttrPerTriangle = triaStr->numberoftriangleattributes;
 
-  vecOut.holes.reserve(2 * triaStr->numberofholes);
+  vecOut.holes.reserve(dim * triaStr->numberofholes);
 
-  vecOut.regions.reserve(2 * triaStr->numberofregions);
+  vecOut.regions.reserve(dim * triaStr->numberofregions);
   vecOut.numOfRegions = triaStr->numberofregions;
 
-  vecOut.edges.reserve(2 * triaStr->numberofedges);
-  vecOut.edgeMarkers.reserve(2 * triaStr->numberofedges);
+  vecOut.edges.reserve(dim * triaStr->numberofedges);
+  vecOut.edgeMarkers.reserve(triaStr->numberofedges);
 
   vecOut.neighbors.reserve(triaStr->numberoftriangles * 3);
   
   for(i = 0; i < 2 * triaStr->numberofpoints; ++i){
     vecOut.points.push_back(triaStr->pointlist[i]);
-    vecOut.pointMarkers.push_back(triaStr->pointmarkerlist[i]);
+    if(b3D && i % 2 != 0)
+        vecOut.points.push_back(z0);
+    if(i < triaStr->numberofpoints)
+        vecOut.pointMarkers.push_back(triaStr->pointmarkerlist[i]);
   }
 
   
@@ -383,15 +390,17 @@ struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaSt
     vecOut.pointAttributes.push_back(triaStr->pointattributelist[i]);
 
   
-  for(i = 0; i < triaStr->numberofsegments; ++i){
+  for(i = 0; i < 2 * triaStr->numberofsegments; ++i){
     vecOut.segments.push_back(triaStr->segmentlist[i]);
-    vecOut.segmentMarkers.push_back(triaStr->segmentmarkerlist[i]);
+    if (i < triaStr->numberofsegments)
+        vecOut.segmentMarkers.push_back(triaStr->segmentmarkerlist[i]);
   }
 
   
-  for(i = 0; i < triaStr->numberoftriangles; ++i){
+  for(i = 0; i < 3*triaStr->numberoftriangles; ++i){
     vecOut.triangles.push_back(triaStr->trianglelist[i]);
-    if(triaStr->trianglearealist != NULL)
+    cout << triaStr->trianglelist[i] << "   ";
+    if(triaStr->trianglearealist != NULL && i < triaStr->numberoftriangles)
         vecOut.triangleAreas.push_back(triaStr->trianglearealist[i]);
   }
 
@@ -400,21 +409,33 @@ struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaSt
     vecOut.triangleAttributes.push_back(triaStr->triangleattributelist[i]);
 
   
-  for(i = 0; i < triaStr->numberofholes; ++i)
+  for(i = 0; i < dim * triaStr->numberofholes; ++i){
     vecOut.holes.push_back(triaStr->holelist[i]);
-
-  
-  for(i = 0; i < triaStr->numberofregions; ++i)
-    vecOut.regions.push_back(triaStr->regionlist[i]);
-
-  
-  for(i = 0; i < triaStr->numberofedges; ++i){
-    vecOut.edges.push_back(triaStr->edgelist[i]);
-    vecOut.edgeMarkers.push_back(triaStr->edgemarkerlist[i]);
+    if(b3D && i % 2 != 0)
+        vecOut.holes.push_back(z0);
   }
 
+  
+  for(i = 0; i < dim * triaStr->numberofregions; ++i){
+    vecOut.regions.push_back(triaStr->regionlist[i]);
+    if(b3D && i % 2 != 0)
+        vecOut.regions.push_back(z0);
+  }
+
+  
+  for(i = 0; i < 2 * triaStr->numberofedges; ++i){
+    vecOut.edges.push_back(triaStr->edgelist[i]);
+    if (i < triaStr->numberofedges)
+        vecOut.edgeMarkers.push_back(triaStr->edgemarkerlist[i]);
+  }
+
+    cout << "Triangles test" << endl;
+    for(auto& el: vecOut.triangles)
+        cout << el << "   ";
+  
   return vecOut;
 }
+
 
 struct triangulateio* Triangle::GetVoronoi()
 {
@@ -452,36 +473,81 @@ struct vecTriangulateIO Triangle::Generate(struct vecTriangulateIO &geom)
 
     return OutputMesh;
 }
-}
 
 
-/*
 
-    Mesh Class
 
-*/
-
-Mesh::Mesh::Mesh()
+Gmsh::Gmsh()
 {
-    gmsh::initialize();
-    gmsh::option::setNumber("Mesh.RecombineAll", 1);
-    gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
-    gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
-    gmsh::option::setNumber("General.Terminal", 1);
-    mdl::add("square");
+  gmsh::initialize();
+  //gmsh::option::setNumber("Mesh.RecombineAll", 1);
+  gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
+  gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
+  gmsh::option::setNumber("General.Terminal", 1);
+  gmsh::model::add(modelName);
+  gmsh::model::addDiscreteEntity(2, 1);
 }
 
-Mesh::Mesh::~Mesh()
+Gmsh::~Gmsh()
 {
     gmsh::finalize();
-    trifree(NULL);
 }
 
-
-void Mesh::Mesh::TriangleGenerator()
+void Gmsh::Open()
 {
-    
+    gmsh::open(fileName);
 }
+
+void Gmsh::Write()
+{
+    gmsh::write(fileName);
+}
+
+void Gmsh::setNodes(vector<double> nodes, int dim, int tag)
+{
+    //TODO: implement range function
+    auto tags = vector<int>{1, 2, 3, 4};
+    
+    gmsh::model::mesh::setNodes(
+        dim, 
+        tag, 
+        tags,
+        nodes);
+}
+
+void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
+{
+    vector<vector<int>> tags(1);
+    tags[0] = vector<int>(elements.size()/3, 1);
+
+    vector<int> elementTypes = {elType};
+
+    vector<vector<int>> elementsContainer;
+    elementsContainer.push_back(elements);
+
+    cout << "Triangles test" << endl;
+    for(auto& el: elements)
+        cout << el << "   ";
+
+    gmsh::model::mesh::setElements(
+        dim,
+        tag,
+        elementTypes,
+        tags,
+        elementsContainer
+    );
+}
+
+
+void Gmsh::StartUserInterface()
+{
+    gmsh::fltk::run();
+}
+
+
+}
+
+
 
 
 
@@ -501,7 +567,7 @@ RiverSim::RiverSim(po::variables_map &vm) : fe(1), dof_handler(triangulation)
         GMSH intialization
     */
 
-    gmsh::initialize();
+    //gmsh::initialize();
     gmsh::option::setNumber("Mesh.RecombineAll", 1);
     gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
     gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
@@ -511,7 +577,7 @@ RiverSim::RiverSim(po::variables_map &vm) : fe(1), dof_handler(triangulation)
 
 RiverSim::~RiverSim()
 {
-    gmsh::finalize();
+    //gmsh::finalize();
 }
 
 void RiverSim::geo_mesh_generator()

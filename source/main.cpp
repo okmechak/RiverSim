@@ -100,19 +100,21 @@ int main(int argc, char *argv[])
 
     //Triangle
     Mesh::Triangle tria;
-    tria.Verbose = true;
     tria.EncloseConvexHull = true;
     tria.VoronoiDiagram = true;
-    tria.Generate(geom);
-
+    geom = tria.Generate(geom);
+    
+    cout << "Triangles test" << endl;
+    for(auto& el: geom.triangles)
+        cout << el << "   ";
     
 
-
+    //Visualization using GMSH object
+    Mesh::Gmsh Gmsh;
+    Gmsh.setNodes(geom.points);
+    Gmsh.setElements(geom.triangles, 2);
     
-    
-    
-
-
+    Gmsh.StartUserInterface();
     /*
         Main River Class initializtion
     */

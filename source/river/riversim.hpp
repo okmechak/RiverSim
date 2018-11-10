@@ -30,7 +30,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <string.h>
 
 #include <tetgen.h>
 #include <gmsh.h>
@@ -48,6 +47,8 @@ namespace geo = gmsh::model::geo;
 
 namespace Mesh
 {
+  typedef vector<double> mesharr;
+
   struct vecTriangulateIO
   {
     vector<double> points = {};
@@ -74,7 +75,6 @@ namespace Mesh
 
 
 
-
   class Geometry
   {
     public:
@@ -92,13 +92,18 @@ namespace Mesh
   };
 
 
-
+ class Tethex
+ {
+   private:
+   public:
+ };
 
 
 
   class Triangle
   {
     private:
+      int dim = 2;
       string options;
 
       struct triangulateio in, out, vorout;
@@ -152,7 +157,7 @@ namespace Mesh
       void SetGeometry(struct triangulateio);
       void SetGeometry(struct vecTriangulateIO &geom);
       struct triangulateio* GetGeometry();
-      struct vecTriangulateIO toVectorStructure(struct triangulateio*);
+      struct vecTriangulateIO toVectorStructure(struct triangulateio*, bool b3D = true);
       struct triangulateio toTriaStructure(struct vecTriangulateIO&);
       struct triangulateio* GetVoronoi();
 
@@ -194,7 +199,7 @@ namespace Mesh
       //Q - quite
       bool Quite = false;
       //V - verbose
-      bool Verbose = false;
+      bool Verbose = true;
 
       Triangle();
       ~Triangle();
@@ -202,62 +207,75 @@ namespace Mesh
 
   };
 
-  class Mesh
+  class TetGen
   {
     public:
-      int dim = 2;
-      //pointlist: array of point coordinates, each point ocupies two reals
-      //pointattributelist: array of point attributes
-      //    each point occupies 'numberofpointattributes' REALs
-      //pointmarkerlist: array of point markers; one int per point
-      //trianglelist: array of triangle corner list
-      //triangleattributelist
-      //trianglearealist - area constrains
-      //neighborlist
-      //segmentlist - array of segment endpoints, two per segment
-      //segmentmarkerlist - array of segment markers, one int per segment
-      //holelist - array of holes
-      //regionlist - array regional attributes and area constrains
-      //edgelist - output only
-      //edgemarkerlist - output
-      ////permanent Triangle options
+    private:
+  };
 
-      vector<double> points = {};
-      int numOfAttrPerPoint = 0;
-      vector<double> pointAttributes = {};
-      vector<int> pointMarkers = {};
-
-      vector<int> segments = {};
-      vector<int> segmentMarkers = {};
-
-      vector<int> triangles = {};
-      int numOfAttrPerTriangle = 0;
-      vector<double> triangleAttributes = {};
-      vector<double> triangleAreas = {};
-      vector<int> neighbors = {};
-
-      //array of coordiantes
-      vector<double> holes = {};
-
-      //array of array of coordinates
-      int numOfRegions = 1;
-      vector<double> regions = {};
-
-      //out only
-      vector<double> edges = {};
-      vector<double> edgeMarkers = {};
-
-      Mesh();
-      ~Mesh();
-      void SetGeometryDescription();
-      void TriangleGenerator();
-      void Print(
-          struct triangulateio &io);
+  class Gmsh
+  {
+    public:
+      //GMSH
+      Gmsh();
+      ~Gmsh();
+      void Open();
+      void Write();
+      void Clear();
+      //OPTIONS
+      //MODEL
+      void add();
+      void remove();
+      void list();
+      void setCurrent();
+      void getEntities();
+      void getPhysicalGroups();
+      void getEntitiesForPhysicalGroup();
+      void getPhysicalGroupsForEntity();
+      void addPhysicalGroup();
+      void setPhysicalName();
+      void getPhysicalName();
+      void getBoundary();
+      void addDiscreteEntity();
+      void getNormal();
+      //... and lot of other..
+      //MESH
+      void generate();
+      void partition();
+      void refine();
+      void setOrder();
+      void getNodes();
+      void setNodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
+      void setElements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
+      void getElements();//<- implement first
+      void getJacobians();
+      //... and lot of other
+      //FIELD
+      //GEO
+      //GEOMESH
+      //OCC
+      //VIEW <-propably I will need this
+      //PLUGIN
+      //GRAPHICS
+      //FLTK <- important one
+      void StartUserInterface();
 
     private:
-      struct triangulateio GetTriangulateIO();
+      string modelName = "basic";
+      string fileName = "rivermesh.msh";
+      int dim = 1;
+
+      vector<int> evaluateTags(int size, int tag0, bool different = false)//FIXME: implement flow for different tags
+      {
+        return vector<int>(size, tag0);
+      }
+
   };
+
 } //namespace mesh
+
+
+
 
 
 
@@ -292,7 +310,3 @@ class RiverSim
     //options fro command line
     po::variables_map option_map;
 };
-
-
-
-void gmsh_possibilites(int argc, char *argv[]);
