@@ -67,52 +67,47 @@ int main(int argc, char *argv[])
     struct Mesh::vecTriangulateIO geom;
     geom.points = vector<double>
         {
-            0.0, 0.0,  //0
-            1.0, 0.0,  //2
-            1.0, 10.0, //3
-            0.0, 10.0  //4
+            0.0, 0.0,  //1
+            0.5, 0.0,  //2
+            1.0, 0.0,  //3
+            1.0, 1.0,  //4
+            0.0, 1.0,  //5
+            0.5, 0.5,  //6
+            0.7, 0.2,  //7
         };
     
     geom.numOfAttrPerPoint = 1;
     geom.pointAttributes = vector<double>
-        {0.0, 1.0, 11.0, 10.0};
+        {0.0, 1.0, 11.0, 10.0, 0.0, 0.0, 0.0};
 
     geom.pointMarkers = vector<int>
-        {0, 2, 0, 0};
+        {1, 2, 3, 4, 5, 6, 7};
 
-    geom.segments = vector<int> 
-        {
-            //0, 1, //1
-            //1, 2, //2
-            //2, 3, //3
-            //3, 1
-        };
+    geom.segments = vector<int> {1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 6, 2, 7, 6, 7};
 
-    geom.segmentMarkers = vector<int>
-        {
-            //    0, 1, 2, 3
-        };
+    geom.segmentMarkers = vector<int>{1, 2, 3, 4, 5, 6, 7, 8};
 
-    geom.numOfRegions = 1;
-    vector<double> regionList =
-        {0.5, 5.0, 7.0, 0.1};
+    geom.numOfRegions = 0;
+    vector<double> regionList = {};
     
 
     //Triangle
     Mesh::Triangle tria;
     tria.EncloseConvexHull = true;
-    tria.VoronoiDiagram = true;
+    tria.AssignRegionalAttributes = false;
+    //tria.DelaunayTriangles = true;
+    tria.ConstrainAngle = true;
+    tria.MaxAngle = 30;
+    tria.AreaConstrain = true;
+    tria.MaxTriaArea = 0.03;
+    //tria.Refine = true;
     geom = tria.Generate(geom);
-    
-    cout << "Triangles test" << endl;
-    for(auto& el: geom.triangles)
-        cout << el << "   ";
-    
+
 
     //Visualization using GMSH object
     Mesh::Gmsh Gmsh;
     Gmsh.setNodes(geom.points);
-    Gmsh.setElements(geom.triangles, 2);
+    Gmsh.setElements(geom.triangles);
     
     Gmsh.StartUserInterface();
     /*

@@ -14,7 +14,6 @@ Triangle::Triangle()
         cout << "Default Options: " << endl;
         PrintOptions(true);
     }
-    
 }
 
 
@@ -44,14 +43,20 @@ string Triangle::updateOptions()
 {
     options = "";
 
-    if (AngleQuality > 0 && AngleQuality < 35)
-        options += "q" + to_string(AngleQuality);
-    else if (AngleQuality >= 35)
+    if (ConstrainAngle)
+        options += "q";
+    if (ConstrainAngle && MaxAngle > 0 && MaxAngle < 35)
+        options += to_string(MaxAngle);
+    else if (ConstrainAngle && MaxAngle >= 35)
         throw invalid_argument("Triangle quality angle should be less then 35");
+    if (StartNumberingFromZero)
+        options += "z";
     if (Refine)
         options += "r";
-    if (MaxTriaArea > 0)
-        options = +"a" + to_string(MaxTriaArea);
+    if (AreaConstrain)
+        options += "a";
+    if (AreaConstrain && MaxTriaArea > 0)
+        options +=  to_string(MaxTriaArea);
     if (DelaunayTriangles)
         options += "D";
     if (EncloseConvexHull)
@@ -119,10 +124,14 @@ void Triangle::PrintOptions(bool qDetailedDescription)
         cout << "(z) numbering starts from zero" << endl;
     if (Refine)
         cout << "(r) refine" << endl;
-    if (AngleQuality > 0)
+    if (ConstrainAngle)
         cout << "(q) quality min 20 degree" << endl;
+    if (MaxAngle > 0)
+        cout << "                    value:" << MaxAngle << endl;
+    if(AreaConstrain)
+        cout << "(a) area constrain: " << endl;
     if (MaxTriaArea > 0)
-        cout << "(a) maximum triangle area constrain" << endl;
+        cout << "                  area constrain: " << MaxTriaArea << endl;
     if (DelaunayTriangles)
         cout << "(D) all traingles will be Delaunay" << endl;
     if (EncloseConvexHull)
@@ -208,10 +217,8 @@ void Triangle::PrintGeometry(
     cout << "         corners:    " << io.numberofcorners << endl;
     if (io.numberoftriangles > 0 && io.trianglelist != NULL)
     {
-        cout << "Number of triangles: " << io.numberoftriangles << endl;
         for (i = 0; i < io.numberoftriangles; i++)
         {
-
             cout << "Triangle " << i << " points: ";
             for (j = 0; j < io.numberofcorners; j++)
                 cout << io.trianglelist[i * io.numberofcorners + j] << " ";
@@ -231,8 +238,11 @@ void Triangle::PrintGeometry(
 
             cout << "  "
                  << " neighbors";
-            for (j = 0; j < 3; j++)
-                cout << " " << io.neighborlist[i * 3 + j];
+            if(io.neighborlist != NULL)
+                for (j = 0; j < 3; j++)
+                    cout << " " << io.neighborlist[i * 3 + j];
+            else
+                cout << " no neighbors ";
 
             cout << endl;
         }
@@ -316,6 +326,7 @@ struct triangulateio Triangle::toTriaStructure(struct vecTriangulateIO& geom)
     triaStr.trianglearealist = &geom.triangleAreas[0];              /* In only */
     triaStr.neighborlist = NULL;                               /* Out only */
     triaStr.numberoftriangles = geom.triangles.size()/3;            /* In / out */
+    cout << "num of triangles " << triaStr.numberoftriangles << endl;
     if (SecondOrderMesh)
       triaStr.numberoftriangles = geom.triangles.size()/6;
     triaStr.numberofcorners = 3;                               /* In / out */
@@ -399,7 +410,6 @@ struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaSt
   
   for(i = 0; i < 3*triaStr->numberoftriangles; ++i){
     vecOut.triangles.push_back(triaStr->trianglelist[i]);
-    cout << triaStr->trianglelist[i] << "   ";
     if(triaStr->trianglearealist != NULL && i < triaStr->numberoftriangles)
         vecOut.triangleAreas.push_back(triaStr->trianglearealist[i]);
   }
@@ -428,11 +438,6 @@ struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaSt
     if (i < triaStr->numberofedges)
         vecOut.edgeMarkers.push_back(triaStr->edgemarkerlist[i]);
   }
-
-    cout << "Triangles test" << endl;
-    for(auto& el: vecOut.triangles)
-        cout << el << "   ";
-  
   return vecOut;
 }
 
@@ -505,8 +510,7 @@ void Gmsh::Write()
 
 void Gmsh::setNodes(vector<double> nodes, int dim, int tag)
 {
-    //TODO: implement range function
-    auto tags = vector<int>{1, 2, 3, 4};
+    auto tags = evaluateTags(nodes.size()/3, 1);
     
     gmsh::model::mesh::setNodes(
         dim, 
@@ -518,16 +522,12 @@ void Gmsh::setNodes(vector<double> nodes, int dim, int tag)
 void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
 {
     vector<vector<int>> tags(1);
-    tags[0] = vector<int>(elements.size()/3, 1);
+    tags[0] = evaluateTags(elements.size()/3, 1);
 
     vector<int> elementTypes = {elType};
 
     vector<vector<int>> elementsContainer;
     elementsContainer.push_back(elements);
-
-    cout << "Triangles test" << endl;
-    for(auto& el: elements)
-        cout << el << "   ";
 
     gmsh::model::mesh::setElements(
         dim,

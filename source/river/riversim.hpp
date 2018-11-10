@@ -108,7 +108,7 @@ namespace Mesh
 
       struct triangulateio in, out, vorout;
       //z - numbering starts from zero
-      bool StartNumberingFromZero = true;
+      bool StartNumberingFromZero = false;
       //p - reads PSLG..
       //    1) will generate Constrained Delaunay.
       //    2) if are used -s(theoretical interest),
@@ -177,9 +177,11 @@ namespace Mesh
       //r - refine previously generated mesh, with preserving of segments
       bool Refine = false;
       //q - quality(minimu 20 degree).. also angle can be specified by q30
-      double AngleQuality = -1.;
+      bool ConstrainAngle = false;
+      double MaxAngle = 20;
       //a - maximum triangle area constrain. a0.1
       double MaxTriaArea = -1.;
+      bool AreaConstrain = false;
       //D - all triangles will be delaunay. Not just constrained delaunay.
       bool DelaunayTriangles = true;
       //c - enclose convex hull with segments
@@ -265,9 +267,11 @@ namespace Mesh
       string fileName = "rivermesh.msh";
       int dim = 1;
 
-      vector<int> evaluateTags(int size, int tag0, bool different = false)//FIXME: implement flow for different tags
+      vector<int> evaluateTags(int size, int tag0)
       {
-        return vector<int>(size, tag0);
+        auto tags = vector<int>(size);
+        iota(begin(tags), end(tags), tag0);
+        return tags;
       }
 
   };
