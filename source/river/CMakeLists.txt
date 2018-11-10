@@ -11,6 +11,7 @@ set(SOURCE_FILES
     riversim.hpp)
 
 add_library(river ${SOURCE_FILES})
+set_property(TARGET river PROPERTY CXX_STANDARD 17)
 deal_ii_setup_target(river)
 
 target_link_libraries(river ${Boost_LIBRARIES})
