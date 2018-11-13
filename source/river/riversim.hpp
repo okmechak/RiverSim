@@ -73,8 +73,6 @@ namespace River
   };
 
 
-
-
   class Geometry
   {
     public:
@@ -203,7 +201,7 @@ namespace River
       //Q - quite
       bool Quite = false;
       //V - verbose
-      bool Verbose = true;
+      bool Verbose = false;
 
       Triangle();
       ~Triangle();
@@ -284,13 +282,14 @@ namespace River
       ~Simulation();
       void SetMesh(struct vecTriangulateIO & mesh);
       void run();
+      void output_results(string fileName = "solution.vtk") const;
 
     private:
       void make_custom_grid();
       void setup_system();
       void assemble_system();
       void solve();
-      void output_results() const;
+
 
       const static int dim = 2;
 

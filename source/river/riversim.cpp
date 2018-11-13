@@ -634,7 +634,6 @@ void Simulation::SetMesh(struct vecTriangulateIO & mesh)
     vector<Point<dim>> vertices(n_points);
     for(unsigned int i = 0; i < n_points; ++i)
     {
-        cout << i << " " <<  mesh.points[3 * i] << "  " << mesh.points[3 * i + 1] << " " << mesh.points[3 * i + 2] << endl;
         vertices[i] = Point<dim>(mesh.points[3 * i], mesh.points[3 * i + 1]);
     }
 
@@ -648,10 +647,10 @@ void Simulation::SetMesh(struct vecTriangulateIO & mesh)
         //     ++j)
         //
         //    cells[i].vertices[j] = mesh.triangles[4 * i + j];
-        cout << (cells[i].vertices[0] = mesh.triangles[4 * i + 0] - 1) << " ";
-        cout << (cells[i].vertices[1] = mesh.triangles[4 * i + 1] - 1) << " ";
-        cout << (cells[i].vertices[2] = mesh.triangles[4 * i + 3] - 1) << " ";
-        cout << (cells[i].vertices[3] = mesh.triangles[4 * i + 2] - 1) << endl;
+        cells[i].vertices[0] = mesh.triangles[4 * i + 0] - 1;
+        cells[i].vertices[1] = mesh.triangles[4 * i + 1] - 1;
+        cells[i].vertices[2] = mesh.triangles[4 * i + 3] - 1;
+        cells[i].vertices[3] = mesh.triangles[4 * i + 2] - 1;
     
         cells[i].material_id = 0;
     }
@@ -780,13 +779,13 @@ void Simulation::solve()
                  PreconditionIdentity());
 }
 
-void Simulation::output_results() const
+void Simulation::output_results(string fileName) const
 {
     DataOut<2> data_out;
     data_out.attach_dof_handler(dof_handler);
     data_out.add_data_vector(solution, "solution");
     data_out.build_patches();
-    std::ofstream output("solution.vtk");
+    std::ofstream output(fileName);
     data_out.write_vtk(output);
 }
 
