@@ -647,6 +647,26 @@ void Mesh::clean()
 }
 
 
+void Mesh::read_triangl(std::vector<double> &p, std::vector<int> &t)
+{
+
+  //Nodes
+  vertices.resize(p.size() / 3);
+  std::cout << "Vertives size " <<  vertices.size() << std::endl;
+  for(int i = 0; i < vertices.size(); ++i)
+    vertices[i] = Point(p[3 * i], p[3 * i + 1], p[3 * i + 2]);
+
+  //Elements
+  std::cout << t.size() / 3 << std::endl;
+  triangles.resize(t.size() / 3);
+  for(int i = 0; i < t.size() / 3; ++i){    
+    triangles[i] = new Triangle(
+        t[3 * i] - 1, 
+        t[3 * i + 1] - 1, 
+        t[3 * i + 2] - 1, 0);
+  }
+}
+
 
 
 void Mesh::read(const std::string &file)
@@ -678,7 +698,7 @@ void Mesh::read(const std::string &file)
 
   getline(in, str); // read some empty string
 
-  // there is additional 1 (the number - one) in binary format
+// there is additional 1 (the number - one) in binary format
   if (binary)
   {
     int one;
@@ -860,7 +880,7 @@ void Mesh::read(const std::string &file)
       } // binary format
 
       else // ASCII format
-      {
+      {      
         for (int el = 0; el < n_elements; ++el)
         {
           in >> number >> el_type >> n_tags;
@@ -876,7 +896,7 @@ void Mesh::read(const std::string &file)
           std::map<int, int>::const_iterator el_type_iter =
               type_nodes.find(el_type);
 
-          require(el_type_iter != type_nodes.end(),
+         require(el_type_iter != type_nodes.end(),
                   "This type of the Gmsh's element (" + d2s(el_type) +
                   ") in the mesh file \"" + file + "\" is unknown!");
 

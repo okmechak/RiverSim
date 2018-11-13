@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 
 add_subdirectory(tethex)
 add_subdirectory(triangle)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/tethex
     ${CMAKE_CURRENT_SOURCE_DIR}/triangle)

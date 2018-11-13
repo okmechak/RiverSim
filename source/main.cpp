@@ -97,13 +97,18 @@ int main(int argc, char *argv[])
     tria.AssignRegionalAttributes = false;
     //tria.DelaunayTriangles = true;
     tria.ConstrainAngle = true;
-    tria.MaxAngle = 30;
+    tria.MaxAngle = 25;
     tria.AreaConstrain = true;
-    tria.MaxTriaArea = 0.03;
-    //tria.Refine = true;
+    tria.MaxTriaArea = 0.1;
+
     geom = tria.Generate(geom);
 
-
+    cout << "Tethex" << endl;
+    tethex::Mesh TethexMesh;
+    TethexMesh.read_triangl(geom.points, geom.triangles);
+    TethexMesh.convert();
+    
+    cout << "GMSH " <<endl;
     //Visualization using GMSH object
     Mesh::Gmsh Gmsh;
     Gmsh.setNodes(geom.points);

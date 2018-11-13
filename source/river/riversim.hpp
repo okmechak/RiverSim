@@ -96,6 +96,8 @@ namespace Mesh
  {
    private:
    public:
+      Tethex(struct vecTriangulateIO &);
+      ~Tethex();
  };
 
 
