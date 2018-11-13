@@ -1,6 +1,6 @@
 #include "riversim.hpp"
 
-namespace Mesh{
+namespace River{
 /*
   
     Triangle Class
@@ -503,6 +503,60 @@ void Gmsh::Open()
     gmsh::open(fileName);
 }
 
+void Gmsh::refine()//just code samles
+{
+    //First
+    geo::addPoint(0, 0, 0, 0.1, 1);
+    geo::addPoint(0.5, 0, 0, 0.1, 2);
+    geo::addPoint(1, 0, 0, 0.1, 3);
+    geo::addPoint(1, 1, 0, 0.1, 4);
+    geo::addPoint(0, 1, 0, 0.1, 5);
+    geo::addPoint(0.5, 0.2, 0, 0.1, 6);
+
+    geo::addLine(1, 2, 1);
+    geo::addLine(2, 3, 2);
+    geo::addLine(3, 4, 3);
+    geo::addLine(4, 5, 4);
+    geo::addLine(5, 1, 5);
+    geo::addLine(2, 6, 6);
+    geo::addLine(6, 2, 7);
+
+    geo::addCurveLoop({1, 2, 3, 4, 5, 6, 7}, 1);
+    geo::addPlaneSurface({1}, 6);
+    geo::synchronize();
+    mdl::mesh::generate(2);
+
+    //second
+    mdl::addDiscreteEntity(1, 1);
+
+    cout << "set nodes" << endl;
+    msh::setNodes(1, 1,
+                  {1, 2, 3, 4, 5, 6, 7},
+                  {
+                      0., 0., 0.,   //node 1
+                      0.5, 0., 0.,  //node 2
+                      1., 0., 0.,   //node 3
+                      1., 1., 0.,   //node 4
+                      0., 1., 0.,   //node 5
+                      0.5, 0.2, 0., //node 6
+                      0.5, 0.6, 0.  //node 7
+                  });
+
+    cout << "set elements" << endl;
+    msh::setElements(1, 1,
+                     {1},                                           //line element
+                     {{1, 2, 3, 4, 5, 6, 7}},                       //line tags
+                     {{1, 2, 2, 6, 6, 2, 2, 3, 3, 4, 4, 5, 5, 1}}); //lines
+
+    geo::addPoint(0.5, 0.6, 0., 0.01, 99);
+    geo::addCurveLoop({1}, 100);
+    geo::addPlaneSurface({100}, 101);
+    geo::synchronize();
+
+    mdl::mesh::generate(2);
+
+}
+
 void Gmsh::Write()
 {
     gmsh::write(fileName);
@@ -548,7 +602,6 @@ void Gmsh::StartUserInterface()
 }
 
 
-}
 
 
 
@@ -562,89 +615,53 @@ void Gmsh::StartUserInterface()
 
 */
 
-RiverSim::RiverSim(po::variables_map &vm) : fe(1), dof_handler(triangulation)
+Simulation::Simulation(po::variables_map &vm) : fe(1), dof_handler(triangulation)
 {
     option_map = vm;
-
-    /*
-        GMSH intialization
-    */
-
-    //gmsh::initialize();
-    gmsh::option::setNumber("Mesh.RecombineAll", 1);
-    gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
-    gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
-    gmsh::option::setNumber("General.Terminal", (int)option_map["gmsh-log"].as<bool>());
-    mdl::add("square");
 }
 
-RiverSim::~RiverSim()
+Simulation::~Simulation()
 {
-    //gmsh::finalize();
+
 }
 
-void RiverSim::geo_mesh_generator()
+void Simulation::SetMesh(struct vecTriangulateIO & mesh)
 {
-    geo::addPoint(0, 0, 0, 0.1, 1);
-    geo::addPoint(0.5, 0, 0, 0.1, 2);
-    geo::addPoint(1, 0, 0, 0.1, 3);
-    geo::addPoint(1, 1, 0, 0.1, 4);
-    geo::addPoint(0, 1, 0, 0.1, 5);
-    geo::addPoint(0.5, 0.2, 0, 0.1, 6);
+    const int dim = 2; //FIXME: set dim somewhere else
+    
+    //VERTICES
+    auto n_points = mesh.points.size() / 3; //FIXME: replace hardcoded 3 by more general thing
+    vector<Point<dim>> vertices(n_points);
+    for(unsigned int i = 0; i < n_points; ++i)
+    {
+        cout << i << " " <<  mesh.points[3 * i] << "  " << mesh.points[3 * i + 1] << " " << mesh.points[3 * i + 2] << endl;
+        vertices[i] = Point<dim>(mesh.points[3 * i], mesh.points[3 * i + 1]);
+    }
 
-    geo::addLine(1, 2, 1);
-    geo::addLine(2, 3, 2);
-    geo::addLine(3, 4, 3);
-    geo::addLine(4, 5, 4);
-    geo::addLine(5, 1, 5);
-    geo::addLine(2, 6, 6);
-    geo::addLine(6, 2, 7);
-
-    geo::addCurveLoop({1, 2, 3, 4, 5, 6, 7}, 1);
-    geo::addPlaneSurface({1}, 6);
-    geo::synchronize();
-    mdl::mesh::generate(2);
+    //SETTING QUADRANGLES
+    auto n_cells = mesh.triangles.size() / 4; //FIXME: remove hardcode
+    vector<CellData<dim>> cells(n_cells, CellData<dim>());
+    for (unsigned int i = 0; i < n_cells; ++i)
+    {
+        //for (unsigned int j = 0;
+        //     j < GeometryInfo<dim>::vertices_per_cell;
+        //     ++j)
+        //
+        //    cells[i].vertices[j] = mesh.triangles[4 * i + j];
+        cout << (cells[i].vertices[0] = mesh.triangles[4 * i + 0] - 1) << " ";
+        cout << (cells[i].vertices[1] = mesh.triangles[4 * i + 1] - 1) << " ";
+        cout << (cells[i].vertices[2] = mesh.triangles[4 * i + 3] - 1) << " ";
+        cout << (cells[i].vertices[3] = mesh.triangles[4 * i + 2] - 1) << endl;
+    
+        cells[i].material_id = 0;
+    }
+    
+    triangulation.create_triangulation(vertices,
+                                       cells,
+                                       SubCellData());
 }
 
-void RiverSim::gmsh_mesh_generator()
-{
-    //TODO: implement right workwflow
-
-    /*
-        defining of geometry
-    */
-    cout << "discr entity" << endl;
-
-    mdl::addDiscreteEntity(1, 1);
-
-    cout << "set nodes" << endl;
-    msh::setNodes(1, 1,
-                  {1, 2, 3, 4, 5, 6, 7},
-                  {
-                      0., 0., 0.,   //node 1
-                      0.5, 0., 0.,  //node 2
-                      1., 0., 0.,   //node 3
-                      1., 1., 0.,   //node 4
-                      0., 1., 0.,   //node 5
-                      0.5, 0.2, 0., //node 6
-                      0.5, 0.6, 0.  //node 7
-                  });
-
-    cout << "set elements" << endl;
-    msh::setElements(1, 1,
-                     {1},                                           //line element
-                     {{1, 2, 3, 4, 5, 6, 7}},                       //line tags
-                     {{1, 2, 2, 6, 6, 2, 2, 3, 3, 4, 4, 5, 5, 1}}); //lines
-
-    geo::addPoint(0.5, 0.6, 0., 0.01, 99);
-    geo::addCurveLoop({1}, 100);
-    geo::addPlaneSurface({100}, 101);
-    geo::synchronize();
-
-    mdl::mesh::generate(2);
-}
-
-void RiverSim::make_custom_grid()
+void Simulation::make_custom_grid()
 {
     static const Point<2> vertices_1[] =
         {Point<2>(0., 0.),
@@ -658,7 +675,8 @@ void RiverSim::make_custom_grid()
     const vector<Point<dim>> vertices(&vertices_1[0],
                                       &vertices_1[n_vertices]);
 
-    static const int cell_vertices[][GeometryInfo<dim>::vertices_per_cell] = {{0, 1, 2, 3}};
+    static const int cell_vertices[][GeometryInfo<dim>::vertices_per_cell] 
+        = {{0, 1, 2, 3}};
 
     const unsigned int
         n_cells = sizeof(cell_vertices) / sizeof(cell_vertices[0]);
@@ -681,7 +699,7 @@ void RiverSim::make_custom_grid()
     triangulation.refine_global(5);
 }
 
-void RiverSim::setup_system()
+void Simulation::setup_system()
 {
     dof_handler.distribute_dofs(fe);
     cout << "Number of degrees of freedom: "
@@ -697,7 +715,7 @@ void RiverSim::setup_system()
     system_rhs.reinit(dof_handler.n_dofs());
 }
 
-void RiverSim::assemble_system()
+void Simulation::assemble_system()
 {
     QGauss<2> quadrature_formula(2);
     FEValues<2> fe_values(fe, quadrature_formula,
@@ -754,7 +772,7 @@ void RiverSim::assemble_system()
                                        system_rhs);
 }
 
-void RiverSim::solve()
+void Simulation::solve()
 {
     SolverControl solver_control(1000, 1e-12);
     SolverCG<> solver(solver_control);
@@ -762,7 +780,7 @@ void RiverSim::solve()
                  PreconditionIdentity());
 }
 
-void RiverSim::output_results() const
+void Simulation::output_results() const
 {
     DataOut<2> data_out;
     data_out.attach_dof_handler(dof_handler);
@@ -772,26 +790,16 @@ void RiverSim::output_results() const
     data_out.write_vtk(output);
 }
 
-void RiverSim::run()
+void Simulation::run()
 {
-    make_custom_grid();
     setup_system();
     assemble_system();
     solve();
     output_results();
-
-    if (option_map.count("b1"))
-        gmsh_mesh_generator();
-    else
-        geo_mesh_generator();
-
-    if (option_map["draw-mesh"].as<bool>())
-        gmsh::fltk::run();
-
-    if (option_map.count("output"))
-        gmsh::write(option_map["output"].as<string>());
 }
 
+
+} //end of River namespace
 
 
 

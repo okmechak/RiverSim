@@ -45,7 +45,7 @@ namespace mdl = gmsh::model;
 namespace msh = gmsh::model::mesh;
 namespace geo = gmsh::model::geo;
 
-namespace Mesh
+namespace River
 {
   typedef vector<double> mesharr;
 
@@ -266,7 +266,7 @@ namespace Mesh
 
     private:
       string modelName = "basic";
-      string fileName = "rivermesh.msh";
+      string fileName = "rivermesh.png";
       int dim = 1;
 
       vector<int> evaluateTags(int size, int tag0)
@@ -275,7 +275,35 @@ namespace Mesh
         iota(begin(tags), end(tags), tag0);
         return tags;
       }
+  };
 
+  class Simulation
+  {
+    public:
+      Simulation(po::variables_map &vm);
+      ~Simulation();
+      void SetMesh(struct vecTriangulateIO & mesh);
+      void run();
+
+    private:
+      void make_custom_grid();
+      void setup_system();
+      void assemble_system();
+      void solve();
+      void output_results() const;
+
+      const static int dim = 2;
+
+      Triangulation<dim> triangulation;
+      FE_Q<dim> fe;
+      DoFHandler<dim> dof_handler;
+      SparsityPattern sparsity_pattern;
+      SparseMatrix<double> system_matrix;
+      Vector<double> solution;
+      Vector<double> system_rhs;
+
+      //options fro command line
+      po::variables_map option_map;
   };
 
 } //namespace mesh
@@ -285,34 +313,3 @@ namespace Mesh
 
 
 
-class RiverSim
-{
-  public:
-    RiverSim(po::variables_map &vm);
-    ~RiverSim();
-    void run();
-
-  private:
-    void geo_mesh_generator();
-    void gmsh_mesh_generator();
-    void mesh_covertor();
-    void make_grid();
-    void make_custom_grid();
-    void setup_system();
-    void assemble_system();
-    void solve();
-    void output_results() const;
-
-    const static int dim = 2;
-
-    Triangulation<dim> triangulation;
-    FE_Q<dim> fe;
-    DoFHandler<dim> dof_handler;
-    SparsityPattern sparsity_pattern;
-    SparseMatrix<double> system_matrix;
-    Vector<double> solution;
-    Vector<double> system_rhs;
-
-    //options fro command line
-    po::variables_map option_map;
-};

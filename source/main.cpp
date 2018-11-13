@@ -64,42 +64,41 @@ int main(int argc, char *argv[])
     
 
     //Geomerty
-    struct Mesh::vecTriangulateIO geom;
+    struct River::vecTriangulateIO geom;
     geom.points = vector<double>
         {
             0.0, 0.0,  //1
-            0.5, 0.0,  //2
             1.0, 0.0,  //3
             1.0, 1.0,  //4
             0.0, 1.0,  //5
-            0.5, 0.5,  //6
-            0.7, 0.2,  //7
+            0.333, 0.333, 
+            0.666, 0.6
         };
     
     geom.numOfAttrPerPoint = 1;
     geom.pointAttributes = vector<double>
-        {0.0, 1.0, 11.0, 10.0, 0.0, 0.0, 0.0};
+        {0.0, 1.0, 11.0, 10.0, 0., 0.};
 
     geom.pointMarkers = vector<int>
-        {1, 2, 3, 4, 5, 6, 7};
+        {1, 2, 3, 4, 5, 6};
 
-    geom.segments = vector<int> {1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 6, 2, 7, 6, 7};
+    geom.segments = vector<int> {1, 2, 2, 3, 3, 4, 4, 1, 5, 6};//, 2, 6, 2, 7, 6, 7};
 
-    geom.segmentMarkers = vector<int>{1, 2, 3, 4, 5, 6, 7, 8};
+    geom.segmentMarkers = vector<int>{1, 2, 3, 4, 5};//, 6, 7, 8};
 
     geom.numOfRegions = 0;
     vector<double> regionList = {};
     
 
     //Triangle
-    Mesh::Triangle tria;
-    tria.EncloseConvexHull = true;
-    tria.AssignRegionalAttributes = false;
+    River::Triangle tria;
+    //tria.EncloseConvexHull = true;
+    //tria.AssignRegionalAttributes = false;
     //tria.DelaunayTriangles = true;
     tria.ConstrainAngle = true;
     tria.MaxAngle = 25;
     tria.AreaConstrain = true;
-    tria.MaxTriaArea = 0.003;
+    tria.MaxTriaArea = 0.0003;
 
     geom = tria.Generate(geom);
 
@@ -112,20 +111,20 @@ int main(int argc, char *argv[])
     geom.triangles = quads;// fix this name
     cout << "GMSH " <<endl;
     //Visualization using GMSH object
-    Mesh::Gmsh Gmsh;
+    River::Gmsh Gmsh;
     Gmsh.setNodes(geom.points);
     Gmsh.setElements(geom.triangles, 3);
 
-    Gmsh.StartUserInterface();
     /*
         Main River Class initializtion
     */
-    if(!vm.count("ss"))
-    {
-        deallog.depth_console (2);
-        RiverSim River(vm);    
-        River.run();    
-    }
+    cout << "RiverSIM" << endl;
+    deallog.depth_console (2);
+    River::Simulation RiverSim(vm);    
+    RiverSim.SetMesh(geom);
+    RiverSim.run();    
+
+    Gmsh.StartUserInterface();
 
     return 0;
 }
