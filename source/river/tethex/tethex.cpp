@@ -652,12 +652,10 @@ void Mesh::read_triangl(std::vector<double> &p, std::vector<int> &t)
 
   //Nodes
   vertices.resize(p.size() / 3);
-  std::cout << "Vertives size " <<  vertices.size() << std::endl;
   for(int i = 0; i < vertices.size(); ++i)
     vertices[i] = Point(p[3 * i], p[3 * i + 1], p[3 * i + 2]);
 
   //Elements
-  std::cout << t.size() / 3 << std::endl;
   triangles.resize(t.size() / 3);
   for(int i = 0; i < t.size() / 3; ++i){    
     triangles[i] = new Triangle(
