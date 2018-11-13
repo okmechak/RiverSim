@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     tria.ConstrainAngle = true;
     tria.MaxAngle = 25;
     tria.AreaConstrain = true;
-    tria.MaxTriaArea = 0.1;
+    tria.MaxTriaArea = 0.003;
 
     geom = tria.Generate(geom);
 
@@ -107,13 +107,15 @@ int main(int argc, char *argv[])
     tethex::Mesh TethexMesh;
     TethexMesh.read_triangl(geom.points, geom.triangles);
     TethexMesh.convert();
-    
+    auto[points, quads] = TethexMesh.write_triangle();
+    geom.points = points;
+    geom.triangles = quads;// fix this name
     cout << "GMSH " <<endl;
     //Visualization using GMSH object
     Mesh::Gmsh Gmsh;
     Gmsh.setNodes(geom.points);
-    Gmsh.setElements(geom.triangles);
-    
+    Gmsh.setElements(geom.triangles, 3);
+
     Gmsh.StartUserInterface();
     /*
         Main River Class initializtion

@@ -1490,6 +1490,43 @@ void Mesh::face_numeration(std::vector<MeshElement*> &cells,
 
 
 
+std::pair<std::vector<double>, std::vector<int>> Mesh::write_triangle()
+{
+  //FIXME::resolve output data structure it is to cumbersome
+  //TODO::how about all others elements type and cases??
+  std::vector<double> points;
+  points.reserve(3 * vertices.size());
+  //physical_names
+
+  //vertices
+  for(auto& p: vertices)
+  {
+    for(int i = 0; i < p.n_coord; ++i)
+    {
+      points.push_back(p.get_coord(i));
+    }
+  }
+
+  std::vector<int> quads;
+  quads.reserve(4 * quadrangles.size());
+  //quadrangles
+  for(auto &el: quadrangles)
+  {
+    for(int i = 0; i < 4; ++i)
+    {
+        quads.push_back(el->get_vertex(i) + 1);
+    }
+  }
+
+  std::pair<std::vector<double>, std::vector<int>> returnValue;
+  returnValue.first = points;
+  returnValue.second = quads;
+  return returnValue;
+}
+
+
+
+
 void Mesh::write(const std::string &file)
 {
   std::ofstream out(file.c_str());

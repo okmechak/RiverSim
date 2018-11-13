@@ -843,6 +843,12 @@ public:
                  */
   void convert();
 
+                  /**
+                 * Write the resulting brick mesh into the file
+                 * @param file - the name of mesh file where we write the results of conversion
+                 */
+  std::pair<std::vector<double>, std::vector<int>> 
+      write_triangle();
                 /**
                  * Write the resulting brick mesh into the file
                  * @param file - the name of mesh file where we write the results of conversion

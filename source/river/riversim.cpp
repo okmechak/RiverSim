@@ -522,7 +522,10 @@ void Gmsh::setNodes(vector<double> nodes, int dim, int tag)
 void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
 {
     vector<vector<int>> tags(1);
-    tags[0] = evaluateTags(elements.size()/3, 1);
+    //FIXME: this divider depends on element type
+    //for triangles(el type = 2) - it will be 3
+    //for quads (el type - 4) - it will be 4
+    tags[0] = evaluateTags(elements.size()/4, 1);
 
     vector<int> elementTypes = {elType};
 
