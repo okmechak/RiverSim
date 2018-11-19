@@ -647,13 +647,27 @@ void Mesh::clean()
 }
 
 
-void Mesh::read_triangl(std::vector<double> &p, std::vector<int> &t)
+void Mesh::read_triangl(
+    std::vector<double> &p, 
+    std::vector<int> &l,
+    std::vector<int> &lm,
+    std::vector<int> &t)
 {
 
   //Nodes
   vertices.resize(p.size() / 3);
   for(int i = 0; i < vertices.size(); ++i)
     vertices[i] = Point(p[3 * i], p[3 * i + 1], p[3 * i + 2]);
+
+  //Lines... in this case edges
+  lines.resize(l.size()/2);
+  std::cout << " setting lines " << std::endl << std::flush;
+  for(int i = 0; i < lines.size(); ++i){
+    std::cout << "  " <<  l[2 * i] - 1 << "  " << l[2 * i + 1] - 1 << "  " <<  lm[i] << std::endl << std::flush;
+    lines[i] = new Line(l[2 * i] - 1, l[2 * i + 1] - 1, lm[i]);
+  }
+  std::cout << " done " << std::endl << std::flush;
+
 
   //Elements
   triangles.resize(t.size() / 3);
@@ -1488,38 +1502,32 @@ void Mesh::face_numeration(std::vector<MeshElement*> &cells,
 
 
 
-std::pair<std::vector<double>, std::vector<int>> Mesh::write_triangle()
+void Mesh::write_triangle(
+    std::vector<double> &p, 
+    std::vector<int> &l,
+    std::vector<int> &lm,
+    std::vector<int> &t)
 {
   //FIXME::resolve output data structure it is to cumbersome
   //TODO::how about all others elements type and cases??
-  std::vector<double> points;
-  points.reserve(3 * vertices.size());
-  //physical_names
 
   //vertices
-  for(auto& p: vertices)
-  {
-    for(int i = 0; i < p.n_coord; ++i)
-    {
-      points.push_back(p.get_coord(i));
-    }
+  p.resize(vertices.size() * Point::n_coord);
+  for(int i = 0; i < vertices.size(); ++i){
+    std::cout << std::endl;
+    for(int j = 0; j < Point::n_coord; ++j)
+      std::cout << (p[i * Point::n_coord + j] = vertices[i].get_coord(j)) << " ";
   }
 
-  std::vector<int> quads;
-  quads.reserve(4 * quadrangles.size());
-  //quadrangles
-  for(auto &el: quadrangles)
-  {
-    for(int i = 0; i < 4; ++i)
-    {
-        quads.push_back(el->get_vertex(i) + 1);
-    }
-  }
+  //lines
 
-  std::pair<std::vector<double>, std::vector<int>> returnValue;
-  returnValue.first = points;
-  returnValue.second = quads;
-  return returnValue;
+  //quads
+  t.resize(quadrangles.size() * Quadrangle::n_vertices);
+  for(int i = 0; i < quadrangles.size(); ++i){
+    std::cout << std::endl;
+    for(int j = 0; j < quadrangles[i]->get_n_vertices(); ++j)
+      std::cout << (t[i * Quadrangle::n_vertices + j] = quadrangles[i]->get_vertex(j) + 1) << " ";
+  }
 }
 
 

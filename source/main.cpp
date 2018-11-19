@@ -26,16 +26,22 @@ struct River::vecTriangulateIO RotatingGeometry(double alpha = 0.)
             0.5 - 0.3 * cos(alpha), 0.5 - 0.3 * sin(alpha)
         };
     
-    geom.numOfAttrPerPoint = 1;
-    geom.pointAttributes = vector<double>
-        {0.0, 1.0, 11.0, 10.0, 0., 0.};
+    geom.numOfAttrPerPoint = 0;
+    geom.pointAttributes = vector<double>{};
 
     geom.pointMarkers = vector<int>
-        {1, 2, 3, 4, 5, 6};
+        {1, 1, 1, 1, 1, 1};
 
-    geom.segments = vector<int> {1, 2, 2, 3, 3, 4, 4, 1, 5, 6};//, 2, 6, 2, 7, 6, 7};
-
-    geom.segmentMarkers = vector<int>{1, 2, 3, 4, 5};//, 6, 7, 8};
+    geom.segments = vector<int> {1, 2, 2, 3, 3, 4, 4, 1, 5, 6};
+    
+    /*markers:
+        1 - dirichlet
+        4 - dirichlet too but on river
+        2 - zero neuman
+        3 - non zero neuman
+    */
+    
+    geom.segmentMarkers = vector<int>{1, 2, 3, 2, 4};
 
     geom.numOfRegions = 0;
     vector<double> regionList = {};
@@ -100,7 +106,7 @@ int main(int argc, char *argv[])
     tria.ConstrainAngle = true;
     tria.MaxAngle = 25;
     tria.AreaConstrain = true;
-    tria.MaxTriaArea = 0.01;
+    tria.MaxTriaArea = 0.1;
     tria.Verbose = vm["Verbose"].as<bool>();
     tria.Quite = vm["Quiet"].as<bool>();
     //tria.EncloseConvexHull = true;
@@ -111,19 +117,32 @@ int main(int argc, char *argv[])
     //Geomerty
     struct River::vecTriangulateIO geom;
     int alpha = 0;
-    while(alpha < 180)
+    while(alpha < 1)
     {
         geom = RotatingGeometry(alpha / 180. * M_PI);
-
 
         geom = tria.Generate(geom);
 
         tethex::Mesh TethexMesh;
-        TethexMesh.read_triangl(geom.points, geom.triangles);
+        TethexMesh.read_triangl(
+            geom.points, 
+            geom.edges, 
+            geom.edgeMarkers,  
+            geom.triangles);
+
+        if(vm["Verbose"].as<bool>())
+            TethexMesh.info(cout);
         TethexMesh.convert();
-        auto[points, quads] = TethexMesh.write_triangle();
-        geom.points = points;
-        geom.triangles = quads;// fix this name
+        if(vm["Verbose"].as<bool>())
+            TethexMesh.info(cout);
+
+
+        //TODO: write normal arguments    
+        TethexMesh.write_triangle(
+            geom.points,
+            geom.segments,
+            geom.segmentMarkers,
+            geom.triangles);
         
         deallog.depth_console (0);
         River::Simulation RiverSim(vm);    

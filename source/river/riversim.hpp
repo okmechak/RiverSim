@@ -68,8 +68,8 @@ namespace River
     int numOfRegions = 1;
     vector<double> regions = {};
     //out only
-    vector<double> edges = {};
-    vector<double> edgeMarkers = {};
+    vector<int> edges = {};
+    vector<int> edgeMarkers = {};
   };
 
 

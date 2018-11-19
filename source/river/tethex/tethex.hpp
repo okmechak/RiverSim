@@ -834,7 +834,11 @@ public:
                  * Read the mesh from Triangulate Structure
                  * @param in - TriangulateIO data structure
                  */
-  void read_triangl(std::vector<double> &p, std::vector<int> &t);
+  void read_triangl(
+    std::vector<double> &p, 
+    std::vector<int> &l,
+    std::vector<int> &lm,
+    std::vector<int> &t);
 
                 /**
                  * Conversion from simplices to bricks.
@@ -847,8 +851,11 @@ public:
                  * Write the resulting brick mesh into the file
                  * @param file - the name of mesh file where we write the results of conversion
                  */
-  std::pair<std::vector<double>, std::vector<int>> 
-      write_triangle();
+  void write_triangle(
+    std::vector<double> &p, 
+    std::vector<int> &l,
+    std::vector<int> &lm,
+    std::vector<int> &t);
                 /**
                  * Write the resulting brick mesh into the file
                  * @param file - the name of mesh file where we write the results of conversion

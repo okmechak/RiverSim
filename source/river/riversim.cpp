@@ -176,7 +176,9 @@ void Triangle::PrintOptions(bool qDetailedDescription)
 void Triangle::PrintGeometry(
     struct triangulateio &io)
 {
-    int i, j;
+    int i, j, shift = 1;
+    if(StartNumberingFromZero)
+        shift = 0;
 
     if (io.numberofpoints > 0 && io.pointlist != NULL)
     {
@@ -187,7 +189,7 @@ void Triangle::PrintGeometry(
 
         for (i = 0; i < io.numberofpoints; i++)
         {
-            cout << "Point " << i << ": ";
+            cout << "Point " << i + shift << ": ";
 
             for (j = 0; j < 2; j++)
                 cout << io.pointlist[i * 2 + j] << " ";
@@ -199,7 +201,7 @@ void Triangle::PrintGeometry(
                     cout << io.pointattributelist[i * io.numberofpointattributes + j] << " ";
             }
             else
-                cout << " point attributes aren't set" << endl;
+                cout << " point attributes aren't set ";
 
             if (io.pointmarkerlist != NULL)
                 cout << "   marker " << io.pointmarkerlist[i];
@@ -219,7 +221,7 @@ void Triangle::PrintGeometry(
     {
         for (i = 0; i < io.numberoftriangles; i++)
         {
-            cout << "Triangle " << i << " points: ";
+            cout << "Triangle " << i + shift << " points: ";
             for (j = 0; j < io.numberofcorners; j++)
                 cout << io.trianglelist[i * io.numberofcorners + j] << " ";
             if (io.numberoftriangleattributes > 0 && io.triangleattributelist != NULL)
@@ -259,7 +261,7 @@ void Triangle::PrintGeometry(
     if (io.numberofsegments > 0 && io.segmentlist != NULL)
         for (i = 0; i < io.numberofsegments; i++)
         {
-            cout << "Segment " << i << " points: ";
+            cout << "Segment " << i + shift << " points: ";
             for (j = 0; j < 2; j++)
                 cout << "  " << io.segmentlist[i * 2 + j];
             if (io.segmentmarkerlist != NULL)
@@ -277,7 +279,7 @@ void Triangle::PrintGeometry(
     if (io.numberofedges > 0 && io.edgelist != NULL)
         for (i = 0; i < io.numberofedges; i++)
         {
-            cout << "Edge " << i << " points:";
+            cout << "Edge " << i + shift << " points:";
             for (j = 0; j < 2; j++)
                 cout << "  " << io.edgelist[i * 2 + j];
             if (io.normlist != NULL)
@@ -579,7 +581,14 @@ void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
     //FIXME: this divider depends on element type
     //for triangles(el type = 2) - it will be 3
     //for quads (el type - 4) - it will be 4
-    tags[0] = evaluateTags(elements.size()/4, 1);
+    int div = 0;
+    switch(elType){
+        case 1: div = 2; break;
+        case 2: div = 3; break;
+        case 3: div = 4; break;
+    }
+
+    tags[0] = evaluateTags(elements.size()/div, 1);
 
     vector<int> elementTypes = {elType};
 
@@ -651,7 +660,6 @@ void Simulation::SetMesh(struct vecTriangulateIO & mesh)
         cells[i].vertices[1] = mesh.triangles[4 * i + 1] - 1;
         cells[i].vertices[2] = mesh.triangles[4 * i + 3] - 1;
         cells[i].vertices[3] = mesh.triangles[4 * i + 2] - 1;
-    
         cells[i].material_id = 0;
     }
     
