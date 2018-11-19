@@ -11468,16 +11468,11 @@ void triangulate(const char *triswitches, struct triangulateio *in,
   struct behavior b;
   REAL *holearray;   /* Array of holes. */
   REAL *regionarray; /* Array of regional attributes and area constraints. */
-#ifndef NO_TIMER
   /* Variables for timing the performance of Triangle.  The types are */
   /*   defined in sys/time.h.                                         */
   struct timeval tv0, tv1, tv2, tv3, tv4, tv5, tv6;
   struct timezone tz;
-#endif /* not NO_TIMER */
-
-#ifndef NO_TIMER
   gettimeofday(&tv0, &tz);
-#endif /* not NO_TIMER */
 
   triangleinit(&m);
   parsecommandline(1, &triswitches, &b);
@@ -11487,12 +11482,10 @@ void triangulate(const char *triswitches, struct triangulateio *in,
                 in->pointmarkerlist, in->numberofpoints,
                 in->numberofpointattributes);
 
-#ifndef NO_TIMER
   if (!b.quiet)
   {
     gettimeofday(&tv1, &tz);
   }
-#endif /* not NO_TIMER */
 
                   
   if (b.refine)
@@ -11511,7 +11504,7 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     m.hullsize = delaunay(&m, &b); /* Triangulate the vertices. */
   }
 
-#ifndef NO_TIMER
+
   if (!b.quiet)
   {
     gettimeofday(&tv2, &tz);
@@ -11526,7 +11519,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     printf(" milliseconds:  %ld\n", 1000l * (tv2.tv_sec - tv1.tv_sec) +
                                         (tv2.tv_usec - tv1.tv_usec) / 1000l);
   }
-#endif /* not NO_TIMER */
 
   /* Ensure that no vertex can be mistaken for a triangular bounding */
   /*   box vertex in insertvertex().                                 */
@@ -11545,7 +11537,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     }
   }
 
-#ifndef NO_TIMER
   if (!b.quiet)
   {
     gettimeofday(&tv3, &tz);
@@ -11556,7 +11547,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
                  (tv3.tv_usec - tv2.tv_usec) / 1000l);
     }
   }
-#endif /* not NO_TIMER */
 
   if (b.poly && (m.triangles.items > 0))
   {
@@ -11579,7 +11569,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     m.regions = 0;
   }
 
-#ifndef NO_TIMER
   if (!b.quiet)
   {
     gettimeofday(&tv4, &tz);
@@ -11589,16 +11578,12 @@ void triangulate(const char *triswitches, struct triangulateio *in,
                                               (tv4.tv_usec - tv3.tv_usec) / 1000l);
     }
   }
-#endif /* not NO_TIMER */
 
-#ifndef CDT_ONLY
   if (b.quality && (m.triangles.items > 0))
   {
     enforcequality(&m, &b); /* Enforce angle and area constraints. */
   }
-#endif /* not CDT_ONLY */
 
-#ifndef NO_TIMER
   if (!b.quiet)
   {
     gettimeofday(&tv5, &tz);
@@ -11611,7 +11596,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     }
 #endif /* not CDT_ONLY */
   }
-#endif /* not NO_TIMER */
 
   /* Calculate the number of edges. */
   m.edges = (3l * m.triangles.items + m.hullsize) / 2l;
@@ -11625,7 +11609,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     printf("\n");
   }
 
-#ifdef TRILIBRARY
   if (b.jettison)
   {
     out->numberofpoints = m.vertices.items - m.undeads;
@@ -11653,7 +11636,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     vorout->numberofpointattributes = m.nextras;
     vorout->numberofedges = m.edges;
   }
-#endif /* TRILIBRARY */
   /* If not using iteration numbers, don't write a .node file if one was */
   /*   read, because the original one would be overwritten!              */
   if (b.nonodewritten || (b.noiterationnum && m.readnodefile))
@@ -11728,7 +11710,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
 
   if (!b.quiet)
   {
-#ifndef NO_TIMER
     gettimeofday(&tv6, &tz);
     printf("\nOutput milliseconds:  %ld\n",
            1000l * (tv6.tv_sec - tv5.tv_sec) +
@@ -11736,7 +11717,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     printf("Total running milliseconds:  %ld\n",
            1000l * (tv6.tv_sec - tv0.tv_sec) +
                (tv6.tv_usec - tv0.tv_usec) / 1000l);
-#endif /* not NO_TIMER */
 
     statistics(&m, &b);
   }
