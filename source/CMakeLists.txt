@@ -5,7 +5,7 @@ project(riversim C CXX)
 message("========================================")
 message("Deal II setup")
 set(deal.II_USE_STATIC_LIBS "OFF")
-find_package(deal.II REQUIRED HINTS ${dealii_DIRECTORY})
+find_package(deal.II REQUIRED HINTS ${dealii_DIRECTORY} ${DEAL_II_DIR})
 deal_ii_initialize_cached_variables()
 
 
@@ -25,7 +25,8 @@ add_subdirectory(river)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/river
     ${CMAKE_CURRENT_SOURCE_DIR}/river/tethex
-    ${CMAKE_CURRENT_SOURCE_DIR}/river/triangle)
+    ${CMAKE_CURRENT_SOURCE_DIR}/river/triangle
+    ${CMAKE_CURRENT_SOURCE_DIR}/river/tetgen)
 
 set(SOURCE_FILES 
     main.cpp)
