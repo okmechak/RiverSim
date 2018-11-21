@@ -210,11 +210,7 @@
 
 /* #define SINGLE */
 
-#ifdef SINGLE
-#define REAL float
-#else /* not SINGLE */
 #define REAL double
-#endif /* not SINGLE */
 
 /* If yours is not a Unix system, define the NO_TIMER compiler switch to     */
 /*   remove the Unix-specific timing code.                                   */
@@ -233,7 +229,6 @@
 /*   TRILIBRARY symbol.  Read the file triangle.h for details on how to call */
 /*   the procedure triangulate() that results.                               */
 
-#define TRILIBRARY
 
 /* It is possible to generate a smaller version of Triangle using one or     */
 /*   both of the following symbols.  Define the REDUCED symbol to eliminate  */
@@ -245,8 +240,6 @@
 /*   generating an object library (triangle.o) by defining the TRILIBRARY    */
 /*   symbol.                                                                 */
 
-#define REDUCED
-#define ANSI_DECLARATORS
 /* #define CDT_ONLY */
 
 /* On some machines, my exact arithmetic routines might be defeated by the   */
@@ -348,25 +341,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#ifndef NO_TIMER
-#include <sys/time.h>
-#endif /* not NO_TIMER */
-#ifdef CPU86
-#include <float.h>
-#endif /* CPU86 */
-#ifdef LINUX
-#include <fpu_control.h>
-#endif /* LINUX */
-#ifdef TRILIBRARY
+
 #include "triangle.h"
-#endif /* TRILIBRARY */
 
-/* A few forward declarations.                                               */
-
-#ifndef TRILIBRARY
-char *readline();
-char *findfield();
-#endif /* not TRILIBRARY */
 
 /* Labels that signify the result of point location.  The result of a        */
 /*   search indicates that the point falls in the interior of a triangle, on */
@@ -1693,23 +1670,6 @@ void parsecommandline(int argc, const char **argv, struct behavior *b)
         {
           b->dwyer = 0;
         }
-#ifndef REDUCED
-#ifndef CDT_ONLY
-        if (argv[i][j] == 's')
-        {
-          b->splitseg = 1;
-        }
-        if ((argv[i][j] == 'D') || (argv[i][j] == 'L'))
-        {
-          b->quality = 1;
-          b->conformdel = 1;
-        }
-#endif /* not CDT_ONLY */
-        if (argv[i][j] == 'C')
-        {
-          b->docheck = 1;
-        }
-#endif /* not REDUCED */
         if (argv[i][j] == 'Q')
         {
           b->quiet = 1;
@@ -11468,11 +11428,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
   struct behavior b;
   REAL *holearray;   /* Array of holes. */
   REAL *regionarray; /* Array of regional attributes and area constraints. */
-  /* Variables for timing the performance of Triangle.  The types are */
-  /*   defined in sys/time.h.                                         */
-  struct timeval tv0, tv1, tv2, tv3, tv4, tv5, tv6;
-  struct timezone tz;
-  gettimeofday(&tv0, &tz);
 
   triangleinit(&m);
   parsecommandline(1, &triswitches, &b);
@@ -11481,11 +11436,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
   transfernodes(&m, &b, in->pointlist, in->pointattributelist,
                 in->pointmarkerlist, in->numberofpoints,
                 in->numberofpointattributes);
-
-  if (!b.quiet)
-  {
-    gettimeofday(&tv1, &tz);
-  }
 
                   
   if (b.refine)
@@ -11505,21 +11455,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
   }
 
 
-  if (!b.quiet)
-  {
-    gettimeofday(&tv2, &tz);
-    if (b.refine)
-    {
-      printf("Mesh reconstruction");
-    }
-    else
-    {
-      printf("Delaunay");
-    }
-    printf(" milliseconds:  %ld\n", 1000l * (tv2.tv_sec - tv1.tv_sec) +
-                                        (tv2.tv_usec - tv1.tv_usec) / 1000l);
-  }
-
   /* Ensure that no vertex can be mistaken for a triangular bounding */
   /*   box vertex in insertvertex().                                 */
   m.infvertex1 = (vertex)NULL;
@@ -11534,17 +11469,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
       /* Insert PSLG segments and/or convex hull segments. */
       formskeleton(&m, &b, in->segmentlist,
                    in->segmentmarkerlist, in->numberofsegments);
-    }
-  }
-
-  if (!b.quiet)
-  {
-    gettimeofday(&tv3, &tz);
-    if (b.usesegments && !b.refine)
-    {
-      printf("Segment milliseconds:  %ld\n",
-             1000l * (tv3.tv_sec - tv2.tv_sec) +
-                 (tv3.tv_usec - tv2.tv_usec) / 1000l);
     }
   }
 
@@ -11569,32 +11493,9 @@ void triangulate(const char *triswitches, struct triangulateio *in,
     m.regions = 0;
   }
 
-  if (!b.quiet)
-  {
-    gettimeofday(&tv4, &tz);
-    if (b.poly && !b.refine)
-    {
-      printf("Hole milliseconds:  %ld\n", 1000l * (tv4.tv_sec - tv3.tv_sec) +
-                                              (tv4.tv_usec - tv3.tv_usec) / 1000l);
-    }
-  }
-
   if (b.quality && (m.triangles.items > 0))
   {
     enforcequality(&m, &b); /* Enforce angle and area constraints. */
-  }
-
-  if (!b.quiet)
-  {
-    gettimeofday(&tv5, &tz);
-#ifndef CDT_ONLY
-    if (b.quality)
-    {
-      printf("Quality milliseconds:  %ld\n",
-             1000l * (tv5.tv_sec - tv4.tv_sec) +
-                 (tv5.tv_usec - tv4.tv_usec) / 1000l);
-    }
-#endif /* not CDT_ONLY */
   }
 
   /* Calculate the number of edges. */
@@ -11710,14 +11611,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
 
   if (!b.quiet)
   {
-    gettimeofday(&tv6, &tz);
-    printf("\nOutput milliseconds:  %ld\n",
-           1000l * (tv6.tv_sec - tv5.tv_sec) +
-               (tv6.tv_usec - tv5.tv_usec) / 1000l);
-    printf("Total running milliseconds:  %ld\n",
-           1000l * (tv6.tv_sec - tv0.tv_sec) +
-               (tv6.tv_usec - tv0.tv_usec) / 1000l);
-
     statistics(&m, &b);
   }
 
