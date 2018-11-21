@@ -109,41 +109,24 @@ int main(int argc, char *argv[])
     tria.MaxTriaArea = 0.1;
     tria.Verbose = vm["Verbose"].as<bool>();
     tria.Quite = vm["Quiet"].as<bool>();
-    //tria.EncloseConvexHull = true;
-    //tria.AssignRegionalAttributes = false;
-    //tria.DelaunayTriangles = true;
 
     //Tethex
+    River::Tethex tet;
+    tet.Verbose = vm["Verbose"].as<bool>();
     //Geomerty
     struct River::vecTriangulateIO geom;
+    
     int alpha = 0;
     while(alpha < 1)
     {
+        //Geometry
         geom = RotatingGeometry(alpha / 180. * M_PI);
-
+        //Triangulate
         geom = tria.Generate(geom);
-
-        tethex::Mesh TethexMesh;
-        TethexMesh.read_triangl(
-            geom.points, 
-            geom.edges, 
-            geom.edgeMarkers,  
-            geom.triangles);
-
-        if(vm["Verbose"].as<bool>())
-            TethexMesh.info(cout);
-        TethexMesh.convert();
-        if(vm["Verbose"].as<bool>())
-            TethexMesh.info(cout);
-
-
-        //TODO: write normal arguments    
-        TethexMesh.write_triangle(
-            geom.points,
-            geom.segments,
-            geom.segmentMarkers,
-            geom.triangles);
+        //Covert to quadrangles
+        tet.Convert(geom);
         
+        //Solve
         deallog.depth_console (0);
         River::Simulation RiverSim(vm);    
         RiverSim.SetMesh(geom);
@@ -152,6 +135,7 @@ int main(int argc, char *argv[])
 
         alpha += 1;
     }
+
     cout << "GMSH " <<endl;
     //Visualization using GMSH object
     River::Gmsh Gmsh;

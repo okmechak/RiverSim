@@ -1513,21 +1513,26 @@ void Mesh::write_triangle(
 
   //vertices
   p.resize(vertices.size() * Point::n_coord);
-  for(int i = 0; i < vertices.size(); ++i){
-    std::cout << std::endl;
+  for(int i = 0; i < vertices.size(); ++i)
     for(int j = 0; j < Point::n_coord; ++j)
-      std::cout << (p[i * Point::n_coord + j] = vertices[i].get_coord(j)) << " ";
-  }
+      p[i * Point::n_coord + j] = vertices[i].get_coord(j);
 
   //lines
+  l.resize(lines.size() * Line::n_vertices);
+  for(int i = 0; i < lines.size(); ++i)
+    for(int j = 0; j < Line::n_vertices; ++j)
+      l[i * Line::n_vertices + j] = lines[i]->get_vertex(j);
+
+  //line markers
+  lm.resize(lines.size());
+  for(int i = 0; i < lines.size(); ++i)
+    lm[i] = lines[i]->get_material_id();
 
   //quads
   t.resize(quadrangles.size() * Quadrangle::n_vertices);
-  for(int i = 0; i < quadrangles.size(); ++i){
-    std::cout << std::endl;
+  for(int i = 0; i < quadrangles.size(); ++i)
     for(int j = 0; j < quadrangles[i]->get_n_vertices(); ++j)
-      std::cout << (t[i * Quadrangle::n_vertices + j] = quadrangles[i]->get_vertex(j) + 1) << " ";
-  }
+      t[i * Quadrangle::n_vertices + j] = quadrangles[i]->get_vertex(j) + 1;
 }
 
 

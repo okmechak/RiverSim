@@ -481,6 +481,34 @@ struct vecTriangulateIO Triangle::Generate(struct vecTriangulateIO &geom)
     return OutputMesh;
 }
 
+Tethex::Tethex()
+{}
+Tethex::~Tethex()
+{}
+
+void Tethex::Convert(struct vecTriangulateIO &geom)
+{
+    tethex::Mesh TethexMesh;
+    TethexMesh.read_triangl(
+        geom.points, 
+        geom.edges, 
+        geom.edgeMarkers,  
+        geom.triangles);
+
+    if(Verbose)
+        TethexMesh.info(cout);
+    TethexMesh.convert();
+    if(Verbose)
+        TethexMesh.info(cout);
+
+    //TODO: write normal arguments    
+    TethexMesh.write_triangle(
+        geom.points,
+        geom.segments,
+        geom.segmentMarkers,
+        geom.triangles);
+
+}
 
 
 
@@ -645,6 +673,9 @@ void Simulation::SetMesh(struct vecTriangulateIO & mesh)
     {
         vertices[i] = Point<dim>(mesh.points[3 * i], mesh.points[3 * i + 1]);
     }
+    
+    //generat boundary id structure
+    std::unordered_map<std::pair<int,int>, int> boundary_ids;
 
     //SETTING QUADRANGLES
     auto n_cells = mesh.triangles.size() / 4; //FIXME: remove hardcode
@@ -666,6 +697,7 @@ void Simulation::SetMesh(struct vecTriangulateIO & mesh)
     triangulation.create_triangulation(vertices,
                                        cells,
                                        SubCellData());
+
 }
 
 void Simulation::make_custom_grid()

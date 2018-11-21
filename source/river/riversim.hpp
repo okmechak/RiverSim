@@ -30,6 +30,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
+#include <utility> 
 
 #include <tetgen.h>
 #include <gmsh.h>
@@ -44,6 +46,17 @@ namespace po = boost::program_options;
 namespace mdl = gmsh::model;
 namespace msh = gmsh::model::mesh;
 namespace geo = gmsh::model::geo;
+
+namespace std {
+  template <> struct hash<pair<int,int>>
+  {
+    size_t operator()(const pair<int,int> & x) const
+    { 
+      int f = x.first, s = x.second;
+      return hash<int>()((f + s)*(f + s + 1)/2 + s);
+    }
+  };
+}
 
 namespace River
 {
@@ -94,8 +107,10 @@ namespace River
  {
    private:
    public:
-      Tethex(struct vecTriangulateIO &);
+      bool Verbose = false;
+      Tethex();
       ~Tethex();
+      void Convert(struct vecTriangulateIO &);
  };
 
 
