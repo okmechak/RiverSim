@@ -40,3 +40,8 @@ install/*
 #vscode project file
 *.code-workspace
 .vscode/*
+
+#visual studio output files
+**/.vs
+**/Debug
+**/x64
