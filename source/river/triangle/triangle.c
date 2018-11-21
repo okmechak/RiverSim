@@ -2864,20 +2864,6 @@ void exactinit()
   REAL half;
   REAL check, lastcheck;
   int every_other;
-#ifdef LINUX
-  int cword;
-#endif /* LINUX */
-
-#ifdef LINUX
-#ifdef SINGLE
-  /*  cword = 4223; */
-  cword = 4210; /* set FPU control word for single precision */
-#else           /* not SINGLE */
-  /*  cword = 4735; */
-  cword = 4722; /* set FPU control word for double precision */
-#endif          /* not SINGLE */
-  _FPU_SETCW(cword);
-#endif /* LINUX */
 
   every_other = 1;
   half = 0.5;
