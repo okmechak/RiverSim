@@ -661,12 +661,8 @@ void Mesh::read_triangl(
 
   //Lines... in this case edges
   lines.resize(l.size()/2);
-  std::cout << " setting lines " << std::endl << std::flush;
-  for(int i = 0; i < lines.size(); ++i){
-    std::cout << "  " <<  l[2 * i] - 1 << "  " << l[2 * i + 1] - 1 << "  " <<  lm[i] << std::endl << std::flush;
+  for(int i = 0; i < lines.size(); ++i)
     lines[i] = new Line(l[2 * i] - 1, l[2 * i + 1] - 1, lm[i]);
-  }
-  std::cout << " done " << std::endl << std::flush;
 
 
   //Elements
