@@ -18,12 +18,12 @@ struct River::vecTriangulateIO RotatingGeometry(double alpha = 0.)
     struct River::vecTriangulateIO geom;
     geom.points = vector<double>
         {
-            0.0, 0.0,  //1
-            1.0, 0.0,  //2
+            -1.0, -1.0,  //1
+            1.0, -1.0,  //2
             1.0, 1.0,  //3
-            0.0, 1.0,  //4
-            0.5 + 0.3 * cos(alpha), 0.5 + 0.3 * sin(alpha),
-            0.5 - 0.3 * cos(alpha), 0.5 - 0.3 * sin(alpha)
+            -1.0, 1.0,  //4
+            0.5 * cos(alpha), 0.5 * sin(alpha),
+            - 0.5 * cos(alpha), - 0.5 * sin(alpha)
         };
     
     geom.numOfAttrPerPoint = 0;
@@ -32,7 +32,12 @@ struct River::vecTriangulateIO RotatingGeometry(double alpha = 0.)
     geom.pointMarkers = vector<int>
         {1, 1, 1, 1, 1, 1};
 
-    geom.segments = vector<int> {1, 2, 2, 3, 3, 4, 4, 1, 5, 6};
+    geom.segments = vector<int> 
+    {1, 2, 
+    2, 3, 
+    3, 4, 
+    4, 1, 
+    5, 6};
     
     /*markers:
         1 - dirichlet
@@ -41,7 +46,50 @@ struct River::vecTriangulateIO RotatingGeometry(double alpha = 0.)
         3 - non zero neuman
     */
     
-    geom.segmentMarkers = vector<int>{1, 2, 3, 2, 4};
+    geom.segmentMarkers = vector<int>{1, 1, 1, 1, 1};
+
+    geom.numOfRegions = 0;
+    vector<double> regionList = {};
+    
+    return geom;
+}
+
+
+struct River::vecTriangulateIO CircularGeometry()
+{
+    struct River::vecTriangulateIO geom;
+    geom.points = vector<double>
+        {
+            -1.0,-1.0,  //1
+            0.0, -1.0,  //2
+            1.0, -1.0,  //3
+            1.0,  1.0,  //4
+            -1.0, 1.0,  //5
+            0.,   0. //6
+        };
+    
+    geom.numOfAttrPerPoint = 0;
+    geom.pointAttributes = vector<double>{};
+
+    geom.pointMarkers = vector<int>
+        {1, 1, 1, 1, 1, 1};
+
+    geom.segments = vector<int> 
+    {1, 2, 
+    2, 6, 
+    6, 2, 
+    2, 3, 
+    3, 4,
+    4, 1};
+    
+    /*markers:
+        1 - dirichlet
+        4 - dirichlet too but on river
+        2 - zero neuman
+        3 - non zero neuman
+    */
+    
+    geom.segmentMarkers = vector<int>{1, 1, 1, 1, 1, 1};
 
     geom.numOfRegions = 0;
     vector<double> regionList = {};
@@ -103,45 +151,36 @@ int main(int argc, char *argv[])
     //initialization of objects
     //Triangle
     River::Triangle tria;
-    tria.ConstrainAngle = true;
-    tria.MaxAngle = 25;
-    tria.AreaConstrain = true;
-    tria.MaxTriaArea = 0.1;
     tria.Verbose = vm["Verbose"].as<bool>();
     tria.Quite = vm["Quiet"].as<bool>();
+
 
     //Tethex
     River::Tethex tet;
     tet.Verbose = vm["Verbose"].as<bool>();
     //Geomerty
-    struct River::vecTriangulateIO geom;
-    
-    int alpha = 0;
-    while(alpha < 1)
-    {
-        //Geometry
-        geom = RotatingGeometry(alpha / 180. * M_PI);
-        //Triangulate
-        geom = tria.Generate(geom);
-        //Covert to quadrangles
-        tet.Convert(geom);
-        
-        //Solve
-        deallog.depth_console (0);
-        River::Simulation RiverSim(vm);    
-        RiverSim.SetMesh(geom);
-        RiverSim.run();
-        RiverSim.output_results("solution" + to_string(alpha) + ".vtk");
+    auto geom = CircularGeometry();
+    //Triangulate
+    geom = tria.Generate(geom);
+    //Covert to quadrangles
+    tet.Convert(geom);
 
-        alpha += 1;
-    }
-
-    cout << "GMSH " <<endl;
-    //Visualization using GMSH object
     River::Gmsh Gmsh;
-    Gmsh.setNodes(geom.points);
-    Gmsh.setElements(geom.triangles, 3);
+    Gmsh.TestMesh(geom);
+    Gmsh.Write();
+    
+    //Solve
+    River::Simulation RiverSim(vm);    
+    //RiverSim.SetMesh(geom);
+    RiverSim.OpenMesh();
+    RiverSim.run();
+    
+    std::cout << "GMSH " <<endl;
+    //Visualization using GMSH object
+    //Gmsh.setNodes(geom.points);
+    //Gmsh.setElements(geom.triangles, 3);
     Gmsh.StartUserInterface();
+    
 
     return 0;
 }

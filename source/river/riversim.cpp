@@ -2,6 +2,19 @@
 
 namespace River{
 /*
+    vecTriangulateIO structure class
+
+*/
+
+vecTriangulateIO::vecTriangulateIO()
+{
+}
+
+vecTriangulateIO::~vecTriangulateIO()
+{
+}
+
+/*
   
     Triangle Class
   
@@ -515,7 +528,7 @@ void Tethex::Convert(struct vecTriangulateIO &geom)
 Gmsh::Gmsh()
 {
   gmsh::initialize();
-  //gmsh::option::setNumber("Mesh.RecombineAll", 1);
+  gmsh::option::setNumber("Mesh.RecombineAll", 1);
   gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
   gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
   gmsh::option::setNumber("General.Terminal", 1);
@@ -639,6 +652,48 @@ void Gmsh::StartUserInterface()
 }
 
 
+void Gmsh::TestMesh(struct River::vecTriangulateIO &geom)
+{
+    gmsh::model::geo::addPoint(0, 0, 0, 0.2, 1);
+    gmsh::model::geo::addPoint(0.5, 0, 0, 0.2, 2);
+    gmsh::model::geo::addPoint(1, 0, 0, 0.2, 3);
+    gmsh::model::geo::addPoint(1, 1, 0, 0.2, 4);
+    gmsh::model::geo::addPoint(0, 1, 0, 0.2, 5);
+    gmsh::model::geo::addPoint(0.5, 0.2, 0, 0.2, 6);
+    
+    gmsh::model::geo::addLine(1, 2, 1);
+    gmsh::model::geo::addLine(2, 6, 2);
+    gmsh::model::geo::addLine(6, 2, 3);
+    gmsh::model::geo::addLine(2, 3, 4);
+    gmsh::model::geo::addLine(3, 4, 5);
+    gmsh::model::geo::addLine(4, 5, 6);
+    gmsh::model::geo::addLine(5, 1, 7);
+    gmsh::model::geo::addCurveLoop({1, 2, 3, 4, 5, 6, 7}, 1);
+    gmsh::model::geo::addPlaneSurface({1}, 6);
+    gmsh::model::geo::synchronize();
+    gmsh::model::mesh::generate(2);
+
+    {
+        std::vector<int> nodeTags;
+        std::vector<double> coord, parametricCoord;
+        const int dim = -1, tag = -1;
+        const bool includeBoundary = true;
+        gmsh::model::mesh::getNodes(nodeTags, coord, parametricCoord, dim, tag, includeBoundary);
+
+        geom.points = coord;
+        geom.pointTags = nodeTags;
+    }
+    
+    {
+        std::vector<int> elementTypes;
+        std::vector<std::vector<int> > elementTags, nodeTags;
+        const int dim = -1;
+        const int tag = -1;
+        gmsh::model::mesh::getElements(elementTypes, elementTags, nodeTags, dim, tag);
+        cout << "Element Types" << endl;
+        copy(elementTypes.begin(), elementTypes.end(), ostream_iterator<int>(cout, " "));
+    }
+}
 
 
 
@@ -652,19 +707,53 @@ void Gmsh::StartUserInterface()
 
 */
 
-Simulation::Simulation(po::variables_map &vm) : fe(1), dof_handler(triangulation)
+Simulation::Simulation(po::variables_map &vm) : fe(2), dof_handler(triangulation)
 {
     option_map = vm;
 }
 
 Simulation::~Simulation()
 {
+    system_matrix.clear();
+}
 
+void Simulation::TryInsertCellBoundary(
+    CellData<dim> &cellData,
+    struct SubCellData &subcelldata, 
+    std::unordered_map<std::pair<int, int>, int> &bound_ids, 
+    int v1, int v2)
+{
+    CellData<1> boundary;
+    pair<int, int> p;
+    if(bound_ids.count(p = make_pair(v1, v2)) &&
+        bound_ids[p] != 0){
+        boundary.boundary_id = bound_ids[p];
+        boundary.vertices[0] = v1;
+        boundary.vertices[1] = v2;
+        subcelldata.boundary_lines.push_back(boundary);
+        cellData.manifold_id = boundary.boundary_id;
+    }
+    else if (bound_ids.count(p = make_pair(v2, v1)) &&
+        bound_ids[p] != 0)
+    {
+        boundary.boundary_id = bound_ids[p];
+        boundary.vertices[0] = v2;
+        boundary.vertices[1] = v1;
+        subcelldata.boundary_lines.push_back(boundary);
+        cellData.manifold_id = boundary.boundary_id;
+    }
+}
+
+void Simulation::OpenMesh(string fileName)
+{
+    GridIn<dim> gridin;
+    gridin.attach_triangulation(triangulation);
+    std::ifstream f(fileName);
+    gridin.read_msh(f);
 }
 
 void Simulation::SetMesh(struct vecTriangulateIO & mesh)
 {
-    const int dim = 2; //FIXME: set dim somewhere else
     
     //VERTICES
     auto n_points = mesh.points.size() / 3; //FIXME: replace hardcoded 3 by more general thing
@@ -675,287 +764,188 @@ void Simulation::SetMesh(struct vecTriangulateIO & mesh)
     }
     
     //generat boundary id structure
-    std::unordered_map<std::pair<int,int>, int> boundary_ids;
+    std::unordered_map<std::pair<int,int>, int> bound_id;
+    for(unsigned int i = 0; i < mesh.segments.size()/2; ++i)
+        bound_id.insert(make_pair(
+            make_pair(mesh.segments[2 * i], mesh.segments[2*i + 1]), mesh.segmentMarkers[i]));
+
+        
+
 
     //SETTING QUADRANGLES
     auto n_cells = mesh.triangles.size() / 4; //FIXME: remove hardcode
     vector<CellData<dim>> cells(n_cells, CellData<dim>());
+    auto subCell = SubCellData();
     for (unsigned int i = 0; i < n_cells; ++i)
     {
-        //for (unsigned int j = 0;
-        //     j < GeometryInfo<dim>::vertices_per_cell;
-        //     ++j)
-        //
-        //    cells[i].vertices[j] = mesh.triangles[4 * i + j];
-        cells[i].vertices[0] = mesh.triangles[4 * i + 0] - 1;
-        cells[i].vertices[1] = mesh.triangles[4 * i + 1] - 1;
-        cells[i].vertices[2] = mesh.triangles[4 * i + 3] - 1;
-        cells[i].vertices[3] = mesh.triangles[4 * i + 2] - 1;
-        cells[i].material_id = 0;
+        auto v1 = cells[i].vertices[0] = mesh.triangles[4 * i + 0] - 1;
+        auto v2 = cells[i].vertices[1] = mesh.triangles[4 * i + 1] - 1;
+        auto v4 = cells[i].vertices[2] = mesh.triangles[4 * i + 3] - 1;
+        auto v3 = cells[i].vertices[3] = mesh.triangles[4 * i + 2] - 1;
+        TryInsertCellBoundary(cells[i], subCell, bound_id, v1, v2);
+        TryInsertCellBoundary(cells[i], subCell, bound_id, v2, v3);
+        TryInsertCellBoundary(cells[i], subCell, bound_id, v3, v4);
+        TryInsertCellBoundary(cells[i], subCell, bound_id, v4, v1);
+        
+        //if(mesh.numOfAttrPerTriangle > 0)
+        //    cells[i].material_id = mesh.triangleAttributes[i];
+        //else 
+        //    cells[i].material_id = 0;
     }
-    
+    cout << "checking consistency" << endl;
+    if(subCell.check_consistency(dim))
+        cout << "i don't know what it means" << endl;
     triangulation.create_triangulation(vertices,
                                        cells,
-                                       SubCellData());
-
+                                       subCell);
 }
 
-void Simulation::make_custom_grid()
+
+double Simulation::RightHandSide::value (const Point<dim> &/*p*/,
+                                  const unsigned int /*component*/) const
 {
-    static const Point<2> vertices_1[] =
-        {Point<2>(0., 0.),
-         Point<2>(1, 0.),
-         Point<2>(0, 1.),
-         Point<2>(1., 1.)};
-
-    const unsigned int
-        n_vertices = sizeof(vertices_1) / sizeof(vertices_1[0]);
-
-    const vector<Point<dim>> vertices(&vertices_1[0],
-                                      &vertices_1[n_vertices]);
-
-    static const int cell_vertices[][GeometryInfo<dim>::vertices_per_cell] 
-        = {{0, 1, 2, 3}};
-
-    const unsigned int
-        n_cells = sizeof(cell_vertices) / sizeof(cell_vertices[0]);
-
-    vector<CellData<dim>> cells(n_cells, CellData<dim>());
-
-    for (unsigned int i = 0; i < n_cells; ++i)
-    {
-        for (unsigned int j = 0;
-             j < GeometryInfo<dim>::vertices_per_cell;
-             ++j)
-            cells[i].vertices[j] = cell_vertices[i][j];
-        cells[i].material_id = 0;
-    }
-
-    triangulation.create_triangulation(vertices,
-                                       cells,
-                                       SubCellData());
-
-    triangulation.refine_global(5);
+  double return_value = 1.0;
+  
+  return return_value;
 }
+
+double Simulation::BoundaryValues::value (const Point<dim> &/*p*/,
+                                   const unsigned int /*component*/) const
+{
+  return 0.;
+}
+
 
 void Simulation::setup_system()
 {
     dof_handler.distribute_dofs(fe);
-    cout << "Number of degrees of freedom: "
-         << dof_handler.n_dofs()
-         << endl;
 
-    DynamicSparsityPattern dsp(dof_handler.n_dofs());
-
-    DoFTools::make_sparsity_pattern(dof_handler, dsp);
-    sparsity_pattern.copy_from(dsp);
-    system_matrix.reinit(sparsity_pattern);
     solution.reinit(dof_handler.n_dofs());
     system_rhs.reinit(dof_handler.n_dofs());
+
+    constraints.clear();
+    DoFTools::make_hanging_node_constraints(
+        dof_handler, constraints);
+
+    VectorTools::interpolate_boundary_values(
+        dof_handler, 0, ZeroFunction<dim>(), constraints);
+    
+    constraints.close();
+    DynamicSparsityPattern dsp(dof_handler.n_dofs());
+    DoFTools::make_sparsity_pattern(
+        dof_handler, dsp, constraints, false);
+    sparsity_pattern.copy_from(dsp);
+    system_matrix.reinit(sparsity_pattern);
+}
+
+
+double coefficient (const Point<2> &p)
+{
+  //if (p.square() < 0.5*0.5)
+  //  return 20;
+  //else
+    return 1;
 }
 
 void Simulation::assemble_system()
 {
-    QGauss<2> quadrature_formula(2);
-    FEValues<2> fe_values(fe, quadrature_formula,
-                          update_values | update_gradients | update_JxW_values);
-    const unsigned int dofs_per_cell = fe.dofs_per_cell;
-    const unsigned int n_q_points = quadrature_formula.size();
-    FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
-    Vector<double> cell_rhs(dofs_per_cell);
-    std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
-    DoFHandler<2>::active_cell_iterator
-        cell = dof_handler.begin_active(),
-        endc = dof_handler.end();
-
-    for (; cell != endc; ++cell)
+const QGauss<dim>  quadrature_formula(3);
+  FEValues<dim> fe_values (fe, quadrature_formula,
+                           update_values    |  update_gradients |
+                           update_quadrature_points  |  update_JxW_values);
+  const unsigned int   dofs_per_cell = fe.dofs_per_cell;
+  const unsigned int   n_q_points    = quadrature_formula.size();
+  FullMatrix<double>   cell_matrix (dofs_per_cell, dofs_per_cell);
+  Vector<double>       cell_rhs (dofs_per_cell);
+  std::vector<types::global_dof_index> local_dof_indices (dofs_per_cell);
+  typename DoFHandler<dim>::active_cell_iterator
+  cell = dof_handler.begin_active(),
+  endc = dof_handler.end();
+  for (; cell!=endc; ++cell)
     {
-        fe_values.reinit(cell);
-        cell_matrix = 0;
-        cell_rhs = 0;
-        for (unsigned int q_index = 0; q_index < n_q_points; ++q_index)
+      cell_matrix = 0;
+      cell_rhs = 0;
+      fe_values.reinit (cell);
+      for (unsigned int q_index=0; q_index<n_q_points; ++q_index)
         {
-            for (unsigned int i = 0; i < dofs_per_cell; ++i)
-                for (unsigned int j = 0; j < dofs_per_cell; ++j)
-                    cell_matrix(i, j) += (fe_values.shape_grad(i, q_index) *
-                                          fe_values.shape_grad(j, q_index) *
-                                          fe_values.JxW(q_index));
-            for (unsigned int i = 0; i < dofs_per_cell; ++i)
-                cell_rhs(i) += (fe_values.shape_value(i, q_index) *
-                                1 *
-                                fe_values.JxW(q_index));
+          const double current_coefficient = coefficient
+                                             (fe_values.quadrature_point (q_index));
+          for (unsigned int i=0; i<dofs_per_cell; ++i)
+            {
+              for (unsigned int j=0; j<dofs_per_cell; ++j)
+                cell_matrix(i,j) += (current_coefficient *
+                                     fe_values.shape_grad(i,q_index) *
+                                     fe_values.shape_grad(j,q_index) *
+                                     fe_values.JxW(q_index));
+              cell_rhs(i) += (fe_values.shape_value(i,q_index) *
+                              1.0 *
+                              fe_values.JxW(q_index));
+            }
         }
-
-        cell->get_dof_indices(local_dof_indices);
-
-        for (unsigned int i = 0; i < dofs_per_cell; ++i)
-            for (unsigned int j = 0; j < dofs_per_cell; ++j)
-                system_matrix.add(local_dof_indices[i],
-                                  local_dof_indices[j],
-                                  cell_matrix(i, j));
-
-        for (unsigned int i = 0; i < dofs_per_cell; ++i)
-            system_rhs(local_dof_indices[i]) += cell_rhs(i);
+      cell->get_dof_indices (local_dof_indices);
+      constraints.distribute_local_to_global (cell_matrix,
+                                              cell_rhs,
+                                              local_dof_indices,
+                                              system_matrix,
+                                              system_rhs);
     }
-
-    std::map<types::global_dof_index, double> boundary_values;
-
-    VectorTools::interpolate_boundary_values(dof_handler,
-                                             0,
-                                             ZeroFunction<2>(),
-                                             boundary_values);
-
-    MatrixTools::apply_boundary_values(boundary_values,
-                                       system_matrix,
-                                       solution,
-                                       system_rhs);
 }
 
 void Simulation::solve()
 {
-    SolverControl solver_control(1000, 1e-12);
-    SolverCG<> solver(solver_control);
-    solver.solve(system_matrix, solution, system_rhs,
-                 PreconditionIdentity());
+    SolverControl      solver_control (1000, 1e-12);
+  SolverCG<>         solver (solver_control);
+  PreconditionSSOR<> preconditioner;
+  preconditioner.initialize(system_matrix, 1.2);
+  solver.solve (system_matrix, solution, system_rhs,
+                preconditioner);
+  constraints.distribute (solution);
 }
 
-void Simulation::output_results(string fileName) const
+void Simulation::refine_grid ()
 {
-    DataOut<2> data_out;
-    data_out.attach_dof_handler(dof_handler);
-    data_out.add_data_vector(solution, "solution");
-    data_out.build_patches();
-    std::ofstream output(fileName);
-    data_out.write_vtk(output);
+  Vector<float> estimated_error_per_cell (triangulation.n_active_cells());
+  KellyErrorEstimator<dim>::estimate (dof_handler,
+                                      QGauss<dim-1>(3),
+                                      typename FunctionMap<dim>::type(),
+                                      solution,
+                                      estimated_error_per_cell);
+  GridRefinement::refine_and_coarsen_fixed_number (triangulation,
+                                                   estimated_error_per_cell,
+                                                   0.3, 0.03);
+  triangulation.execute_coarsening_and_refinement ();
+}
+
+void Simulation::output_results (const unsigned int cycle) const
+{
+    DataOut<dim> data_out;
+    data_out.attach_dof_handler (dof_handler);
+    data_out.add_data_vector (solution, "solution");
+    data_out.build_patches ();
+    std::ofstream output ("solution-" + std::to_string(cycle) + ".vtk");
+    data_out.write_vtk (output);
 }
 
 void Simulation::run()
 {
-    setup_system();
-    assemble_system();
-    solve();
-    output_results();
+for (unsigned int cycle=0; cycle < 11; ++cycle)
+    {
+      std::cout << "Cycle " << cycle << ':' << std::endl;
+      if (cycle > 0)
+        refine_grid ();
+        
+      std::cout << "   Number of active cells:       "
+                << triangulation.n_active_cells()
+                << std::endl;
+      setup_system ();
+      std::cout << "   Number of degrees of freedom: "
+                << dof_handler.n_dofs()
+                << std::endl;
+      assemble_system ();
+      solve ();
+      output_results (cycle);
+    }
 }
 
 
 } //end of River namespace
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void gmsh_possibilites(int argc, char *argv[])
-{
-    const int meshDimension = 2; 
-
-    cout << "init" << endl;
-    gmsh::initialize(argc, argv);
-
-    //only this format is supported by deal.ii
-    //gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
-
-    //create new test model
-    cout << "add" << endl;
-    mdl::add("test");
-    vector<string> model_list;
-    mdl::list(model_list);
-    cout << "List of models" << endl;
-    for(auto m : model_list)
-        cout << m << endl;
-    cout << "Model dimenssions: " << mdl::getDimension() << endl;
-
-    
-    /*
-        defining of geometry
-    */
-    int geomTag = 1;
-    cout << "discr entity" << endl;
-    mdl::addDiscreteEntity(meshDimension, geomTag);
-    
-    //node points
-    cout << "set nodes" << endl;
-    msh::setNodes(
-        meshDimension, 
-        geomTag, 
-        {1, 2, 3, 4, 5}, 
-        {0., 0., 0.,   //node 1 
-         0.5, 0., 0.,  //node 2
-         1., 0., 0.,   //node 3
-         1., 1., 0.,   //node 4
-         0., 1., 0.}); //node 5
-
-    //elemets definition(e.g lines)
-    //vector<int> elementTypes{1};//1-line, 2 -triangle, see gmsh.pdf for more details
-    //vector<vector<int>> elementTags = {{1, 1, 1, 1}};
-    //vector<vector<int>> nodeTags = {{1,2,2,3,3,4,4,1}};
-    cout << "set elements" << endl;
-    msh::setElements(
-        meshDimension, 
-        geomTag, 
-        {1}, 
-        {{1, 2, 3, 4, 5}},
-        {{1, 2, 2, 3, 3, 4, 4, 5, 5, 1}});
-
-    //Mesh generation
-    //msh::generate(meshDimension);
-    //gmsh::graphics::draw();
-    gmsh::fltk::initialize();
-    gmsh::fltk::wait();
-    gmsh::fltk::run();
-    
-    //gmsh::write("playing.msh");
-    //finalizing working with gmsh library
-    cout << "fina" << endl;
-    gmsh::finalize();
-}
-

@@ -1,23 +1,20 @@
 #pragma once
 
-#include <deal.II/grid/tria.h>
-#include <deal.II/grid/grid_generator.h>
-#include <deal.II/grid/tria_accessor.h>
-#include <deal.II/grid/tria_iterator.h>
+#include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/function.h>
 
 #include <deal.II/dofs/dof_handler.h>
-#include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_tools.h>
+#include <deal.II/dofs/dof_accessor.h>
 
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_values.h>
 
-#include <deal.II/base/quadrature_lib.h>
-#include <deal.II/base/function.h>
-
-#include <deal.II/numerics/vector_tools.h>
-#include <deal.II/numerics/matrix_tools.h>
-#include <deal.II/numerics/data_out.h>
+#include <deal.II/grid/tria.h>
+#include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_in.h>
+#include <deal.II/grid/grid_out.h>
+#include <deal.II/grid/grid_refinement.h>
 
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/full_matrix.h>
@@ -25,6 +22,15 @@
 #include <deal.II/lac/dynamic_sparsity_pattern.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/precondition.h>
+#include <deal.II/lac/constraint_matrix.h>
+
+#include <deal.II/numerics/vector_tools.h>
+#include <deal.II/numerics/data_out.h>
+#include <deal.II/numerics/error_estimator.h>
+
+
+
+
 
 #include <boost/program_options.hpp>
 
@@ -62,27 +68,35 @@ namespace River
 {
   typedef vector<double> mesharr;
 
-  struct vecTriangulateIO
+  class vecTriangulateIO
   {
-    vector<double> points = {};
-    int numOfAttrPerPoint = 0;
-    vector<double> pointAttributes = {};
-    vector<int> pointMarkers = {};
-    vector<int> segments = {};
-    vector<int> segmentMarkers = {};
-    vector<int> triangles = {};
-    int numOfAttrPerTriangle = 0;
-    vector<double> triangleAttributes = {};
-    vector<double> triangleAreas = {};
-    vector<int> neighbors = {};
-    //array of coordiantes
-    vector<double> holes = {};
-    //array of array of coordinates
-    int numOfRegions = 1;
-    vector<double> regions = {};
-    //out only
-    vector<int> edges = {};
-    vector<int> edgeMarkers = {};
+    public:
+      vector<double> points = {};
+      vector<int> pointTags = {};
+      int numOfAttrPerPoint = 0;
+      vector<double> pointAttributes = {};
+      vector<int> pointMarkers = {};
+      vector<int> segments = {};
+      vector<int> segmentMarkers = {};
+      vector<int> triangles = {};
+      int numOfAttrPerTriangle = 0;
+      vector<double> triangleAttributes = {};
+      vector<double> triangleAreas = {};
+      vector<int> neighbors = {};
+      //array of coordiantes
+      vector<double> holes = {};
+      //array of array of coordinates
+      int numOfRegions = 1;
+      vector<double> regions = {};
+      //out only
+      vector<int> edges = {};
+      vector<int> edgeMarkers = {};
+      vecTriangulateIO();
+      ~vecTriangulateIO();
+      void Print()
+      {
+        cout << "Num of points: " << points.size();
+      }
   };
 
 
@@ -266,6 +280,7 @@ namespace River
       void setElements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
       void getElements();//<- implement first
       void getJacobians();
+      void TestMesh(struct vecTriangulateIO &geom);
       //... and lot of other
       //FIELD
       //GEO
@@ -279,8 +294,8 @@ namespace River
 
     private:
       string modelName = "basic";
-      string fileName = "rivermesh.png";
-      int dim = 1;
+      string fileName = "river.msh";
+      const int dim = 1;
 
       vector<int> evaluateTags(int size, int tag0)
       {
@@ -296,28 +311,58 @@ namespace River
       Simulation(po::variables_map &vm);
       ~Simulation();
       void SetMesh(struct vecTriangulateIO & mesh);
+      void OpenMesh(string fileName = "river.msh");
       void run();
-      void output_results(string fileName = "solution.vtk") const;
 
     private:
-      void make_custom_grid();
-      void setup_system();
-      void assemble_system();
-      void solve();
-
-
       const static int dim = 2;
 
       Triangulation<dim> triangulation;
+
       FE_Q<dim> fe;
       DoFHandler<dim> dof_handler;
-      SparsityPattern sparsity_pattern;
+
+      ConstraintMatrix constraints;
+
       SparseMatrix<double> system_matrix;
+      SparsityPattern sparsity_pattern;
+
       Vector<double> solution;
       Vector<double> system_rhs;
 
       //options fro command line
       po::variables_map option_map;
+
+      void setup_system();
+      void assemble_system();
+      void solve();
+      void refine_grid ();
+      void output_results (const unsigned int cycle) const;
+
+      void TryInsertCellBoundary(
+          CellData<dim> &cellData,
+          struct SubCellData &subcelldata,
+          std::unordered_map<std::pair<int, int>, int> &bound_ids, 
+          int v1, int v2);
+
+
+
+      class RightHandSide : public Function<dim>
+      {
+      public:
+        RightHandSide () : Function<dim>() {}
+        virtual double value (const Point<dim>   &p,
+                              const unsigned int  component = 0) const;
+      };
+
+      class BoundaryValues : public Function<dim>
+      {
+      public:
+        BoundaryValues () : Function<dim>() {}
+        virtual double value (const Point<dim>   &p,
+                              const unsigned int  component = 0) const;
+      };
+
   };
 
 } //namespace mesh
