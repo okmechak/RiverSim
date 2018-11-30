@@ -19,10 +19,17 @@
 #include <fstream>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/grid/grid_out.h>
+#include <deal.II/grid/grid_in.h>
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/grid/grid_refinement.h>
 #include <deal.II/numerics/error_estimator.h>
+
+#include <iostream>
+
+
 using namespace dealii;
+
+
 template <int dim>
 class Step6
 {
@@ -36,6 +43,8 @@ private:
   void solve ();
   void refine_grid ();
   void output_results (const unsigned int cycle) const;
+  void open_mesh(std::string fileName);
+
   Triangulation<dim> triangulation;
   FE_Q<dim>          fe;
   DoFHandler<dim>    dof_handler;
@@ -46,6 +55,8 @@ private:
   Vector<double>       system_rhs;
 };
 
+
+
 template <int dim>
 double coefficient (const Point<dim> &p)
 {
@@ -54,6 +65,8 @@ double coefficient (const Point<dim> &p)
   else
     return 1;
 }
+
+
 
 template <int dim>
 Step6<dim>::Step6 ()
@@ -138,6 +151,9 @@ void Step6<dim>::assemble_system ()
                                               system_rhs);
     }
 }
+
+
+
 template <int dim>
 void Step6<dim>::solve ()
 {
@@ -163,6 +179,9 @@ void Step6<dim>::refine_grid ()
                                                    0.3, 0.03);
   triangulation.execute_coarsening_and_refinement ();
 }
+
+
+
 template <int dim>
 void Step6<dim>::output_results (const unsigned int cycle) const
 {
@@ -180,6 +199,19 @@ void Step6<dim>::output_results (const unsigned int cycle) const
     data_out.write_vtk (output);
   }
 }
+
+template <int dim>
+void Step6<dim>::open_mesh (std::string fileName)
+{
+    GridIn<dim> gridin;
+    gridin.attach_triangulation(triangulation);
+    std::ifstream f(fileName);
+    gridin.read_msh(f);
+}
+
+
+
+
 template <int dim>
 void Step6<dim>::run ()
 {
@@ -188,8 +220,7 @@ void Step6<dim>::run ()
       std::cout << "Cycle " << cycle << ':' << std::endl;
       if (cycle == 0)
         {
-          GridGenerator::hyper_ball (triangulation);
-          triangulation.refine_global (1);
+          open_mesh("crack.msh");
         }
       else
         refine_grid ();
@@ -205,11 +236,14 @@ void Step6<dim>::run ()
       output_results (cycle);
     }
 }
-int main ()
+
+
+
+int main (int argc, char* argv[])
 {
   try
     {
-      Step6<2> laplace_problem_2d;
+      Step6<3> laplace_problem_2d;
       laplace_problem_2d.run ();
     }
   catch (std::exception &exc)
