@@ -1,6 +1,6 @@
 # This reimplements gmsh/demos/boolean/boolean.geo in Python.
 import sys
-sys.path.append("/usr/local/gmsh_release/lib")
+sys.path.append("/home/oleg/Programs/gmsh/lib")
 import gmsh
 
 model = gmsh.model
