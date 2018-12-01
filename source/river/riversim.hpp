@@ -31,14 +31,13 @@
 
 
 
-
-#include <boost/program_options.hpp>
-
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
 #include <utility> 
 
+
+#include <boost/program_options.hpp>
 #include <tetgen.h>
 #include <gmsh.h>
 #include "triangle.h"
@@ -64,9 +63,49 @@ namespace std {
   };
 }
 
+
 namespace River
 {
-  typedef vector<double> mesharr;
+
+  /*
+    this is simiple geometry class used to easilly do 
+    different operations with geometry which describes river
+    mesh
+  */
+  class Geometry
+  {
+    public: 
+      //Geometry region indicators/markers
+      enum Markers {None = 0, Bottom, Right, Top, Left, River};
+
+      //Nodes
+      vector<double> nodes;
+      vector <unsigned int> nodeMarkers;
+
+      //Segments or Edges or Elements
+      vector<unsigned int> circularSegments;
+      vector<unsigned int> segmentMarkers;
+
+      Geometry(
+        double dl = 0.01, double dx = 0.5, 
+        vector<double> coords = {0., 0., 1., 1.,});
+      ~Geometry();
+
+      void addNode(double x, double y, unsigned int marker = Markers::River);
+      void addDNode(double dx, double dy, unsigned int marker = Markers::River);
+
+
+    private:
+      double eps = 1e-8;
+
+
+      //Box parameters
+      vector<double> BottomBoxCorner = {0., 0.}, TopBoxCorner = {1., 1.};
+      double dx = 0.5, dl = 0.01;
+ 
+  };
+
+
 
   class vecTriangulateIO
   {
@@ -99,22 +138,6 @@ namespace River
       }
   };
 
-
-  class Geometry
-  {
-    public:
-      int index;
-      struct
-      {
-          double x;
-          double y;
-      } coord;
-      //physical attributes
-      vector<double> phys_attributes;
-      int marker;
-      bool is_on_edge;
-      vector<double> data;
-  };
 
 
  class Tethex
@@ -247,29 +270,17 @@ namespace River
   class Gmsh
   {
     public:
+      //some flags
+      bool recombine = true;
+      bool mesh24format = true;
+      bool Verbose = true;
       //GMSH
+      
       Gmsh();
       ~Gmsh();
       void Open();
       void Write();
       void Clear();
-      //OPTIONS
-      //MODEL
-      void add();
-      void remove();
-      void list();
-      void setCurrent();
-      void getEntities();
-      void getPhysicalGroups();
-      void getEntitiesForPhysicalGroup();
-      void getPhysicalGroupsForEntity();
-      void addPhysicalGroup();
-      void setPhysicalName();
-      void getPhysicalName();
-      void getBoundary();
-      void addDiscreteEntity();
-      void getNormal();
-      //... and lot of other..
       //MESH
       void generate();
       void partition();
@@ -278,6 +289,7 @@ namespace River
       void getNodes();
       void setNodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
       void setElements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
+      void generate(Geometry & geom);
       void getElements();//<- implement first
       void getJacobians();
       void TestMesh(struct vecTriangulateIO &geom);

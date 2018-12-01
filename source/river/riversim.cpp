@@ -2,6 +2,131 @@
 
 namespace River{
 /*
+    River Geometry Object
+
+*/
+
+Geometry::Geometry(
+        double dl, double dx, 
+        vector<double> coords): dl(dl), dx(dx)
+{
+    BottomBoxCorner = {coords[0], coords[1]};
+    TopBoxCorner    = {coords[2], coords[3]};
+    
+    //Nodes
+    nodes = {
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 9*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 8*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 7*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 6*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 5*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 4*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 3*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + 2*dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1] + dl, //node 1
+        BottomBoxCorner[0] + (dx + eps), BottomBoxCorner[1],      //node 2
+        TopBoxCorner[0],                 BottomBoxCorner[1],      //node 3
+        TopBoxCorner[0],                 TopBoxCorner[1],         //node 4
+        BottomBoxCorner[0],              TopBoxCorner[1],         //node 5
+        BottomBoxCorner[0],              BottomBoxCorner[1],      //node 6
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1],      //node 7
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + dl, //node 8
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + 2*dl, //node 8
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + 3*dl, //node 8
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + 4*dl, //node 8
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + 5*dl, //node 8
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + 6*dl, //node 8
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + 7*dl, //node 8
+        BottomBoxCorner[0] + dx,         BottomBoxCorner[1] + 8*dl, //node 8
+    };
+
+    nodeMarkers = {
+        Markers::River,
+        Markers::Bottom,
+        Markers::Bottom,
+        Markers::Right,
+        Markers::Top,
+        Markers::Left,
+        Markers::Bottom,
+        Markers::River,
+    };
+
+    //Segments
+    circularSegments = {
+        1, 2,   2, 3,   3, 4,   4, 5, 
+        5, 6,   6, 7,   7, 8,   8, 9,   9,10,  10,11, 11,12, 12,13, 13,14, 14,15, 15,16, 16,17, 17,18,  18,19, 19,20, 20,21, 21,22, 22,23, 23,1
+        };
+    
+    segmentMarkers = {
+        Markers::River,
+        Markers::Bottom,
+        Markers::Right,
+        Markers::Top,
+        Markers::Left,
+        Markers::Bottom,
+        Markers::River,
+        Markers::River,
+    };
+}
+
+void Geometry::addNode(double x, double y, unsigned int marker)
+{
+    nodes.push_back(x);
+    nodes.push_back(y);
+    auto curNodeIndex = nodes.size() / 2;
+
+    //insert left segment at the beginning of circular array
+    circularSegments.insert(circularSegments.begin(), 
+        circularSegments[0]);
+    circularSegments.insert(circularSegments.begin(), 
+        curNodeIndex);
+
+    //insert rigth segment at the end of circular array
+    circularSegments.push_back(circularSegments[0]);
+    circularSegments.push_back(curNodeIndex);
+
+}
+
+void Geometry::addDNode(double dx, double dy, unsigned int marker)
+{
+    auto lastNodePosition = circularSegments[0] - 1;
+    auto x = nodes[2 * lastNodePosition];
+    auto y = nodes[2 * lastNodePosition + 1];
+
+    nodes.push_back(x + dx);
+    nodes.push_back(y + dy);
+    auto curNodeIndex = nodes.size() / 2;
+    nodes.push_back(x + (dx + eps));
+    nodes.push_back(y + dy);
+    auto curEpsNodeIndex = nodes.size() / 2;
+    nodeMarkers.push_back(marker);
+
+    //insert left segment at the beginning of circular array
+    auto firstPoint = circularSegments[0];
+    auto lastPoint = circularSegments.back();
+
+    //TODO: add assertion.. first and last points should be the same
+
+    circularSegments.insert(circularSegments.begin(), 
+        firstPoint);
+    circularSegments.insert(circularSegments.begin(), 
+        curNodeIndex);
+    
+
+    //insert rigth segment at the end of circular array
+    circularSegments.push_back(lastPoint);
+    circularSegments.push_back(curEpsNodeIndex);
+    
+    //Markers
+    segmentMarkers.insert(segmentMarkers.begin(), marker);
+    segmentMarkers.push_back(marker);
+}
+
+
+Geometry::~Geometry(){}
+
+
+/*
     vecTriangulateIO structure class
 
 */
@@ -528,12 +653,14 @@ void Tethex::Convert(struct vecTriangulateIO &geom)
 Gmsh::Gmsh()
 {
   gmsh::initialize();
-  gmsh::option::setNumber("Mesh.RecombineAll", 1);
-  gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
+  gmsh::option::setNumber("Mesh.RecombineAll", (int)recombine);
+  //gmsh::option::setNumber("Mesh.Optimize", 1);
+  //gmsh::option::setNumber("Mesh.OptimizeThreshold", 0.31);
+  //gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
   gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
   gmsh::option::setNumber("General.Terminal", 1);
   gmsh::model::add(modelName);
-  gmsh::model::addDiscreteEntity(2, 1);
+  //gmsh::model::addDiscreteEntity(2, 1);
 }
 
 Gmsh::~Gmsh()
@@ -643,6 +770,29 @@ void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
         tags,
         elementsContainer
     );
+}
+
+void Gmsh::generate(Geometry & geom)
+{
+    auto numOfNodes = geom.nodes.size() / 2;
+    for(auto i = 0; i < numOfNodes; ++i)
+        geo::addPoint(
+            geom.nodes[2 * i], geom.nodes[2 * i + 1], 0, 0.01);//FIXME: very precise parameter
+
+    
+    auto numOfSegments = geom.circularSegments.size() / 2;
+    for(auto i = 0; i < numOfSegments; ++i)
+        geo::addLine(
+            geom.circularSegments[2 * i], geom.circularSegments[2 * i + 1]);
+
+    auto curveTag = geo::addCurveLoop(evaluateTags(numOfSegments, 1));
+    auto surfaceTag = geo::addPlaneSurface({curveTag});
+    cout << surfaceTag << endl;
+    geo::synchronize();
+    //mdl::mesh::generate(2);
+    //mdl::mesh::setRecombine(2, 1);
+    mdl::mesh::generate(2);
+
 }
 
 
@@ -893,27 +1043,27 @@ const QGauss<dim>  quadrature_formula(3);
 
 void Simulation::solve()
 {
-    SolverControl      solver_control (1000, 1e-12);
-  SolverCG<>         solver (solver_control);
-  PreconditionSSOR<> preconditioner;
-  preconditioner.initialize(system_matrix, 1.2);
-  solver.solve (system_matrix, solution, system_rhs,
-                preconditioner);
-  constraints.distribute (solution);
+    SolverControl      solver_control (4000, 1e-12);
+    SolverCG<>         solver (solver_control);
+    PreconditionSSOR<> preconditioner;
+    preconditioner.initialize(system_matrix, 1.2);
+    solver.solve (system_matrix, solution, system_rhs,
+                    preconditioner);
+    constraints.distribute (solution);
 }
 
 void Simulation::refine_grid ()
 {
-  Vector<float> estimated_error_per_cell (triangulation.n_active_cells());
-  KellyErrorEstimator<dim>::estimate (dof_handler,
+    Vector<float> estimated_error_per_cell (triangulation.n_active_cells());
+    KellyErrorEstimator<dim>::estimate (dof_handler,
                                       QGauss<dim-1>(3),
                                       typename FunctionMap<dim>::type(),
                                       solution,
                                       estimated_error_per_cell);
-  GridRefinement::refine_and_coarsen_fixed_number (triangulation,
+    GridRefinement::refine_and_coarsen_fixed_number (triangulation,
                                                    estimated_error_per_cell,
                                                    0.3, 0.03);
-  triangulation.execute_coarsening_and_refinement ();
+    triangulation.execute_coarsening_and_refinement ();
 }
 
 void Simulation::output_results (const unsigned int cycle) const
@@ -928,7 +1078,7 @@ void Simulation::output_results (const unsigned int cycle) const
 
 void Simulation::run()
 {
-for (unsigned int cycle=0; cycle < 11; ++cycle)
+for (unsigned int cycle=0; cycle < 3; ++cycle)
     {
       std::cout << "Cycle " << cycle << ':' << std::endl;
       if (cycle > 0)
