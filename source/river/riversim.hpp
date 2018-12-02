@@ -37,6 +37,7 @@
 #include <utility> 
 
 
+#include <math.h>
 #include <boost/program_options.hpp>
 #include <tetgen.h>
 #include <gmsh.h>
@@ -45,7 +46,6 @@
 
 using namespace dealii;
 using namespace std;
-using namespace gmsh;
 
 namespace po = boost::program_options;
 namespace mdl = gmsh::model;
@@ -68,9 +68,50 @@ namespace River
 {
 
   /*
+    Is used to simply describe one branch of river. From one
+    biffurcation point to another
+  
+  */
+  class Branch
+  {
+    //TODO: Implement this class
+    public:
+      unsigned long int id;
+      string name = "branch";
+      vector<double> leftPoints;
+      vector<double> rightPoints;
+
+      Branch(unsigned long int id);
+      ~Branch();
+
+      //modify branch
+      void addPoint(vector<double> coords);
+      void addPoint(double dl, double alpha);
+      void removeHeadPoint();
+      void shrink(double dl);
+      double width();
+      void setWidth(double eps);
+
+      //geom entities
+      vector<double> getHead();
+      vector<double> getDirection();
+      vector<double> getTail();
+
+      //statistics
+      bool empty();
+      double length();
+      unsigned int size();
+      double averageSpeed();
+      //lot of others to be implemented
+
+    private:
+      double eps = 1e-8;
+  };
+
+  /*
     this is simiple geometry class used to easilly do 
     different operations with geometry which describes river
-    mesh
+    mesh. This class strongly dependce of Branch class
   */
   class Geometry
   {

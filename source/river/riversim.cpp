@@ -2,6 +2,102 @@
 
 namespace River{
 /*
+    Branch object
+
+*/
+
+Branch::Branch(unsigned long int id):id(id){}
+
+Branch::~Branch(){}
+
+void Branch::addPoint(vector<double> coords)
+{
+    leftPoints.push_back(coords[0] - eps/2);
+    leftPoints.push_back(coords[1] - eps/2);
+    rightPoints.push_back(coords[0] + eps/2);
+    rightPoints.push_back(coords[1] + eps/2);
+}
+
+void Branch::addPoint(double dl, double alpha)
+{
+    //compute dirrection by using
+    //TODO: add assertion that at least 
+}
+
+void Branch::removeHeadPoint()
+{
+    leftPoints.pop_back();//y coord
+    leftPoints.pop_back();//x coord
+    rightPoints.pop_back();//y coord
+    rightPoints.pop_back();//x coord
+}
+
+double Branch::width()
+{
+    return eps;
+}
+
+void Branch::setWidth(double eps)
+{
+    eps/*of object*/ = eps/*passed argument*/;
+}
+
+vector<double> Branch::getHead()
+{
+    auto lastIndex = leftPoints.size() - 1;
+    return vector<double>{
+        (leftPoints[lastIndex - 1] + rightPoints[lastIndex - 1])/2,
+        (leftPoints[lastIndex] + rightPoints[lastIndex])/2
+    };
+}
+
+vector<double> Branch::getDirection()
+{
+    auto lastIndex = leftPoints.size() - 1;
+    return vector<double>{
+        leftPoints[lastIndex - 1] - rightPoints[lastIndex - 3],
+        leftPoints[lastIndex] + rightPoints[lastIndex - 2]
+    };
+}
+
+vector<double> Branch::getTail()
+{
+    return vector<double>{
+        (leftPoints[0] + rightPoints[0])/2,
+        (leftPoints[1] + rightPoints[1])/2
+    };
+}
+
+bool Branch::empty()
+{
+    return leftPoints.empty();
+}
+
+double Branch::length()
+{   
+    double len = 0;
+    //TODO: Test it
+    for(unsigned int i = 0; i < leftPoints.size() - 1; ++i)
+    {
+        auto dx = leftPoints[2 * (i + 1)] - leftPoints[2 * i];
+        auto dy = leftPoints[2 * (i + 1) + 1] - leftPoints[2 * i + 1];
+        len += sqrt(dx*dx + dy*dy); 
+    }
+
+    return len;
+}
+
+unsigned int Branch::size()
+{
+    return leftPoints.size();
+}
+
+double Branch::averageSpeed()
+{
+    return length()/size();
+}
+
+/*
     River Geometry Object
 
 */
