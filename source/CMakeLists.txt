@@ -4,8 +4,7 @@ project(riversim C CXX)
 
 message("========================================")
 message("Deal II setup")
-set(deal.II_USE_STATIC_LIBS "OFF")
-message("$ENV{DEAL_II_DIR}")
+set(deal.II_USE_STATIC_LIBS "ON")
 find_package(deal.II REQUIRED HINTS $ENV{DEAL_II_DIR} ${dealii_DIRECTORY})
 deal_ii_initialize_cached_variables()
 
@@ -28,7 +27,7 @@ ELSE()
   set(BOOST_LIBRARYDIR "/usr/lib/x86_64-linux-gnu")
   set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
 ENDIF()
-message("$ENV{Boost_DIR}")
+
 find_package(Boost COMPONENTS program_options log)
 include_directories(${Boost_INCLUDE_DIRS})
 

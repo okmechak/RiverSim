@@ -12,14 +12,13 @@ set(dealii_DIRECTORY /home/oleg/Programs/dealii_release)
 
 include_directories(
     ${gmsh_DIRECTORY}/include
-    ${tetgen_DIRECTORY}
 )
 
 link_directories(
-    ${tetgen_DIRECTORY}
     ${gmsh_DIRECTORY}/lib
     )
 
 
 add_subdirectory(source)
 #add_subdirectory(research)
+#TODO: tests how to work with them?
