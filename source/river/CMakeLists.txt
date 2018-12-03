@@ -11,7 +11,16 @@ include_directories(
 
 set(SOURCE_FILES 
     riversim.cpp
-    riversim.hpp)
+    riversim.hpp
+    common.hpp
+    geometry.hpp
+    geometry.cpp
+    mesh.hpp
+    mesh.cpp
+    solver.hpp
+    solver.cpp
+    utilities.hpp
+    utilities.cpp)
 
 add_library(river ${SOURCE_FILES})
 set_property(TARGET river PROPERTY CXX_STANDARD 17)
