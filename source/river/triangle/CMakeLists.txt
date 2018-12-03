@@ -8,7 +8,4 @@ set(SOURCE_FILES
     triangle.h)
 
 
-add_library(triangle ${SOURCE_FILES})
-
-install(TARGETS triangle DESTINATION ${riversim_INSTALL_LIB_DIR})
-install(FILES triangle.h DESTINATION ${riversim_INSTALL_INCLUDE_DIR})
+add_library(triangle STATIC ${SOURCE_FILES})

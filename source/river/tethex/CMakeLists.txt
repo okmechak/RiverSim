@@ -8,7 +8,4 @@ set(SOURCE_FILES
     tethex.cpp
     tethex.hpp)
 
-add_library(tethex ${SOURCE_FILES})
-
-install(TARGETS tethex DESTINATION ${riversim_INSTALL_LIB_DIR})
-install(FILES tethex.hpp DESTINATION ${riversim_INSTALL_INCLUDE_DIR})
+add_library(tethex STATIC ${SOURCE_FILES})

@@ -10,14 +10,6 @@ set(riversim_INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
 set(gmsh_DIRECTORY /home/oleg/Programs/gmsh)
 set(dealii_DIRECTORY /home/oleg/Programs/dealii_release)
 
-include_directories(
-    ${gmsh_DIRECTORY}/include
-)
-
-link_directories(
-    ${gmsh_DIRECTORY}/lib
-    )
-
 
 add_subdirectory(source)
 #add_subdirectory(research)

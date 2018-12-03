@@ -32,7 +32,13 @@ find_package(Boost COMPONENTS program_options log)
 include_directories(${Boost_INCLUDE_DIRS})
 
 message("========================================")
-message("River, Tethex, Triangle")
+message("GMSH setup")
+include_directories(${gmsh_DIRECTORY}/include)
+link_directories(${gmsh_DIRECTORY}/lib)
+
+
+message("========================================")
+message("River, Tethex, Triangle setup")
 add_subdirectory(river)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/river
@@ -47,5 +53,3 @@ add_executable(riversim ${SOURCE_FILES})
 deal_ii_setup_target(riversim)
 
 target_link_libraries(riversim river)
-
-install(TARGETS riversim DESTINATION ${riversim_INSTALL_BIN_DIR})

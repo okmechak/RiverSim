@@ -4,7 +4,7 @@ add_subdirectory(tethex)
 add_subdirectory(triangle)
 add_subdirectory(tetgen)
 
-include_directories(
+include_directories( #FIXME: why I should include in every cmakelist file
     ${CMAKE_CURRENT_SOURCE_DIR}/tethex
     ${CMAKE_CURRENT_SOURCE_DIR}/triangle
     ${CMAKE_CURRENT_SOURCE_DIR}/tetgen)
@@ -22,13 +22,10 @@ set(SOURCE_FILES
     utilities.hpp
     utilities.cpp)
 
-add_library(river ${SOURCE_FILES})
+add_library(river STATIC ${SOURCE_FILES})
 set_property(TARGET river PROPERTY CXX_STANDARD 17)
 deal_ii_setup_target(river)
 
 target_link_libraries(river ${Boost_LIBRARIES})
-target_link_libraries(river libgmsh.so)
+target_link_libraries(river libgmsh.so)#FIXME: how to setup static library .a?
 target_link_libraries(river tethex triangle tetgen)
-
-install(TARGETS river DESTINATION ${riversim_INSTALL_LIB_DIR})
-install(FILES riversim.hpp DESTINATION ${riversim_INSTALL_INCLUDE_DIR})
