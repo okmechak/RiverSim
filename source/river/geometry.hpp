@@ -3,7 +3,9 @@
 #include <utility>
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <map>
+
+#include <iostream>
 
 #include <math.h>
 
@@ -29,7 +31,7 @@ public:
 
   //modify branch
   void addPoint(Point p);
-  void addPoint(double dl, double phi);
+  void addPolar(Polar p);
   void removeHeadPoint();
   void shrink(double dl);
   double width();
@@ -83,31 +85,46 @@ public:
   vector<Line> lines;
 
   //branches functionality
-  unordered_map<unsigned int, unsigned int> branchRelation;
-  unordered_map<unsigned int, Branch> branches;
+  map<int, 
+    pair<unsigned int, unsigned int>> branchRelation;
+  map<int, Branch> branches;
 
   //Segments or Edges or Elements
 
   Geometry();
   ~Geometry();
 
-  void addPoint(double x, double y, unsigned int marker = Markers::River);
-  void addDPoint(double dx, double dy, unsigned int marker = Markers::River);
+  void initiateRootBranch(unsigned int id = 1);
+  void addPoints(vector<Point> points);
+  void addDPoints(vector<Point> dpoints);
+  void addPolar(Polar p, bool bRelativeAngle = false);
   void SetSquareBoundary(
       Point BottomBoxCorner,
       Point TopBoxCorner,
       double dx);
+  vector<unsigned int> GetTipIds();
+  Branch& GetBranch(unsigned int id);
+  vector<Polar> GetTipPolars();
   void generateCircularBoundary();
   void SetEps(double eps);
 
 private:
   double eps = 1e-8;
 
+  unsigned int rootBranchId = 0;//0 means no root/first Branch
+
   //Boundary
   //Box parameters
   vector<Point> boundaryPoints;
   vector<Line> boundaryLines;
   double dx = 0.5;
+
+  //river geometry parameters
+  double alpha = M_PI/3.; // biffurcation angle
+  double len = 0.1; // biffurcation initial length 
+  
+  pair<Point, double> GetEndPointOfSquareBoundary();
+  void InserBranchTree(unsigned int id);
 };
 
 } // namespace River

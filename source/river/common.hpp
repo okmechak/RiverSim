@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
@@ -30,11 +31,76 @@ namespace River
     biffurcation point to another
   
   */
-struct Point
+struct Polar
 {
-  double x, y;
+  double dl;
+  double phi;
   unsigned int index = 0;
 };
+
+/*
+  Point struct and feew functions to work with it
+*/
+class Point
+{
+  public:
+    double x, y;
+    unsigned int index = 0;
+    Point() = default;
+    Point(double x, double y, unsigned int index = 0)
+    {
+      x=x;
+      y=y;
+      index=index;
+    };
+
+    Point(Polar p)
+    {
+      x = p.dl * cos(p.phi);
+      y = p.dl * sin(p.phi);
+      index = p.index;
+    };
+
+    double norm()
+    {
+      return sqrt(x*x + y*y);
+    }
+
+    Point getNormalized()
+    {
+      return Point{x/norm(), y/norm(), index};
+    }
+
+    Polar getPolar()
+    {
+      return Polar{norm(), angle(), index};
+    }
+
+    void normalize()
+    {
+      auto l = norm();
+      x /= l;
+      y /= l;
+    }
+
+    double angle()
+    {
+      double phi = acos(x/norm());
+      if(y < 0)
+        phi = -phi;
+      return phi;
+    }
+
+    double angle(Point p)
+    {
+      //order of points is important
+      double phi = acos((x*p.x + y*p.y)/norm()/p.norm());
+      double sign = x*p.y - p.x*y > 0 ? 1 : -1;//FIXME: is this sign correct?
+      phi *= sign;
+      return phi;
+    }
+};
+
 
 struct Line
 {

@@ -1,5 +1,6 @@
 #include "geometry.hpp"
 
+
 namespace River{
 
 /*
@@ -9,8 +10,8 @@ namespace River{
 
 Branch::Branch(unsigned long int id, Point sourcePoint, double phi):id(id)
 {
+    sourcePoint.index = id;
     auto points = splitPoint(sourcePoint, phi);
-
     leftPoints.push_back(points.first);
     rightPoints.push_back(points.second);
 }
@@ -20,7 +21,7 @@ Branch::~Branch(){}
 pair<Point, Point> Branch::splitPoint(Point p, double phi)
 {
     Point pLeft, pRight;
-    
+    pLeft.index = pRight.index = p.index;
     pLeft = {p.x + sin(phi) * eps/2 , p.y + cos(phi) * eps/2, p.index};
     pRight = {p.x + sin(phi) * eps/2 , p.y - cos(phi) * eps/2, p.index};
 
@@ -40,13 +41,13 @@ void Branch::addPoint(Point p)
     //rightPoints.push_back(coords[1] + eps/2);
 }
 
-void Branch::addPoint(double dl, double phi)
+void Branch::addPolar(Polar p)
 { 
     auto tipVector = getDirection();
-    auto newPoint = Point{ 
-        dl * cos(phi) + tipVector.x, 
-        dl * sin(phi) + tipVector.y};
-    
+    auto newPoint = Point{p}; 
+    newPoint.x += tipVector.x;
+    newPoint.y += tipVector.y; 
+
     addPoint(newPoint);
 }
 
@@ -128,8 +129,6 @@ double Branch::averageSpeed()
 
 
 
-
-
 /*
     Geometry object
 
@@ -161,22 +160,75 @@ void Geometry::SetSquareBoundary(
         };
 }
 
-void Geometry::addPoint(double x, double y, unsigned int marker)
+void Geometry::addPoints(vector<Point> points)
 {
     
 }
 
-void Geometry::addDPoint(double dx, double dy, unsigned int marker)
+void Geometry::addDPoints(vector<Point> shifts)
 {
     
+}
+
+void Geometry::initiateRootBranch(unsigned int id)
+{
+    auto [boundaryEndPoint, phi] = GetEndPointOfSquareBoundary();
+    rootBranchId = id;
+    branches.insert(make_pair(rootBranchId,  Branch(rootBranchId, boundaryEndPoint, phi));
 }
 
 void Geometry::generateCircularBoundary()
 {
+    unsigned int curId = rootBranchId;
+
+    //inserting boundary conditions
     points.insert(points.end(), boundaryPoints.begin(), boundaryPoints.end());
-    if(branchRelation.count(0)){
-        //TODO some functionality
+
+    if(branches.count(curId))
+        InserBranchTree(curId);
+
+}
+/*
+    Recursive inserting of branches
+*/
+void Geometry::InserBranchTree(unsigned int id)
+{
+    auto curBranch = branches[id];
+    if(curBranch.size() > 1){
+        points.insert(points.end(), curBranch.leftPoints.begin() + 1, boundaryPoints.end() - 1);
+        if(branchRelation.count(id))
+        {
+            auto leftId = branchRelation[id].first;
+            auto rightId = branchRelation[id].second;
+            InserBranchTree(leftId);
+            points.push_back(curBranch.getHead());
+            InserBranchTree(rightId);
+        }
+        else
+            //inserting narrow tip
+            points.push_back(curBranch.getHead());
+
+        //inserting right branch side in reverse order
+        points.insert(points.end(), curBranch.rightPoints.rbegin() + 1, boundaryPoints.rend() - 1);
     }
+}
+
+void Geometry::addPolar(Polar p, bool bRelativeAngle)
+{
+    if (branchRelation.count(p.index));//TODO: add assertion
+    std::cout << "addPolar" << std::endl << std::flush;
+    auto & curBranch = branches[p.index];
+    std::cout << "addPolar" << std::endl << std::flush;
+    curBranch.addPolar(p);
+    std::cout << "addPolar" << std::endl << std::flush;
+}
+
+pair<Point, double> Geometry::GetEndPointOfSquareBoundary()
+{
+    auto x = (boundaryPoints[0].x + boundaryPoints.back().x) / 2;
+    auto y = boundaryPoints[0].y;
+
+    return pair<Point, double>{Point{x, y}, M_PI / 2.};
 }
 
 void Geometry::SetEps(double eps){
