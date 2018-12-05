@@ -46,3 +46,4 @@ install/*
 **/.vs
 **/Debug
 **/x64
+Doxyfile
