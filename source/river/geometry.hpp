@@ -19,7 +19,6 @@ namespace River
 
 class Branch
 {
-  //TODO: Implement this class
 public:
   unsigned long int id;
   string name = "branch";
@@ -32,7 +31,7 @@ public:
   //modify branch
   void addPoint(Point p);
   void addDPoint(Point p);
-  void addPolar(Polar p);
+  void addPolar(Polar p, bool bRelativeAngle = false);
   void removeHeadPoint();
   void shrink(double dl);
   double width();
@@ -41,6 +40,7 @@ public:
   //geom entities
   Point getHead();
   double getHeadAngle();
+  double getTailAngle();
   Point getTail();
 
   //statistics
@@ -56,7 +56,8 @@ public:
 private:
   pair<Point, Point> splitPoint(Point p, double phi);
   Point mergePoints(Point p1, Point p2);
-  double eps = 1e-1;
+  double eps = 3e-2;
+  double tailAngle;
 };
 
 
@@ -107,6 +108,9 @@ public:
       Point BottomBoxCorner,
       Point TopBoxCorner,
       double dx);
+
+  void AddBiffurcation(unsigned int id, double dl);
+
   vector<unsigned int> GetTipIds();
   Branch& GetBranch(unsigned int id);
   vector<Polar> GetTipPolars();
@@ -114,8 +118,8 @@ public:
   void SetEps(double epsVal);
 
 private:
-  double eps = 1e-1;
-  double bifAngle = M_PI/5;
+  double eps = 3e-2;
+  double bifAngle = M_PI/5.;
 
   unsigned int rootBranchId = 0;//0 means no root/first Branch
 
@@ -130,7 +134,13 @@ private:
   double len = 0.1; // biffurcation initial length 
   
   pair<Point, double> GetEndPointOfSquareBoundary();
-  void InserBranchTree(unsigned int id);
+  void InserBranchTree(unsigned int id, double phi, bool isRoot = false);
+  //at generation time of whole circular boundary
+  //it gives us a points of crossection of boundaries
+  Point mergedLeft(double phi);
+  Point mergedRight(double phi);
+  Point mergedCenter(double phi);
+  unsigned int generateID(unsigned int prevID, bool isRight = false);
 };
 
 } // namespace River

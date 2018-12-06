@@ -7,7 +7,7 @@ namespace River{
 
 */
 
-Branch::Branch(unsigned long int id, Point sourcePoint, double phi):id(id)
+Branch::Branch(unsigned long int id, Point sourcePoint, double phi):id(id), tailAngle(phi)
 {
     sourcePoint.index = id;
     auto points = splitPoint(sourcePoint, phi);
@@ -17,13 +17,10 @@ Branch::Branch(unsigned long int id, Point sourcePoint, double phi):id(id)
 
 pair<Point, Point> Branch::splitPoint(Point p, double phi)
 {
-    Point pLeft{p}, pRight{p}, 
-    vecL{-sin(phi),  cos(phi)}, 
-    vecR{+sin(phi), -cos(phi)};
+    Point pLeft{p}, pRight{p};
 
-    pLeft.index = pRight.index = p.index;
-    pLeft  += vecL * eps/2;
-    pRight += vecR * eps/2;
+    pLeft  += Point{0, 1}.rotate(phi) * eps/2;
+    pRight += Point{0, -1}.rotate(phi) * eps/2;
     return {pLeft, pRight};
 }
 
@@ -36,7 +33,7 @@ void Branch::print()
 {
     for(unsigned int i = 0; i < leftPoints.size(); ++i )
     {
-        cout << "Branch" << endl;
+        cout << "Branch ID : " << leftPoints[0].index << endl;
         cout << "size: " << leftPoints.size() << endl;
         cout << i << ") left: " << leftPoints[i] << endl;
         cout << "   right: " << rightPoints[i] << endl;
@@ -60,9 +57,12 @@ void Branch::addDPoint(Point p)
     rightPoints.push_back(points.second);
 }
 
-void Branch::addPolar(Polar p)
+void Branch::addPolar(Polar p, bool bRelativeAngle)
 { 
-    auto newPoint = Point{p}; 
+    if(bRelativeAngle);
+        p.phi += getHeadAngle();
+
+    auto newPoint = Point{p};
     newPoint += getHead();
     auto points = splitPoint(newPoint, p.phi);
     leftPoints.push_back(points.first);
@@ -87,15 +87,26 @@ void Branch::setWidth(double epsVal)
 
 Point Branch::getHead()
 {
-    auto lastIndex = leftPoints.size() - 1;
+    auto lastIndex = size() - 1;
     return (leftPoints[lastIndex] + rightPoints[lastIndex]) / 2;
 }
 
 double Branch::getHeadAngle()
 {   
-    auto index = leftPoints.size() - 1;
-    auto point = leftPoints[index] - leftPoints[index - 1];
+    double angle = tailAngle;
     
+    if(auto index = size() - 1 > 0; index > 0)
+    {
+        auto point = leftPoints[index] - leftPoints[index - 1];
+        angle = point.angle();
+    }
+    
+    return angle;
+}
+
+double Branch::getTailAngle()
+{   
+    auto point = leftPoints[1] - leftPoints[0];
     return point.angle();
 }
 
@@ -179,9 +190,28 @@ void Geometry::addDPoints(vector<Point> shifts)
 void Geometry::initiateRootBranch(unsigned int id)
 {
     auto [boundaryEndPoint, phi] = GetEndPointOfSquareBoundary();
+    cout << "boundary phi - " << phi << endl;
     rootBranchId = id;
     branches.push_back(Branch(rootBranchId, boundaryEndPoint, phi));
     branchIndexes[id] = branches.size() - 1;
+}
+
+Point Geometry::mergedLeft(double phi)
+{
+    auto vec = Point{-eps/2*tan(bifAngle/2), eps/2};
+    return vec.rotate(phi);
+}
+
+Point Geometry::mergedRight(double phi)
+{
+    auto vec = Point{-eps/2*tan(bifAngle/2), - eps/2};
+    return vec.rotate(phi);
+}
+
+Point Geometry::mergedCenter(double phi)
+{
+    auto vec = Point{eps/2/sin(bifAngle), 0};
+    return vec.rotate(phi);
 }
 
 void Geometry::generateCircularBoundary()
@@ -193,16 +223,18 @@ void Geometry::generateCircularBoundary()
     points.insert(points.end(), boundaryPoints.begin(), boundaryPoints.end());
 
     if(branchIndexes.count(curId))
-        InserBranchTree(curId);
+        InserBranchTree(curId, M_PI/2., true);
 
 }
 /*
     Recursive inserting of branches
 */
-void Geometry::InserBranchTree(unsigned int id)
+void Geometry::InserBranchTree(unsigned int id, double phi, bool isRoot)
 {
+    cout << "insert brnach tree" << endl;
     auto curBranch = branches[branchIndexes[id]];
-    curBranch.print();
+    phi = curBranch.getHeadAngle();
+    cout << phi << endl;
     if(curBranch.size() > 1){
 
         points.insert(end(points), 
@@ -214,19 +246,29 @@ void Geometry::InserBranchTree(unsigned int id)
         {
             auto leftId = branchRelation[id].first;
             auto rightId = branchRelation[id].second;
-            InserBranchTree(leftId);
-            points.push_back(curBranch.getHead());
-            InserBranchTree(rightId);
+
+            auto leftMergPoint = curBranch.getHead() + mergedLeft(phi);
+            cout << leftMergPoint << endl;
+            points.push_back(curBranch.getHead() + mergedLeft(phi));
+
+            InserBranchTree(leftId, curBranch.getHeadAngle());
+            points.push_back(curBranch.getHead() + mergedCenter(phi));
+            InserBranchTree(rightId, curBranch.getHeadAngle());
+
+            points.push_back(curBranch.getHead() + mergedRight(phi));
         }
         else
             //inserting narrow tip
             points.push_back(curBranch.getHead());
+        
+        
 
         //inserting right branch side in reverse order
         points.insert(
             points.end(), 
             curBranch.rightPoints.rbegin() + 1, 
             curBranch.rightPoints.rend() - 1);
+        
     }
 }
 
@@ -238,7 +280,7 @@ void Geometry::addPolar(Polar p, bool bRelativeAngle)
         throw std::invalid_argument("Such branch does not exist");
 
     auto & curBranch = branches[branchIndexes[p.index]];
-    curBranch.addPolar(p);
+    curBranch.addPolar(p, bRelativeAngle/*relative angle*/);
 }
 
 pair<Point, double> Geometry::GetEndPointOfSquareBoundary()
@@ -256,5 +298,44 @@ Branch& Geometry::GetBranch(unsigned int id)
 {
     return branches[branchIndexes[id]];
 }
+
+
+unsigned int Geometry::generateID(unsigned int prevID, bool isRight)
+{
+    return prevID << 1 + (int)isRight;//TODO: test it.. WRONG!
+}
+
+void Geometry::AddBiffurcation(unsigned int id, double dl)
+{
+    if (branchRelation.count(id))
+        throw std::invalid_argument("branch already has ancestors!");
+    if(!branchIndexes.count(id))
+        throw std::invalid_argument("Such branch does not exist");
+    
+    auto leftId = generateID(id),
+        rightId = generateID(id, true);
+
+    //Some values from origin brnach
+    auto originBranch = GetBranch(id);
+    auto headPoint = originBranch.getHead();
+    auto phi = originBranch.getHeadAngle();
+
+    branchRelation[id] = {leftId, rightId};
+
+    //setting left branch
+    auto leftBranch = Branch(leftId, headPoint, phi + bifAngle);
+    leftBranch.addPolar({dl, 0}, true/*relative coords*/);
+    branches.push_back(leftBranch);
+    branchIndexes[leftId] = branches.size() - 1;
+
+    //setting right branch
+    auto rightBranch = Branch(rightId, headPoint, phi - bifAngle);
+    rightBranch.addPolar({dl, 0}, true/*relative coord*/);
+    branches.push_back(rightBranch);
+    branchIndexes[rightId] = branches.size() - 1;
+}
+
+
+
 
 }
