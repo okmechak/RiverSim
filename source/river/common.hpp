@@ -59,6 +59,7 @@ class Point
 
     double norm() const;
     Point getNormalized();
+    Point& rotate(double phi);
     Polar getPolar() const;
     void normalize();
     double angle() const;

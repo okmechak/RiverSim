@@ -17,6 +17,16 @@ namespace River
       index = p.index;
     };
 
+    Point& Point::rotate(double phi)
+    {
+        auto tempx = x,
+            tempy = y;
+        x = tempx*cos(phi) - tempy*sin(phi);
+        y = tempx*sin(phi) + tempy*cos(phi);
+        
+        return *this;
+    }
+
     double Point::norm() const
     {
       return sqrt(x*x + y*y);
@@ -57,7 +67,7 @@ namespace River
     }
     void Point::print() const
     {
-      cout << this << endl;
+      cout << *this << endl;
     }
 
     bool Point::operator==(const Point& p) const
