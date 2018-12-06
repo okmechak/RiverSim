@@ -231,7 +231,7 @@ void Simulation::output_results(const unsigned int cycle) const
 
 void Simulation::run()
 {
-    for (unsigned int cycle = 0; cycle < 3; ++cycle)
+    for (unsigned int cycle = 0; cycle < numOfRefinments; ++cycle)
     {
         std::cout << "Cycle " << cycle << ':' << std::endl;
         if (cycle > 0)

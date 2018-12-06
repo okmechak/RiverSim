@@ -66,6 +66,8 @@ class Simulation
     Vector<double> solution;
     Vector<double> system_rhs;
 
+    unsigned int numOfRefinments = 1;
+
     void setup_system();
     void assemble_system();
     void solve();
