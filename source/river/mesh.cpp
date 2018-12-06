@@ -656,7 +656,7 @@ void Gmsh::generate(vector<Point> points)
 {
     for(auto &p: points)
         geo::addPoint(
-            p.x, p.y, 0, 0.1);//FIXME: very precise parameter
+            p.x, p.y, 0, 0.01);//FIXME: very precise parameter
 
     for(unsigned int i = 1; i < points.size(); ++i)
         geo::addLine(i, i + 1);

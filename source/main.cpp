@@ -19,37 +19,20 @@ int main(int argc, char *argv[])
     /*
         Geometry Object
     */
-
-    auto dl = 0.01; //FIXME: 0.001 is to small
-    auto riverGeom = Geometry();
-    riverGeom.SetSquareBoundary({0., 0.}, {1., 1.}, 0.5);
-    
-    auto rootBranchID = 1;
-    riverGeom.initiateRootBranch(rootBranchID);
-    auto rootBranch = riverGeom.GetBranch(rootBranchID);
-    
-    for (int i = 0; i < 30; ++i){
-        riverGeom.addPolar(Polar{dl, 0, rootBranchID}, true/*relative angle*/);
-    }
-
-    riverGeom.AddBiffurcation(rootBranchID, 0.03);
-    riverGeom.addPolar(Polar{dl, 0, 2}, true);
-    riverGeom.addPolar(Polar{dl, 0, 2}, true);
-    riverGeom.addPolar(Polar{dl, 0, 4}, true);
-    riverGeom.addPolar(Polar{dl, 0, 4}, true);
+    auto geom = CustomRiverTree(0.02, 0.00001);
     
 
-    riverGeom.generateCircularBoundary();
+    geom.generateCircularBoundary();
 
     River::Gmsh Gmsh;
-    Gmsh.generate(riverGeom.points);
+    Gmsh.generate(geom.points);
     Gmsh.Write();
 
     //Solve
     River::Simulation sim;
     sim.OpenMesh();
     sim.run();
-
     Gmsh.StartUserInterface();
+
     return 0;
 }

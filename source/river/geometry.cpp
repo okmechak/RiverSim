@@ -7,7 +7,10 @@ namespace River{
 
 */
 
-Branch::Branch(unsigned long int id, Point sourcePoint, double phi):id(id), tailAngle(phi)
+Branch::Branch(unsigned long int id, Point sourcePoint, double phi, double epsVal):
+id(id), 
+tailAngle(phi),
+eps(epsVal)
 {
     sourcePoint.index = id;
     auto points = splitPoint(sourcePoint, phi);
@@ -95,7 +98,7 @@ double Branch::getHeadAngle()
 {   
     double angle = tailAngle;
     
-    if(auto index = size() - 1 > 0; index > 0)
+    if(auto index = size() - 1; index > 0)
     {
         auto point = leftPoints[index] - leftPoints[index - 1];
         angle = point.angle();
@@ -187,13 +190,17 @@ void Geometry::addDPoints(vector<Point> shifts)
     
 }
 
-void Geometry::initiateRootBranch(unsigned int id)
+Branch& Geometry::initiateRootBranch(unsigned int id)
 {
     auto [boundaryEndPoint, phi] = GetEndPointOfSquareBoundary();
-    cout << "boundary phi - " << phi << endl;
+    
     rootBranchId = id;
-    branches.push_back(Branch(rootBranchId, boundaryEndPoint, phi));
+    auto rootBranch = Branch(rootBranchId, boundaryEndPoint, phi, eps);
+
+    branches.push_back(rootBranch);
     branchIndexes[id] = branches.size() - 1;
+
+    return rootBranch;
 }
 
 Point Geometry::mergedLeft(double phi)
@@ -217,8 +224,7 @@ Point Geometry::mergedCenter(double phi)
 void Geometry::generateCircularBoundary()
 {
     unsigned int curId = rootBranchId;
-    for(auto &el : boundaryPoints)
-        cout << el << endl;
+
     //inserting boundary conditions
     points.insert(points.end(), boundaryPoints.begin(), boundaryPoints.end());
 
@@ -231,10 +237,8 @@ void Geometry::generateCircularBoundary()
 */
 void Geometry::InserBranchTree(unsigned int id, double phi, bool isRoot)
 {
-    cout << "insert brnach tree" << endl;
     auto curBranch = branches[branchIndexes[id]];
     phi = curBranch.getHeadAngle();
-    cout << phi << endl;
     if(curBranch.size() > 1){
 
         points.insert(end(points), 
@@ -248,7 +252,6 @@ void Geometry::InserBranchTree(unsigned int id, double phi, bool isRoot)
             auto rightId = branchRelation[id].second;
 
             auto leftMergPoint = curBranch.getHead() + mergedLeft(phi);
-            cout << leftMergPoint << endl;
             points.push_back(curBranch.getHead() + mergedLeft(phi));
 
             InserBranchTree(leftId, curBranch.getHeadAngle());
@@ -302,10 +305,10 @@ Branch& Geometry::GetBranch(unsigned int id)
 
 unsigned int Geometry::generateID(unsigned int prevID, bool isRight)
 {
-    return prevID << 1 + (int)isRight;//TODO: test it.. WRONG!
+    return (prevID << 1) + (int)isRight;
 }
 
-void Geometry::AddBiffurcation(unsigned int id, double dl)
+pair<unsigned int, unsigned int> Geometry::AddBiffurcation(unsigned int id, double dl)
 {
     if (branchRelation.count(id))
         throw std::invalid_argument("branch already has ancestors!");
@@ -323,16 +326,18 @@ void Geometry::AddBiffurcation(unsigned int id, double dl)
     branchRelation[id] = {leftId, rightId};
 
     //setting left branch
-    auto leftBranch = Branch(leftId, headPoint, phi + bifAngle);
+    auto leftBranch = Branch(leftId, headPoint, phi + bifAngle, eps);
     leftBranch.addPolar({dl, 0}, true/*relative coords*/);
     branches.push_back(leftBranch);
     branchIndexes[leftId] = branches.size() - 1;
 
     //setting right branch
-    auto rightBranch = Branch(rightId, headPoint, phi - bifAngle);
+    auto rightBranch = Branch(rightId, headPoint, phi - bifAngle, eps);
     rightBranch.addPolar({dl, 0}, true/*relative coord*/);
     branches.push_back(rightBranch);
     branchIndexes[rightId] = branches.size() - 1;
+
+    return {leftId, rightId};
 }
 
 

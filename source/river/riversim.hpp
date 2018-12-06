@@ -7,6 +7,7 @@
 
 namespace River
 {
+    Geometry CustomRiverTree(double dl = 0.01, double eps = 1e-5);
     /* 
         TODO: 
         Implementation of some standard workflows 

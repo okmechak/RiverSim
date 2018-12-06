@@ -25,7 +25,7 @@ public:
   vector<Point> leftPoints;
   vector<Point> rightPoints;
 
-  Branch(unsigned long int id, Point sourcePoint, double phi);
+  Branch(unsigned long int id, Point sourcePoint, double phi,double epsVal = 1e-10);
   ~Branch() = default;
 
   //modify branch
@@ -100,7 +100,7 @@ public:
   Geometry() = default;
   ~Geometry() = default;
 
-  void initiateRootBranch(unsigned int id = 1);
+  Branch& initiateRootBranch(unsigned int id = 1);
   void addPoints(vector<Point> points);
   void addDPoints(vector<Point> dpoints);
   void addPolar(Polar p, bool bRelativeAngle = false);
@@ -109,7 +109,9 @@ public:
       Point TopBoxCorner,
       double dx);
 
-  void AddBiffurcation(unsigned int id, double dl);
+  //TODO implement constraint on eps and dl values!!!
+  //important
+  pair<unsigned int, unsigned int> AddBiffurcation(unsigned int id, double dl);
 
   vector<unsigned int> GetTipIds();
   Branch& GetBranch(unsigned int id);
