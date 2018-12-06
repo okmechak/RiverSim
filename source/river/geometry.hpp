@@ -27,19 +27,20 @@ public:
   vector<Point> rightPoints;
 
   Branch(unsigned long int id, Point sourcePoint, double phi);
-  ~Branch();
+  ~Branch() = default;
 
   //modify branch
   void addPoint(Point p);
+  void addDPoint(Point p);
   void addPolar(Polar p);
   void removeHeadPoint();
   void shrink(double dl);
   double width();
-  void setWidth(double eps);
+  void setWidth(double epsVal);
 
   //geom entities
   Point getHead();
-  Point getDirection();
+  double getHeadAngle();
   Point getTail();
 
   //statistics
@@ -49,9 +50,13 @@ public:
   double averageSpeed();
   //lot of others to be implemented
 
+  //debug
+  void print();
+
 private:
   pair<Point, Point> splitPoint(Point p, double phi);
-  double eps = 1e-8;
+  Point mergePoints(Point p1, Point p2);
+  double eps = 1e-1;
 };
 
 
@@ -85,14 +90,14 @@ public:
   vector<Line> lines;
 
   //branches functionality
-  map<int, 
-    pair<unsigned int, unsigned int>> branchRelation;
-  map<int, Branch> branches;
+  map<unsigned int, pair<unsigned int, unsigned int>> branchRelation;
+  map<unsigned int, unsigned int> branchIndexes;
+  vector<Branch> branches;
 
   //Segments or Edges or Elements
 
-  Geometry();
-  ~Geometry();
+  Geometry() = default;
+  ~Geometry() = default;
 
   void initiateRootBranch(unsigned int id = 1);
   void addPoints(vector<Point> points);
@@ -106,10 +111,11 @@ public:
   Branch& GetBranch(unsigned int id);
   vector<Polar> GetTipPolars();
   void generateCircularBoundary();
-  void SetEps(double eps);
+  void SetEps(double epsVal);
 
 private:
-  double eps = 1e-8;
+  double eps = 1e-1;
+  double bifAngle = M_PI/5;
 
   unsigned int rootBranchId = 0;//0 means no root/first Branch
 

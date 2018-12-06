@@ -13,6 +13,7 @@ set(SOURCE_FILES
     riversim.cpp
     riversim.hpp
     common.hpp
+    common.cpp
     geometry.hpp
     geometry.cpp
     mesh.hpp

@@ -2,7 +2,6 @@
 
 
 namespace River{
-
 /*
     Branch object
 
@@ -16,39 +15,58 @@ Branch::Branch(unsigned long int id, Point sourcePoint, double phi):id(id)
     rightPoints.push_back(points.second);
 }
 
-Branch::~Branch(){}
-
 pair<Point, Point> Branch::splitPoint(Point p, double phi)
 {
-    Point pLeft, pRight;
-    pLeft.index = pRight.index = p.index;
-    pLeft = {p.x + sin(phi) * eps/2 , p.y + cos(phi) * eps/2, p.index};
-    pRight = {p.x + sin(phi) * eps/2 , p.y - cos(phi) * eps/2, p.index};
+    Point pLeft{p}, pRight{p}, 
+    vecL{-sin(phi),  cos(phi)}, 
+    vecR{+sin(phi), -cos(phi)};
 
-    return pair<Point, Point>{pLeft, pRight};
+    pLeft.index = pRight.index = p.index;
+    pLeft  += vecL * eps/2;
+    pRight += vecR * eps/2;
+    return {pLeft, pRight};
+}
+
+Point Branch::mergePoints(Point p1, Point p2)
+{
+    return (p1 + p2)/2;
+}
+
+void Branch::print()
+{
+    for(unsigned int i = 0; i < leftPoints.size(); ++i )
+    {
+        cout << "Branch" << endl;
+        cout << "size: " << leftPoints.size() << endl;
+        cout << i << ") left: " << leftPoints[i] << endl;
+        cout << "   right: " << rightPoints[i] << endl;
+    }
 }
 
 void Branch::addPoint(Point p)
 {
-    //FIXME: wrong functionality!
-    // shift should be perpendicular to branch
-    //use getDirection!
-    //and what if we add first point! we should use some 
-    //predefined direction information
-    //leftPoints.push_back(coords[0] - eps/2);
-    //leftPoints.push_back(coords[1] - eps/2);
-    //rightPoints.push_back(coords[0] + eps/2);
-    //rightPoints.push_back(coords[1] + eps/2);
+    auto tempP = p - getHead();
+    auto phi = tempP.angle();
+    auto points = splitPoint(p, phi);
+    leftPoints.push_back(points.first);
+    rightPoints.push_back(points.second);
+}
+
+void Branch::addDPoint(Point p)
+{
+    auto phi = p.angle();
+    auto points = splitPoint(p, phi);
+    leftPoints.push_back(points.first);
+    rightPoints.push_back(points.second);
 }
 
 void Branch::addPolar(Polar p)
 { 
-    auto tipVector = getDirection();
     auto newPoint = Point{p}; 
-    newPoint.x += tipVector.x;
-    newPoint.y += tipVector.y; 
-
-    addPoint(newPoint);
+    newPoint += getHead();
+    auto points = splitPoint(newPoint, p.phi);
+    leftPoints.push_back(points.first);
+    rightPoints.push_back(points.second);
 }
 
 void Branch::removeHeadPoint()
@@ -62,35 +80,28 @@ double Branch::width()
     return eps;
 }
 
-void Branch::setWidth(double eps)
+void Branch::setWidth(double epsVal)
 {
-    eps/*of object*/ = eps/*passed argument*/;
+    eps/*of object*/ = epsVal/*passed argument*/;
 }
 
 Point Branch::getHead()
 {
     auto lastIndex = leftPoints.size() - 1;
-    return Point{
-        (leftPoints[lastIndex].x + rightPoints[lastIndex].x) / 2,
-        (leftPoints[lastIndex].y + rightPoints[lastIndex].y) / 2, 
-        leftPoints[lastIndex].index};
+    return (leftPoints[lastIndex] + rightPoints[lastIndex]) / 2;
 }
 
-Point Branch::getDirection()
-{
+double Branch::getHeadAngle()
+{   
     auto index = leftPoints.size() - 1;
-    auto dx = leftPoints[index].x - leftPoints[index - 1].x;
-    auto dy = leftPoints[index].y - leftPoints[index - 1].y;
-    auto dn = sqrt(dx*dx + dy*dy);
-    return Point{dx/dn, dy/dn, 0};
+    auto point = leftPoints[index] - leftPoints[index - 1];
+    
+    return point.angle();
 }
 
 Point Branch::getTail()
 {
-    return Point{
-        (leftPoints[0].x + rightPoints[0].x) / 2,
-        (leftPoints[0].y + rightPoints[0].y) / 2, 
-         leftPoints[0].index};
+    return mergePoints(leftPoints[0], rightPoints[0]);
 }
 
 bool Branch::empty()
@@ -104,11 +115,9 @@ double Branch::length()
     //TODO: Test it
     for(unsigned int i = 1; i < leftPoints.size(); ++i)
     {
-        auto dx = leftPoints[i].x - leftPoints[i - 1].x;
-        auto dy = leftPoints[i].y - leftPoints[i - 1].y;
-        len += sqrt(dx*dx + dy*dy); 
+        auto p = leftPoints[i] - leftPoints[i - 1];
+        len += p.norm(); 
     }
-
     return len;
 }
 
@@ -133,9 +142,6 @@ double Branch::averageSpeed()
     Geometry object
 
 */
-
-
-Geometry::Geometry(){}
 
 void Geometry::SetSquareBoundary(
     Point BottomBoxCorner, 
@@ -174,17 +180,19 @@ void Geometry::initiateRootBranch(unsigned int id)
 {
     auto [boundaryEndPoint, phi] = GetEndPointOfSquareBoundary();
     rootBranchId = id;
-    branches.insert(make_pair(rootBranchId,  Branch(rootBranchId, boundaryEndPoint, phi));
+    branches.push_back(Branch(rootBranchId, boundaryEndPoint, phi));
+    branchIndexes[id] = branches.size() - 1;
 }
 
 void Geometry::generateCircularBoundary()
 {
     unsigned int curId = rootBranchId;
-
+    for(auto &el : boundaryPoints)
+        cout << el << endl;
     //inserting boundary conditions
     points.insert(points.end(), boundaryPoints.begin(), boundaryPoints.end());
 
-    if(branches.count(curId))
+    if(branchIndexes.count(curId))
         InserBranchTree(curId);
 
 }
@@ -193,9 +201,15 @@ void Geometry::generateCircularBoundary()
 */
 void Geometry::InserBranchTree(unsigned int id)
 {
-    auto curBranch = branches[id];
+    auto curBranch = branches[branchIndexes[id]];
+    curBranch.print();
     if(curBranch.size() > 1){
-        points.insert(points.end(), curBranch.leftPoints.begin() + 1, boundaryPoints.end() - 1);
+
+        points.insert(end(points), 
+            begin(curBranch.leftPoints) + 1, 
+            end(curBranch.leftPoints) - 1
+            );
+
         if(branchRelation.count(id))
         {
             auto leftId = branchRelation[id].first;
@@ -209,33 +223,38 @@ void Geometry::InserBranchTree(unsigned int id)
             points.push_back(curBranch.getHead());
 
         //inserting right branch side in reverse order
-        points.insert(points.end(), curBranch.rightPoints.rbegin() + 1, boundaryPoints.rend() - 1);
+        points.insert(
+            points.end(), 
+            curBranch.rightPoints.rbegin() + 1, 
+            curBranch.rightPoints.rend() - 1);
     }
 }
 
 void Geometry::addPolar(Polar p, bool bRelativeAngle)
 {
-    if (branchRelation.count(p.index));//TODO: add assertion
-    std::cout << "addPolar" << std::endl << std::flush;
-    auto & curBranch = branches[p.index];
-    std::cout << "addPolar" << std::endl << std::flush;
+    if (branchRelation.count(p.index))
+        throw std::invalid_argument("branch already has ancestors!");
+    if (!branchIndexes.count(p.index))
+        throw std::invalid_argument("Such branch does not exist");
+
+    auto & curBranch = branches[branchIndexes[p.index]];
     curBranch.addPolar(p);
-    std::cout << "addPolar" << std::endl << std::flush;
 }
 
 pair<Point, double> Geometry::GetEndPointOfSquareBoundary()
 {
     auto x = (boundaryPoints[0].x + boundaryPoints.back().x) / 2;
     auto y = boundaryPoints[0].y;
-
-    return pair<Point, double>{Point{x, y}, M_PI / 2.};
+    return {Point{x, y}, M_PI / 2.};
 }
 
-void Geometry::SetEps(double eps){
-    eps/*object parameter*/ = eps/*argument*/;
+void Geometry::SetEps(double epsVal){
+    eps/*object parameter*/ = epsVal/*argument*/;
 }
 
-
-Geometry::~Geometry(){}
+Branch& Geometry::GetBranch(unsigned int id)
+{
+    return branches[branchIndexes[id]];
+}
 
 }

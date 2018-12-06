@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <math.h>
+#include <iostream>
 
 using namespace std;
 
@@ -36,6 +37,11 @@ struct Polar
   double dl;
   double phi;
   unsigned int index = 0;
+  void print()
+  {
+    cout << "Polar point: " << dl << " " << phi 
+      << " " << index << endl;
+  }
 };
 
 /*
@@ -44,61 +50,33 @@ struct Polar
 class Point
 {
   public:
-    double x, y;
+    double x = 0, y = 0;
     unsigned int index = 0;
     Point() = default;
-    Point(double x, double y, unsigned int index = 0)
-    {
-      x=x;
-      y=y;
-      index=index;
-    };
+    ~Point() = default;
+    Point(double xval, double yval, unsigned int indexval = 0);
+    Point(Polar p);
 
-    Point(Polar p)
-    {
-      x = p.dl * cos(p.phi);
-      y = p.dl * sin(p.phi);
-      index = p.index;
-    };
+    double norm() const;
+    Point getNormalized();
+    Polar getPolar() const;
+    void normalize();
+    double angle() const;
+    double angle(Point p) const;
+    void print() const;
 
-    double norm()
-    {
-      return sqrt(x*x + y*y);
-    }
-
-    Point getNormalized()
-    {
-      return Point{x/norm(), y/norm(), index};
-    }
-
-    Polar getPolar()
-    {
-      return Polar{norm(), angle(), index};
-    }
-
-    void normalize()
-    {
-      auto l = norm();
-      x /= l;
-      y /= l;
-    }
-
-    double angle()
-    {
-      double phi = acos(x/norm());
-      if(y < 0)
-        phi = -phi;
-      return phi;
-    }
-
-    double angle(Point p)
-    {
-      //order of points is important
-      double phi = acos((x*p.x + y*p.y)/norm()/p.norm());
-      double sign = x*p.y - p.x*y > 0 ? 1 : -1;//FIXME: is this sign correct?
-      phi *= sign;
-      return phi;
-    }
+    Point& operator=(const Point& p) = default;
+    Point operator+(const Point& p) const;
+    Point& operator+=(const Point& p);
+    Point operator-(const Point& p) const;
+    Point& operator-=(const Point& p);
+    double operator*(const Point& p) const;
+    Point operator*(const double gain) const;
+    Point& operator*=(const double gain);
+    Point operator/(const double gain) const;
+    Point& operator/=(const double gain);
+    bool operator==(const Point& p) const;
+    friend ostream& operator <<(ostream& write, const Point & p);
 };
 
 
