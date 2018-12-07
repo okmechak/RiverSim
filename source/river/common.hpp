@@ -90,23 +90,50 @@ struct Line
 class vecTriangulateIO
 {
 public:
-  vector<double> points = {};
-  vector<int> pointTags = {};
-  int numOfAttrPerPoint = 0;
-  vector<double> pointAttributes = {};
-  vector<int> pointMarkers = {};
-  vector<int> segments = {};
-  vector<int> segmentMarkers = {};
-  vector<int> triangles = {};
-  int numOfAttrPerTriangle = 0;
-  vector<double> triangleAttributes = {};
-  vector<double> triangleAreas = {};
-  vector<int> neighbors = {};
+  vecTriangulateIO() = default;
+  ~vecTriangulateIO() = default;
+  //Nodes
+  struct{
+    vector<double> coords = {};
+    vector<int> tags = {};
+    int numOfAttr = 0;
+    vector<double> attributes = {};
+    vector<int> markers = {};
+  } node;
+
+  //Elements
+  struct {
+    //1-line, 2-triangle, 3-quad, 15-point
+    struct{
+      vector<int> nodeTags = {};
+      vector<int> markers = {};
+    } line;
+
+    struct{
+      vector<int> nodeTags = {};
+      int numOfAttr = 0;
+      vector<double> attributes = {};
+      vector<int> markers = {};
+      vector<double> areas = {};
+      vector<int> neighbors = {};
+    } triangle;
+    
+    struct{
+      vector<int> nodeTags = {};
+      int numOfAttr = 0;
+      vector<double> attributes = {};
+      vector<int> markers = {};
+
+    } quad;
+
+  } element;
+
   //array of coordiantes
   vector<double> holes = {};
   //array of array of coordinates
   int numOfRegions = 1;
   vector<double> regions = {};
+  
   //out only
   vector<int> edges = {};
   vector<int> edgeMarkers = {};

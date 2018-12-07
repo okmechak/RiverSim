@@ -59,27 +59,27 @@ void Simulation::SetMesh(struct vecTriangulateIO &mesh)
 {
 
     //VERTICES
-    auto n_points = mesh.points.size() / 3; //FIXME: replace hardcoded 3 by more general thing
+    auto n_points = mesh.node.coords.size() / 3; //FIXME: replace hardcoded 3 by more general thing
     vector<dealii::Point<dim>> vertices(n_points);
     for (unsigned int i = 0; i < n_points; ++i)
-        vertices[i] = dealii::Point<dim>(mesh.points[3 * i], mesh.points[3 * i + 1]);
+        vertices[i] = dealii::Point<dim>(mesh.node.coords[3 * i], mesh.node.coords[3 * i + 1]);
 
     //generat boundary id structure
     unordered_map<std::pair<int, int>, int> bound_id;
-    for (unsigned int i = 0; i < mesh.segments.size() / 2; ++i)
+    for (unsigned int i = 0; i < mesh.element.line.nodeTags.size() / 2; ++i)
         bound_id.insert(make_pair(
-            make_pair(mesh.segments[2 * i], mesh.segments[2 * i + 1]), mesh.segmentMarkers[i]));
+            make_pair(mesh.element.line.nodeTags[2 * i], mesh.element.line.nodeTags[2 * i + 1]), mesh.element.line.markers[i]));
 
     //SETTING QUADRANGLES
-    auto n_cells = mesh.triangles.size() / 4; //FIXME: remove hardcode
+    auto n_cells = mesh.element.quad.nodeTags.size() / 4; //FIXME: remove hardcode
     vector<CellData<dim>> cells(n_cells, CellData<dim>());
     auto subCell = SubCellData();
     for (unsigned int i = 0; i < n_cells; ++i)
     {
-        auto v1 = cells[i].vertices[0] = mesh.triangles[4 * i + 0] - 1;
-        auto v2 = cells[i].vertices[1] = mesh.triangles[4 * i + 1] - 1;
-        auto v4 = cells[i].vertices[2] = mesh.triangles[4 * i + 3] - 1;
-        auto v3 = cells[i].vertices[3] = mesh.triangles[4 * i + 2] - 1;
+        auto v1 = cells[i].vertices[0] = mesh.element.quad.nodeTags[4 * i + 0] - 1;
+        auto v2 = cells[i].vertices[1] = mesh.element.quad.nodeTags[4 * i + 1] - 1;
+        auto v4 = cells[i].vertices[2] = mesh.element.quad.nodeTags[4 * i + 3] - 1;
+        auto v3 = cells[i].vertices[3] = mesh.element.quad.nodeTags[4 * i + 2] - 1;
         TryInsertCellBoundary(cells[i], subCell, bound_id, v1, v2);
         TryInsertCellBoundary(cells[i], subCell, bound_id, v2, v3);
         TryInsertCellBoundary(cells[i], subCell, bound_id, v3, v4);

@@ -22,18 +22,18 @@ struct vecTriangulateIO MeshGenerator::toVectorStr(struct triangulateio &geom, b
   //so we have such possibility
   //reserve memory for vector containers
   
-  geoOut.points.reserve(dim * geom.numberofpoints);
-  geoOut.pointAttributes.reserve(geom.numberofpoints * geom.numberofpointattributes);
-  geoOut.pointMarkers.reserve(geom.numberofpoints);
-  geoOut.numOfAttrPerPoint = geom.numberofpointattributes;
+  geoOut.node.tags.reserve(dim * geom.numberofpoints);
+  geoOut.node.attributes.reserve(geom.numberofpoints * geom.numberofpointattributes);
+  geoOut.node.markers.reserve(geom.numberofpoints);
+  geoOut.node.numOfAttr = geom.numberofpointattributes;
 
-  geoOut.segments.reserve(2 * geom.numberofsegments);
-  geoOut.segmentMarkers.reserve(geom.numberofsegments);
+  geoOut.element.line.nodeTags.reserve(2 * geom.numberofsegments);
+  geoOut.element.line.markers.reserve(geom.numberofsegments);
 
-  geoOut.triangles.reserve(3 * geom.numberoftriangles);
-  geoOut.triangleAreas.reserve(geom.numberoftriangles);
-  geoOut.triangleAttributes.reserve(geom.numberoftriangles * geom.numberoftriangleattributes);
-  geoOut.numOfAttrPerTriangle = geom.numberoftriangleattributes;
+  geoOut.element.triangle.nodeTags.reserve(3 * geom.numberoftriangles);
+  geoOut.element.triangle.areas.reserve(geom.numberoftriangles);
+  geoOut.element.triangle.attributes.reserve(geom.numberoftriangles * geom.numberoftriangleattributes);
+  geoOut.element.triangle.numOfAttr = geom.numberoftriangleattributes;
 
   geoOut.holes.reserve(dim * geom.numberofholes);
 
@@ -43,37 +43,37 @@ struct vecTriangulateIO MeshGenerator::toVectorStr(struct triangulateio &geom, b
   geoOut.edges.reserve(dim * geom.numberofedges);
   geoOut.edgeMarkers.reserve(geom.numberofedges);
 
-  geoOut.neighbors.reserve(geom.numberoftriangles * 3);
+  geoOut.element.triangle.neighbors.reserve(geom.numberoftriangles * 3);
   
   for(i = 0; i < 2 * geom.numberofpoints; ++i){
-    geoOut.points.push_back(geom.pointlist[i]);
+    geoOut.node.tags.push_back(geom.pointlist[i]);
     if(b3D && i % 2 != 0)
-        geoOut.points.push_back(z0);
+        geoOut.node.tags.push_back(z0);
     if(i < geom.numberofpoints)
-        geoOut.pointMarkers.push_back(geom.pointmarkerlist[i]);
+        geoOut.node.markers.push_back(geom.pointmarkerlist[i]);
   }
 
   
   for(i = 0; i < geom.numberofpoints * geom.numberofpointattributes; ++i)
-    geoOut.pointAttributes.push_back(geom.pointattributelist[i]);
+    geoOut.node.attributes.push_back(geom.pointattributelist[i]);
 
   
   for(i = 0; i < 2 * geom.numberofsegments; ++i){
-    geoOut.segments.push_back(geom.segmentlist[i]);
+    geoOut.element.line.nodeTags.push_back(geom.segmentlist[i]);
     if (i < geom.numberofsegments)
-        geoOut.segmentMarkers.push_back(geom.segmentmarkerlist[i]);
+        geoOut.element.line.markers.push_back(geom.segmentmarkerlist[i]);
   }
 
   
   for(i = 0; i < 3*geom.numberoftriangles; ++i){
-    geoOut.triangles.push_back(geom.trianglelist[i]);
+    geoOut.element.triangle.nodeTags.push_back(geom.trianglelist[i]);
     if(geom.trianglearealist != NULL && i < geom.numberoftriangles)
-        geoOut.triangleAreas.push_back(geom.trianglearealist[i]);
+        geoOut.element.triangle.areas.push_back(geom.trianglearealist[i]);
   }
 
   
   for(i = 0; i < geom.numberoftriangles * geom.numberoftriangleattributes; ++i)
-    geoOut.triangleAttributes.push_back(geom.triangleattributelist[i]);
+    geoOut.element.triangle.attributes.push_back(geom.triangleattributelist[i]);
 
   
   for(i = 0; i < dim * geom.numberofholes; ++i){
@@ -104,34 +104,33 @@ struct triangulateio MeshGenerator::toTriaStr(struct vecTriangulateIO &geom)
   struct triangulateio triaStr;
   set_tria_to_default(&triaStr);
 
-  if(!geom.points.empty())
+  if(!geom.node.coords.empty())
   {
-    triaStr.pointlist = &geom.points[0];                            /* In / out */
-    triaStr.pointattributelist = &geom.pointAttributes[0];          /* In / out */
-    triaStr.pointmarkerlist = &geom.pointMarkers[0];                /* In / out */
-    triaStr.numberofpoints = geom.points.size()/2;                /* In / out */
-    triaStr.numberofpointattributes = geom.numOfAttrPerPoint;       /* In / out */
+    triaStr.pointlist = &geom.node.coords[0];                            /* In / out */
+    triaStr.pointattributelist = &geom.node.attributes[0];          /* In / out */
+    triaStr.pointmarkerlist = &geom.node.markers[0];                /* In / out */
+    triaStr.numberofpoints = geom.node.coords.size()/2;                /* In / out */
+    triaStr.numberofpointattributes = geom.node.numOfAttr;       /* In / out */
   }
 
-  if(!geom.triangles.empty())
+  if(!geom.element.triangle.nodeTags.empty())
   {
-    triaStr.trianglelist = &geom.triangles[0];                      /* In / out */
-    triaStr.triangleattributelist = &geom.triangleAttributes[0];    /* In / out */
-    triaStr.trianglearealist = &geom.triangleAreas[0];              /* In only */
+    triaStr.trianglelist = &geom.element.triangle.nodeTags[0];                      /* In / out */
+    triaStr.triangleattributelist = &geom.element.triangle.attributes[0];    /* In / out */
+    triaStr.trianglearealist = &geom.element.triangle.areas[0];              /* In only */
     triaStr.neighborlist = NULL;                               /* Out only */
-    triaStr.numberoftriangles = geom.triangles.size()/3;            /* In / out */
-    cout << "num of triangles " << triaStr.numberoftriangles << endl;
+    triaStr.numberoftriangles = geom.element.triangle.nodeTags.size()/3;            /* In / out */
     //if (SecondOrderMesh)
     //  triaStr.numberoftriangles = geom.triangles.size()/6;
     triaStr.numberofcorners = 3;                               /* In / out */
-    triaStr.numberoftriangleattributes = geom.numOfAttrPerTriangle; /* In / out */
+    triaStr.numberoftriangleattributes = geom.element.triangle.numOfAttr; /* In / out */
   }
 
-  if(!geom.segments.empty())
+  if(!geom.element.line.nodeTags.empty())
   {
-    triaStr.segmentlist = &geom.segments[0];                        /* In / out */
-    triaStr.segmentmarkerlist = &geom.segmentMarkers[0];            /* In / out */
-    triaStr.numberofsegments = geom.segments.size() / 2;            /* In / out */
+    triaStr.segmentlist = &geom.element.line.nodeTags[0];                        /* In / out */
+    triaStr.segmentmarkerlist = &geom.element.line.markers[0];            /* In / out */
+    triaStr.numberofsegments = geom.element.line.nodeTags.size() / 2;            /* In / out */
   }
 
   if(!geom.holes.empty())
@@ -514,10 +513,10 @@ void Tethex::Convert(struct vecTriangulateIO &geom)
 {
     tethex::Mesh TethexMesh;
     TethexMesh.read_triangl(
-        geom.points, 
+        geom.node.coords, 
         geom.edges, 
         geom.edgeMarkers,  
-        geom.triangles);
+        geom.element.triangle.nodeTags);
 
     if(Verbose)
         TethexMesh.info(cout);
@@ -527,10 +526,10 @@ void Tethex::Convert(struct vecTriangulateIO &geom)
 
     //TODO: write normal arguments    
     TethexMesh.write_triangle(
-        geom.points,
-        geom.segments,
-        geom.segmentMarkers,
-        geom.triangles);
+        geom.node.coords,
+        geom.element.line.nodeTags,
+        geom.element.line.markers,
+        geom.element.triangle.nodeTags);
 
 }
 
@@ -669,8 +668,8 @@ void Gmsh::TestMesh(struct River::vecTriangulateIO &geom)
         const bool includeBoundary = true;
         gmsh::model::mesh::getNodes(nodeTags, coord, parametricCoord, dim, tag, includeBoundary);
 
-        geom.points = coord;
-        geom.pointTags = nodeTags;
+        geom.node.coords = coord;
+        geom.node.tags = nodeTags;
     }
     
     {
