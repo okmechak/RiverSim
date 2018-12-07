@@ -108,10 +108,12 @@ double Simulation::RightHandSide::value(const dealii::Point<dim> & /*p*/,
 }
 
 
-double Simulation::BoundaryValues::value(const dealii::Point<dim> & /*p*/,
-                                         const unsigned int /*component*/) const
+double Simulation::BoundaryValues::value(const dealii::Point<dim> & p,
+                                         const unsigned int component) const
 {
-    return 0.;
+    if (component == 0)
+      return (p[0] < 0 ? -1 : (p[0] > 0 ? 1 : 0));
+    return 0;
 }
 
 
