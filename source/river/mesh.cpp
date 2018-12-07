@@ -2,184 +2,158 @@
 
 namespace River{
 
+
 /*
-  
-    Triangle Class
-  
+    Mesh class
+    it encorporates different mesh generation tools
+    and provides one interface
+
+    
+
 */
-Triangle::Triangle()
+
+struct vecTriangulateIO MeshGenerator::toVectorStr(struct triangulateio &geom, bool b3D)
 {
-    SetAllValuesToDefault();
-    
-    if (Verbose){
-        cout << "Default Options: " << endl;
-        PrintOptions(true);
-    }
+  struct vecTriangulateIO geoOut;
+  int i, dim = 2;
+  double z0 = 0.;
+  if(b3D) dim = 3;
+  //Triangle generates two dimensional data, but almost all packages need three dimmnesion
+  //so we have such possibility
+  //reserve memory for vector containers
+  
+  geoOut.points.reserve(dim * geom.numberofpoints);
+  geoOut.pointAttributes.reserve(geom.numberofpoints * geom.numberofpointattributes);
+  geoOut.pointMarkers.reserve(geom.numberofpoints);
+  geoOut.numOfAttrPerPoint = geom.numberofpointattributes;
+
+  geoOut.segments.reserve(2 * geom.numberofsegments);
+  geoOut.segmentMarkers.reserve(geom.numberofsegments);
+
+  geoOut.triangles.reserve(3 * geom.numberoftriangles);
+  geoOut.triangleAreas.reserve(geom.numberoftriangles);
+  geoOut.triangleAttributes.reserve(geom.numberoftriangles * geom.numberoftriangleattributes);
+  geoOut.numOfAttrPerTriangle = geom.numberoftriangleattributes;
+
+  geoOut.holes.reserve(dim * geom.numberofholes);
+
+  geoOut.regions.reserve(dim * geom.numberofregions);
+  geoOut.numOfRegions = geom.numberofregions;
+
+  geoOut.edges.reserve(dim * geom.numberofedges);
+  geoOut.edgeMarkers.reserve(geom.numberofedges);
+
+  geoOut.neighbors.reserve(geom.numberoftriangles * 3);
+  
+  for(i = 0; i < 2 * geom.numberofpoints; ++i){
+    geoOut.points.push_back(geom.pointlist[i]);
+    if(b3D && i % 2 != 0)
+        geoOut.points.push_back(z0);
+    if(i < geom.numberofpoints)
+        geoOut.pointMarkers.push_back(geom.pointmarkerlist[i]);
+  }
+
+  
+  for(i = 0; i < geom.numberofpoints * geom.numberofpointattributes; ++i)
+    geoOut.pointAttributes.push_back(geom.pointattributelist[i]);
+
+  
+  for(i = 0; i < 2 * geom.numberofsegments; ++i){
+    geoOut.segments.push_back(geom.segmentlist[i]);
+    if (i < geom.numberofsegments)
+        geoOut.segmentMarkers.push_back(geom.segmentmarkerlist[i]);
+  }
+
+  
+  for(i = 0; i < 3*geom.numberoftriangles; ++i){
+    geoOut.triangles.push_back(geom.trianglelist[i]);
+    if(geom.trianglearealist != NULL && i < geom.numberoftriangles)
+        geoOut.triangleAreas.push_back(geom.trianglearealist[i]);
+  }
+
+  
+  for(i = 0; i < geom.numberoftriangles * geom.numberoftriangleattributes; ++i)
+    geoOut.triangleAttributes.push_back(geom.triangleattributelist[i]);
+
+  
+  for(i = 0; i < dim * geom.numberofholes; ++i){
+    geoOut.holes.push_back(geom.holelist[i]);
+    if(b3D && i % 2 != 0)
+        geoOut.holes.push_back(z0);
+  }
+
+  
+  for(i = 0; i < dim * geom.numberofregions; ++i){
+    geoOut.regions.push_back(geom.regionlist[i]);
+    if(b3D && i % 2 != 0)
+        geoOut.regions.push_back(z0);
+  }
+
+  
+  for(i = 0; i < 2 * geom.numberofedges; ++i){
+    geoOut.edges.push_back(geom.edgelist[i]);
+    if (i < geom.numberofedges)
+        geoOut.edgeMarkers.push_back(geom.edgemarkerlist[i]);
+  }
+  return geoOut;
 }
 
 
-Triangle::~Triangle()
+struct triangulateio MeshGenerator::toTriaStr(struct vecTriangulateIO &geom)
 {
-    FreeAllocatedMemory();
+  struct triangulateio triaStr;
+  set_tria_to_default(&triaStr);
+
+  if(!geom.points.empty())
+  {
+    triaStr.pointlist = &geom.points[0];                            /* In / out */
+    triaStr.pointattributelist = &geom.pointAttributes[0];          /* In / out */
+    triaStr.pointmarkerlist = &geom.pointMarkers[0];                /* In / out */
+    triaStr.numberofpoints = geom.points.size()/2;                /* In / out */
+    triaStr.numberofpointattributes = geom.numOfAttrPerPoint;       /* In / out */
+  }
+
+  if(!geom.triangles.empty())
+  {
+    triaStr.trianglelist = &geom.triangles[0];                      /* In / out */
+    triaStr.triangleattributelist = &geom.triangleAttributes[0];    /* In / out */
+    triaStr.trianglearealist = &geom.triangleAreas[0];              /* In only */
+    triaStr.neighborlist = NULL;                               /* Out only */
+    triaStr.numberoftriangles = geom.triangles.size()/3;            /* In / out */
+    cout << "num of triangles " << triaStr.numberoftriangles << endl;
+    //if (SecondOrderMesh)
+    //  triaStr.numberoftriangles = geom.triangles.size()/6;
+    triaStr.numberofcorners = 3;                               /* In / out */
+    triaStr.numberoftriangleattributes = geom.numOfAttrPerTriangle; /* In / out */
+  }
+
+  if(!geom.segments.empty())
+  {
+    triaStr.segmentlist = &geom.segments[0];                        /* In / out */
+    triaStr.segmentmarkerlist = &geom.segmentMarkers[0];            /* In / out */
+    triaStr.numberofsegments = geom.segments.size() / 2;            /* In / out */
+  }
+
+  if(!geom.holes.empty())
+  {
+    triaStr.holelist = &geom.holes[0];               /* In / pointer to array copied out */
+    triaStr.numberofholes = geom.holes.size() / 2; /* In / copied out */
+  }
+
+  if(!geom.regions.empty())
+  {
+    triaStr.regionlist = &geom.regions[0];           /* In / pointer to array copied out */
+    triaStr.numberofregions = geom.numOfRegions;     /* In / copied out */
+  }
+
+  return triaStr;
 }
 
-
-void Triangle::SetAllValuesToDefault()
-{
-    updateOptions();
-    set_tria_to_default(&in);
-    set_tria_to_default(&out);
-    set_tria_to_default(&vorout);
-}
-
-
-void Triangle::FreeAllocatedMemory()
-{
-    triangulateiofree(&out);
-    triangulateiofree(&vorout);
-}
-
-
-string Triangle::updateOptions()
-{
-    options = "";
-
-    if (ConstrainAngle)
-        options += "q";
-    if (ConstrainAngle && MaxAngle > 0 && MaxAngle < 35)
-        options += to_string(MaxAngle);
-    else if (ConstrainAngle && MaxAngle >= 35)
-        throw invalid_argument("Triangle quality angle should be less then 35");
-    if (StartNumberingFromZero)
-        options += "z";
-    if (Refine)
-        options += "r";
-    if (AreaConstrain)
-        options += "a";
-    if (AreaConstrain && MaxTriaArea > 0)
-        options +=  to_string(MaxTriaArea);
-    if (DelaunayTriangles)
-        options += "D";
-    if (EncloseConvexHull)
-        options += "c";
-    if (CheckFinalMesh)
-        options += "C";
-    if (AssignRegionalAttributes)
-        options += "A";
-    if (VoronoiDiagram)
-        options += "v";
-    if (Quite)
-        options += "Q";
-    else if (Verbose)
-        options += "V";
-    if (Algorithm == FORUNE)
-        options += "F";
-    else if (Algorithm == ITERATOR)
-        options += "i";
-    if (ReadPSLG)
-        options += "p";
-    if (SuppressBoundaryMarkers)
-        options += "B";
-    if (SuppressPolyFile)
-        options += "P";
-    if (SuppressNodeFile)
-        options += "N";
-    if (SuppressEleFile)
-        options += "E";
-    if (OutputEdges)
-        options += "e";
-    if (ComputeNeighbours)
-        options += "n";
-    if (SuppressMehsFileNumbering)
-        options += "I";
-    if (SuppressExactArithmetics)
-        options += "X";
-    if (SuppressHoles)
-        options += "O";
-    if (SecondOrderMesh)
-        options += "o2";
-    if (SteinerPointsOnBoundary)
-        options += "Y";
-    if (SteinerPointsOnSegments)
-        options += "YY";
-    if (MaxNumOfSteinerPoints > 0)
-        options += "S" + to_string(MaxNumOfSteinerPoints);
-
-    return options;
-}
-
-
-void Triangle::PrintOptions(bool qDetailedDescription)
-{
-    updateOptions();
-
-    cout << "Triangle options command : " << options << endl;
-    
-    if(!qDetailedDescription) return;
-
-    cout << "Detailed description: " << endl << endl; 
-
-    if (ReadPSLG)
-        cout << "(p) read PSLG" << endl;
-    if (StartNumberingFromZero)
-        cout << "(z) numbering starts from zero" << endl;
-    if (Refine)
-        cout << "(r) refine" << endl;
-    if (ConstrainAngle)
-        cout << "(q) quality min 20 degree" << endl;
-    if (MaxAngle > 0)
-        cout << "                    value:" << MaxAngle << endl;
-    if(AreaConstrain)
-        cout << "(a) area constrain: " << endl;
-    if (MaxTriaArea > 0)
-        cout << "                  area constrain: " << MaxTriaArea << endl;
-    if (DelaunayTriangles)
-        cout << "(D) all traingles will be Delaunay" << endl;
-    if (EncloseConvexHull)
-        cout << "(c) enclose convex hull" << endl;
-    if (CheckFinalMesh)
-        cout << "(C) check final mesh" << endl;
-    if (AssignRegionalAttributes)
-        cout << "(A) assign additional attribute to each triangle which specifies segment which it belongs too" << endl;
-    if (OutputEdges)
-        cout << "(e) output list of edges" << endl;
-    if (VoronoiDiagram)
-        cout << "(v) outputs voronoi diagram" << endl;
-    if (ComputeNeighbours)
-        cout << "(n) outputs neighboors" << endl;
-    if (SuppressBoundaryMarkers)
-        cout << "(B) suppress boundary markers" << endl;
-    if (SuppressPolyFile)
-        cout << "(P) suppress output poly file(either don't work)" << endl;
-    if (SuppressNodeFile)
-        cout << "(N) suppress output nodes file(either don't work)" << endl;
-    if (SuppressEleFile)
-        cout << "(E) suppress output elements file(either don't work)" << endl;
-    if (SuppressHoles)
-        cout << "(O) suppress holes" << endl;
-    if (SecondOrderMesh)
-        cout << "(o2) second order mesh" << endl;
-    if (SteinerPointsOnBoundary || SteinerPointsOnSegments)
-        cout << "(Y) prohibits stainer points on boundary" << endl;
-    if (MaxNumOfSteinerPoints > 0)
-        cout << "(S) specify max number off added Steiner points" << endl;
-    if (Algorithm == ITERATOR)
-        cout << "(i) use incremental algorithm" << endl;
-    if (Algorithm == FORUNE)
-        cout << "(F) use Fortune algorithm" << endl;
-    if (Quite)
-        cout << "(Q) quite" << endl;
-    if (Verbose)
-        cout << "(V) verbose" << endl;
-}
-
-
-void Triangle::PrintGeometry(
-    struct triangulateio &io)
+void MeshGenerator::PrintGeometry(struct triangulateio &io)
 {
     int i, j, shift = 1;
-    if(StartNumberingFromZero)
-        shift = 0;
+    //if(StartNumberingFromZero)
+    //    shift = 0;
 
     if (io.numberofpoints > 0 && io.pointlist != NULL)
     {
@@ -297,7 +271,181 @@ void Triangle::PrintGeometry(
     cout << endl;
 }
 
-void Triangle::SetGeometry(struct triangulateio geom)
+
+/*
+  
+    Triangle Class
+  
+*/
+Triangle::Triangle()
+{
+    SetAllValuesToDefault();
+    
+    if (Verbose){
+        cout << "Default Options: " << endl;
+        PrintOptions(true);
+    }
+}
+
+
+Triangle::~Triangle()
+{
+    FreeAllocatedMemory();
+}
+
+
+void Triangle::SetAllValuesToDefault()
+{
+    updateOptions();
+    set_tria_to_default(&in);
+    set_tria_to_default(&out);
+    set_tria_to_default(&vorout);
+}
+
+
+void Triangle::FreeAllocatedMemory()
+{
+    triangulateiofree(&out);
+    triangulateiofree(&vorout);
+}
+
+
+string Triangle::updateOptions()
+{
+    options = "";
+
+    if (ConstrainAngle)
+        options += "q";
+    if (ConstrainAngle && MaxAngle > 0 && MaxAngle < 35)
+        options += to_string(MaxAngle);
+    else if (ConstrainAngle && MaxAngle >= 35)
+        throw invalid_argument("Triangle quality angle should be less then 35");
+    //if (StartNumberingFromZero)
+    //    options += "z";
+    if (Refine)
+        options += "r";
+    if (AreaConstrain)
+        options += "a";
+    if (AreaConstrain && MaxTriaArea > 0)
+        options +=  to_string(MaxTriaArea);
+    if (DelaunayTriangles)
+        options += "D";
+    if (EncloseConvexHull)
+        options += "c";
+    if (CheckFinalMesh)
+        options += "C";
+    if (AssignRegionalAttributes)
+        options += "A";
+    if (VoronoiDiagram)
+        options += "v";
+    if (Quite)
+        options += "Q";
+    else if (Verbose)
+        options += "V";
+    if (Algorithm == FORTUNE)
+        options += "F";
+    else if (Algorithm == ITERATOR)
+        options += "i";
+    if (ReadPSLG)
+        options += "p";
+    if (SuppressBoundaryMarkers)
+        options += "B";
+    if (SuppressPolyFile)
+        options += "P";
+    if (SuppressNodeFile)
+        options += "N";
+    if (SuppressEleFile)
+        options += "E";
+    if (OutputEdges)
+        options += "e";
+    if (ComputeNeighbours)
+        options += "n";
+    if (SuppressMehsFileNumbering)
+        options += "I";
+    if (SuppressExactArithmetics)
+        options += "X";
+    if (SuppressHoles)
+        options += "O";
+    //if (SecondOrderMesh)
+    //    options += "o2";
+    if (SteinerPointsOnBoundary)
+        options += "Y";
+    if (SteinerPointsOnSegments)
+        options += "YY";
+    if (MaxNumOfSteinerPoints > 0)
+        options += "S" + to_string(MaxNumOfSteinerPoints);
+
+    return options;
+}
+
+
+void Triangle::PrintOptions(bool qDetailedDescription)
+{
+    updateOptions();
+
+    cout << "Triangle options command : " << options << endl;
+    
+    if(!qDetailedDescription) return;
+
+    cout << "Detailed description: " << endl << endl; 
+
+    if (ReadPSLG)
+        cout << "(p) read PSLG" << endl;
+    //if (StartNumberingFromZero)
+    //    cout << "(z) numbering starts from zero" << endl;
+    if (Refine)
+        cout << "(r) refine" << endl;
+    if (ConstrainAngle)
+        cout << "(q) quality min 20 degree" << endl;
+    if (MaxAngle > 0)
+        cout << "                    value:" << MaxAngle << endl;
+    if(AreaConstrain)
+        cout << "(a) area constrain: " << endl;
+    if (MaxTriaArea > 0)
+        cout << "                  area constrain: " << MaxTriaArea << endl;
+    if (DelaunayTriangles)
+        cout << "(D) all traingles will be Delaunay" << endl;
+    if (EncloseConvexHull)
+        cout << "(c) enclose convex hull" << endl;
+    if (CheckFinalMesh)
+        cout << "(C) check final mesh" << endl;
+    if (AssignRegionalAttributes)
+        cout << "(A) assign additional attribute to each triangle which specifies segment which it belongs too" << endl;
+    if (OutputEdges)
+        cout << "(e) output list of edges" << endl;
+    if (VoronoiDiagram)
+        cout << "(v) outputs voronoi diagram" << endl;
+    if (ComputeNeighbours)
+        cout << "(n) outputs neighboors" << endl;
+    if (SuppressBoundaryMarkers)
+        cout << "(B) suppress boundary markers" << endl;
+    if (SuppressPolyFile)
+        cout << "(P) suppress output poly file(either don't work)" << endl;
+    if (SuppressNodeFile)
+        cout << "(N) suppress output nodes file(either don't work)" << endl;
+    if (SuppressEleFile)
+        cout << "(E) suppress output elements file(either don't work)" << endl;
+    if (SuppressHoles)
+        cout << "(O) suppress holes" << endl;
+    //if (SecondOrderMesh)
+    //    cout << "(o2) second order mesh" << endl;
+    if (SteinerPointsOnBoundary || SteinerPointsOnSegments)
+        cout << "(Y) prohibits stainer points on boundary" << endl;
+    if (MaxNumOfSteinerPoints > 0)
+        cout << "(S) specify max number off added Steiner points" << endl;
+    if (Algorithm == ITERATOR)
+        cout << "(i) use incremental algorithm" << endl;
+    if (Algorithm == FORTUNE)
+        cout << "(F) use Fortune algorithm" << endl;
+    if (Quite)
+        cout << "(Q) quite" << endl;
+    if (Verbose)
+        cout << "(V) verbose" << endl;
+}
+
+
+
+void Triangle::SetGeometry(struct triangulateio &geom)//TODO check passing by references
 {
     in = geom;
 }
@@ -308,141 +456,7 @@ struct triangulateio* Triangle::GetGeometry()
     return &out;
 }
 
-struct triangulateio Triangle::toTriaStructure(struct vecTriangulateIO& geom)
-{
-  struct triangulateio triaStr;
-  set_tria_to_default(&triaStr);
 
-  if(!geom.points.empty())
-  {
-    triaStr.pointlist = &geom.points[0];                            /* In / out */
-    triaStr.pointattributelist = &geom.pointAttributes[0];          /* In / out */
-    triaStr.pointmarkerlist = &geom.pointMarkers[0];                /* In / out */
-    triaStr.numberofpoints = geom.points.size()/2;                /* In / out */
-    triaStr.numberofpointattributes = geom.numOfAttrPerPoint;       /* In / out */
-  }
-
-  if(!geom.triangles.empty())
-  {
-    triaStr.trianglelist = &geom.triangles[0];                      /* In / out */
-    triaStr.triangleattributelist = &geom.triangleAttributes[0];    /* In / out */
-    triaStr.trianglearealist = &geom.triangleAreas[0];              /* In only */
-    triaStr.neighborlist = NULL;                               /* Out only */
-    triaStr.numberoftriangles = geom.triangles.size()/3;            /* In / out */
-    cout << "num of triangles " << triaStr.numberoftriangles << endl;
-    if (SecondOrderMesh)
-      triaStr.numberoftriangles = geom.triangles.size()/6;
-    triaStr.numberofcorners = 3;                               /* In / out */
-    triaStr.numberoftriangleattributes = geom.numOfAttrPerTriangle; /* In / out */
-  }
-
-  if(!geom.segments.empty())
-  {
-    triaStr.segmentlist = &geom.segments[0];                        /* In / out */
-    triaStr.segmentmarkerlist = &geom.segmentMarkers[0];            /* In / out */
-    triaStr.numberofsegments = geom.segments.size() / 2;            /* In / out */
-  }
-
-  if(!geom.holes.empty())
-  {
-    triaStr.holelist = &geom.holes[0];               /* In / pointer to array copied out */
-    triaStr.numberofholes = geom.holes.size() / 2; /* In / copied out */
-  }
-
-  if(!geom.regions.empty())
-  {
-    triaStr.regionlist = &geom.regions[0];           /* In / pointer to array copied out */
-    triaStr.numberofregions = geom.numOfRegions;     /* In / copied out */
-  }
-
-  return triaStr;
-}
-
-struct vecTriangulateIO Triangle::toVectorStructure(struct triangulateio* triaStr, bool b3D)
-{
-  struct vecTriangulateIO vecOut;
-  int i;
-  double z0 = 0.;
-  if(b3D) dim = 3;
-  //Triangle generates two dimensional data, but almost all packages need three dimmnesion
-  //so we have such possibility
-  //reserve memory for vector containers
-  
-  vecOut.points.reserve(dim * triaStr->numberofpoints);
-  vecOut.pointAttributes.reserve(triaStr->numberofpoints * triaStr->numberofpointattributes);
-  vecOut.pointMarkers.reserve(triaStr->numberofpoints);
-  vecOut.numOfAttrPerPoint = triaStr->numberofpointattributes;
-
-  vecOut.segments.reserve(2 * triaStr->numberofsegments);
-  vecOut.segmentMarkers.reserve(triaStr->numberofsegments);
-
-  vecOut.triangles.reserve(3 * triaStr->numberoftriangles);
-  vecOut.triangleAreas.reserve(triaStr->numberoftriangles);
-  vecOut.triangleAttributes.reserve(triaStr->numberoftriangles * triaStr->numberoftriangleattributes);
-  vecOut.numOfAttrPerTriangle = triaStr->numberoftriangleattributes;
-
-  vecOut.holes.reserve(dim * triaStr->numberofholes);
-
-  vecOut.regions.reserve(dim * triaStr->numberofregions);
-  vecOut.numOfRegions = triaStr->numberofregions;
-
-  vecOut.edges.reserve(dim * triaStr->numberofedges);
-  vecOut.edgeMarkers.reserve(triaStr->numberofedges);
-
-  vecOut.neighbors.reserve(triaStr->numberoftriangles * 3);
-  
-  for(i = 0; i < 2 * triaStr->numberofpoints; ++i){
-    vecOut.points.push_back(triaStr->pointlist[i]);
-    if(b3D && i % 2 != 0)
-        vecOut.points.push_back(z0);
-    if(i < triaStr->numberofpoints)
-        vecOut.pointMarkers.push_back(triaStr->pointmarkerlist[i]);
-  }
-
-  
-  for(i = 0; i < triaStr->numberofpoints * triaStr->numberofpointattributes; ++i)
-    vecOut.pointAttributes.push_back(triaStr->pointattributelist[i]);
-
-  
-  for(i = 0; i < 2 * triaStr->numberofsegments; ++i){
-    vecOut.segments.push_back(triaStr->segmentlist[i]);
-    if (i < triaStr->numberofsegments)
-        vecOut.segmentMarkers.push_back(triaStr->segmentmarkerlist[i]);
-  }
-
-  
-  for(i = 0; i < 3*triaStr->numberoftriangles; ++i){
-    vecOut.triangles.push_back(triaStr->trianglelist[i]);
-    if(triaStr->trianglearealist != NULL && i < triaStr->numberoftriangles)
-        vecOut.triangleAreas.push_back(triaStr->trianglearealist[i]);
-  }
-
-  
-  for(i = 0; i < triaStr->numberoftriangles * triaStr->numberoftriangleattributes; ++i)
-    vecOut.triangleAttributes.push_back(triaStr->triangleattributelist[i]);
-
-  
-  for(i = 0; i < dim * triaStr->numberofholes; ++i){
-    vecOut.holes.push_back(triaStr->holelist[i]);
-    if(b3D && i % 2 != 0)
-        vecOut.holes.push_back(z0);
-  }
-
-  
-  for(i = 0; i < dim * triaStr->numberofregions; ++i){
-    vecOut.regions.push_back(triaStr->regionlist[i]);
-    if(b3D && i % 2 != 0)
-        vecOut.regions.push_back(z0);
-  }
-
-  
-  for(i = 0; i < 2 * triaStr->numberofedges; ++i){
-    vecOut.edges.push_back(triaStr->edgelist[i]);
-    if (i < triaStr->numberofedges)
-        vecOut.edgeMarkers.push_back(triaStr->edgemarkerlist[i]);
-  }
-  return vecOut;
-}
 
 
 struct triangulateio* Triangle::GetVoronoi()
@@ -455,7 +469,7 @@ struct vecTriangulateIO Triangle::Generate(struct vecTriangulateIO &geom)
 {
     SetAllValuesToDefault();
     
-    in = toTriaStructure(geom);
+    in = toTriaStr(geom);
 
     if (Verbose){
         cout << "Input Geometry: " << endl;
@@ -475,7 +489,7 @@ struct vecTriangulateIO Triangle::Generate(struct vecTriangulateIO &geom)
         PrintGeometry(vorout);
     }
     
-    struct vecTriangulateIO OutputMesh = toVectorStructure(&out);
+    struct vecTriangulateIO OutputMesh = toVectorStr(out);
 
     FreeAllocatedMemory();
 
@@ -553,60 +567,6 @@ void Gmsh::Open()
     gmsh::open(fileName);
 }
 
-void Gmsh::refine()//just code samles
-{
-    //First
-    geo::addPoint(0, 0, 0, 0.1, 1);
-    geo::addPoint(0.5, 0, 0, 0.1, 2);
-    geo::addPoint(1, 0, 0, 0.1, 3);
-    geo::addPoint(1, 1, 0, 0.1, 4);
-    geo::addPoint(0, 1, 0, 0.1, 5);
-    geo::addPoint(0.5, 0.2, 0, 0.1, 6);
-
-    geo::addLine(1, 2, 1);
-    geo::addLine(2, 3, 2);
-    geo::addLine(3, 4, 3);
-    geo::addLine(4, 5, 4);
-    geo::addLine(5, 1, 5);
-    geo::addLine(2, 6, 6);
-    geo::addLine(6, 2, 7);
-
-    geo::addCurveLoop({1, 2, 3, 4, 5, 6, 7}, 1);
-    geo::addPlaneSurface({1}, 6);
-    geo::synchronize();
-    mdl::mesh::generate(2);
-
-    //second
-    mdl::addDiscreteEntity(1, 1);
-
-    cout << "set nodes" << endl;
-    msh::setNodes(1, 1,
-                  {1, 2, 3, 4, 5, 6, 7},
-                  {
-                      0., 0., 0.,   //node 1
-                      0.5, 0., 0.,  //node 2
-                      1., 0., 0.,   //node 3
-                      1., 1., 0.,   //node 4
-                      0., 1., 0.,   //node 5
-                      0.5, 0.2, 0., //node 6
-                      0.5, 0.6, 0.  //node 7
-                  });
-
-    cout << "set elements" << endl;
-    msh::setElements(1, 1,
-                     {1},                                           //line element
-                     {{1, 2, 3, 4, 5, 6, 7}},                       //line tags
-                     {{1, 2, 2, 6, 6, 2, 2, 3, 3, 4, 4, 5, 5, 1}}); //lines
-
-    geo::addPoint(0.5, 0.6, 0., 0.01, 99);
-    geo::addCurveLoop({1}, 100);
-    geo::addPlaneSurface({100}, 101);
-    geo::synchronize();
-
-    mdl::mesh::generate(2);
-
-}
-
 void Gmsh::Write()
 {
     gmsh::write(fileName);
@@ -671,7 +631,7 @@ void Gmsh::generate(vector<Point> points)
     //mdl::mesh::generate(2);
     //mdl::mesh::setRecombine(2, 1);
     mdl::mesh::generate(2);
-
+    
 }
 
 

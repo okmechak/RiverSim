@@ -22,10 +22,29 @@ namespace geo = gmsh::model::geo;
 
 namespace River
 {
+  class MeshGenerator{
+    public:
+      struct {
+        //TODO some common options
+
+
+      } Options;
+      MeshGenerator() = default;
+      void PrintGeometry(struct triangulateio &io);
+      void PrintGeometry(struct vecTriangulateIO &geom);
+
+      struct vecTriangulateIO QuadConvertor(struct vecTriangulateIO &geom);
+      
+      struct vecTriangulateIO toVectorStr(struct triangulateio &geom, bool b3D = true);
+      struct triangulateio toTriaStr(struct vecTriangulateIO &geom);
+    private:
+
+
+  };
+
   
  class Tethex
  {
-   private:
    public:
       bool Verbose = false;
       Tethex();
@@ -35,7 +54,7 @@ namespace River
 
 
 
-  class Triangle
+  class Triangle: private MeshGenerator
   {
     private:
       int dim = 2;
@@ -43,7 +62,7 @@ namespace River
 
       struct triangulateio in, out, vorout;
       //z - numbering starts from zero
-      bool StartNumberingFromZero = false;
+      //bool StartNumberingFromZero = false; - commented out
       //p - reads PSLG..
       //    1) will generate Constrained Delaunay.
       //    2) if are used -s(theoretical interest),
@@ -77,8 +96,10 @@ namespace River
       bool SteinerPointsOnSegments = false;
       //S - specify max num of added steiner points
       int MaxNumOfSteinerPoints = -1;
-
-
+      //v - outputs voronoi diagram
+      bool VoronoiDiagram = false;
+      //o2 - generates second order mesh
+      //bool SecondOrderMesh = false; - not implemented
       
 
       void SetAllValuesToDefault();
@@ -87,27 +108,24 @@ namespace River
       string updateOptions();
 
       void PrintOptions(bool qDetailedDescription = true);
-      void PrintGeometry(struct triangulateio &io);
       
-      void SetGeometry(struct triangulateio);
+      void SetGeometry(struct triangulateio &geom);
       void SetGeometry(struct vecTriangulateIO &geom);
       struct triangulateio* GetGeometry();
-      struct vecTriangulateIO toVectorStructure(struct triangulateio*, bool b3D = true);
-      struct triangulateio toTriaStructure(struct vecTriangulateIO&);
       struct triangulateio* GetVoronoi();
 
     public:
       enum algorithm
       {
           CONQUER,
-          FORUNE,
+          FORTUNE,
           ITERATOR
       };
       //not used options -u(user defined constraint), -I, -J(garbage triangles), h - help
 
       /*
-                  Triangle specific option list
-              */
+           Triangle specific option list
+      */
 
       //r - refine previously generated mesh, with preserving of segments
       bool Refine = false;
@@ -126,10 +144,6 @@ namespace River
       //A - asign additional regional attribute to each triangle, and specifies it to
       //    each closed segment region it belongs. (has effect with -p and without -r)
       bool AssignRegionalAttributes = true;
-      //v - outputs voronoi diagram
-      bool VoronoiDiagram = false;
-      //o2 - generates second order mesh
-      bool SecondOrderMesh = false;
       //i - use incremental algorithm instead of divide and conqure
       //F - fortune algorithm instead of delauna
       algorithm Algorithm = CONQUER;
@@ -166,26 +180,12 @@ namespace River
       void Write();
       void Clear();
       //MESH
-      void generate();
-      void partition();
       void refine();
-      void setOrder();
-      void getNodes();
       void setNodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
       void setElements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
       void generate(vector<Point> points);
       void getElements();//<- implement first
-      void getJacobians();
       void TestMesh(struct vecTriangulateIO &geom);
-      //... and lot of other
-      //FIELD
-      //GEO
-      //GEOMESH
-      //OCC
-      //VIEW <-propably I will need this
-      //PLUGIN
-      //GRAPHICS
-      //FLTK <- important one
       void StartUserInterface();
 
     private:
