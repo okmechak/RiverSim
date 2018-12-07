@@ -110,6 +110,7 @@ public:
   //out only
   vector<int> edges = {};
   vector<int> edgeMarkers = {};
+  friend ostream& operator <<(ostream& write, const vecTriangulateIO & io);
 };
 
 } // namespace River
