@@ -23,11 +23,9 @@ BOOST_AUTO_TEST_CASE( constructors, *utf::tolerance(1e-6))
   Point obj1();
   Point obj2{};
   Point obj3{1, 1};
-  Point obj4{1, 1, 2};
   
-  BOOST_CHECK(obj4.x == 1);
-  BOOST_CHECK(obj4.y == 1);
-  BOOST_CHECK(obj4.index == 2);
+  BOOST_CHECK(obj3.x == 1);
+  BOOST_CHECK(obj3.y == 1);
   
 }
 
@@ -35,8 +33,8 @@ BOOST_AUTO_TEST_CASE( constructors, *utf::tolerance(1e-6))
 BOOST_AUTO_TEST_CASE( methods, *utf::tolerance(1e-4))
 {
     utf::unit_test_log_t::instance().set_threshold_level(utf::log_level::log_test_units);
-    Point p1{1, 1, 2};
-    Point p2{1, 1, 2};
+    Point p1{1, 1};
+    Point p2{1, 1};
 
     BOOST_CHECK(p1.norm() == sqrt(2));
     BOOST_CHECK(p1.angle() == M_PI/4);

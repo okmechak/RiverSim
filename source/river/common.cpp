@@ -3,18 +3,16 @@
 namespace River
 {
 
-    Point::Point(double xval, double yval, unsigned int indexval)
+    Point::Point(double xval, double yval)
     {
       x = xval;
       y = yval;
-      index = indexval;
     };
 
     Point::Point(Polar p)
     {
       x = p.dl * cos(p.phi);
       y = p.dl * sin(p.phi);
-      index = p.index;
     };
 
     Point& Point::rotate(double phi)
@@ -34,12 +32,12 @@ namespace River
 
     Point Point::getNormalized()
     {
-      return Point{x/norm(), y/norm(), index};
+      return Point{x/norm(), y/norm()};
     }
 
     Polar Point::getPolar() const
     {
-      return Polar{norm(), angle(), index};
+      return Polar{norm(), angle()};
     }
 
     void Point::normalize()
@@ -78,7 +76,7 @@ namespace River
 
     Point Point::operator+(const Point& p) const
     { 
-        return Point{x + p.x, y + p.y, index};
+        return Point{x + p.x, y + p.y};
     }
 
     Point& Point::operator+=(const Point& p) 
@@ -90,7 +88,7 @@ namespace River
 
     Point Point::operator-(const Point& p) const
     { 
-        return Point{x - p.x, y - p.y, index};
+        return Point{x - p.x, y - p.y};
     }
 
     Point& Point::operator-=(const Point& p) 
@@ -107,7 +105,7 @@ namespace River
 
     Point Point::operator*(const double gain) const
     { 
-        return Point{x*gain, y*gain, index};
+        return Point{x*gain, y*gain};
     }
 
     Point& Point::operator*=(const double gain)
@@ -119,7 +117,7 @@ namespace River
 
     Point Point::operator/(const double gain) const
     { 
-        return Point{x/gain, y/gain, index};
+        return Point{x/gain, y/gain};
     }
 
     Point& Point::operator/=(const double gain)
@@ -131,7 +129,7 @@ namespace River
 
     ostream& operator << (ostream& write, const Point& p)
     {
-        write << "point: " << p.x << ", " << p.y << ", " << p.index;
+        write << "point: " << p.x << ", " << p.y;
         return write;
     }
 

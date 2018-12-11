@@ -11,7 +11,7 @@
 //mesh convertor tool
 #include "tethex.hpp"
 
-#include "common.hpp"
+#include "geometry.hpp"
 
 using namespace std;
 
@@ -183,7 +183,7 @@ namespace River
       void refine();
       void setNodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
       void setElements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
-      void generate(vector<Point> points);
+      void generate(vector<GeomPoint> points);
       void getElements();//<- implement first
       void TestMesh(struct vecTriangulateIO &geom);
       void StartUserInterface();

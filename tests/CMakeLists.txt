@@ -1,4 +1,5 @@
 include_directories(${PROJECT_SOURCE_DIR}/source/river)
+include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
 
 message("========================================")
 message("GMSH setup")

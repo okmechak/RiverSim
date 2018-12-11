@@ -32,16 +32,16 @@ namespace River
     biffurcation point to another
   
   */
-struct Polar
+class Polar
 {
-  double dl;
-  double phi;
-  unsigned int index = 0;
-  void print()
-  {
-    cout << "Polar point: " << dl << " " << phi 
-      << " " << index << endl;
-  }
+  public:
+    double dl;
+    double phi;
+    
+    void print()
+    {
+      cout << "Polar point: " << dl << " " << phi << endl;
+    }
 };
 
 /*
@@ -50,11 +50,10 @@ struct Polar
 class Point
 {
   public:
-    double x = 0, y = 0;
-    unsigned int index = 0;
+    double x, y;
     Point() = default;
     ~Point() = default;
-    Point(double xval, double yval, unsigned int indexval = 0);
+    Point(double xval, double yval);
     Point(Polar p);
 
     double norm() const;
@@ -81,10 +80,9 @@ class Point
 };
 
 
-struct Line
+class Line
 {
   unsigned int p1, p2;
-  unsigned int index = 0;
 };
 
 class vecTriangulateIO

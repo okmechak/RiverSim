@@ -10,38 +10,106 @@
 #include <math.h>
 
 #include "common.hpp"
+#include "tethex.hpp"
 
 using namespace std;
 
 
+
 namespace River
 {
+
+
+class GeomTag
+{
+  public:
+    GeomTag(unsigned int idVal = 0, unsigned int rVal = 0);
+    int branchId = 0;
+    int regionTag = 0;
+};
+
+class GeomPolar : public Polar
+{
+  public:
+    GeomPolar(double r, double phiVal, 
+      int branchIdVal = 0);
+    int branchId = 0;
+};
+
+class GeomLine
+{
+  public:
+    GeomLine(unsigned int p1Val, unsigned int p2Val, 
+      int branchIdVal, int regionTagVal);
+    unsigned int p1, p2;
+    int branchId = 0, regionTag = 0;
+
+};
+
+/*
+  Point struct and feew functions to work with it
+*/
+class GeomPoint
+{
+  public:
+    double x, y;
+    int branchId = 0, regionTag = 0;
+    GeomPoint() = default;
+    ~GeomPoint() = default;
+    GeomPoint(double xval, double yval, int branchIdVal = 0, int regionTagVal = 0);
+    GeomPoint(GeomPolar p);
+    GeomPoint(Point p);
+
+    double norm() const;
+    GeomPoint getNormalized();
+    GeomPoint& rotate(double phi);
+    GeomPolar getPolar() const;
+    void normalize();
+    double angle() const;
+    double angle(GeomPoint p) const;
+    void print() const;
+
+    GeomPoint& operator=(const GeomPoint& p) = default;
+    GeomPoint operator+(const GeomPoint& p) const;
+    GeomPoint& operator+=(const GeomPoint& p);
+    GeomPoint operator-(const GeomPoint& p) const;
+    GeomPoint& operator-=(const GeomPoint& p);
+    double operator*(const GeomPoint& p) const;
+    GeomPoint operator*(const double gain) const;
+    GeomPoint& operator*=(const double gain);
+    GeomPoint operator/(const double gain) const;
+    GeomPoint& operator/=(const double gain);
+    bool operator==(const GeomPoint& p) const;
+    friend ostream& operator <<(ostream& write, const GeomPoint & p);
+};
+
+
 
 class Branch
 {
 public:
   unsigned long int id;
   string name = "branch";
-  vector<Point> leftPoints;
-  vector<Point> rightPoints;
+  vector<GeomPoint> leftPoints;
+  vector<GeomPoint> rightPoints;
 
-  Branch(unsigned long int id, Point sourcePoint, double phi,double epsVal = 1e-10);
+  Branch(unsigned long int id, GeomPoint sourcePoint, double phi, double epsVal = 1e-10);
   ~Branch() = default;
 
   //modify branch
-  void addPoint(Point p);
-  void addDPoint(Point p);
-  void addPolar(Polar p, bool bRelativeAngle = false);
+  void addPoint(GeomPoint p);
+  void addDPoint(GeomPoint p);
+  void addPolar(GeomPolar p, bool bRelativeAngle = false);
   void removeHeadPoint();
   void shrink(double dl);
   double width();
   void setWidth(double epsVal);
 
   //geom entities
-  Point getHead();
+  GeomPoint getHead();
   double getHeadAngle();
   double getTailAngle();
-  Point getTail();
+  GeomPoint getTail();
 
   //statistics
   bool empty();
@@ -54,8 +122,8 @@ public:
   void print();
 
 private:
-  pair<Point, Point> splitPoint(Point p, double phi);
-  Point mergePoints(Point p1, Point p2);
+  pair<GeomPoint, GeomPoint> splitPoint(GeomPoint p, double phi);
+  GeomPoint mergePoints(GeomPoint p1, GeomPoint p2);
   double eps = 3e-2;
   double tailAngle;
 };
@@ -87,8 +155,7 @@ public:
   };
 
   //Nodes and lines - main interface of this class
-  vector<Point> points;
-  vector<Line> lines;
+  vector<GeomPoint> points;
 
   //branches functionality
   map<unsigned int, pair<unsigned int, unsigned int>> branchRelation;
@@ -101,12 +168,12 @@ public:
   ~Geometry() = default;
 
   Branch& initiateRootBranch(unsigned int id = 1);
-  void addPoints(vector<Point> points);
-  void addDPoints(vector<Point> dpoints);
-  void addPolar(Polar p, bool bRelativeAngle = false);
+  void addPoints(vector<GeomPoint> points);
+  void addDPoints(vector<GeomPoint> dpoints);
+  void addPolar(GeomPolar p, bool bRelativeAngle = false);
   void SetSquareBoundary(
-      Point BottomBoxCorner,
-      Point TopBoxCorner,
+      GeomPoint BottomBoxCorner,
+      GeomPoint TopBoxCorner,
       double dx);
 
   //TODO implement constraint on eps and dl values!!!
@@ -115,8 +182,9 @@ public:
 
   vector<unsigned int> GetTipIds();
   Branch& GetBranch(unsigned int id);
-  vector<Polar> GetTipPolars();
+  vector<GeomPolar> GetTipPolars();
   void generateCircularBoundary();
+  tethex::Mesh GetInitialMesh();
   void SetEps(double epsVal);
 
 private:
@@ -127,21 +195,23 @@ private:
 
   //Boundary
   //Box parameters
-  vector<Point> boundaryPoints;
-  vector<Line> boundaryLines;
+  vector<GeomPoint> boundaryPoints;
+  vector<GeomLine> boundaryLines;
   double dx = 0.5;
+
+  int branchTag = 35;
 
   //river geometry parameters
   double alpha = M_PI/3.; // biffurcation angle
   double len = 0.1; // biffurcation initial length 
   
-  pair<Point, double> GetEndPointOfSquareBoundary();
+  pair<GeomPoint, double> GetEndPointOfSquareBoundary();
   void InserBranchTree(unsigned int id, double phi, bool isRoot = false);
   //at generation time of whole circular boundary
   //it gives us a points of crossection of boundaries
-  Point mergedLeft(double phi);
-  Point mergedRight(double phi);
-  Point mergedCenter(double phi);
+  GeomPoint mergedLeft(double phi);
+  GeomPoint mergedRight(double phi);
+  GeomPoint mergedCenter(double phi);
   unsigned int generateID(unsigned int prevID, bool isRight = false);
 };
 

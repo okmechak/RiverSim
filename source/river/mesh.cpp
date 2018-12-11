@@ -611,7 +611,7 @@ void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
     );
 }
 
-void Gmsh::generate(vector<Point> points)
+void Gmsh::generate(vector<GeomPoint> points)
 {
     for(auto &p: points)
         geo::addPoint(

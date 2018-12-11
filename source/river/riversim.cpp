@@ -6,7 +6,7 @@ namespace River
     {
 
         for (int i = 0; i < size; ++i)
-            riverGeom.addPolar(Polar{dl, angle, id}, true/*relative angle*/);
+            riverGeom.addPolar(GeomPolar{dl, angle, id}, true/*relative angle*/);
 
         if(size < 21)
             return;
