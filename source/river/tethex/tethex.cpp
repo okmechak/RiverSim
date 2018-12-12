@@ -618,11 +618,112 @@ Mesh::Mesh()
   , physical_names()
 { }
 
+Mesh::Mesh(
+  std::vector<MeshElement *> verticesVal, 
+  std::vector<MeshElement *> pointsVal, 
+  std::vector<MeshElement *> linesVal,
+  std::vector<MeshElement *> edgesVal,
+  std::vector<MeshElement *> facesVal,
+  std::vector<MeshElement *> trianglesVal,
+  std::vector<MeshElement *> tetrahedrasVal,
+  std::vector<MeshElement *> quaddranglesVal,
+  std::vector<MeshElement *> hexahedraVal
+)
+: vertices()
+  , points(verticesVal)
+  , lines(linesVal)
+  , edges(edgesVal)
+  , faces(facesVal)
+  , triangles(trianglesVal)
+  , tetrahedra(tetrahedrasVal)
+  , quadrangles(quaddranglesVal)
+  , hexahedra(hexahedraVal)
+  , n_converted_quadrangles(0)
+  , n_converted_hexahedra(0)
+  , physical_names()//TODO implement this if necessery
+{}
+
 
 Mesh::~Mesh()
 {
   clean();
 }
+
+
+
+
+void Mesh::set_vertexes(std::vector<Point> vertexesVal)
+{
+  vertices = vertexesVal;
+}
+                /**
+                 * Set the physical points
+                 * @param points - the vector of points
+                 */
+  void Mesh::set_points(std::vector<MeshElement *> pointsVal)
+  {
+    points = pointsVal;
+  }
+
+                /**
+                 * Set the mesh edges
+                 * @param edges - the vector of edges
+                 */
+  void Mesh::set_edges(std::vector<MeshElement *> edges)
+  {
+
+  }
+
+                /**
+                 * Set the physical lines
+                 * @param lines - the vector of lines
+                 */
+  void Mesh::set_lines(std::vector<MeshElement *> linesVal)
+  { 
+    lines = linesVal;
+  }
+
+                /**
+                 * Set the mesh triangles
+                 * @param triangles - the vector of triangles
+                 */
+  void Mesh::set_triangles(std::vector<MeshElement *> trianglesVal)
+  {
+    triangles = trianglesVal;
+  }
+              /**
+                 * Set the mesh triangles
+                 * @param triangles - the vector of triangles
+                 */
+  void Mesh::set_faces(std::vector<MeshElement *> facesVal)
+  {
+    faces = facesVal;
+  }
+                /**
+                 * Set the mesh tetrahedrons
+                 * @param tetrahedrons - the vector of tetrahedrons
+                 */
+  void Mesh::Mesh::set_tetrahedrons(std::vector<MeshElement *> tetrahedrons)
+  {
+
+  }
+                /**
+                 * Set the mesh quadrangles
+                 * @param quadrangles - the vector of quadrangles
+                 */
+  void Mesh::set_quadrangles(std::vector<MeshElement *> quadranglesVal)
+  {
+    quadrangles = quadranglesVal;
+  }
+
+                /**
+                 * Set the mesh hexahedron
+                 * @param hexahedrons - the vector of hexahedrons
+                 */
+  void Mesh::set_hexahedrons(std::vector<MeshElement *> hexahedronsVal)
+  {
+    hexahedra = hexahedronsVal;
+  }
 
 
 
@@ -644,6 +745,9 @@ void Mesh::clean()
     delete quadrangles[i];
   for (size_t i = 0; i < hexahedra.size(); ++i)
     delete hexahedra[i];
+
+  n_converted_hexahedra = 0;
+  n_converted_quadrangles = 0;
 }
 
 
@@ -791,103 +895,6 @@ void Mesh::read(const std::string &file)
       type_nodes[5] = 8; // 8-nodes hexahedron
       type_nodes[15]= 1; // 1-node point
 
-      if (binary) // binary format
-      {
-/*
-        int n_elem_part = 0; // some part of the elements
-        int header[3]; // the header of the element
-        int amount; // amount of mesh elements of the same type
-
-        while (n_elem_part < n_elements)
-        {
-          in.read(reinterpret_cast<char*>(header), 3 * sizeof(int)); // read the header
-          el_type = header[0];
-          amount  = header[1];
-          n_tags  = header[2];
-
-          n_elem_part += amount;
-
-           // the number of nodes
-          const int n_elem_nodes = type_nodes.find(el_type) != ;
-
-          switch (el_type)
-          {
-          case 1: // 2-node line
-
-            const int n_data = 1 + n_tags + n_elem_nodes; // how much data we need to read
-            int data[n_data]; // allocate memory for data
-            int nodes[n_elem_nodes]; // allocate memory for nodes
-            for (int el = 0; el < amount; ++el)
-            {
-              in.read(reinterpret_cast<char*>(data), n_data * sizeof(int)); // read the data
-              number = data[0];
-              phys_domain = (n_tags > 0) ? data[1] : 0; // physical domain - the most important value
-              elem_domain = (n_tags > 1) ? data[2] : 0; // elementary domain
-              partition   = (n_tags > 2) ? data[3] : 0; // partition (Metis, Chaco, etc)
-              for (int i = 0; i < n_elem_nodes; ++i)
-                nodes[i] = vertices_map[data[n_tags + 1 + i]]; // nodes can be numerated not sequentially
-
-              // add new element in the list
-              lines.push_back(Edge(nodes[0], nodes[1], phys_domain));
-            }
-            break;
-          case 2: // 3-node triangle
-            const int n_elem_nodes = 3; // the number of nodes
-            const int n_data = 1 + n_tags + n_elem_nodes; // how much data we need to read
-            int data[n_data]; // allocate memory for data
-            int nodes[n_elem_nodes]; // allocate memory for nodes
-            for (int el = 0; el < amount; ++el)
-            {
-              in.read(reinterpret_cast<char*>(data), n_data * sizeof(int)); // read the data
-              number = data[0];
-              phys_domain = (n_tags > 0) ? data[1] : 0; // physical domain - the most important value
-              elem_domain = (n_tags > 1) ? data[2] : 0; // elementary domain
-              partition   = (n_tags > 2) ? data[3] : 0; // partition (Metis, Chaco, etc)
-              for (int i = 0; i < n_elem_nodes; ++i)
-                nodes[i] = vertices_map[data[n_tags + 1 + i]]; // nodes can be numerated not sequentially
-
-              // add new element in the list
-              triangles.push_back(Triangle(nodes[0], nodes[1], nodes[2], phys_domain));
-            }
-            break;
-          case 4: // 4-node tetrahedron
-            break;
-          default: // other elements are not interesting for us
-            break;
-          }
-
-          int nElemNodes = mev->second; // the number of nodes
-          int nData = 1 + nTags + nElemNodes; // how much data we need to read
-          std::vector<int> data(nData); // allocate memory for data
-          std::vector<int> nodes(nElemNodes); // allocate memory for nodes
-
-          // read the elements of the same type
-          for (int el = 0; el < amount; ++el)
-          {
-            in.read(reinterpret_cast<char*>(&data[0]), nData * sizeof(int)); // read the data
-            number = data[0];
-            physDomain = (nTags > 0) ? data[1] : 0; // physical domain - the most important value
-            elemDomain = (nTags > 1) ? data[2] : 0; // elementary domain
-            partition = (nTags > 2) ? data[3] : 0; // partition (Metis, Chaco, etc)
-            for (int i = 0; i < nElemNodes; ++i)
-              nodes[i] = data[nTags + 1 + i] - minNodeNumber; // Gmsh numerates the nodes from 'minNodeNumber' (it's usually 1)
-
-            // add new element in the list
-            _elements[elName].push_back(MeshElement(nodes, physDomain));
-          }
-
-          nodes.clear();
-          data.clear();
-        }
-
-        // check some expectations
-        expect(nElemPart == nElements,
-               ExcMessage("The accumulate number of different elements (" + d2s(nElemPart) +\
-                          ") is not equal to the amount of all elements in the mesh (" + d2s(nElements) + ")!"));
-*/
-      } // binary format
-
-      else // ASCII format
       {      
         for (int el = 0; el < n_elements; ++el)
         {
@@ -1631,6 +1638,16 @@ int Mesh::get_n_hexahedra() const
 }
 
 
+int Mesh::get_n_converted_quadrangles() const
+{
+  return n_converted_quadrangles;
+}
+
+int Mesh::get_n_converted_hexahedra() const
+{
+  return n_converted_hexahedra;
+}
+
 
 Point Mesh::get_vertex(int number) const
 {
@@ -1703,6 +1720,58 @@ MeshElement& Mesh::get_hexahedron(int number) const
          " is bigger than the number of hexahedra (" + d2s(hexahedra.size()) + "))");
   return *(hexahedra[number]);
 }
+
+
+
+
+
+
+std::vector<Point> Mesh::get_vertexes() const
+{
+  return vertices;
+}
+
+std::vector<MeshElement*> Mesh::get_points() const
+{
+  return points;
+}
+
+std::vector<MeshElement*> Mesh::get_edges() const
+{
+  return edges;
+}
+
+std::vector<MeshElement*> Mesh::get_lines() const
+{
+  return lines;
+}
+
+std::vector<MeshElement*> Mesh::get_faces() const
+{
+  return faces;
+}
+
+std::vector<MeshElement*> Mesh::get_triangles() const
+{
+  return triangles;
+}
+
+std::vector<MeshElement*> Mesh::get_tetrahedrons() const
+{
+  return tetrahedra;
+}
+
+std::vector<MeshElement*> Mesh::get_quadrangles() const
+{
+  return quadrangles;
+}
+
+std::vector<MeshElement*> Mesh::get_hexahedrons() const
+{
+  return hexahedra;
+}
+
+
 
 
 

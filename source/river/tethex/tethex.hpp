@@ -819,6 +819,22 @@ public:
                  */
   Mesh();
 
+                  /**
+                 * Constructor - nothing special
+                 */
+  Mesh(
+    std::vector<MeshElement *> verticesVal, 
+    std::vector<MeshElement *> pointsVal, 
+    std::vector<MeshElement *> linesVal,
+    std::vector<MeshElement *> edgesVal,
+    std::vector<MeshElement *> facesVal,
+    std::vector<MeshElement *> trianglesVal,
+    std::vector<MeshElement *> tetrahedrasVal,
+    std::vector<MeshElement *> quaddranglesVal,
+    std::vector<MeshElement *> hexahedraVal
+  );
+
+
                 /**
                  * Destructor - to clean the memory
                  */
@@ -862,6 +878,16 @@ public:
                  */
   void write(const std::string &file);
 
+                /**
+                 * Get the number of converted quadrangles
+                 */
+  int get_n_converted_quadrangles() const;
+
+                /**
+                 * Get the number of converted hexahedra
+                 */
+  int get_n_converted_hexahedra() const;
+  
                 /**
                  * Get the number of vertices
                  */
@@ -972,7 +998,118 @@ public:
                  * @param number - the number of hexahedron
                  */
   MeshElement& get_hexahedron(int number) const;
+  /**
+                 * Get the copy of vertex
+                 * @param number - the number of vertex
+                 */
+  std::vector<Point> get_vertexes() const;
 
+                /**
+                 * Get the physical point
+                 * @param number - the number of point
+                 */
+  std::vector<MeshElement*> get_points() const;
+
+                /**
+                 * Get the mesh edge
+                 * @param number - the number of edge
+                 */
+  std::vector<MeshElement*> get_edges() const;
+
+                /**
+                 * Get the physical line
+                 * @param number - the number of line
+                 */
+  std::vector<MeshElement*> get_lines() const;
+
+                /**
+                 * Get the mesh face
+                 * @param number - the number of face
+                 */
+  std::vector<MeshElement*> get_faces() const;
+
+                /**
+                 * Get the mesh triangle
+                 * @param number - the number of triangle
+                 */
+  std::vector<MeshElement*> get_triangles() const;
+
+                /**
+                 * Get the mesh tetrahedron
+                 * @param number - the number of tetrahedron
+                 */
+  std::vector<MeshElement*> get_tetrahedrons() const;
+
+                /**
+                 * Get the mesh quadrangle
+                 * @param number - the number of quadrangle
+                 */
+  std::vector<MeshElement*> get_quadrangles() const;
+
+                /**
+                 * Get the mesh hexahedron
+                 * @param number - the number of hexahedron
+                 */
+  std::vector<MeshElement*> get_hexahedrons() const;
+
+                /**
+                 * Set the copy of vertex
+                 * @param vertexes - the vector of vertexes
+                 */
+  void set_vertexes(std::vector<Point> vertexes);
+
+                /**
+                 * Set the physical points
+                 * @param points - the vector of points
+                 */
+  void set_points(std::vector<MeshElement *> points);
+
+                /**
+                 * Set the mesh edges
+                 * @param edges - the vector of edges
+                 */
+  void set_edges(std::vector<MeshElement *> edges);
+
+                /**
+                 * Set the physical lines
+                 * @param lines - the vector of lines
+                 */
+  void set_lines(std::vector<MeshElement *> lines);
+
+                /**
+                 * Set the mesh triangles
+                 * @param triangles - the vector of triangles
+                 */
+  void set_triangles(std::vector<MeshElement *> triangles);
+                  /**
+                 * Set the mesh faces
+                 * @param faces - the vector of faces
+                 */
+  void set_faces(std::vector<MeshElement *> faces);
+
+                /**
+                 * Set the mesh tetrahedrons
+                 * @param tetrahedrons - the vector of tetrahedrons
+                 */
+  void set_tetrahedrons(std::vector<MeshElement *> tetrahedrons);
+
+                /**
+                 * Set the mesh quadrangles
+                 * @param quadrangles - the vector of quadrangles
+                 */
+  void set_quadrangles(std::vector<MeshElement *> quadrangles);
+
+                /**
+                 * Set the mesh hexahedron
+                 * @param hexahedrons - the vector of hexahedrons
+                 */
+  void set_hexahedrons(std::vector<MeshElement *> hexahedrons);
+
+                /**
+                 * Free the memory to read again, for example
+                 */
+  void clean();
+  
 private:
                 /**
                  * Mesh vertices (nodes in terms of Gmsh)
@@ -1041,10 +1178,6 @@ private:
                  */
   std::vector<std::string> physical_names;
 
-                /**
-                 * Free the memory to read again, for example
-                 */
-  void clean();
 
                 /**
                  * Numerate the edges of simplices
