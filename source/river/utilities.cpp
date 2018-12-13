@@ -36,7 +36,8 @@ po::variables_map processProgramOptions(int argc, char *argv[])
     ("Quiet,Q", po::value<bool>()->default_value(false), "print detailed log to terminal")
     ("sm", "suppress mesh")("ss", "suppress solver")
     ("MeshMaxArea,A", po::value<double>()->default_value(-1.), "constraints maximal area of triangle element") //FIXME.. some errors appears: faile d
-    ("MeshMinAngle,q", po::value<double>()->default_value(-1.), "constraints minimal angle of triangle element"); //conversion using boost::any_cast
+    ("MeshMinAngle,q", po::value<double>()->default_value(-1.), "constraints minimal angle of triangle element")
+    ("Eps,e", po::value<double>()->default_value(0.000001), "Width of branch"); //conversion using boost::any_cast
 
 
     po::positional_options_description p;
