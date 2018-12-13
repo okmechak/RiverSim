@@ -154,8 +154,6 @@ public:
     River
   };
 
-  //Nodes and lines - main interface of this class
-  vector<GeomPoint> points;
 
   //branches functionality
   map<unsigned int, pair<unsigned int, unsigned int>> branchRelation;
@@ -183,8 +181,8 @@ public:
   vector<unsigned int> GetTipIds();
   Branch& GetBranch(unsigned int id);
   vector<GeomPolar> GetTipPolars();
-  void generateCircularBoundary();
-  tethex::Mesh GetInitialMesh();
+  tuple<vector<tethex::Point>, vector<tethex::MeshElement *>, vector<tethex::MeshElement *>>   
+    GetInitialMesh();
   void SetEps(double epsVal);
 
 private:
@@ -192,6 +190,10 @@ private:
   double bifAngle = M_PI/5.;
 
   unsigned int rootBranchId = 0;//0 means no root/first Branch
+  int branchTag = 35;
+  
+  //Nodes and lines - main interface of this class
+  vector<GeomPoint> points;
 
   //Boundary
   //Box parameters
@@ -199,7 +201,6 @@ private:
   vector<GeomLine> boundaryLines;
   double dx = 0.5;
 
-  int branchTag = 35;
 
   //river geometry parameters
   double alpha = M_PI/3.; // biffurcation angle
@@ -207,6 +208,7 @@ private:
   
   pair<GeomPoint, double> GetEndPointOfSquareBoundary();
   void InserBranchTree(unsigned int id, double phi, bool isRoot = false);
+  void generateCircularBoundary();
   //at generation time of whole circular boundary
   //it gives us a points of crossection of boundaries
   GeomPoint mergedLeft(double phi);

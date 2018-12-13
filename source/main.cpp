@@ -19,20 +19,30 @@ int main(int argc, char *argv[])
     /*
         Geometry Object
     */
-    auto geom = CustomRiverTree(0.02, 0.00001);
+    auto geom = SimpleGeo::CustomRiverTree();
     
 
-    geom.generateCircularBoundary();
+    auto [points, lines, triangles] = geom.GetInitialMesh();
 
+    auto tr = Triangle(points, lines, triangles);
+    tr.Verbose = vm["Verbose"].as<bool>();
+    tr.Quite = vm["Quiet"].as<bool>();
+    tr.AreaConstrain = tr.ConstrainAngle = true;
+    tr.MaxTriaArea = vm["MeshMaxArea"].as<double>();
+    tr.MinAngle = vm["MeshMinAngle"].as<double>();
+    tr.Generate();
+    tr.convert();
+    tr.write("quadrangle.msh");
+    
     River::Gmsh Gmsh;
-    Gmsh.generate(geom.points);
+    Gmsh.Open("quadrangle.msh");
     Gmsh.Write();
+    Gmsh.StartUserInterface();
 
     //Solve
     River::Simulation sim;
-    sim.OpenMesh();
+    sim.OpenMesh("quadrangle.msh");
     sim.run();
-    Gmsh.StartUserInterface();
 
     return 0;
 }

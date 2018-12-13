@@ -404,14 +404,30 @@ void Geometry::generateCircularBoundary()
 }
 
 
-tethex::Mesh Geometry::GetInitialMesh()
+tuple<vector<tethex::Point>, vector<tethex::MeshElement *>, vector<tethex::MeshElement *>> 
+Geometry::GetInitialMesh()
 {   
     auto meshOut = tethex::Mesh{};
-    for(int i = 0; i < boundaryPoints.size(); ++i)
+
+    generateCircularBoundary();
+    vector<tethex::Point> meshPoints;
+    vector<tethex::MeshElement *> meshLines;
+    vector<tethex::MeshElement *> meshTriangles;//empy
+    meshPoints.reserve(points.size());
+    meshLines.reserve(points.size());
+    int index = 1;
+    for(auto &p: points)
     {
-        //meshOut.node.coords.
+        meshPoints.push_back(tethex::Point(p.x, p.y, 0/*z-coord*/, p.regionTag));
+        if(index < points.size())
+            meshLines.push_back(new tethex::Line({index, index + 1}, p.regionTag));
+        else
+            meshLines.push_back(new tethex::Line({index, 1}, 0));//FIXME
+
+        ++index;
     }
-    return meshOut;
+    
+    return {meshPoints, meshLines, meshTriangles};
 }
 /*
     Recursive inserting of branches

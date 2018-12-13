@@ -64,6 +64,17 @@ Point::Point(const double x_coord,
   if (n_coord > 2) coord[2] = z_coord;
 }
 
+Point::Point(const double x_coord,
+             const double y_coord,
+             const double z_coord,
+             const int regionTagVal)
+{
+  regionTag = regionTagVal;
+  coord[0] = x_coord;
+  if (n_coord > 1) coord[1] = y_coord;
+  if (n_coord > 2) coord[2] = z_coord;
+}
+
 Point::Point(const Point &p)
 {
   for (int i = 0; i < n_coord; ++i)
@@ -156,7 +167,7 @@ inline int MeshElement::get_gmsh_el_type() const
   return gmsh_el_type;
 }
 
-inline int MeshElement::get_material_id() const
+int MeshElement::get_material_id() const
 {
   return material_id;
 }
@@ -618,19 +629,38 @@ Mesh::Mesh()
   , physical_names()
 { }
 
+
 Mesh::Mesh(
-  std::vector<MeshElement *> verticesVal, 
-  std::vector<MeshElement *> pointsVal, 
-  std::vector<MeshElement *> linesVal,
-  std::vector<MeshElement *> edgesVal,
-  std::vector<MeshElement *> facesVal,
-  std::vector<MeshElement *> trianglesVal,
-  std::vector<MeshElement *> tetrahedrasVal,
-  std::vector<MeshElement *> quaddranglesVal,
-  std::vector<MeshElement *> hexahedraVal
+    std::vector<Point> &verticesVal, 
+    std::vector<MeshElement *> &linesVal,
+    std::vector<MeshElement *> &trianglesVal
+  ): vertices(verticesVal)
+  , points()
+  , lines(linesVal)
+  , edges()
+  , faces()
+  , triangles(trianglesVal)
+  , tetrahedra()
+  , quadrangles()
+  , hexahedra()
+  , n_converted_quadrangles(0)
+  , n_converted_hexahedra(0)
+  , physical_names()
+{}
+
+Mesh::Mesh(
+  std::vector<Point> &verticesVal, 
+  std::vector<MeshElement *> &pointsVal, 
+  std::vector<MeshElement *> &linesVal,
+  std::vector<MeshElement *> &edgesVal,
+  std::vector<MeshElement *> &facesVal,
+  std::vector<MeshElement *> &trianglesVal,
+  std::vector<MeshElement *> &tetrahedrasVal,
+  std::vector<MeshElement *> &quaddranglesVal,
+  std::vector<MeshElement *> &hexahedraVal
 )
-: vertices()
-  , points(verticesVal)
+  : vertices(verticesVal)
+  , points(pointsVal)
   , lines(linesVal)
   , edges(edgesVal)
   , faces(facesVal)
@@ -652,7 +682,7 @@ Mesh::~Mesh()
 
 
 
-void Mesh::set_vertexes(std::vector<Point> vertexesVal)
+void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
 {
   vertices = vertexesVal;
 }
@@ -660,7 +690,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the physical points
                  * @param points - the vector of points
                  */
-  void Mesh::set_points(std::vector<MeshElement *> pointsVal)
+  void Mesh::set_points(std::vector<MeshElement *> &pointsVal)
   {
     points = pointsVal;
   }
@@ -669,7 +699,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the mesh edges
                  * @param edges - the vector of edges
                  */
-  void Mesh::set_edges(std::vector<MeshElement *> edges)
+  void Mesh::set_edges(std::vector<MeshElement *> &edges)
   {
 
   }
@@ -678,7 +708,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the physical lines
                  * @param lines - the vector of lines
                  */
-  void Mesh::set_lines(std::vector<MeshElement *> linesVal)
+  void Mesh::set_lines(std::vector<MeshElement *> &linesVal)
   { 
     lines = linesVal;
   }
@@ -687,7 +717,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the mesh triangles
                  * @param triangles - the vector of triangles
                  */
-  void Mesh::set_triangles(std::vector<MeshElement *> trianglesVal)
+  void Mesh::set_triangles(std::vector<MeshElement *> &trianglesVal)
   {
     triangles = trianglesVal;
   }
@@ -695,7 +725,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the mesh triangles
                  * @param triangles - the vector of triangles
                  */
-  void Mesh::set_faces(std::vector<MeshElement *> facesVal)
+  void Mesh::set_faces(std::vector<MeshElement *> &facesVal)
   {
     faces = facesVal;
   }
@@ -703,7 +733,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the mesh tetrahedrons
                  * @param tetrahedrons - the vector of tetrahedrons
                  */
-  void Mesh::Mesh::set_tetrahedrons(std::vector<MeshElement *> tetrahedrons)
+  void Mesh::Mesh::set_tetrahedrons(std::vector<MeshElement *> &tetrahedrons)
   {
 
   }
@@ -711,7 +741,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the mesh quadrangles
                  * @param quadrangles - the vector of quadrangles
                  */
-  void Mesh::set_quadrangles(std::vector<MeshElement *> quadranglesVal)
+  void Mesh::set_quadrangles(std::vector<MeshElement *> &quadranglesVal)
   {
     quadrangles = quadranglesVal;
   }
@@ -720,7 +750,7 @@ void Mesh::set_vertexes(std::vector<Point> vertexesVal)
                  * Set the mesh hexahedron
                  * @param hexahedrons - the vector of hexahedrons
                  */
-  void Mesh::set_hexahedrons(std::vector<MeshElement *> hexahedronsVal)
+  void Mesh::set_hexahedrons(std::vector<MeshElement *> &hexahedronsVal)
   {
     hexahedra = hexahedronsVal;
   }
@@ -1726,7 +1756,7 @@ MeshElement& Mesh::get_hexahedron(int number) const
 
 
 
-std::vector<Point> Mesh::get_vertexes() const
+std::vector<Point> Mesh::get_vertices() const
 {
   return vertices;
 }

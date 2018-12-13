@@ -148,7 +148,7 @@ struct triangulateio MeshGenerator::toTriaStr(struct vecTriangulateIO &geom)
   return triaStr;
 }
 
-void MeshGenerator::PrintGeometry(struct triangulateio &io)
+void Triangle::PrintGeometry(struct triangulateio &io)
 {
     int i, j, shift = 1;
     //if(StartNumberingFromZero)
@@ -271,6 +271,114 @@ void MeshGenerator::PrintGeometry(struct triangulateio &io)
 }
 
 
+struct triangulateio Triangle::tethexToIO(
+    vector<tethex::Point> verticesVal,  
+    vector<tethex::MeshElement *> linesVal,
+    vector<tethex::MeshElement *> trianglesVal)
+{
+    struct triangulateio io;
+    set_tria_to_default(&io);
+
+    //Points
+    if(!verticesVal.empty())
+    {
+        io.pointlist = new double[2 * verticesVal.size()];
+        io.pointmarkerlist = new int[verticesVal.size()];
+        io.numberofpoints = verticesVal.size();
+        
+        int i = 0;
+        for(auto &p: verticesVal)
+        {
+            io.pointlist[2 * i ] = p.get_coord(0);
+            io.pointlist[2 * i + 1] = p.get_coord(1);
+            io.pointmarkerlist[i] = p.regionTag;
+            ++i;
+        }
+    }
+
+    //Segments
+    if(!linesVal.empty())
+    {
+        io.segmentlist = new int[2 * linesVal.size()];
+        io.segmentmarkerlist = new int[linesVal.size()];
+        io.numberofsegments = linesVal.size();
+        int i = 0;
+        for(auto l: linesVal)
+        {
+            io.segmentlist[2 * i ] = l->get_vertex(0);
+            io.segmentlist[2 * i + 1] = l->get_vertex(1);
+            io.segmentmarkerlist[i] = l->get_material_id();
+            ++i;
+        }
+    }
+
+    if(!trianglesVal.empty())
+    {
+        io.trianglelist = new int[3 * linesVal.size()];
+        io.numberoftriangleattributes = 1;
+        io.triangleattributelist = new double[linesVal.size()];
+        io.numberofsegments = linesVal.size();
+        int i = 0;
+        for(auto t: trianglesVal)
+        {
+            io.trianglelist[3 * i ] = t->get_vertex(0);
+            io.trianglelist[3 * i + 1] = t->get_vertex(1);
+            io.trianglelist[3 * i + 2] = t->get_vertex(2);
+            io.triangleattributelist[i] = t->get_material_id();
+            ++i;
+        }
+    }
+
+    return io;
+}
+
+tuple<vector<tethex::Point>,  
+      vector<tethex::MeshElement*>,
+      vector<tethex::MeshElement*>>  Triangle::IOToTethex(
+        struct triangulateio &io)
+{
+    vector<tethex::Point> pointsVal;
+    vector<tethex::MeshElement*> edgesVal;
+    vector<tethex::MeshElement*> trianglesVal;
+
+    pointsVal.reserve(io.numberofpoints);
+    for(int i = 0; i < io.numberofpoints; ++i)
+    {
+        auto x = io.pointlist[2 * i],
+            y = io.pointlist[2 * i + 1];
+        auto regionTag = io.pointmarkerlist[i];
+
+        pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag));
+    }
+
+    edgesVal.reserve(io.numberofedges);
+    for(int i = 0; i < io.numberofedges; ++i)
+    {
+        auto v1 = io.edgelist[2*i] - 1,//NOTE vertices index should start from zero
+            v2 = io.edgelist[2*i + 1] - 1,
+            regionTag = io.edgemarkerlist[i];
+
+        edgesVal.push_back(new tethex::Line(v1, v2, regionTag));
+    }
+
+    trianglesVal.reserve(io.numberoftriangles);
+    for(int i = 0; i < io.numberoftriangles; ++i)
+    {
+        auto v1 = io.trianglelist[3*i] - 1,//NOTE vertice index should start from zero
+            v2 = io.trianglelist[3*i + 1] - 1,
+            v3 = io.trianglelist[3*i + 2] - 1;   
+        
+        //taking only the first one attribute
+        double regionTag = 0;
+        if(io.numberoftriangleattributes != 0)
+            regionTag = io.triangleattributelist[io.numberoftriangleattributes * i];
+
+        trianglesVal.push_back(new tethex::Triangle(v1, v2, v3, regionTag));
+    }
+
+    return {pointsVal, edgesVal, trianglesVal};
+}
+
 /*
   
     Triangle Class
@@ -285,6 +393,12 @@ Triangle::Triangle()
         PrintOptions(true);
     }
 }
+Triangle::Triangle(
+        vector<tethex::Point> &verticesVal, 
+        vector<tethex::MeshElement *> &linesVal,
+        vector<tethex::MeshElement *> &trianglesVal
+      ):Mesh(verticesVal, linesVal, trianglesVal)
+{}
 
 
 Triangle::~Triangle()
@@ -312,67 +426,48 @@ void Triangle::FreeAllocatedMemory()
 string Triangle::updateOptions()
 {
     options = "";
-
-    if (ConstrainAngle)
-        options += "q";
-    if (ConstrainAngle && MaxAngle > 0 && MaxAngle < 35)
-        options += to_string(MaxAngle);
-    else if (ConstrainAngle && MaxAngle >= 35)
-        throw invalid_argument("Triangle quality angle should be less then 35");
+    #define MAX_ANGLE 36
+    if (ConstrainAngle)     options += "q";
+    if (ConstrainAngle && MinAngle > 0 && MinAngle < MAX_ANGLE)
+                            options += to_string(MinAngle);
+    else if (ConstrainAngle && MinAngle > MAX_ANGLE)
+        throw invalid_argument("Triangle quality angle should be equal or less then 36");
     //if (StartNumberingFromZero)
     //    options += "z";
-    if (Refine)
-        options += "r";
-    if (AreaConstrain)
-        options += "a";
+    if (Refine)             options += "r";
+    if (AreaConstrain)      options += "a";
     if (AreaConstrain && MaxTriaArea > 0)
-        options +=  to_string(MaxTriaArea);
-    if (DelaunayTriangles)
-        options += "D";
-    if (EncloseConvexHull)
-        options += "c";
-    if (CheckFinalMesh)
-        options += "C";
-    if (AssignRegionalAttributes)
-        options += "A";
-    if (VoronoiDiagram)
-        options += "v";
-    if (Quite)
-        options += "Q";
-    else if (Verbose)
-        options += "V";
+                            options +=  to_string(MaxTriaArea);
+    if (DelaunayTriangles)  options += "D";
+    if (EncloseConvexHull)  options += "c";
+    if (CheckFinalMesh)     options += "C";
+    if (AssignRegionalAttributes) options += "A";
+    if (VoronoiDiagram)     options += "v";
+    if (Quite)              options += "Q";
+    else if (Verbose)       options += "V";
     if (Algorithm == FORTUNE)
-        options += "F";
+                            options += "F";
     else if (Algorithm == ITERATOR)
-        options += "i";
-    if (ReadPSLG)
-        options += "p";
+                            options += "i";
+    if (ReadPSLG)           options += "p";
     if (SuppressBoundaryMarkers)
-        options += "B";
-    if (SuppressPolyFile)
-        options += "P";
-    if (SuppressNodeFile)
-        options += "N";
-    if (SuppressEleFile)
-        options += "E";
-    if (OutputEdges)
-        options += "e";
-    if (ComputeNeighbours)
-        options += "n";
+                            options += "B";
+    if (SuppressPolyFile)   options += "P";
+    if (SuppressNodeFile)   options += "N";
+    if (SuppressEleFile)    options += "E";
+    if (OutputEdges)        options += "e";
+    if (ComputeNeighbours)  options += "n";
     if (SuppressMehsFileNumbering)
-        options += "I";
+                            options += "I";
     if (SuppressExactArithmetics)
-        options += "X";
-    if (SuppressHoles)
-        options += "O";
+                            options += "X";
+    if (SuppressHoles)      options += "O";
     //if (SecondOrderMesh)
     //    options += "o2";
-    if (SteinerPointsOnBoundary)
-        options += "Y";
-    if (SteinerPointsOnSegments)
-        options += "YY";
+    if (SteinerPointsOnBoundary) options += "Y";
+    if (SteinerPointsOnSegments) options += "YY";
     if (MaxNumOfSteinerPoints > 0)
-        options += "S" + to_string(MaxNumOfSteinerPoints);
+                            options += "S" + to_string(MaxNumOfSteinerPoints);
 
     return options;
 }
@@ -388,58 +483,39 @@ void Triangle::PrintOptions(bool qDetailedDescription)
 
     cout << "Detailed description: " << endl << endl; 
 
-    if (ReadPSLG)
-        cout << "(p) read PSLG" << endl;
+    if (ReadPSLG)        cout << "(p) read PSLG" << endl;
     //if (StartNumberingFromZero)
     //    cout << "(z) numbering starts from zero" << endl;
-    if (Refine)
-        cout << "(r) refine" << endl;
-    if (ConstrainAngle)
-        cout << "(q) quality min 20 degree" << endl;
-    if (MaxAngle > 0)
-        cout << "                    value:" << MaxAngle << endl;
-    if(AreaConstrain)
-        cout << "(a) area constrain: " << endl;
-    if (MaxTriaArea > 0)
-        cout << "                  area constrain: " << MaxTriaArea << endl;
-    if (DelaunayTriangles)
-        cout << "(D) all traingles will be Delaunay" << endl;
-    if (EncloseConvexHull)
-        cout << "(c) enclose convex hull" << endl;
-    if (CheckFinalMesh)
-        cout << "(C) check final mesh" << endl;
+    if (Refine)          cout << "(r) refine" << endl;
+    if (ConstrainAngle)  cout << "(q) quality min 20 degree" << endl;
+    if (MinAngle > 0)    cout << "                    value:" << MinAngle << endl;
+    if(AreaConstrain)    cout << "(a) area constrain: " << endl;
+    if (MaxTriaArea > 0) cout << "                  area constrain: " << MaxTriaArea << endl;
+    if (DelaunayTriangles)cout << "(D) all traingles will be Delaunay" << endl;
+    if (EncloseConvexHull)cout << "(c) enclose convex hull" << endl;
+    if (CheckFinalMesh)  cout << "(C) check final mesh" << endl;
     if (AssignRegionalAttributes)
-        cout << "(A) assign additional attribute to each triangle which specifies segment which it belongs too" << endl;
-    if (OutputEdges)
-        cout << "(e) output list of edges" << endl;
-    if (VoronoiDiagram)
-        cout << "(v) outputs voronoi diagram" << endl;
-    if (ComputeNeighbours)
-        cout << "(n) outputs neighboors" << endl;
-    if (SuppressBoundaryMarkers)
-        cout << "(B) suppress boundary markers" << endl;
-    if (SuppressPolyFile)
-        cout << "(P) suppress output poly file(either don't work)" << endl;
-    if (SuppressNodeFile)
-        cout << "(N) suppress output nodes file(either don't work)" << endl;
-    if (SuppressEleFile)
-        cout << "(E) suppress output elements file(either don't work)" << endl;
-    if (SuppressHoles)
-        cout << "(O) suppress holes" << endl;
+                         cout << "(A) assign additional attribute to each triangle which specifies segment which it belongs too" << endl;
+    if (OutputEdges)     cout << "(e) output list of edges" << endl;
+    if (VoronoiDiagram)  cout << "(v) outputs voronoi diagram" << endl;
+    if (ComputeNeighbours)cout << "(n) outputs neighboors" << endl;
+    if (SuppressBoundaryMarkers)cout << "(B) suppress boundary markers" << endl;
+    if (SuppressPolyFile)cout << "(P) suppress output poly file(either don't work)" << endl;
+    if (SuppressNodeFile)cout << "(N) suppress output nodes file(either don't work)" << endl;
+    if (SuppressEleFile) cout << "(E) suppress output elements file(either don't work)" << endl;
+    if (SuppressHoles)   cout << "(O) suppress holes" << endl;
     //if (SecondOrderMesh)
     //    cout << "(o2) second order mesh" << endl;
     if (SteinerPointsOnBoundary || SteinerPointsOnSegments)
-        cout << "(Y) prohibits stainer points on boundary" << endl;
+                        cout << "(Y) prohibits stainer points on boundary" << endl;
     if (MaxNumOfSteinerPoints > 0)
-        cout << "(S) specify max number off added Steiner points" << endl;
+                        cout << "(S) specify max number off added Steiner points" << endl;
     if (Algorithm == ITERATOR)
-        cout << "(i) use incremental algorithm" << endl;
+                        cout << "(i) use incremental algorithm" << endl;
     if (Algorithm == FORTUNE)
-        cout << "(F) use Fortune algorithm" << endl;
-    if (Quite)
-        cout << "(Q) quite" << endl;
-    if (Verbose)
-        cout << "(V) verbose" << endl;
+                        cout << "(F) use Fortune algorithm" << endl;
+    if (Quite)          cout << "(Q) quite" << endl;
+    if (Verbose)        cout << "(V) verbose" << endl;
 }
 
 
@@ -497,6 +573,43 @@ struct vecTriangulateIO Triangle::Generate(struct vecTriangulateIO &geom)
 
 
 
+void Triangle::Generate()
+{
+    SetAllValuesToDefault();
+    
+    in = tethexToIO(vertices, lines, triangles);
+
+    if (Verbose)
+    {
+        cout << "Input Geometry: " << endl;
+        PrintGeometry(in);
+    }
+
+    //Main call to Triangle
+    triangulate(options.c_str(), &in, &out, &vorout);
+    
+    if (Verbose)
+    {
+        cout << "Output Geometry: " << endl;
+        PrintGeometry(out);
+    }
+
+    if (Verbose && VoronoiDiagram)
+    {
+        cout << "Voronoi Diagram: " << endl;
+        PrintGeometry(vorout);
+    }
+
+    auto [pointsVal, edgesVal, trianglesVal] = IOToTethex(out);
+
+    vertices = pointsVal;
+    lines = edgesVal;
+    triangles = trianglesVal;
+    FreeAllocatedMemory();
+}
+
+
+
 
 
 
@@ -504,34 +617,34 @@ struct vecTriangulateIO Triangle::Generate(struct vecTriangulateIO &geom)
     Tethex
 
 */
-Tethex::Tethex()
-{}
-Tethex::~Tethex()
-{}
-
-void Tethex::Convert(struct vecTriangulateIO &geom)
-{
-    tethex::Mesh TethexMesh;
-    TethexMesh.read_triangl(
-        geom.node.coords, 
-        geom.edges, 
-        geom.edgeMarkers,  
-        geom.element.triangle.nodeTags);
-
-    if(Verbose)
-        TethexMesh.info(cout);
-    TethexMesh.convert();
-    if(Verbose)
-        TethexMesh.info(cout);
-
-    //TODO: write normal arguments    
-    TethexMesh.write_triangle(
-        geom.node.coords,
-        geom.element.line.nodeTags,
-        geom.element.line.markers,
-        geom.element.triangle.nodeTags);
-
-}
+//Tethex::Tethex()
+//{}
+//Tethex::~Tethex()
+//{}
+//
+//void Tethex::Convert(struct vecTriangulateIO &geom)
+//{
+//    tethex::Mesh TethexMesh;
+//    TethexMesh.read_triangl(
+//        geom.node.coords, 
+//        geom.edges, 
+//        geom.edgeMarkers,  
+//        geom.element.triangle.nodeTags);
+//
+//    if(Verbose)
+//        TethexMesh.info(cout);
+//    TethexMesh.convert();
+//    if(Verbose)
+//        TethexMesh.info(cout);
+//
+//    //TODO: write normal arguments    
+//    TethexMesh.write_triangle(
+//        geom.node.coords,
+//        geom.element.line.nodeTags,
+//        geom.element.line.markers,
+//        geom.element.triangle.nodeTags);
+//
+//}
 
 
 
@@ -561,7 +674,7 @@ Gmsh::~Gmsh()
     gmsh::finalize();
 }
 
-void Gmsh::Open()
+void Gmsh::Open(string fileName)
 {
     gmsh::open(fileName);
 }

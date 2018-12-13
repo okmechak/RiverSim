@@ -24,16 +24,8 @@ namespace River
 {
   class MeshGenerator{
     public:
-      struct {
-        //TODO some common options
-
-
-      } Options;
       MeshGenerator() = default;
-      void PrintGeometry(struct triangulateio &io);
       void PrintGeometry(struct vecTriangulateIO &geom);
-
-      struct vecTriangulateIO QuadConvertor(struct vecTriangulateIO &geom);
       
       struct vecTriangulateIO toVectorStr(struct triangulateio &geom, bool b3D = true);
       struct triangulateio toTriaStr(struct vecTriangulateIO &geom);
@@ -43,18 +35,18 @@ namespace River
   };
 
   
- class Tethex
- {
-   public:
-      bool Verbose = false;
-      Tethex();
-      ~Tethex();
-      void Convert(struct vecTriangulateIO &);
- };
+ //class Tethex
+ //{
+ //  public:
+ //     bool Verbose = false;
+ //     Tethex();
+ //     ~Tethex();
+ //     void Convert(struct vecTriangulateIO &);
+ //};
 
 
 
-  class Triangle: private MeshGenerator
+  class Triangle: public MeshGenerator, public tethex::Mesh
   {
     private:
       int dim = 2;
@@ -114,7 +106,19 @@ namespace River
       struct triangulateio* GetGeometry();
       struct triangulateio* GetVoronoi();
 
+      struct triangulateio tethexToIO(
+        vector<tethex::Point> verticesVal,  
+        vector<tethex::MeshElement *> linesVal,
+        vector<tethex::MeshElement *> trianglesVal);
+
+      tuple<vector<tethex::Point>,
+      vector<tethex::MeshElement*>,
+      vector<tethex::MeshElement*>>  
+      IOToTethex(
+        struct triangulateio &io);
+      
     public:
+      void PrintGeometry(struct triangulateio &io);
       enum algorithm
       {
           CONQUER,
@@ -131,7 +135,7 @@ namespace River
       bool Refine = false;
       //q - quality(minimu 20 degree).. also angle can be specified by q30
       bool ConstrainAngle = false;
-      double MaxAngle = 20;
+      double MinAngle = 20;
       //a - maximum triangle area constrain. a0.1
       double MaxTriaArea = -1.;
       bool AreaConstrain = false;
@@ -153,8 +157,14 @@ namespace River
       bool Verbose = false;
 
       Triangle();
+      Triangle(
+        vector<tethex::Point> &verticesVal, 
+        vector<tethex::MeshElement *> &linesVal,
+        vector<tethex::MeshElement *> &trianglesVal
+      );
       ~Triangle();
       struct vecTriangulateIO Generate(struct vecTriangulateIO &geom);
+      void Generate();
 
   };
 
@@ -176,7 +186,7 @@ namespace River
       
       Gmsh();
       ~Gmsh();
-      void Open();
+      void Open(string fileName);
       void Write();
       void Clear();
       //MESH

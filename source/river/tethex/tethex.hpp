@@ -88,6 +88,8 @@ public:
                  */
   static const int n_coord = 3;
 
+  int regionTag;
+
                 /**
                  * Default constructor.
                  * Coordinates are initialized by 0.
@@ -111,6 +113,12 @@ public:
   Point(double x_coord,
         double y_coord = 0,
         double z_coord = 0);
+  
+
+  Point(const double x_coord,
+             const double y_coord,
+             const double z_coord,
+             const int regionIdTag);
 
                 /**
                  * Copy constructor
@@ -823,15 +831,21 @@ public:
                  * Constructor - nothing special
                  */
   Mesh(
-    std::vector<MeshElement *> verticesVal, 
-    std::vector<MeshElement *> pointsVal, 
-    std::vector<MeshElement *> linesVal,
-    std::vector<MeshElement *> edgesVal,
-    std::vector<MeshElement *> facesVal,
-    std::vector<MeshElement *> trianglesVal,
-    std::vector<MeshElement *> tetrahedrasVal,
-    std::vector<MeshElement *> quaddranglesVal,
-    std::vector<MeshElement *> hexahedraVal
+    std::vector<Point> &verticesVal, 
+    std::vector<MeshElement *> &pointsVal, 
+    std::vector<MeshElement *> &linesVal,
+    std::vector<MeshElement *> &edgesVal,
+    std::vector<MeshElement *> &facesVal,
+    std::vector<MeshElement *> &trianglesVal,
+    std::vector<MeshElement *> &tetrahedrasVal,
+    std::vector<MeshElement *> &quaddranglesVal,
+    std::vector<MeshElement *> &hexahedraVal
+  );
+
+  Mesh(
+    std::vector<Point> &verticesVal, 
+    std::vector<MeshElement *> &linesVal,
+    std::vector<MeshElement *> &trianglesVal
   );
 
 
@@ -1002,7 +1016,7 @@ public:
                  * Get the copy of vertex
                  * @param number - the number of vertex
                  */
-  std::vector<Point> get_vertexes() const;
+  std::vector<Point> get_vertices() const;
 
                 /**
                  * Get the physical point
@@ -1056,61 +1070,61 @@ public:
                  * Set the copy of vertex
                  * @param vertexes - the vector of vertexes
                  */
-  void set_vertexes(std::vector<Point> vertexes);
+  void set_vertexes(std::vector<Point> &vertexes);
 
                 /**
                  * Set the physical points
                  * @param points - the vector of points
                  */
-  void set_points(std::vector<MeshElement *> points);
+  void set_points(std::vector<MeshElement *> &points);
 
                 /**
                  * Set the mesh edges
                  * @param edges - the vector of edges
                  */
-  void set_edges(std::vector<MeshElement *> edges);
+  void set_edges(std::vector<MeshElement *> &edges);
 
                 /**
                  * Set the physical lines
                  * @param lines - the vector of lines
                  */
-  void set_lines(std::vector<MeshElement *> lines);
+  void set_lines(std::vector<MeshElement *> &lines);
 
                 /**
                  * Set the mesh triangles
                  * @param triangles - the vector of triangles
                  */
-  void set_triangles(std::vector<MeshElement *> triangles);
+  void set_triangles(std::vector<MeshElement *> &triangles);
                   /**
                  * Set the mesh faces
                  * @param faces - the vector of faces
                  */
-  void set_faces(std::vector<MeshElement *> faces);
+  void set_faces(std::vector<MeshElement *> &faces);
 
                 /**
                  * Set the mesh tetrahedrons
                  * @param tetrahedrons - the vector of tetrahedrons
                  */
-  void set_tetrahedrons(std::vector<MeshElement *> tetrahedrons);
+  void set_tetrahedrons(std::vector<MeshElement *> &tetrahedrons);
 
                 /**
                  * Set the mesh quadrangles
                  * @param quadrangles - the vector of quadrangles
                  */
-  void set_quadrangles(std::vector<MeshElement *> quadrangles);
+  void set_quadrangles(std::vector<MeshElement *> &quadrangles);
 
                 /**
                  * Set the mesh hexahedron
                  * @param hexahedrons - the vector of hexahedrons
                  */
-  void set_hexahedrons(std::vector<MeshElement *> hexahedrons);
+  void set_hexahedrons(std::vector<MeshElement *> &hexahedrons);
 
                 /**
                  * Free the memory to read again, for example
                  */
   void clean();
   
-private:
+protected:
                 /**
                  * Mesh vertices (nodes in terms of Gmsh)
                  */
