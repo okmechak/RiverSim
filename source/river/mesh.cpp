@@ -338,7 +338,7 @@ tuple<vector<tethex::Point>,
         struct triangulateio &io)
 {
     vector<tethex::Point> pointsVal;
-    vector<tethex::MeshElement*> edgesVal;
+    vector<tethex::MeshElement*> segmentsVal;
     vector<tethex::MeshElement*> trianglesVal;
 
     pointsVal.reserve(io.numberofpoints);
@@ -351,14 +351,15 @@ tuple<vector<tethex::Point>,
         pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag));
     }
 
-    edgesVal.reserve(io.numberofedges);
-    for(int i = 0; i < io.numberofedges; ++i)
+    segmentsVal.reserve(io.numberofsegments);
+    for(int i = 0; i < io.numberofsegments; ++i)
     {
-        auto v1 = io.edgelist[2*i] - 1,//NOTE vertices index should start from zero
-            v2 = io.edgelist[2*i + 1] - 1,
-            regionTag = io.edgemarkerlist[i];
-
-        edgesVal.push_back(new tethex::Line(v1, v2, regionTag));
+        auto v1 = io.segmentlist[2*i] - 1,//NOTE vertices index should start from zero
+            v2 = io.segmentlist[2*i + 1] - 1,
+            regionTag = io.segmentmarkerlist[i];
+        if(regionTag == 0)//NOTE boundary_id of inner cells in Deal.II should be -1
+            regionTag = -1;
+        segmentsVal.push_back(new tethex::Line(v1, v2, regionTag));
     }
 
     trianglesVal.reserve(io.numberoftriangles);
@@ -376,7 +377,7 @@ tuple<vector<tethex::Point>,
         trianglesVal.push_back(new tethex::Triangle(v1, v2, v3, regionTag));
     }
 
-    return {pointsVal, edgesVal, trianglesVal};
+    return {pointsVal, segmentsVal, trianglesVal};
 }
 
 /*
