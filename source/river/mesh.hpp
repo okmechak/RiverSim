@@ -73,7 +73,7 @@ namespace River
       //E - suppress ele file
       bool SuppressEleFile = false;
       //e - outputs list of edges
-      bool OutputEdges = true;
+      bool OutputEdges = false;
       //n - outputs neighbours
       bool ComputeNeighbours = true;
       //I - suppress file mesh iteration number

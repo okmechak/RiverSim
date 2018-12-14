@@ -32,8 +32,10 @@ class GeomPolar : public Polar
 {
   public:
     GeomPolar(double r, double phiVal, 
-      int branchIdVal = 0);
-    int branchId = 0;
+      int branchIdVal = 0, 
+      int regionTagVal = 0);
+
+    int branchId = 0, regionTag = 0;
 };
 
 class GeomLine
@@ -42,7 +44,8 @@ class GeomLine
     GeomLine(unsigned int p1Val, unsigned int p2Val, 
       int branchIdVal, int regionTagVal);
     unsigned int p1, p2;
-    int branchId = 0, regionTag = 0;
+    int branchId = 0, 
+       regionTag = 0;
 
 };
 
@@ -185,15 +188,16 @@ public:
     GetInitialMesh();
   void SetEps(double epsVal);
 
+
 private:
   double eps = 3e-2;
   double bifAngle = M_PI/5.;
 
   unsigned int rootBranchId = 0;//0 means no root/first Branch
-  int branchTag = 35;
   
   //Nodes and lines - main interface of this class
   vector<GeomPoint> points;
+  vector<GeomLine> lines;
 
   //Boundary
   //Box parameters

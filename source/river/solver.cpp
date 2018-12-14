@@ -4,20 +4,25 @@ namespace River
 {
 
 /*
-    Simulation Class
+    Solver Class
 
 */
 
-Simulation::Simulation() : fe(2), dof_handler(triangulation)
+Solver::Solver() : fe(2), dof_handler(triangulation)
 {
 }
 
-Simulation::~Simulation()
+Solver::~Solver()
 {
     system_matrix.clear();
 }
 
-void Simulation::TryInsertCellBoundary(
+void Solver::SetBoundaryRegionValue(std::vector<int> regionTags, double value)
+{
+    boundaryRegionValue.insert(std::make_pair(value, regionTags));
+}
+
+void Solver::TryInsertCellBoundary(
     CellData<dim> &cellData,
     struct SubCellData &subcelldata,
     std::unordered_map<std::pair<int, int>, int> &bound_ids,
@@ -46,7 +51,7 @@ void Simulation::TryInsertCellBoundary(
 }
 
 
-void Simulation::OpenMesh(string fileName)
+void Solver::OpenMesh(string fileName)
 {
     GridIn<dim> gridin;
     gridin.attach_triangulation(triangulation);
@@ -55,7 +60,7 @@ void Simulation::OpenMesh(string fileName)
 }
 
 
-void Simulation::SetMesh(struct vecTriangulateIO &mesh)
+void Solver::SetMesh(struct vecTriangulateIO &mesh)
 {
 
     //VERTICES
@@ -99,16 +104,16 @@ void Simulation::SetMesh(struct vecTriangulateIO &mesh)
 }
 
 
-double Simulation::RightHandSide::value(const dealii::Point<dim> & /*p*/,
+double Solver::RightHandSide::value(const dealii::Point<dim> & /*p*/,
                                         const unsigned int /*component*/) const
 {
-    double return_value = 1.0;
+    double return_value = fieldValue;
 
     return return_value;
 }
 
 
-double Simulation::BoundaryValues::value(const dealii::Point<dim> & p,
+double Solver::BoundaryValues::value(const dealii::Point<dim> & p,
                                          const unsigned int component) const
 {
     if (component == 0)
@@ -117,7 +122,7 @@ double Simulation::BoundaryValues::value(const dealii::Point<dim> & p,
 }
 
 
-void Simulation::setup_system()
+void Solver::setup_system()
 {
     dof_handler.distribute_dofs(fe);
 
@@ -128,8 +133,11 @@ void Simulation::setup_system()
     DoFTools::make_hanging_node_constraints(
         dof_handler, constraints);
 
-    VectorTools::interpolate_boundary_values(
-        dof_handler, 0, ZeroFunction<dim>(), constraints);
+    for(auto &key: boundaryRegionValue)
+        for(auto regionTag: key.second)
+            VectorTools::interpolate_boundary_values(
+                dof_handler, regionTag, ConstantFunction<dim>(key.first), constraints);
+    
 
     constraints.close();
     DynamicSparsityPattern dsp(dof_handler.n_dofs());
@@ -149,7 +157,7 @@ double coefficient(const dealii::Point<2> &p)
 }
 
 
-void Simulation::assemble_system()
+void Solver::assemble_system()
 {
     const QGauss<dim> quadrature_formula(3);
     FEValues<dim> fe_values(fe, quadrature_formula,
@@ -193,9 +201,9 @@ void Simulation::assemble_system()
 }
 
 
-void Simulation::solve()
+void Solver::solve()
 {
-    SolverControl solver_control(4000, 1e-12);
+    SolverControl solver_control(4000, 1e-6);
     SolverCG<> solver(solver_control);
     PreconditionSSOR<> preconditioner;
     preconditioner.initialize(system_matrix, 1.2);
@@ -205,7 +213,7 @@ void Simulation::solve()
 }
 
 
-void Simulation::refine_grid()
+void Solver::refine_grid()
 {
     Vector<float> estimated_error_per_cell(triangulation.n_active_cells());
     KellyErrorEstimator<dim>::estimate(dof_handler,
@@ -220,7 +228,7 @@ void Simulation::refine_grid()
 }
 
 
-void Simulation::output_results(const unsigned int cycle) const
+void Solver::output_results(const unsigned int cycle) const
 {
     DataOut<dim> data_out;
     data_out.attach_dof_handler(dof_handler);
@@ -231,7 +239,7 @@ void Simulation::output_results(const unsigned int cycle) const
 }
 
 
-void Simulation::run()
+void Solver::run()
 {
     for (unsigned int cycle = 0; cycle < numOfRefinments; ++cycle)
     {

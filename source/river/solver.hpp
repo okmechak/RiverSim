@@ -34,6 +34,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <map>
 #include <utility>
 
 #include "common.hpp"
@@ -43,11 +44,13 @@ using namespace dealii;
 namespace River
 {
 
-class Simulation
+class Solver
 {
   public:
-    Simulation();
-    ~Simulation();
+    Solver();
+    ~Solver();
+    unsigned int numOfRefinments = 1;
+    void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
     void SetMesh(struct vecTriangulateIO &mesh);
     void OpenMesh(string fileName = "river.msh");
     void run();
@@ -56,6 +59,8 @@ class Simulation
     const static int dim = 2;
 
     Triangulation<dim> triangulation;
+
+    std::map<double, std::vector<int>> boundaryRegionValue;
 
     FE_Q<dim> fe;
     DoFHandler<dim> dof_handler;
@@ -68,7 +73,6 @@ class Simulation
     Vector<double> solution;
     Vector<double> system_rhs;
 
-    unsigned int numOfRefinments = 1;
 
     void setup_system();
     void assemble_system();
@@ -85,6 +89,7 @@ class Simulation
     class RightHandSide : public Function<dim>
     {
       public:
+        double fieldValue = 0.;
         RightHandSide() : Function<dim>() {}
         virtual double value(const dealii::Point<dim> &p,
                              const unsigned int component = 0) const;

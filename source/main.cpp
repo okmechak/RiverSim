@@ -37,12 +37,15 @@ int main(int argc, char *argv[])
     River::Gmsh Gmsh;
     Gmsh.Open("quadrangle.msh");
     Gmsh.Write();
-    Gmsh.StartUserInterface();
 
     //Solve
-    River::Simulation sim;
+    River::Solver sim;
+    sim.numOfRefinments = vm["RefNum"].as<int>();
+    sim.SetBoundaryRegionValue({Geometry::Markers::Bottom, Geometry::Markers::River}, 0.);
+    sim.SetBoundaryRegionValue({Geometry::Markers::Top}, 1.);
     sim.OpenMesh("quadrangle.msh");
     sim.run();
 
+    Gmsh.StartUserInterface();
     return 0;
 }

@@ -9,8 +9,9 @@ namespace River{
 
 */
 GeomPolar::GeomPolar(double r, double phiVal, 
-      int branchIdVal):
-      branchId(branchIdVal)
+      int branchIdVal, int regionTagVal):
+      branchId(branchIdVal),
+      regionTag(regionTagVal)
 {
     dl = r;
     phi = phiVal;
@@ -43,6 +44,8 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
     {
       x = p.dl * cos(p.phi);
       y = p.dl * sin(p.phi);
+      regionTag = p.regionTag;
+      branchId = p.branchId;
     }
 
     GeomPoint::GeomPoint(Point p):
@@ -163,7 +166,8 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     ostream& operator << (ostream& write, const GeomPoint& p)
     {
-        write << "point: " << p.x << ", " << p.y;
+        write << "point: " << p.x << ", " << p.y << endl 
+              << "       branch: " << p.branchId << " regionTag: " << p.regionTag;
         return write;
     }
 
@@ -334,19 +338,20 @@ void Geometry::SetSquareBoundary(
 {
     boundaryPoints = {
         {BottomBoxCorner.x + (dx + eps / 2), BottomBoxCorner.y},   //node 2
-        {TopBoxCorner.x,                 BottomBoxCorner.y},       //node 3
-        {TopBoxCorner.x,                 TopBoxCorner.y},          //node 4
-        {BottomBoxCorner.x,              TopBoxCorner.y},          //node 5
-        {BottomBoxCorner.x,              BottomBoxCorner.y},       //node 6
+        {TopBoxCorner.x,                     BottomBoxCorner.y},   //node 3
+        {TopBoxCorner.x,                     TopBoxCorner.y},      //node 4
+        {BottomBoxCorner.x,                  TopBoxCorner.y},      //node 5
+        {BottomBoxCorner.x,                  BottomBoxCorner.y},   //node 6
         {BottomBoxCorner.x + (dx - eps / 2), BottomBoxCorner.y}    //node 7
     };
 
+    int borderBranchId = 0;
     boundaryLines = {
-        {1, 2, 0, Markers::Bottom},   
-        {2, 3, 0, Markers::Right},   
-        {3, 4, 0, Markers::Top},   
-        {4, 5, 0, Markers::Left}, 
-        {5, 6, 0, Markers::Bottom}
+        {1, 2, borderBranchId, Markers::Bottom},   
+        {2, 3, borderBranchId, Markers::Right},   
+        {3, 4, borderBranchId, Markers::Top},   
+        {4, 5, borderBranchId, Markers::Left}, 
+        {5, 6, borderBranchId, Markers::Bottom}
         };
 }
 
@@ -401,12 +406,25 @@ void Geometry::generateCircularBoundary()
     if(branchIndexes.count(curId))
         InserBranchTree(curId, M_PI/2., true);
 
+    
+    lines.insert(lines.end(), boundaryLines.begin(), boundaryLines.end());
+    int index = boundaryPoints.size();
+    for(auto &p: points)
+    {
+        if(index < points.size())
+            lines.push_back(GeomLine(index, index + 1, p.branchId, Markers::River));
+        else
+            lines.push_back(GeomLine(index, 1, p.branchId, Markers::River));
+
+        index++;
+    }
 }
 
 
 tuple<vector<tethex::Point>, vector<tethex::MeshElement *>, vector<tethex::MeshElement *>> 
 Geometry::GetInitialMesh()
 {   
+    //TODO add differenr tags!!!
     auto meshOut = tethex::Mesh{};
 
     generateCircularBoundary();
@@ -415,17 +433,13 @@ Geometry::GetInitialMesh()
     vector<tethex::MeshElement *> meshTriangles;//empy
     meshPoints.reserve(points.size());
     meshLines.reserve(points.size());
-    int index = 1;
-    for(auto &p: points)
-    {
-        meshPoints.push_back(tethex::Point(p.x, p.y, 0/*z-coord*/, p.regionTag));
-        if(index < points.size())
-            meshLines.push_back(new tethex::Line({index, index + 1}, p.regionTag));
-        else
-            meshLines.push_back(new tethex::Line({index, 1}, 0));//FIXME
 
-        ++index;
-    }
+    for(auto &p: points)
+        meshPoints.push_back(tethex::Point(p.x, p.y, 0/*z-coord*/, p.regionTag));
+
+    for(auto &l: lines)
+        meshLines.push_back(new tethex::Line(l.p1, l.p2, l.regionTag));
+        
     
     return {meshPoints, meshLines, meshTriangles};
 }
@@ -442,6 +456,7 @@ void Geometry::InserBranchTree(unsigned int id, double phi, bool isRoot)
             begin(curBranch.leftPoints) + 1, 
             end(curBranch.leftPoints) - 1
             );
+        
 
         if(branchRelation.count(id))
         {
@@ -489,6 +504,7 @@ pair<GeomPoint, double> Geometry::GetEndPointOfSquareBoundary()
     auto y = boundaryPoints[0].y;
     return {GeomPoint{x, y}, M_PI / 2.};
 }
+
 
 void Geometry::SetEps(double epsVal){
     eps/*object parameter*/ = epsVal/*argument*/;

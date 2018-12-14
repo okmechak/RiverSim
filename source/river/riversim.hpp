@@ -10,6 +10,7 @@ namespace River
     namespace SimpleGeo{
     Geometry CustomRiverTree(double dl = 0.01, double eps = 1e-5);
     Geometry Box();
+    Geometry SingleTip();
     }
     /* 
         TODO: 
