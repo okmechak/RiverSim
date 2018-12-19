@@ -1,0 +1,48 @@
+# Installation and set-up
+
+RiverSim - contains three major dependencies:
+
+- Deal.II
+- GMSH
+- Boost
+
+# Deal.II
+There is three different ways:
+
+- Download SDK fiels from official site: dealii.com
+- Build project and install from repository
+> git clone https://github.com/dealii/dealii.git
+> mkdir dealii_build && cd dealii_build
+> cmake ../dealii_build
+> sudo make test install
+
+-From Ubuntu packages:
+> sudo apt install libdeal.ii-dev
+
+
+# GMSH
+There is two ways to install GMSH
+- download sdk from official site: gmsh.info
+- build from repository
+> git clone https://gitlab.onelab.info/gmsh/gmsh.git
+but carefully read installation instruction of gmsh. It depends on fltk, opengl and some others.
+Also you have to chose build shared and GUI.
+
+# Boost
+There is a lot ways to install it too, but most convinient and easy is:
+>sudo apt install libboost-all-dev
+RiverSim depends only on "program options" and "test" modules, so if you know how you can only install these options
+
+
+# Notes
+Author is building from source to folders:
+/usr/local/dealii or /usr/local/gmsh
+if You want some others you can modify top level CMakeLists.txt fiels
+
+in any problems, please contact me: oleg.kmechak@gmail.com
+
+# Cross Platform
+Currently RiverSim was only setuped on Linux machines(Ubuntu, Minux)
+It is not a big deal to compile it on Windows, but author encountered problems with porting of Gmsh
+
+
