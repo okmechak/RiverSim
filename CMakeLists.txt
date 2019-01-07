@@ -8,7 +8,7 @@ set(riversim_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
 set(riversim_INSTALL_BIN_DIR ${CMAKE_INSTALL_PREFIX})
 set(riversim_INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
 set(gmsh_DIRECTORY /usr/local/gmsh)
-set(dealii_DIRECTORY /usr/local/dealii_debug)
+set(dealii_DIRECTORY /usr/local/dealii)
 
 enable_testing()
 

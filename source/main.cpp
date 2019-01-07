@@ -36,7 +36,6 @@ int main(int argc, char *argv[])
     
     River::Gmsh Gmsh;
     Gmsh.Open("quadrangle.msh");
-    Gmsh.Write();
 
     //Solve
     River::Solver sim;

@@ -22,17 +22,6 @@ namespace geo = gmsh::model::geo;
 
 namespace River
 {
-  class MeshGenerator{
-    public:
-      MeshGenerator() = default;
-      void PrintGeometry(struct vecTriangulateIO &geom);
-      
-      struct vecTriangulateIO toVectorStr(struct triangulateio &geom, bool b3D = true);
-      struct triangulateio toTriaStr(struct vecTriangulateIO &geom);
-    private:
-
-
-  };
 
   
  //class Tethex
@@ -46,7 +35,7 @@ namespace River
 
 
 
-  class Triangle: public MeshGenerator, public tethex::Mesh
+  class Triangle: public tethex::Mesh
   {
     private:
       int dim = 2;
@@ -116,6 +105,11 @@ namespace River
       vector<tethex::MeshElement*>>  
       IOToTethex(
         struct triangulateio &io);
+
+      void PrintGeometry(struct vecTriangulateIO &geom);
+      
+      struct vecTriangulateIO toVectorStr(struct triangulateio &geom, bool b3D = true);
+      struct triangulateio toTriaStr(struct vecTriangulateIO &geom);
       
     public:
       void PrintGeometry(struct triangulateio &io);

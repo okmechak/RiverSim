@@ -12,7 +12,7 @@ namespace River{
 
 */
 
-struct vecTriangulateIO MeshGenerator::toVectorStr(struct triangulateio &geom, bool b3D)
+struct vecTriangulateIO Triangle::toVectorStr(struct triangulateio &geom, bool b3D)
 {
   struct vecTriangulateIO geoOut;
   int i, dim = 2;
@@ -99,7 +99,7 @@ struct vecTriangulateIO MeshGenerator::toVectorStr(struct triangulateio &geom, b
 }
 
 
-struct triangulateio MeshGenerator::toTriaStr(struct vecTriangulateIO &geom)
+struct triangulateio Triangle::toTriaStr(struct vecTriangulateIO &geom)
 {
   struct triangulateio triaStr;
   set_tria_to_default(&triaStr);
