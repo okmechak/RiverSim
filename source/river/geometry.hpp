@@ -184,8 +184,7 @@ public:
   vector<unsigned int> GetTipIds();
   Branch& GetBranch(unsigned int id);
   vector<GeomPolar> GetTipPolars();
-  tuple<vector<tethex::Point>, vector<tethex::MeshElement *>, vector<tethex::MeshElement *>>   
-    GetInitialMesh();
+  tethex::Mesh GetInitialMesh();
   void SetEps(double epsVal);
 
 

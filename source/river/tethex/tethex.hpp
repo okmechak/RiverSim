@@ -826,6 +826,7 @@ public:
                  * Constructor - nothing special
                  */
   Mesh();
+  Mesh(Mesh &) = default;
 
                   /**
                  * Constructor - nothing special

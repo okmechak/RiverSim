@@ -152,9 +152,7 @@ namespace River
 
       Triangle();
       Triangle(
-        vector<tethex::Point> &verticesVal, 
-        vector<tethex::MeshElement *> &linesVal,
-        vector<tethex::MeshElement *> &trianglesVal
+        tethex::Mesh &initMesh
       );
       ~Triangle();
       struct vecTriangulateIO Generate(struct vecTriangulateIO &geom);

@@ -21,10 +21,9 @@ int main(int argc, char *argv[])
     */
     auto geom = SimpleGeo::CustomRiverTree();
     
+    auto initMesh = geom.GetInitialMesh();
+    auto tr = Triangle(initMesh);
 
-    auto [points, lines, triangles] = geom.GetInitialMesh();
-
-    auto tr = Triangle(points, lines, triangles);
     tr.Verbose = vm["Verbose"].as<bool>();
     tr.Quite = vm["Quiet"].as<bool>();
     tr.AreaConstrain = tr.ConstrainAngle = true;

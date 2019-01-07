@@ -394,11 +394,10 @@ Triangle::Triangle()
         PrintOptions(true);
     }
 }
+
 Triangle::Triangle(
-        vector<tethex::Point> &verticesVal, 
-        vector<tethex::MeshElement *> &linesVal,
-        vector<tethex::MeshElement *> &trianglesVal
-      ):Mesh(verticesVal, linesVal, trianglesVal)
+        tethex::Mesh &initMesh
+      ):Mesh(initMesh)
 {}
 
 

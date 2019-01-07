@@ -421,11 +421,9 @@ void Geometry::generateCircularBoundary()
 }
 
 
-tuple<vector<tethex::Point>, vector<tethex::MeshElement *>, vector<tethex::MeshElement *>> 
-Geometry::GetInitialMesh()
+ 
+tethex::Mesh Geometry::GetInitialMesh()
 {   
-    //TODO add differenr tags!!!
-    auto meshOut = tethex::Mesh{};
 
     generateCircularBoundary();
     vector<tethex::Point> meshPoints;
@@ -441,7 +439,11 @@ Geometry::GetInitialMesh()
         meshLines.push_back(new tethex::Line(l.p1, l.p2, l.regionTag));
         
     
-    return {meshPoints, meshLines, meshTriangles};
+    //TODO add differenr tags!!!
+    auto meshOut = tethex::Mesh{meshPoints, meshLines, meshTriangles};
+    
+
+    return meshOut;
 }
 /*
     Recursive inserting of branches
