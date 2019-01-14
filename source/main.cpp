@@ -17,22 +17,43 @@ int main(int argc, char *argv[])
         printAsciiSignature();
 
     /*
-        Geometry Object
-    */
-    auto geom = SimpleGeo::CustomRiverTree();
-    
+                    Geometry Object
+         */
+    River::Geometry geom;
+    switch(vm["GeomType"].as<int>())
+    {   
+        case 0: 
+            geom = SimpleGeo::Box();
+            break;
+        case 1:
+            geom = SimpleGeo::CustomRiverTree();
+            break;
+        case 2:
+            geom = SimpleGeo::SingleTip();
+            break;
+    }
     auto initMesh = geom.GetInitialMesh();
-    auto tr = Triangle(initMesh);
-
+    
+    /*
+                Mesh Generation
+        */
+    auto tr = Triangle();
     tr.Verbose = vm["Verbose"].as<bool>();
     tr.Quite = vm["Quiet"].as<bool>();
     tr.AreaConstrain = tr.ConstrainAngle = true;
     tr.MaxTriaArea = vm["MeshMaxArea"].as<double>();
     tr.MinAngle = vm["MeshMinAngle"].as<double>();
-    tr.Generate();
-    tr.convert();
-    tr.write("quadrangle.msh");
-    
+    //generate mesh
+    tr.Generate(initMesh);
+
+
+    /*
+
+         */
+    initMesh.convert();
+    initMesh.write("quadrangle.msh");
+    initMesh.info();
+
     River::Gmsh Gmsh;
     Gmsh.Open("quadrangle.msh");
 
@@ -41,6 +62,7 @@ int main(int argc, char *argv[])
     sim.numOfRefinments = vm["RefNum"].as<int>();
     sim.SetBoundaryRegionValue({Geometry::Markers::Bottom, Geometry::Markers::River}, 0.);
     sim.SetBoundaryRegionValue({Geometry::Markers::Top}, 1.);
+    //sim.SetMesh(initMesh);
     sim.OpenMesh("quadrangle.msh");
     sim.run();
 

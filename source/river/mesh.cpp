@@ -11,143 +11,6 @@ namespace River{
     
 
 */
-
-struct vecTriangulateIO Triangle::toVectorStr(struct triangulateio &geom, bool b3D)
-{
-  struct vecTriangulateIO geoOut;
-  int i, dim = 2;
-  double z0 = 0.;
-  if(b3D) dim = 3;
-  //Triangle generates two dimensional data, but almost all packages need three dimmnesion
-  //so we have such possibility
-  //reserve memory for vector containers
-  
-  geoOut.node.tags.reserve(dim * geom.numberofpoints);
-  geoOut.node.attributes.reserve(geom.numberofpoints * geom.numberofpointattributes);
-  geoOut.node.markers.reserve(geom.numberofpoints);
-  geoOut.node.numOfAttr = geom.numberofpointattributes;
-
-  geoOut.element.line.nodeTags.reserve(2 * geom.numberofsegments);
-  geoOut.element.line.markers.reserve(geom.numberofsegments);
-
-  geoOut.element.triangle.nodeTags.reserve(3 * geom.numberoftriangles);
-  geoOut.element.triangle.areas.reserve(geom.numberoftriangles);
-  geoOut.element.triangle.attributes.reserve(geom.numberoftriangles * geom.numberoftriangleattributes);
-  geoOut.element.triangle.numOfAttr = geom.numberoftriangleattributes;
-
-  geoOut.holes.reserve(dim * geom.numberofholes);
-
-  geoOut.regions.reserve(dim * geom.numberofregions);
-  geoOut.numOfRegions = geom.numberofregions;
-
-  geoOut.edges.reserve(dim * geom.numberofedges);
-  geoOut.edgeMarkers.reserve(geom.numberofedges);
-
-  geoOut.element.triangle.neighbors.reserve(geom.numberoftriangles * 3);
-  
-  for(i = 0; i < 2 * geom.numberofpoints; ++i){
-    geoOut.node.tags.push_back(geom.pointlist[i]);
-    if(b3D && i % 2 != 0)
-        geoOut.node.tags.push_back(z0);
-    if(i < geom.numberofpoints)
-        geoOut.node.markers.push_back(geom.pointmarkerlist[i]);
-  }
-
-  
-  for(i = 0; i < geom.numberofpoints * geom.numberofpointattributes; ++i)
-    geoOut.node.attributes.push_back(geom.pointattributelist[i]);
-
-  
-  for(i = 0; i < 2 * geom.numberofsegments; ++i){
-    geoOut.element.line.nodeTags.push_back(geom.segmentlist[i]);
-    if (i < geom.numberofsegments)
-        geoOut.element.line.markers.push_back(geom.segmentmarkerlist[i]);
-  }
-
-  
-  for(i = 0; i < 3*geom.numberoftriangles; ++i){
-    geoOut.element.triangle.nodeTags.push_back(geom.trianglelist[i]);
-    if(geom.trianglearealist != NULL && i < geom.numberoftriangles)
-        geoOut.element.triangle.areas.push_back(geom.trianglearealist[i]);
-  }
-
-  
-  for(i = 0; i < geom.numberoftriangles * geom.numberoftriangleattributes; ++i)
-    geoOut.element.triangle.attributes.push_back(geom.triangleattributelist[i]);
-
-  
-  for(i = 0; i < dim * geom.numberofholes; ++i){
-    geoOut.holes.push_back(geom.holelist[i]);
-    if(b3D && i % 2 != 0)
-        geoOut.holes.push_back(z0);
-  }
-
-  
-  for(i = 0; i < dim * geom.numberofregions; ++i){
-    geoOut.regions.push_back(geom.regionlist[i]);
-    if(b3D && i % 2 != 0)
-        geoOut.regions.push_back(z0);
-  }
-
-  
-  for(i = 0; i < 2 * geom.numberofedges; ++i){
-    geoOut.edges.push_back(geom.edgelist[i]);
-    if (i < geom.numberofedges)
-        geoOut.edgeMarkers.push_back(geom.edgemarkerlist[i]);
-  }
-  return geoOut;
-}
-
-
-struct triangulateio Triangle::toTriaStr(struct vecTriangulateIO &geom)
-{
-  struct triangulateio triaStr;
-  set_tria_to_default(&triaStr);
-
-  if(!geom.node.coords.empty())
-  {
-    triaStr.pointlist = &geom.node.coords[0];                            /* In / out */
-    triaStr.pointattributelist = &geom.node.attributes[0];          /* In / out */
-    triaStr.pointmarkerlist = &geom.node.markers[0];                /* In / out */
-    triaStr.numberofpoints = geom.node.coords.size()/2;                /* In / out */
-    triaStr.numberofpointattributes = geom.node.numOfAttr;       /* In / out */
-  }
-
-  if(!geom.element.triangle.nodeTags.empty())
-  {
-    triaStr.trianglelist = &geom.element.triangle.nodeTags[0];                      /* In / out */
-    triaStr.triangleattributelist = &geom.element.triangle.attributes[0];    /* In / out */
-    triaStr.trianglearealist = &geom.element.triangle.areas[0];              /* In only */
-    triaStr.neighborlist = NULL;                               /* Out only */
-    triaStr.numberoftriangles = geom.element.triangle.nodeTags.size()/3;            /* In / out */
-    //if (SecondOrderMesh)
-    //  triaStr.numberoftriangles = geom.triangles.size()/6;
-    triaStr.numberofcorners = 3;                               /* In / out */
-    triaStr.numberoftriangleattributes = geom.element.triangle.numOfAttr; /* In / out */
-  }
-
-  if(!geom.element.line.nodeTags.empty())
-  {
-    triaStr.segmentlist = &geom.element.line.nodeTags[0];                        /* In / out */
-    triaStr.segmentmarkerlist = &geom.element.line.markers[0];            /* In / out */
-    triaStr.numberofsegments = geom.element.line.nodeTags.size() / 2;            /* In / out */
-  }
-
-  if(!geom.holes.empty())
-  {
-    triaStr.holelist = &geom.holes[0];               /* In / pointer to array copied out */
-    triaStr.numberofholes = geom.holes.size() / 2; /* In / copied out */
-  }
-
-  if(!geom.regions.empty())
-  {
-    triaStr.regionlist = &geom.regions[0];           /* In / pointer to array copied out */
-    triaStr.numberofregions = geom.numOfRegions;     /* In / copied out */
-  }
-
-  return triaStr;
-}
-
 void Triangle::PrintGeometry(struct triangulateio &io)
 {
     int i, j, shift = 1;
@@ -271,23 +134,20 @@ void Triangle::PrintGeometry(struct triangulateio &io)
 }
 
 
-struct triangulateio Triangle::tethexToIO(
-    vector<tethex::Point> verticesVal,  
-    vector<tethex::MeshElement *> linesVal,
-    vector<tethex::MeshElement *> trianglesVal)
+struct triangulateio Triangle::tethexToIO(tethex::Mesh &mesh)
 {
     struct triangulateio io;
     set_tria_to_default(&io);
 
     //Points
-    if(!verticesVal.empty())
+    if(!mesh.vertices.empty())
     {
-        io.pointlist = new double[2 * verticesVal.size()];
-        io.pointmarkerlist = new int[verticesVal.size()];
-        io.numberofpoints = verticesVal.size();
+        io.pointlist = new double[2 * mesh.vertices.size()];
+        io.pointmarkerlist = new int[mesh.vertices.size()];
+        io.numberofpoints = mesh.vertices.size();
         
         int i = 0;
-        for(auto &p: verticesVal)
+        for(auto &p: mesh.vertices)
         {
             io.pointlist[2 * i ] = p.get_coord(0);
             io.pointlist[2 * i + 1] = p.get_coord(1);
@@ -297,13 +157,13 @@ struct triangulateio Triangle::tethexToIO(
     }
 
     //Segments
-    if(!linesVal.empty())
+    if(!mesh.lines.empty())
     {
-        io.segmentlist = new int[2 * linesVal.size()];
-        io.segmentmarkerlist = new int[linesVal.size()];
-        io.numberofsegments = linesVal.size();
+        io.segmentlist = new int[2 * mesh.lines.size()];
+        io.segmentmarkerlist = new int[mesh.lines.size()];
+        io.numberofsegments = mesh.lines.size();
         int i = 0;
-        for(auto l: linesVal)
+        for(auto l: mesh.lines)
         {
             io.segmentlist[2 * i ] = l->get_vertex(0);
             io.segmentlist[2 * i + 1] = l->get_vertex(1);
@@ -312,14 +172,14 @@ struct triangulateio Triangle::tethexToIO(
         }
     }
 
-    if(!trianglesVal.empty())
+    if(!mesh.triangles.empty())
     {
-        io.trianglelist = new int[3 * linesVal.size()];
+        io.trianglelist = new int[3 * mesh.lines.size()];
         io.numberoftriangleattributes = 1;
-        io.triangleattributelist = new double[linesVal.size()];
-        io.numberofsegments = linesVal.size();
+        io.triangleattributelist = new double[mesh.lines.size()];
+        io.numberofsegments = mesh.lines.size();
         int i = 0;
-        for(auto t: trianglesVal)
+        for(auto t: mesh.triangles)
         {
             io.trianglelist[3 * i ] = t->get_vertex(0);
             io.trianglelist[3 * i + 1] = t->get_vertex(1);
@@ -332,10 +192,8 @@ struct triangulateio Triangle::tethexToIO(
     return io;
 }
 
-tuple<vector<tethex::Point>,  
-      vector<tethex::MeshElement*>,
-      vector<tethex::MeshElement*>>  Triangle::IOToTethex(
-        struct triangulateio &io)
+    void  Triangle::IOToTethex(
+        struct triangulateio &io, tethex::Mesh &initMesh)
 {
     vector<tethex::Point> pointsVal;
     vector<tethex::MeshElement*> segmentsVal;
@@ -377,7 +235,9 @@ tuple<vector<tethex::Point>,
         trianglesVal.push_back(new tethex::Triangle(v1, v2, v3, regionTag));
     }
 
-    return {pointsVal, segmentsVal, trianglesVal};
+    initMesh.set_vertexes(pointsVal);
+    initMesh.set_lines(segmentsVal);
+    initMesh.set_triangles(trianglesVal);
 }
 
 /*
@@ -394,12 +254,6 @@ Triangle::Triangle()
         PrintOptions(true);
     }
 }
-
-Triangle::Triangle(
-        tethex::Mesh &initMesh
-      ):Mesh(initMesh)
-{}
-
 
 Triangle::~Triangle()
 {
@@ -540,44 +394,12 @@ struct triangulateio* Triangle::GetVoronoi()
 }
 
 
-struct vecTriangulateIO Triangle::Generate(struct vecTriangulateIO &geom)
+
+void Triangle::Generate(tethex::Mesh &initMesh)
 {
     SetAllValuesToDefault();
-    
-    in = toTriaStr(geom);
 
-    if (Verbose){
-        cout << "Input Geometry: " << endl;
-        PrintGeometry(in);
-    }
-
-    //Main call to Triangle
-    triangulate(options.c_str(), &in, &out, &vorout);
-    
-    if (Verbose){
-        cout << "Output Geometry: " << endl;
-        PrintGeometry(out);
-    }
-    if (Verbose && VoronoiDiagram)
-    {
-        cout << "Voronoi Diagram: " << endl;
-        PrintGeometry(vorout);
-    }
-    
-    struct vecTriangulateIO OutputMesh = toVectorStr(out);
-
-    FreeAllocatedMemory();
-
-    return OutputMesh;
-}
-
-
-
-void Triangle::Generate()
-{
-    SetAllValuesToDefault();
-    
-    in = tethexToIO(vertices, lines, triangles);
+    in = tethexToIO(initMesh);
 
     if (Verbose)
     {
@@ -600,11 +422,7 @@ void Triangle::Generate()
         PrintGeometry(vorout);
     }
 
-    auto [pointsVal, edgesVal, trianglesVal] = IOToTethex(out);
-
-    vertices = pointsVal;
-    lines = edgesVal;
-    triangles = trianglesVal;
+    IOToTethex(out, initMesh);
     FreeAllocatedMemory();
 }
 

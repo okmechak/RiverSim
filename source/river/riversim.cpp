@@ -3,7 +3,7 @@ namespace River
 {
     namespace SimpleGeo{
 
-        void AddBranches(Geometry &riverGeom, unsigned int id, double angle = 0.01, int size = 20, double dl = 0.02)
+        void AddBranches(Geometry &riverGeom, unsigned int id, double angle = 0.01, int size = 20, double dl = 0.1)
         {
 
             for (int i = 0; i < size; ++i)
@@ -26,14 +26,14 @@ namespace River
             auto rootBranchID = 1;
             riverGeom.initiateRootBranch(rootBranchID);
 
-            AddBranches(riverGeom, rootBranchID, 0.001, 4);
+            AddBranches(riverGeom, rootBranchID, 0.001, 3);
             return riverGeom;
         }
 
         Geometry Box()
         {
             auto riverGeom = Geometry();
-            riverGeom.SetEps(0.001);
+            riverGeom.SetEps(0.1);
             riverGeom.SetSquareBoundary({0., 0.}, {1., 1.}, 0.5);
 
             return riverGeom;

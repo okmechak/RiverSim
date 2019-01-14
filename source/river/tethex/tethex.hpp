@@ -1017,55 +1017,55 @@ public:
                  * Get the copy of vertex
                  * @param number - the number of vertex
                  */
-  std::vector<Point> get_vertices() const;
+  std::vector<Point>& get_vertices();
 
                 /**
                  * Get the physical point
                  * @param number - the number of point
                  */
-  std::vector<MeshElement*> get_points() const;
+  std::vector<MeshElement*>& get_points();
 
                 /**
                  * Get the mesh edge
                  * @param number - the number of edge
                  */
-  std::vector<MeshElement*> get_edges() const;
+  std::vector<MeshElement*>& get_edges();
 
                 /**
                  * Get the physical line
                  * @param number - the number of line
                  */
-  std::vector<MeshElement*> get_lines() const;
+  std::vector<MeshElement*>& get_lines();
 
                 /**
                  * Get the mesh face
                  * @param number - the number of face
                  */
-  std::vector<MeshElement*> get_faces() const;
+  std::vector<MeshElement*>& get_faces();
 
                 /**
                  * Get the mesh triangle
                  * @param number - the number of triangle
                  */
-  std::vector<MeshElement*> get_triangles() const;
+  std::vector<MeshElement*>& get_triangles();
 
                 /**
                  * Get the mesh tetrahedron
                  * @param number - the number of tetrahedron
                  */
-  std::vector<MeshElement*> get_tetrahedrons() const;
+  std::vector<MeshElement*>& get_tetrahedrons();
 
                 /**
                  * Get the mesh quadrangle
                  * @param number - the number of quadrangle
                  */
-  std::vector<MeshElement*> get_quadrangles() const;
+  std::vector<MeshElement*>& get_quadrangles();
 
                 /**
                  * Get the mesh hexahedron
                  * @param number - the number of hexahedron
                  */
-  std::vector<MeshElement*> get_hexahedrons() const;
+  std::vector<MeshElement*>& get_hexahedrons();
 
                 /**
                  * Set the copy of vertex
@@ -1125,7 +1125,7 @@ public:
                  */
   void clean();
   
-protected:
+//protected: FIXME: !!!!!
                 /**
                  * Mesh vertices (nodes in terms of Gmsh)
                  */

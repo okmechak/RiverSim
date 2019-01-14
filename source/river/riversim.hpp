@@ -8,7 +8,7 @@
 namespace River
 {
     namespace SimpleGeo{
-    Geometry CustomRiverTree(double dl = 0.01, double eps = 1e-5);
+    Geometry CustomRiverTree(double dl = 0.1, double eps = 0.03);
     Geometry Box();
     Geometry SingleTip();
     }

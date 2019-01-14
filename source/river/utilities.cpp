@@ -38,7 +38,8 @@ po::variables_map processProgramOptions(int argc, char *argv[])
     ("MeshMaxArea,A", po::value<double>()->default_value(-1.), "constraints maximal area of triangle element") //FIXME.. some errors appears: faile d
     ("MeshMinAngle,q", po::value<double>()->default_value(-1.), "constraints minimal angle of triangle element")
     ("Eps,e", po::value<double>()->default_value(0.000001), "Width of branch") //conversion using boost::any_cast
-    ("RefNum,r", po::value<int>()->default_value(3), "Number of solver adaptive refinments");
+    ("RefNum,r", po::value<int>()->default_value(3), "Number of solver adaptive refinments")
+    ("GeomType,g", po::value<int>()->default_value(0), "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip");
 
 
     po::positional_options_description p;

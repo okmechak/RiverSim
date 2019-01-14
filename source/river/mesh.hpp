@@ -30,12 +30,11 @@ namespace River
  //     bool Verbose = false;
  //     Tethex();
  //     ~Tethex();
- //     void Convert(struct vecTriangulateIO &);
  //};
 
 
 
-  class Triangle: public tethex::Mesh
+  class Triangle
   {
     private:
       int dim = 2;
@@ -85,31 +84,20 @@ namespace River
 
       void SetAllValuesToDefault();
       void FreeAllocatedMemory();
+      void* AllocateMemory(int size);
 
       string updateOptions();
 
       void PrintOptions(bool qDetailedDescription = true);
       
       void SetGeometry(struct triangulateio &geom);
-      void SetGeometry(struct vecTriangulateIO &geom);
       struct triangulateio* GetGeometry();
       struct triangulateio* GetVoronoi();
 
-      struct triangulateio tethexToIO(
-        vector<tethex::Point> verticesVal,  
-        vector<tethex::MeshElement *> linesVal,
-        vector<tethex::MeshElement *> trianglesVal);
+      struct triangulateio tethexToIO(tethex::Mesh &initMesh);
 
-      tuple<vector<tethex::Point>,
-      vector<tethex::MeshElement*>,
-      vector<tethex::MeshElement*>>  
-      IOToTethex(
-        struct triangulateio &io);
-
-      void PrintGeometry(struct vecTriangulateIO &geom);
-      
-      struct vecTriangulateIO toVectorStr(struct triangulateio &geom, bool b3D = true);
-      struct triangulateio toTriaStr(struct vecTriangulateIO &geom);
+      void IOToTethex(
+        struct triangulateio &io, tethex::Mesh &initMesh);
       
     public:
       void PrintGeometry(struct triangulateio &io);
@@ -150,13 +138,11 @@ namespace River
       //V - verbose
       bool Verbose = false;
 
+      bool Quadrangles = false;
+
       Triangle();
-      Triangle(
-        tethex::Mesh &initMesh
-      );
       ~Triangle();
-      struct vecTriangulateIO Generate(struct vecTriangulateIO &geom);
-      void Generate();
+      void Generate(tethex::Mesh &initMesh);
 
   };
 

@@ -593,11 +593,17 @@ int IncidenceMatrix::find(int row_number,
       return i;
   }
 
+  for (int i = row[col_number]; i < row[col_number + 1]; ++i)
+  {
+    if (col[i] == row_number)
+      return i;
+  }
+
   // if the number cannot be found in this row, we throw exception
-  require(false,
-          "The right value wasn't found for such row and column numbers: row_number = " +
-          d2s(row_number) + ", col_number = " + d2s(col_number) + "!");
-  return 0; // to calm compiler down about returned value
+  //require(false,
+  //        "The right value wasn't found for such row and column numbers: row_number = " +
+  //        d2s(row_number) + ", col_number = " + d2s(col_number) + "!");
+  return -1; // to calm compiler down about returned value
 }
 
 
@@ -684,6 +690,7 @@ Mesh::~Mesh()
 
 void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
 {
+  //TODO: free up from memory previous vector!
   vertices = vertexesVal;
 }
                 /**
@@ -692,6 +699,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_points(std::vector<MeshElement *> &pointsVal)
   {
+    //TODO: free up from memory previous vector!
     points = pointsVal;
   }
 
@@ -710,6 +718,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_lines(std::vector<MeshElement *> &linesVal)
   { 
+    //TODO: free up from memory previous vector!
     lines = linesVal;
   }
 
@@ -719,6 +728,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_triangles(std::vector<MeshElement *> &trianglesVal)
   {
+    //TODO: free up from memory previous vector!
     triangles = trianglesVal;
   }
               /**
@@ -727,6 +737,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_faces(std::vector<MeshElement *> &facesVal)
   {
+    //TODO: free up from memory previous vector!
     faces = facesVal;
   }
                 /**
@@ -743,6 +754,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_quadrangles(std::vector<MeshElement *> &quadranglesVal)
   {
+    //TODO: free up from memory previous vector!
     quadrangles = quadranglesVal;
   }
 
@@ -752,6 +764,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_hexahedrons(std::vector<MeshElement *> &hexahedronsVal)
   {
+    //TODO: free up from memory previous vector!
     hexahedra = hexahedronsVal;
   }
 
@@ -1756,47 +1769,47 @@ MeshElement& Mesh::get_hexahedron(int number) const
 
 
 
-std::vector<Point> Mesh::get_vertices() const
+std::vector<Point>& Mesh::get_vertices()
 {
   return vertices;
 }
 
-std::vector<MeshElement*> Mesh::get_points() const
+std::vector<MeshElement*>& Mesh::get_points()
 {
   return points;
 }
 
-std::vector<MeshElement*> Mesh::get_edges() const
+std::vector<MeshElement*>& Mesh::get_edges()
 {
   return edges;
 }
 
-std::vector<MeshElement*> Mesh::get_lines() const
+std::vector<MeshElement*>& Mesh::get_lines()
 {
   return lines;
 }
 
-std::vector<MeshElement*> Mesh::get_faces() const
+std::vector<MeshElement*>& Mesh::get_faces()
 {
   return faces;
 }
 
-std::vector<MeshElement*> Mesh::get_triangles() const
+std::vector<MeshElement*>& Mesh::get_triangles()
 {
   return triangles;
 }
 
-std::vector<MeshElement*> Mesh::get_tetrahedrons() const
+std::vector<MeshElement*>& Mesh::get_tetrahedrons()
 {
   return tetrahedra;
 }
 
-std::vector<MeshElement*> Mesh::get_quadrangles() const
+std::vector<MeshElement*>& Mesh::get_quadrangles()
 {
   return quadrangles;
 }
 
-std::vector<MeshElement*> Mesh::get_hexahedrons() const
+std::vector<MeshElement*>& Mesh::get_hexahedrons()
 {
   return hexahedra;
 }
@@ -1819,6 +1832,15 @@ void Mesh::info(std::ostream &out) const
       << "\nconverted quads: " << n_converted_quadrangles
       << "\nconverted hexs : " << n_converted_hexahedra
       << "\n\n";
+  
+  //Quadrangles
+  for(auto quad: quadrangles)
+  {
+      for(int j = 0; j < quad->get_n_vertices(); ++j)
+          out << quad->get_vertex(j) + 1 << " ";
+      out << std::endl;
+  }
+    
 }
 
 
