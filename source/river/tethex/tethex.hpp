@@ -143,6 +143,8 @@ public:
                  */
   void set_coord(int number, double value);
 
+  friend std::ostream & operator<< (std::ostream &out, const Point &p);
+
 private:
                 /**
                  * Cartesian coordinates of the point
@@ -255,6 +257,8 @@ public:
                  * @param vertex - the number of vertex that we want to check
                  */
   bool contains(const int vertex) const;
+
+  friend std::ostream & operator<< (std::ostream &out, const MeshElement &el);
 
 protected:
                 /**

@@ -108,6 +108,17 @@ void Point::set_coord(int number, double value)
   coord[number] = value;
 }
 
+std::ostream & operator<< (std::ostream &out, const Point &p)
+{
+  std::cout << "Point{";
+  for(int i = 0; i < p.n_coord - 1; ++i)
+    std::cout << p.coord[i] << ", ";
+
+  std::cout << p.coord[p.n_coord - 1] << "}  ";
+  std::cout << "region tag: " << p.regionTag;
+  
+  return out;
+}
 
 
 
@@ -258,6 +269,34 @@ bool MeshElement::contains(int vertex) const
     if (vertex == vertices[i])
       return true;
   return false;
+}
+
+std::ostream & operator<< (std::ostream &out, const MeshElement &el)
+{
+  std::cout << "gmsh type: " << el.gmsh_el_type;
+  std::cout << "  vert {";
+  for(int i = 0; i < el.n_vertices - 1; ++i)
+    std::cout << el.vertices[i] << ", ";
+  
+  if(el.n_vertices != 0)
+    std::cout << el.vertices[el.n_vertices - 1];
+
+
+  std::cout << "}  edges {";
+  for(int i = 0; i < el.n_edges - 1; ++i)
+    std::cout << el.edges[i] << ", ";
+  if(el.n_edges != 0)
+    std::cout << el.edges[el.n_edges - 1];
+
+  std::cout << "}  faces {";
+  for(int i = 0; i < el.n_faces - 1; ++i)
+    std::cout << el.faces[i] << ", ";
+  if(el.n_faces != 0)
+    std::cout << el.faces[el.n_faces - 1];
+
+  std::cout << "}  mat id " << el.material_id;
+
+  return out;
 }
 
 
@@ -728,7 +767,10 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_triangles(std::vector<MeshElement *> &trianglesVal)
   {
-    //TODO: free up from memory previous vector!
+    for (size_t i = 0; i < triangles.size(); ++i)
+      delete triangles[i];
+    triangles.clear();
+
     triangles = trianglesVal;
   }
               /**
@@ -737,7 +779,10 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_faces(std::vector<MeshElement *> &facesVal)
   {
-    //TODO: free up from memory previous vector!
+    for (size_t i = 0; i < faces.size(); ++i)
+      delete faces[i];
+    faces.clear();
+
     faces = facesVal;
   }
                 /**
@@ -754,7 +799,10 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_quadrangles(std::vector<MeshElement *> &quadranglesVal)
   {
-    //TODO: free up from memory previous vector!
+    for (size_t i = 0; i < quadrangles.size(); ++i)
+      delete quadrangles[i];
+    quadrangles.clear();
+    
     quadrangles = quadranglesVal;
   }
 
@@ -764,7 +812,10 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_hexahedrons(std::vector<MeshElement *> &hexahedronsVal)
   {
-    //TODO: free up from memory previous vector!
+    for (size_t i = 0; i < hexahedra.size(); ++i)
+      delete hexahedra[i];
+    hexahedra.clear();
+
     hexahedra = hexahedronsVal;
   }
 
@@ -1094,9 +1145,9 @@ void Mesh::convert_2D()
   convert_triangles(incidence_matrix, n_old_vertices, false);
 
   // now we don't need triangles anymore
-  for (size_t i = 0; i < triangles.size(); ++i)
-    delete triangles[i];
-  triangles.clear();
+  //for (size_t i = 0; i < triangles.size(); ++i)
+  //  delete triangles[i];
+  //triangles.clear();
 
   // after that we check boundary elements (lines),
   // because after adding new vertices they need to be redefined
@@ -1611,19 +1662,23 @@ void Mesh::write(const std::string &file)
     out << "\n";
   }
 
-  const int n_all_elements = points.size() +
+  int n_all_elements = points.size() +
                                       lines.size() +
                                       triangles.size() +
                                       tetrahedra.size() +
                                       quadrangles.size() +
                                       hexahedra.size();
+  if(!quadrangles.empty())
+    n_all_elements -= triangles.size();
+
   out << "$EndNodes\n$Elements\n" << n_all_elements << "\n";
 
   int serial_number = 0;
 
   write_elements(out, points, serial_number);
   write_elements(out, lines, serial_number);
-  write_elements(out, triangles, serial_number);
+  if(quadrangles.empty())
+    write_elements(out, triangles, serial_number);
   write_elements(out, tetrahedra, serial_number);
   write_elements(out, quadrangles, serial_number);
   write_elements(out, hexahedra, serial_number);
@@ -1833,14 +1888,55 @@ void Mesh::info(std::ostream &out) const
       << "\nconverted hexs : " << n_converted_hexahedra
       << "\n\n";
   
-  //Quadrangles
-  for(auto quad: quadrangles)
+  int i = 1;
+  //Points
+  std::cout << std::endl;
+  std::cout << "----------" << std::endl;
+  std::cout << "Points" << std::endl;
+  std::cout << "----------" << std::endl;
+  for(auto & p: vertices)
   {
-      for(int j = 0; j < quad->get_n_vertices(); ++j)
-          out << quad->get_vertex(j) + 1 << " ";
-      out << std::endl;
+    std::cout << i << ") "<< p << std::endl;
+    i++;
   }
-    
+
+  //Lines
+  i = 1;
+  std::cout << std::endl;
+  std::cout << "----------" << std::endl;
+  std::cout << "Lines" << std::endl;
+  std::cout << "----------" << std::endl;
+  for(auto l: lines)
+  {
+    std::cout << i << ") " << *l << std::endl;
+    i++;
+  }
+
+  //Triangles
+  i = 1;
+  std::cout << std::endl;
+  std::cout << "----------" << std::endl;
+  std::cout << "Triangles" << std::endl;
+  std::cout << "----------" << std::endl;
+  for(auto t: triangles)
+  {
+    std::cout << i << ") "<< *t << std::endl;
+    i++;
+  }
+
+
+  //Quadrangles
+  i = 1;
+  std::cout << std::endl;
+  std::cout << "----------" << std::endl;
+  std::cout << "Quadrangles" << std::endl;
+  std::cout << "----------" << std::endl;
+  for(auto q: quadrangles)
+  {
+    std::cout << i << ") "<< *q << std::endl;
+    i++;
+  }
+   
 }
 
 

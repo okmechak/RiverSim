@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
             geom = SimpleGeo::SingleTip();
             break;
     }
-    auto initMesh = geom.GetInitialMesh();
+    auto mesh = geom.GetInitialMesh();
     
     /*
                 Mesh Generation
@@ -44,15 +44,15 @@ int main(int argc, char *argv[])
     tr.MaxTriaArea = vm["MeshMaxArea"].as<double>();
     tr.MinAngle = vm["MeshMinAngle"].as<double>();
     //generate mesh
-    tr.Generate(initMesh);
+    tr.Generate(mesh);
 
 
     /*
 
          */
-    initMesh.convert();
-    initMesh.write("quadrangle.msh");
-    initMesh.info();
+    mesh.convert();
+    mesh.write("quadrangle.msh");
+    mesh.info();
 
     River::Gmsh Gmsh;
     Gmsh.Open("quadrangle.msh");
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     sim.numOfRefinments = vm["RefNum"].as<int>();
     sim.SetBoundaryRegionValue({Geometry::Markers::Bottom, Geometry::Markers::River}, 0.);
     sim.SetBoundaryRegionValue({Geometry::Markers::Top}, 1.);
-    //sim.SetMesh(initMesh);
+    //sim.SetMesh(mesh);
     sim.OpenMesh("quadrangle.msh");
     sim.run();
 
