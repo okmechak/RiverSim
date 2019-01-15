@@ -4,7 +4,7 @@ namespace River
 {
 
 
-void printAsciiSignature()
+void print_ascii_signature()
 {
     cout << endl;
     cout << "     _)                    _)           " << endl;
@@ -14,9 +14,15 @@ void printAsciiSignature()
     cout << endl;            
 }
 
+void print_version()
+{
+    cout << "RiverSim  version: 0.8.9" << endl;
+}
+
+
 
     
-po::variables_map processProgramOptions(int argc, char *argv[])
+po::variables_map process_program_options(int argc, char *argv[])
 {
     //Declaring group of options that will be allowed on both
     //command line and config file
@@ -30,16 +36,17 @@ po::variables_map processProgramOptions(int argc, char *argv[])
     ("input-mesh,f", po::value<vector<string>>(), "input mesh file")
     ("suppress-signature", "suppress signature printing")
     ("draw-mesh,d", po::value<bool>()->default_value(true), "draw mesh using gmsh fltk submodule")
-    ("output,o", po::value<string>()->default_value("out_mesh.msh"), "save output mesh")
-    ("gmsh-log", po::value<bool>()->default_value(false), "print Gmsh log to terminal")
+    ("output-mesh,o", po::value<string>()->default_value("out_mesh.msh"), "save output mesh")
     ("Verbose,V", po::value<bool>()->default_value(false), "print detailed log to terminal")
     ("Quiet,Q", po::value<bool>()->default_value(false), "print detailed log to terminal")
-    ("sm", "suppress mesh")("ss", "suppress solver")
     ("MeshMaxArea,A", po::value<double>()->default_value(-1.), "constraints maximal area of triangle element") //FIXME.. some errors appears: faile d
     ("MeshMinAngle,q", po::value<double>()->default_value(-1.), "constraints minimal angle of triangle element")
     ("Eps,e", po::value<double>()->default_value(0.000001), "Width of branch") //conversion using boost::any_cast
-    ("RefNum,r", po::value<int>()->default_value(3), "Number of solver adaptive refinments")
-    ("GeomType,g", po::value<int>()->default_value(0), "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip");
+    ("ref-num,r", po::value<int>()->default_value(3), "Number of solver adaptive refinments")
+    ("geom-type,g", po::value<int>()->default_value(0), "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip")
+    ("use-gmsh,G", po::value<bool>()->default_value(false), "Mesh Generator: false(default) - Triangle, true - Gmsh")
+    ("simulate,s", po::value<bool>()->default_value(true), "Run simulation in Deal.II")
+    ("visualise,Z", po::value<bool>()->default_value(true), "Run GMSH gui and visualise current mesh");
 
 
     po::positional_options_description p;
@@ -50,9 +57,10 @@ po::variables_map processProgramOptions(int argc, char *argv[])
     po::notify(vm);
 
     if (vm.count("help"))
-    {
         cout << config << endl;
-    }
+
+    if (vm.count("version"))
+        print_version();
 
     return vm;
 }

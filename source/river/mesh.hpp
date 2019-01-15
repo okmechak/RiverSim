@@ -82,25 +82,25 @@ namespace River
       //bool SecondOrderMesh = false; - not implemented
       
 
-      void SetAllValuesToDefault();
-      void FreeAllocatedMemory();
-      void* AllocateMemory(int size);
+      void set_all_values_to_default();
+      void free_allocated_memory();
+      void* allocate_memory(int size);
 
-      string updateOptions();
+      string update_options();
 
-      void PrintOptions(bool qDetailedDescription = true);
+      void print_options(bool qDetailedDescription = true);
       
-      void SetGeometry(struct triangulateio &geom);
-      struct triangulateio* GetGeometry();
-      struct triangulateio* GetVoronoi();
+      void set_geometry(struct triangulateio &geom);
+      struct triangulateio* get_geometry();
+      struct triangulateio* get_voronoi();
 
-      struct triangulateio tethexToIO(tethex::Mesh &initMesh);
+      struct triangulateio tethex_to_io(tethex::Mesh &initMesh);
 
-      void IOToTethex(
+      void io_to_tethex(
         struct triangulateio &io, tethex::Mesh &initMesh);
       
     public:
-      void PrintGeometry(struct triangulateio &io);
+      void print_geometry(struct triangulateio &io);
       enum algorithm
       {
           CONQUER,
@@ -142,7 +142,7 @@ namespace River
 
       Triangle();
       ~Triangle();
-      void Generate(tethex::Mesh &initMesh);
+      void generate(tethex::Mesh &initMesh);
 
   };
 
@@ -164,24 +164,23 @@ namespace River
       
       Gmsh();
       ~Gmsh();
-      void Open(string fileName);
-      void Write();
-      void Clear();
+      void open(string fileName);
+      void write(string fileName);
+      void clear();
       //MESH
-      void refine();
-      void setNodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
-      void setElements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
+      void set_nodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
+      void set_elements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
       void generate(vector<GeomPoint> points);
-      void getElements();//<- implement first
-      void TestMesh(struct vecTriangulateIO &geom);
-      void StartUserInterface();
+      void generate(tethex::Mesh & meshio);
+      void test_mesh();
+      void start_ui();
 
     private:
       string modelName = "basic";
-      string fileName = "river.msh";
+      //string fileName = "quadrangle.msh";
       const int dim = 1;
 
-      vector<int> evaluateTags(int size, int tag0)
+      vector<int> evaluate_tags(int size, int tag0)
       {
         auto tags = vector<int>(size);
         iota(begin(tags), end(tags), tag0);

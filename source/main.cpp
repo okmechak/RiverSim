@@ -5,22 +5,22 @@ using namespace River;
 int main(int argc, char *argv[])
 {
     /*
-        Program options
-    */
+            Program options
+        */
 
-    auto vm = processProgramOptions(argc, argv);
+    auto vm = process_program_options(argc, argv);
 
-    if (vm.count("help"))
+    if (vm.count("help") || vm.count("version"))
         return 0;
 
     if (!vm.count("supprchess-signature"))
-        printAsciiSignature();
+        print_ascii_signature();
 
     /*
                     Geometry Object
          */
     River::Geometry geom;
-    switch(vm["GeomType"].as<int>())
+    switch(vm["geom-type"].as<int>())
     {   
         case 0: 
             geom = SimpleGeo::Box();
@@ -32,40 +32,61 @@ int main(int argc, char *argv[])
             geom = SimpleGeo::SingleTip();
             break;
     }
-    auto mesh = geom.GetInitialMesh();
+    tethex::Mesh meshio;
+    geom.InitiateMesh(meshio);
+
     
     /*
                 Mesh Generation
         */
-    auto tr = Triangle();
-    tr.Verbose = vm["Verbose"].as<bool>();
-    tr.Quite = vm["Quiet"].as<bool>();
-    tr.AreaConstrain = tr.ConstrainAngle = true;
-    tr.MaxTriaArea = vm["MeshMaxArea"].as<double>();
-    tr.MinAngle = vm["MeshMinAngle"].as<double>();
-    //generate mesh
-    tr.Generate(mesh);
+    
+    River::Triangle tr;
+    River::Gmsh Gmsh;
+    if(!vm["use-gmsh"].as<bool>())
+    {
+        //options
+        tr.Verbose = vm["Verbose"].as<bool>();
+        tr.Quite = vm["Quiet"].as<bool>();
+        tr.AreaConstrain = tr.ConstrainAngle = true;
+        tr.MaxTriaArea = vm["MeshMaxArea"].as<double>();
+        tr.MinAngle = vm["MeshMinAngle"].as<double>();
+        //generate mesh
+        tr.generate(meshio);
+        //convert triangles to quadrangles
+        meshio.convert();
+        meshio.write(vm["output-mesh"].as<string>());
+    }
+    else
+    {
+        Gmsh.generate(meshio);
+        Gmsh.write(vm["output-mesh"].as<string>());
+    }
+
+    if(vm["Verbose"].as<bool>())
+        meshio.info();
 
 
     /*
-
+            Solver
          */
-    mesh.convert();
-    mesh.write("quadrangle.msh");
-    mesh.info();
+    if(vm["simulate"].as<bool>())
+    {
+        River::Solver sim;
+        sim.numOfRefinments = vm["ref-num"].as<int>();
+        sim.SetBoundaryRegionValue({Geometry::Markers::Bottom, Geometry::Markers::River}, 0.);
+        sim.SetBoundaryRegionValue({Geometry::Markers::Top}, 1.);
+        //sim.SetMesh(meshio);
+        sim.OpenMesh(vm["output-mesh"].as<string>());
+        sim.run();
+    }
 
-    River::Gmsh Gmsh;
-    Gmsh.Open("quadrangle.msh");
-
-    //Solve
-    River::Solver sim;
-    sim.numOfRefinments = vm["RefNum"].as<int>();
-    sim.SetBoundaryRegionValue({Geometry::Markers::Bottom, Geometry::Markers::River}, 0.);
-    sim.SetBoundaryRegionValue({Geometry::Markers::Top}, 1.);
-    //sim.SetMesh(mesh);
-    sim.OpenMesh("quadrangle.msh");
-    sim.run();
-
-    Gmsh.StartUserInterface();
+    /*
+            Visualisation
+         */
+    if(!vm["use-gmsh"].as<bool>())
+        Gmsh.open(vm["output-mesh"].as<string>());
+    
+    if(vm["visualise"].as<bool>())
+        Gmsh.start_ui();
     return 0;
 }

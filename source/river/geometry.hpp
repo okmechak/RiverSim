@@ -33,9 +33,11 @@ class GeomPolar : public Polar
   public:
     GeomPolar(double r, double phiVal, 
       int branchIdVal = 0, 
-      int regionTagVal = 0);
+      int regionTagVal = 0,
+      double meshSizeVal = 1.);
 
-    int branchId = 0, regionTag = 0;
+    int branchId = 0, regionTag;
+    double meshSize;
 };
 
 class GeomLine
@@ -57,11 +59,12 @@ class GeomPoint
   public:
     double x, y;
     int branchId = 0, regionTag = 0;
+    double meshSize = 1.;
     GeomPoint() = default;
     ~GeomPoint() = default;
-    GeomPoint(double xval, double yval, int branchIdVal = 0, int regionTagVal = 0);
-    GeomPoint(GeomPolar p);
-    GeomPoint(Point p);
+    GeomPoint(double xval, double yval, 
+        int branchIdVal = 0, int regionTagVal = 0, double msize = 1.);
+    GeomPoint(GeomPolar &p);
 
     double norm() const;
     GeomPoint getNormalized();
@@ -83,7 +86,7 @@ class GeomPoint
     GeomPoint operator/(const double gain) const;
     GeomPoint& operator/=(const double gain);
     bool operator==(const GeomPoint& p) const;
-    friend ostream& operator <<(ostream& write, const GeomPoint & p);
+    friend ostream& operator<<(ostream& write, const GeomPoint & p);
 };
 
 
@@ -102,7 +105,7 @@ public:
   //modify branch
   void addPoint(GeomPoint p);
   void addDPoint(GeomPoint p);
-  void addPolar(GeomPolar p, bool bRelativeAngle = false);
+  void addPolar(GeomPolar p, bool bRelativeAngle = true);
   void removeHeadPoint();
   void shrink(double dl);
   double width();
@@ -171,7 +174,7 @@ public:
   Branch& initiateRootBranch(unsigned int id = 1);
   void addPoints(vector<GeomPoint> points);
   void addDPoints(vector<GeomPoint> dpoints);
-  void addPolar(GeomPolar p, bool bRelativeAngle = false);
+  void addPolar(GeomPolar p, bool bRelativeAngle = true);
   void SetSquareBoundary(
       GeomPoint BottomBoxCorner,
       GeomPoint TopBoxCorner,
@@ -184,13 +187,18 @@ public:
   vector<unsigned int> GetTipIds();
   Branch& GetBranch(unsigned int id);
   vector<GeomPolar> GetTipPolars();
-  tethex::Mesh GetInitialMesh();
+  void InitiateMesh(tethex::Mesh & meshio);
   void SetEps(double epsVal);
 
 
 private:
   double eps = 3e-2;
   double bifAngle = M_PI/5.;
+
+  //mesh size of different regions
+  double tipMeshSize = 0.003;
+  double riverMeshSize = 0.01;
+  double boundariesMeshSize = 0.1;
 
   unsigned int rootBranchId = 0;//0 means no root/first Branch
   

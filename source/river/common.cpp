@@ -133,15 +133,4 @@ namespace River
         return write;
     }
 
-
-
-
-    /*
-        Vector Triangle Input Output data structure
-    */
-
-    ostream& operator <<(ostream& write, const vecTriangulateIO & io)
-    {
-        //TODO:
-    }
 }//River namespace

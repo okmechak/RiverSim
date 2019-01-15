@@ -10,8 +10,8 @@ namespace po = boost::program_options;
 
 namespace River{
     
-    void printAsciiSignature();
-
-    po::variables_map processProgramOptions(int argc, char* argv[]);
+    void print_ascii_signature();
+    void print_version();
+    po::variables_map process_program_options(int argc, char* argv[]);
     
 }

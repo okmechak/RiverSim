@@ -9,9 +9,11 @@ namespace River{
 
 */
 GeomPolar::GeomPolar(double r, double phiVal, 
-      int branchIdVal, int regionTagVal):
+      int branchIdVal, int regionTagVal,
+      double meshSizeVal):
       branchId(branchIdVal),
-      regionTag(regionTagVal)
+      regionTag(regionTagVal),
+      meshSize(meshSizeVal)
 {
     dl = r;
     phi = phiVal;
@@ -35,22 +37,21 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
 */
 
-    GeomPoint::GeomPoint(double xval, double yval, int branchIdVal, int regionTagVal):
+    GeomPoint::GeomPoint(double xval, double yval, 
+            int branchIdVal, int regionTagVal, double msize):
     x(xval),y(yval),
-    regionTag(regionTagVal), branchId(branchIdVal)
+    regionTag(regionTagVal), branchId(branchIdVal),
+    meshSize(msize)
     {}
 
-    GeomPoint::GeomPoint(GeomPolar p)
+    GeomPoint::GeomPoint(GeomPolar &p)
     {
       x = p.dl * cos(p.phi);
       y = p.dl * sin(p.phi);
       regionTag = p.regionTag;
       branchId = p.branchId;
+      meshSize = p.meshSize;
     }
-
-    GeomPoint::GeomPoint(Point p):
-    x(p.x), y(p.y)
-    {}
 
     GeomPoint& GeomPoint::rotate(double phi)
     {
@@ -74,7 +75,7 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     GeomPolar GeomPoint::getPolar() const
     {
-      return GeomPolar{norm(), angle(), branchId};
+      return GeomPolar{norm(), angle(), branchId, regionTag, meshSize};
     }
 
     void GeomPoint::normalize()
@@ -113,7 +114,7 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     GeomPoint GeomPoint::operator+(const GeomPoint& p) const
     { 
-        return GeomPoint{x + p.x, y + p.y, branchId, regionTag};
+        return GeomPoint{x + p.x, y + p.y, branchId, regionTag, meshSize};
     }
 
     GeomPoint& GeomPoint::operator+=(const GeomPoint& p) 
@@ -125,7 +126,7 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     GeomPoint GeomPoint::operator-(const GeomPoint& p) const
     { 
-        return GeomPoint{x - p.x, y - p.y, branchId, regionTag};
+        return GeomPoint{x - p.x, y - p.y, branchId, regionTag, meshSize};
     }
 
     GeomPoint& GeomPoint::operator-=(const GeomPoint& p) 
@@ -142,7 +143,7 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     GeomPoint GeomPoint::operator*(const double gain) const
     { 
-        return GeomPoint{x*gain, y*gain, branchId, regionTag};
+        return GeomPoint{x*gain, y*gain, branchId, regionTag, meshSize};
     }
 
     GeomPoint& GeomPoint::operator*=(const double gain)
@@ -154,7 +155,7 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     GeomPoint GeomPoint::operator/(const double gain) const
     { 
-        return GeomPoint{x/gain, y/gain, branchId, regionTag};
+        return GeomPoint{x/gain, y/gain, branchId, regionTag, meshSize};
     }
 
     GeomPoint& GeomPoint::operator/=(const double gain)
@@ -166,19 +167,28 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     ostream& operator << (ostream& write, const GeomPoint& p)
     {
-        write << "point: " << p.x << ", " << p.y << endl 
-              << "       branch: " << p.branchId << " regionTag: " << p.regionTag;
+        write << "point:  {" << p.x << ", " << p.y << "} " << endl 
+              << "        id: " << p.branchId << ", tag: " << p.regionTag << endl
+              << "        mesh size: " << p.meshSize ;
         return write;
     }
 
 /*
-    Branch object
+
+    GeomTag Object
 
 */
+
 
 GeomTag::GeomTag(unsigned int rVal, unsigned int idVal):regionTag(rVal), branchId(idVal){}
 
 
+
+/*
+ 
+    Branch object
+
+*/
 
 
 Branch::Branch(unsigned long int id, GeomPoint sourcePoint, double phi, double epsVal):
@@ -195,7 +205,6 @@ eps(epsVal)
 pair<GeomPoint, GeomPoint> Branch::splitPoint(GeomPoint p, double phi)
 {
     GeomPoint pLeft{p}, pRight{p};
-
     pLeft  += GeomPoint{0, 1}.rotate(phi) * eps/2;
     pRight += GeomPoint{0, -1}.rotate(phi) * eps/2;
     return {pLeft, pRight};
@@ -337,12 +346,18 @@ void Geometry::SetSquareBoundary(
     double dx)
 {
     boundaryPoints = {
-        {BottomBoxCorner.x + (dx + eps / 2), BottomBoxCorner.y},   //node 2
-        {TopBoxCorner.x,                     BottomBoxCorner.y},   //node 3
-        {TopBoxCorner.x,                     TopBoxCorner.y},      //node 4
-        {BottomBoxCorner.x,                  TopBoxCorner.y},      //node 5
-        {BottomBoxCorner.x,                  BottomBoxCorner.y},   //node 6
-        {BottomBoxCorner.x + (dx - eps / 2), BottomBoxCorner.y}    //node 7
+        {BottomBoxCorner.x + (dx + eps / 2), BottomBoxCorner.y, 
+        0, 0, riverMeshSize},        //node 1
+        {TopBoxCorner.x,                     BottomBoxCorner.y, 
+        0, 0, boundariesMeshSize},   //node 2
+        {TopBoxCorner.x,                     TopBoxCorner.y, 
+        0, 0, boundariesMeshSize},   //node 3
+        {BottomBoxCorner.x,                  TopBoxCorner.y, 
+        0, 0, boundariesMeshSize},   //node 4
+        {BottomBoxCorner.x,                  BottomBoxCorner.y, 
+        0, 0, boundariesMeshSize},   //node 5
+        {BottomBoxCorner.x + (dx - eps / 2), BottomBoxCorner.y, 
+        0, 0, riverMeshSize}         //node 6
     };
 
     int borderBranchId = 0;
@@ -380,19 +395,19 @@ Branch& Geometry::initiateRootBranch(unsigned int id)
 
 GeomPoint Geometry::mergedLeft(double phi)
 {
-    auto vec = GeomPoint{-eps/2*tan(bifAngle/2), eps/2};
+    auto vec = GeomPoint{-eps/2*tan(bifAngle/2), eps/2, 0, 0, riverMeshSize};
     return vec.rotate(phi);
 }
 
 GeomPoint Geometry::mergedRight(double phi)
 {
-    auto vec = GeomPoint{-eps/2*tan(bifAngle/2), - eps/2};
+    auto vec = GeomPoint{-eps/2*tan(bifAngle/2), - eps/2, 0, 0, riverMeshSize};
     return vec.rotate(phi);
 }
 
 GeomPoint Geometry::mergedCenter(double phi)
 {
-    auto vec = GeomPoint{eps/2/sin(bifAngle), 0};
+    auto vec = GeomPoint{eps/2/sin(bifAngle), 0, 0, 0, riverMeshSize};
     return vec.rotate(phi);
 }
 
@@ -414,7 +429,10 @@ void Geometry::generateCircularBoundary()
         if(index < points.size())
             lines.push_back(GeomLine(index, index + 1, p.branchId, Markers::River));
         else
+        {
             lines.push_back(GeomLine(index, 1, p.branchId, Markers::River));
+            break;
+        }
 
         index++;
     }
@@ -422,28 +440,20 @@ void Geometry::generateCircularBoundary()
 
 
  
-tethex::Mesh Geometry::GetInitialMesh()
+void Geometry::InitiateMesh(tethex::Mesh &meshio)
 {   
 
     generateCircularBoundary();
-    vector<tethex::Point> meshPoints;
-    vector<tethex::MeshElement *> meshLines;
-    vector<tethex::MeshElement *> meshTriangles;//empy
-    meshPoints.reserve(points.size());
-    meshLines.reserve(points.size());
 
-    for(auto &p: points)
-        meshPoints.push_back(tethex::Point(p.x, p.y, 0/*z-coord*/, p.regionTag));
+    meshio.vertices.reserve(points.size());
+    meshio.lines.reserve(points.size());
+
+    for(GeomPoint p: points)
+        meshio.vertices.push_back(
+            tethex::Point(p.x, p.y, 0/*z-coord*/, p.regionTag, p.meshSize));
 
     for(auto &l: lines)
-        meshLines.push_back(new tethex::Line(l.p1, l.p2, l.regionTag));
-        
-    
-    //TODO add differenr tags!!!
-    auto meshOut = tethex::Mesh{meshPoints, meshLines, meshTriangles};
-    
-
-    return meshOut;
+        meshio.lines.push_back(new tethex::Line(l.p1, l.p2, l.regionTag));
 }
 /*
     Recursive inserting of branches
@@ -465,18 +475,32 @@ void Geometry::InserBranchTree(unsigned int id, double phi, bool isRoot)
             auto leftId = branchRelation[id].first;
             auto rightId = branchRelation[id].second;
 
+            //Left merged point
             auto leftMergPoint = curBranch.getHead() + mergedLeft(phi);
-            points.push_back(curBranch.getHead() + mergedLeft(phi));
+            //leftMergPoint.meshSize = riverMeshSize;
+            points.push_back(leftMergPoint);
 
             InserBranchTree(leftId, curBranch.getHeadAngle());
-            points.push_back(curBranch.getHead() + mergedCenter(phi));
+            
+            //Tip point
+            auto tipPoint = curBranch.getHead() + mergedCenter(phi);
+            tipPoint.meshSize = riverMeshSize;
+            points.push_back(tipPoint);
+
             InserBranchTree(rightId, curBranch.getHeadAngle());
 
-            points.push_back(curBranch.getHead() + mergedRight(phi));
+            //Left merged point
+            auto rightMergPoint = curBranch.getHead() + mergedRight(phi);
+            //rightMergPoint.meshSize = riverMeshSize;
+            points.push_back(rightMergPoint);
         }
         else
+        {
             //inserting narrow tip
-            points.push_back(curBranch.getHead());
+            auto p = curBranch.getHead();
+            p.meshSize = tipMeshSize;
+            points.push_back(p);
+        }
         
         
 
@@ -497,6 +521,7 @@ void Geometry::addPolar(GeomPolar p, bool bRelativeAngle)
         throw std::invalid_argument("Such branch does not exist");
 
     auto & curBranch = branches[branchIndexes[p.branchId]];
+    p.meshSize = riverMeshSize;
     curBranch.addPolar(p, bRelativeAngle/*relative angle*/);
 }
 
@@ -531,24 +556,25 @@ pair<unsigned int, unsigned int> Geometry::AddBiffurcation(unsigned int id, doub
         throw std::invalid_argument("Such branch does not exist");
     
     auto leftId = generateID(id),
-        rightId = generateID(id, true);
+        rightId = generateID(id, true/*is right branch*/);
 
     //Some values from origin brnach
     auto originBranch = GetBranch(id);
     auto headPoint = originBranch.getHead();
+    headPoint.meshSize = riverMeshSize;
     auto phi = originBranch.getHeadAngle();
 
     branchRelation[id] = {leftId, rightId};
 
     //setting left branch
     auto leftBranch = Branch(leftId, headPoint, phi + bifAngle, eps);
-    leftBranch.addPolar({dl, 0}, true/*relative coords*/);
+    leftBranch.addPolar({dl, 0, headPoint.branchId, headPoint.regionTag, riverMeshSize}/*relative coords*/);
     branches.push_back(leftBranch);
     branchIndexes[leftId] = branches.size() - 1;
 
     //setting right branch
     auto rightBranch = Branch(rightId, headPoint, phi - bifAngle, eps);
-    rightBranch.addPolar({dl, 0}, true/*relative coord*/);
+    rightBranch.addPolar({dl, 0, headPoint.branchId, headPoint.regionTag, riverMeshSize}/*relative coord*/);
     branches.push_back(rightBranch);
     branchIndexes[rightId] = branches.size() - 1;
 

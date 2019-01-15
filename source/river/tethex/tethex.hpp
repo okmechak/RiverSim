@@ -82,52 +82,50 @@ void requirement_fails(const char *file,
 class Point
 {
 public:
-                /**
-                 * The number of Cartesian coordinates, that describe the point.
-                 * Here we always use 3 coordinates to describe a point.
-                 */
+  /**
+      * The number of Cartesian coordinates, that describe the point.
+      * Here we always use 3 coordinates to describe a point.
+      */
   static const int n_coord = 3;
 
   int regionTag;
+  double meshSize;
 
-                /**
-                 * Default constructor.
-                 * Coordinates are initialized by 0.
-                 */
+  /**
+      * Default constructor.
+      * Coordinates are initialized by 0.
+      */
   Point();
 
-                /**
-                 * Constructor with parameter.
-                 * Coordinates are initialized by array of numbers.
-                 * @param coordinates - array of point coordinates
-                 */
+  /**
+      * Constructor with parameter.
+      * Coordinates are initialized by array of numbers.
+      * @param coordinates - array of point coordinates
+      */
   Point(const double coordinates[]);
 
-                /**
-                 * Constructor with parameters.
-                 * Coordinates are initialized by numbers.
-                 * @param x_coord - x-coordinate of the point
-                 * @param y_coord - y-coordinate of the point
-                 * @param z_coord - z-coordinate of the point
-                 */
-  Point(double x_coord,
-        double y_coord = 0,
-        double z_coord = 0);
-  
+  /**
+     * Constructor with parameters.
+     * Coordinates are initialized by numbers.
+     * @param x_coord - x-coordinate of the point
+     * @param y_coord - y-coordinate of the point
+     * @param z_coord - z-coordinate of the point
+     */
 
   Point(const double x_coord,
-             const double y_coord,
-             const double z_coord,
-             const int regionIdTag);
+        const double y_coord = 0,
+        const double z_coord =0 ,
+        const int regionIdTag = 0,
+        const double mesh_size = 0);
 
-                /**
-                 * Copy constructor
-                 */
+  /**
+      * Copy constructor
+      */
   Point(const Point &p);
 
-                /**
-                 * Copy assignment operator
-                 */
+  /**
+      * Copy assignment operator
+      */
   Point& operator =(const Point &p);
 
                 /**
@@ -146,7 +144,7 @@ public:
   friend std::ostream & operator<< (std::ostream &out, const Point &p);
 
 private:
-                /**
+      /**
                  * Cartesian coordinates of the point
                  */
   double coord[n_coord];

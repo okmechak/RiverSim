@@ -11,7 +11,7 @@ namespace River{
     
 
 */
-void Triangle::PrintGeometry(struct triangulateio &io)
+void Triangle::print_geometry(struct triangulateio &io)
 {
     int i, j, shift = 1;
     //if(StartNumberingFromZero)
@@ -134,7 +134,7 @@ void Triangle::PrintGeometry(struct triangulateio &io)
 }
 
 
-struct triangulateio Triangle::tethexToIO(tethex::Mesh &mesh)
+struct triangulateio Triangle::tethex_to_io(tethex::Mesh &mesh)
 {
     struct triangulateio io;
     set_tria_to_default(&io);
@@ -192,7 +192,7 @@ struct triangulateio Triangle::tethexToIO(tethex::Mesh &mesh)
     return io;
 }
 
-    void  Triangle::IOToTethex(
+    void  Triangle::io_to_tethex(
         struct triangulateio &io, tethex::Mesh &initMesh)
 {
     vector<tethex::Point> pointsVal;
@@ -206,7 +206,7 @@ struct triangulateio Triangle::tethexToIO(tethex::Mesh &mesh)
             y = io.pointlist[2 * i + 1];
         auto regionTag = io.pointmarkerlist[i];
 
-        pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag));
+        pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag, 1./*default mesh size used in gmsh*/));
     }
 
     segmentsVal.reserve(io.numberofsegments);
@@ -247,37 +247,37 @@ struct triangulateio Triangle::tethexToIO(tethex::Mesh &mesh)
 */
 Triangle::Triangle()
 {
-    SetAllValuesToDefault();
+    set_all_values_to_default();
     
     if (Verbose){
         cout << "Default Options: " << endl;
-        PrintOptions(true);
+        print_options(true);
     }
 }
 
 Triangle::~Triangle()
 {
-    FreeAllocatedMemory();
+    free_allocated_memory();
 }
 
 
-void Triangle::SetAllValuesToDefault()
+void Triangle::set_all_values_to_default()
 {
-    updateOptions();
+    update_options();
     set_tria_to_default(&in);
     set_tria_to_default(&out);
     set_tria_to_default(&vorout);
 }
 
 
-void Triangle::FreeAllocatedMemory()
+void Triangle::free_allocated_memory()
 {
     triangulateiofree(&out);
     triangulateiofree(&vorout);
 }
 
 
-string Triangle::updateOptions()
+string Triangle::update_options()
 {
     options = "";
     #define MAX_ANGLE 36
@@ -327,9 +327,9 @@ string Triangle::updateOptions()
 }
 
 
-void Triangle::PrintOptions(bool qDetailedDescription)
+void Triangle::print_options(bool qDetailedDescription)
 {
-    updateOptions();
+    update_options();
 
     cout << "Triangle options command : " << options << endl;
     
@@ -374,13 +374,13 @@ void Triangle::PrintOptions(bool qDetailedDescription)
 
 
 
-void Triangle::SetGeometry(struct triangulateio &geom)//TODO check passing by references
+void Triangle::set_geometry(struct triangulateio &geom)//TODO check passing by references
 {
     in = geom;
 }
 
 
-struct triangulateio* Triangle::GetGeometry()
+struct triangulateio* Triangle::get_geometry()
 {
     return &out;
 }
@@ -388,23 +388,23 @@ struct triangulateio* Triangle::GetGeometry()
 
 
 
-struct triangulateio* Triangle::GetVoronoi()
+struct triangulateio* Triangle::get_voronoi()
 {
     return &vorout;
 }
 
 
 
-void Triangle::Generate(tethex::Mesh &initMesh)
+void Triangle::generate(tethex::Mesh &initMesh)
 {
-    SetAllValuesToDefault();
+    set_all_values_to_default();
 
-    in = tethexToIO(initMesh);
+    in = tethex_to_io(initMesh);
 
     if (Verbose)
     {
         cout << "Input Geometry: " << endl;
-        PrintGeometry(in);
+        print_geometry(in);
     }
 
     //Main call to Triangle
@@ -413,17 +413,17 @@ void Triangle::Generate(tethex::Mesh &initMesh)
     if (Verbose)
     {
         cout << "Output Geometry: " << endl;
-        PrintGeometry(out);
+        print_geometry(out);
     }
 
     if (Verbose && VoronoiDiagram)
     {
         cout << "Voronoi Diagram: " << endl;
-        PrintGeometry(vorout);
+        print_geometry(vorout);
     }
 
-    IOToTethex(out, initMesh);
-    FreeAllocatedMemory();
+    io_to_tethex(out, initMesh);
+    free_allocated_memory();
 }
 
 
@@ -477,14 +477,17 @@ void Triangle::Generate(tethex::Mesh &initMesh)
 Gmsh::Gmsh()
 {
   gmsh::initialize();
-  gmsh::option::setNumber("Mesh.RecombineAll", (int)recombine);
+  if(recombine)
+    gmsh::option::setNumber("Mesh.RecombineAll", (int)recombine);
   //gmsh::option::setNumber("Mesh.Optimize", 1);
   //gmsh::option::setNumber("Mesh.OptimizeThreshold", 0.31);
   //gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
-  gmsh::option::setNumber("Mesh.MshFileVersion", 2.2);
-  gmsh::option::setNumber("General.Terminal", 1);
+  if(mesh24format)
+    gmsh::option::setNumber("Mesh.MshFileVersion", 2.0);
+  if(Verbose)
+    gmsh::option::setNumber("General.Terminal", 1);
+
   gmsh::model::add(modelName);
-  //gmsh::model::addDiscreteEntity(2, 1);
 }
 
 Gmsh::~Gmsh()
@@ -492,19 +495,19 @@ Gmsh::~Gmsh()
     gmsh::finalize();
 }
 
-void Gmsh::Open(string fileName)
+void Gmsh::open(string fileName)
 {
     gmsh::open(fileName);
 }
 
-void Gmsh::Write()
+void Gmsh::write(string fileName)
 {
     gmsh::write(fileName);
 }
 
-void Gmsh::setNodes(vector<double> nodes, int dim, int tag)
+void Gmsh::set_nodes(vector<double> nodes, int dim, int tag)
 {
-    auto tags = evaluateTags(nodes.size()/3, 1);
+    auto tags = evaluate_tags(nodes.size()/3, 1);
     
     gmsh::model::mesh::setNodes(
         dim, 
@@ -513,7 +516,7 @@ void Gmsh::setNodes(vector<double> nodes, int dim, int tag)
         nodes);
 }
 
-void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
+void Gmsh::set_elements(vector<int> elements, int elType, int dim, int tag)
 {
     vector<vector<int>> tags(1);
     //FIXME: this divider depends on element type
@@ -526,7 +529,7 @@ void Gmsh::setElements(vector<int> elements, int elType, int dim, int tag)
         case 3: div = 4; break;
     }
 
-    tags[0] = evaluateTags(elements.size()/div, 1);
+    tags[0] = evaluate_tags(elements.size()/div, 1);
 
     vector<int> elementTypes = {elType};
 
@@ -554,8 +557,8 @@ void Gmsh::generate(vector<GeomPoint> points)
     //closing circle
     geo::addLine(points.size(), 1);
 
-    auto curveTag = geo::addCurveLoop(evaluateTags(points.size(), 1));
-    auto surfaceTag = geo::addPlaneSurface({curveTag});
+    auto curveTag = geo::addCurveLoop(evaluate_tags(points.size(), 1));
+    geo::addPlaneSurface({curveTag});
 
     geo::synchronize();
     //mdl::mesh::generate(2);
@@ -564,15 +567,45 @@ void Gmsh::generate(vector<GeomPoint> points)
     
 }
 
+void Gmsh::generate(tethex::Mesh &meshio)
+{   
+    //mdl::addDiscreteEntity(2, 1, lineTags);
 
-void Gmsh::StartUserInterface()
+    int i = 1;
+    for(auto &p: meshio.vertices)
+    {
+        geo::addPoint(
+            p.get_coord(0), p.get_coord(1), p.get_coord(3), p.meshSize, i++);
+        cout << p.meshSize << " ";
+    }
+
+    i = 1;
+    for(auto &l: meshio.lines)
+    //TODO: create per each material_id separate group!
+        geo::addLine(l->get_vertex(0), l->get_vertex(1), i++);
+
+
+    auto lineTags = evaluate_tags(meshio.lines.size(), 1);
+    auto curveTag = geo::addCurveLoop(lineTags);
+    auto surfaceTag = geo::addPlaneSurface({curveTag});
+    
+    //TODO: test it! maybe i somehing forgot
+    geo::synchronize();
+    mdl::addPhysicalGroup(1, lineTags, 1);
+    mdl::addPhysicalGroup(2, {surfaceTag}, 0);
+    mdl::mesh::generate();
+}
+
+
+void Gmsh::start_ui()
 {
     gmsh::fltk::run();
 }
 
 
-void Gmsh::TestMesh(struct River::vecTriangulateIO &geom)
+void Gmsh::test_mesh()
 {
+    //gmsh::model::addDiscreteEntity(2, 0);
     gmsh::model::geo::addPoint(0, 0, 0, 0.2, 1);
     gmsh::model::geo::addPoint(0.5, 0, 0, 0.2, 2);
     gmsh::model::geo::addPoint(1, 0, 0, 0.2, 3);
@@ -587,31 +620,16 @@ void Gmsh::TestMesh(struct River::vecTriangulateIO &geom)
     gmsh::model::geo::addLine(3, 4, 5);
     gmsh::model::geo::addLine(4, 5, 6);
     gmsh::model::geo::addLine(5, 1, 7);
-    gmsh::model::geo::addCurveLoop({1, 2, 3, 4, 5, 6, 7}, 1);
-    gmsh::model::geo::addPlaneSurface({1}, 6);
+    auto curveTag = gmsh::model::geo::addCurveLoop({1, 2, 3, 4, 5, 6, 7});
+    auto surfaceTag = gmsh::model::geo::addPlaneSurface({curveTag});
+    gmsh::model::addPhysicalGroup(1, {1,2,3,4,5,6,7}, 1);
+    //gmsh::model::addPhysicalGroup(1, {curveTag}, 1119);
+    gmsh::model::addPhysicalGroup(2, {surfaceTag}, 1117);
     gmsh::model::geo::synchronize();
+    gmsh::model::mesh::setRecombine(2, surfaceTag);
     gmsh::model::mesh::generate(2);
+    gmsh::write("out_mesh.msh");
 
-    {
-        std::vector<int> nodeTags;
-        std::vector<double> coord, parametricCoord;
-        const int dim = -1, tag = -1;
-        const bool includeBoundary = true;
-        gmsh::model::mesh::getNodes(nodeTags, coord, parametricCoord, dim, tag, includeBoundary);
-
-        geom.node.coords = coord;
-        geom.node.tags = nodeTags;
-    }
-    
-    {
-        std::vector<int> elementTypes;
-        std::vector<std::vector<int> > elementTags, nodeTags;
-        const int dim = -1;
-        const int tag = -1;
-        gmsh::model::mesh::getElements(elementTypes, elementTags, nodeTags, dim, tag);
-        cout << "Element Types" << endl;
-        copy(elementTypes.begin(), elementTypes.end(), ostream_iterator<int>(cout, " "));
-    }
 }
 
 } //end of River namespace

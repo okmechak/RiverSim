@@ -11,7 +11,7 @@
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( constructors )
 {
-  River::Branch obj(1, River::Point{0., 0}, 0);
+  River::Branch obj(1, River::GeomPoint{0., 0}, 0);
 
 //Check default constructor
 //Use BOOST_CHECK for small equal checks - true or false

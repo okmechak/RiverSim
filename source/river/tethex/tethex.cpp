@@ -55,36 +55,34 @@ Point::Point(const double coordinates[])
     coord[i] = coordinates[i];
 }
 
-Point::Point(const double x_coord,
-             const double y_coord,
-             const double z_coord)
-{
-  coord[0] = x_coord;
-  if (n_coord > 1) coord[1] = y_coord;
-  if (n_coord > 2) coord[2] = z_coord;
-}
 
 Point::Point(const double x_coord,
              const double y_coord,
              const double z_coord,
-             const int regionTagVal)
+             const int regionTagVal,
+             const double mesh_size)
 {
   regionTag = regionTagVal;
   coord[0] = x_coord;
   if (n_coord > 1) coord[1] = y_coord;
   if (n_coord > 2) coord[2] = z_coord;
+  meshSize = mesh_size;
 }
 
 Point::Point(const Point &p)
 {
   for (int i = 0; i < n_coord; ++i)
     coord[i] = p.coord[i];
+  regionTag = p.regionTag;
+  meshSize = p.meshSize;
 }
 
 Point& Point::operator =(const Point &p)
 {
   for (int i = 0; i < n_coord; ++i)
     coord[i] = p.coord[i];
+  regionTag = p.regionTag;
+  meshSize = p.meshSize;
   return *this;
 }
 
@@ -108,6 +106,7 @@ void Point::set_coord(int number, double value)
   coord[number] = value;
 }
 
+
 std::ostream & operator<< (std::ostream &out, const Point &p)
 {
   std::cout << "Point{";
@@ -116,6 +115,7 @@ std::ostream & operator<< (std::ostream &out, const Point &p)
 
   std::cout << p.coord[p.n_coord - 1] << "}  ";
   std::cout << "region tag: " << p.regionTag;
+  std::cout << ", mesh size: " << p.meshSize;
   
   return out;
 }
