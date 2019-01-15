@@ -1888,7 +1888,7 @@ void Mesh::info(std::ostream &out) const
       << "\nconverted hexs : " << n_converted_hexahedra
       << "\n\n";
   
-  int i = 1;
+  int i = 0;
   //Points
   std::cout << std::endl;
   std::cout << "----------" << std::endl;
@@ -1900,8 +1900,22 @@ void Mesh::info(std::ostream &out) const
     i++;
   }
 
+
+  //Edges
+  i = 0;
+  std::cout << std::endl;
+  std::cout << "----------" << std::endl;
+  std::cout << "Edges" << std::endl;
+  std::cout << "----------" << std::endl;
+  for(auto e: edges)
+  {
+    std::cout << i << ") " << *e << std::endl;
+    i++;
+  }
+
+
   //Lines
-  i = 1;
+  i = 0;
   std::cout << std::endl;
   std::cout << "----------" << std::endl;
   std::cout << "Lines" << std::endl;
@@ -1913,7 +1927,7 @@ void Mesh::info(std::ostream &out) const
   }
 
   //Triangles
-  i = 1;
+  i = 0;
   std::cout << std::endl;
   std::cout << "----------" << std::endl;
   std::cout << "Triangles" << std::endl;
@@ -1926,7 +1940,7 @@ void Mesh::info(std::ostream &out) const
 
 
   //Quadrangles
-  i = 1;
+  i = 0;
   std::cout << std::endl;
   std::cout << "----------" << std::endl;
   std::cout << "Quadrangles" << std::endl;
