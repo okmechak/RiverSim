@@ -3,6 +3,7 @@
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/function.h>
 #include <deal.II/base/convergence_table.h>
+#include <deal.II/base/types.h>
 
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
@@ -17,6 +18,7 @@
 #include <deal.II/grid/grid_in.h>
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/grid_refinement.h>
+#include <deal.II/grid/grid_reordering.h>
 
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/full_matrix.h>
@@ -38,6 +40,7 @@
 #include <utility>
 
 #include "common.hpp"
+#include "tethex.hpp"
 
 using namespace dealii;
 
@@ -51,7 +54,7 @@ class Solver
     ~Solver();
     unsigned int numOfRefinments = 1;
     void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
-    void SetMesh(struct vecTriangulateIO &mesh);
+    void SetMesh(tethex::Mesh &meshio);
     void OpenMesh(string fileName = "river.msh");
     void run();
 

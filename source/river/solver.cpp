@@ -22,34 +22,6 @@ void Solver::SetBoundaryRegionValue(std::vector<int> regionTags, double value)
     boundaryRegionValue.insert(std::make_pair(value, regionTags));
 }
 
-void Solver::TryInsertCellBoundary(
-    CellData<dim> &cellData,
-    struct SubCellData &subcelldata,
-    std::unordered_map<std::pair<int, int>, int> &bound_ids,
-    int v1, int v2)
-{
-    CellData<1> boundary;
-    pair<int, int> p;
-    if (bound_ids.count(p = make_pair(v1, v2)) &&
-        bound_ids[p] != 0)
-    {
-        boundary.boundary_id = bound_ids[p];
-        boundary.vertices[0] = v1;
-        boundary.vertices[1] = v2;
-        subcelldata.boundary_lines.push_back(boundary);
-        cellData.manifold_id = boundary.boundary_id;
-    }
-    else if (bound_ids.count(p = make_pair(v2, v1)) &&
-             bound_ids[p] != 0)
-    {
-        boundary.boundary_id = bound_ids[p];
-        boundary.vertices[0] = v2;
-        boundary.vertices[1] = v1;
-        subcelldata.boundary_lines.push_back(boundary);
-        cellData.manifold_id = boundary.boundary_id;
-    }
-}
-
 
 void Solver::OpenMesh(string fileName)
 {
@@ -60,47 +32,75 @@ void Solver::OpenMesh(string fileName)
 }
 
 
-void Solver::SetMesh(struct vecTriangulateIO &mesh)
+
+void Solver::SetMesh(tethex::Mesh &meshio)
 {
-
+    cout << "set_mesh" << endl;
     //VERTICES
-    auto n_points = mesh.node.coords.size() / 3; //FIXME: replace hardcoded 3 by more general thing
-    vector<dealii::Point<dim>> vertices(n_points);
-    for (unsigned int i = 0; i < n_points; ++i)
-        vertices[i] = dealii::Point<dim>(mesh.node.coords[3 * i], mesh.node.coords[3 * i + 1]);
-
-    //generat boundary id structure
-    unordered_map<std::pair<int, int>, int> bound_id;
-    for (unsigned int i = 0; i < mesh.element.line.nodeTags.size() / 2; ++i)
-        bound_id.insert(make_pair(
-            make_pair(mesh.element.line.nodeTags[2 * i], mesh.element.line.nodeTags[2 * i + 1]), mesh.element.line.markers[i]));
-
-    //SETTING QUADRANGLES
-    auto n_cells = mesh.element.quad.nodeTags.size() / 4; //FIXME: remove hardcode
-    vector<CellData<dim>> cells(n_cells, CellData<dim>());
-    auto subCell = SubCellData();
-    for (unsigned int i = 0; i < n_cells; ++i)
+    auto n_vertices = meshio.get_n_vertices(); 
+    vector<dealii::Point<dim>> vertices(n_vertices);
+    for (unsigned int i = 0; i < n_vertices; ++i)
     {
-        auto v1 = cells[i].vertices[0] = mesh.element.quad.nodeTags[4 * i + 0] - 1;
-        auto v2 = cells[i].vertices[1] = mesh.element.quad.nodeTags[4 * i + 1] - 1;
-        auto v4 = cells[i].vertices[2] = mesh.element.quad.nodeTags[4 * i + 3] - 1;
-        auto v3 = cells[i].vertices[3] = mesh.element.quad.nodeTags[4 * i + 2] - 1;
-        TryInsertCellBoundary(cells[i], subCell, bound_id, v1, v2);
-        TryInsertCellBoundary(cells[i], subCell, bound_id, v2, v3);
-        TryInsertCellBoundary(cells[i], subCell, bound_id, v3, v4);
-        TryInsertCellBoundary(cells[i], subCell, bound_id, v4, v1);
-
-        //if(mesh.numOfAttrPerTriangle > 0)
-        //    cells[i].material_id = mesh.triangleAttributes[i];
-        //else
-        //    cells[i].material_id = 0;
+        auto vertice = meshio.get_vertex(i);
+        vertices[i] = dealii::Point<dim>(vertice.get_coord(0), vertice.get_coord(1));
     }
-    cout << "checking consistency" << endl;
-    if (subCell.check_consistency(dim))
-        cout << "i don't know what it means" << endl;
-    triangulation.create_triangulation(vertices,
-                                       cells,
-                                       subCell);
+
+    cout << "incidence_matrix" << endl;
+    //initialize edge enumeration structure
+    auto incidence_matrix = tethex::IncidenceMatrix(meshio.get_n_vertices(), meshio.lines);
+
+    //QUADRANGLES
+    cout << "quads" << endl << flush;
+    auto n_cells = meshio.get_n_quadrangles();
+    vector<CellData<dim>> cells(n_cells, CellData<dim>());
+    SubCellData sub_cells;
+    cout << "for" << endl;
+    for(int i = 0; i < n_cells; ++i)
+    {
+        cells[i].material_id = meshio.get_quadrangle(i).get_material_id();
+        
+        auto v0 = cells[i].vertices[0] = meshio.get_quadrangle(i).get_vertex(0);
+        auto v1 = cells[i].vertices[1] = meshio.get_quadrangle(i).get_vertex(1);
+        auto v2 = cells[i].vertices[2] = meshio.get_quadrangle(i).get_vertex(2);
+        auto v3 = cells[i].vertices[3] = meshio.get_quadrangle(i).get_vertex(3);
+        
+        /*
+                        TODO: boundary conditions here are wrong! fix it
+                    */
+        auto cellEdges = 
+            //vector<pair<unsigned int, unsigned int>>{{v0, v2}, {v1, v3}, {v0, v1}, {v2, v3}};
+            vector<pair<unsigned int, unsigned int>>{{v0, v1}, {v1, v2}, {v2, v3}, {v3, v0}};
+        
+        //Boundary IDS
+        for(auto & edge: cellEdges)
+        {
+            int lineIndex = incidence_matrix.find(edge.first, edge.second);
+            int boundary_id;
+            if(lineIndex > 0)
+                boundary_id = meshio.get_line(lineIndex).get_material_id();
+            else
+                boundary_id = numbers::internal_face_boundary_id;
+            
+            CellData<1> cell_data;
+
+            cout << "boundary lines" << endl;
+            cout << edge.first << "  " << edge.second << endl;
+            cout << boundary_id << endl;
+            
+            cell_data.vertices[0] = edge.first;
+            cell_data.vertices[1] = edge.second;
+            cell_data.boundary_id = boundary_id;
+            
+            sub_cells.boundary_lines.push_back(cell_data);
+        }
+        
+    }
+
+    
+    GridReordering<dim, dim>::invert_all_cells_of_negative_grid (vertices, cells);
+    GridReordering<dim, dim>::reorder_cells (cells);
+    triangulation.create_triangulation_compatibility(vertices, cells, sub_cells);
+
 }
 
 
@@ -236,6 +236,11 @@ void Solver::output_results(const unsigned int cycle) const
     data_out.build_patches();
     std::ofstream output("solution-" + std::to_string(cycle) + ".vtk");
     data_out.write_vtk(output);
+
+    std::ofstream out("grid-"+std::to_string(cycle)+".eps");
+    GridOut       grid_out;
+    grid_out.write_eps(triangulation, out);
+
 }
 
 
@@ -260,4 +265,4 @@ void Solver::run()
     }
 }
 
-} // namespace River
+} // namespace Riverestimated_error_per_cell
