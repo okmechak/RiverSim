@@ -41,6 +41,7 @@
 
 #include "common.hpp"
 #include "tethex.hpp"
+#include "physmodel.hpp"
 
 using namespace dealii;
 
@@ -56,7 +57,15 @@ class Solver
     void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
     void SetMesh(tethex::Mesh &meshio);
     void OpenMesh(string fileName = "river.msh");
-    void run();
+    void run(int step);
+    vector<double> integrate(GeomPoint tipPoint, double tipAngle);
+    void clear()
+    {
+      dof_handler.clear();
+      triangulation.clear();
+      constraints.clear();
+      system_matrix.clear();
+    }
 
   private:
     const static int dim = 2;
@@ -82,7 +91,7 @@ class Solver
     void solve();
     void refine_grid();
     void output_results(const unsigned int cycle) const;
-
+    
     void TryInsertCellBoundary(
         CellData<dim> &cellData,
         struct SubCellData &subcelldata,

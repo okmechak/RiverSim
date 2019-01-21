@@ -228,6 +228,57 @@ void Solver::refine_grid()
 }
 
 
+vector<double> Solver::integrate(GeomPoint tipPoint, double tipAngle)
+{   
+    /*
+                Some predefined parameters
+         */
+    Model model;
+
+
+    const QGauss<dim> quadrature_formula(3);
+    FEValues<dim> fe_values(fe, quadrature_formula,
+                            update_values            |
+                            update_quadrature_points |
+                            update_JxW_values);
+
+    const unsigned int dofs_per_cell = fe.dofs_per_cell;
+    const unsigned int n_q_points    = quadrature_formula.size();
+    
+    std::vector<double> values(n_q_points);
+    std::vector<double> series_params(3, 0); //Series params
+    
+    for (auto cell: dof_handler.active_cell_iterators())
+    {
+        fe_values.reinit (cell);
+        fe_values.get_function_values(solution, values);
+        auto quad_points = fe_values.get_quadrature_points();
+
+        for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
+        {
+            auto quad_point = quad_points[q_point];
+            auto dx = (quad_point[0] - tipPoint[0]), 
+                dy = (quad_point[1] - tipPoint[1]);
+
+            double dist = sqrt(dx*dx + dy*dy);
+            double angle = Point::angle(dx, dy) - tipAngle;
+
+            if(dist > model.Rmin && dist < model.Rmax)
+                for(int param_index = 0; param_index < series_params.size(); ++param_index)
+                    for (unsigned int i = 0; i < dofs_per_cell; ++i)
+                        series_params[param_index] += 
+                            fe_values.shape_value(i, q_point)
+                             * values[q_point]
+                             * fe_values.JxW(q_point)
+                             * model.Gain(param_index)(dist, angle);
+        }
+    }
+    
+    return series_params;
+}
+
+
+
 void Solver::output_results(const unsigned int cycle) const
 {
     DataOut<dim> data_out;
@@ -244,7 +295,7 @@ void Solver::output_results(const unsigned int cycle) const
 }
 
 
-void Solver::run()
+void Solver::run(int step)
 {
     for (unsigned int cycle = 0; cycle < numOfRefinments; ++cycle)
     {
@@ -261,8 +312,10 @@ void Solver::run()
                   << std::endl;
         assemble_system();
         solve();
-        output_results(cycle);
+        
     }
+
+    output_results(step);
 }
 
 } // namespace Riverestimated_error_per_cell
