@@ -164,6 +164,7 @@ namespace River
       
       Gmsh();
       ~Gmsh();
+      void init();
       void open(string fileName);
       void write(string fileName);
       void clear();

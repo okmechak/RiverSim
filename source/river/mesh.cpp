@@ -165,8 +165,8 @@ struct triangulateio Triangle::tethex_to_io(tethex::Mesh &mesh)
         int i = 0;
         for(auto l: mesh.lines)
         {
-            io.segmentlist[2 * i ] = l->get_vertex(0);
-            io.segmentlist[2 * i + 1] = l->get_vertex(1);
+            io.segmentlist[2 * i ] = l->get_vertex(0) + 1;//HOTFIX FIXME
+            io.segmentlist[2 * i + 1] = l->get_vertex(1) + 1;//HOTFIX FIXME
             io.segmentmarkerlist[i] = l->get_material_id();
             ++i;
         }
@@ -272,6 +272,8 @@ void Triangle::set_all_values_to_default()
 
 void Triangle::free_allocated_memory()
 {
+
+    triangulateiofree(&in);
     triangulateiofree(&out);
     triangulateiofree(&vorout);
 }
@@ -477,6 +479,7 @@ void Triangle::generate(tethex::Mesh &initMesh)
 Gmsh::Gmsh()
 {
   gmsh::initialize();
+  init();
   if(recombine)
     gmsh::option::setNumber("Mesh.RecombineAll", (int)recombine);
   //gmsh::option::setNumber("Mesh.Optimize", 1);
@@ -576,13 +579,12 @@ void Gmsh::generate(tethex::Mesh &meshio)
     {
         geo::addPoint(
             p.get_coord(0), p.get_coord(1), p.get_coord(3), p.meshSize, i++);
-        cout << p.meshSize << " ";
     }
 
     i = 1;
     for(auto &l: meshio.lines)
     //TODO: create per each material_id separate group!
-        geo::addLine(l->get_vertex(0), l->get_vertex(1), i++);
+        geo::addLine(l->get_vertex(0)+1, l->get_vertex(1)+1, i++);
 
 
     auto lineTags = evaluate_tags(meshio.lines.size(), 1);
@@ -590,12 +592,31 @@ void Gmsh::generate(tethex::Mesh &meshio)
     auto surfaceTag = geo::addPlaneSurface({curveTag});
     
     //TODO: test it! maybe i somehing forgot
-    geo::synchronize();
     mdl::addPhysicalGroup(1, lineTags, 1);
     mdl::addPhysicalGroup(2, {surfaceTag}, 0);
+    geo::synchronize();
     mdl::mesh::generate();
 }
 
+void Gmsh::clear()
+{
+    gmsh::clear();
+}
+
+void Gmsh::init()
+{
+    if(recombine)
+        gmsh::option::setNumber("Mesh.RecombineAll", (int)recombine);
+    //gmsh::option::setNumber("Mesh.Optimize", 1);
+    //gmsh::option::setNumber("Mesh.OptimizeThreshold", 0.31);
+    //gmsh::option::setNumber("Mesh.RecombinationAlgorithm", 1);
+    if(mesh24format)
+        gmsh::option::setNumber("Mesh.MshFileVersion", 2.0);
+    if(Verbose)
+        gmsh::option::setNumber("General.Terminal", 1);
+
+    gmsh::model::add(modelName);
+}
 
 void Gmsh::start_ui()
 {
