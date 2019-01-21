@@ -823,55 +823,38 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
 
 void Mesh::clean()
 {
+  vertices.clear();
   for (size_t i = 0; i < points.size(); ++i)
     delete points[i];
+  points.clear();
   for (size_t i = 0; i < lines.size(); ++i)
     delete lines[i];
+  lines.clear();
   for (size_t i = 0; i < edges.size(); ++i)
     delete edges[i];
+  edges.clear();
   for (size_t i = 0; i < faces.size(); ++i)
     delete faces[i];
+  faces.clear();
   for (size_t i = 0; i < triangles.size(); ++i)
     delete triangles[i];
+  triangles.clear();
   for (size_t i = 0; i < tetrahedra.size(); ++i)
     delete tetrahedra[i];
+  tetrahedra.clear();
   for (size_t i = 0; i < quadrangles.size(); ++i)
     delete quadrangles[i];
+  quadrangles.clear();
   for (size_t i = 0; i < hexahedra.size(); ++i)
     delete hexahedra[i];
+  hexahedra.clear();
+
+  physical_names.clear();
 
   n_converted_hexahedra = 0;
   n_converted_quadrangles = 0;
 }
 
-
-void Mesh::read_triangl(
-    std::vector<double> &p, 
-    std::vector<int> &l,
-    std::vector<int> &lm,
-    std::vector<int> &t)
-{
-
-  //Nodes
-  vertices.resize(p.size() / 3);
-  for(int i = 0; i < vertices.size(); ++i)
-    vertices[i] = Point(p[3 * i], p[3 * i + 1], p[3 * i + 2]);
-
-  //Lines... in this case edges
-  lines.resize(l.size()/2);
-  for(int i = 0; i < lines.size(); ++i)
-    lines[i] = new Line(l[2 * i] - 1, l[2 * i + 1] - 1, lm[i]);
-
-
-  //Elements
-  triangles.resize(t.size() / 3);
-  for(int i = 0; i < t.size() / 3; ++i){    
-    triangles[i] = new Triangle(
-        t[3 * i] - 1, 
-        t[3 * i + 1] - 1, 
-        t[3 * i + 2] - 1, 0);
-  }
-}
 
 
 
@@ -1594,43 +1577,6 @@ void Mesh::face_numeration(std::vector<MeshElement*> &cells,
 
   } // cells
 } // face numeration
-
-
-
-
-
-void Mesh::write_triangle(
-    std::vector<double> &p, 
-    std::vector<int> &l,
-    std::vector<int> &lm,
-    std::vector<int> &t)
-{
-  //FIXME::resolve output data structure it is to cumbersome
-  //TODO::how about all others elements type and cases??
-
-  //vertices
-  p.resize(vertices.size() * Point::n_coord);
-  for(int i = 0; i < vertices.size(); ++i)
-    for(int j = 0; j < Point::n_coord; ++j)
-      p[i * Point::n_coord + j] = vertices[i].get_coord(j);
-
-  //lines
-  l.resize(lines.size() * Line::n_vertices);
-  for(int i = 0; i < lines.size(); ++i)
-    for(int j = 0; j < Line::n_vertices; ++j)
-      l[i * Line::n_vertices + j] = lines[i]->get_vertex(j);
-
-  //line markers
-  lm.resize(lines.size());
-  for(int i = 0; i < lines.size(); ++i)
-    lm[i] = lines[i]->get_material_id();
-
-  //quads
-  t.resize(quadrangles.size() * Quadrangle::n_vertices);
-  for(int i = 0; i < quadrangles.size(); ++i)
-    for(int j = 0; j < quadrangles[i]->get_n_vertices(); ++j)
-      t[i * Quadrangle::n_vertices + j] = quadrangles[i]->get_vertex(j) + 1;
-}
 
 
 

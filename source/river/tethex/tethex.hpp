@@ -864,31 +864,12 @@ public:
   void read(const std::string &file);
 
                 /**
-                 * Read the mesh from Triangulate Structure
-                 * @param in - TriangulateIO data structure
-                 */
-  void read_triangl(
-    std::vector<double> &p, 
-    std::vector<int> &l,
-    std::vector<int> &lm,
-    std::vector<int> &t);
-
-                /**
                  * Conversion from simplices to bricks.
                  * Specifically, in 2D - conversion from triangles to quadrangles,
                  * in 3D - conversion from tetrahedra to hexahedra.
                  */
   void convert();
 
-                  /**
-                 * Write the resulting brick mesh into the file
-                 * @param file - the name of mesh file where we write the results of conversion
-                 */
-  void write_triangle(
-    std::vector<double> &p, 
-    std::vector<int> &l,
-    std::vector<int> &lm,
-    std::vector<int> &t);
                 /**
                  * Write the resulting brick mesh into the file
                  * @param file - the name of mesh file where we write the results of conversion
