@@ -4,13 +4,14 @@
 #include "geometry.hpp"
 #include "mesh.hpp"
 #include "solver.hpp"
+#include "physmodel.hpp"
 
 namespace River
 {
     namespace SimpleGeo{
-    Geometry CustomRiverTree(double dl = 0.1, double eps = 0.03);
-    Geometry Box();
-    Geometry SingleTip();
+        Geometry Box(Model &model);
+        Geometry SingleTip(Model &model, int size);
+        Geometry CustomRiverTree(Model &model, int size);
     }
     /* 
         TODO: 

@@ -17,39 +17,45 @@ namespace River
 
         }
 
-        Geometry CustomRiverTree(double dl, double eps)
+        Geometry CustomRiverTree(Model &model, int size)
         {
             auto riverGeom = Geometry();
-            riverGeom.SetEps(eps);
-            riverGeom.SetSquareBoundary({0., 0.}, {1., 1.}, 0.5);
+            riverGeom.SetEps(model.eps);
+            riverGeom.SetSquareBoundary(
+                {0., 0.}, 
+                {model.width, model.height}, model.dx);
 
             int rootBranchID = 1;
             riverGeom.initiateRootBranch(rootBranchID);
 
-            AddBranches(riverGeom, rootBranchID, 0.001, 3, dl);
+            AddBranches(riverGeom, rootBranchID, 0.001, size, model.ds);
             return riverGeom;
         }
 
-        Geometry Box()
+        Geometry Box(Model &model)
         {
             auto riverGeom = Geometry();
-            riverGeom.SetEps(0.1);
-            riverGeom.SetSquareBoundary({0., 0.}, {1., 1.}, 0.5);
+            riverGeom.SetEps(model.eps);
+            riverGeom.SetSquareBoundary(
+                {0., 0.}, 
+                {model.width, model.height}, model.dx);
 
             return riverGeom;
         }
         
-        Geometry SingleTip()
+        Geometry SingleTip(Model &model, int size)
         {
             auto riverGeom = Geometry();
-            riverGeom.SetEps(0.02);
-            riverGeom.SetSquareBoundary({0., 0.}, {1., 1.}, 0.5);
+            riverGeom.SetEps(model.eps);
+            riverGeom.SetSquareBoundary(
+                {0., 0.}, 
+                {model.width, model.height}, model.dx);
 
             auto rootBranchID = 1;
             riverGeom.initiateRootBranch(rootBranchID);
 
-            for (int i = 0; i < 10; ++i)
-                riverGeom.addPolar(GeomPolar{0.02, 0, rootBranchID}/*relative angle*/);
+            for (int i = 0; i < size; ++i)
+                riverGeom.addPolar(GeomPolar{model.ds, 0, rootBranchID}/*relative angle*/);
 
             return riverGeom;
         }

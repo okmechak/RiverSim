@@ -37,16 +37,20 @@ po::variables_map process_program_options(int argc, char *argv[])
     ("suppress-signature", "suppress signature printing")
     ("draw-mesh,d", po::value<bool>()->default_value(true), "draw mesh using gmsh fltk submodule")
     ("output-mesh,o", po::value<string>()->default_value("out_mesh.msh"), "save output mesh")
-    ("Verbose,V", po::value<bool>()->default_value(false), "print detailed log to terminal")
-    ("Quiet,Q", po::value<bool>()->default_value(false), "print detailed log to terminal")
-    ("MeshMaxArea,A", po::value<double>()->default_value(-1.), "constraints maximal area of triangle element") //FIXME.. some errors appears: faile d
-    ("MeshMinAngle,q", po::value<double>()->default_value(-1.), "constraints minimal angle of triangle element")
-    ("Eps,e", po::value<double>()->default_value(0.000001), "Width of branch") //conversion using boost::any_cast
+    ("verbose,V", po::value<bool>()->default_value(false), "print detailed log to terminal")
+    ("quiet,Q", po::value<bool>()->default_value(false), "print detailed log to terminal")
+    ("mesh-max-area,A", po::value<double>()->default_value(-1.), "constraints maximal area of triangle element") //FIXME.. some errors appears: faile d
+    ("mesh-min-angle,q", po::value<double>()->default_value(-1.), "constraints minimal angle of triangle element")
+    ("eps,e", po::value<double>()->default_value(0.000001), "Width of branch") //conversion using boost::any_cast
     ("ref-num,r", po::value<int>()->default_value(3), "Number of solver adaptive refinments")
     ("geom-type,g", po::value<int>()->default_value(0), "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip")
     ("use-gmsh,G", po::value<bool>()->default_value(false), "Mesh Generator: false(default) - Triangle, true - Gmsh")
     ("simulate,s", po::value<bool>()->default_value(true), "Run simulation in Deal.II")
-    ("visualise,Z", po::value<bool>()->default_value(true), "Run GMSH gui and visualise current mesh");
+    ("visualise,Z", po::value<bool>()->default_value(true), "Run GMSH gui and visualise current mesh")
+    ("mesh,m", po::value<bool>()->default_value(true), "Turn on/off mesh generation")
+    ("steps", po::value<int>()->default_value(3), "Number of steps to simulate")
+    ("ds", po::value<double>()->default_value(0.1), "ds - minimal lenght of growing")
+    ("dx", po::value<double>()->default_value(0.5), "dx - shift of initial river position from beginning of coordinates");
 
 
     po::positional_options_description p;

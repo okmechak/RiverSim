@@ -21,7 +21,9 @@ set(SOURCE_FILES
     solver.hpp
     solver.cpp
     utilities.hpp
-    utilities.cpp)
+    utilities.cpp
+    physmodel.hpp
+    physmodel.cpp)
 
 add_library(river STATIC ${SOURCE_FILES})
 set_property(TARGET river PROPERTY CXX_STANDARD 17)
