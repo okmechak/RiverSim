@@ -30,6 +30,11 @@ namespace River
       return sqrt(x*x + y*y);
     }
 
+    double Point::norm(double x, double y)
+    {
+        return sqrt(x*x + y*y);
+    }
+
     Point Point::getNormalized()
     {
       return Point{x/norm(), y/norm()};
@@ -53,6 +58,15 @@ namespace River
       if(y < 0)
         phi = -phi;
       return phi;
+    }
+
+    double Point::angle(double x, double y)
+    {
+        double phi = acos(x/norm(x, y));
+        if(y < 0)
+            phi = -phi;
+
+        return phi;
     }
 
     double Point::angle(Point p) const
@@ -125,6 +139,16 @@ namespace River
         x /= gain;
         y /= gain;
         return *this;
+    }
+
+    double Point::operator[](const int index) const
+    {
+        if(index == 0)
+            return x;
+        else if(index == 1)
+            return y;
+        else
+            throw std::invalid_argument( "index should be 0 or 1");
     }
 
     ostream& operator << (ostream& write, const Point& p)

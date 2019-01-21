@@ -38,9 +38,10 @@ class Polar
     double dl;
     double phi;
     
-    void print()
+    friend ostream& operator <<(ostream& write, const Polar & p)
     {
-      cout << "Polar point: " << dl << " " << phi << endl;
+      cout << "Polar: " << p.dl << " " << p.phi << endl;
+      return write;
     }
 };
 
@@ -57,11 +58,13 @@ class Point
     Point(Polar p);
 
     double norm() const;
+    static double norm(double x, double y);
     Point getNormalized();
     Point& rotate(double phi);
     Polar getPolar() const;
     void normalize();
     double angle() const;
+    static double angle(double x, double y);
     double angle(Point p) const;
     void print() const;
 
@@ -71,6 +74,7 @@ class Point
     Point operator-(const Point& p) const;
     Point& operator-=(const Point& p);
     double operator*(const Point& p) const;
+    double operator[](const int index) const;
     Point operator*(const double gain) const;
     Point& operator*=(const double gain);
     Point operator/(const double gain) const;
