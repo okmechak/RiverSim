@@ -165,6 +165,16 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
         return *this;
     }
 
+    double GeomPoint::operator[](const int index) const
+    {
+        if(index == 0)
+            return x;
+        else if(index == 1)
+            return y;
+        else
+            throw std::invalid_argument( "index should be 0 or 1");
+    }
+
     ostream& operator << (ostream& write, const GeomPoint& p)
     {
         write << "point:  {" << p.x << ", " << p.y << "} " << endl 
@@ -245,7 +255,8 @@ void Branch::addDPoint(GeomPoint p)
 
 void Branch::addPolar(GeomPolar p, bool bRelativeAngle)
 { 
-    if(bRelativeAngle);
+    
+    if(bRelativeAngle)
         p.phi += getHeadAngle();
 
     auto newPoint = GeomPoint(p);
@@ -279,11 +290,13 @@ GeomPoint Branch::getHead()
 
 double Branch::getHeadAngle()
 {   
+    cout << "getHeadAngle" << endl;
     double angle = tailAngle;
     
     if(auto index = size() - 1; index > 0)
     {
         auto point = leftPoints[index] - leftPoints[index - 1];
+        cout << point << endl;
         angle = point.angle();
     }
     
@@ -362,11 +375,11 @@ void Geometry::SetSquareBoundary(
 
     int borderBranchId = 0;
     boundaryLines = {
-        {1, 2, borderBranchId, Markers::Bottom},   
-        {2, 3, borderBranchId, Markers::Right},   
-        {3, 4, borderBranchId, Markers::Top},   
-        {4, 5, borderBranchId, Markers::Left}, 
-        {5, 6, borderBranchId, Markers::Bottom}
+        {0, 1, borderBranchId, Markers::Bottom},   
+        {1, 2, borderBranchId, Markers::Right},   
+        {2, 3, borderBranchId, Markers::Top},   
+        {3, 4, borderBranchId, Markers::Left}, 
+        {4, 5, borderBranchId, Markers::Bottom}
         };
 }
 
@@ -421,16 +434,15 @@ void Geometry::generateCircularBoundary()
     if(branchIndexes.count(curId))
         InserBranchTree(curId, M_PI/2., true);
 
-    
     lines.insert(lines.end(), boundaryLines.begin(), boundaryLines.end());
-    int index = boundaryPoints.size();
+    int index = boundaryPoints.size() - 1;
     for(auto &p: points)
     {
-        if(index < points.size())
+        if(index < points.size() - 1)
             lines.push_back(GeomLine(index, index + 1, p.branchId, Markers::River));
         else
         {
-            lines.push_back(GeomLine(index, 1, p.branchId, Markers::River));
+            lines.push_back(GeomLine(index, 0, p.branchId, Markers::River));
             break;
         }
 
@@ -442,11 +454,10 @@ void Geometry::generateCircularBoundary()
  
 void Geometry::InitiateMesh(tethex::Mesh &meshio)
 {   
-
     generateCircularBoundary();
-
+    
     meshio.vertices.reserve(points.size());
-    meshio.lines.reserve(points.size());
+    meshio.lines.reserve(points.size());//same length as points cos circular region
 
     for(GeomPoint p: points)
         meshio.vertices.push_back(
@@ -460,13 +471,13 @@ void Geometry::InitiateMesh(tethex::Mesh &meshio)
 */
 void Geometry::InserBranchTree(unsigned int id, double phi, bool isRoot)
 {
-    auto curBranch = branches[branchIndexes[id]];
-    phi = curBranch.getHeadAngle();
-    if(curBranch.size() > 1){
-
+    auto curBranch = get_branch(id);
+    phi = curBranch->getHeadAngle();
+    if(curBranch->size() > 1)
+    {
         points.insert(end(points), 
-            begin(curBranch.leftPoints) + 1, 
-            end(curBranch.leftPoints) - 1
+            begin(curBranch->leftPoints) + 1, 
+            end(curBranch->leftPoints) - 1
             );
         
 
@@ -476,53 +487,50 @@ void Geometry::InserBranchTree(unsigned int id, double phi, bool isRoot)
             auto rightId = branchRelation[id].second;
 
             //Left merged point
-            auto leftMergPoint = curBranch.getHead() + mergedLeft(phi);
+            auto leftMergPoint = curBranch->getHead() + mergedLeft(phi);
             //leftMergPoint.meshSize = riverMeshSize;
             points.push_back(leftMergPoint);
 
-            InserBranchTree(leftId, curBranch.getHeadAngle());
+            InserBranchTree(leftId, curBranch->getHeadAngle());
             
             //Tip point
-            auto tipPoint = curBranch.getHead() + mergedCenter(phi);
+            auto tipPoint = curBranch->getHead() + mergedCenter(phi);
             tipPoint.meshSize = riverMeshSize;
             points.push_back(tipPoint);
 
-            InserBranchTree(rightId, curBranch.getHeadAngle());
+            InserBranchTree(rightId, curBranch->getHeadAngle());
 
             //Left merged point
-            auto rightMergPoint = curBranch.getHead() + mergedRight(phi);
+            auto rightMergPoint = curBranch->getHead() + mergedRight(phi);
             //rightMergPoint.meshSize = riverMeshSize;
             points.push_back(rightMergPoint);
         }
         else
         {
             //inserting narrow tip
-            auto p = curBranch.getHead();
+            auto p = curBranch->getHead();
             p.meshSize = tipMeshSize;
             points.push_back(p);
         }
-        
         
 
         //inserting right branch side in reverse order
         points.insert(
             points.end(), 
-            curBranch.rightPoints.rbegin() + 1, 
-            curBranch.rightPoints.rend() - 1);
+            curBranch->rightPoints.rbegin() + 1, 
+            curBranch->rightPoints.rend() - 1);
         
     }
 }
 
 void Geometry::addPolar(GeomPolar p, bool bRelativeAngle)
-{
-    if (branchRelation.count(p.branchId))
+{   
+    if (q_branch_childs(p.branchId))
         throw std::invalid_argument("branch already has ancestors!");
-    if (!branchIndexes.count(p.branchId))
-        throw std::invalid_argument("Such branch does not exist");
 
-    auto & curBranch = branches[branchIndexes[p.branchId]];
+    auto curBranch = get_branch(p.branchId);
     p.meshSize = riverMeshSize;
-    curBranch.addPolar(p, bRelativeAngle/*relative angle*/);
+    curBranch->addPolar(p, bRelativeAngle/*relative angle*/);
 }
 
 pair<GeomPoint, double> Geometry::GetEndPointOfSquareBoundary()
@@ -537,9 +545,10 @@ void Geometry::SetEps(double epsVal){
     eps/*object parameter*/ = epsVal/*argument*/;
 }
 
-Branch& Geometry::GetBranch(unsigned int id)
+void Geometry::clear()
 {
-    return branches[branchIndexes[id]];
+    points.clear();
+    lines.clear();
 }
 
 
@@ -559,26 +568,105 @@ pair<unsigned int, unsigned int> Geometry::AddBiffurcation(unsigned int id, doub
         rightId = generateID(id, true/*is right branch*/);
 
     //Some values from origin brnach
-    auto originBranch = GetBranch(id);
-    auto headPoint = originBranch.getHead();
+    auto originBranch = get_branch(id);
+    auto headPoint = originBranch->getHead();
     headPoint.meshSize = riverMeshSize;
-    auto phi = originBranch.getHeadAngle();
+    auto phi = originBranch->getHeadAngle();
 
-    branchRelation[id] = {leftId, rightId};
+    add_branch_relation(id, leftId, rightId);
 
     //setting left branch
     auto leftBranch = Branch(leftId, headPoint, phi + bifAngle, eps);
     leftBranch.addPolar({dl, 0, headPoint.branchId, headPoint.regionTag, riverMeshSize}/*relative coords*/);
-    branches.push_back(leftBranch);
-    branchIndexes[leftId] = branches.size() - 1;
+    add_branch(leftBranch, leftId);
 
     //setting right branch
     auto rightBranch = Branch(rightId, headPoint, phi - bifAngle, eps);
     rightBranch.addPolar({dl, 0, headPoint.branchId, headPoint.regionTag, riverMeshSize}/*relative coord*/);
-    branches.push_back(rightBranch);
-    branchIndexes[rightId] = branches.size() - 1;
+    add_branch(rightBranch, rightId);
+
 
     return {leftId, rightId};
+}
+
+//Recursively generates array of branch ids which at the end of tree(don't have childs)
+void Geometry::generate_ids_of_tip_branches(vector<int> &IdsOfBranchesAtTip, int branchId)
+{
+    if(!q_branch_childs(branchId))
+        IdsOfBranchesAtTip.push_back(branchId);
+    else
+    {
+        auto[leftBranchId, rightBranchId] = get_branch_childs(branchId);
+        generate_ids_of_tip_branches(IdsOfBranchesAtTip, leftBranchId);
+        generate_ids_of_tip_branches(IdsOfBranchesAtTip, rightBranchId);
+    }
+
+}
+
+//returns array of points at tips of branches
+vector<pair<GeomPoint, double>> Geometry::GetTipPoints()
+{
+    vector<int> IdsOfBranchesAtTip;
+    generate_ids_of_tip_branches(IdsOfBranchesAtTip, rootBranchId);
+
+    vector<pair<GeomPoint, double>> tipPointsAndAngles;
+    for(auto branchId: IdsOfBranchesAtTip)
+    {
+        Branch* curBranch = get_branch(branchId);
+        auto point = curBranch->getHead();
+        auto angle = curBranch->getHeadAngle();
+        tipPointsAndAngles.push_back(make_pair(point, angle));
+
+    }
+
+    return tipPointsAndAngles;
+}
+
+
+void Geometry::add_branch(Branch& branch, int id)
+{
+    if(q_branch(id))
+        throw invalid_argument("Can't add branch. Such branch already exist");
+
+    branches.push_back(branch);
+    branchIndexes[id] = branches.size() - 1;
+}
+
+
+Branch* Geometry::get_branch(int id)
+{
+    if (!branchIndexes.count(id))
+        throw invalid_argument("Such brunch with id doesn't exist");
+
+    return &(branches[branchIndexes[id]]);
+}
+
+bool Geometry::q_branch(int id)
+{
+    return branchIndexes.count(id);
+}
+
+
+bool Geometry::q_branch_childs(int id)
+{
+    return branchRelation.count(id);
+}
+
+
+pair<int, int> Geometry::get_branch_childs(int id)
+{
+    if (!branchRelation.count(id))
+        throw invalid_argument("Such brunch with id doesn't exist or it has no childs");
+
+    return branchRelation[id];
+}
+
+void Geometry::add_branch_relation(int baseId, int leftId, int rightId)
+{
+    if(q_branch_childs(baseId))
+        throw invalid_argument("Current base branch already has childs!");
+
+    branchRelation[baseId] = {leftId, rightId};   
 }
 
 

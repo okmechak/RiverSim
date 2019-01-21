@@ -48,7 +48,7 @@ class GeomLine
     unsigned int p1, p2;
     int branchId = 0, 
        regionTag = 0;
-
+    
 };
 
 /*
@@ -86,6 +86,7 @@ class GeomPoint
     GeomPoint operator/(const double gain) const;
     GeomPoint& operator/=(const double gain);
     bool operator==(const GeomPoint& p) const;
+    double operator[](const int index) const;
     friend ostream& operator<<(ostream& write, const GeomPoint & p);
 };
 
@@ -161,10 +162,6 @@ public:
   };
 
 
-  //branches functionality
-  map<unsigned int, pair<unsigned int, unsigned int>> branchRelation;
-  map<unsigned int, unsigned int> branchIndexes;
-  vector<Branch> branches;
 
   //Segments or Edges or Elements
 
@@ -185,10 +182,11 @@ public:
   pair<unsigned int, unsigned int> AddBiffurcation(unsigned int id, double dl);
 
   vector<unsigned int> GetTipIds();
-  Branch& GetBranch(unsigned int id);
+  vector<pair<GeomPoint, double>> GetTipPoints();
   vector<GeomPolar> GetTipPolars();
   void InitiateMesh(tethex::Mesh & meshio);
   void SetEps(double epsVal);
+  void clear();
 
 
 private:
@@ -196,8 +194,8 @@ private:
   double bifAngle = M_PI/5.;
 
   //mesh size of different regions
-  double tipMeshSize = 0.003;
-  double riverMeshSize = 0.01;
+  double tipMeshSize = 0.0001;
+  double riverMeshSize = 0.005;
   double boundariesMeshSize = 0.1;
 
   unsigned int rootBranchId = 0;//0 means no root/first Branch
@@ -205,6 +203,19 @@ private:
   //Nodes and lines - main interface of this class
   vector<GeomPoint> points;
   vector<GeomLine> lines;
+
+  //branches functionality
+  map<unsigned int, pair<unsigned int, unsigned int>> branchRelation;
+  //all branches structure is strored in *branches*. To get position of some branch in *branches* structure use branchIndexes
+  map<unsigned int, unsigned int> branchIndexes;
+  vector<Branch> branches;
+
+  inline Branch* get_branch(int id);
+  inline bool q_branch(int id);
+  inline bool q_branch_childs(int id);
+  inline pair<int, int> get_branch_childs(int id);
+  void add_branch(Branch& branch, int id);
+  void add_branch_relation(int baseId, int leftId, int rightId);
 
   //Boundary
   //Box parameters
@@ -219,6 +230,7 @@ private:
   
   pair<GeomPoint, double> GetEndPointOfSquareBoundary();
   void InserBranchTree(unsigned int id, double phi, bool isRoot = false);
+  void generate_ids_of_tip_branches(vector<int> &IdsOfBranchesAtTip, int branchId);
   void generateCircularBoundary();
   //at generation time of whole circular boundary
   //it gives us a points of crossection of boundaries
