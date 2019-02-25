@@ -5,8 +5,6 @@
 #include <iterator>//ostream_iterator
 
 //mesh generation tools
-#include <gmsh.h>
-#include <tetgen.h>
 #include "triangle.h"
 //mesh convertor tool
 #include "tethex.hpp"
@@ -14,11 +12,6 @@
 #include "geometry.hpp"
 
 using namespace std;
-
-namespace mdl = gmsh::model;
-namespace msh = gmsh::model::mesh;
-namespace geo = gmsh::model::geo;
-
 
 namespace River
 {
@@ -152,40 +145,5 @@ namespace River
     private:
   };
 
-
-  class Gmsh
-  {
-    public:
-      //some flags
-      bool recombine = true;
-      bool mesh24format = true;
-      bool Verbose = true;
-      //GMSH
-      
-      Gmsh();
-      ~Gmsh();
-      void open(string fileName);
-      void write(string fileName);
-      void clear();
-      //MESH
-      void set_nodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
-      void set_elements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
-      void generate(vector<GeomPoint> points);
-      void generate(tethex::Mesh & meshio);
-      void test_mesh();
-      void start_ui();
-
-    private:
-      string modelName = "basic";
-      //string fileName = "quadrangle.msh";
-      const int dim = 1;
-
-      vector<int> evaluate_tags(int size, int tag0)
-      {
-        auto tags = vector<int>(size);
-        iota(begin(tags), end(tags), tag0);
-        return tags;
-      }
-  };
 
 } //namespace mesh

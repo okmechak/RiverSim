@@ -1,11 +1,6 @@
 include_directories(${PROJECT_SOURCE_DIR}/source/river)
 include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
 
-message("========================================")
-message("GMSH setup")
-include_directories(${gmsh_DIRECTORY}/include)
-link_directories(${gmsh_DIRECTORY}/lib)
-
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 

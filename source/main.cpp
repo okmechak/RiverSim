@@ -41,26 +41,18 @@ int main(int argc, char *argv[])
         */
     
     River::Triangle tr;
-    River::Gmsh Gmsh;
-    if(!vm["use-gmsh"].as<bool>())
-    {
-        //options
-        tr.Verbose = vm["Verbose"].as<bool>();
-        tr.Quite = vm["Quiet"].as<bool>();
-        tr.AreaConstrain = tr.ConstrainAngle = true;
-        tr.MaxTriaArea = vm["MeshMaxArea"].as<double>();
-        tr.MinAngle = vm["MeshMinAngle"].as<double>();
-        //generate mesh
-        tr.generate(meshio);
-        //convert triangles to quadrangles
-        meshio.convert();
-        meshio.write(vm["output-mesh"].as<string>());
-    }
-    else
-    {
-        Gmsh.generate(meshio);
-        Gmsh.write(vm["output-mesh"].as<string>());
-    }
+
+    //options
+    tr.Verbose = vm["Verbose"].as<bool>();
+    tr.Quite = vm["Quiet"].as<bool>();
+    tr.AreaConstrain = tr.ConstrainAngle = true;
+    tr.MaxTriaArea = vm["MeshMaxArea"].as<double>();
+    tr.MinAngle = vm["MeshMinAngle"].as<double>();
+    //generate mesh
+    tr.generate(meshio);
+    //convert triangles to quadrangles
+    meshio.convert();
+    meshio.write(vm["output-mesh"].as<string>());
 
     if(vm["Verbose"].as<bool>())
         meshio.info();
@@ -80,13 +72,5 @@ int main(int argc, char *argv[])
         sim.run();
     }
 
-    /*
-            Visualisation
-         */
-    if(!vm["use-gmsh"].as<bool>())
-        Gmsh.open(vm["output-mesh"].as<string>());
-    
-    if(vm["visualise"].as<bool>())
-        Gmsh.start_ui();
     return 0;
 }
