@@ -35,16 +35,13 @@ message("========================================")
 message("GMSH setup")
 include_directories(${gmsh_DIRECTORY}/include)
 link_directories(${gmsh_DIRECTORY}/lib)
-
-
 message("========================================")
 message("River, Tethex, Triangle setup")
 add_subdirectory(river)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/river
     ${CMAKE_CURRENT_SOURCE_DIR}/river/tethex
-    ${CMAKE_CURRENT_SOURCE_DIR}/river/triangle
-    ${CMAKE_CURRENT_SOURCE_DIR}/river/tetgen)
+    ${CMAKE_CURRENT_SOURCE_DIR}/river/triangle)
 
 set(SOURCE_FILES 
     main.cpp)
