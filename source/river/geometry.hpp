@@ -31,20 +31,21 @@ class GeomTag
 class GeomPolar : public Polar
 {
   public:
+    GeomPolar() = default;
     GeomPolar(double r, double phiVal, 
       int branchIdVal = 0, 
       int regionTagVal = 0,
       double meshSizeVal = 1.);
 
     int branchId = 0, regionTag;
-    double meshSize;
+    double meshSize = 1.;
 };
 
 class GeomLine
 {
   public:
     GeomLine(unsigned int p1Val, unsigned int p2Val, 
-      int branchIdVal, int regionTagVal);
+      int branchIdVal = 0, int regionTagVal = 0);
     unsigned int p1, p2;
     int branchId = 0, 
        regionTag = 0;

@@ -8,10 +8,8 @@ link_directories(${gmsh_DIRECTORY}/lib)
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-
 #I like to keep test files in a separate source directory called test
 file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
-
 
 #Run through each source
 foreach(testSrc ${TEST_SRCS})
@@ -23,10 +21,6 @@ foreach(testSrc ${TEST_SRCS})
 
         #link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName} ${Boost_LIBRARIES} river)
-
-        #I like to move testing binaries into a testBin directory
-        #set_target_properties(${testName} PROPERTIES 
-        #    RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/testBin)
 
         #Finally add it to test execution - 
         #Notice the WORKING_DIRECTORY and COMMAND

@@ -3,7 +3,6 @@
 
 namespace River{
 
-
 /*
     GeomPolar Class
 
@@ -190,7 +189,9 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 */
 
 
-GeomTag::GeomTag(unsigned int rVal, unsigned int idVal):regionTag(rVal), branchId(idVal){}
+GeomTag::GeomTag(unsigned int rVal, unsigned int idVal):
+regionTag(rVal), branchId(idVal)
+{}
 
 
 

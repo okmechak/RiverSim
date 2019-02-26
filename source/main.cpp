@@ -117,8 +117,13 @@ int main(int argc, char *argv[])
                 cout << endl << endl;
                 cout << p.first << ", angle : " << p.second << endl;
                 auto series_params = sim.integrate(p.first, p.second);
+
+                for(auto a: series_params)
+                    cout << a << " ";
+                cout << endl;
                 auto newPoint = model.next_point(series_params);
                 newPoint.branchId = p.first.branchId;
+                cout << newPoint.branchId << endl << flush;
                 geom.addPolar(newPoint);
                 cout << endl << endl;
             }
