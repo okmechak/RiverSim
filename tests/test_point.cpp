@@ -126,3 +126,15 @@ BOOST_AUTO_TEST_CASE(operators,
   BOOST_TEST((a[0] == 1. && a[1] == 1.));
   BOOST_CHECK_THROW(a[2], std::invalid_argument);
 }
+
+
+BOOST_AUTO_TEST_CASE( polar_test, 
+  *utf::description("polar constructor")
+  *utf::tolerance(eps))
+{
+  Polar p;
+  BOOST_TEST((p.dl == 0. && p.phi == 0.));
+  
+  p = Polar{1, 2};
+  BOOST_TEST((p.dl == 1. && p.phi == 2.));
+}
