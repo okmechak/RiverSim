@@ -4,16 +4,13 @@
 #include <string>
 #include <vector>
 #include <map>
-
 #include <iostream>
-
 #include <math.h>
 
 #include "common.hpp"
 #include "tethex.hpp"
 
 using namespace std;
-
 
 
 namespace River
@@ -23,7 +20,10 @@ namespace River
 class GeomTag
 {
   public:
-    GeomTag(unsigned int idVal = 0, unsigned int rVal = 0);
+    GeomTag(int idVal = 0, int rVal = 0):
+      branchId{idVal},
+      regionTag{rVal}
+    {};
     int branchId = 0;
     int regionTag = 0;
 };
@@ -37,7 +37,7 @@ class GeomPolar : public Polar
       int regionTagVal = 0,
       double meshSizeVal = 1.);
 
-    int branchId = 0, regionTag;
+    int branchId = 0, regionTag = 0;
     double meshSize = 1.;
 };
 
@@ -57,24 +57,27 @@ class GeomLine
 */
 class GeomPoint
 {
+  private:
+    double eps = 1e-20;
+
   public:
     double x, y;
     int branchId = 0, regionTag = 0;
     double meshSize = 1.;
-    GeomPoint() = default;
+
     ~GeomPoint() = default;
     GeomPoint(double xval, double yval, 
         int branchIdVal = 0, int regionTagVal = 0, double msize = 1.);
-    GeomPoint(GeomPolar &p);
+    GeomPoint(const GeomPolar &p);
 
     double norm() const;
     GeomPoint getNormalized();
     GeomPoint& rotate(double phi);
     GeomPolar getPolar() const;
-    void normalize();
+    GeomPoint& normalize();
     double angle() const;
-    double angle(GeomPoint p) const;
-    void print() const;
+    double angle(GeomPoint &p) const;
+    GeomPoint& print();
 
     GeomPoint& operator=(const GeomPoint& p) = default;
     GeomPoint operator+(const GeomPoint& p) const;
@@ -88,6 +91,7 @@ class GeomPoint
     GeomPoint& operator/=(const double gain);
     bool operator==(const GeomPoint& p) const;
     double operator[](const int index) const;
+
     friend ostream& operator<<(ostream& write, const GeomPoint & p);
 };
 

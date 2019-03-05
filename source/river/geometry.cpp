@@ -43,7 +43,7 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
     meshSize(msize)
     {}
 
-    GeomPoint::GeomPoint(GeomPolar &p)
+    GeomPoint::GeomPoint(const GeomPolar &p)
     {
       x = p.dl * cos(p.phi);
       y = p.dl * sin(p.phi);
@@ -69,46 +69,61 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     GeomPoint GeomPoint::getNormalized()
     {
-      return GeomPoint{x/norm(), y/norm()};
+        auto n = norm();
+        if(n == 0.)
+            throw std::invalid_argument( "norm is equal to zero");
+        return GeomPoint{x / n, y / n, branchId, regionTag, meshSize};
     }
 
     GeomPolar GeomPoint::getPolar() const
     {
-      return GeomPolar{norm(), angle(), branchId, regionTag, meshSize};
+        return GeomPolar{norm(), angle(), branchId, regionTag, meshSize};
     }
 
-    void GeomPoint::normalize()
+    GeomPoint& GeomPoint::normalize()
     {
-      auto l = norm();
-      x /= l;
-      y /= l;
+        auto l = norm();
+        if(l == 0.)
+            throw std::invalid_argument( "norm is equal to zero");
+        x /= l;
+        y /= l;
+
+        return *this;
     }
 
     double GeomPoint::angle() const
     {
-      double phi = acos(x/norm());
-      if(y < 0)
-        phi = -phi;
-      return phi;
+        auto n = norm();
+        if(n == 0.)
+            throw std::invalid_argument( "norm is equal to zero");
+        double phi = acos(x / n);
+        if(y < 0)
+            phi = -phi;
+        return phi;
     }
 
-    double GeomPoint::angle(GeomPoint p) const
+    double GeomPoint::angle(GeomPoint &p) const
     {
-      //order of points is important
-      double phi = acos((x*p.x + y*p.y)/norm()/p.norm());
-      double sign = x*p.y - p.x*y > 0 ? 1 : -1;//FIXME: is this sign correct?
-      phi *= sign;
-      return phi;
+        auto n = norm();
+        auto pn = p.norm();
+        if(n == 0. || pn == 0.)
+            throw std::invalid_argument("norm of one or another vector is 0");
+
+        //order of points is important
+        double phi = acos((x*p.x + y*p.y)/n/pn);
+        double sign = x*p.y - p.x*y > 0 ? 1 : -1;//FIXME: is this sign correct?
+        phi *= sign;
+        return phi;
     }
-    void GeomPoint::print() const
+    GeomPoint& GeomPoint::print()
     {
-      cout << *this << endl;
+        cout << *this << endl;
+        return *this;
     }
 
     bool GeomPoint::operator==(const GeomPoint& p) const
     {   
-        double eps = 1e-15;
-        return abs(x - p.x) < eps && abs(y - p.y);
+        return (abs(x - p.x)) < eps && (abs(y - p.y) < eps);
     }
 
     GeomPoint GeomPoint::operator+(const GeomPoint& p) const
@@ -181,17 +196,6 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
               << "        mesh size: " << p.meshSize ;
         return write;
     }
-
-/*
-
-    GeomTag Object
-
-*/
-
-
-GeomTag::GeomTag(unsigned int rVal, unsigned int idVal):
-regionTag(rVal), branchId(idVal)
-{}
 
 
 
