@@ -28,15 +28,17 @@ struct hash<pair<int, int>>
 namespace River
 {
 /*
-    Is used to simply describe one branch of river. From one
-    biffurcation point to another
-  
-  */
+  Is used to simply describe one branch of river. From one
+  biffurcation point to another
+*/
 class Polar
 {
   public:
-    double dl;
-    double phi;
+    Polar() = default;
+    Polar(double dlval, double phival):
+      dl{dlval}, phi{phival} {};
+    double dl = 0.;
+    double phi = 0.;
     
     friend ostream& operator <<(ostream& write, const Polar & p)
     {
@@ -50,11 +52,16 @@ class Polar
 */
 class Point
 {
+  private:
+    double eps = 1e-20;
+
   public:
-    double x, y;
+    double x = 0, y = 0;
+
     Point() = default;
     ~Point() = default;
     Point(double xval, double yval);
+    Point(const Point &p) = default;
     Point(Polar p);
 
     double norm() const;
@@ -65,7 +72,7 @@ class Point
     void normalize();
     double angle() const;
     static double angle(double x, double y);
-    double angle(Point p) const;
+    double angle(Point &p) const;
     void print() const;
 
     Point& operator=(const Point& p) = default;
@@ -80,6 +87,7 @@ class Point
     Point operator/(const double gain) const;
     Point& operator/=(const double gain);
     bool operator==(const Point& p) const;
+
     friend ostream& operator <<(ostream& write, const Point & p);
 };
 

@@ -11,41 +11,118 @@
 #include <math.h>
 #include "common.hpp"
 
+const double eps = 1e-13;
 
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 using namespace River;
 
+
+
 // ------------- Tests Follow --------------
-BOOST_AUTO_TEST_CASE( constructors)
+BOOST_AUTO_TEST_CASE( constructors, 
+  *utf::description("constructors")
+  *utf::tolerance(eps))
 {
 
-  Point obj;
-  Point obj1();
-  Point obj2{};
-  Point obj3{1, 1};
-  
-  auto tol = 1e-10;
+  //constructor
+  Point obj1;
+  BOOST_TEST((obj1.x == 0. && obj1.y == 0.));
+  BOOST_TEST(obj1.norm() == 0.);
 
-  BOOST_CHECK_CLOSE(obj3.x, 1., tol);
-  BOOST_CHECK_CLOSE(obj3.y, 1., tol);
-  
+  Point obj2{1, 1};
+  BOOST_TEST((obj2.x == 1. && obj2.y == 1.));
+  BOOST_TEST(obj2.norm() == sqrt(2.));
+
+  Point obj3(2, 3);
+  BOOST_TEST((obj3.x == 2. && obj3.y == 3.));
+  BOOST_TEST(obj3.norm() == sqrt(13.));
+
+  //copy constructor
+  Point obj4(obj3);
+  BOOST_TEST((obj4.x == 2. && obj4.y == 3.));
+  BOOST_TEST(obj4.norm() == sqrt(13.));
+
+  //assign 
+  auto obj5 = obj4;
+  BOOST_TEST((obj5.x == 2. && obj5.y == 3.));
+  BOOST_TEST(obj5.norm() == sqrt(13.));
+
+  //polar coord
+  Point obj6(Polar{sqrt(2.), M_PI/4.});
+  BOOST_TEST(obj6.x == 1.);
+  BOOST_TEST(obj6.y == 1.);
 }
 
-//Name your test cases for what they test
-BOOST_AUTO_TEST_CASE( methods, *utf::tolerance(1e-4))
+
+
+BOOST_AUTO_TEST_CASE( static_methods, 
+  *utf::tolerance(eps)
+  *utf::description("static methods"))
 {
-    utf::unit_test_log_t::instance().set_threshold_level(utf::log_level::log_test_units);
-    Point p1{1, 1};
+  //norm 
+  BOOST_TEST(Point::norm(1., 1.) == sqrt(2.));
+  BOOST_TEST(Point::norm(-1., 1.) == sqrt(2.));
+  BOOST_TEST(Point::norm(1., -1.) == sqrt(2.));
+  BOOST_TEST(Point::norm(0., 0.) == sqrt(0.));
 
-    auto tol = 1e-10;
-    BOOST_CHECK_CLOSE(p1.norm(), sqrt(2), tol);
-    BOOST_CHECK_CLOSE(p1.angle(), M_PI/4, tol);
-    //p1 = Point{-1, 1};
-    //BOOST_CHECK(p1.angle() == M_PI*3/4);
-    //p1 = Point{-1, -1};
-    //BOOST_CHECK(p1.angle() == - M_PI*3/4);
-    //p1 = Point{1, -1};
-    //BOOST_CHECK(p1.angle() == - M_PI*4);
+  //angle lies between [-Pi, +Pi]
+  BOOST_TEST(Point::angle(1., 0.) == 0.);
+  BOOST_TEST(Point::angle(1., 1.) == M_PI/4.);
+  BOOST_TEST(Point::angle(0., 1.) == M_PI/2.);
+  BOOST_TEST(Point::angle(-1., 1.) == 3*M_PI/4.);
+  BOOST_TEST((Point::angle(-1., 0.) == M_PI 
+    || Point::angle(-1., 0.) == -M_PI));
+  BOOST_TEST(Point::angle(-1., -1.) == -3*M_PI/4.);
+  BOOST_TEST(Point::angle(0., -1.) == -M_PI/2.);
+  BOOST_TEST(Point::angle(1., -1.) == -M_PI/4.);
 
+  BOOST_CHECK_THROW(Point::angle(0., 0.), std::invalid_argument);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(methods, 
+  *utf::tolerance(eps)
+  *utf::description("methods")
+)
+{
+  //norm and angle
+  Point obj(1, 2);
+  BOOST_TEST(obj.norm() == sqrt(5.));
+  BOOST_TEST(obj.angle() == atan(2.));
+  BOOST_TEST(obj.angle(obj) == 0.);
+  Point obj_angl(1, -2);
+  BOOST_TEST(obj.angle(obj_angl) == - 2*atan(2.));
+  Point a(0, 0);
+  BOOST_CHECK_THROW(a.angle(), std::invalid_argument);
+  BOOST_CHECK_THROW(a.normalize(), std::invalid_argument);
+  BOOST_CHECK_THROW(a.getNormalized(), std::invalid_argument);
+  BOOST_CHECK_THROW(obj.angle(a), std::invalid_argument);
+
+  //getNormalized
+  Point obj2 = obj.getNormalized();
+  BOOST_TEST((obj2.x == 1./sqrt(5.) && obj2.y == 2./sqrt(5.)));
+
+  //normalize
+  obj.normalize();
+  BOOST_TEST(obj2 == obj);
+}
+
+
+
+BOOST_AUTO_TEST_CASE(operators, 
+  *utf::tolerance(eps)
+  *utf::description("operators")
+)
+{
+  Point a(1, 1);
+
+  a += (a + a)/*2*a*/ +( a*(-2) + a*2)/*0*/ 
+    + ( a /(-2) + a/2)/*0*/;
+  a -= a/3;
+  a /= 2;
+  BOOST_TEST((a.x == 1. && a.y == 1.));
+  BOOST_TEST((a[0] == 1. && a[1] == 1.));
+  BOOST_CHECK_THROW(a[2], std::invalid_argument);
 }

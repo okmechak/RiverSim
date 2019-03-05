@@ -7,13 +7,13 @@ namespace River
     {
       x = xval;
       y = yval;
-    };
+    }
 
     Point::Point(Polar p)
     {
       x = p.dl * cos(p.phi);
       y = p.dl * sin(p.phi);
-    };
+    }
 
     Point& Point::rotate(double phi)
     {
@@ -37,6 +37,10 @@ namespace River
 
     Point Point::getNormalized()
     {
+      auto n = norm();
+      if(n == 0.)
+        throw std::invalid_argument( "norm is equal to zero");
+
       return Point{x/norm(), y/norm()};
     }
 
@@ -48,13 +52,20 @@ namespace River
     void Point::normalize()
     {
       auto l = norm();
+      if(l == 0.)
+        throw std::invalid_argument( "norm is equal to zero");
       x /= l;
       y /= l;
     }
 
     double Point::angle() const
     {
-      double phi = acos(x/norm());
+      auto n = norm();
+
+      if(n == 0.)
+        throw std::invalid_argument( "vector doesn't have arc");
+
+      double phi = acos(x/n);
       if(y < 0)
         phi = -phi;
       return phi;
@@ -62,6 +73,9 @@ namespace River
 
     double Point::angle(double x, double y)
     {
+        if (x == 0. && y == 0.)
+          throw std::invalid_argument("vector doesn't have arc");
+
         double phi = acos(x/norm(x, y));
         if(y < 0)
             phi = -phi;
@@ -69,10 +83,15 @@ namespace River
         return phi;
     }
 
-    double Point::angle(Point p) const
+    double Point::angle(Point &p) const
     {
       //order of points is important
-      double phi = acos((x*p.x + y*p.y)/norm()/p.norm());
+      auto n = norm();
+      auto pn = p.norm();
+      if(n == 0. || pn == 0.)
+        throw std::invalid_argument("norm of one or another vector is 0");
+
+      double phi = acos((x*p.x + y*p.y)/n/pn);
       double sign = x*p.y - p.x*y > 0 ? 1 : -1;//FIXME: is this sign correct?
       phi *= sign;
       return phi;
@@ -84,8 +103,7 @@ namespace River
 
     bool Point::operator==(const Point& p) const
     {   
-        double eps = 1e-15;
-        return abs(x - p.x) < eps && abs(y - p.y);
+        return (abs(x - p.x) < eps) && (abs(y - p.y) < eps);
     }
 
     Point Point::operator+(const Point& p) const
