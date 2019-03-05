@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(geom_point_operators,
   *utf::description("operators")
 )
 {
-  GeomPoint a(1, 1);
+  GeomPoint a(1, 1, 2, 3, 4);
 
   a += (a + a)/*2*a*/ +( a*(-2) + a*2)/*0*/ 
     + ( a /(-2) + a/2)/*0*/;
@@ -162,5 +162,6 @@ BOOST_AUTO_TEST_CASE(geom_point_operators,
   a /= 2;
   BOOST_TEST((a.x == 1. && a.y == 1.));
   BOOST_TEST((a[0] == 1. && a[1] == 1.));
+  BOOST_TEST((a.branchId == 2 && a.regionTag == 3 && a.meshSize == 4.));
   BOOST_CHECK_THROW(a[2], std::invalid_argument);
 }
