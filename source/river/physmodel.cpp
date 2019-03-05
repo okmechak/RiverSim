@@ -27,7 +27,7 @@ namespace River
                 return [](double R, double phi)
                     {return cos(3*phi/2)/M_PI/sqrt(R)/R;};
             default:
-                throw std::invalid_argument( "index should be 0 or 1");
+                throw std::invalid_argument( "index should be 0 or 1 or 2");
                 break;
         }
     }

@@ -145,12 +145,6 @@ namespace River
 
   };
 
-  class TetGen
-  {
-    public:
-    private:
-  };
-
 
   class Gmsh
   {

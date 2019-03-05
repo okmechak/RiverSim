@@ -12,6 +12,6 @@ set(dealii_DIRECTORY /usr/local/dealii)
 
 enable_testing()
 
-#add_subdirectory(docs)
+add_subdirectory(docs)
 add_subdirectory(tests)
 add_subdirectory(source)
