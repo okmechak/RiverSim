@@ -109,13 +109,13 @@ public:
   ~Branch() = default;
 
   //modify branch
-  void addPoint(GeomPoint p);
-  void addDPoint(GeomPoint p);
-  void addPolar(GeomPolar p, bool bRelativeAngle = true);
-  void removeHeadPoint();
-  void shrink(double dl);
-  double width();
-  void setWidth(double epsVal);
+  Branch& addPoint(GeomPoint p);
+  Branch& addDPoint(GeomPoint p);
+  Branch& addPolar(GeomPolar p, bool bRelativeAngle = true);
+  Branch& removeHeadPoint();
+  Branch& shrink(double dl);
+  double getWidth();
+  Branch& setWidth(double epsVal);
 
   //geom entities
   GeomPoint getHead();
@@ -131,7 +131,7 @@ public:
   //lot of others to be implemented
 
   //debug
-  void print();
+  Branch& print();
 
 private:
   pair<GeomPoint, GeomPoint> splitPoint(GeomPoint p, double phi);

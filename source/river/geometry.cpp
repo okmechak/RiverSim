@@ -230,7 +230,7 @@ GeomPoint Branch::mergePoints(GeomPoint p1, GeomPoint p2)
     return (p1 + p2)/2;
 }
 
-void Branch::print()
+Branch& Branch::print()
 {
     for(unsigned int i = 0; i < leftPoints.size(); ++i )
     {
@@ -239,26 +239,32 @@ void Branch::print()
         cout << i << ") left: " << leftPoints[i] << endl;
         cout << "   right: " << rightPoints[i] << endl;
     }
+
+    return *this;
 }
 
-void Branch::addPoint(GeomPoint p)
+Branch& Branch::addPoint(GeomPoint p)
 {
     auto tempP = p - getHead();
     auto phi = tempP.angle();
     auto points = splitPoint(p, phi);
     leftPoints.push_back(points.first);
     rightPoints.push_back(points.second);
+
+    return *this;
 }
 
-void Branch::addDPoint(GeomPoint p)
+Branch& Branch::addDPoint(GeomPoint p)
 {
     auto phi = p.angle();
     auto points = splitPoint(p, phi);
     leftPoints.push_back(points.first);
     rightPoints.push_back(points.second);
+
+    return *this;
 }
 
-void Branch::addPolar(GeomPolar p, bool bRelativeAngle)
+Branch& Branch::addPolar(GeomPolar p, bool bRelativeAngle)
 { 
     
     if(bRelativeAngle)
@@ -269,22 +275,27 @@ void Branch::addPolar(GeomPolar p, bool bRelativeAngle)
     auto points = splitPoint(newPoint, p.phi);
     leftPoints.push_back(points.first);
     rightPoints.push_back(points.second);
+
+    return *this;
 }
 
-void Branch::removeHeadPoint()
+Branch& Branch::removeHeadPoint()
 {
     leftPoints.pop_back();
     rightPoints.pop_back();
+    return *this;
 }
 
-double Branch::width()
+double Branch::getWidth()
 {
     return eps;
 }
 
-void Branch::setWidth(double epsVal)
+Branch& Branch::setWidth(double epsVal)
 {
     eps/*of object*/ = epsVal/*passed argument*/;
+
+    return *this;
 }
 
 GeomPoint Branch::getHead()
@@ -345,9 +356,6 @@ double Branch::averageSpeed()
 {
     return length()/size();
 }
-
-
-
 
 
 
