@@ -6,8 +6,8 @@ using namespace River;
 int main(int argc, char *argv[])
 {
     /*
-            Program options
-        */
+        Program options
+    */
     auto vm = process_program_options(argc, argv);
 
     if (vm.count("help") || vm.count("version"))
@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
         print_ascii_signature();
 
     /*
-            Definition of all main objects used in project
-        */
+        Definition of all main objects used in project
+    */
     River::Model model;
     model.ds = vm["ds"].as<double>();
     model.dx = vm["dx"].as<double>();
@@ -30,13 +30,13 @@ int main(int argc, char *argv[])
     
 
     /*
-            Physical Model Object
-        */
+        Physical Model Object
+    */
 
 
     /*
-                    Geometry Object
-         */
+            Geometry Object
+    */
     switch(vm["geom-type"].as<int>())
     {   
         case 0: 
@@ -51,10 +51,10 @@ int main(int argc, char *argv[])
     }
 
     /**
-           *****Main
-           *****Program
-           *****Cycle
-           **/
+    *****Main
+    *****Program
+    *****Cycle
+    **/
     River::Gmsh Gmsh;
     for(int i = 0; i < vm["steps"].as<int>(); ++i)
     {
@@ -132,8 +132,8 @@ int main(int argc, char *argv[])
         }
         
         /*
-                        Freeup resources
-                   */
+            Freeup resources
+        */
         geom.clear();
         meshio.clean();
         if(vm["use-gmsh"].as<bool>())
@@ -142,8 +142,8 @@ int main(int argc, char *argv[])
     }
     
     /*
-                Visualisation
-         */
+        Visualisation
+    */
     if(vm["visualise"].as<bool>())
     {
         Gmsh.open(vm["output-mesh"].as<string>());
