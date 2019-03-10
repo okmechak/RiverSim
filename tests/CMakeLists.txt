@@ -6,8 +6,8 @@ if(BUILD_TEST)
         
         message("========================================")
         message("GMSH setup")
-        include_directories(${GMSH_DIR}/include)
-        link_directories(${GMSH_DIR}/lib)
+        include_directories(${GMSH_HEADER})
+        link_directories(${GMSH_LIB_PATH})
         
         find_package(Boost COMPONENTS unit_test_framework REQUIRED)
         
