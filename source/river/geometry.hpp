@@ -105,7 +105,8 @@ public:
   vector<GeomPoint> leftPoints;
   vector<GeomPoint> rightPoints;
 
-  Branch(unsigned long int id, GeomPoint sourcePoint, double phi, double epsVal = 1e-10);
+  Branch(unsigned long int id, GeomPoint sourcePoint, 
+    double phi, double epsVal = 1e-10);
   ~Branch() = default;
 
   //modify branch
@@ -136,7 +137,7 @@ public:
 private:
   pair<GeomPoint, GeomPoint> splitPoint(GeomPoint p, double phi);
   GeomPoint mergePoints(GeomPoint p1, GeomPoint p2);
-  double eps = 3e-2;
+  double eps = 1e-10;
   double tailAngle;
 };
 
