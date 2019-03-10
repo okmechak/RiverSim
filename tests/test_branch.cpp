@@ -8,14 +8,35 @@
 #include <boost/test/unit_test.hpp>
 
 #include "geometry.hpp"
+
+using namespace River;
+
+const double eps = 1e-13;
+namespace utf = boost::unit_test;
+
 // ------------- Tests Follow --------------
-//Name your test cases for what they test
-BOOST_AUTO_TEST_CASE( constructors )
+BOOST_AUTO_TEST_CASE( constructor, *utf::tolerance(eps))
 {
-  River::Branch obj(1, River::GeomPoint{0., 0}, 0);
-  BOOST_CHECK(!obj.empty());
+    Branch b(1, GeomPoint{1., 2., 3, 4, 5.}, 1., 1e-10);
+
+    BOOST_TEST(b.id == 1);
+    BOOST_TEST(b.getWidth() == 1e-10);
+    BOOST_TEST(b.getTailAngle() == 1.);
+
+    auto p = b.getTail();
+    BOOST_TEST(p.x == 1.); 
+    BOOST_TEST(p.y == 2.);
+    BOOST_TEST(p.branchId == 1);//same as in branch
+    BOOST_TEST(p.regionTag == 4);
+    BOOST_TEST(p.meshSize == 5.);
+
+    
+
+
   
 }
+
+
 
 BOOST_AUTO_TEST_CASE( assignment )
 {
