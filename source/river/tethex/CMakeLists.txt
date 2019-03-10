@@ -1,8 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
-
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR})
-
+cmake_minimum_required(VERSION ${min_version})
 
 set(SOURCE_FILES 
     tethex.cpp
