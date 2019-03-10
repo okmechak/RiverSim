@@ -14,7 +14,6 @@
 const double eps = 1e-13;
 
 namespace utf = boost::unit_test;
-namespace tt = boost::test_tools;
 using namespace River;
 
 
