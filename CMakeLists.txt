@@ -5,6 +5,6 @@ project(riversim C CXX)
 
 
 add_subdirectory(source)
-add_subdirectory(docs)
+add_subdirectory(doxy)
 enable_testing()
 add_subdirectory(tests)

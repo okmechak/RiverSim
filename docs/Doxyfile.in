@@ -1,4 +1,0 @@
-OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/doc_doxygen
-INPUT                  = @PROJECT_SOURCE_DIR@/source @PROJECT_SOURCE_DIR@/docs
-
-PROJECT_NAME           = RiverSim

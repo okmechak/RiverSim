@@ -6,8 +6,9 @@ if(BUILD_DOC)
     find_package(Doxygen)
     if (DOXYGEN_FOUND)
         message("Doxygen build started")
-        set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/../docs/Doxyfile.in)
+        set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/doxy/Doxyfile.in)
         set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+        message(${CMAKE_CURRENT_BINARY_DIR})
   
         configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
   
