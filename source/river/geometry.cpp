@@ -206,10 +206,11 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 */
 
 
-Branch::Branch(unsigned long int id, GeomPoint sourcePoint, double phi, double epsVal):
-id(id), 
-tailAngle(phi),
-eps(epsVal)
+Branch::Branch(unsigned long int id, GeomPoint sourcePoint, 
+    double phi, double epsVal):
+    id(id), 
+    tailAngle(phi),
+    eps(epsVal)
 {
     sourcePoint.branchId = id;
     auto points = splitPoint(sourcePoint, phi);
@@ -321,8 +322,7 @@ double Branch::getHeadAngle()
 
 double Branch::getTailAngle()
 {   
-    auto point = leftPoints[1] - leftPoints[0];
-    return point.angle();
+    return tailAngle;
 }
 
 GeomPoint Branch::getTail()
