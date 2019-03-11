@@ -1,8 +1,19 @@
+/*! \file main.cpp
+    \brief Entry point of program and main loop handler.
+    
+    Main incorporates user commands handling and managing of inner simulation objects.
+    User commands are simple terminal commands(run ./riversim --help to check them all).
+    It setups initial conditions and parameters. Initializes all object that are used in
+    simulation like: Geometry, Mesh, Triangle, Gmsh and Simualtion, which are all combined
+    into the loop.
+    Please review code for further details
+*/
+
 #include "riversim.hpp"
-// #include <stdlib.h>
 
 using namespace River;
-
+///Entry point of RiverSim program.
+/** It glues all together user inputs(commands) and inner objects to run simulation */
 int main(int argc, char *argv[])
 {
     /*
@@ -66,8 +77,8 @@ int main(int argc, char *argv[])
         geom.InitiateMesh(meshio);
 
         /*
-                    Mesh Generation
-                    */
+            Mesh Generation
+        */
         
         if(vm["mesh"].as<bool>())
         {
@@ -100,8 +111,8 @@ int main(int argc, char *argv[])
 
 
         /*
-                    Solver
-                  */
+            Solver
+        */
         if(vm["simulate"].as<bool>())
         {
             //Deal.II library
