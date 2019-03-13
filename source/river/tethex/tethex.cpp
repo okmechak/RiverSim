@@ -532,7 +532,6 @@ Mesh::Mesh()
   : vertices()
   , points()
   , lines()
-  , edges()
   , triangles()
   , quadrangles()
   , n_converted_quadrangles(0)
@@ -547,7 +546,6 @@ Mesh::Mesh(
   ): vertices(verticesVal)
   , points()
   , lines(linesVal)
-  , edges()
   , triangles(trianglesVal)
   , quadrangles()
   , n_converted_quadrangles(0)
@@ -558,13 +556,11 @@ Mesh::Mesh(
   std::vector<Point> &verticesVal, 
   std::vector<MeshElement *> &pointsVal, 
   std::vector<MeshElement *> &linesVal,
-  std::vector<MeshElement *> &edgesVal,
   std::vector<MeshElement *> &trianglesVal,
   std::vector<MeshElement *> &quaddranglesVal
 ): vertices(verticesVal)
   , points(pointsVal)
   , lines(linesVal)
-  , edges(edgesVal)
   , triangles(trianglesVal)
   , quadrangles(quaddranglesVal)
   , n_converted_quadrangles(0)
@@ -593,15 +589,6 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
   {
     //TODO: free up from memory previous vector!
     points = pointsVal;
-  }
-
-                /**
-                 * Set the mesh edges
-                 * @param edges - the vector of edges
-                 */
-  void Mesh::set_edges(std::vector<MeshElement *> &edges)
-  {
-
   }
 
                 /**
@@ -1197,11 +1184,6 @@ int Mesh::get_n_lines() const
   return lines.size();
 }
 
-int Mesh::get_n_edges() const
-{
-  return edges.size();
-}
-
 int Mesh::get_n_triangles() const
 {
   return triangles.size();
@@ -1280,11 +1262,6 @@ std::vector<MeshElement*>& Mesh::get_points()
   return points;
 }
 
-std::vector<MeshElement*>& Mesh::get_edges()
-{
-  return edges;
-}
-
 std::vector<MeshElement*>& Mesh::get_lines()
 {
   return lines;
@@ -1307,7 +1284,6 @@ void Mesh::info(std::ostream &out) const
 {
   out << "\nvertices       : " << vertices.size()
       << "\npoints (phys)  : " << points.size()
-      << "\nedges          : " << edges.size()
       << "\nlines          : " << lines.size()
       << "\ntriangles      : " << triangles.size()
       << "\nquadrangles    : " << quadrangles.size()

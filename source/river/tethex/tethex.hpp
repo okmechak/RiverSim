@@ -642,7 +642,6 @@ public:
     std::vector<Point> &verticesVal, 
     std::vector<MeshElement *> &pointsVal, 
     std::vector<MeshElement *> &linesVal,
-    std::vector<MeshElement *> &edgesVal,
     std::vector<MeshElement *> &trianglesVal,
     std::vector<MeshElement *> &quaddranglesVal
   );
@@ -699,11 +698,6 @@ public:
   int get_n_lines() const;
 
                 /**
-                 * Get the number of edges
-                 */
-  int get_n_edges() const;
-
-                /**
                  * Get the number of triangles
                  */
   int get_n_triangles() const;
@@ -742,7 +736,7 @@ public:
                  * @param number - the number of edge
                  */
   MeshElement& get_edge(int number) const;
-
+  
                 /**
                  * Get the physical line
                  * @param number - the number of line
@@ -774,12 +768,6 @@ public:
   std::vector<MeshElement*>& get_points();
 
                 /**
-                 * Get the mesh edge
-                 * @param number - the number of edge
-                 */
-  std::vector<MeshElement*>& get_edges();
-
-                /**
                  * Get the physical line
                  * @param number - the number of line
                  */
@@ -809,12 +797,6 @@ public:
                  * @param points - the vector of points
                  */
   void set_points(std::vector<MeshElement *> &points);
-
-                /**
-                 * Set the mesh edges
-                 * @param edges - the vector of edges
-                 */
-  void set_edges(std::vector<MeshElement *> &edges);
 
                 /**
                  * Set the physical lines
