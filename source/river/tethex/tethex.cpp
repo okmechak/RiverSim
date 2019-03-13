@@ -1303,19 +1303,6 @@ void Mesh::info(std::ostream &out) const
   }
 
 
-  //Edges
-  i = 0;
-  std::cout << std::endl;
-  std::cout << "----------" << std::endl;
-  std::cout << "Edges" << std::endl;
-  std::cout << "----------" << std::endl;
-  for(auto e: edges)
-  {
-    std::cout << i << ") " << *e << std::endl;
-    i++;
-  }
-
-
   //Lines
   i = 0;
   std::cout << std::endl;
