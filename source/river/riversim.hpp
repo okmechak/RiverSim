@@ -5,6 +5,7 @@
 #include "mesh.hpp"
 #include "solver.hpp"
 #include "physmodel.hpp"
+#include "border.hpp"
 
 namespace River
 {
@@ -13,6 +14,8 @@ namespace River
         Geometry SingleTip(Model &model, int size);
         Geometry CustomRiverTree(Model &model, int size);
     }
+
+    int ForwardRiverEvolution(cxxopts::ParseResult &vm);
     /* 
         TODO: 
         Implementation of some standard workflows 
