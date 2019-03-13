@@ -22,6 +22,8 @@ set(SOURCE_FILES
     utilities.cpp
     physmodel.hpp
     physmodel.cpp
+    border.hpp
+    border.cpp
     cxxopts.hpp)
 
 add_library(river STATIC ${SOURCE_FILES})
