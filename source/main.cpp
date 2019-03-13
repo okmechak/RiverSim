@@ -16,9 +16,9 @@ using namespace River;
 /** It glues all together user inputs(commands) and inner objects to run simulation */
 int main(int argc, char *argv[])
 {
-    /*
-        Program options
-    */
+    /**
+            Program options
+         */
     auto vm = process_program_options(argc, argv);
 
     if (vm.count("help") || vm.count("version"))
@@ -27,27 +27,29 @@ int main(int argc, char *argv[])
     if (!vm.count("supprchess-signature"))
         print_ascii_signature();
 
-    /*
-        Definition of all main objects used in project
-    */
+    /**
+            Definition of all main objects used in project
+        */
+    ///Model parameters
     River::Model model;
     model.ds = vm["ds"].as<double>();
     model.dx = vm["dx"].as<double>();
     model.eps = vm["eps"].as<double>();
+
     tethex::Mesh meshio;
     River::Geometry geom;
     River::Triangle tr;
     River::Solver sim;
     
 
-    /*
-        Physical Model Object
-    */
+    /**
+            Physical Model Object
+        */
 
 
     /*
-            Geometry Object
-    */
+                Geometry Object
+        */
     switch(vm["geom-type"].as<int>())
     {   
         case 0: 
@@ -62,10 +64,10 @@ int main(int argc, char *argv[])
     }
 
     /**
-    *****Main
-    *****Program
-    *****Cycle
-    **/
+         *****Main
+         *****Program
+         *****Cycle
+         **/
     River::Gmsh Gmsh;
     for(int i = 0; i < vm["steps"].as<int>(); ++i)
     {
@@ -76,9 +78,9 @@ int main(int argc, char *argv[])
 
         geom.InitiateMesh(meshio);
 
-        /*
-            Mesh Generation
-        */
+        /**
+                        Mesh Generation
+                   */
         
         if(vm["mesh"].as<bool>())
         {
@@ -110,9 +112,9 @@ int main(int argc, char *argv[])
             meshio.info();
 
 
-        /*
-            Solver
-        */
+        /**
+                        Solver
+                   */
         if(vm["simulate"].as<bool>())
         {
             //Deal.II library
@@ -142,9 +144,9 @@ int main(int argc, char *argv[])
             sim.clear();
         }
         
-        /*
-            Freeup resources
-        */
+        /**
+                        Freeup resources
+                   */
         geom.clear();
         meshio.clean();
         if(vm["use-gmsh"].as<bool>())
@@ -152,9 +154,9 @@ int main(int argc, char *argv[])
 
     }
     
-    /*
-        Visualisation
-    */
+    /**
+                   Visualisation
+         */
     if(vm["visualise"].as<bool>())
     {
         Gmsh.open(vm["output-mesh"].as<string>());
