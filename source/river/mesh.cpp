@@ -570,10 +570,8 @@ void Gmsh::generate(vector<GeomPoint> points)
     
 }
 
-void Gmsh::generate(tethex::Mesh &meshio)
-{   
-    //mdl::addDiscreteEntity(2, 1, lineTags);
-
+void Gmsh::set_geometry(tethex::Mesh &meshio)
+{
     int i = 1;
     for(auto &p: meshio.vertices)
     {
@@ -595,6 +593,13 @@ void Gmsh::generate(tethex::Mesh &meshio)
     mdl::addPhysicalGroup(1, lineTags, 1);
     mdl::addPhysicalGroup(2, {surfaceTag}, 0);
     geo::synchronize();
+}
+
+void Gmsh::generate(tethex::Mesh &meshio)
+{   
+    //mdl::addDiscreteEntity(2, 1, lineTags);
+
+    set_geometry(meshio);
     mdl::mesh::generate();
 }
 
