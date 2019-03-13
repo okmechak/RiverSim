@@ -186,11 +186,6 @@ public:
   int get_n_edges() const;
 
                 /**
-                 * Get the number of faces
-                 */
-  int get_n_faces() const;
-
-                /**
                  * Get type of the element that is used in Gmsh
                  */
   int get_gmsh_el_type() const;
@@ -217,13 +212,6 @@ public:
   int get_edge(int number) const;
 
                 /**
-                 * Get the number of face describing the element
-                 * @param number - local number of face [0, n_faces)
-                 * @return global number of face (among other mesh faces)
-                 */
-  int get_face(int number) const;
-
-                /**
                  * Set the number of vertex
                  * @param local_number - the number of vertex inside the element [0, n_vertices)
                  * @param global_number - the number of vertex among other vertices of the mesh
@@ -237,18 +225,6 @@ public:
                  */
   void set_edge(int local_number, int global_number);
 
-                /**
-                 * Set the number of face
-                 * @param local_number - the number of face inside the element [0, n_faces)
-                 * @param global_number - the number of face among other faces of the mesh
-                 */
-  void set_face(int local_number, int global_number);
-
-                /**
-                 * Set all faces once at time
-                 * @param face_numbers - the numbers of all cell faces
-                 */
-  void set_faces(const std::vector<int> &face_numbers);
 
                 /**
                  * Check - whether the element contains the vertex or not
@@ -285,19 +261,6 @@ protected:
   std::vector<int> edges;
 
                 /**
-                 * The number of faces describing the element.
-                 * It must be defined in each derived class,
-                 * because it's 0 by default.
-                 */
-  int n_faces;
-
-                /**
-                 * Faces (i.e. their global numbers) describing the element
-                 * It's not always used.
-                 */
-  std::vector<int> faces;
-
-                /**
                  * ID of the physical domain where the element takes place.
                  * It's necessary to distinguish media with different physical properties.
                  */
@@ -319,7 +282,6 @@ protected:
                  */
   MeshElement(int n_ver = 0,
               int n_edg = 0,
-              int n_fac = 0,
               int el_type = 0);
 
                 /**
@@ -358,11 +320,6 @@ public:
                  * It's 0-dimensional shape, and it's a boundary for edge
                  */
   static const int n_edges = 0;
-
-                /**
-                 * It has no faces
-                 */
-  static const int n_faces = 0;
 
                 /**
                  * In Gmsh physical point is defined by number 15
@@ -418,11 +375,6 @@ public:
                  * Line is edge itself, so the number of edges is 1
                  */
   static const int n_edges = 1;
-
-                /**
-                 * It's 1D shape, so there is no faces here
-                 */
-  static const int n_faces = 0;
 
                 /**
                  * In Gmsh line (physical line) is defined by number 1
@@ -495,12 +447,6 @@ public:
   static const int n_edges = 3;
 
                 /**
-                 * Triangle is 2D shape,
-                 * so it's a face itself (for tetrahedron)
-                 */
-  static const int n_faces = 1;
-
-                /**
                  * In Gmsh triangle is defined by number 2
                  */
   static const int gmsh_el_type = 2;
@@ -536,72 +482,6 @@ public:
 
 //-------------------------------------------------------
 //
-// Tetrahedron
-//
-//-------------------------------------------------------
-/**
- * Tetrahedron - 3-dimensional simplex.
- * The simplest shape in 3D.
- * It's an element of mesh,
- * therefore it inherits the most part of
- * functionality from MeshElement class.
- */
-class Tetrahedron : public MeshElement
-{
-public:
-                /**
-                 * The number of vertices of tetrahedron
-                 */
-  static const int n_vertices = 4;
-
-                /**
-                 * The number of edges of tetrahedron
-                 */
-  static const int n_edges = 6;
-
-                /**
-                 * The number of faces of tetrahedron
-                 */
-  static const int n_faces = 4;
-
-                /**
-                 * In Gmsh triangle is defined by number 2
-                 */
-  static const int gmsh_el_type = 4;
-
-                /**
-                 * Default constructor.
-                 */
-  Tetrahedron();
-
-                /**
-                 * Constructor with parameters
-                 * @param ver - triangle vertices
-                 * @param mat_id - material ID
-                 */
-  Tetrahedron(const std::vector<int> &ver,
-              int mat_id = 0);
-
-                /**
-                 * Constructor with parameters
-                 * @param v1 - first vertex
-                 * @param v2 - second vertex
-                 * @param v3 - third vertex
-                 * @param v4 - fourth vertex
-                 * @param mat_id - material ID
-                 */
-  Tetrahedron(int v1,
-              int v2,
-              int v3,
-              int v4,
-              int mat_id = 0);
-};
-
-
-
-
-//-------------------------------------------------------
-//
 // Quadrangle
 //
 //-------------------------------------------------------
@@ -623,12 +503,6 @@ public:
                  * The number of edges of quadrangle
                  */
   static const int n_edges = 4;
-
-                /**
-                 * Quadrangle is 2D shape,
-                 * so it's a face itself (for hexahedron)
-                 */
-  static const int n_faces = 1;
 
                 /**
                  * In Gmsh quadrangle is defined by number 3
@@ -662,75 +536,6 @@ public:
              int v4,
              int mat_id = 0);
 };
-
-
-
-
-
-//-------------------------------------------------------
-//
-// Hexahedron
-//
-//-------------------------------------------------------
-/**
- * Hexahedron - 3-dimensional shape with 6 plane faces.
- * It's an element of mesh,
- * therefore it inherits the most part of
- * functionality from MeshElement class.
- */
-class Hexahedron : public MeshElement
-{
-public:
-                /**
-                 * The number of vertices of hexahedron
-                 */
-  static const int n_vertices = 8;
-
-                /**
-                 * The number of edges of hexahedron
-                 */
-  static const int n_edges = 12;
-
-                /**
-                 * The number of faces of hexahedron
-                 */
-  static const int n_faces = 6;
-
-                /**
-                 * In Gmsh hexahedron is defined by number 5
-                 */
-  static const int gmsh_el_type = 5;
-
-                /**
-                 * Default constructor.
-                 */
-  Hexahedron();
-
-                /**
-                 * Constructor with parameters
-                 * @param ver - hexahedron vertices
-                 * @param mat_id - material ID
-                 */
-  Hexahedron(const std::vector<int> &ver,
-             int mat_id = 0);
-
-                /**
-                 * Constructor with parameters
-                 * @param v1 - first vertex of hexahedron
-                 * @param v8 - 8-th vertex of hexahedron
-                 * @param mat_id - material ID
-                 */
-  Hexahedron(int v1,
-             int v2,
-             int v3,
-             int v4,
-             int v5,
-             int v6,
-             int v7,
-             int v8,
-             int mat_id = 0);
-};
-
 
 
 
@@ -824,25 +629,22 @@ private:
 class Mesh
 {
 public:
-                /**
-                 * Constructor - nothing special
-                 */
+  /**
+     * Constructor - nothing special
+     */
   Mesh();
   Mesh(Mesh &) = default;
 
-                  /**
-                 * Constructor - nothing special
-                 */
+  /**
+     * Constructor - nothing special
+     */
   Mesh(
     std::vector<Point> &verticesVal, 
     std::vector<MeshElement *> &pointsVal, 
     std::vector<MeshElement *> &linesVal,
     std::vector<MeshElement *> &edgesVal,
-    std::vector<MeshElement *> &facesVal,
     std::vector<MeshElement *> &trianglesVal,
-    std::vector<MeshElement *> &tetrahedrasVal,
-    std::vector<MeshElement *> &quaddranglesVal,
-    std::vector<MeshElement *> &hexahedraVal
+    std::vector<MeshElement *> &quaddranglesVal
   );
 
   Mesh(
@@ -852,28 +654,28 @@ public:
   );
 
 
-                /**
-                 * Destructor - to clean the memory
-                 */
+  /**
+     * Destructor - to clean the memory
+     */
   ~Mesh();
 
-                /**
-                 * Read the mesh from file
-                 * @param file - the name of the mesh file
-                 */
+  /**
+     * Read the mesh from file
+     * @param file - the name of the mesh file
+     */
   void read(const std::string &file);
 
-                /**
-                 * Conversion from simplices to bricks.
-                 * Specifically, in 2D - conversion from triangles to quadrangles,
-                 * in 3D - conversion from tetrahedra to hexahedra.
-                 */
+  /**
+     * Conversion from simplices to bricks.
+     * Specifically, in 2D - conversion from triangles to quadrangles,
+     * in 3D - conversion from tetrahedra to hexahedra.
+     */
   void convert();
 
-                /**
-                 * Write the resulting brick mesh into the file
-                 * @param file - the name of mesh file where we write the results of conversion
-                 */
+  /**
+     * Write the resulting brick mesh into the file
+     * @param file - the name of mesh file where we write the results of conversion
+     */
   void write(const std::string &file);
 
                 /**
@@ -881,11 +683,6 @@ public:
                  */
   int get_n_converted_quadrangles() const;
 
-                /**
-                 * Get the number of converted hexahedra
-                 */
-  int get_n_converted_hexahedra() const;
-  
                 /**
                  * Get the number of vertices
                  */
@@ -912,24 +709,9 @@ public:
   int get_n_triangles() const;
 
                 /**
-                 * Get the number of faces
-                 */
-  int get_n_faces() const;
-
-                /**
-                 * Get the number of tetrahedra
-                 */
-  int get_n_tetrahedra() const;
-
-                /**
                  * Get the number of tetrahedra
                  */
   int get_n_quadrangles() const;
-
-                /**
-                 * Get the number of hexahedra
-                 */
-  int get_n_hexahedra() const;
 
                 /**
                  * Print short information
@@ -968,22 +750,10 @@ public:
   MeshElement& get_line(int number) const;
 
                 /**
-                 * Get the mesh face
-                 * @param number - the number of face
-                 */
-  MeshElement& get_face(int number) const;
-
-                /**
                  * Get the mesh triangle
                  * @param number - the number of triangle
                  */
   MeshElement& get_triangle(int number) const;
-
-                /**
-                 * Get the mesh tetrahedron
-                 * @param number - the number of tetrahedron
-                 */
-  MeshElement& get_tetrahedron(int number) const;
 
                 /**
                  * Get the mesh quadrangle
@@ -991,11 +761,6 @@ public:
                  */
   MeshElement& get_quadrangle(int number) const;
 
-                /**
-                 * Get the mesh hexahedron
-                 * @param number - the number of hexahedron
-                 */
-  MeshElement& get_hexahedron(int number) const;
   /**
                  * Get the copy of vertex
                  * @param number - the number of vertex
@@ -1021,22 +786,10 @@ public:
   std::vector<MeshElement*>& get_lines();
 
                 /**
-                 * Get the mesh face
-                 * @param number - the number of face
-                 */
-  std::vector<MeshElement*>& get_faces();
-
-                /**
                  * Get the mesh triangle
                  * @param number - the number of triangle
                  */
   std::vector<MeshElement*>& get_triangles();
-
-                /**
-                 * Get the mesh tetrahedron
-                 * @param number - the number of tetrahedron
-                 */
-  std::vector<MeshElement*>& get_tetrahedrons();
 
                 /**
                  * Get the mesh quadrangle
@@ -1044,11 +797,6 @@ public:
                  */
   std::vector<MeshElement*>& get_quadrangles();
 
-                /**
-                 * Get the mesh hexahedron
-                 * @param number - the number of hexahedron
-                 */
-  std::vector<MeshElement*>& get_hexahedrons();
 
                 /**
                  * Set the copy of vertex
@@ -1079,17 +827,6 @@ public:
                  * @param triangles - the vector of triangles
                  */
   void set_triangles(std::vector<MeshElement *> &triangles);
-                  /**
-                 * Set the mesh faces
-                 * @param faces - the vector of faces
-                 */
-  void set_faces(std::vector<MeshElement *> &faces);
-
-                /**
-                 * Set the mesh tetrahedrons
-                 * @param tetrahedrons - the vector of tetrahedrons
-                 */
-  void set_tetrahedrons(std::vector<MeshElement *> &tetrahedrons);
 
                 /**
                  * Set the mesh quadrangles
@@ -1098,17 +835,11 @@ public:
   void set_quadrangles(std::vector<MeshElement *> &quadrangles);
 
                 /**
-                 * Set the mesh hexahedron
-                 * @param hexahedrons - the vector of hexahedrons
-                 */
-  void set_hexahedrons(std::vector<MeshElement *> &hexahedrons);
-
-                /**
                  * Free the memory to read again, for example
                  */
   void clean();
   
-//protected: FIXME: !!!!!
+//protected: FIXME!
                 /**
                  * Mesh vertices (nodes in terms of Gmsh)
                  */
@@ -1131,29 +862,14 @@ public:
   std::vector<MeshElement*> edges;
 
                 /**
-                 * Mesh faces
-                 */
-  std::vector<MeshElement*> faces;
-
-                /**
                  * Mesh triangles
                  */
   std::vector<MeshElement*> triangles;
 
                 /**
-                 * Mesh tetrahedra
-                 */
-  std::vector<MeshElement*> tetrahedra;
-
-                /**
                  * Mesh quadrangles
                  */
   std::vector<MeshElement*> quadrangles;
-
-                /**
-                 * Mesh hexahedra
-                 */
-  std::vector<MeshElement*> hexahedra;
 
   typedef std::vector<std::map<int, int> > VectorMap;
 
@@ -1162,12 +878,6 @@ public:
                  * and then were converted to have the same order of vertices for all elements
                  */
   int n_converted_quadrangles;
-
-                /**
-                 * The number of hexahedra that existed in the input mesh
-                 * and then were converted to have the same order of vertices for all elements
-                 */
-  int n_converted_hexahedra;
 
                 /**
                  * The vector of strings representing names of physical entities
@@ -1189,25 +899,9 @@ public:
                        bool initialize_edges);
 
                 /**
-                 * Numerate the faces of simplices.
-                 * @param cells - triangles or tetrahedra
-                 * @param incidence_matrix - matrix of vertices incidence
-                 * @param edge_vertex_incidence - it's a structure of incidence between
-                 *                                edges and vertices opposite to them.
-                 */
-  void face_numeration(std::vector<MeshElement*> &cells,
-                       const IncidenceMatrix &incidence_matrix,
-                       VectorMap &edge_vertex_incidence);
-
-                /**
                  * Conversion of 2D meshes (triangles -> quadrangles)
                  */
   void convert_2D();
-
-                /**
-                 * Conversion of 3D meshes (tetrahedra -> hexahedrons)
-                 */
-  void convert_3D();
 
                 /**
                  * Find the global number of face basing on numbers of 2 edges defining that face
@@ -1233,17 +927,6 @@ public:
   void set_new_vertices(const std::vector<MeshElement*> &elements,
                         int n_old_vertices,
                         int shift);
-
-                /**
-                 * Conversion from tetrahedra to hexahedra.
-                 * @param n_old_vertices - the number of original mesh vertices
-                 * @param incidence_matrix - the matrix of incidence between mesh nodes
-                 * @param edge_vertex_incidence - the structure of incidence between
-                 *                                mesh edges and vertices opposite to them
-                 */
-  void convert_tetrahedra(int n_old_vertices,
-                          const IncidenceMatrix &incidence_matrix,
-                          const VectorMap edge_vertex_incidence);
 
                 /**
                  * Conversion from triangles to quadrangles.
@@ -1287,12 +970,6 @@ public:
                  */
   void convert_quadrangles();
 
-                /**
-                 * We do the same thing as convert_quadrangles does,
-                 * but in case of hexahedra.
-                 */
-  void convert_hexahedra();
-
 };
 
 
@@ -1313,18 +990,6 @@ public:
                  * This procedure is taken from deal.II sources.
                  */
 double cell_measure_2D(const std::vector<Point> &vertices,
-                       const std::vector<int> &indices);
-
-                /**
-                 * Since this project was originally designed to connect Gmsh's meshes
-                 * with deal.II solvers, the main requirement for new meshes
-                 * was to be properly read by deal.II.
-                 * Therefore before creating hexahedron we check,
-                 * that it's correctly numerated. And we check it
-                 * like deal.II authors do - using cell_measure.
-                 * This procedure is taken from deal.II sources.
-                 */
-double cell_measure_3D(const std::vector<Point> &vertices,
                        const std::vector<int> &indices);
 
                 /**
