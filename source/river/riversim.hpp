@@ -2,6 +2,7 @@
 
 #include "utilities.hpp"
 #include "geometry.hpp"
+#include "geometrynew.hpp"
 #include "mesh.hpp"
 #include "solver.hpp"
 #include "physmodel.hpp"
