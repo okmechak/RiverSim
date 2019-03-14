@@ -48,7 +48,8 @@ BOOST_AUTO_TEST_CASE( constructors,
   BOOST_TEST(obj5.norm() == sqrt(13.));
 
   //polar coord
-  Point obj6(Polar{sqrt(2.), M_PI/4.});
+  auto pol = Polar{sqrt(2.), M_PI/4.};
+  Point obj6(pol);
   BOOST_TEST(obj6.x == 1.);
   BOOST_TEST(obj6.y == 1.);
 }
@@ -132,8 +133,8 @@ BOOST_AUTO_TEST_CASE( polar_test,
   *utf::tolerance(eps))
 {
   Polar p;
-  BOOST_TEST((p.dl == 0. && p.phi == 0.));
+  BOOST_TEST((p.r == 0. && p.phi == 0.));
   
   p = Polar{1, 2};
-  BOOST_TEST((p.dl == 1. && p.phi == 2.));
+  BOOST_TEST((p.r == 1. && p.phi == 2.));
 }

@@ -14,6 +14,8 @@ set(SOURCE_FILES
     common.cpp
     geometry.hpp
     geometry.cpp
+    geometrynew.hpp
+    geometrynew.cpp
     mesh.hpp
     mesh.cpp
     solver.hpp
@@ -22,6 +24,8 @@ set(SOURCE_FILES
     utilities.cpp
     physmodel.hpp
     physmodel.cpp
+    border.hpp
+    border.cpp
     cxxopts.hpp)
 
 add_library(river STATIC ${SOURCE_FILES})

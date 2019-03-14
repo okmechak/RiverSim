@@ -36,13 +36,13 @@ class Polar
   public:
     Polar() = default;
     Polar(double dlval, double phival):
-      dl{dlval}, phi{phival} {};
-    double dl = 0.;
+      r{dlval}, phi{phival} {};
+    double r = 0.;
     double phi = 0.;
     
     friend ostream& operator <<(ostream& write, const Polar & p)
     {
-      cout << "Polar: " << p.dl << " " << p.phi << endl;
+      cout << "Polar: " << p.r << " " << p.phi << endl;
       return write;
     }
 };
@@ -53,7 +53,7 @@ class Polar
 class Point
 {
   private:
-    double eps = 1e-20;
+    double eps = 1e-13;
 
   public:
     double x = 0, y = 0;
@@ -62,7 +62,7 @@ class Point
     ~Point() = default;
     Point(double xval, double yval);
     Point(const Point &p) = default;
-    Point(Polar p);
+    Point(const Polar &p);
 
     double norm() const;
     static double norm(double x, double y);
