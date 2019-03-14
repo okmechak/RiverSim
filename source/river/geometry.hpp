@@ -32,7 +32,7 @@ class GeomPolar : public Polar
 {
   public:
     GeomPolar() = default;
-    GeomPolar(double r, double phiVal, 
+    GeomPolar(double r_val, double phiVal, 
       int branchIdVal = 0, 
       int regionTagVal = 0,
       double meshSizeVal = 1.);

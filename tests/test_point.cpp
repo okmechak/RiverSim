@@ -132,8 +132,8 @@ BOOST_AUTO_TEST_CASE( polar_test,
   *utf::tolerance(eps))
 {
   Polar p;
-  BOOST_TEST((p.dl == 0. && p.phi == 0.));
+  BOOST_TEST((p.r == 0. && p.phi == 0.));
   
   p = Polar{1, 2};
-  BOOST_TEST((p.dl == 1. && p.phi == 2.));
+  BOOST_TEST((p.r == 1. && p.phi == 2.));
 }

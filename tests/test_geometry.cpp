@@ -35,13 +35,13 @@ BOOST_AUTO_TEST_CASE( geom_polar, *utf::tolerance(eps))
 {
   //default constructor
   GeomPolar gp;
-  BOOST_TEST((gp.dl == 0. && gp.phi == 0. 
+  BOOST_TEST((gp.r == 0. && gp.phi == 0. 
     && gp.branchId == 0 && gp.regionTag == 0 
     && gp.meshSize == 1. ));
   
   //constructor
   gp = GeomPolar{1, 2, 3, 4, 5};
-  BOOST_TEST((gp.dl == 1. && gp.phi == 2. 
+  BOOST_TEST((gp.r == 1. && gp.phi == 2. 
     && gp.branchId == 3 && gp.regionTag == 4 
     && gp.meshSize == 5. ));
 }

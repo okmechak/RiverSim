@@ -7,14 +7,14 @@ namespace River{
     GeomPolar Class
 
 */
-GeomPolar::GeomPolar(double r, double phiVal, 
+GeomPolar::GeomPolar(double r_val, double phiVal, 
       int branchIdVal, int regionTagVal,
       double meshSizeVal):
       branchId(branchIdVal),
       regionTag(regionTagVal),
       meshSize(meshSizeVal)
 {
-    dl = r;
+    r = r_val;
     phi = phiVal;
 }
 
@@ -45,8 +45,8 @@ GeomLine::GeomLine(unsigned int p1Val, unsigned int p2Val,
 
     GeomPoint::GeomPoint(const GeomPolar &p)
     {
-      x = p.dl * cos(p.phi);
-      y = p.dl * sin(p.phi);
+      x = p.r * cos(p.phi);
+      y = p.r * sin(p.phi);
       regionTag = p.regionTag;
       branchId = p.branchId;
       meshSize = p.meshSize;

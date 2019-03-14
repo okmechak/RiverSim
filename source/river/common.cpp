@@ -11,8 +11,8 @@ namespace River
 
     Point::Point(Polar p)
     {
-      x = p.dl * cos(p.phi);
-      y = p.dl * sin(p.phi);
+      x = p.r * cos(p.phi);
+      y = p.r * sin(p.phi);
     }
 
     Point& Point::rotate(double phi)

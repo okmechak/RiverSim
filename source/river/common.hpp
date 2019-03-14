@@ -36,13 +36,13 @@ class Polar
   public:
     Polar() = default;
     Polar(double dlval, double phival):
-      dl{dlval}, phi{phival} {};
-    double dl = 0.;
+      r{dlval}, phi{phival} {};
+    double r = 0.;
     double phi = 0.;
     
     friend ostream& operator <<(ostream& write, const Polar & p)
     {
-      cout << "Polar: " << p.dl << " " << p.phi << endl;
+      cout << "Polar: " << p.r << " " << p.phi << endl;
       return write;
     }
 };
