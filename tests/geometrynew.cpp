@@ -16,7 +16,7 @@ const double eps = 1e-13;
 namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
-BOOST_AUTO_TEST_CASE( constructor_and_methods, 
+BOOST_AUTO_TEST_CASE( BranchNew_Class, 
     *utf::tolerance(eps))
 {   
     //or seed point
@@ -109,4 +109,53 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
     BOOST_TEST(br.Lenght() == 1);
     auto test_p_3 = Point{1, 0};
     BOOST_TEST(br.TipPoint() == test_p_3);
+}
+
+
+
+
+
+
+BOOST_AUTO_TEST_CASE( Tree_Class, 
+    *utf::tolerance(eps))
+{   
+    vector<int> ids{3, 4, 5};
+    Tree tr(
+        {{0.0, 0}, {0.1, 0}, {0.2, 0}}, 
+        {0, 0, 0},
+        ids);
+
+    BOOST_TEST(tr.NumberOfSourceBranches() == 3);
+    for(auto id: ids)
+    {
+        BOOST_TEST(tr.DoesExistBranch(id));
+        BOOST_TEST(!tr.HasSubBranches(id));
+    }
+    auto tips = tr.TipBranchesId();
+    BOOST_TEST(tips == ids);
+
+
+    //cool work with pointers.. but auto will force simple BranchNew
+    BranchNew& br = tr.GetBranch(3);
+    Point p{1, 1};
+    br.AddPoint(p);
+    BranchNew& br_new = tr.GetBranch(3);
+    BOOST_TEST(br_new.Size() == 2);
+
+    //addSources
+    tr.AddSourceBranch(BranchNew{{0.3, 0}, 0}, 6);
+    ids.push_back(6);
+    BOOST_TEST(tr.TipBranchesId() == ids);
+    BOOST_CHECK_THROW(tr.AddSourceBranch(BranchNew{{0.3, 0}, 0}, 6), invalid_argument);
+
+
+    //addPoints
+    //different size
+    BOOST_CHECK_THROW(tr.AddPoints({{0, 0}, {0.1, 0}}, {1, 2, 3}), invalid_argument);
+    
+    auto test_point = Point{1, 1};
+    auto tip_point = tr.GetBranch(3).TipPoint();
+
+    BOOST_TEST(tr.AddPoints({test_point}, {3}).GetBranch(3).TipPoint() == (tip_point+test_point));
+
 }

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include "common.hpp"
 #include "tethex.hpp"
 
@@ -127,6 +128,86 @@ namespace River
 
     class Tree
     {
+        public: 
+            Tree(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids)
+            {
+                for(unsigned int i = 0; i < ids.size(); ++i)
+                {
+                    AddSourceBranch(BranchNew{
+                            sources_point.at(i), 
+                            sources_angle.at(i)}, 
+                            ids.at(i));
+                }
+            }
+
+            Tree& AddPoints(vector<Point> points, vector<int> tips_id)
+            {
+                for(unsigned int i = 0; i < tips_id.size(); ++i)
+                    if(DoesExistBranch(tips_id.at(i)))
+                    {
+                        BranchNew& br = GetBranch(tips_id.at(i));
+                        br.AddPoint(points.at(i));
+                    }
+                    else
+                        throw invalid_argument("Such branch does not exist");
+
+                return *this;
+            }
+
+            Tree& AddSourceBranch(const BranchNew &branch, int id)
+            {
+                if(branches_index.count(id))
+                    throw invalid_argument("Invalid Id, such branch already exists");
+
+                branches.push_back(branch);
+                source_branches_id.push_back(id);
+                branches_index[id] = branches.size() - 1;
+                
+                return *this;
+            }
+
+            Tree& AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch)
+            {
+                
+                return *this;
+            }
+
+            vector<int> TipBranchesId()
+            {
+                vector<int> tip_branches_id;
+                for(auto p: branches_index)
+                    if(!HasSubBranches(p.first))
+                        tip_branches_id.push_back(p.first);
+
+                return tip_branches_id;
+            }
+
+            int NumberOfSourceBranches(){return source_branches_id.size();}
+
+        //private:  FIXME: cos i need somehow test private members
+            map<int, pair<int, int>> branches_relation;
+            map<int, unsigned int> branches_index;
+            vector<BranchNew> branches;
+            vector<int> source_branches_id;
+
+            bool DoesExistBranch(int id){return branches_index.count(id);}
+
+            BranchNew& GetBranch(int id)
+            {
+                if(!DoesExistBranch(id))
+                    throw invalid_argument("there is no such branch");
+                
+                return branches.at(branches_index[id]);
+            }
+
+            bool HasSubBranches(int branch_id)
+            {
+                return branches_relation.count(branch_id);
+            }
+
+            unsigned int GenerateNewID(unsigned int prevID, bool isLeft = true)
+            {return (prevID << 1) + (int)isLeft;}
+
 
 
 
