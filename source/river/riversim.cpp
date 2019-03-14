@@ -198,6 +198,8 @@ namespace River
             Gmsh.open(vm["output-mesh"].as<string>());
             Gmsh.start_ui();
         }
+
+        return 0;
     }
 
 }   
