@@ -9,7 +9,7 @@ namespace River
       y = yval;
     }
 
-    Point::Point(Polar p)
+    Point::Point(const Polar &p)
     {
       x = p.r * cos(p.phi);
       y = p.r * sin(p.phi);

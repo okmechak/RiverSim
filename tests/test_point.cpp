@@ -48,7 +48,8 @@ BOOST_AUTO_TEST_CASE( constructors,
   BOOST_TEST(obj5.norm() == sqrt(13.));
 
   //polar coord
-  Point obj6(Polar{sqrt(2.), M_PI/4.});
+  auto pol = Polar{sqrt(2.), M_PI/4.};
+  Point obj6(pol);
   BOOST_TEST(obj6.x == 1.);
   BOOST_TEST(obj6.y == 1.);
 }
