@@ -41,6 +41,7 @@ namespace River
             Border& ReadFromFile(string file_name)
             {
                 borderMesh.read(file_name);
+                return *this;
             }
 
             //addition
