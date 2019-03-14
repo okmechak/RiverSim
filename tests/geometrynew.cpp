@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
     BOOST_TEST(br.Size() == 1);
     BOOST_TEST(br.Lenght() == 0);
     BOOST_CHECK_THROW(br.AverageSpeed(), std::invalid_argument);
-    BOOST_TEST((br.TipVector() == Point{0, 1}));
+    BOOST_CHECK_THROW(br.TipVector(), std::invalid_argument);
     BOOST_TEST(br.TipPoint() == source_point);
     BOOST_TEST(br.TipAngle() == M_PI/2);
     BOOST_TEST(br.SourceAngle() == M_PI/2);
@@ -61,6 +61,13 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
     BOOST_TEST(br.TipAngle() == M_PI/2);
     BOOST_TEST(br.SourceAngle() == M_PI/2);
     BOOST_TEST(br.SourcePoint() == source_point );
+    
+    br.Shrink(2);
+    BOOST_TEST(br.Lenght() == 0);
+    BOOST_TEST(br.TipPoint() == source_point);
+    BOOST_TEST(br.SourcePoint() == source_point);
+    BOOST_CHECK_THROW(br.RemoveTipPoint(), invalid_argument);
+    
 
     //now let add points with different angles
     source_point = Point{0, 0};
@@ -84,4 +91,22 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
 
     BOOST_TEST(br.TipPoint() == br.SourcePoint());
     BOOST_TEST(source_point == br.SourcePoint());
+
+    br.Shrink(20);
+    BOOST_TEST(br.TipPoint() == br.SourcePoint());
+    BOOST_TEST(source_point == br.SourcePoint());
+
+
+    br = BranchNew(source_point, 0);
+    br.AddPoint(Polar{1, 0});
+    br.AddPoint(Polar{1, 0});
+    br.Shrink(0.5);
+    BOOST_TEST(br.Size() == 3);
+    auto test_p_4 = Point{1.5, 0};
+    BOOST_TEST(br.TipPoint() == test_p_4);
+    br.Shrink(0.5);
+    BOOST_TEST(br.Size() == 2);
+    BOOST_TEST(br.Lenght() == 1);
+    auto test_p_3 = Point{1, 0};
+    BOOST_TEST(br.TipPoint() == test_p_3);
 }

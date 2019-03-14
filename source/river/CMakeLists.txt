@@ -14,6 +14,8 @@ set(SOURCE_FILES
     common.cpp
     geometry.hpp
     geometry.cpp
+    geometrynew.hpp
+    geometrynew.cpp
     mesh.hpp
     mesh.cpp
     solver.hpp

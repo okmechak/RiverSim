@@ -67,12 +67,17 @@ namespace River
             Point TipVector() const 
             {
                 if(Size() == 1)
-                    return Polar{1, source_angle};
+                    throw invalid_argument("Can't return TipVector size is 1");
 
                 return points.at(Size() - 1) - points.at(Size() - 2);
             }
 
-            double TipAngle() const { return TipVector().angle();}
+            double TipAngle() const 
+            {
+                if(Size() == 1)
+                    return source_angle; 
+                return TipVector().angle();
+            }
 
             Point SourcePoint() const{return points.at(0);}
 
