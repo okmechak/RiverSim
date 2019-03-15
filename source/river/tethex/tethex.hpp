@@ -633,7 +633,8 @@ public:
      * Constructor - nothing special
      */
   Mesh();
-  Mesh(Mesh &) = default;
+  Mesh(Mesh & msh) = default;
+  Mesh(Mesh && msh) = default;
 
   /**
      * Constructor - nothing special
