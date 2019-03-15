@@ -55,7 +55,7 @@ namespace River
         return *this;
     }
 
-    vector<int> Border::GetSourcesId()
+    vector<int> Border::GetSourcesId() const
     {
         vector<int> sources_id;
         for(auto point: borderMesh.get_points()){
@@ -67,7 +67,21 @@ namespace River
         return sources_id;
     }
 
-    vector<int> Border::GetHolesId()
+    vector<Point> Border::GetSourcesPoint() const
+    {
+        vector<Point> sources_point;
+        for(auto point: borderMesh.get_points())
+            //we are using __material_id__ as simply __id___ to distinguish different source points
+            if(IsSource(point->get_material_id()))
+            {    
+                auto vertice = borderMesh.get_vertex(point->get_vertex(0));
+                sources_point.push_back(Point{vertice.get_coord(0), vertice.get_coord(1)});
+            }
+        
+        return sources_point;
+    }
+
+    vector<int> Border::GetHolesId() const
     {
         vector<int> holes_id;
         for(auto point: borderMesh.get_points()){
@@ -79,7 +93,7 @@ namespace River
         return holes_id;
     }
 
-    vector<tethex::MeshElement *> Border::GetPointLines(int point_id)
+    vector<tethex::MeshElement *> Border::GetPointLines(int point_id) const
     {
         vector<tethex::MeshElement *> point_lines;
         for(auto line: borderMesh.get_lines())
@@ -89,7 +103,7 @@ namespace River
         return point_lines;
     }
 
-    vector<int> Border::GetAdjacentPointsId(int point_id)
+    vector<int> Border::GetAdjacentPointsId(int point_id) const
     {
         vector<int> adjacent_points;
         //it should have only two points, cos it is a border
@@ -106,7 +120,7 @@ namespace River
         return adjacent_points;
     }
 
-    tet::MeshElement& Border::GetSourceById(int source_id)
+    tet::MeshElement& Border::GetSourceById(int source_id) const
     {
         for(int i = 0; i < borderMesh.get_n_points(); ++i)
             if(borderMesh.get_point(i).get_material_id() == source_id)
@@ -117,7 +131,7 @@ namespace River
         return borderMesh.get_point(0);
     }
 
-    double Border::GetSourceNormalAngle(int source_id)
+    double Border::GetSourceNormalAngle(int source_id) const
     {
         auto source_point_id = GetSourceById(source_id).get_vertex(0);
 

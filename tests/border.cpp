@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
         {0, 1, 2, 3},
         coords, ids);
     
-    for(int i = 0; i < ids.size(); ++i)
+    for(unsigned i = 0; i < ids.size(); ++i)
     {
         BOOST_TEST(ids[i] == border.GetSourcesId().at(i));
         BOOST_TEST( borderMesh.get_vertex(border.GetSourceById(ids[i]).get_vertex(0)).get_coord(0) == coords[i]);
@@ -67,4 +67,19 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
         auto angle = border.GetSourceNormalAngle(id);
         BOOST_TEST(angle == M_PI/2.);
     }
+}
+
+BOOST_AUTO_TEST_CASE( get_sources_point, 
+    *utf::tolerance(eps))
+{
+    tet::Mesh border_mesh;
+    Border border(border_mesh);
+    vector<Point> p;
+    BOOST_TEST(border.GetSourcesPoint() == p);BOOST_TEST(border.GetSourcesPoint() == p);
+    vector<int> ids{1,2,3,4,5};
+    border.MakeRectangular({2, 2}, {0, 1, 2, 3}, {0.1, 0.2, 0.3, 0.4, 0.5}, ids);
+    p = vector<Point>{{0.1, 0},{0.2, 0},{0.3, 0},{0.4, 0},{0.5, 0}};
+    BOOST_TEST(border.GetSourcesPoint() == p);
+    BOOST_TEST(border.GetSourcesId() == ids);
+
 }
