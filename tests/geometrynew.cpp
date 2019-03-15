@@ -130,6 +130,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     {
         BOOST_TEST(tr.DoesExistBranch(id));
         BOOST_TEST(!tr.HasSubBranches(id));
+        BOOST_TEST(!tr.IsSubBranch(id));
     }
     auto tips = tr.TipBranchesId();
     BOOST_TEST(tips == ids);
@@ -147,6 +148,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     ids.push_back(6);
     BOOST_TEST(tr.TipBranchesId() == ids);
     BOOST_CHECK_THROW(tr.AddSourceBranch(BranchNew{{0.3, 0}, 0}, 6), invalid_argument);
+    BOOST_CHECK_THROW(tr.IsSubBranch(1), invalid_argument);
 
 
     //addPoints
@@ -158,4 +160,64 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
 
     BOOST_TEST(tr.AddPoints({test_point}, {3}).GetBranch(3).TipPoint() == (tip_point+test_point));
 
+}
+
+BOOST_AUTO_TEST_CASE( Tree_Class_methods, 
+    *utf::tolerance(eps))
+{   
+    vector<int> ids{5, 4, 9};
+    Tree tr(
+        {{0.0, 0}, {0.1, 0}, {0.2, 0}}, 
+        {0.0, 0.1, 0.2},
+        ids);
+
+    BranchNew 
+        left_branch{tr.GetBranch(5).TipPoint(), 0.1},
+        right_branch{tr.GetBranch(5).TipPoint(), -0.1};
+    
+    //ADD SUBBRANCHES TEST
+    BOOST_TEST(!tr.HasSubBranches(5));         
+    auto[b1, b2] = tr.AddSubBranches(5, left_branch, right_branch);
+    BOOST_CHECK_THROW(tr.AddSubBranches(5, left_branch, right_branch), invalid_argument);
+    BOOST_TEST(tr.HasSubBranches(5));
+    BOOST_TEST(tr.DoesExistBranch(b1));
+    BOOST_TEST(tr.DoesExistBranch(b2));
+
+
+    //ADDBRANCH TEST
+    BOOST_CHECK_THROW(tr.AddBranch(left_branch, b1), invalid_argument);
+    BOOST_CHECK_THROW(tr.AddBranch(right_branch, b2), invalid_argument);
+
+
+
+    ids = vector{10};
+    tr = Tree{{{0.0, 0}}, {0.0}, ids};
+    
+    BOOST_TEST(tr.TipBranchesId() == ids);
+    auto [c1, c2] = tr.AddSubBranches(10, left_branch, right_branch);
+    auto new_ids = vector{c2, c1};
+    BOOST_TEST(tr.TipBranchesId() == new_ids);
+    BOOST_CHECK_THROW(tr.AddSubBranches(79, left_branch, right_branch), invalid_argument);
+    BOOST_TEST(tr.IsSubBranch(c2));
+    BOOST_TEST(tr.IsSubBranch(c1));
+
+    //GETSOURCEBRANCH TEST
+    BOOST_TEST(tr.GetSourceBranch(c1) == 10);
+    BOOST_TEST(tr.GetSourceBranch(c2) == 10);
+
+    BOOST_TEST(!tr.IsSubBranch(10));
+    BOOST_TEST(tr.IsSubBranch(c1));
+    BOOST_TEST(tr.IsSubBranch(c2));
+    BOOST_CHECK_THROW(tr.GetSourceBranch(10), invalid_argument);
+    BOOST_CHECK_THROW(tr.GetSourceBranch(79), invalid_argument);
+
+
+    //GENERATE NEW ID
+    BOOST_TEST(!tr.IsValidBranchId(0));
+    BOOST_TEST(tr.IsValidBranchId(1));
+    BOOST_TEST(tr.GenerateNewID(1, true) == 3);
+    BOOST_TEST(tr.GenerateNewID(1, false) == 2);
+    BOOST_CHECK_THROW(tr.GenerateNewID(0, false), invalid_argument);
+
+    BOOST_CHECK_THROW(tr.AddBranch(left_branch, 0), invalid_argument);
 }
