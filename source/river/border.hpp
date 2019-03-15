@@ -49,6 +49,14 @@ namespace River
             vector<Point> GetSourcesPoint() const;
             vector<int> GetHolesId() const ;
             double GetSourceNormalAngle(int source_id) const;
+            vector<double> GetSourcesNormalAngle() const
+            {
+                vector<double> norm_angles;
+                for(auto id: GetSourcesId())
+                    norm_angles.push_back(GetSourceNormalAngle(id));
+
+                return norm_angles;
+            }
 
         //private: for testing purposes
             tet::Mesh& borderMesh;
