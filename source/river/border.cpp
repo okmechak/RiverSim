@@ -29,7 +29,7 @@ namespace River
         //Iterating over sources points
         vector<tet::MeshElement *> sources;
         auto indexShift = regionPoints.size() - 1;
-        int i = 0;
+        unsigned i = 0;
         for(; i < sourcesId.size(); ++i)
         {
             regionPoints.push_back(
