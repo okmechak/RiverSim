@@ -335,6 +335,21 @@ namespace River
 
                 return (prev_id << 1) + (int)is_left;
             }
+
+            friend ostream& operator<<(ostream& write, const Tree & b)
+            {
+                write << "source branches ids" << endl;
+                for(auto s_id: b.source_branches_id)
+                    write << s_id << ", ";
+                write << endl;
+
+                write << "branches relation" << endl;
+                for(auto key_val: b.branches_relation)
+                    write << key_val.first << " left: " << key_val.second.first 
+                        << " right: " << key_val.second.second << endl;
+                
+                return write;
+            }
     };
 
 
