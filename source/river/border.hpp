@@ -44,9 +44,13 @@ namespace River
                 return *this;
             }
 
+            ///Add border line to each source
+            Border& CloseSources(int boundary_id);
+
+
             //addition
             vector<int> GetSourcesId() const;
-            vector<Point> GetSourcesPoint() const;
+            vector<pair<Point, Point>> GetSourcesPoint() const;
             vector<int> GetHolesId() const ;
             double GetSourceNormalAngle(int source_id) const;
             vector<double> GetSourcesNormalAngle() const
@@ -59,11 +63,11 @@ namespace River
             }
 
         //private: for testing purposes
+            const double eps = 1e-10;
             tet::Mesh& borderMesh;
             
-            vector<tethex::MeshElement *> GetPointLines(int point_id) const;
-            vector<int> GetAdjacentPointsId(int point_id) const;
-            tet::MeshElement& GetSourceById(int source_id) const;
+            int GetAdjacentPointId(int point_id) const;
+            pair<int, int> GetSourceVerticesIndexById(int source_id) const;
 
             ///All hole points should be indicated with @hole_point_index material_id
             const int hole_point_index = -1;
