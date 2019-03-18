@@ -12,8 +12,10 @@
 
 using namespace River;
 
-const double eps = 1e-13;
+const double eps = 1e-15;
 namespace utf = boost::unit_test;
+
+
 
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( BranchNew_Class, 
@@ -113,6 +115,25 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
 
 
 
+BOOST_AUTO_TEST_CASE( BranchNew_vector, 
+    *utf::tolerance(eps))
+{   
+    BranchNew br{Point{0, 0}, 0};
+    BOOST_CHECK_THROW(br.Vector(0), invalid_argument);
+
+    br.AddPoint(Polar{1, 0});
+    auto test_p = Point{1, 0};
+    BOOST_TEST(br.Vector(0) == test_p);
+    BOOST_CHECK_THROW(br.Vector(1), invalid_argument);
+
+    br.AddPoint(Polar{1, M_PI/2});
+    auto test_p_2 = Point{0, 1};
+    BOOST_TEST(br.Vector(1) == test_p_2);
+    BOOST_CHECK_THROW(br.Vector(2), invalid_argument);
+}
+
+
+
 
 
 
@@ -162,6 +183,9 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
 
 }
 
+
+
+
 BOOST_AUTO_TEST_CASE( Tree_Class_methods, 
     *utf::tolerance(eps))
 {   
@@ -183,12 +207,9 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_TEST(tr.DoesExistBranch(b1));
     BOOST_TEST(tr.DoesExistBranch(b2));
 
-
     //ADDBRANCH TEST
     BOOST_CHECK_THROW(tr.AddBranch(left_branch, b1), invalid_argument);
     BOOST_CHECK_THROW(tr.AddBranch(right_branch, b2), invalid_argument);
-
-
 
     ids = vector{10};
     tr = Tree{{{0.0, 0}}, {0.0}, ids};
@@ -220,4 +241,27 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_CHECK_THROW(tr.GenerateNewID(0, false), invalid_argument);
 
     BOOST_CHECK_THROW(tr.AddBranch(left_branch, 0), invalid_argument);
+}
+
+
+
+
+
+BOOST_AUTO_TEST_CASE( boundary_generator_new, 
+    *utf::tolerance(eps))
+{   
+    //Model mdl;
+    //tethex::Mesh msh;
+    //Border br(msh);
+    //Tree tr(
+    //    br.GetSourcesPoint(),
+    //    br.GetSourcesNormalAngle(),
+    //    br.GetSourcesId());
+//
+    //auto out_mesh = BoundaryGenerator(mdl, tr, br);
+    //BOOST_TEST(out_mesh.get_n_vertices() == 0);
+    //BOOST_TEST(out_mesh.get_n_points() == 0);
+    //BOOST_TEST(out_mesh.get_n_lines() == 0);
+
+
 }

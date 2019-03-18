@@ -14,6 +14,8 @@
 #include <map>
 #include "common.hpp"
 #include "tethex.hpp"
+#include "physmodel.hpp"
+#include "border.hpp"
 
 using namespace std;
 
@@ -86,12 +88,23 @@ namespace River
                 return points.at(Size() - 1);
             }
 
-            ///Returns vector - difference between two adjacent points
-            ///if size is <= 0exception is rised
+            ///Returns vector of tip - difference between two adjacent points
+            ///if size is <= 0exception is rised.
             Point TipVector() const 
             {
                 if(Size() == 1)
                     throw invalid_argument("Can't return TipVector size is 1");
+
+                return points.at(Size() - 1) - points.at(Size() - 2);
+            }
+
+            ///Returns vector of i-th segment of branch.
+            Point Vector(unsigned i) const
+            {
+                if(Size() == 1)
+                    throw invalid_argument("Can't return Vector size is 1");
+                if(i > Size() - 2)
+                    throw invalid_argument("Can't return Vector index is bigger then size");
 
                 return points.at(Size() - 1) - points.at(Size() - 2);
             }
@@ -150,6 +163,9 @@ namespace River
 
                 return write;
             }
+
+            ///Returns points vector
+            vector<Point> GetPoints(){return points;}
 
             
         private:
@@ -352,11 +368,9 @@ namespace River
             }
     };
 
-
-    //generataor of boundaries from tree and boudary obejcts TODO
-
-
-
-
+    ///Finnal Boudary Geneartor Class
+    ///
+    ///Sticks together all components: Tree class, boudary class and model parameters
+    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, const Border &br);
 
 }
