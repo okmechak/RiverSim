@@ -63,7 +63,7 @@ namespace River
             }
 
         //private: for testing purposes
-            const double eps = 1e-10;
+            double eps = 1e-10;
             tet::Mesh& borderMesh;
             
             int GetAdjacentPointId(int point_id) const;
