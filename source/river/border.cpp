@@ -65,7 +65,7 @@ namespace River
 
     Border& Border::CloseSources(int boundary_id)
     {
-        auto border_lines = borderMesh.get_lines();
+        vector<tethex::MeshElement *> border_lines;
         for(auto id: GetSourcesId())
         {
             auto[vert_left, vert_right] = Border::GetSourceVerticesIndexById(id);
@@ -75,7 +75,7 @@ namespace River
 
         }
             
-        borderMesh.set_lines(border_lines);
+        borderMesh.append_lines(border_lines);
 
         return *this;
     }
