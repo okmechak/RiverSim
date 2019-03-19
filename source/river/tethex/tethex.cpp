@@ -1308,11 +1308,11 @@ void Mesh::info(std::ostream &out) const
       << "\nconverted quads: " << n_converted_quadrangles
       << "\n\n";
   
+  //Vertices
   int i = 0;
-  //Points
   std::cout << std::endl;
   std::cout << "----------" << std::endl;
-  std::cout << "Points" << std::endl;
+  std::cout << "Vertices" << std::endl;
   std::cout << "----------" << std::endl;
   for(auto & p: vertices)
   {
@@ -1320,6 +1320,17 @@ void Mesh::info(std::ostream &out) const
     i++;
   }
 
+  //Points
+  i = 0;
+  std::cout << std::endl;
+  std::cout << "----------" << std::endl;
+  std::cout << "Points" << std::endl;
+  std::cout << "----------" << std::endl;
+  for(auto & p: points)
+  {
+    std::cout << i << ") "<< *p << std::endl;
+    i++;
+  }
 
   //Lines
   i = 0;
