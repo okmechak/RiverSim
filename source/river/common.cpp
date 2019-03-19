@@ -49,13 +49,15 @@ namespace River
       return Polar{norm(), angle()};
     }
 
-    void Point::normalize()
+    Point& Point::normalize()
     {
       auto l = norm();
       if(l == 0.)
         throw std::invalid_argument( "norm is equal to zero");
       x /= l;
       y /= l;
+
+      return *this;
     }
 
     double Point::angle() const
@@ -96,9 +98,10 @@ namespace River
       phi *= sign;
       return phi;
     }
-    void Point::print() const
+    Point& Point::print()
     {
       cout << *this << endl;
+      return *this;
     }
 
     bool Point::operator==(const Point& p) const
