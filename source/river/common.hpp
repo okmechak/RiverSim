@@ -69,11 +69,11 @@ class Point
     Point getNormalized();
     Point& rotate(double phi);
     Polar getPolar() const;
-    void normalize();
+    Point& normalize();
     double angle() const;
     static double angle(double x, double y);
     double angle(Point &p) const;
-    void print() const;
+    Point& print();
 
     Point& operator=(const Point& p) = default;
     Point operator+(const Point& p) const;

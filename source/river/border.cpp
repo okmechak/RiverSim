@@ -28,23 +28,31 @@ namespace River
         
         //Iterating over sources points
         vector<tet::MeshElement *> sources;
-        auto indexShift = regionPoints.size() - 1;
-        int i = 0;
+        unsigned i = 0;
         for(; i < sourcesId.size(); ++i)
         {
+            //Pushing left point
             regionPoints.push_back(
-                tet::Point(sourcesXCoord[i], 0/*y coord*/));
+                tet::Point(sourcesXCoord[i] - eps/2, 0/*y coord*/));
+            sources.push_back(
+                new tet::PhysPoint(regionPoints.size() - 1 , sourcesId[i]));
+
+            if(i < sourcesId.size())
+                borderLines.push_back(
+                    new tet::Line(regionPoints.size() - 2, regionPoints.size() - 1,
+                        boundariesId[3]));
+
+
+            //Pushing right point
+            regionPoints.push_back(
+                tet::Point(sourcesXCoord[i] + eps/2, 0/*y coord*/));
             sources.push_back(
                 new tet::PhysPoint(regionPoints.size() - 1 , sourcesId[i]));
             
             //last one point is ommited
-            if(i < sourcesId.size())
-                borderLines.push_back(
-                    new tet::Line(i + indexShift, i + 1 + indexShift,
-                        boundariesId[3]));
         }
         borderLines.push_back(
-                    new tet::Line(i + indexShift, 0, boundariesId[3]));
+                    new tet::Line(regionPoints.size() - 1, 0, boundariesId[3]));
 
 
         //passing values to meshBorder object
@@ -55,19 +63,67 @@ namespace River
         return *this;
     }
 
-    vector<int> Border::GetSourcesId()
+    Border& Border::CloseSources(int boundary_id)
+    {
+        vector<tethex::MeshElement *> border_lines;
+        for(auto id: GetSourcesId())
+        {
+            auto[vert_left, vert_right] = Border::GetSourceVerticesIndexById(id);
+            border_lines.push_back(
+                    new tet::Line(vert_left, vert_right, boundary_id));
+            
+
+        }
+            
+        borderMesh.append_lines(border_lines);
+
+        return *this;
+    }
+
+    vector<int> Border::GetSourcesId() const
     {
         vector<int> sources_id;
-        for(auto point: borderMesh.get_points()){
+        auto points = borderMesh.get_points();
+        for(unsigned i = 0; i < points.size(); ++i)
+        {
             //we are using __material_id__ as simply __id___ to distinguish different source points
-            auto id = point->get_material_id();
+            auto id = points[i]->get_material_id();
             if(IsSource(id))
+            {
                 sources_id.push_back(id);
+                //cos next clockwise point will be  same point
+                i++;
+            }
         }
         return sources_id;
     }
 
-    vector<int> Border::GetHolesId()
+    vector<Point> Border::GetSourcesPoint() const
+    {
+        vector<Point> sources_point;
+        auto points = borderMesh.get_points();
+
+        for(unsigned i = 0; i < points.size(); i+=2)
+            //we are using __material_id__ as simply __id___ to distinguish different source points
+            if(IsSource(points.at(i)->get_material_id()))
+            {    
+                auto vert_left = borderMesh.get_vertex(points.at(i)->get_vertex(0));
+                //cos we are moving in clockwise order if one point is source then next one should be too
+                tethex::Point vert_right;
+                if(i == points.size() - 1)
+                    vert_right = borderMesh.get_vertex(points.at(0)->get_vertex(0));
+                else
+                    vert_right = borderMesh.get_vertex(points.at(i + 1)->get_vertex(0));
+
+                sources_point.push_back(
+                    Point{vert_left.get_coord(0)/2 + vert_right.get_coord(0)/2, 
+                    vert_left.get_coord(1)/2 + vert_right.get_coord(1)/2});
+            }
+        
+        return sources_point;
+    }
+
+    vector<int> Border::GetHolesId() const
     {
         vector<int> holes_id;
         for(auto point: borderMesh.get_points()){
@@ -79,65 +135,52 @@ namespace River
         return holes_id;
     }
 
-    vector<tethex::MeshElement *> Border::GetPointLines(int point_id)
+
+    int Border::GetAdjacentPointId(int point_id) const
     {
-        vector<tethex::MeshElement *> point_lines;
+        //it should have only one point, cos it is a border
+        tethex::MeshElement* adjacent_line;
         for(auto line: borderMesh.get_lines())
             if(line->contains(point_id))
-                point_lines.push_back(line);
+                adjacent_line = line;
+
+        auto vertexIndex = adjacent_line->get_vertex(0);
+        if(point_id == vertexIndex)
+            vertexIndex = adjacent_line->get_vertex(1);
         
-        return point_lines;
+        return vertexIndex;
     }
 
-    vector<int> Border::GetAdjacentPointsId(int point_id)
-    {
-        vector<int> adjacent_points;
-        //it should have only two points, cos it is a border
-        auto point_lines = GetPointLines(point_id);
-        for(auto line: point_lines)
-        {
-            auto vertexIndex = line->get_vertex(0);
-            if(point_id == vertexIndex)
-                vertexIndex = line->get_vertex(1);
 
-            adjacent_points.push_back(vertexIndex);
-        }        
-
-        return adjacent_points;
-    }
-
-    tet::MeshElement& Border::GetSourceById(int source_id)
+    ///Returns source ver
+    pair<int, int> Border::GetSourceVerticesIndexById(int source_id) const
     {
         for(int i = 0; i < borderMesh.get_n_points(); ++i)
             if(borderMesh.get_point(i).get_material_id() == source_id)
-                return borderMesh.get_point(i);
+                return {borderMesh.get_point(i).get_vertex(0), borderMesh.get_point(i).get_vertex(0) + 1};
 
         throw std::invalid_argument("PhysPoint with such source id doesn't exist");
 
-        return borderMesh.get_point(0);
+        return {-1, -2};
     }
 
-    double Border::GetSourceNormalAngle(int source_id)
+    double Border::GetSourceNormalAngle(int source_id) const
     {
-        auto source_point_id = GetSourceById(source_id).get_vertex(0);
+        auto [p_left, p_right] = GetSourceVerticesIndexById(source_id);
+        auto v_left = borderMesh.get_vertex(p_left);
+        auto v_right = borderMesh.get_vertex(p_right);
 
-        auto adjacent_points_id = GetAdjacentPointsId(source_point_id);
-        auto source_point = borderMesh.get_vertex(source_point_id);
+        auto adjacent_left = borderMesh.get_vertex(GetAdjacentPointId(p_left));
+        auto adjacent_right = borderMesh.get_vertex(GetAdjacentPointId(p_right));
 
-        auto angle1 = River::Point::angle(
-                - borderMesh.get_vertex(adjacent_points_id[0]).get_coord(0) 
-                + source_point.get_coord(0),
-                - borderMesh.get_vertex(adjacent_points_id[0]).get_coord(1) 
-                + source_point.get_coord(1));
+        auto angle_left = River::Point::angle(
+                v_left.get_coord(0) - adjacent_left.get_coord(0),
+                v_left.get_coord(1) - adjacent_left.get_coord(1));
 
-        auto angle2 = River::Point::angle(
-                + borderMesh.get_vertex(adjacent_points_id[1]).get_coord(0) 
-                - source_point.get_coord(0),
-                + borderMesh.get_vertex(adjacent_points_id[1]).get_coord(1) 
-                - source_point.get_coord(1));
+        auto angle_right = River::Point::angle(
+                adjacent_right.get_coord(0) - v_right.get_coord(0),
+                adjacent_right.get_coord(1) - v_right.get_coord(1));
 
-
-        //Point::angle()
-        return (angle1 + angle2) / 2 + M_PI/2/*we are looking for perpendicular*/;
+        return (angle_left + angle_right) / 2 + M_PI/2/*we are looking for perpendicular*/;
     }
 }

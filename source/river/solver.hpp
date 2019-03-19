@@ -101,7 +101,7 @@ class Solver
     class RightHandSide : public Function<dim>
     {
       public:
-        double fieldValue = 0.;
+        double fieldValue = 1.;
         RightHandSide() : Function<dim>() {}
         virtual double value(const dealii::Point<dim> &p,
                              const unsigned int component = 0) const;

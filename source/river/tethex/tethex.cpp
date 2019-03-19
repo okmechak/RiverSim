@@ -578,16 +578,25 @@ Mesh::~Mesh()
 
 void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
 {
-  //TODO: free up from memory previous vector!
   vertices = vertexesVal;
 }
+/**
+                 * Append the vertex vector
+                 * @param vertexes - the vector of vertexes
+                 */
+  void Mesh::append_vertexes(std::vector<Point> &vertexes_val)
+  {
+    vertices.insert(end(vertices), vertexes_val.begin(), vertexes_val.end());
+  }
                 /**
                  * Set the physical points
                  * @param points - the vector of points
                  */
   void Mesh::set_points(std::vector<MeshElement *> &pointsVal)
   {
-    //TODO: free up from memory previous vector!
+    for (size_t i = 0; i < points.size(); ++i)
+      delete points.at(i);
+
     points = pointsVal;
   }
 
@@ -597,8 +606,17 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
                  */
   void Mesh::set_lines(std::vector<MeshElement *> &linesVal)
   { 
-    //TODO: free up from memory previous vector!
+    for (size_t i = 0; i < lines.size(); ++i)
+      delete lines.at(i);
     lines = linesVal;
+  }
+  /**
+                 * Set the physical lines
+                 * @param lines - the vector of lines
+                 */
+  void Mesh::append_lines(std::vector<MeshElement *> &lines_val)
+  {
+    lines.insert(end(lines), lines_val.begin(), lines_val.end());
   }
 
                 /**
@@ -1290,11 +1308,11 @@ void Mesh::info(std::ostream &out) const
       << "\nconverted quads: " << n_converted_quadrangles
       << "\n\n";
   
+  //Vertices
   int i = 0;
-  //Points
   std::cout << std::endl;
   std::cout << "----------" << std::endl;
-  std::cout << "Points" << std::endl;
+  std::cout << "Vertices" << std::endl;
   std::cout << "----------" << std::endl;
   for(auto & p: vertices)
   {
@@ -1302,6 +1320,17 @@ void Mesh::info(std::ostream &out) const
     i++;
   }
 
+  //Points
+  i = 0;
+  std::cout << std::endl;
+  std::cout << "----------" << std::endl;
+  std::cout << "Points" << std::endl;
+  std::cout << "----------" << std::endl;
+  for(auto & p: points)
+  {
+    std::cout << i << ") "<< *p << std::endl;
+    i++;
+  }
 
   //Lines
   i = 0;

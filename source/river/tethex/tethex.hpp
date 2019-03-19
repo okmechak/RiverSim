@@ -633,7 +633,8 @@ public:
      * Constructor - nothing special
      */
   Mesh();
-  Mesh(Mesh &) = default;
+  Mesh(Mesh & msh) = default;
+  Mesh(Mesh && msh) = default;
 
   /**
      * Constructor - nothing special
@@ -791,6 +792,11 @@ public:
                  * @param vertexes - the vector of vertexes
                  */
   void set_vertexes(std::vector<Point> &vertexes);
+  /**
+                 * Set the copy of vertex
+                 * @param vertexes - the vector of vertexes
+                 */
+  void append_vertexes(std::vector<Point> &vertexes_val);
 
                 /**
                  * Set the physical points
@@ -803,6 +809,11 @@ public:
                  * @param lines - the vector of lines
                  */
   void set_lines(std::vector<MeshElement *> &lines);
+  /**
+                 * Append the physical lines
+                 * @param lines - the vector of lines
+                 */
+  void append_lines(std::vector<MeshElement *> &lines_val);
 
                 /**
                  * Set the mesh triangles
