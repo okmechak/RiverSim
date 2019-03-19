@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <algorithm>
 #include "common.hpp"
 #include "tethex.hpp"
 #include "physmodel.hpp"
@@ -102,11 +103,11 @@ namespace River
             Point Vector(unsigned i) const
             {
                 if(Size() == 1)
-                    throw invalid_argument("Can't return Vector size is 1");
-                if(i > Size() - 2)
-                    throw invalid_argument("Can't return Vector index is bigger then size");
+                    throw invalid_argument("Can't return Vector. Size is 1");
+                if(i >= Size() || i == 0)
+                    throw invalid_argument("Can't return Vector. Index is bigger then size or is zero");
 
-                return points.at(Size() - 1) - points.at(Size() - 2);
+                return points.at(i) - points.at(i - 1);
             }
             
             ///Returns angle of tip of branch
@@ -166,6 +167,7 @@ namespace River
 
             ///Returns points vector
             vector<Point> GetPoints(){return points;}
+            Point GetPoint(unsigned i){return points.at(i);}
 
             
         private:
@@ -223,19 +225,19 @@ namespace River
             ///Adds Sub Branches @left_bracnhs, @right_branch to @root_branch_id
             pair<int, int> AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch)
             {   
-                pair<int, int> sub_branches_id;
                 if(!DoesExistBranch(root_branch_id))
                     throw invalid_argument("root branch doesn't exis");
 
                 if(HasSubBranches(root_branch_id))
                     throw invalid_argument("This branch already has subbranches");
                 
-                //evaluating ids
-                sub_branches_id.first = GenerateNewID(root_branch_id);
-                sub_branches_id.second = GenerateNewID(root_branch_id, false);
 
                 //adding new branches
+                pair<int, int> sub_branches_id;
+                sub_branches_id.first = GenerateNewID();
                 AddBranch(left_branch, sub_branches_id.first);
+                
+                sub_branches_id.second = GenerateNewID();
                 AddBranch(right_branch, sub_branches_id.second);
 
                 //setting relation
@@ -338,18 +340,34 @@ namespace River
                 return invalid_branch;
             }
 
+            pair<int, int> GetSubBranches(int branch_id)
+            {   
+                if(!HasSubBranches(branch_id))
+                    throw invalid_argument("branch does't have sub branches");
+                return branches_relation[branch_id];
+            }
+
+
+
             bool IsValidBranchId(int id)
             {
                 return id >= 1;
             }
 
-            ///Generates unique id number for new subbranch based on @prevID and @isLeft.
-            unsigned int GenerateNewID(unsigned int prev_id, bool is_left = true)
+            ///Generates unique id number for new subbranch.
+            unsigned int GenerateNewID()
             {
-                if(!IsValidBranchId(prev_id))
-                    throw invalid_argument("Invalid argument");
+                unsigned max_id = 1;
+                
+                vector<int> branches_id;
+                branches_id.reserve(branches_index.size());
 
-                return (prev_id << 1) + (int)is_left;
+                for(auto &key_val: branches_index)
+                    branches_id.push_back(key_val.first);
+
+                while(find(begin(branches_id), end(branches_id), ++max_id)!= branches_id.end());
+
+                return max_id;
             }
 
             friend ostream& operator<<(ostream& write, const Tree & b)
@@ -371,6 +389,7 @@ namespace River
     ///Finnal Boudary Geneartor Class
     ///
     ///Sticks together all components: Tree class, boudary class and model parameters
-    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, const Border &br);
+    void TreeVector(vector<Point> &tree_vector, int id, Tree& tr, double eps);
+    void BoundaryGenerator(const Model& mdl, Tree& tr, Border &br, int boundary_id);
 
 }
