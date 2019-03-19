@@ -25,14 +25,14 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
 
     BOOST_TEST(border.GetHolesId().empty());
     BOOST_TEST(border.GetSourcesId().empty());
-
+    
     //now with some initialization
     border.MakeRectangular(
         {1, 4}, 
         {0, 1, 2, 3},
         {0.5},
         {1});
-
+    
     BOOST_TEST(!border.GetSourcesId().empty()); 
     BOOST_TEST(border.GetSourcesId().size() == 1);
     BOOST_TEST((border.GetSourcesId().at(0) == 1));
@@ -103,13 +103,11 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
     BOOST_TEST(adjacent_left.get_coord(0) == 1);
     BOOST_TEST(adjacent_left.get_coord(1) == 0);
 
-    cout << endl << "Bliat!" << endl;
     for(auto id: ids)
     {
         auto angle = border.GetSourceNormalAngle(id);
         BOOST_TEST(angle == M_PI/2.);
     }
-    cout << "--" << endl;
 }
 
 BOOST_AUTO_TEST_CASE( get_sources_point, 
@@ -117,25 +115,19 @@ BOOST_AUTO_TEST_CASE( get_sources_point,
 {
     tet::Mesh border_mesh;
     Border border(border_mesh);
-    vector<pair<Point, Point>> p;
+    vector<Point> p;
     BOOST_TEST(border.GetSourcesPoint() == p);
     
     vector<int> ids{1,2,3,4,5};
     border.MakeRectangular({2, 2}, {0, 1, 2, 3}, {0.1, 0.2, 0.3, 0.4, 0.5}, ids);
-    p = vector<pair<Point, Point>>{
-        {{0.1 - border.eps/2, 0}, {0.1 + border.eps/2, 0}},
-        {{0.2 - border.eps/2, 0}, {0.2 + border.eps/2, 0}},
-        {{0.3 - border.eps/2, 0}, {0.3 + border.eps/2, 0}},
-        {{0.4 - border.eps/2, 0}, {0.4 + border.eps/2, 0}},
-        {{0.5 - border.eps/2, 0}, {0.5 + border.eps/2, 0}}};
+    p = vector<Point>{
+        {0.1, 0},
+        {0.2, 0},
+        {0.3, 0},
+        {0.4, 0},
+        {0.5, 0}};
     
     BOOST_TEST(border.GetSourcesPoint() == p);
-
-    for(unsigned i = 0; i < p.size(); ++i)
-    {
-        BOOST_TEST(border.GetSourcesPoint().at(i).first == p.at(i).first);
-        BOOST_TEST(border.GetSourcesPoint().at(i).second == p.at(i).second);
-    }
 
     BOOST_TEST(border.GetSourcesId() == ids);
 }
