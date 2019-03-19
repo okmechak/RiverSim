@@ -98,9 +98,9 @@ namespace River
         return sources_id;
     }
 
-    vector<pair<Point, Point>> Border::GetSourcesPoint() const
+    vector<Point> Border::GetSourcesPoint() const
     {
-        vector<pair<Point, Point>> sources_point;
+        vector<Point> sources_point;
         auto points = borderMesh.get_points();
 
         for(unsigned i = 0; i < points.size(); i+=2)
@@ -115,9 +115,9 @@ namespace River
                 else
                     vert_right = borderMesh.get_vertex(points.at(i + 1)->get_vertex(0));
 
-                sources_point.push_back({
-                    Point{vert_left.get_coord(0), vert_left.get_coord(1)},
-                    Point{vert_right.get_coord(0), vert_right.get_coord(1)}});
+                sources_point.push_back(
+                    Point{vert_left.get_coord(0)/2 + vert_right.get_coord(0)/2, 
+                    vert_left.get_coord(1)/2 + vert_right.get_coord(1)/2});
             }
         
         return sources_point;
@@ -181,13 +181,6 @@ namespace River
                 adjacent_right.get_coord(0) - v_right.get_coord(0),
                 adjacent_right.get_coord(1) - v_right.get_coord(1));
 
-        
-        cout << endl<<"Suka!!" << endl;
-        cout << "id " << source_id << endl;
-        cout << "angles " <<angle_right << " " << angle_left << endl;
-        cout << "dx =" << adjacent_right.get_coord(0) - v_right.get_coord(0) << " dy=" <<
-                adjacent_right.get_coord(1) - v_right.get_coord(1) << endl;
-        cout << "adjacent point id " << GetAdjacentPointId(p_right) << endl;
         return (angle_left + angle_right) / 2 + M_PI/2/*we are looking for perpendicular*/;
     }
 }

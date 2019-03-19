@@ -50,7 +50,7 @@ namespace River
 
             //addition
             vector<int> GetSourcesId() const;
-            vector<pair<Point, Point>> GetSourcesPoint() const;
+            vector<Point> GetSourcesPoint() const;
             vector<int> GetHolesId() const ;
             double GetSourceNormalAngle(int source_id) const;
             vector<double> GetSourcesNormalAngle() const
