@@ -3,6 +3,13 @@ set(BUILD_TEST ON CACHE BOOL "Build Boost Unit Tests")
 if(BUILD_TEST)
         include_directories(${PROJECT_SOURCE_DIR}/source/river)
         include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
+        include_directories(${PROJECT_SOURCE_DIR}/source/river/triangle)
+
+        message("========================================")
+        message("Deal II setup")
+        set(deal.II_USE_STATIC_LIBS "ON")
+        find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
+        deal_ii_initialize_cached_variables()
         
         message("========================================")
         message("GMSH setup")
@@ -21,6 +28,7 @@ if(BUILD_TEST)
         
                 #Add compile target
                 add_executable(${testName} ${testSrc})
+                deal_ii_setup_target(${testName})
         
                 #link to Boost libraries AND your targets and dependencies
                 target_link_libraries(${testName} ${Boost_LIBRARIES} river)

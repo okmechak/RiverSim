@@ -11,7 +11,7 @@ namespace River{
     
 
 */
-void Triangle::print_geometry(struct triangulateio &io)
+void Triangle::print_geometry(struct triangulateio &io) const
 {
     int i, j, shift = 1;
     //if(StartNumberingFromZero)
@@ -134,7 +134,7 @@ void Triangle::print_geometry(struct triangulateio &io)
 }
 
 
-struct triangulateio Triangle::tethex_to_io(tethex::Mesh &mesh)
+struct triangulateio Triangle::tethex_to_io(tethex::Mesh &mesh) const
 {
     struct triangulateio io;
     set_tria_to_default(&io);
@@ -256,8 +256,10 @@ Triangle::Triangle()
 }
 
 Triangle::~Triangle()
-{
-    free_allocated_memory();
+{   
+    //we don't call this function
+    //free_allocated_memory();
+    //cos it is already present at the of generate() function
 }
 
 
@@ -427,45 +429,6 @@ void Triangle::generate(tethex::Mesh &initMesh)
     io_to_tethex(out, initMesh);
     free_allocated_memory();
 }
-
-
-
-
-
-
-/*
-    Tethex
-
-*/
-//Tethex::Tethex()
-//{}
-//Tethex::~Tethex()
-//{}
-//
-//void Tethex::Convert(struct vecTriangulateIO &geom)
-//{
-//    tethex::Mesh TethexMesh;
-//    TethexMesh.read_triangl(
-//        geom.node.coords, 
-//        geom.edges, 
-//        geom.edgeMarkers,  
-//        geom.element.triangle.nodeTags);
-//
-//    if(Verbose)
-//        TethexMesh.info(cout);
-//    TethexMesh.convert();
-//    if(Verbose)
-//        TethexMesh.info(cout);
-//
-//    //TODO: write normal arguments    
-//    TethexMesh.write_triangle(
-//        geom.node.coords,
-//        geom.element.line.nodeTags,
-//        geom.element.line.markers,
-//        geom.element.triangle.nodeTags);
-//
-//}
-
 
 
 

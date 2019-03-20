@@ -40,10 +40,15 @@ install/*
 
 #vscode project file
 *.code-workspace
-#.vscode/*
+.vscode/ipch/*
 
 #visual studio output files
 **/.vs
 **/Debug
 **/x64
 Doxyfile
+
+#some test files..FIXME:
+tests/solution-0.vtk
+tests/grid-0.eps
+tests/test.msh

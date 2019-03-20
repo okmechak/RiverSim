@@ -15,7 +15,7 @@ namespace River
     class Model
     {   
         public: 
-            double eps = 0.01;
+            double eps = 1e-10;
             /*
                                 Different parameters that is used in river simulation
                             */

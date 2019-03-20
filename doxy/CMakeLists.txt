@@ -1,5 +1,5 @@
 # first we can indicate the documentation build as an option and set it to ON by default
-set(BUILD_DOC ON CACHE BOOL "Build Doxygen documentation")
+set(BUILD_DOC OFF CACHE BOOL "Build Doxygen documentation")
 
 # check if Doxygen is installed
 if(BUILD_DOC)

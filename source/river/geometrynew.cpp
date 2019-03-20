@@ -96,11 +96,10 @@ namespace River
         mesh.append_lines(lines);
     }
     
-    void BoundaryGenerator(const Model& mdl, Tree& tr, Border &br, int boundary_id)
+    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br, int boundary_id)
     {
+        tethex::Mesh boundary_mesh = br.borderMesh;
 
-        //FIXME: !! we should somehow copy initial boundary mesh!
-        tethex::Mesh& boundary_mesh = br.borderMesh;
         for(auto source_id: br.GetSourcesId())
         {
             auto[vertice_left, vertice_right] = br.GetSourceVerticesIndexById(source_id);
@@ -116,6 +115,7 @@ namespace River
             AppendTreeToMesh(tree_vector, vertice_left, vertice_right, boundary_id, boundary_mesh);
             tree_vector.clear();
         }
-    }
 
+        return boundary_mesh;
+    }
 }

@@ -633,8 +633,9 @@ public:
      * Constructor - nothing special
      */
   Mesh();
-  Mesh(Mesh & msh) = default;
+  Mesh(const Mesh & msh);
   Mesh(Mesh && msh) = default;
+  Mesh& operator =(const Mesh& msh);
 
   /**
      * Constructor - nothing special
