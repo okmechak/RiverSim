@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
     Triangle tria;
     tria.AreaConstrain = tria.ConstrainAngle = true;
-    tria.MaxTriaArea = 0.01;
+    tria.MaxTriaArea = 0.1;
     tria.MinAngle = 30;
     tria.generate(mesh);
     mesh.convert();
@@ -54,11 +54,10 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     //Simulation
     River::Solver sim;
     
-    sim.numOfRefinments = 4;
+    sim.numOfRefinments = 8;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run(0);
-
     
     auto tip_ids = tr.TipBranchesId();
     auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();
@@ -71,5 +70,4 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     BOOST_TEST(series_params.at(1) == 0.0114);
     BOOST_TEST(series_params.at(2) == 0.0325);
     sim.clear();
-    BOOST_TEST_CHECKPOINT("lalal");
 }

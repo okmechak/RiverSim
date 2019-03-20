@@ -22,17 +22,6 @@ namespace geo = gmsh::model::geo;
 namespace River
 {
 
-  
- //class Tethex
- //{
- //  public:
- //     bool Verbose = false;
- //     Tethex();
- //     ~Tethex();
- //};
-
-
-
   class Triangle
   {
     private:
@@ -93,13 +82,13 @@ namespace River
       struct triangulateio* get_geometry();
       struct triangulateio* get_voronoi();
 
-      struct triangulateio tethex_to_io(tethex::Mesh &initMesh);
+      struct triangulateio tethex_to_io(tethex::Mesh &initMesh) const;
 
       void io_to_tethex(
         struct triangulateio &io, tethex::Mesh &initMesh);
       
     public:
-      void print_geometry(struct triangulateio &io);
+      void print_geometry(struct triangulateio &io) const;
       enum algorithm
       {
           CONQUER,
