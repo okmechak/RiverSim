@@ -390,6 +390,6 @@ namespace River
     ///
     ///Sticks together all components: Tree class, boudary class and model parameters
     void TreeVector(vector<Point> &tree_vector, int id, Tree& tr, double eps);
-    void BoundaryGenerator(const Model& mdl, Tree& tr, Border &br, int boundary_id);
+    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br, int boundary_id);
 
 }
