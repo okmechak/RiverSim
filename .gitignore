@@ -40,7 +40,7 @@ install/*
 
 #vscode project file
 *.code-workspace
-#.vscode/*
+.vscode/ipch/*
 
 #visual studio output files
 **/.vs
