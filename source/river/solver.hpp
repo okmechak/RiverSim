@@ -58,7 +58,7 @@ class Solver
     void SetMesh(tethex::Mesh &meshio);
     void OpenMesh(string fileName = "river.msh");
     void run(int step);
-    vector<double> integrate(GeomPoint tipPoint, double tipAngle);
+    vector<double> integrate(Point point, double angle);
     void clear()
     {
       dof_handler.clear();

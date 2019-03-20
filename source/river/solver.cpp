@@ -228,11 +228,11 @@ void Solver::refine_grid()
 }
 
 
-vector<double> Solver::integrate(GeomPoint tipPoint, double tipAngle)
+vector<double> Solver::integrate(Point point, double angle)
 {   
     /*
-                Some predefined parameters
-         */
+        Some predefined parameters
+    */
     Model model;
 
 
@@ -257,11 +257,11 @@ vector<double> Solver::integrate(GeomPoint tipPoint, double tipAngle)
         for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
         {
             auto quad_point = quad_points[q_point];
-            auto dx = (quad_point[0] - tipPoint[0]), 
-                dy = (quad_point[1] - tipPoint[1]);
+            auto dx = (quad_point[0] - point[0]), 
+                dy = (quad_point[1] - point[1]);
 
             double dist = sqrt(dx*dx + dy*dy);
-            double angle = Point::angle(dx, dy) - tipAngle;
+            double angle = Point::angle(dx, dy) - angle;
 
             if(dist > model.Rmin && dist < model.Rmax)
                 for(int param_index = 0; param_index < series_params.size(); ++param_index)
