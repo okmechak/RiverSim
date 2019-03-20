@@ -539,6 +539,124 @@ Mesh::Mesh()
 { }
 
 
+
+Mesh::Mesh(const Mesh& msh)
+{
+  n_converted_quadrangles = msh.get_n_converted_quadrangles();
+  physical_names = msh.physical_names;
+  
+  //Vertices
+  vertices.reserve(msh.get_n_vertices());
+  for(unsigned i = 0; i < msh.get_n_vertices(); ++i)
+  {
+    vertices.push_back(msh.get_vertex(i));
+  }
+
+  //PhysPoints
+  points.reserve(msh.get_n_points());
+  for(unsigned i = 0; i < msh.get_n_points(); ++i)
+  {
+    points.push_back(
+      new PhysPoint(msh.get_point(i).get_vertex(0), msh.get_point(i).get_material_id()));
+  }
+
+  //Lines
+  lines.reserve(msh.get_n_lines());
+  for(unsigned i = 0; i < msh.get_n_lines(); ++i)
+  {
+    lines.push_back(
+      new Line(
+        msh.get_line(i).get_vertex(0), 
+        msh.get_line(i).get_vertex(1), 
+        msh.get_line(i).get_material_id()));
+  }
+
+  //Triangles
+  triangles.reserve(msh.get_n_triangles());
+  for(unsigned i = 0; i < msh.get_n_triangles(); ++i)
+  {
+    triangles.push_back(
+      new Triangle(
+        msh.get_triangle(i).get_vertex(0), 
+        msh.get_triangle(i).get_vertex(1), 
+        msh.get_triangle(i).get_vertex(2), 
+        msh.get_triangle(i).get_material_id()));
+  }
+
+  //Quadrangles
+  quadrangles.reserve(msh.get_n_quadrangles());
+  for(unsigned i = 0; i < msh.get_n_quadrangles(); ++i)
+  {
+    quadrangles.push_back(
+      new Quadrangle(
+        msh.get_quadrangle(i).get_vertex(0), 
+        msh.get_quadrangle(i).get_vertex(1), 
+        msh.get_quadrangle(i).get_vertex(2), 
+        msh.get_quadrangle(i).get_vertex(3), 
+        msh.get_quadrangle(i).get_material_id()));
+  }
+}
+
+
+Mesh& Mesh::operator =(const Mesh& msh)
+{
+  n_converted_quadrangles = msh.get_n_converted_quadrangles();
+  physical_names = msh.physical_names;
+
+  //Vertices
+  vertices.reserve(msh.get_n_vertices());
+  for(unsigned i = 0; i < msh.get_n_vertices(); ++i)
+  {
+    vertices.push_back(msh.get_vertex(i));
+  }
+
+  //PhysPoints
+  points.reserve(msh.get_n_points());
+  for(unsigned i = 0; i < msh.get_n_points(); ++i)
+  {
+    points.push_back(
+      new PhysPoint(msh.get_point(i).get_vertex(0), msh.get_point(i).get_material_id()));
+  }
+
+  //Lines
+  lines.reserve(msh.get_n_lines());
+  for(unsigned i = 0; i < msh.get_n_lines(); ++i)
+  {
+    lines.push_back(
+      new Line(
+        msh.get_line(i).get_vertex(0), 
+        msh.get_line(i).get_vertex(1), 
+        msh.get_line(i).get_material_id()));
+  }
+
+  //Triangles
+  triangles.reserve(msh.get_n_triangles());
+  for(unsigned i = 0; i < msh.get_n_triangles(); ++i)
+  {
+    triangles.push_back(
+      new Triangle(
+        msh.get_triangle(i).get_vertex(0), 
+        msh.get_triangle(i).get_vertex(1), 
+        msh.get_triangle(i).get_vertex(2), 
+        msh.get_triangle(i).get_material_id()));
+  }
+
+  //Quadrangles
+  quadrangles.reserve(msh.get_n_quadrangles());
+  for(unsigned i = 0; i < msh.get_n_quadrangles(); ++i)
+  {
+    quadrangles.push_back(
+      new Quadrangle(
+        msh.get_quadrangle(i).get_vertex(0), 
+        msh.get_quadrangle(i).get_vertex(1), 
+        msh.get_quadrangle(i).get_vertex(2), 
+        msh.get_quadrangle(i).get_vertex(3), 
+        msh.get_quadrangle(i).get_material_id()));
+  }
+}
+
+
+
 Mesh::Mesh(
     std::vector<Point> &verticesVal, 
     std::vector<MeshElement *> &linesVal,
