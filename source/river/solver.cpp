@@ -14,7 +14,7 @@ Solver::Solver() : fe(2), dof_handler(triangulation)
 
 Solver::~Solver()
 {
-    system_matrix.clear();
+    clear();
 }
 
 void Solver::SetBoundaryRegionValue(std::vector<int> regionTags, double value)
@@ -230,11 +230,6 @@ void Solver::refine_grid()
 
 vector<double> Solver::integrate(Point point, double angle)
 {   
-    /*
-        Some predefined parameters
-    */
-    Model model;
-
 
     const QGauss<dim> quadrature_formula(3);
     FEValues<dim> fe_values(fe, quadrature_formula,
@@ -261,16 +256,16 @@ vector<double> Solver::integrate(Point point, double angle)
                 dy = (quad_point[1] - point[1]);
 
             double dist = sqrt(dx*dx + dy*dy);
-            double angle = Point::angle(dx, dy) - angle;
+            double angle = Point::angle(dx, dy);
 
-            if(dist > model.Rmin && dist < model.Rmax)
+            if(dist >= Model::Rmin && dist <= Model::Rmax)
                 for(int param_index = 0; param_index < series_params.size(); ++param_index)
                     for (unsigned int i = 0; i < dofs_per_cell; ++i)
                         series_params[param_index] += 
                             fe_values.shape_value(i, q_point)
                              * values[q_point]
                              * fe_values.JxW(q_point)
-                             * model.Gain(param_index)(dist, angle);
+                             * Model::Gain(param_index)(dist, angle);
         }
     }
     

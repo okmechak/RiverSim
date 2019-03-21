@@ -19,22 +19,22 @@ namespace River
             //FIXME: divide by Rmax - Rmin
             case 0:
                 return [](double R, double phi)
-                    {return cos(phi/2)/M_PI/sqrt(R);};
+                    {return cos(phi/2)/M_PI/sqrt(R)/(Model::Rmax - Model::Rmin);};
             case 1:
                 return [](double R, double phi)
-                    {return sin(phi)/M_PI/R;};
+                    {return sin(phi)/M_PI/R/(Model::Rmax - Model::Rmin);};
             case 2:
                 return [](double R, double phi)
-                    {return cos(3*phi/2)/M_PI/sqrt(R)/R;};
+                    {return cos(3*phi/2)/M_PI/sqrt(R)/R/(Model::Rmax - Model::Rmin);};
             default:
                 throw std::invalid_argument( "index should be 0 or 1 or 2");
                 break;
         }
     }
 
-    GeomPolar Model::next_point(vector<double> series_params)
+    Polar Model::next_point(vector<double> series_params)
     {
-        double phi = - atan(2*series_params[2]/series_params[1]*sqrt(ds));
+        double phi = -atan(2*series_params[2]/series_params[1]*sqrt(ds));
         return {ds, phi};
     }
 
