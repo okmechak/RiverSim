@@ -16,7 +16,6 @@ namespace River
     {
         switch(index)
         {
-            //FIXME: divide by Rmax - Rmin
             case 0:
                 return [](double R, double phi)
                     {return cos(phi/2)/M_PI/sqrt(R)/(Model::Rmax - Model::Rmin);};
