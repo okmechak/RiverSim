@@ -68,7 +68,7 @@ namespace River
         */
         ///Model parameters
         Model model;
-        model.ds = vm["ds"].as<double>();
+        //model.ds = vm["ds"].as<double>();
         model.dx = vm["dx"].as<double>();
         model.eps = vm["eps"].as<double>();
 
@@ -105,7 +105,7 @@ namespace River
              *****Cycle
              **/
         River::Gmsh Gmsh;
-        for(int i = 0; i < vm["steps"].as<int>(); ++i)
+        for(int i = 0; i < vm["number-of-steps"].as<int>(); ++i)
         {
             cout << endl 
                  << "==========" << endl;
