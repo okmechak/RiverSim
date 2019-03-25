@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 {   
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
-    auto region_size = vector<double>{1, 1};
+    auto region_size = vector<double>{1, 2};
     auto sources_x_coord = vector<double>{0.25};
     auto sources_id = vector<int>{1};
 
@@ -70,4 +70,58 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     BOOST_TEST(series_params.at(1) == 0.0114);
     BOOST_TEST(series_params.at(2) == 0.0325);
     sim.clear();
+}
+
+BOOST_AUTO_TEST_CASE( integration_test, 
+    *utf::tolerance(1e-4))
+{
+    auto river_boundary_id = 3;
+    auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
+    auto region_size = vector<double>{1, 1};
+    auto sources_x_coord = vector<double>{0.25};
+    auto sources_id = vector<int>{1};
+
+    Model mdl;
+    tethex::Mesh border_mesh;
+    Border border(border_mesh);
+    border.eps = mdl.eps;
+    border.MakeRectangular(
+        region_size, 
+        boundary_ids,
+        sources_x_coord,
+        sources_id);
+
+    Tree tr(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+    tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.1, 0});
+
+    auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
+
+    Triangle tria;
+    tria.AreaConstrain = tria.ConstrainAngle = true;
+    tria.MaxTriaArea = 0.001;
+    tria.MinAngle = 30;
+    tria.generate(mesh);
+    mesh.convert();
+    mesh.write("test.msh");
+
+    //Simulation
+    River::Solver sim;
+    
+    sim.numOfRefinments = 5;
+    sim.SetBoundaryRegionValue(boundary_ids, 0.);
+    sim.OpenMesh("test.msh");
+    sim.run(0);
+    
+    auto tip_ids = tr.TipBranchesId();
+    auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();
+    auto dr = 0.1;
+    auto integration = sim.integration_test(point, dr);
+    auto integration_of_whole_region = sim.integration_test(point, 10);
+    auto max_value = sim.max_value();
+
+    //Comparing to result given by MAthematica program
+    //see for notebook Testing.nb in results folder
+    BOOST_TEST(integration == 0.0107017094);
+    BOOST_TEST(integration_of_whole_region == 0.0342019674);
+    BOOST_TEST(max_value == 0.07257914889);
 }

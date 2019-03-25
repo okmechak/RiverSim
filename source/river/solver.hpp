@@ -59,6 +59,8 @@ class Solver
     void OpenMesh(string fileName = "river.msh");
     void run(int step);
     vector<double> integrate(Point point, double angle);
+    double integration_test(Point point, double dr);
+    double max_value();
     void clear()
     {
       dof_handler.clear();
