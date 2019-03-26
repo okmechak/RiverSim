@@ -1,0 +1,12 @@
+<map id="River::TreeVector" name="River::TreeVector">
+<area shape="rect" id="node2" href="$classRiver_1_1Tree.html#a7e4887a6f4c0c6a0e164128e0fe5f19a" title="Returns link to branch with . " alt="" coords="199,5,356,32"/>
+<area shape="rect" id="node3" href="$classRiver_1_1BranchNew.html#ad31e9de44351f77a06bce668094cf2f4" title="Returns number of points in branch. " alt="" coords="196,56,359,83"/>
+<area shape="rect" id="node4" href="$classRiver_1_1BranchNew.html#aada65e4898e1bd299aa7fa9fe36e05bb" title="River::BranchNew::GetPoint" alt="" coords="183,107,371,133"/>
+<area shape="rect" id="node5" href="$classRiver_1_1BranchNew.html#a5d3d81efc31f625bbddcbd5b17f405b9" title="Returns SourceAngle of branch &#45; initial . " alt="" coords="188,158,367,199"/>
+<area shape="rect" id="node6" href="$classRiver_1_1BranchNew.html#a4e49c832969fde3d72bf9049a819cc04" title="Returns vector of i&#45;th segment of branch. " alt="" coords="190,224,365,251"/>
+<area shape="rect" id="node7" href="$classRiver_1_1Point.html#aa6005dcc4bb5ded97a0b9a5eb28bc528" title="River::Point::normalize" alt="" coords="200,275,355,301"/>
+<area shape="rect" id="node9" href="$classRiver_1_1Point.html#a99648a8a3af61babbcbcdbe0de12db71" title="River::Point::rotate" alt="" coords="211,325,343,352"/>
+<area shape="rect" id="node10" href="$classRiver_1_1Tree.html#a0df36a9d86f78e51104c0e028f3a2983" title="Checks if Branch &#160;has subbranches. " alt="" coords="179,376,376,403"/>
+<area shape="rect" id="node11" href="$classRiver_1_1Tree.html#a87e5469392220bb6dcdfca99add6b1f8" title="River::Tree::GetSubBranches" alt="" coords="180,427,375,453"/>
+<area shape="rect" id="node8" href="$classRiver_1_1Point.html#a96d6c70f36acd051f5885163bc2de5b5" title="River::Point::norm" alt="" coords="424,275,552,301"/>
+</map>

@@ -1,5 +1,6 @@
 <map id="River::Branch::getHeadAngle" name="River::Branch::getHeadAngle">
 <area shape="rect" id="node2" href="$dc/dfe/class_river_1_1_branch.html#ae0516312626bf41418d5aa1d536e11ea" title="River::Branch::addPolar" alt="" coords="266,5,427,32"/>
 <area shape="rect" id="node3" href="$d6/d93/class_river_1_1_geometry.html#a37d40329645be4c1dee1794aa239be5b" title="River::Geometry::GetTipPoints" alt="" coords="245,56,448,83"/>
-<area shape="rect" id="node4" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="496,56,547,83"/>
+<area shape="rect" id="node4" href="$d3/df2/namespace_river.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="496,56,689,83"/>
+<area shape="rect" id="node5" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="737,56,788,83"/>
 </map>

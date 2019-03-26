@@ -1,0 +1,5 @@
+<map id="River::Geometry::AddBiffurcation" name="River::Geometry::AddBiffurcation">
+<area shape="rect" id="node2" href="$classRiver_1_1Branch.html#ac530394680fc8ab073033352f251fe17" title="River::Branch::Branch" alt="" coords="268,5,419,32"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Branch.html#a67e24ea2b1f521a1af4193fb7a9c0bed" title="River::Branch::splitPoint" alt="" coords="467,5,631,32"/>
+<area shape="rect" id="node4" href="$classRiver_1_1GeomPoint.html#a8a4dd9e43fc222c4276c67bc258812ec" title="River::GeomPoint::rotate" alt="" coords="679,5,845,32"/>
+</map>

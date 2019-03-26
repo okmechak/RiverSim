@@ -1,0 +1,8 @@
+<map id="tethex::Mesh::get_points" name="tethex::Mesh::get_points">
+<area shape="rect" id="node2" href="$classRiver_1_1Border.html#ae11520725faf327360db442782a8b036" title="Returns vector of sources ids. " alt="" coords="220,60,407,87"/>
+<area shape="rect" id="node6" href="$classRiver_1_1Border.html#a2f25dbd4abd2d3d684a4d01389e76a0d" title="Returns vector of sources points(both source point is merged into one). " alt="" coords="461,137,637,178"/>
+<area shape="rect" id="node7" href="$classRiver_1_1Border.html#ae27c8de6887af5a900999e60de02c858" title="Returns holes ids. " alt="" coords="227,191,400,217"/>
+<area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="692,85,743,112"/>
+<area shape="rect" id="node4" href="$classRiver_1_1Border.html#a08df0eb89a5692e84d6b3fe5fe5bec37" title="Add border line to each source points. " alt="" coords="455,35,644,61"/>
+<area shape="rect" id="node5" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="River::BoundaryGenerator" alt="" coords="463,85,636,112"/>
+</map>

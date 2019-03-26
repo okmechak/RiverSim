@@ -1,0 +1,5 @@
+<map id="River::Border::CloseSources" name="River::Border::CloseSources">
+<area shape="rect" id="node2" href="$d9/d0d/class_river_1_1_border.html#ae11520725faf327360db442782a8b036" title="River::Border::GetSourcesId" alt="" coords="243,5,429,32"/>
+<area shape="rect" id="node4" href="$d9/d0d/class_river_1_1_border.html#acf71aa49ddf1244f1aba474fe0457eba" title="Returns source ver. " alt="" coords="251,57,421,98"/>
+<area shape="rect" id="node3" href="$d9/d0d/class_river_1_1_border.html#a953fd3059a1d32edc34eefbc1ed1ae66" title="River::Border::IsSource" alt="" coords="477,5,636,32"/>
+</map>

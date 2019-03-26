@@ -1,6 +1,16 @@
 var searchData=
 [
-  ['next_5fpoint',['next_point',['../d0/d70/class_river_1_1_model.html#ac7e7012f34eb2ed1b959162bc78b8f0d',1,'River::Model']]],
-  ['norm',['norm',['../d7/d92/class_river_1_1_point.html#a96d6c70f36acd051f5885163bc2de5b5',1,'River::Point::norm() const'],['../d7/d92/class_river_1_1_point.html#a9623720ad3ad6a257ec457cb0dcea1a9',1,'River::Point::norm(double x, double y)'],['../d0/dbb/class_river_1_1_geom_point.html#a1c091dc0abfbad1ac8d5cc659db422f6',1,'River::GeomPoint::norm()']]],
-  ['normalize',['normalize',['../d7/d92/class_river_1_1_point.html#aa16298eaaeab62f395832034d2f11052',1,'River::Point::normalize()'],['../d0/dbb/class_river_1_1_geom_point.html#a9e12280c2ff754f15207a9a5417f21bc',1,'River::GeomPoint::normalize()']]]
+  ['incidencematrix',['IncidenceMatrix',['../classtethex_1_1IncidenceMatrix.html#ac4b392c5931c3bbd334080fc8c0ebbef',1,'tethex::IncidenceMatrix::IncidenceMatrix(int n_vertices, const std::vector&lt; MeshElement *&gt; &amp;cells)'],['../classtethex_1_1IncidenceMatrix.html#ae77ff083be99d64cc96d14d43bf32435',1,'tethex::IncidenceMatrix::IncidenceMatrix(const IncidenceMatrix &amp;)']]],
+  ['info',['info',['../classtethex_1_1Mesh.html#a5cf280b3e66e9033298da8df3a67ccb5',1,'tethex::Mesh']]],
+  ['init',['init',['../classRiver_1_1Gmsh.html#acee66ab4e60847ab1d2368d8bebb7902',1,'River::Gmsh']]],
+  ['initiatemesh',['InitiateMesh',['../classRiver_1_1Geometry.html#a585d9801784be7999921ddfc7bab9de8',1,'River::Geometry']]],
+  ['initiaterootbranch',['initiateRootBranch',['../classRiver_1_1Geometry.html#a0c430d5eb103fe6016b805dc5278d247',1,'River::Geometry']]],
+  ['inserbranchtree',['InserBranchTree',['../classRiver_1_1Geometry.html#aeecc30b4dec8c9ffe4aed3d640e6ebc8',1,'River::Geometry']]],
+  ['integrate',['integrate',['../classRiver_1_1Solver.html#a8224d44b334d6d1f0d40d5b161bbdd6d',1,'River::Solver']]],
+  ['integration_5ftest',['integration_test',['../classRiver_1_1Solver.html#a63a76afd40676182d4ba781642672acc',1,'River::Solver']]],
+  ['io_5fto_5ftethex',['io_to_tethex',['../classRiver_1_1Triangle.html#ace837080fe12b6a062b3256288885d74',1,'River::Triangle']]],
+  ['ishole',['IsHole',['../classRiver_1_1Border.html#a7797586b16b2b07205738b1b5509a8dd',1,'River::Border']]],
+  ['issource',['IsSource',['../classRiver_1_1Border.html#a953fd3059a1d32edc34eefbc1ed1ae66',1,'River::Border']]],
+  ['issubbranch',['IsSubBranch',['../classRiver_1_1Tree.html#ad4f91f6a0be4f206a499cb73cbd7aa31',1,'River::Tree']]],
+  ['isvalidbranchid',['IsValidBranchId',['../classRiver_1_1Tree.html#ae049f4448ac34b641417aa998f317d50',1,'River::Tree']]]
 ];

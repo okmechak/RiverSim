@@ -1,0 +1,6 @@
+<map id="River::Border::GetSourceNormalAngle" name="River::Border::GetSourceNormalAngle">
+<area shape="rect" id="node2" href="$d9/d0d/class_river_1_1_border.html#acf71aa49ddf1244f1aba474fe0457eba" title="Returns source ver. " alt="" coords="227,5,397,47"/>
+<area shape="rect" id="node3" href="$d9/d0d/class_river_1_1_border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" title="River::Border::GetAdjacent\lPointId" alt="" coords="223,71,401,112"/>
+<area shape="rect" id="node4" href="$d7/d92/class_river_1_1_point.html#a24deaa21918d47a5d4fea7e0a7e4b61b" title="River::Point::angle" alt="" coords="247,137,377,163"/>
+<area shape="rect" id="node5" href="$d7/d92/class_river_1_1_point.html#a96d6c70f36acd051f5885163bc2de5b5" title="River::Point::norm" alt="" coords="449,137,577,163"/>
+</map>

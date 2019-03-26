@@ -1,8 +1,12 @@
 <map id="River::Point::norm" name="River::Point::norm">
 <area shape="rect" id="node2" href="$d7/d92/class_river_1_1_point.html#af33df3fef6945d57925744ad1b128cf4" title="River::Point::getNormalized" alt="" coords="181,5,364,32"/>
-<area shape="rect" id="node3" href="$d7/d92/class_river_1_1_point.html#a5a80f76067f92be8434cafff8cf55380" title="River::Point::getPolar" alt="" coords="417,81,563,108"/>
-<area shape="rect" id="node4" href="$d7/d92/class_river_1_1_point.html#aa16298eaaeab62f395832034d2f11052" title="River::Point::normalize" alt="" coords="195,107,350,133"/>
-<area shape="rect" id="node5" href="$d7/d92/class_river_1_1_point.html#a24deaa21918d47a5d4fea7e0a7e4b61b" title="River::Point::angle" alt="" coords="207,157,338,184"/>
-<area shape="rect" id="node6" href="$d1/ddf/class_river_1_1_solver.html#a5254b1760bf5d00f332d82400c17381b" title="River::Solver::integrate" alt="" coords="412,157,568,184"/>
-<area shape="rect" id="node7" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="616,157,667,184"/>
+<area shape="rect" id="node3" href="$d7/d92/class_river_1_1_point.html#a5a80f76067f92be8434cafff8cf55380" title="River::Point::getPolar" alt="" coords="423,107,570,133"/>
+<area shape="rect" id="node4" href="$d7/d92/class_river_1_1_point.html#aa6005dcc4bb5ded97a0b9a5eb28bc528" title="River::Point::normalize" alt="" coords="195,56,350,83"/>
+<area shape="rect" id="node8" href="$d7/d92/class_river_1_1_point.html#a24deaa21918d47a5d4fea7e0a7e4b61b" title="River::Point::angle" alt="" coords="207,157,338,184"/>
+<area shape="rect" id="node11" href="$db/de2/class_river_1_1_branch_new.html#a3d751724e8b8c4349c7ce25eee3a2995" title="River::BranchNew::Shrink" alt="" coords="185,208,360,235"/>
+<area shape="rect" id="node5" href="$d3/df2/namespace_river.html#aa5a21f7169be41bacdb7bab009a2e7be" title="River::TreeVector" alt="" coords="434,56,559,83"/>
+<area shape="rect" id="node6" href="$d3/df2/namespace_river.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="River::BoundaryGenerator" alt="" coords="629,85,803,112"/>
+<area shape="rect" id="node7" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="851,140,901,167"/>
+<area shape="rect" id="node9" href="$d9/d0d/class_river_1_1_border.html#ad884663725156885e8e5def07a2e49c1" title="River::Border::GetSource\lNormalAngle" alt="" coords="412,158,581,199"/>
+<area shape="rect" id="node10" href="$d1/ddf/class_river_1_1_solver.html#a8224d44b334d6d1f0d40d5b161bbdd6d" title="River::Solver::integrate" alt="" coords="638,165,794,192"/>
 </map>

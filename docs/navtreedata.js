@@ -1,7 +1,9 @@
 var NAVTREE =
 [
   [ "RiverSim", "index.html", [
-    [ "River Growth Simulation", "index.html", null ],
+    [ "RiverSim", "md__home_oleg_Dev_riversim_doxy_articles_README.html", null ],
+    [ "stub", "md__home_oleg_Dev_riversim_doxy_articles_stub.html", null ],
+    [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -15,9 +17,10 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Enumerator", "functions_eval.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
@@ -37,7 +40,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"de/ddf/class_river_1_1_polar.html#a7ce49223881067f543ca5bc6baf9d5f4"
+"classRiver_1_1Polar.html#a75da5d684297f8b79a04bdb8ef04810f",
+"functions_0x7e.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

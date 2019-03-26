@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['hash_3c_20pair_3c_20int_2c_20int_20_3e_20_3e',['hash&lt; pair&lt; int, int &gt; &gt;',['../da/dc2/structstd_1_1hash_3_01pair_3_01int_00_01int_01_4_01_4.html',1,'std']]],
-  ['height',['height',['../d0/d70/class_river_1_1_model.html#a7ee090dcb4cfefd56cdc27dcb3cfb9f3',1,'River::Model']]]
+  ['hash_3c_20pair_3c_20int_2c_20int_20_3e_20_3e',['hash&lt; pair&lt; int, int &gt; &gt;',['../structstd_1_1hash_3_01pair_3_01int_00_01int_01_4_01_4.html',1,'std']]],
+  ['hassubbranches',['HasSubBranches',['../classRiver_1_1Tree.html#a0df36a9d86f78e51104c0e028f3a2983',1,'River::Tree']]],
+  ['height',['height',['../classRiver_1_1Model.html#a7ee090dcb4cfefd56cdc27dcb3cfb9f3',1,'River::Model']]],
+  ['hole_5fpoint_5findex',['hole_point_index',['../classRiver_1_1Border.html#ab87be6cf2d1a8c61b82de2b8c9f5c2ef',1,'River::Border']]]
 ];

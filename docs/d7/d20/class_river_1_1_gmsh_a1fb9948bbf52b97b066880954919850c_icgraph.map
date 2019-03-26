@@ -1,3 +1,4 @@
 <map id="River::Gmsh::open" name="River::Gmsh::open">
-<area shape="rect" id="node2" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="185,5,236,32"/>
+<area shape="rect" id="node2" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="427,5,477,32"/>
+<area shape="rect" id="node3" href="$d3/df2/namespace_river.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="185,31,379,57"/>
 </map>

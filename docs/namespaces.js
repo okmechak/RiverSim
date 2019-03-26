@@ -1,5 +1,6 @@
 var namespaces =
 [
-    [ "River", "d3/df2/namespace_river.html", "d3/df2/namespace_river" ],
-    [ "std", "d8/dcc/namespacestd.html", null ]
+    [ "River", "namespaceRiver.html", "namespaceRiver" ],
+    [ "std", "namespacestd.html", null ],
+    [ "tethex", "namespacetethex.html", null ]
 ];

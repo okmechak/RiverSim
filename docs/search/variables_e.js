@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['width',['width',['../d0/d70/class_river_1_1_model.html#a55e91e1639a9871bcd711d4804c2a241',1,'River::Model']]]
+  ['quadrangles',['quadrangles',['../classtethex_1_1Mesh.html#a3fcc2b60eb78d3011a42758e4ca5d3c4',1,'tethex::Mesh::quadrangles()'],['../classRiver_1_1Triangle.html#a3632a71ce42a5707426c66dc0cd4a214',1,'River::Triangle::Quadrangles()']]],
+  ['quite',['Quite',['../classRiver_1_1Triangle.html#a5f90e3547fdb895efceef09c037ff080',1,'River::Triangle']]]
 ];

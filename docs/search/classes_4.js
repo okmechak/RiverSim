@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['model',['Model',['../d0/d70/class_river_1_1_model.html',1,'River']]]
+  ['incidencematrix',['IncidenceMatrix',['../classtethex_1_1IncidenceMatrix.html',1,'tethex']]]
 ];

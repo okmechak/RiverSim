@@ -1,0 +1,6 @@
+<map id="River::BranchNew::Shrink" name="River::BranchNew::Shrink">
+<area shape="rect" id="node2" href="$db/de2/class_river_1_1_branch_new.html#a2593a455f2a163a4f513c5614507737f" title="River::BranchNew::TipVector" alt="" coords="228,5,421,32"/>
+<area shape="rect" id="node3" href="$d7/d92/class_river_1_1_point.html#a96d6c70f36acd051f5885163bc2de5b5" title="River::Point::norm" alt="" coords="261,56,389,83"/>
+<area shape="rect" id="node4" href="$db/de2/class_river_1_1_branch_new.html#ae2015dfdf6208b1a5df7e0fa48e7cd77" title="Remove tip point from branch(simply pops element from vector) " alt="" coords="231,107,418,149"/>
+<area shape="rect" id="node5" href="$db/de2/class_river_1_1_branch_new.html#a81a7a1477541ef4310d9e49197643146" title="Adds point to branch in tip relative coord system. " alt="" coords="229,173,420,200"/>
+</map>

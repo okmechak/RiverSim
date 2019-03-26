@@ -1,0 +1,7 @@
+<map id="River::GeomPoint::norm" name="River::GeomPoint::norm">
+<area shape="rect" id="node2" href="$classRiver_1_1GeomPoint.html#a7749a4f2404dca387475ba3fd9e01bf3" title="River::GeomPoint::getNormalized" alt="" coords="216,5,435,32"/>
+<area shape="rect" id="node3" href="$classRiver_1_1GeomPoint.html#ad859db1c8c4a3ba2d4ad9e6b9f774e92" title="River::GeomPoint::getPolar" alt="" coords="483,81,665,108"/>
+<area shape="rect" id="node4" href="$classRiver_1_1GeomPoint.html#a9e12280c2ff754f15207a9a5417f21bc" title="River::GeomPoint::normalize" alt="" coords="230,107,421,133"/>
+<area shape="rect" id="node5" href="$classRiver_1_1GeomPoint.html#ac7b5a6f51601c28b1c169efd99faa80e" title="River::GeomPoint::angle" alt="" coords="243,157,408,184"/>
+<area shape="rect" id="node6" href="$classRiver_1_1Branch.html#ad1c529a3eae4a3a33cdc6de391218e0a" title="River::Branch::addDPoint" alt="" coords="489,157,659,184"/>
+</map>

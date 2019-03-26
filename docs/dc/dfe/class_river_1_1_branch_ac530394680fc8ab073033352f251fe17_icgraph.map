@@ -3,5 +3,6 @@
 <area shape="rect" id="node3" href="$d6/d93/class_river_1_1_geometry.html#a2e00a634a0e948570540a2ab47335478" title="River::Geometry::AddBiffurcation" alt="" coords="204,71,419,98"/>
 <area shape="rect" id="node4" href="$df/dbf/namespace_river_1_1_simple_geo.html#aaeaf0931007ed0bb3f04ffe517b90708" title="River::SimpleGeo::AddBranches" alt="" coords="467,71,677,98"/>
 <area shape="rect" id="node5" href="$df/dbf/namespace_river_1_1_simple_geo.html#ab6e4b434f7b71839df562edbc13ddb5b" title="River::SimpleGeo::Custom\lRiverTree" alt="" coords="725,64,904,105"/>
-<area shape="rect" id="node6" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="952,71,1003,98"/>
+<area shape="rect" id="node6" href="$d3/df2/namespace_river.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="952,71,1145,98"/>
+<area shape="rect" id="node7" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="1193,71,1244,98"/>
 </map>

@@ -8,7 +8,7 @@ var class_river_1_1_triangle =
     [ "Triangle", "d7/d31/class_river_1_1_triangle.html#af0831b121aebb9accaafe9e291327938", null ],
     [ "~Triangle", "d7/d31/class_river_1_1_triangle.html#adf9a725816b9c1c3c9500eaace662192", null ],
     [ "generate", "d7/d31/class_river_1_1_triangle.html#a0dae20b40d446e6009a88543e2c14daf", null ],
-    [ "print_geometry", "d7/d31/class_river_1_1_triangle.html#ae371fff760a4d5613bae3a201d6b55ec", null ],
+    [ "print_geometry", "d7/d31/class_river_1_1_triangle.html#ab4a007be4739f8e3781b190f5c6c0b09", null ],
     [ "Algorithm", "d7/d31/class_river_1_1_triangle.html#a633bd89042b52bad85c2ab87154c40b5", null ],
     [ "AreaConstrain", "d7/d31/class_river_1_1_triangle.html#abbfa07d074e39ec46ad2939c44cfcc51", null ],
     [ "AssignRegionalAttributes", "d7/d31/class_river_1_1_triangle.html#ad3e775e56e6155b46cb72557349b8e39", null ],

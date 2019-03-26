@@ -1,0 +1,5 @@
+<map id="River::Geometry::GetTipPoints" name="River::Geometry::GetTipPoints">
+<area shape="rect" id="node2" href="$classRiver_1_1Branch.html#a2bf375682c5b397c9bf04ab9f215a926" title="River::Branch::getHead" alt="" coords="273,5,431,32"/>
+<area shape="rect" id="node4" href="$classRiver_1_1Branch.html#a769ba8d295c72c53343ff2e4b0d91f29" title="River::Branch::getHeadAngle" alt="" coords="256,56,448,83"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Branch.html#a28a8c207ba296169ca20b47e99a9e091" title="River::Branch::size" alt="" coords="496,31,631,57"/>
+</map>

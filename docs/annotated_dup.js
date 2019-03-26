@@ -1,5 +1,7 @@
 var annotated_dup =
 [
-    [ "River", "d3/df2/namespace_river.html", "d3/df2/namespace_river" ],
-    [ "std", "d8/dcc/namespacestd.html", "d8/dcc/namespacestd" ]
+    [ "River", "namespaceRiver.html", "namespaceRiver" ],
+    [ "std", "namespacestd.html", "namespacestd" ],
+    [ "tethex", "namespacetethex.html", "namespacetethex" ],
+    [ "Function", "classFunction.html", null ]
 ];

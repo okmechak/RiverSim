@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['point',['Point',['../d7/d92/class_river_1_1_point.html',1,'River']]],
-  ['polar',['Polar',['../de/ddf/class_river_1_1_polar.html',1,'River']]]
+  ['line',['Line',['../classRiver_1_1Line.html',1,'River::Line'],['../classtethex_1_1Line.html',1,'tethex::Line']]]
 ];

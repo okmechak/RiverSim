@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['init',['init',['../d7/d20/class_river_1_1_gmsh.html#acee66ab4e60847ab1d2368d8bebb7902',1,'River::Gmsh']]],
-  ['initiatemesh',['InitiateMesh',['../d6/d93/class_river_1_1_geometry.html#a585d9801784be7999921ddfc7bab9de8',1,'River::Geometry']]],
-  ['initiaterootbranch',['initiateRootBranch',['../d6/d93/class_river_1_1_geometry.html#a0c430d5eb103fe6016b805dc5278d247',1,'River::Geometry']]],
-  ['integrate',['integrate',['../d1/ddf/class_river_1_1_solver.html#a5254b1760bf5d00f332d82400c17381b',1,'River::Solver']]]
+  ['find',['find',['../classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d',1,'tethex::IncidenceMatrix']]],
+  ['find_5fface_5ffrom_5ftwo_5fedges',['find_face_from_two_edges',['../classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb',1,'tethex::Mesh']]],
+  ['forwardriverevolution',['ForwardRiverEvolution',['../namespaceRiver.html#a494b68e2992de95500d6d81770de62ed',1,'River']]],
+  ['free_5fallocated_5fmemory',['free_allocated_memory',['../classRiver_1_1Triangle.html#a3f7788026746dcc85d607cfe375b7d20',1,'River::Triangle']]]
 ];

@@ -1,16 +1,20 @@
 var searchData=
 [
-  ['p1',['p1',['../d9/df2/class_river_1_1_geom_line.html#a5ac77fd05a875df05c2382c23a03f82a',1,'River::GeomLine']]],
-  ['p2',['p2',['../d9/df2/class_river_1_1_geom_line.html#ace0e1639e274836d21a97debc2f4a542',1,'River::GeomLine']]],
-  ['phi',['phi',['../de/ddf/class_river_1_1_polar.html#a6a81706ba4e3eddaa21c5a6a415f276e',1,'River::Polar']]],
-  ['physmodel_2ecpp',['physmodel.cpp',['../d6/de4/physmodel_8cpp.html',1,'']]],
-  ['physmodel_2ehpp',['physmodel.hpp',['../dc/da2/physmodel_8hpp.html',1,'']]],
-  ['point',['Point',['../d7/d92/class_river_1_1_point.html',1,'River::Point'],['../d7/d92/class_river_1_1_point.html#aef619d030d358183505accf130cfd2ed',1,'River::Point::Point()=default'],['../d7/d92/class_river_1_1_point.html#a18ace6e4660d0eaae9aa626ecacfdc8e',1,'River::Point::Point(double xval, double yval)'],['../d7/d92/class_river_1_1_point.html#ac7f3434abdcc50675b4850907e1fdc28',1,'River::Point::Point(const Point &amp;p)=default'],['../d7/d92/class_river_1_1_point.html#a154af2bda59770c1f484c4aed50d994b',1,'River::Point::Point(Polar p)']]],
-  ['polar',['Polar',['../de/ddf/class_river_1_1_polar.html',1,'River::Polar'],['../de/ddf/class_river_1_1_polar.html#a7ce49223881067f543ca5bc6baf9d5f4',1,'River::Polar::Polar()=default'],['../de/ddf/class_river_1_1_polar.html#a75da5d684297f8b79a04bdb8ef04810f',1,'River::Polar::Polar(double dlval, double phival)']]],
-  ['print',['print',['../d7/d92/class_river_1_1_point.html#a1d1d5f98402226e9d221194dd612ea9b',1,'River::Point::print()'],['../d0/dbb/class_river_1_1_geom_point.html#a16ca85e4ebcd1541c4382849362abd3e',1,'River::GeomPoint::print()'],['../dc/dfe/class_river_1_1_branch.html#a86a378e9ced8776873e931d34a3b482c',1,'River::Branch::print()']]],
-  ['print_5fascii_5fsignature',['print_ascii_signature',['../d3/df2/namespace_river.html#a02a7bd977ae572b7b678c2b9585a2320',1,'River']]],
-  ['print_5fgeometry',['print_geometry',['../d7/d31/class_river_1_1_triangle.html#ae371fff760a4d5613bae3a201d6b55ec',1,'River::Triangle']]],
-  ['print_5fversion',['print_version',['../d3/df2/namespace_river.html#ab5576a99dc50334ad837bfa492dfc4ec',1,'River']]],
-  ['process_5fprogram_5foptions',['process_program_options',['../d3/df2/namespace_river.html#affa8f88114842f27d0a7b829d69120cf',1,'River']]],
-  ['programtitle',['ProgramTitle',['../d3/df2/namespace_river.html#abf29229f102f9fcf9217efbd91b1bf1f',1,'River']]]
+  ['p1',['p1',['../classRiver_1_1Line.html#ab7cbb6d8cd6dcb08b3ab88a490980f02',1,'River::Line::p1()'],['../classRiver_1_1GeomLine.html#a5ac77fd05a875df05c2382c23a03f82a',1,'River::GeomLine::p1()']]],
+  ['p2',['p2',['../classRiver_1_1Line.html#afd7cea0c21136c5d123fac2a2ed00f41',1,'River::Line::p2()'],['../classRiver_1_1GeomLine.html#ace0e1639e274836d21a97debc2f4a542',1,'River::GeomLine::p2()']]],
+  ['phi',['phi',['../classRiver_1_1Polar.html#a6a81706ba4e3eddaa21c5a6a415f276e',1,'River::Polar']]],
+  ['physical_5fnames',['physical_names',['../classtethex_1_1Mesh.html#a7f5f2145553284eb132ef0aeebf914dc',1,'tethex::Mesh']]],
+  ['physmodel_2ecpp',['physmodel.cpp',['../physmodel_8cpp.html',1,'']]],
+  ['physmodel_2ehpp',['physmodel.hpp',['../physmodel_8hpp.html',1,'']]],
+  ['physpoint',['PhysPoint',['../classtethex_1_1PhysPoint.html',1,'tethex::PhysPoint'],['../classtethex_1_1PhysPoint.html#a3cf4adbe351ceb6378a9725f9ffb6486',1,'tethex::PhysPoint::PhysPoint()'],['../classtethex_1_1PhysPoint.html#a7869b6e9d79b512aaa102a08cb54e674',1,'tethex::PhysPoint::PhysPoint(const std::vector&lt; int &gt; &amp;ver, int mat_id=0)'],['../classtethex_1_1PhysPoint.html#a882374de8de928a540ee467eb5e7ef15',1,'tethex::PhysPoint::PhysPoint(const int ver, int mat_id=0)']]],
+  ['point',['Point',['../classRiver_1_1Point.html',1,'River::Point'],['../classtethex_1_1Point.html',1,'tethex::Point'],['../classRiver_1_1Point.html#aef619d030d358183505accf130cfd2ed',1,'River::Point::Point()=default'],['../classRiver_1_1Point.html#a18ace6e4660d0eaae9aa626ecacfdc8e',1,'River::Point::Point(double xval, double yval)'],['../classRiver_1_1Point.html#ac7f3434abdcc50675b4850907e1fdc28',1,'River::Point::Point(const Point &amp;p)=default'],['../classRiver_1_1Point.html#a54770b10a1d563ce20b246d4cde550fe',1,'River::Point::Point(const Polar &amp;p)'],['../classtethex_1_1Point.html#ae3de866b87d25343d27b702577db6f31',1,'tethex::Point::Point()'],['../classtethex_1_1Point.html#ac4c7e27bf151bdefa5702cd7adc41c6d',1,'tethex::Point::Point(const double coordinates[])'],['../classtethex_1_1Point.html#ac2ae2fd7ceff0a5362f43ece4d57d81b',1,'tethex::Point::Point(const double x_coord, const double y_coord=0, const double z_coord=0, const int regionIdTag=0, const double mesh_size=0)'],['../classtethex_1_1Point.html#ad77b9217996c026e4ff1a1fa3c73178d',1,'tethex::Point::Point(const Point &amp;p)']]],
+  ['points',['points',['../classRiver_1_1Geometry.html#a9abd0a25cfa4e792e3d0d2528c219ad2',1,'River::Geometry::points()'],['../classRiver_1_1BranchNew.html#a6c94d0388c0927d986d3a59bf4311c66',1,'River::BranchNew::points()'],['../classtethex_1_1Mesh.html#ae32b3306507c97436ea0057e86b57e47',1,'tethex::Mesh::points()']]],
+  ['polar',['Polar',['../classRiver_1_1Polar.html',1,'River::Polar'],['../classRiver_1_1Polar.html#a7ce49223881067f543ca5bc6baf9d5f4',1,'River::Polar::Polar()=default'],['../classRiver_1_1Polar.html#a75da5d684297f8b79a04bdb8ef04810f',1,'River::Polar::Polar(double dlval, double phival)']]],
+  ['print',['print',['../classRiver_1_1Point.html#a839ff2895c4654e4b3974fabc10647bf',1,'River::Point::print()'],['../classRiver_1_1GeomPoint.html#a16ca85e4ebcd1541c4382849362abd3e',1,'River::GeomPoint::print()'],['../classRiver_1_1Branch.html#a86a378e9ced8776873e931d34a3b482c',1,'River::Branch::print()']]],
+  ['print_5fascii_5fsignature',['print_ascii_signature',['../namespaceRiver.html#a02a7bd977ae572b7b678c2b9585a2320',1,'River']]],
+  ['print_5fgeometry',['print_geometry',['../classRiver_1_1Triangle.html#ab4a007be4739f8e3781b190f5c6c0b09',1,'River::Triangle']]],
+  ['print_5foptions',['print_options',['../classRiver_1_1Triangle.html#aeb6108ef14cf1bd359ebc6b1a2ecdb1b',1,'River::Triangle']]],
+  ['print_5fversion',['print_version',['../namespaceRiver.html#ab5576a99dc50334ad837bfa492dfc4ec',1,'River']]],
+  ['process_5fprogram_5foptions',['process_program_options',['../namespaceRiver.html#affa8f88114842f27d0a7b829d69120cf',1,'River']]],
+  ['programtitle',['ProgramTitle',['../namespaceRiver.html#abf29229f102f9fcf9217efbd91b1bf1f',1,'River']]]
 ];

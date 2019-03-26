@@ -1,0 +1,8 @@
+<map id="River::Branch::Branch" name="River::Branch::Branch">
+<area shape="rect" id="node2" href="$classRiver_1_1Geometry.html#a0c430d5eb103fe6016b805dc5278d247" title="River::Geometry::initiate\lRootBranch" alt="" coords="229,5,393,47"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Geometry.html#a2e00a634a0e948570540a2ab47335478" title="River::Geometry::AddBiffurcation" alt="" coords="204,71,419,98"/>
+<area shape="rect" id="node4" href="$namespaceRiver_1_1SimpleGeo.html#aaeaf0931007ed0bb3f04ffe517b90708" title="River::SimpleGeo::AddBranches" alt="" coords="467,71,677,98"/>
+<area shape="rect" id="node5" href="$namespaceRiver_1_1SimpleGeo.html#ab6e4b434f7b71839df562edbc13ddb5b" title="River::SimpleGeo::Custom\lRiverTree" alt="" coords="725,64,904,105"/>
+<area shape="rect" id="node6" href="$namespaceRiver.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="952,71,1145,98"/>
+<area shape="rect" id="node7" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="1193,71,1244,98"/>
+</map>

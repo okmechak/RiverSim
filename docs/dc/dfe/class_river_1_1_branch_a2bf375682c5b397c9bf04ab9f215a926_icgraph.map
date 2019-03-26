@@ -2,5 +2,6 @@
 <area shape="rect" id="node2" href="$dc/dfe/class_river_1_1_branch.html#ac61fc55a34a62822e8d633b5b683361c" title="River::Branch::addPoint" alt="" coords="233,5,394,32"/>
 <area shape="rect" id="node3" href="$dc/dfe/class_river_1_1_branch.html#ae0516312626bf41418d5aa1d536e11ea" title="River::Branch::addPolar" alt="" coords="233,56,394,83"/>
 <area shape="rect" id="node4" href="$d6/d93/class_river_1_1_geometry.html#a37d40329645be4c1dee1794aa239be5b" title="River::Geometry::GetTipPoints" alt="" coords="212,107,415,133"/>
-<area shape="rect" id="node5" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="463,107,513,133"/>
+<area shape="rect" id="node5" href="$d3/df2/namespace_river.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="463,107,656,133"/>
+<area shape="rect" id="node6" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="704,107,755,133"/>
 </map>

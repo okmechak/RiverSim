@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RiverSim: River Growth Simulation</title>
+<title>RiverSim: RiverSim</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -81,21 +81,77 @@ $(document).ready(function(){initNavTree('df/d29/md__home_oleg__dev_riversim__r_
 
 <div class="header">
   <div class="headertitle">
-<div class="title"><a class="el" href="../../d3/df2/namespace_river.html">River</a> Growth Simulation </div>  </div>
+<div class="title">RiverSim </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h3>Simulation of river growth using Laplace equation</h3>
-<h2>System setup</h2>
-<h3>Dependecies</h3>
-<p>At firs install <b>Deal.ii</b> package by running command: </p><blockquote class="doxtable">
-<p>sudo apt install libdeal.ii-dev </p>
+<div class="textblock"><p>Simulation of river growth using model based on Laplace equation[1]. Mathematicaly, in this program we solve PDE equation using Finite Element Method(FEM). And as result program produces VTK file, which contains solution and its details, which furthere can be viewed in <a href="https://www.paraview.org/"><b>ParaView</b></a></p>
+<p>Program is written in C++ Language. And contains few built-in and external dependencies.</p>
+<h4>Built-in dependencies:</h4>
+<ul>
+<li><a href="http://www.cs.cmu.edu/afs/cs/Web/People/quake/triangle.html"><b>Triangle</b></a> - robust and state of the art mesh generation tool.</li>
+<li><a href="https://github.com/martemyev/tethex/wiki"><b>Tethex</b></a> - tool used for convertation from triangles to quadrangels.</li>
+<li><a href="https://github.com/jarro2783/cxxopts"><b>cxxopts</b></a> - c++ header library used to process command line options. Has same syntaxys as Boost program options.</li>
+</ul>
+<h4>External dependencies:</h4>
+<ul>
+<li><a href="http://gmsh.info/"><b>Gmsh</b></a> - also mesh generation tool, with priority on GUI. And mostly used, in this case, for mesh visualization.</li>
+<li><a href="https://www.dealii.org/"><b>Deal.II</b></a> - A C++ software library supporting the creation of finite element codes and an open community of users and developers.</li>
+<li><a href="https://www.boost.org/doc/libs/1_66_0/libs/test/doc/html/index.html"><b>Boost</b></a> - used for unit testing.</li>
+</ul>
+<h2>1. System setup</h2>
+<p>As we discussed above product contains few external dependencies: <b>Deal.II</b>, <b>Gmsh</b> and <b>Boost</b>. To build system on computer</p>
+<h4>Deal.II setup:</h4>
+<ul>
+<li>Using ubuntu package system: &gt; sudo apt install libdeal.ii-dev</li>
+<li>Download prebuild files from official site.</li>
+<li>Build from repository(Read INSTALL instruction for details, static lib options shoud be turned ON).</li>
+</ul>
+<h4>Gmsh setup:</h4>
+<ul>
+<li>Download SDK files from official site.</li>
+<li>Build from repository(Read INSTALL instruction for details, static lib and share lib options shoud be turned ON).</li>
+</ul>
+<h4>Gmsh setup:</h4>
+<ul>
+<li>Using Ubuntu package system is the most starightforward in this case: &gt; sudo apt install libboost-all</li>
+</ul>
+<h2>2. Compiling and running Tests</h2>
+<p>When you have configured and setuped all dependencies. Now you can build RiverSim source code using <b>cmake</b>. It is very easy and fast(in comparsion to Deal.II compiling process), you just have to setup two variables in cmake:</p><ul>
+<li>DEALII_DIR - path too Deal.II files, and</li>
+<li>GMSH_DIR - path to Gmsh SDK files.</li>
+</ul>
+<blockquote class="doxtable">
+<p>cmake -DDEALII_DIR:STRING=/path/to/deal/ii -DGMSH_DIR:STRING=/path/to/gmsh /path/to/riversim/project/folder </p>
 </blockquote>
-<p>Next you need <b>Gmsh SDK</b> package, from <a href="http://gmsh.info/#Download">official site</a> be sure that you choosed SDK link. And unpack it to /usr/local/gmsh location. Configuring <em>CMakeLists.txt</em> you can specify another location. Also it is easy to build from <a href="https://gitlab.onelab.info/gmsh/gmsh">source</a> with shared objects option turned on.</p>
-<p>And finaly <b>Tetgen</b>, <a href="https://github.com/libigl/tetgen">from github repo</a>. Build it and install to /usr/local/tetgen. Copy by hand header(tetgen.h) and library(libtetgen.so) file from build directory to. You have to reconfigure CMakeFile by replacing STATIC -&gt; SHARED to generate libtetgen.so instead of libtetgen.a.</p>
-<h3>Notes</h3>
-<p>Tetgen and Gmsh are interchangable, but both will be included into project. Gmsh even is based on functionality of Tetgen, which is further development of <b>Triangle</b>(which is also included in project).</p>
-<p>But Gmsh is preferrable, cos it inludes some postprocess functionality and quadric mehs ellemts, which are mandatory for Deal.II.</p>
-<p>Make sure that you have installed <b>libgfortran3</b> (dependencie of Gmsh). </p>
+<p>Makefile will be generated, which next is used for compiling of program:</p>
+<blockquote class="doxtable">
+<p>make </p>
+</blockquote>
+<h4>Running Tests</h4>
+<p>After compiling, simply type a command: </p><blockquote class="doxtable">
+<p>make test </p>
+</blockquote>
+<h2>3. How to use RiverSim program</h2>
+<p>As any Linux program, now just type in terminal from folder source(in your build folder) command: </p><blockquote class="doxtable">
+<p>./riversim </p>
+</blockquote>
+<p>More details about parameters you can find in <b>help</b> of program: </p><blockquote class="doxtable">
+<p>./riversim -h </p>
+</blockquote>
+<p>or </p><blockquote class="doxtable">
+<p>./riversim &ndash;help </p>
+</blockquote>
+<p>add more details about workflow with program(TODO)..</p>
+<h2>4. Notes</h2>
+<p>Gmsh and Triangle are interchangable, but both will be included into project. Gmsh even is based on functionality of Tetgen, which is further development of <b>Triangle</b>.</p>
+<p>But Gmsh is preferrable, cos it inludes some postprocess functionality and quadric mehs elemts, which are mandatory for Deal.II.</p>
+<h2>5. References</h2>
+<p>[1]: Add links on scientific work(TODO)</p>
+<h2>6. Links</h2>
+<ul>
+<li><a href="https://github.com/okmechak/RiverSim">Github repo</a>.</li>
+<li><a href="https://okmechak.github.io/RiverSim/">Website of project</a>. </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

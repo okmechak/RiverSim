@@ -1,6 +1,8 @@
 var namespace_river =
 [
+    [ "Border", "d9/d0d/class_river_1_1_border.html", "d9/d0d/class_river_1_1_border" ],
     [ "Branch", "dc/dfe/class_river_1_1_branch.html", "dc/dfe/class_river_1_1_branch" ],
+    [ "BranchNew", "db/de2/class_river_1_1_branch_new.html", "db/de2/class_river_1_1_branch_new" ],
     [ "Geometry", "d6/d93/class_river_1_1_geometry.html", "d6/d93/class_river_1_1_geometry" ],
     [ "GeomLine", "d9/df2/class_river_1_1_geom_line.html", "d9/df2/class_river_1_1_geom_line" ],
     [ "GeomPoint", "d0/dbb/class_river_1_1_geom_point.html", "d0/dbb/class_river_1_1_geom_point" ],
@@ -12,5 +14,6 @@ var namespace_river =
     [ "Point", "d7/d92/class_river_1_1_point.html", "d7/d92/class_river_1_1_point" ],
     [ "Polar", "de/ddf/class_river_1_1_polar.html", "de/ddf/class_river_1_1_polar" ],
     [ "Solver", "d1/ddf/class_river_1_1_solver.html", "d1/ddf/class_river_1_1_solver" ],
+    [ "Tree", "d9/de8/class_river_1_1_tree.html", "d9/de8/class_river_1_1_tree" ],
     [ "Triangle", "d7/d31/class_river_1_1_triangle.html", "d7/d31/class_river_1_1_triangle" ]
 ];

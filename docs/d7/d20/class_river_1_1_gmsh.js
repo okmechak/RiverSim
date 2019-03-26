@@ -8,6 +8,7 @@ var class_river_1_1_gmsh =
     [ "init", "d7/d20/class_river_1_1_gmsh.html#acee66ab4e60847ab1d2368d8bebb7902", null ],
     [ "open", "d7/d20/class_river_1_1_gmsh.html#a1fb9948bbf52b97b066880954919850c", null ],
     [ "set_elements", "d7/d20/class_river_1_1_gmsh.html#a14f22a3cb3de137904a08148e83e3a12", null ],
+    [ "set_geometry", "d7/d20/class_river_1_1_gmsh.html#a1becbdd7e693b9f63417353643de6145", null ],
     [ "set_nodes", "d7/d20/class_river_1_1_gmsh.html#ab8efa2e99294237c8186a9b11394b4d5", null ],
     [ "start_ui", "d7/d20/class_river_1_1_gmsh.html#a7021b8ecb83c2e5f2248c579ff2c1c6c", null ],
     [ "test_mesh", "d7/d20/class_river_1_1_gmsh.html#a36f02722beca9b41eaf475dbe09bd50c", null ],

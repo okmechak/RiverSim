@@ -1,0 +1,8 @@
+<map id="River::Solver::run" name="River::Solver::run">
+<area shape="rect" id="node2" href="$classRiver_1_1Solver.html#a01eb2f2d7229b100f6da98420be1449f" title="River::Solver::refine_grid" alt="" coords="177,5,344,32"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Solver.html#adba0a10f694b0193b449efc4c68d7418" title="River::Solver::setup\l_system" alt="" coords="191,57,330,98"/>
+<area shape="rect" id="node4" href="$classRiver_1_1Solver.html#af16fb58ac78609220538d62c2c491249" title="River::Solver::assemble\l_system" alt="" coords="179,122,342,163"/>
+<area shape="rect" id="node6" href="$classRiver_1_1Solver.html#acc631ad7d750f35bd33430a2b0410efe" title="River::Solver::solve" alt="" coords="192,188,329,215"/>
+<area shape="rect" id="node7" href="$classRiver_1_1Solver.html#a328be2cd9739561d1d97ac6e59ebe261" title="River::Solver::output\l_results" alt="" coords="189,239,332,281"/>
+<area shape="rect" id="node5" href="$namespaceRiver.html#aeb51a1c35cf6a02863958bcfdb0034e9" title="River::coefficient" alt="" coords="392,129,513,156"/>
+</map>
