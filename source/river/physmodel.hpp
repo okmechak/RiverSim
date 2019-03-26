@@ -24,7 +24,7 @@ namespace River
             double dx = 0.5;
             double width = 1.;
             double height = 1.;
-            static constexpr double Rmin = 0.0001;
+            static constexpr double Rmin = 0.0000000001;
             static constexpr double Rmax = 0.01;
             double biffurcationThreshold = 0.1;
             
