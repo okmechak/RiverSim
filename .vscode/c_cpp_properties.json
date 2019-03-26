@@ -5,8 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/source/**",
-                "${workspaceFolder}/source/triangle/**",
-                "${workspaceFolder}/source/tethex/**",
+                "${workspaceFolder}/source/river/**",
+                "${workspaceFolder}/source/river/triangle/**",
+                "${workspaceFolder}/source/river/tethex/**",
                 "/usr/local/gmsh/**",
                 "/usr/local/dealii/**"
             ],
