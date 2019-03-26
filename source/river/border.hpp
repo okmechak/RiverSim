@@ -93,6 +93,11 @@ namespace River
              */
 
         //private: for testing purposes
+
+            /**
+             * @name Private
+             * @{
+             */
             double eps = 1e-10; ///< width between points at each source
             tet::Mesh& borderMesh; ///< tethex::Mesh object with geometry info inside
             
@@ -128,5 +133,9 @@ namespace River
             {
                 return point_id >= first_source_index;
             }
+
+            /**
+             * @}
+             */
     };
 }
