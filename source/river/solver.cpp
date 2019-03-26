@@ -163,8 +163,8 @@ void Solver::assemble_system()
     FEValues<dim> fe_values(fe, quadrature_formula,
                             update_values | update_gradients |
                                 update_quadrature_points | update_JxW_values);
-    const unsigned int dofs_per_cell = fe.dofs_per_cell;
-    const unsigned int n_q_points = quadrature_formula.size();
+    const unsigned dofs_per_cell = fe.dofs_per_cell;
+    const unsigned n_q_points = quadrature_formula.size();
     FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
     Vector<double> cell_rhs(dofs_per_cell);
     std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
@@ -176,10 +176,10 @@ void Solver::assemble_system()
         cell_matrix = 0;
         cell_rhs = 0;
         fe_values.reinit(cell);
-        for (unsigned int q_index = 0; q_index < n_q_points; ++q_index)
+        for (unsigned q_index = 0; q_index < n_q_points; ++q_index)
         {
             const double current_coefficient = coefficient(fe_values.quadrature_point(q_index));
-            for (unsigned int i = 0; i < dofs_per_cell; ++i)
+            for (unsigned i = 0; i < dofs_per_cell; ++i)
             {
                 for (unsigned int j = 0; j < dofs_per_cell; ++j)
                     cell_matrix(i, j) += (current_coefficient *
@@ -249,29 +249,99 @@ vector<double> Solver::integrate(Point point, double angle)
         fe_values.get_function_values(solution, values);
         auto quad_points = fe_values.get_quadrature_points();
 
-        for (unsigned int q_point = 0; q_point < n_q_points; ++q_point)
+        for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
         {
-            auto quad_point = quad_points[q_point];
-            auto dx = (quad_point[0] - point[0]), 
-                dy = (quad_point[1] - point[1]);
+            auto dx = (quad_points[q_point][0] - point[0]), 
+                dy = (quad_points[q_point][1] - point[1]);
 
             double dist = sqrt(dx*dx + dy*dy);
-            double angle = Point::angle(dx, dy);
+            double angle_r = Point::angle(dx, dy) - angle;
 
             if(dist >= Model::Rmin && dist <= Model::Rmax)
-                for(int param_index = 0; param_index < series_params.size(); ++param_index)
-                    for (unsigned int i = 0; i < dofs_per_cell; ++i)
+                for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
                         series_params[param_index] += 
-                            fe_values.shape_value(i, q_point)
-                             * values[q_point]
+                               values[q_point]
                              * fe_values.JxW(q_point)
-                             * Model::Gain(param_index)(dist, angle);
+                             * Model::Gain(param_index)(dist, angle_r);
         }
     }
     
     return series_params;
 }
 
+
+double Solver::integration_test(Point point, double dr)
+{
+
+    const QGauss<dim> quadrature_formula(3);
+    FEValues<dim> fe_values(fe, quadrature_formula,
+                            update_values            |
+                            update_quadrature_points |
+                            update_JxW_values);
+
+    const unsigned int dofs_per_cell = fe.dofs_per_cell;
+    const unsigned int n_q_points    = quadrature_formula.size();
+    
+    std::vector<double> values(n_q_points);
+    double integration_result = 0; 
+
+
+    
+    for (auto cell: dof_handler.active_cell_iterators())
+    {
+        fe_values.reinit (cell);
+        fe_values.get_function_values(solution, values);
+        auto& quad_points = fe_values.get_quadrature_points();
+        auto& JxW_values = fe_values.get_JxW_values();
+
+        for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
+        {
+            auto dx = point[0] - quad_points[q_point][0], 
+                 dy = point[1] - quad_points[q_point][1],
+                 dist = sqrt(dx*dx + dy*dy);
+
+            cout << "quad_points { " << quad_points[q_point][0] << ", " << quad_points[q_point][1] << " }" << endl;
+
+            if(dist <= dr)
+                integration_result += 
+                       values[q_point]
+                     * JxW_values[q_point];
+        }
+    }
+    
+    return integration_result;
+
+}
+
+
+double Solver::max_value()
+{
+
+    const QGauss<dim> quadrature_formula(3);
+    FEValues<dim> fe_values(fe, quadrature_formula,
+                            update_values            |
+                            update_quadrature_points |
+                            update_JxW_values);
+
+    const unsigned int n_q_points    = quadrature_formula.size();
+    
+    std::vector<double> values(n_q_points);
+    double max_value = 0; 
+
+    
+    
+    for (auto cell: dof_handler.active_cell_iterators())
+    {
+        fe_values.reinit (cell);
+        fe_values.get_function_values(solution, values);
+
+        for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
+            if(max_value < values[q_point]) 
+                max_value = values[q_point];
+    }
+    
+    return max_value;
+}
 
 
 void Solver::output_results(const unsigned int cycle) const
@@ -313,4 +383,4 @@ void Solver::run(int step)
     output_results(step);
 }
 
-} // namespace Riverestimated_error_per_cell
+} // namespace River
