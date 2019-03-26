@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 {   
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
-    auto region_size = vector<double>{1, 2};
+    auto region_size = vector<double>{1, 1};
     auto sources_x_coord = vector<double>{0.25};
     auto sources_id = vector<int>{1};
 
@@ -64,6 +64,8 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     auto angle = tr.GetBranch(tip_ids.at(0)).TipAngle();
     auto series_params = sim.integrate(point, angle);
 
+    BOOST_TEST(angle == M_PI/2);
+    BOOST_TEST((point == River::Point{0.25, 0.1}));
     //Comparing to results given by Matlab program simulation
     BOOST_TEST(series_params.size() == 3);
     BOOST_TEST(series_params.at(0) == 0.0250);
@@ -98,7 +100,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
     Triangle tria;
     tria.AreaConstrain = tria.ConstrainAngle = true;
-    tria.MaxTriaArea = 0.001;
+    tria.MaxTriaArea = 0.00001;
     tria.MinAngle = 30;
     tria.generate(mesh);
     mesh.convert();
@@ -107,7 +109,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     //Simulation
     River::Solver sim;
     
-    sim.numOfRefinments = 5;
+    sim.numOfRefinments = 2;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run(0);
@@ -121,7 +123,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
     //Comparing to result given by MAthematica program
     //see for notebook Testing.nb in results folder
-    BOOST_TEST(integration == 0.0107017094);
-    BOOST_TEST(integration_of_whole_region == 0.0342019674);
-    BOOST_TEST(max_value == 0.07257914889);
+    BOOST_TEST(integration == 0.0004611382344465363);
+    BOOST_TEST(integration_of_whole_region == 0.03420202360857102);
+    BOOST_TEST(max_value == 0.07257921834603551);
 }
