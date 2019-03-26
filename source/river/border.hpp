@@ -44,7 +44,7 @@ namespace River
                 vector<double> regionSize, vector<int> boundariesId,
                 vector<double> sourcesXCoord = {}, vector<int> sourcesId = {});
 
-            /// Read region information from @file_name msh file
+            /// Read region information from __file_name__ msh file
             /**
              * TODO: describe exact format of such file.
              */
