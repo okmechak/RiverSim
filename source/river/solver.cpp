@@ -243,27 +243,30 @@ vector<double> Solver::integrate(Point point, double angle)
     std::vector<double> values(n_q_points);
     std::vector<double> series_params(3, 0); //Series params
     
-    for (auto cell: dof_handler.active_cell_iterators())
+    auto tria_cell = triangulation.begin_active();
+    auto dof_cell = dof_handler.begin_active();
+    while (dof_cell != dof_handler.end())
     {
-        fe_values.reinit (cell);
+        fe_values.reinit (dof_cell);
         fe_values.get_function_values(solution, values);
         auto quad_points = fe_values.get_quadrature_points();
 
-        for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
-        {
-            auto dx = (quad_points[q_point][0] - point[0]), 
-                dy = (quad_points[q_point][1] - point[1]);
-
-            double dist = sqrt(dx*dx + dy*dy);
-            double angle_r = Point::angle(dx, dy) - angle;
-
-            if(dist >= Model::Rmin && dist <= Model::Rmax)
+        auto center = tria_cell->center();
+        auto dx = center[0] - point[0],
+            dy = center[1] - point[1],
+            dist = sqrt(dx*dx + dy*dy),
+            angle_r = -Point::angle(dx, dy) + angle;
+        
+        if(dist >= Model::Rmin && dist <= Model::Rmax)
+            for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
                 for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
-                        series_params[param_index] += 
-                               values[q_point]
-                             * fe_values.JxW(q_point)
-                             * Model::Gain(param_index)(dist, angle_r);
-        }
+                    series_params[param_index] 
+                        += values[q_point]
+                         * fe_values.JxW(q_point)
+                         * Model::Gain(param_index)(dist, angle_r);
+
+        ++dof_cell;
+        ++tria_cell;
     }
     
     return series_params;
@@ -287,26 +290,31 @@ double Solver::integration_test(Point point, double dr)
 
 
     
-    for (auto cell: dof_handler.active_cell_iterators())
+    auto tria_cell = triangulation.begin_active();
+    auto dof_cell = dof_handler.begin_active();
+    while (tria_cell != triangulation.end())
     {
-        fe_values.reinit (cell);
-        fe_values.get_function_values(solution, values);
-        auto& quad_points = fe_values.get_quadrature_points();
-        auto& JxW_values = fe_values.get_JxW_values();
-
-        for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
+        
+        auto center = tria_cell->center();
+        auto dx = center[0] - point[0],
+            dy = center[1] - point[1],
+            dist = sqrt(dx*dx + dy*dy);
+        
+        if(dist <= dr)
         {
-            auto dx = point[0] - quad_points[q_point][0], 
-                 dy = point[1] - quad_points[q_point][1],
-                 dist = sqrt(dx*dx + dy*dy);
+            fe_values.reinit (dof_cell);
+            fe_values.get_function_values(solution, values);
+            auto& quad_points = fe_values.get_quadrature_points();
+            auto& JxW_values = fe_values.get_JxW_values();
 
-            cout << "quad_points { " << quad_points[q_point][0] << ", " << quad_points[q_point][1] << " }" << endl;
-
-            if(dist <= dr)
-                integration_result += 
-                       values[q_point]
-                     * JxW_values[q_point];
+            for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
+                integration_result  
+                    += values[q_point]
+                    * JxW_values[q_point];
         }
+
+        ++dof_cell;
+        ++tria_cell;
     }
     
     return integration_result;
