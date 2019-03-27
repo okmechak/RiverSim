@@ -45,17 +45,17 @@ problem Poisson(u, v, solver = sparsesolver) =
 func real tipfield( real xtip, real ytip, real sigma)
 {	
 	real rsq = sqrt((x - xtip)^2 + (y - ytip)^2);
- 	return exp(- rsq/sigma);
+ 	return exp(- rsq/sigma );
 }
 	
 Vh0 h = 1;
 real error = 0.001; // 0.04
 real angle = 1.5708, x0 = 0.25, y0 = 0.1, R = 0.01;
-real hmincustom = 0.03*R;
+real hmincustom = 0.005*R;
 while(h[].min >= hmincustom)
 {
     Poisson;
-    Th = adaptmesh(Th, [u, 1/(1 + tipfield(x0, y0, R))], err = error, nbvx = 1000000, hmin = hmincustom, iso = true, ratio = 3);
+    Th = adaptmesh(Th, [u, 0.5/(1 + tipfield(x0, y0, 14*R))], err = error, nbvx = 1000000, hmin = hmincustom, iso = true, ratio = 3);
     error = 0.5*error;
     u = u;
     h = hTriangle; // the triangle size
@@ -108,15 +108,17 @@ cout << endl << endl << endl;
 cout << "Final parameters of integration used in test" << endl << endl;
 cout << " - series params: " << endl;
 for(int i = 0; i < a.n; ++i)
-	cout << "   " <<a[i] << endl;
-//0.101735
-//0.0454682
-//0.13099
+	cout << "   " << a[i] << endl;
+//0.101866
+//0.0454618
+//0.13087
 
 cout << " - integral over whole region" << endl;
 cout << "   " << int2d(Th)(u) << endl;
-//0.0342016
+//0.034202
+
+Ph = trunc(Th, (sqrt((x - x0)^2 + (y - y0)^2) <= 0.1)); 
 cout << " - integration over tip circle" << endl;
 cout << "   " << int2d(Ph)(u) << endl;
-//2.49613e-5
+//0.000461324
 cout << "----- done." << endl << endl << endl;
