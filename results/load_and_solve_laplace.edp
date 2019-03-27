@@ -1,4 +1,3 @@
-
 // Defining the projection function to extract the expansion of the field around a tip
 //////////////////////////////////////////
 
@@ -176,8 +175,6 @@ for(int i=0; i < nbTips; ++i)
     real valueNew;
     bool newOnRight;
     for (int i = 1; i <= 64; i++) {
-        //cout << angleLeft << " " << angleCenter << " " << angleRight << endl;
-        //cout << valueLeft << " " << valueCenter << " " << valueRight << endl;
         if (angleCenter - angleRight > angleLeft - angleCenter) {
             newOnRight = 1;
             angleNew = (angleCenter + angleRight) / 2;
@@ -206,49 +203,30 @@ for(int i=0; i < nbTips; ++i)
             }
         }
     }
-    /*real angleCenter;
-    real bestValue = 0;
-    for (real angle = -pi; angle < pi; angle = angle + 2*pi/1024) {
-        real value = u(x0 + ring*R*sin(angle), y0 + ring*R*cos(angle));
-        if (bestValue < value) {
-            angleCenter = angle;
-            bestValue = value;
-        }
-        flowProfile << angle << "\t" << value << endl;
-    }*/
-    //cout << "angle = " << angleCenter * 180 / pi << endl;
+    
     
     for(int order = 1; order <= a.n; ++order){ 
         a[order - 1] =
-        int2d(Ph)( u*exp(-(sqrt((x - x0)^2 + (y - y0)^2)/R)^exponant)
-		*BaseVector(order, exp(-angle(i)*1i)*( (x-x0) + (y-y0)*1i) ) ) /
-        (int2d(Ph)(exp(-(sqrt((x-x0)^2 + (y-y0)^2)/R)^exponant)
-		*square(BaseVector(order,exp(-angle(i)*1i)*( (x-x0) + (y-y0)*1i) ) )));
+            int2d(Ph)( 
+                u * exp(-(sqrt((x - x0)^2 + (y - y0)^2)/R)^exponant)
+		        * BaseVector(order, 
+                    * exp(-angle(i)*1i)
+                    * ( (x-x0) + (y-y0)*1i) 
+                ) 
+            )/
+            (int2d(Ph)(
+                exp(-(sqrt((x-x0)^2 + (y-y0)^2)/R)^exponant)
+		        * square(
+                    BaseVector(order, 
+                        exp(-angle(i)*1i)
+                        * ( (x-x0) + (y-y0)*1i) 
+                    ) 
+                )
+            )
+        );
         freefemOutput << a[order-1] << " ";
         cout << "a(" << order << ")=" << a[order - 1] << endl;
     }
     freefemOutput << angleCenter << " " << Names(i) << endl;
 
 };
-//plot(Ph, fill = 1, wait = 1, ps = "circle.eps");
-
-/* 
-cout<< "Writing out the field5" << endl;
-// string could be read from data file to save the field in each timestep
-{
-ofstream FieldFile("freefem_field.csv");
-// header for matlab
-FieldFile << Th.nv << " " << Th.nt << endl;
-// first write out the nodes
-for (int i = 0; i < Th.nv; i++)
-{
- FieldFile << Th(i).x << " " << Th(i).y << " " << u(Th(i).x, Th(i).y) << endl;
-}
-
-// then write out the mesh connectivity
-for (int i = 0; i < Th.nt; i++)
-{ 
-  FieldFile << Th[i][0] << " " << Th[i][1] << " " << Th[i][2] << endl;
-}
-}
-*/
