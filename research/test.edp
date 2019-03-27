@@ -109,9 +109,14 @@ cout << "Final parameters of integration used in test" << endl << endl;
 cout << " - series params: " << endl;
 for(int i = 0; i < a.n; ++i)
 	cout << "   " <<a[i] << endl;
+//0.101735
+//0.0454682
+//0.13099
 
 cout << " - integral over whole region" << endl;
 cout << "   " << int2d(Th)(u) << endl;
+//0.0342016
 cout << " - integration over tip circle" << endl;
 cout << "   " << int2d(Ph)(u) << endl;
+//2.49613e-5
 cout << "----- done." << endl << endl << endl;
