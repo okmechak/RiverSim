@@ -260,8 +260,6 @@
 /*   Floating-Point Arithmetic and Fast Robust Geometric Predicates" (also   */
 /*   available as Section 6.6 of my dissertation).                           */
 
-/* #define CPU86 */
-#define LINUX
 
 #define INEXACT /* Nothing */
 /* #define INEXACT volatile */
@@ -1393,7 +1391,25 @@ int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
   maxlen = (dalen > oalen) ? dalen : oalen;
   maxlen = (odlen > maxlen) ? odlen : maxlen;
 
-  if (maxlen > 0.05 * (triorg[0] * triorg[0] + triorg[1] * triorg[1]) + 0.02)
+  //test of adaptive mesh
+  //My code
+  REAL center_point[] = 
+    {
+      (triorg[0] + tridest[0] + triorg[0]) / 3,
+      (triorg[1] + tridest[1] + triorg[1]) / 3
+    },
+    //custom test tip point
+    tip_point[] = {0.25, 0.1},
+    dx = center_point[0] - tip_point[0],
+    dy = center_point[1] - tip_point[1],
+    r = sqrt(dx*dx + dy*dy),
+    fvalue = (1.000001 - exp(-pow(r/0.05, 8))),
+    flag = area > fvalue;
+
+    //printf ("area: %4.10f,  func value: %4.10f,  flag: %3d \n", area, fvalue, (int)flag);
+
+
+  if (maxlen > 0.05 * (triorg[0] * triorg[0] + triorg[1] * triorg[1]) + 0.02 || flag)
   {
     return 1;
   }
