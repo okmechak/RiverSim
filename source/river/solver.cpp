@@ -7,16 +7,6 @@ namespace River
     Solver Class
 
 */
-
-Solver::Solver() : fe(2), dof_handler(triangulation)
-{
-}
-
-Solver::~Solver()
-{
-    clear();
-}
-
 void Solver::SetBoundaryRegionValue(std::vector<int> regionTags, double value)
 {
     boundaryRegionValue.insert(std::make_pair(value, regionTags));
@@ -39,7 +29,7 @@ void Solver::SetMesh(tethex::Mesh &meshio)
     //VERTICES
     auto n_vertices = meshio.get_n_vertices(); 
     vector<dealii::Point<dim>> vertices(n_vertices);
-    for (unsigned int i = 0; i < n_vertices; ++i)
+    for (int i = 0; i < n_vertices; ++i)
     {
         auto vertice = meshio.get_vertex(i);
         vertices[i] = dealii::Point<dim>(vertice.get_coord(0), vertice.get_coord(1));
@@ -148,7 +138,7 @@ void Solver::setup_system()
 }
 
 
-double coefficient(const dealii::Point<2> &p)
+double coefficient(const dealii::Point<2> &/*p*/)
 {
     //if (p.square() < 0.5*0.5)
     //  return 20;
@@ -159,7 +149,6 @@ double coefficient(const dealii::Point<2> &p)
 
 void Solver::assemble_system()
 {
-    const QGauss<dim> quadrature_formula(3);
     FEValues<dim> fe_values(fe, quadrature_formula,
                             update_values | update_gradients |
                                 update_quadrature_points | update_JxW_values);
@@ -228,46 +217,70 @@ void Solver::refine_grid()
 }
 
 
+
+
 vector<double> Solver::integrate(Point point, double angle)
 {   
 
-    const QGauss<dim> quadrature_formula(3);
     FEValues<dim> fe_values(fe, quadrature_formula,
-                            update_values            |
-                            update_quadrature_points |
+                            update_values |
                             update_JxW_values);
-
-    const unsigned int dofs_per_cell = fe.dofs_per_cell;
-    const unsigned int n_q_points    = quadrature_formula.size();
     
-    std::vector<double> values(n_q_points);
-    std::vector<double> series_params(3, 0); //Series params
+    //Parameters definition
+    std::vector<double> 
+        values(quadrature_formula.size()),
+        integral(3, 0),
+        normalization_integral(3, 0),
+        series_params(3, 0); //Series params
     
-    auto tria_cell = triangulation.begin_active();
-    auto dof_cell = dof_handler.begin_active();
-    while (dof_cell != dof_handler.end())
+    
+    //Iteratation over Mesh and DoFHandler 
+    for(auto dof_cell: dof_handler.active_cell_iterators())
     {
-        fe_values.reinit (dof_cell);
-        fe_values.get_function_values(solution, values);
-        auto quad_points = fe_values.get_quadrature_points();
-
-        auto center = tria_cell->center();
+        //central point of mesh element
+        auto center = dof_cell->center();
+        
+        //distance between tip point and current mesh element
         auto dx = center[0] - point[0],
             dy = center[1] - point[1],
-            dist = sqrt(dx*dx + dy*dy),
-            angle_r = -Point::angle(dx, dy) + angle;
+            dist = sqrt(dx*dx + dy*dy);
         
-        if(dist >= Model::Rmin && dist <= Model::Rmax)
-            for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
-                for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
-                    series_params[param_index] 
-                        += values[q_point]
-                         * fe_values.JxW(q_point)
-                         * Model::Gain(param_index)(dist, angle_r);
+        //Integrates over points only in this circle
+        if(dist <= 3*Model::Rmax)
+        {
+            fe_values.reinit (dof_cell);
+            fe_values.get_function_values(solution, values);
+            auto weight_func_value = Model::WeightFunction(dist);
 
-        ++dof_cell;
-        ++tria_cell;
+            //cycle over all series parameters order
+            for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
+            {
+                //preevaluate basevector value
+                auto base_vector_value = Model::BaseVector(param_index + 1, exp(-1i*angle)*(dx + 1i*dy));
+
+                //sum over all quadrature points over single mesh element
+                for (unsigned q_point = 0; q_point < quadrature_formula.size(); ++q_point)
+                {
+                    //integration of weighted integral..
+                    integral[param_index]
+                        += values[q_point]
+                        * weight_func_value
+                        * base_vector_value
+                        * fe_values.JxW(q_point);
+                    
+                    //.. and its normalization integral
+                    normalization_integral[param_index]
+                        += weight_func_value
+                        * pow(base_vector_value, 2)
+                        * fe_values.JxW(q_point);
+                    
+                }       
+            }
+        }
     }
+
+    for(unsigned i = 0; i < integral.size(); ++i)
+        series_params[i] = integral[i]/normalization_integral[i];
     
     return series_params;
 }
@@ -276,14 +289,12 @@ vector<double> Solver::integrate(Point point, double angle)
 double Solver::integration_test(Point point, double dr)
 {
 
-    const QGauss<dim> quadrature_formula(3);
     FEValues<dim> fe_values(fe, quadrature_formula,
                             update_values            |
                             update_quadrature_points |
                             update_JxW_values);
 
-    const unsigned int dofs_per_cell = fe.dofs_per_cell;
-    const unsigned int n_q_points    = quadrature_formula.size();
+    const unsigned int n_q_points = quadrature_formula.size();
     
     std::vector<double> values(n_q_points);
     double integration_result = 0; 
@@ -294,7 +305,6 @@ double Solver::integration_test(Point point, double dr)
     auto dof_cell = dof_handler.begin_active();
     while (tria_cell != triangulation.end())
     {
-        
         auto center = tria_cell->center();
         auto dx = center[0] - point[0],
             dy = center[1] - point[1],
@@ -304,7 +314,6 @@ double Solver::integration_test(Point point, double dr)
         {
             fe_values.reinit (dof_cell);
             fe_values.get_function_values(solution, values);
-            auto& quad_points = fe_values.get_quadrature_points();
             auto& JxW_values = fe_values.get_JxW_values();
 
             for (unsigned q_point = 0; q_point < n_q_points; ++q_point)
@@ -324,8 +333,6 @@ double Solver::integration_test(Point point, double dr)
 
 double Solver::max_value()
 {
-
-    const QGauss<dim> quadrature_formula(3);
     FEValues<dim> fe_values(fe, quadrature_formula,
                             update_values            |
                             update_quadrature_points |

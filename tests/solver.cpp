@@ -15,8 +15,10 @@
 
 using namespace River;
 
-const double eps = 1e-13;
+const double eps = 1e-4;
 namespace utf = boost::unit_test;
+
+
 
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( integration_params_test, 
@@ -44,8 +46,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
 
     Triangle tria;
-    tria.AreaConstrain = tria.ConstrainAngle = true;
-    tria.MaxTriaArea = 0.1;
+    tria.ConstrainAngle = tria.CustomConstraint = true;
     tria.MinAngle = 30;
     tria.generate(mesh);
     mesh.convert();
@@ -54,7 +55,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     //Simulation
     River::Solver sim;
     
-    sim.numOfRefinments = 8;
+    sim.numOfRefinments = 2;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run(0);
@@ -68,14 +69,14 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     BOOST_TEST((point == River::Point{0.25, 0.1}));
     //Comparing to results given by Matlab program simulation
     BOOST_TEST(series_params.size() == 3);
-    BOOST_TEST(series_params.at(0) == 0.0250);
-    BOOST_TEST(series_params.at(1) == 0.0114);
-    BOOST_TEST(series_params.at(2) == 0.0325);
+    BOOST_TEST(series_params.at(0) == 0.101866);
+    BOOST_TEST(series_params.at(1) == 0.0454618);
+    BOOST_TEST(series_params.at(2) == 0.13087);
     sim.clear();
 }
 
 BOOST_AUTO_TEST_CASE( integration_test, 
-    *utf::tolerance(1e-4))
+    *utf::tolerance(eps))
 {
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
@@ -99,8 +100,8 @@ BOOST_AUTO_TEST_CASE( integration_test,
     auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
 
     Triangle tria;
-    tria.AreaConstrain = tria.ConstrainAngle = true;
-    tria.MaxTriaArea = 0.00001;
+    tria.AreaConstrain = tria.ConstrainAngle = tria.CustomConstraint = true;
+    tria.MaxTriaArea = 0.00005;
     tria.MinAngle = 30;
     tria.generate(mesh);
     mesh.convert();
@@ -109,21 +110,23 @@ BOOST_AUTO_TEST_CASE( integration_test,
     //Simulation
     River::Solver sim;
     
-    sim.numOfRefinments = 2;
+    sim.numOfRefinments = 1;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run(0);
     
     auto tip_ids = tr.TipBranchesId();
     auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();
-    auto dr = 0.1;
+    auto dr = 0.01;
     auto integration = sim.integration_test(point, dr);
     auto integration_of_whole_region = sim.integration_test(point, 10);
     auto max_value = sim.max_value();
 
-    //Comparing to result given by MAthematica program
+    //Comparing to result given by Mathematica program
     //see for notebook Testing.nb in results folder
-    BOOST_TEST(integration == 0.0004611382344465363);
+    BOOST_TEST(Model::Rmax == 0.01);
+    BOOST_TEST(integration == 0.00000162911);
+
     BOOST_TEST(integration_of_whole_region == 0.03420202360857102);
     BOOST_TEST(max_value == 0.07257921834603551);
 }

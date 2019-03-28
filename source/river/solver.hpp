@@ -51,8 +51,9 @@ namespace River
 class Solver
 {
   public:
-    Solver();
-    ~Solver();
+    Solver(): fe(2), dof_handler(triangulation),quadrature_formula(3){};
+    ~Solver(){clear();}
+
     unsigned int numOfRefinments = 1;
     void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
     void SetMesh(tethex::Mesh &meshio);
@@ -78,6 +79,7 @@ class Solver
 
     FE_Q<dim> fe;
     DoFHandler<dim> dof_handler;
+    const QGauss<dim> quadrature_formula;
 
     ConstraintMatrix constraints;
 

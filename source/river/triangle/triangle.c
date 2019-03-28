@@ -1400,11 +1400,20 @@ int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
     },
     //custom test tip point
     tip_point[] = {0.25, 0.1},
-    dx = center_point[0] - tip_point[0],
-    dy = center_point[1] - tip_point[1],
-    r = sqrt(dx*dx + dy*dy),
-    fvalue = (1.000001 - exp(-pow(r/0.05, 8))),
-    flag = area > fvalue;
+    dx1 = triorg[0] - tip_point[0],
+    dy1 = triorg[1] - tip_point[1],
+    dx2 = tridest[0] - tip_point[0],
+    dy2 = tridest[1] - tip_point[1],
+    dx3 = triapex[0] - tip_point[0],
+    dy3 = triapex[1] - tip_point[1],
+    r1 = sqrt(dx1*dx1 + dy1*dy1),
+    r2 = sqrt(dx2*dx2 + dy2*dy2),
+    r3 = sqrt(dx3*dx3 + dy3*dy3),
+    min_area = 0.0000000001,
+    fvalue1 = (1. + min_area - exp(-pow(r1/0.2, 4))),
+    fvalue2 = (1. + min_area - exp(-pow(r2/0.2, 4))),
+    fvalue3 = (1. + min_area - exp(-pow(r3/0.2, 4))),
+    flag = area > fvalue1 || area > fvalue2 || area > fvalue3;
 
     //printf ("area: %4.10f,  func value: %4.10f,  flag: %3d \n", area, fvalue, (int)flag);
 
