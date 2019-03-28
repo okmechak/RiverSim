@@ -51,7 +51,8 @@ cxxopts::ParseResult process_program_options(int argc, char *argv[])
     ("q,mesh-min-angle", "constraints minimal angle of triangle element", value<double>()->default_value("-1."))
     ("e,eps", "Width of branch", value<double>()->default_value("0.000001"))
     ("r,ref-num", "Number of solver adaptive refinments", value<int>()->default_value("3"))
-    ("g,geom-type", "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip", value<int>()->default_value("0"));
+    ("g,geom-type", "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip", value<int>()->default_value("0"))
+    ("t,test-flag", "Test flag for development purposes");
 
     auto result = options.parse(argc, argv);
 
