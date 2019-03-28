@@ -296,6 +296,7 @@ string Triangle::update_options()
     if (AreaConstrain)      options += "a";
     if (AreaConstrain && MaxTriaArea > 0)
                             options +=  to_string(MaxTriaArea);
+    if (CustomConstraint)   options += "u";
     if (DelaunayTriangles)  options += "D";
     if (EncloseConvexHull)  options += "c";
     if (CheckFinalMesh)     options += "C";
@@ -349,6 +350,7 @@ void Triangle::print_options(bool qDetailedDescription)
     if (MinAngle > 0)    cout << "                    value:" << MinAngle << endl;
     if(AreaConstrain)    cout << "(a) area constrain: " << endl;
     if (MaxTriaArea > 0) cout << "                  area constrain: " << MaxTriaArea << endl;
+    if (CustomConstraint) cout << "(u) imposes a user-defined constraint on triangle size" << endl;
     if (DelaunayTriangles)cout << "(D) all traingles will be Delaunay" << endl;
     if (EncloseConvexHull)cout << "(c) enclose convex hull" << endl;
     if (CheckFinalMesh)  cout << "(C) check final mesh" << endl;

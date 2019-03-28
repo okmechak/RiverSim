@@ -109,6 +109,8 @@ namespace River
       //a - maximum triangle area constrain. a0.1
       double MaxTriaArea = -1.;
       bool AreaConstrain = false;
+      //User defined function constrint
+      bool CustomConstraint = false;
       //D - all triangles will be delaunay. Not just constrained delaunay.
       bool DelaunayTriangles = true;
       //c - enclose convex hull with segments
