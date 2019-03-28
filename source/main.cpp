@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
         tria.AreaConstrain = tria.ConstrainAngle = true;
         tria.MaxTriaArea = vm["mesh-max-area"].as<double>();
         tria.MinAngle = vm["mesh-min-angle"].as<double>();
+        tria.CustomConstraint = vm.count("test-flag");
         tria.generate(mesh);
         mesh.convert();
         mesh.write(vm["output-mesh"].as<string>());
