@@ -371,7 +371,61 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     BOOST_TEST(tree_vector.size() == 3);
     TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
     TEST_POINT(tree_vector.at(1), Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
-    TEST_POINT(tree_vector.at(2), Point{0.5, 0});
+    TEST_POINT(tree_vector.at(2), Point{0.5, 0});    
+}
 
-    
+
+BOOST_AUTO_TEST_CASE( tree_tips_point_method, 
+    *utf::tolerance(eps))
+{
+    tethex::Mesh mesh;
+    Border border(mesh);
+    border.MakeRectangular(
+        {1, 1},
+        {0 ,1, 2, 3},
+        {0.5}, {1});
+
+    Tree tr(
+        border.GetSourcesPoint(), 
+        border.GetSourcesNormalAngle(),
+        border.GetSourcesId());
+
+    BOOST_TEST(tr.TipPoints().size() == 1);
+    TEST_POINT(tr.TipPoints().at(0), Point{0.5, 0});
+}
+
+BOOST_AUTO_TEST_CASE( add_points_tests, 
+    *utf::tolerance(eps))
+{
+    tethex::Mesh mesh;
+    Border border(mesh);
+    border.MakeRectangular(
+        {1, 1},
+        {0 ,1, 2, 3},
+        {0.5, 0.6, 0.7}, {1, 2, 3});
+
+    Tree tr(
+        border.GetSourcesPoint(), 
+        border.GetSourcesNormalAngle(),
+        border.GetSourcesId());
+
+    tr.AddPoints({Point{0, 0.1}, Point{0, 0.1}, Point{0, 0.1}}, {1, 2, 3});
+    TEST_POINT(tr.GetBranch(1).TipPoint(), Point(0.5, 0.1));
+    TEST_POINT(tr.GetBranch(2).TipPoint(), Point(0.6, 0.1));
+    TEST_POINT(tr.GetBranch(3).TipPoint(), Point(0.7, 0.1));
+
+    tr.AddPolars({Polar{0.1, 0}, Polar{0.1, 0}, Polar{0.1, 0}}, {1, 2, 3});
+    TEST_POINT(tr.GetBranch(1).TipPoint(), Point(0.5, 0.2));
+    TEST_POINT(tr.GetBranch(2).TipPoint(), Point(0.6, 0.2));
+    TEST_POINT(tr.GetBranch(3).TipPoint(), Point(0.7, 0.2));
+
+    tr.AddAbsolutePolars({Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}}, {1, 2, 3});
+    TEST_POINT(tr.GetBranch(1).TipPoint(), Point(0.5, 0.3));
+    TEST_POINT(tr.GetBranch(2).TipPoint(), Point(0.6, 0.3));
+    TEST_POINT(tr.GetBranch(3).TipPoint(), Point(0.7, 0.3));
+
+    tr.AddAbsolutePolars({Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}}, {1, 2, 3});
+    TEST_POINT(tr.GetBranch(1).TipPoint(), Point(0.5, 0.4));
+    TEST_POINT(tr.GetBranch(2).TipPoint(), Point(0.6, 0.4));
+    TEST_POINT(tr.GetBranch(3).TipPoint(), Point(0.7, 0.4));
 }

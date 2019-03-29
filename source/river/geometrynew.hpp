@@ -221,9 +221,24 @@ namespace River
                 return *this;
             }
 
+            ///Adds  relatively @param points to Branches @param tips_id.
+            Tree& AddPolars(vector<Polar> points, vector<int> tips_id)
+            {
+                for(unsigned int i = 0; i < tips_id.size(); ++i)
+                    if(DoesExistBranch(tips_id.at(i)))
+                    {
+                        BranchNew& br = GetBranch(tips_id.at(i));
+                        br.AddPoint(points.at(i));
+                    }
+                    else
+                        throw invalid_argument("Such branch does not exist");
+
+                return *this;
+            }
+
 
             ///Adds  absolute @param points to Branches @param tips_id.
-            Tree& AddAbsolutePoints(vector<Polar> points, vector<int> tips_id)
+            Tree& AddAbsolutePolars(vector<Polar> points, vector<int> tips_id)
             {
                 for(unsigned int i = 0; i < tips_id.size(); ++i)
                     if(DoesExistBranch(tips_id.at(i)))
@@ -262,7 +277,7 @@ namespace River
                 return sub_branches_id;
             }
 
-            ///Returns vector of tip branches ds.
+            ///Returns vector of tip branches ids.
             vector<int> TipBranchesId()
             {
                 vector<int> tip_branches_id;
@@ -271,6 +286,18 @@ namespace River
                         tip_branches_id.push_back(p.first);
 
                 return tip_branches_id;
+            }
+
+            ///Returns vector of tip branches Points.
+            vector<Point> TipPoints()
+            {   
+                vector<Point> tip_points;
+                auto tip_branches_id = TipBranchesId();
+                tip_points.reserve(tip_branches_id.size());
+                for(auto id: tip_branches_id)
+                    tip_points.push_back(GetBranch(id).TipPoint());
+                
+                return tip_points;
             }
 
             ///Returns number of source branches.
