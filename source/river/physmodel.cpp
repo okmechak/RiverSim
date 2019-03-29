@@ -6,10 +6,10 @@ using namespace std;
 
 namespace River
 {
-    bool Model::q_biffurcate(double a1, double a2, double a3)
+    bool Model::q_biffurcate(vector<double> a)
     {
-        //TODO implement
-        return false;
+        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcationThreshold << endl;
+        return a.at(2)/a.at(0) < biffurcationThreshold && a.at(0) > 0.08;
     }
 
     function<double(double, double)> Model::Gain(int index)

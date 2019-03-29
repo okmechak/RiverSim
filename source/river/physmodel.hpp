@@ -41,7 +41,7 @@ namespace River
             /*
                 Different parameters that is used in river simulation
             */
-            double eps = 1e-4;
+            double eps = 1e-6;
             enum class Method {Royal, Simple, Min, Integral};
             double ac = 0.;
             static constexpr double ds = 0.002;
@@ -53,10 +53,11 @@ namespace River
             double RMaxMesh = 0.01;
             double MinConstraintArea = 0.0000001;
             double MeshExponant = 1;
-            double biffurcationThreshold = 0.1;
+            double biffurcationThreshold = -0.1;
+            double biff_angle = M_PI/5;
             static constexpr int exponant = 2;
 
-            bool q_biffurcate(double a1, double a2, double a3);
+            bool q_biffurcate(vector<double> a);
             static Polar next_point(vector<double> series_params);
  
             static function<double(double, double)> Gain(int index);
