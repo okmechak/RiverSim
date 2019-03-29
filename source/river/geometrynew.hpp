@@ -206,7 +206,7 @@ namespace River
                 }
             }
 
-            ///Adds  relatively @points to Branches @tips_id.
+            ///Adds  relatively @param points to Branches @param tips_id.
             Tree& AddPoints(vector<Point> points, vector<int> tips_id)
             {
                 for(unsigned int i = 0; i < tips_id.size(); ++i)
@@ -214,6 +214,22 @@ namespace River
                     {
                         BranchNew& br = GetBranch(tips_id.at(i));
                         br.AddPoint(points.at(i));
+                    }
+                    else
+                        throw invalid_argument("Such branch does not exist");
+
+                return *this;
+            }
+
+
+            ///Adds  absolute @param points to Branches @param tips_id.
+            Tree& AddAbsolutePoints(vector<Polar> points, vector<int> tips_id)
+            {
+                for(unsigned int i = 0; i < tips_id.size(); ++i)
+                    if(DoesExistBranch(tips_id.at(i)))
+                    {
+                        BranchNew& br = GetBranch(tips_id.at(i));
+                        br.AddAbsolutePoint(points.at(i));
                     }
                     else
                         throw invalid_argument("Such branch does not exist");

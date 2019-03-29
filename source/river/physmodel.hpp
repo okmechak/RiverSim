@@ -13,6 +13,8 @@ using namespace std;
 namespace River
 {
 
+    typedef double(*fptr)(double x, double y);
+
     class Model
     {   
         public: 
@@ -28,6 +30,9 @@ namespace River
             double height = 1.;
             static constexpr double Rmin = 0.0000000001;
             static constexpr double Rmax = 0.01;
+            double RMaxMesh = 0.01;
+            double MinConstraintArea = 0.0000001;
+            double MeshExponant = 1;
             double biffurcationThreshold = 0.1;
             static constexpr int exponant = 2;
 
@@ -49,6 +54,19 @@ namespace River
             static double WeightFunction(double r)
             {
                 return exp(-pow(r/Rmax, exponant));
+            }
+
+            double MeshRefinmentFunc(vector<Point> tip_points, Point cur_point, double r0, double exponant, double max_area)
+            {
+                vector<double> area_constraint;
+                area_constraint.reserve(tip_points.size());
+                for(auto& tip: tip_points)
+                    area_constraint.push_back(
+                        1 + max_area - exp( - pow( (cur_point - tip).norm()/r0, exponant))
+                    );
+
+                return *min_element(area_constraint.begin(), area_constraint.end());
+
             }
 
 

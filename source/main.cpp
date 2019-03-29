@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
-    auto region_size = vector<double>{1, 1};
+    auto region_size = vector<double>{1, 4};
     auto sources_x_coord = vector<double>{0.1};
     auto sources_id = vector<int>{1};
 
@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
         tria.AreaConstrain = tria.ConstrainAngle = true;
         tria.MaxTriaArea = vm["mesh-max-area"].as<double>();
         tria.MinAngle = vm["mesh-min-angle"].as<double>();
+        tria.Verbose = vm["verbose"].as<bool>();
         tria.CustomConstraint = vm.count("test-flag");
         tria.generate(mesh);
         mesh.convert();
@@ -65,21 +66,34 @@ int main(int argc, char *argv[])
 
         //Simulation
         //Deal.II library
-        River::Solver sim;
-        sim.numOfRefinments = vm["ref-num"].as<int>();
-        sim.SetBoundaryRegionValue(boundary_ids, 0.);
-        sim.OpenMesh(vm["output-mesh"].as<string>());
-        sim.run(0);
-        auto tip_point = tr.GetBranch(sources_id.at(0)).TipPoint();
-        auto tip_angle = tr.GetBranch(sources_id.at(0)).TipAngle();
-        auto series_params = sim.integrate(tip_point, tip_angle);
+        if(vm["simulate"].as<bool>())
+        {
+            River::Solver sim;
+            sim.numOfRefinments = vm["ref-num"].as<int>();
+            sim.SetBoundaryRegionValue(boundary_ids, 0.);
+            sim.OpenMesh(vm["output-mesh"].as<string>());
+            sim.run(0);
+            auto tip_point = tr.GetBranch(sources_id.at(0)).TipPoint();
+            auto tip_angle = tr.GetBranch(sources_id.at(0)).TipAngle();
+            auto series_params = sim.integrate(tip_point, tip_angle);
 
-        cout << "Volume - " << series_params.at(0) << endl;
-
-        cout << "Next Point" << endl;
-        cout << Model::next_point(series_params) << endl;
-        tr.AddPoints({Model::next_point(series_params)}, {sources_id.at(0)});
+            cout << Model::next_point(series_params) << endl;
+            tr.AddAbsolutePoints({Model::next_point(series_params)}, {sources_id.at(0)});
+        }
     }
+
+
+    auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
+
+    Triangle tria;
+    tria.AreaConstrain = tria.ConstrainAngle = true;
+    tria.MaxTriaArea = vm["mesh-max-area"].as<double>();
+    tria.MinAngle = vm["mesh-min-angle"].as<double>();
+    tria.Verbose = vm["verbose"].as<bool>();
+    tria.CustomConstraint = vm.count("test-flag");
+    tria.generate(mesh);
+    mesh.convert();
+    mesh.write(vm["output-mesh"].as<string>());
     
     Gmsh gmsh;
     gmsh.open(vm["output-mesh"].as<string>());

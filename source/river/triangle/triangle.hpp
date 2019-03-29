@@ -252,9 +252,6 @@
 #define REAL double
 #include <vector>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
   struct triangulateio {
     REAL *pointlist;                                               /* In / out */
@@ -293,6 +290,3 @@ extern "C" {
   void trifree(void *memptr);
   void triangulateiofree(struct triangulateio *);
   void set_tria_to_default(struct triangulateio * io);
-#ifdef __cplusplus
-}
-#endif
