@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "triangle.h"
+#include "triangle.hpp"
 
 /*****************************************************************************/
 /*                                                                           */

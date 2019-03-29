@@ -1,6 +1,6 @@
 /*****************************************************************************/
 /*                                                                           */
-/*  (triangle.h)                                                             */
+/*  (triangle.hpp)                                                             */
 /*                                                                           */
 /*  Include file for programs that call Triangle.                            */
 /*                                                                           */
@@ -39,7 +39,7 @@
 /*                                                                           */
 /*  IMPORTANT:  These definitions (TRILIBRARY, REDUCED, CDT_ONLY) must be    */
 /*  made in the makefile or in triangle.c itself.  Putting these definitions */
-/*  in this file (triangle.h) will not create the desired effect.            */
+/*  in this file (triangle.hpp) will not create the desired effect.            */
 /*                                                                           */
 /*                                                                           */
 /*  The calling convention for triangulate() follows.                        */
@@ -250,7 +250,7 @@
 
 #define VOID void
 #define REAL double
-#include <math.h>
+#include <vector>
 
 #ifdef __cplusplus
 extern "C" {

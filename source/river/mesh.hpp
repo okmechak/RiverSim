@@ -6,7 +6,7 @@
 
 //mesh generation tools
 #include <gmsh.h>
-#include "triangle.h"
+#include "triangle.hpp"
 //mesh convertor tool
 #include "tethex.hpp"
 

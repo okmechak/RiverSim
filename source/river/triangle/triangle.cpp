@@ -226,7 +226,7 @@
 /* #define SELF_CHECK */
 
 /* To compile Triangle as a callable object library (triangle.o), define the */
-/*   TRILIBRARY symbol.  Read the file triangle.h for details on how to call */
+/*   TRILIBRARY symbol.  Read the file triangle.hpp for details on how to call */
 /*   the procedure triangulate() that results.                               */
 
 
@@ -340,7 +340,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "triangle.h"
+#include "triangle.hpp"
 
 
 /* Labels that signify the result of point location.  The result of a        */
