@@ -19,9 +19,9 @@ namespace River
         public:
             //FIXME: implement this refinment function in better way
             vector<Point> tip_points;
-            double r0 = 0.1;
-            double exponant = 2;
-            double min_area = 0.0000001;
+            double r0 = 0.2;
+            double exponant = 4;
+            double min_area = 1e-8;
 
             double operator()(double x, double y)
             {
@@ -44,7 +44,7 @@ namespace River
             double eps = 1e-4;
             enum class Method {Royal, Simple, Min, Integral};
             double ac = 0.;
-            static constexpr double ds = 0.01;
+            static constexpr double ds = 0.002;
             double dx = 0.5;
             double width = 1.;
             double height = 1.;

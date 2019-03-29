@@ -33,7 +33,8 @@ namespace River
 
     Polar Model::next_point(vector<double> series_params)
     {
-        double phi = -atan(2*series_params[2]/series_params[1]*sqrt(ds));
+        //FIXME: should here be - or +????
+        double phi = atan(2 * series_params[2]/series_params[1] * sqrt(ds));
         return {ds, phi};
     }
 

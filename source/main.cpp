@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
-    auto region_size = vector<double>{1, 4};
+    auto region_size = vector<double>{1, 1};
     auto sources_x_coord = vector<double>{0.1};
     auto sources_id = vector<int>{1};
 
@@ -48,19 +48,27 @@ int main(int argc, char *argv[])
         sources_id);
 
     Tree tr(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    //tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.1, 0});
+    tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.01, 0});
 
     //Loop
     for(unsigned i = 0; i < vm["number-of-steps"].as<unsigned>(); ++i){
         auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
+        cout << "-------" << endl;
+        cout << "---"<<i<< endl;
+        cout << "-------" << endl;
+        //FIXME:
+        //preparing mesh constraint function
+        AreaConstraint ac;
+        ac.tip_points = tr.TipPoints();
 
         Triangle tria;
         tria.AreaConstrain = tria.ConstrainAngle = true;
         tria.MaxTriaArea = vm["mesh-max-area"].as<double>();
         tria.MinAngle = vm["mesh-min-angle"].as<double>();
         tria.Verbose = vm["verbose"].as<bool>();
+        tria.Quite =  true;
         tria.CustomConstraint = vm.count("test-flag");
-        tria.generate(mesh);
+        tria.generate(mesh, &ac);
         mesh.convert();
         mesh.write(vm["output-mesh"].as<string>());
 
@@ -72,13 +80,18 @@ int main(int argc, char *argv[])
             sim.numOfRefinments = vm["ref-num"].as<int>();
             sim.SetBoundaryRegionValue(boundary_ids, 0.);
             sim.OpenMesh(vm["output-mesh"].as<string>());
-            sim.run(0);
+            sim.run(i);
             auto tip_point = tr.GetBranch(sources_id.at(0)).TipPoint();
             auto tip_angle = tr.GetBranch(sources_id.at(0)).TipAngle();
             auto series_params = sim.integrate(tip_point, tip_angle);
-
-            cout << Model::next_point(series_params) << endl;
-            tr.AddAbsolutePoints({Model::next_point(series_params)}, {sources_id.at(0)});
+            cout << "serieas_params: " 
+                << series_params.at(0) << " "
+                << series_params.at(1) << " "
+                << series_params.at(2) << endl;
+            cout << "tip_angle: " << tip_angle << endl;
+            cout << "tip_point: " << tip_point << endl;
+            cout << "new point: " << Model::next_point(series_params) << endl;
+            tr.AddPolars({Model::next_point(series_params)}, {sources_id.at(0)});
         }
     }
 
@@ -91,7 +104,9 @@ int main(int argc, char *argv[])
     tria.MinAngle = vm["mesh-min-angle"].as<double>();
     tria.Verbose = vm["verbose"].as<bool>();
     tria.CustomConstraint = vm.count("test-flag");
-    tria.generate(mesh);
+    AreaConstraint ac;
+    ac.tip_points = tr.TipPoints();
+    tria.generate(mesh, &ac);
     mesh.convert();
     mesh.write(vm["output-mesh"].as<string>());
     
