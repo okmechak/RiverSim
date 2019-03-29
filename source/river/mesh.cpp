@@ -401,7 +401,7 @@ struct triangulateio* Triangle::get_voronoi()
 
 
 
-void Triangle::generate(tethex::Mesh &initMesh)
+void Triangle::generate(tethex::Mesh &initMesh, AreaConstraint* area_constraint)
 {
     set_all_values_to_default();
 
@@ -414,7 +414,7 @@ void Triangle::generate(tethex::Mesh &initMesh)
     }
 
     //Main call to Triangle
-    triangulate(options.c_str(), &in, &out, &vorout);
+    triangulate(options.c_str(), &in, &out, &vorout, area_constraint);
     
     if (Verbose)
     {

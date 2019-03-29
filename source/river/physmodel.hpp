@@ -5,6 +5,7 @@
 #include <functional>
 #include <complex>
 #include <math.h>
+#include <algorithm>
 
 #include "common.hpp"
 
@@ -12,8 +13,27 @@ using namespace std;
 
 namespace River
 {
+    //FIXME:
+    class AreaConstraint
+    {
+        public:
+            //FIXME: implement this refinment function in better way
+            vector<Point> tip_points;
+            double r0 = 0.1;
+            double exponant = 2;
+            double min_area = 0.0000001;
 
-    typedef double(*fptr)(double x, double y);
+            double operator()(double x, double y)
+            {
+                vector<double> area_constraint(tip_points.size(), 1/*some large area value*/);
+                for(auto& tip: tip_points)
+                    area_constraint.push_back(
+                        1 + min_area - exp( - pow( (Point{x, y} - tip).norm()/r0, exponant))
+                    );
+                return *min_element(area_constraint.begin(), area_constraint.end());
+            }
+    };
+
 
     class Model
     {   
@@ -55,22 +75,5 @@ namespace River
             {
                 return exp(-pow(r/Rmax, exponant));
             }
-
-            double MeshRefinmentFunc(vector<Point> tip_points, Point cur_point, double r0, double exponant, double max_area)
-            {
-                vector<double> area_constraint;
-                area_constraint.reserve(tip_points.size());
-                for(auto& tip: tip_points)
-                    area_constraint.push_back(
-                        1 + max_area - exp( - pow( (cur_point - tip).norm()/r0, exponant))
-                    );
-
-                return *min_element(area_constraint.begin(), area_constraint.end());
-
-            }
-
-
-
-
     };
 }

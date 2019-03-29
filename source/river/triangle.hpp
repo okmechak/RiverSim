@@ -290,7 +290,7 @@ struct triangulateio {
 
 //FIXME: mdl
 void triangulate(const char *, struct triangulateio *, struct triangulateio *,
-                 struct triangulateio *, River::Model *mdl = NULL);
+                 struct triangulateio *, River::AreaConstraint *ac = NULL);
 void trifree(void *memptr);
 void triangulateiofree(struct triangulateio *);
 void set_tria_to_default(struct triangulateio * io);

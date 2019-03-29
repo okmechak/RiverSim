@@ -1,13 +1,16 @@
 cmake_minimum_required(VERSION ${min_version})
 
 add_subdirectory(tethex)
-add_subdirectory(triangle)
+#FIXME:
+#add_subdirectory(triangle)
 
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/tethex
-    ${CMAKE_CURRENT_SOURCE_DIR}/triangle)
+    ${CMAKE_CURRENT_SOURCE_DIR}/tethex)
+    #${CMAKE_CURRENT_SOURCE_DIR}/triangle)FIXME
 
-set(SOURCE_FILES 
+set(SOURCE_FILES
+    triangle.hpp#FIXME
+    triangle.cpp
     riversim.cpp
     riversim.hpp
     common.hpp
@@ -31,4 +34,5 @@ set(SOURCE_FILES
 add_library(river STATIC ${SOURCE_FILES})
 deal_ii_setup_target(river)
 
-target_link_libraries(river tethex triangle ${GMSH_LIB})
+#FIXME
+target_link_libraries(river tethex ${GMSH_LIB}) #triangle 

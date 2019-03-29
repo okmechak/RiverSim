@@ -7,9 +7,12 @@
 //mesh generation tools
 #include <gmsh.h>
 #include "triangle.hpp"
+
 //mesh convertor tool
 #include "tethex.hpp"
 
+//other dependencies
+#include "physmodel.hpp"
 #include "geometry.hpp"
 
 using namespace std;
@@ -84,8 +87,7 @@ namespace River
 
       struct triangulateio tethex_to_io(tethex::Mesh &initMesh) const;
 
-      void io_to_tethex(
-        struct triangulateio &io, tethex::Mesh &initMesh);
+      void io_to_tethex(struct triangulateio &io, tethex::Mesh &initMesh);
       
     public:
       void print_geometry(struct triangulateio &io) const;
@@ -132,7 +134,8 @@ namespace River
 
       Triangle();
       ~Triangle();
-      void generate(tethex::Mesh &initMesh);
+      //FIXME: make a better interface to area constraint function
+      void generate(tethex::Mesh &initMesh, AreaConstraint* mdl = NULL);
 
   };
 

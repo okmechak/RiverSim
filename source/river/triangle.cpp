@@ -1371,18 +1371,18 @@ void set_tria_to_default(struct triangulateio *io)
 
 
 //FIXME: remove this hardcode with global variable!!!
-River::Model* mdl_global = NULL;
+River::AreaConstraint* ac_global = NULL;
 int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
 {
   //test of adaptive mesh function
   bool q_refine = false;
-  if(mdl_global != NULL)
+  if(ac_global != NULL)
   {
     double 
-      vert_val_1 = (*mdl_global)(triorg[0], triorg[1]), 
-      vert_val_2 = (*mdl_global)(tridest[0], tridest[1]), 
-      vert_val_3 = (*mdl_global)(triapex[0], triapex[1]);
-      q_refine = area > vert_val_1 || area > vert_val_2 || area > vert_val_3;
+      vert_val_1 = (*ac_global)(triorg[0], triorg[1]), 
+      vert_val_2 = (*ac_global)(tridest[0], tridest[1]), 
+      vert_val_3 = (*ac_global)(triapex[0], triapex[1]);
+    q_refine = (area > vert_val_1 || area > vert_val_2 || area > vert_val_3);
   }
 
   return (int)q_refine;
@@ -11392,7 +11392,7 @@ void statistics(struct mesh *m, struct behavior *b)
 /*****************************************************************************/
 
 void triangulate(const char *triswitches, struct triangulateio *in,
-                 struct triangulateio *out, struct triangulateio *vorout, River::Model* mdl)
+                 struct triangulateio *out, struct triangulateio *vorout, River::AreaConstraint* ac)
 {
   struct mesh m;
   struct behavior b;
@@ -11400,7 +11400,7 @@ void triangulate(const char *triswitches, struct triangulateio *in,
   REAL *regionarray; /* Array of regional attributes and area constraints. */
 
   //FIXME: remove this global function
-  mdl_global = mdl;
+  ac_global = ac;
 
   triangleinit(&m);
   parsecommandline(1, &triswitches, &b);
