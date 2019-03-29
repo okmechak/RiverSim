@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     Model mdl;
     tethex::Mesh border_mesh;
     Border border(border_mesh);
-    border.eps = mdl.eps;
+    border.eps = mdl.eps = vm["eps"].as<double>();
     border.MakeRectangular(
         region_size, 
         boundary_ids,
@@ -81,17 +81,36 @@ int main(int argc, char *argv[])
             sim.SetBoundaryRegionValue(boundary_ids, 0.);
             sim.OpenMesh(vm["output-mesh"].as<string>());
             sim.run(i);
-            auto tip_point = tr.GetBranch(sources_id.at(0)).TipPoint();
-            auto tip_angle = tr.GetBranch(sources_id.at(0)).TipAngle();
-            auto series_params = sim.integrate(tip_point, tip_angle);
-            cout << "serieas_params: " 
-                << series_params.at(0) << " "
-                << series_params.at(1) << " "
-                << series_params.at(2) << endl;
-            cout << "tip_angle: " << tip_angle << endl;
-            cout << "tip_point: " << tip_point << endl;
-            cout << "new point: " << Model::next_point(series_params) << endl;
-            tr.AddPolars({Model::next_point(series_params)}, {sources_id.at(0)});
+
+            for(auto id: tr.TipBranchesId())
+            {
+                auto tip_point = tr.GetBranch(id).TipPoint();
+                auto tip_angle = tr.GetBranch(id).TipAngle();
+                auto series_params = sim.integrate(tip_point, tip_angle);
+
+                cout << "serieas_params: " 
+                    << series_params.at(0) << " "
+                    << series_params.at(1) << " "
+                    << series_params.at(2) << endl;
+                cout << "tip_angle: " << tip_angle << endl;
+                cout << "tip_point: " << tip_point << endl;
+                cout << "new point: " << Model::next_point(series_params) << endl;
+
+                if(mdl.q_biffurcate(series_params))
+                {
+                    auto br_left = BranchNew(tip_point, tip_angle + mdl.biff_angle);
+                    br_left.AddPoint(Polar{mdl.ds, 0});
+                    auto br_right = BranchNew(tip_point, tip_angle - mdl.biff_angle);
+                    br_right.AddPoint(Polar{mdl.ds, 0});
+                    tr.AddSubBranches(id, br_left, br_right);
+                }
+                else
+                {
+                    auto& br = tr.GetBranch(id);
+                    br.AddPoint(Model::next_point(series_params));
+                }
+            }
+            //Biffurcation
         }
     }
 
