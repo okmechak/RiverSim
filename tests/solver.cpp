@@ -22,7 +22,7 @@ namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( integration_params_test, 
-    *utf::tolerance(eps))
+    *utf::tolerance(1e-1))
 {   
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     AreaConstraint ac;
     //1e-12 - is to small and we receive strange mesh
     ac.min_area = 1e-10;
-    ac.r0 = 0.35;
+    ac.r0 = 0.25;
     ac.exponant = 4;
     ac.tip_points = {River::Point{0.25, 0.1}};
     tethex::Mesh border_mesh;
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
 
 BOOST_AUTO_TEST_CASE( integration_test, 
-    *utf::tolerance(eps) * utf::disabled())
+    *utf::tolerance(1e-1) * utf::disabled())
 {
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     AreaConstraint ac;
     //1e-12 - is to small and we receive strange mesh
     ac.min_area = 1e-10;
-    ac.r0 = 0.35;
+    ac.r0 = 0.25;
     ac.exponant = 4;
     ac.tip_points = {River::Point{0.25, 0.1}};
     tethex::Mesh border_mesh;
