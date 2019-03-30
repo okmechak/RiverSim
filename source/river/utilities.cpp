@@ -21,7 +21,6 @@ namespace River
         cout << ProgramTitle+ " version: 1.0.0" << endl;
     }
 
-
     cxxopts::ParseResult process_program_options(int argc, char *argv[])
     {
         using namespace cxxopts;
@@ -65,9 +64,9 @@ namespace River
         ("Z,visualise", "Run GMSH gui and visualise current mesh", value<bool>()->default_value("true"))
 
         //Model parameters
-        ("n,number-of-steps", "Number of steps to simulate", value<unsigned>()->default_value("3"))
-        ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.1"))
-        ("dx", "dx - shift of initial river position from beginning of coordinates", value<double>()->default_value("0.5"))
+        ("n,number-of-steps", "Number of steps to simulate(-1 - infinity)", value<int>()->default_value("-1"))
+        ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.01"))
+        ("dx", "dx - shift of initial river position from beginning of coordinates", value<double>()->default_value("0.1"))
         ("A,mesh-max-area", "constraints maximal area of triangle element", value<double>()->default_value("0.01."))
         ("q,mesh-min-angle", "constraints minimal angle of triangle element", value<double>()->default_value("20."))
         ("e,eps", "Width of branch", value<double>()->default_value("0.000001"))

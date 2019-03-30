@@ -28,19 +28,20 @@ int main(int argc, char *argv[])
     if (!vm.count("supprchess-signature"))
         print_ascii_signature();
 
-    if(!vm["dev-mode"].as<bool>())
-        ForwardRiverEvolution(vm);
+    Model mdl;
+    mdl.eps = vm["eps"].as<double>();
+    mdl.ds = vm["ds"].as<double>();
+    mdl.dx = vm["dx"].as<double>();
 
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
-    auto region_size = vector<double>{1, 1};
-    auto sources_x_coord = vector<double>{0.1};
+    auto region_size = vector<double>{mdl.width, mdl.height};
+    auto sources_x_coord = vector<double>{mdl.dx};
     auto sources_id = vector<int>{1};
 
-    Model mdl;
     tethex::Mesh border_mesh;
     Border border(border_mesh);
-    border.eps = mdl.eps = vm["eps"].as<double>();
+    border.eps = mdl.eps;
     border.MakeRectangular(
         region_size, 
         boundary_ids,
@@ -48,10 +49,13 @@ int main(int argc, char *argv[])
         sources_id);
 
     Tree tr(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.01, 0});
 
-    //Loop
-    for(unsigned i = 0; i < vm["number-of-steps"].as<unsigned>(); ++i){
+    //MAIN LOOP
+    for(int i = 0; 
+        (vm["number-of-steps"].as<int>()==-1)? true: i < vm["number-of-steps"].as<int>(); 
+        ++i)
+        
+        {
         auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
         cout << "-------" << endl;
         cout << "---"<<i<< endl;
@@ -67,7 +71,7 @@ int main(int argc, char *argv[])
         tria.MinAngle = vm["mesh-min-angle"].as<double>();
         tria.Verbose = vm["verbose"].as<bool>();
         tria.Quite =  true;
-        tria.CustomConstraint = vm.count("test-flag");
+        tria.CustomConstraint = true;
         tria.generate(mesh, &ac);
         mesh.convert();
         mesh.write(vm["output-mesh"].as<string>());
@@ -94,7 +98,7 @@ int main(int argc, char *argv[])
                     << series_params.at(2) << endl;
                 cout << "tip_angle: " << tip_angle << endl;
                 cout << "tip_point: " << tip_point << endl;
-                cout << "new point: " << Model::next_point(series_params) << endl;
+                cout << "new point: " << mdl.next_point(series_params) << endl;
 
                 if(mdl.q_biffurcate(series_params))
                 {
@@ -105,10 +109,7 @@ int main(int argc, char *argv[])
                     tr.AddSubBranches(id, br_left, br_right);
                 }
                 else
-                {
-                    auto& br = tr.GetBranch(id);
-                    br.AddPoint(Model::next_point(series_params));
-                }
+                    tr.GetBranch(id).AddPoint(mdl.next_point(series_params));
             }
             //Biffurcation
         }

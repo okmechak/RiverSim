@@ -51,3 +51,15 @@ BOOST_AUTO_TEST_CASE( area_constraint_test,
     ac.tip_points = {{0, 0}, {0.1, 0.1}, {0.1,0}};
     BOOST_TEST(ac(0.05, 0.05) == 0.8647647167633872);
 }
+
+BOOST_AUTO_TEST_CASE( next_point_method, 
+    *utf::tolerance(eps))
+{
+    Model mdl;
+    auto p = mdl.next_point({0.0233587, 0.0117224, 0.621602});
+    BOOST_TEST(p.r == mdl.ds);
+    BOOST_TEST(p.phi == -0.1000335889387177);
+    BOOST_TEST(atan(1) == M_PI/4);
+    BOOST_TEST(atan(sqrt(3)) == M_PI/3);
+
+}
