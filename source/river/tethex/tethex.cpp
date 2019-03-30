@@ -700,18 +700,15 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
 {
   vertices = vertexesVal;
 }
-/**
-                 * Append the vertex vector
-                 * @param vertexes - the vector of vertexes
-                 */
+
+
+
   void Mesh::append_vertexes(std::vector<Point> &vertexes_val)
   {
     vertices.insert(end(vertices), vertexes_val.begin(), vertexes_val.end());
   }
-                /**
-                 * Set the physical points
-                 * @param points - the vector of points
-                 */
+               
+
   void Mesh::set_points(std::vector<MeshElement *> &pointsVal)
   {
     for (size_t i = 0; i < points.size(); ++i)
@@ -720,29 +717,21 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
     points = pointsVal;
   }
 
-                /**
-                 * Set the physical lines
-                 * @param lines - the vector of lines
-                 */
+
   void Mesh::set_lines(std::vector<MeshElement *> &linesVal)
   { 
     for (size_t i = 0; i < lines.size(); ++i)
       delete lines.at(i);
     lines = linesVal;
   }
-  /**
-                 * Set the physical lines
-                 * @param lines - the vector of lines
-                 */
+ 
+
   void Mesh::append_lines(std::vector<MeshElement *> &lines_val)
   {
     lines.insert(end(lines), lines_val.begin(), lines_val.end());
   }
 
-                /**
-                 * Set the mesh triangles
-                 * @param triangles - the vector of triangles
-                 */
+
   void Mesh::set_triangles(std::vector<MeshElement *> &trianglesVal)
   {
     for (size_t i = 0; i < triangles.size(); ++i)
@@ -752,10 +741,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
     triangles = trianglesVal;
   }
    
-                /**
-                 * Set the mesh quadrangles
-                 * @param quadrangles - the vector of quadrangles
-                 */
+  
   void Mesh::set_quadrangles(std::vector<MeshElement *> &quadranglesVal)
   {
     for (size_t i = 0; i < quadrangles.size(); ++i)

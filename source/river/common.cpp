@@ -1,5 +1,7 @@
 #include "common.hpp"
 
+#include <math.h>
+
 namespace River
 {
 

@@ -1,10 +1,11 @@
 #include "utilities.hpp"
+#include <iostream>
 
 namespace River
 {
 
     string ProgramTitle = "RiverSim 2018";
-
+    
     void print_ascii_signature()
     {
         cout << endl;

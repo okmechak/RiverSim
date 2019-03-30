@@ -1,3 +1,10 @@
+/*! 
+  \file riversim.hpp
+  
+  PDE Solver and Integration tool.
+
+  Incapsulates all logic of Deal.II PDE solver library and postprocessing of its results.
+*/
 #pragma once
 
 #include <deal.II/base/quadrature_lib.h>

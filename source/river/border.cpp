@@ -89,7 +89,7 @@ namespace River
         auto points = borderMesh.get_points();
         for(unsigned i = 0; i < points.size(); ++i)
         {
-            //we are using __material_id__ as simply __id___ to distinguish different source points
+            //we are using __material_id__ as simply __id__ to distinguish different source points
             auto id = points[i]->get_material_id();
             if(IsSource(id))
             {
@@ -107,7 +107,7 @@ namespace River
         auto points = borderMesh.get_points();
 
         for(unsigned i = 0; i < points.size(); i+=2)
-            //we are using __material_id__ as simply __id___ to distinguish different source points
+            //we are using __material_id__ as simply __id__ to distinguish different source points
             if(IsSource(points.at(i)->get_material_id()))
             {    
                 auto vert_left = borderMesh.get_vertex(points.at(i)->get_vertex(0));

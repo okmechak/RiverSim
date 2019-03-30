@@ -1,15 +1,20 @@
+/*! \file comon.hpp
+    \brief Common geometric entities to whole program.
+    
+    Like Point(or Vector), Polar - same vector but in Polar coordinates and simple
+    Line element.
+*/
 #pragma once
 
 #include <vector>
-#include <math.h>
 #include <iostream>
 
 using namespace std;
 
 
-/*
-  hash pairing function used for uordered map 
-*/
+/**
+ * Hash pairing function used for uordered map 
+ */
 namespace std
 {
 template <>
@@ -27,17 +32,19 @@ struct hash<pair<int, int>>
 
 namespace River
 {
-/*
-  Is used to simply describe one branch of river. From one
-  biffurcation point to another
-*/
+/**
+ * Vector represented in polar coordinates.
+ */
 class Polar
 {
   public:
+
     Polar() = default;
     Polar(double dlval, double phival):
       r{dlval}, phi{phival} {};
+    ///radius of points
     double r = 0.;
+    ///angle of point
     double phi = 0.;
     
     friend ostream& operator <<(ostream& write, const Polar & p)
@@ -47,34 +54,60 @@ class Polar
     }
 };
 
-/*
-  Point struct and feew functions to work with it
-*/
+/**
+ * Point struct and feew functions to work with it.
+ */
 class Point
 {
   private:
+    ///Absolute precission parameter, used in Point comparsion
     double eps = 1e-13;
 
   public:
+    ///Point coordinates;
     double x = 0, y = 0;
 
     Point() = default;
     ~Point() = default;
     Point(double xval, double yval);
     Point(const Point &p) = default;
+    ///Converts Polar coordinates to Cartesian of Point.
     Point(const Polar &p);
 
+    ///Returns norm of vector.
     double norm() const;
+
+    ///Evaluates norm of vector {x, y}.
     static double norm(double x, double y);
+
+    ///Returns normalized vector of current Point.
     Point getNormalized();
+
+    ///Rotates point on __phi__ angle(counterclockwise)
     Point& rotate(double phi);
+
+    ///Returns Polar representation of vector.
     Polar getPolar() const;
+
+    ///Normalizes current Point.
     Point& normalize();
+
+    ///Returns angle.
     double angle() const;
+
+    ///Returns angle of {x, y} vector.
     static double angle(double x, double y);
+
+    ///Returns angle relatively to __p__ Point
     double angle(Point &p) const;
+
+    ///Prints point
     Point& print();
 
+    /**
+    * @name Math operations
+    * @{
+    */
     Point& operator=(const Point& p) = default;
     Point operator+(const Point& p) const;
     Point& operator+=(const Point& p);
@@ -87,11 +120,14 @@ class Point
     Point operator/(const double gain) const;
     Point& operator/=(const double gain);
     bool operator==(const Point& p) const;
+    /**
+     * @}
+     */
 
     friend ostream& operator <<(ostream& write, const Point & p);
 };
 
-
+///Line - holds indexes of __p1__ and __p2__ vertices.
 class Line
 {
   unsigned int p1, p2;
