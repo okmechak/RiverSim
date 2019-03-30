@@ -7,8 +7,11 @@ namespace River
                 vector<double> regionSize, vector<int> boundariesId,
                 vector<double> sourcesXCoord, vector<int> sourcesId)
     {
-        auto width = regionSize[0],
-            height = regionSize[1];
+        if(sourcesXCoord.at(0) <= 0 || sourcesXCoord.back() >= regionSize.at(0))
+            throw invalid_argument("X coords of sources should be in interval (0, width)");
+
+        auto width = regionSize.at(0),
+            height = regionSize.at(1);
 
         //corner Points of rectangular region
         vector<tet::Point> regionPoints{
@@ -21,9 +24,9 @@ namespace River
         //Border Lines
         vector<tet::MeshElement * > borderLines
         {
-            new tet::Line(0, 1, boundariesId[0]),//indexes starts from zero
-            new tet::Line(1, 2, boundariesId[1]),
-            new tet::Line(2, 3, boundariesId[2])
+            new tet::Line(0, 1, boundariesId.at(0)),//indexes starts from zero
+            new tet::Line(1, 2, boundariesId.at(1)),
+            new tet::Line(2, 3, boundariesId.at(2))
         };
         
         //Iterating over sources points
@@ -40,7 +43,7 @@ namespace River
             if(i < sourcesId.size())
                 borderLines.push_back(
                     new tet::Line(regionPoints.size() - 2, regionPoints.size() - 1,
-                        boundariesId[3]));
+                        boundariesId.at(3)));
 
 
             //Pushing right point
