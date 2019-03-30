@@ -653,6 +653,8 @@ Mesh& Mesh::operator =(const Mesh& msh)
         msh.get_quadrangle(i).get_vertex(3), 
         msh.get_quadrangle(i).get_material_id()));
   }
+
+  return *this;
 }
 
 

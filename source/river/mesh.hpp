@@ -13,7 +13,6 @@
 
 //other dependencies
 #include "physmodel.hpp"
-#include "geometry.hpp"
 
 using namespace std;
 
@@ -159,7 +158,7 @@ namespace River
       void set_nodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
       void set_elements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
       void set_geometry(tethex::Mesh &meshio);
-      void generate(vector<GeomPoint> points);
+      void generate(vector<Point> points);
       void generate(tethex::Mesh & meshio);
       void test_mesh();
       void start_ui();

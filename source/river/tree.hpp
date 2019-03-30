@@ -1,4 +1,4 @@
-/*! \file geometrynew.hpp
+/*! \file tree.hpp
     \brief Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry
     
     This file holds several classes like @BranchNew, @Tree, @GeometryNew.

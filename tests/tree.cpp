@@ -8,7 +8,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <math.h>
-#include "geometrynew.hpp"
+#include "tree.hpp"
 #include "border.hpp"
 
 using namespace River;
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     BranchNew& br = tr.GetBranch(1);
     br.AddPoint(Polar{0.1, 0});
     tree_vector.clear();
-    BOOST_TEST_CHECKPOINT("lala");
+    
     TreeVector(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
     p = Point{0.5 - 1e-3/2, 0};

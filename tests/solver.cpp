@@ -10,7 +10,7 @@
 #include <math.h>
 #include "solver.hpp"
 #include "border.hpp"
-#include "geometrynew.hpp"
+#include "tree.hpp"
 #include "mesh.hpp"
 
 using namespace River;

@@ -15,10 +15,8 @@ set(SOURCE_FILES
     riversim.hpp
     common.hpp
     common.cpp
-    geometry.hpp
-    geometry.cpp
-    geometrynew.hpp
-    geometrynew.cpp
+    tree.hpp
+    tree.cpp
     mesh.hpp
     mesh.cpp
     solver.hpp

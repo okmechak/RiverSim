@@ -142,14 +142,19 @@ namespace River
     int Border::GetAdjacentPointId(int point_id) const
     {
         //it should have only one point, cos it is a border
-        tethex::MeshElement* adjacent_line;
+        tethex::MeshElement* adjacent_line = NULL;
         for(auto line: borderMesh.get_lines())
             if(line->contains(point_id))
                 adjacent_line = line;
-
-        auto vertexIndex = adjacent_line->get_vertex(0);
-        if(point_id == vertexIndex)
-            vertexIndex = adjacent_line->get_vertex(1);
+        int vertexIndex = -1;
+        if(adjacent_line == NULL)
+            throw invalid_argument("Adjacent line was not found.");
+        else
+        {
+            vertexIndex = adjacent_line->get_vertex(0);
+            if(point_id == vertexIndex)
+                vertexIndex = adjacent_line->get_vertex(1);
+        }
         
         return vertexIndex;
     }
