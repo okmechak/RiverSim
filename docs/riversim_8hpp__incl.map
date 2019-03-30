@@ -1,11 +1,11 @@
 <map id="/home/oleg/Dev/riversim/source/river/riversim.hpp" name="/home/oleg/Dev/riversim/source/river/riversim.hpp">
-<area shape="rect" id="node2" href="$utilities_8hpp.html" title="utilities.hpp" alt="" coords="92,95,180,121"/>
-<area shape="rect" id="node5" href="$geometry_8hpp.html" title="geometry.hpp" alt="" coords="1291,177,1392,203"/>
-<area shape="rect" id="node13" href="$geometrynew_8hpp.html" title="Holds all functionality that you need to work with tree of river, its separate branches and generatio..." alt="" coords="452,95,577,121"/>
-<area shape="rect" id="node15" href="$physmodel_8hpp.html" title="physmodel.hpp" alt="" coords="326,177,437,203"/>
-<area shape="rect" id="node16" href="$border_8hpp.html" title="Generate some initial predefinide border geometry and its source positions. " alt="" coords="563,177,645,203"/>
-<area shape="rect" id="node17" href="$mesh_8hpp.html" title="mesh.hpp" alt="" coords="858,95,937,121"/>
-<area shape="rect" id="node22" href="$solver_8hpp.html" title="solver.hpp" alt="" coords="3516,95,3599,121"/>
-<area shape="rect" id="node11" href="$common_8hpp.html" title="common.hpp" alt="" coords="726,259,823,285"/>
-<area shape="rect" id="node12" href="$tethex_8hpp.html" title="tethex.hpp" alt="" coords="1060,259,1143,285"/>
+<area shape="rect" id="node2" href="$utilities_8hpp.html" title="Console printouts, version, title and program options processing. " alt="" coords="35,95,123,121"/>
+<area shape="rect" id="node4" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree of river, its separate branches and generatio..." alt="" coords="515,169,584,196"/>
+<area shape="rect" id="node12" href="$physmodel_8hpp.html" title="Physical model incapsulation. " alt="" coords="638,251,749,278"/>
+<area shape="rect" id="node15" href="$border_8hpp.html" title="Generate initial predefinide border geometry and its source positions. " alt="" coords="277,251,360,278"/>
+<area shape="rect" id="node16" href="$mesh_8hpp.html" title="Wrappers classes to Triangle and Gmsh. " alt="" coords="422,95,501,121"/>
+<area shape="rect" id="node21" href="$solver_8hpp.html" title="PDE Solver and Integration tool. " alt="" coords="3087,169,3169,196"/>
+<area shape="rect" id="node9" href="$common_8hpp.html" title="Common geometric entities to whole program. " alt="" coords="537,333,634,360"/>
+<area shape="rect" id="node10" href="$tethex_8hpp.html" title="tethex &#45; tetrahedra to hexahedra conversion Copyright (c) 2013 Mikhail Artemyev Report issues: github..." alt="" coords="280,333,363,360"/>
+<area shape="rect" id="node20" href="$triangle_8hpp.html" title="Piece of Art Mesh Generation Tool, Winner of the 2003 James Hardy Wilkinson Prize in Numerical Softwa..." alt="" coords="225,169,314,196"/>
 </map>

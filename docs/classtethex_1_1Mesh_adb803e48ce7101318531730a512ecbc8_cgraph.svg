@@ -9,294 +9,294 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 442.7284)">
 <title>tethex::Mesh::convert_2D</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-442.7284 750,-442.7284 750,4 -4,4"/>
-<!-- Node228 -->
+<!-- Node225 -->
 <g id="node1" class="node">
-<title>Node228</title>
+<title>Node225</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-252.2077 0,-271.2077 130,-271.2077 130,-252.2077 0,-252.2077"/>
 <text text-anchor="middle" x="65" y="-259.2077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert_2D</text>
 </g>
-<!-- Node229 -->
+<!-- Node226 -->
 <g id="node2" class="node">
-<title>Node229</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" target="_top" xlink:title="tethex::Mesh::edge\l_numeration">
+<title>Node226</title>
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" target="_top" xlink:title="Numerate the edges of simplices. ">
 <polygon fill="#ffffff" stroke="#000000" points="328,-290.7077 328,-320.7077 429,-320.7077 429,-290.7077 328,-290.7077"/>
 <text text-anchor="start" x="336" y="-308.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::edge</text>
 <text text-anchor="middle" x="378.5" y="-297.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_numeration</text>
 </a>
 </g>
 </g>
-<!-- Node228&#45;&gt;Node229 -->
+<!-- Node225&#45;&gt;Node226 -->
 <g id="edge1" class="edge">
-<title>Node228&#45;&gt;Node229</title>
+<title>Node225&#45;&gt;Node226</title>
 <path fill="none" stroke="#191970" d="M130.3383,-270.878C185.4652,-278.6151 263.7785,-289.6064 317.6085,-297.1615"/>
 <polygon fill="#191970" stroke="#191970" points="317.3091,-300.6537 327.6985,-298.5777 318.2821,-293.7217 317.3091,-300.6537"/>
 </g>
-<!-- Node233 -->
+<!-- Node230 -->
 <g id="node6" class="node">
-<title>Node233</title>
-<g id="a_node6"><a xlink:href="classtethex_1_1Mesh.html#a8e5d9c057c6f562d5036f262a23af29c" target="_top" xlink:title="tethex::Mesh::set_new\l_vertices">
+<title>Node230</title>
+<g id="a_node6"><a xlink:href="classtethex_1_1Mesh.html#a8e5d9c057c6f562d5036f262a23af29c" target="_top" xlink:title="During conversion we add new vertices &#45; at the centers of edges, triangles, tetrahedra. ">
 <polygon fill="#ffffff" stroke="#000000" points="166,-25.7077 166,-55.7077 282,-55.7077 282,-25.7077 166,-25.7077"/>
 <text text-anchor="start" x="174" y="-43.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::set_new</text>
 <text text-anchor="middle" x="224" y="-32.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertices</text>
 </a>
 </g>
 </g>
-<!-- Node228&#45;&gt;Node233 -->
+<!-- Node225&#45;&gt;Node230 -->
 <g id="edge6" class="edge">
-<title>Node228&#45;&gt;Node233</title>
+<title>Node225&#45;&gt;Node230</title>
 <path fill="none" stroke="#191970" d="M72.0372,-251.9265C95.6871,-219.0546 172.7482,-111.9445 207.15,-64.1282"/>
 <polygon fill="#191970" stroke="#191970" points="210.0556,-66.0826 213.0546,-55.9211 204.3733,-61.9945 210.0556,-66.0826"/>
 </g>
-<!-- Node235 -->
+<!-- Node232 -->
 <g id="node8" class="node">
-<title>Node235</title>
-<g id="a_node8"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="tethex::Mesh::convert\l_triangles">
+<title>Node232</title>
+<g id="a_node8"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="Conversion from triangles to quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="168,-224.7077 168,-254.7077 280,-254.7077 280,-224.7077 168,-224.7077"/>
 <text text-anchor="start" x="176" y="-242.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 <text text-anchor="middle" x="224" y="-231.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_triangles</text>
 </a>
 </g>
 </g>
-<!-- Node228&#45;&gt;Node235 -->
+<!-- Node225&#45;&gt;Node232 -->
 <g id="edge9" class="edge">
-<title>Node228&#45;&gt;Node235</title>
+<title>Node225&#45;&gt;Node232</title>
 <path fill="none" stroke="#191970" d="M130.1302,-252.696C139.2276,-251.4372 148.5847,-250.1425 157.7034,-248.8808"/>
 <polygon fill="#191970" stroke="#191970" points="158.445,-252.3117 167.8709,-247.474 157.4855,-245.3777 158.445,-252.3117"/>
 </g>
-<!-- Node243 -->
+<!-- Node240 -->
 <g id="node16" class="node">
-<title>Node243</title>
-<g id="a_node16"><a xlink:href="classtethex_1_1Mesh.html#ac4c7819413f5941593722fa1024e1f25" target="_top" xlink:title="tethex::Mesh::redefine\l_lines">
+<title>Node240</title>
+<g id="a_node16"><a xlink:href="classtethex_1_1Mesh.html#ac4c7819413f5941593722fa1024e1f25" target="_top" xlink:title="During mesh conversion we add new vertices. ">
 <polygon fill="#ffffff" stroke="#000000" points="321.5,-383.7077 321.5,-413.7077 435.5,-413.7077 435.5,-383.7077 321.5,-383.7077"/>
 <text text-anchor="start" x="329.5" y="-401.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::redefine</text>
 <text text-anchor="middle" x="378.5" y="-390.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_lines</text>
 </a>
 </g>
 </g>
-<!-- Node228&#45;&gt;Node243 -->
+<!-- Node225&#45;&gt;Node240 -->
 <g id="edge21" class="edge">
-<title>Node228&#45;&gt;Node243</title>
+<title>Node225&#45;&gt;Node240</title>
 <path fill="none" stroke="#191970" d="M87.0447,-271.3413C138.4262,-293.7951 266.9212,-349.9476 334.8412,-379.6287"/>
 <polygon fill="#191970" stroke="#191970" points="333.4438,-382.8377 344.0086,-383.6349 336.2469,-376.4234 333.4438,-382.8377"/>
 </g>
-<!-- Node230 -->
+<!-- Node227 -->
 <g id="node3" class="node">
-<title>Node230</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1IncidenceMatrix.html#a35358d0c7bd51a6c7ce900237f3e7672" target="_top" xlink:title="tethex::IncidenceMatrix\l::get_n_nonzero">
+<title>Node227</title>
+<g id="a_node3"><a xlink:href="classtethex_1_1IncidenceMatrix.html#a35358d0c7bd51a6c7ce900237f3e7672" target="_top" xlink:title="Get the number of non zero elements in the matrix. ">
 <polygon fill="#ffffff" stroke="#000000" points="478,-334.7077 478,-364.7077 597,-364.7077 597,-334.7077 478,-334.7077"/>
 <text text-anchor="start" x="486" y="-352.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::IncidenceMatrix</text>
 <text text-anchor="middle" x="537.5" y="-341.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_n_nonzero</text>
 </a>
 </g>
 </g>
-<!-- Node229&#45;&gt;Node230 -->
+<!-- Node226&#45;&gt;Node227 -->
 <g id="edge2" class="edge">
-<title>Node229&#45;&gt;Node230</title>
+<title>Node226&#45;&gt;Node227</title>
 <path fill="none" stroke="#191970" d="M429.2458,-319.7506C443.2021,-323.6127 458.5248,-327.8529 473.1388,-331.8971"/>
 <polygon fill="#191970" stroke="#191970" points="472.5461,-335.3645 483.1174,-334.6585 474.4131,-328.6181 472.5461,-335.3645"/>
 </g>
-<!-- Node231 -->
+<!-- Node228 -->
 <g id="node4" class="node">
-<title>Node231</title>
-<g id="a_node4"><a xlink:href="classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" target="_top" xlink:title="tethex::IncidenceMatrix\l::find">
+<title>Node228</title>
+<g id="a_node4"><a xlink:href="classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" target="_top" xlink:title="Find a serial number of the non zero element in the matrix. ">
 <polygon fill="#ffffff" stroke="#000000" points="478,-383.7077 478,-413.7077 597,-413.7077 597,-383.7077 478,-383.7077"/>
 <text text-anchor="start" x="486" y="-401.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::IncidenceMatrix</text>
 <text text-anchor="middle" x="537.5" y="-390.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::find</text>
 </a>
 </g>
 </g>
-<!-- Node229&#45;&gt;Node231 -->
+<!-- Node226&#45;&gt;Node228 -->
 <g id="edge3" class="edge">
-<title>Node229&#45;&gt;Node231</title>
+<title>Node226&#45;&gt;Node228</title>
 <path fill="none" stroke="#191970" d="M397.228,-320.9034C416.0692,-335.698 446.358,-358.1653 475,-373.7077 478.6978,-375.7143 482.5916,-377.6509 486.553,-379.4976"/>
 <polygon fill="#191970" stroke="#191970" points="485.2994,-382.7705 495.8591,-383.6337 488.1425,-376.3738 485.2994,-382.7705"/>
 </g>
-<!-- Node232 -->
+<!-- Node229 -->
 <g id="node5" class="node">
-<title>Node232</title>
+<title>Node229</title>
 <g id="a_node5"><a xlink:href="namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" target="_top" xlink:title="tethex::d2s">
 <polygon fill="#ffffff" stroke="#000000" points="658.5,-277.2077 658.5,-296.2077 723.5,-296.2077 723.5,-277.2077 658.5,-277.2077"/>
 <text text-anchor="middle" x="691" y="-284.2077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::d2s</text>
 </a>
 </g>
 </g>
-<!-- Node229&#45;&gt;Node232 -->
+<!-- Node226&#45;&gt;Node229 -->
 <g id="edge5" class="edge">
-<title>Node229&#45;&gt;Node232</title>
+<title>Node226&#45;&gt;Node229</title>
 <path fill="none" stroke="#191970" d="M429.0558,-302.6339C489.8761,-298.9361 590.9181,-292.7927 648.1023,-289.3159"/>
 <polygon fill="#191970" stroke="#191970" points="648.4808,-292.7994 658.2499,-288.6989 648.0559,-285.8123 648.4808,-292.7994"/>
 </g>
-<!-- Node231&#45;&gt;Node232 -->
+<!-- Node228&#45;&gt;Node229 -->
 <g id="edge4" class="edge">
-<title>Node231&#45;&gt;Node232</title>
+<title>Node228&#45;&gt;Node229</title>
 <path fill="none" stroke="#191970" d="M581.2696,-383.7072C587.7559,-380.7775 594.2014,-377.4385 600,-373.7077 630.5824,-354.0311 659.8505,-323.1827 676.5949,-303.9952"/>
 <polygon fill="#191970" stroke="#191970" points="679.3238,-306.1894 683.1694,-296.3171 674.0067,-301.6365 679.3238,-306.1894"/>
 </g>
-<!-- Node233&#45;&gt;Node232 -->
+<!-- Node230&#45;&gt;Node229 -->
 <g id="edge7" class="edge">
-<title>Node233&#45;&gt;Node232</title>
+<title>Node230&#45;&gt;Node229</title>
 <path fill="none" stroke="#191970" d="M270.8575,-25.6841C285.7643,-21.599 302.4278,-17.7431 318,-15.7077 444.6178,.8421 515.6914,25.1986 600,-70.7077 653.0019,-131.0007 592.186,-180.4413 636,-247.7077 642.4077,-257.5452 652.2367,-265.6607 661.8227,-271.8934"/>
 <polygon fill="#191970" stroke="#191970" points="660.0792,-274.9291 670.4527,-277.0835 663.6869,-268.9303 660.0792,-274.9291"/>
 </g>
-<!-- Node234 -->
+<!-- Node231 -->
 <g id="node7" class="node">
-<title>Node234</title>
-<g id="a_node7"><a xlink:href="classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac" target="_top" xlink:title="tethex::Mesh::get_n\l_vertices">
+<title>Node231</title>
+<g id="a_node7"><a xlink:href="classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac" target="_top" xlink:title="Get the number of vertices. ">
 <polygon fill="#ffffff" stroke="#000000" points="326.5,-25.7077 326.5,-55.7077 430.5,-55.7077 430.5,-25.7077 326.5,-25.7077"/>
 <text text-anchor="start" x="334.5" y="-43.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="378.5" y="-32.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertices</text>
 </a>
 </g>
 </g>
-<!-- Node233&#45;&gt;Node234 -->
+<!-- Node230&#45;&gt;Node231 -->
 <g id="edge8" class="edge">
-<title>Node233&#45;&gt;Node234</title>
+<title>Node230&#45;&gt;Node231</title>
 <path fill="none" stroke="#191970" d="M282.4098,-40.7077C293.4666,-40.7077 305.0717,-40.7077 316.242,-40.7077"/>
 <polygon fill="#191970" stroke="#191970" points="316.3499,-44.2078 326.3499,-40.7077 316.3498,-37.2078 316.3499,-44.2078"/>
 </g>
-<!-- Node235&#45;&gt;Node229 -->
+<!-- Node232&#45;&gt;Node226 -->
 <g id="edge10" class="edge">
-<title>Node235&#45;&gt;Node229</title>
+<title>Node232&#45;&gt;Node226</title>
 <path fill="none" stroke="#191970" d="M259.4454,-254.8495C281.5263,-264.2821 310.1282,-276.5004 333.7633,-286.5969"/>
 <polygon fill="#191970" stroke="#191970" points="332.6485,-289.9266 343.2195,-290.6364 335.3984,-283.4893 332.6485,-289.9266"/>
 </g>
-<!-- Node235&#45;&gt;Node232 -->
+<!-- Node232&#45;&gt;Node229 -->
 <g id="edge20" class="edge">
-<title>Node235&#45;&gt;Node232</title>
+<title>Node232&#45;&gt;Node229</title>
 <path fill="none" stroke="#191970" d="M244.431,-224.5253C304.5941,-181.8122 484.1404,-68.8388 600,-149.7077 638.0494,-176.2658 607.8071,-210.8533 636,-247.7077 643.2966,-257.246 653.5782,-265.4029 663.2804,-271.7536"/>
 <polygon fill="#191970" stroke="#191970" points="661.5731,-274.8125 671.9255,-277.066 665.238,-268.8485 661.5731,-274.8125"/>
 </g>
-<!-- Node236 -->
+<!-- Node233 -->
 <g id="node9" class="node">
-<title>Node236</title>
-<g id="a_node9"><a xlink:href="classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" target="_top" xlink:title="tethex::Mesh::find\l_face_from_two_edges">
+<title>Node233</title>
+<g id="a_node9"><a xlink:href="classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" target="_top" xlink:title="Find the global number of face basing on numbers of 2 edges defining that face. ">
 <polygon fill="#ffffff" stroke="#000000" points="319.5,-224.7077 319.5,-254.7077 437.5,-254.7077 437.5,-224.7077 319.5,-224.7077"/>
 <text text-anchor="start" x="327.5" y="-242.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::find</text>
 <text text-anchor="middle" x="378.5" y="-231.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_face_from_two_edges</text>
 </a>
 </g>
 </g>
-<!-- Node235&#45;&gt;Node236 -->
+<!-- Node232&#45;&gt;Node233 -->
 <g id="edge11" class="edge">
-<title>Node235&#45;&gt;Node236</title>
+<title>Node232&#45;&gt;Node233</title>
 <path fill="none" stroke="#191970" d="M280.2151,-239.7077C289.6924,-239.7077 299.627,-239.7077 309.3864,-239.7077"/>
 <polygon fill="#191970" stroke="#191970" points="309.4668,-243.2078 319.4668,-239.7077 309.4667,-236.2078 309.4668,-243.2078"/>
 </g>
-<!-- Node241 -->
+<!-- Node238 -->
 <g id="node14" class="node">
-<title>Node241</title>
-<g id="a_node14"><a xlink:href="namespacetethex.html#a7f8708334371c722c41cab50445d7987" target="_top" xlink:title="tethex::change_vertices\l_order">
+<title>Node238</title>
+<g id="a_node14"><a xlink:href="namespacetethex.html#a7f8708334371c722c41cab50445d7987" target="_top" xlink:title="Change the order of vertices in such a way, that it will be good for deal.II. ">
 <polygon fill="#ffffff" stroke="#000000" points="318,-74.7077 318,-104.7077 439,-104.7077 439,-74.7077 318,-74.7077"/>
 <text text-anchor="start" x="326" y="-92.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::change_vertices</text>
 <text text-anchor="middle" x="378.5" y="-81.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_order</text>
 </a>
 </g>
 </g>
-<!-- Node235&#45;&gt;Node241 -->
+<!-- Node232&#45;&gt;Node238 -->
 <g id="edge18" class="edge">
-<title>Node235&#45;&gt;Node241</title>
+<title>Node232&#45;&gt;Node238</title>
 <path fill="none" stroke="#191970" d="M232.679,-224.6688C247.5028,-200.0507 279.8282,-150.7859 318,-119.7077 322.3754,-116.1455 327.2437,-112.8623 332.2651,-109.8793"/>
 <polygon fill="#191970" stroke="#191970" points="334.3328,-112.7358 341.3955,-104.8384 330.9494,-106.6077 334.3328,-112.7358"/>
 </g>
-<!-- Node236&#45;&gt;Node231 -->
+<!-- Node233&#45;&gt;Node228 -->
 <g id="edge17" class="edge">
-<title>Node236&#45;&gt;Node231</title>
+<title>Node233&#45;&gt;Node228</title>
 <path fill="none" stroke="#191970" d="M408.1558,-254.7939C419.0346,-261.5136 430.7032,-270.284 439,-280.7077 466.6021,-315.3858 443.8351,-342.1927 475,-373.7077 476.4175,-375.1411 477.9277,-376.4949 479.5118,-377.7732"/>
 <polygon fill="#191970" stroke="#191970" points="477.7306,-380.7954 487.9595,-383.5557 481.6845,-375.019 477.7306,-380.7954"/>
 </g>
-<!-- Node237 -->
+<!-- Node234 -->
 <g id="node10" class="node">
-<title>Node237</title>
-<g id="a_node10"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="tethex::Mesh::get_vertex">
+<title>Node234</title>
+<g id="a_node10"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="Get the copy of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="475,-258.2077 475,-277.2077 600,-277.2077 600,-258.2077 475,-258.2077"/>
 <text text-anchor="middle" x="537.5" y="-265.2077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_vertex</text>
 </a>
 </g>
 </g>
-<!-- Node236&#45;&gt;Node237 -->
+<!-- Node233&#45;&gt;Node234 -->
 <g id="edge12" class="edge">
-<title>Node236&#45;&gt;Node237</title>
+<title>Node233&#45;&gt;Node234</title>
 <path fill="none" stroke="#191970" d="M437.7057,-250.1339C449.3149,-252.1783 461.5428,-254.3316 473.306,-256.4031"/>
 <polygon fill="#191970" stroke="#191970" points="473.041,-259.9102 483.4965,-258.1977 474.2551,-253.0163 473.041,-259.9102"/>
 </g>
-<!-- Node238 -->
+<!-- Node235 -->
 <g id="node11" class="node">
-<title>Node238</title>
-<g id="a_node11"><a xlink:href="classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" target="_top" xlink:title="tethex::Line::common\l_vertex">
+<title>Node235</title>
+<g id="a_node11"><a xlink:href="classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" target="_top" xlink:title="Find common vertex between two lines. ">
 <polygon fill="#ffffff" stroke="#000000" points="482,-208.7077 482,-238.7077 593,-238.7077 593,-208.7077 482,-208.7077"/>
 <text text-anchor="start" x="490" y="-226.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Line::common</text>
 <text text-anchor="middle" x="537.5" y="-215.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertex</text>
 </a>
 </g>
 </g>
-<!-- Node236&#45;&gt;Node238 -->
+<!-- Node233&#45;&gt;Node235 -->
 <g id="edge14" class="edge">
-<title>Node236&#45;&gt;Node238</title>
+<title>Node233&#45;&gt;Node235</title>
 <path fill="none" stroke="#191970" d="M437.7057,-233.7499C448.792,-232.6343 460.4426,-231.4619 471.7139,-230.3277"/>
 <polygon fill="#191970" stroke="#191970" points="472.3321,-233.7833 481.9314,-229.2995 471.6312,-226.8184 472.3321,-233.7833"/>
 </g>
-<!-- Node240 -->
+<!-- Node237 -->
 <g id="node13" class="node">
-<title>Node240</title>
-<g id="a_node13"><a xlink:href="classtethex_1_1Line.html#abdc04877eb0feb0200f4e9bb8a4e3735" target="_top" xlink:title="tethex::Line::another\l_vertex">
+<title>Node237</title>
+<g id="a_node13"><a xlink:href="classtethex_1_1Line.html#abdc04877eb0feb0200f4e9bb8a4e3735" target="_top" xlink:title="Get another vertex (different from that we have) ">
 <polygon fill="#ffffff" stroke="#000000" points="484.5,-159.7077 484.5,-189.7077 590.5,-189.7077 590.5,-159.7077 484.5,-159.7077"/>
 <text text-anchor="start" x="492.5" y="-177.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Line::another</text>
 <text text-anchor="middle" x="537.5" y="-166.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertex</text>
 </a>
 </g>
 </g>
-<!-- Node236&#45;&gt;Node240 -->
+<!-- Node233&#45;&gt;Node237 -->
 <g id="edge16" class="edge">
-<title>Node236&#45;&gt;Node240</title>
+<title>Node233&#45;&gt;Node237</title>
 <path fill="none" stroke="#191970" d="M413.2171,-224.6092C431.53,-216.7332 454.4114,-207.0315 475,-198.7077 479.2363,-196.995 483.6453,-195.2424 488.0742,-193.5025"/>
 <polygon fill="#191970" stroke="#191970" points="489.6959,-196.6269 497.7421,-189.7342 487.1537,-190.1048 489.6959,-196.6269"/>
 </g>
-<!-- Node237&#45;&gt;Node232 -->
+<!-- Node234&#45;&gt;Node229 -->
 <g id="edge13" class="edge">
-<title>Node237&#45;&gt;Node232</title>
+<title>Node234&#45;&gt;Node229</title>
 <path fill="none" stroke="#191970" d="M600.3772,-275.4906C616.367,-277.4698 633.1878,-279.5518 647.9377,-281.3775"/>
 <polygon fill="#191970" stroke="#191970" points="647.9162,-284.9015 658.2704,-282.6565 648.7761,-277.9545 647.9162,-284.9015"/>
 </g>
-<!-- Node239 -->
+<!-- Node236 -->
 <g id="node12" class="node">
-<title>Node239</title>
-<g id="a_node12"><a xlink:href="classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" target="_top" xlink:title="tethex::MeshElement\l::contains">
+<title>Node236</title>
+<g id="a_node12"><a xlink:href="classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" target="_top" xlink:title="Check &#45; whether the element contains the vertex or not. ">
 <polygon fill="#ffffff" stroke="#000000" points="636,-208.7077 636,-238.7077 746,-238.7077 746,-208.7077 636,-208.7077"/>
 <text text-anchor="start" x="644" y="-226.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="691" y="-215.7077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::contains</text>
 </a>
 </g>
 </g>
-<!-- Node238&#45;&gt;Node239 -->
+<!-- Node235&#45;&gt;Node236 -->
 <g id="edge15" class="edge">
-<title>Node238&#45;&gt;Node239</title>
+<title>Node235&#45;&gt;Node236</title>
 <path fill="none" stroke="#191970" d="M593.3512,-223.7077C603.8749,-223.7077 614.966,-223.7077 625.7474,-223.7077"/>
 <polygon fill="#191970" stroke="#191970" points="625.9607,-227.2078 635.9607,-223.7077 625.9607,-220.2078 625.9607,-227.2078"/>
 </g>
-<!-- Node242 -->
+<!-- Node239 -->
 <g id="node15" class="node">
-<title>Node242</title>
-<g id="a_node15"><a xlink:href="namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" target="_top" xlink:title="tethex::cell_measure_2D">
+<title>Node239</title>
+<g id="a_node15"><a xlink:href="namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" target="_top" xlink:title="Since this project was originally designed to connect Gmsh&#39;s meshes with deal.II solvers, the main requirement for new meshes was to be properly read by deal.II. ">
 <polygon fill="#ffffff" stroke="#000000" points="475,-80.2077 475,-99.2077 600,-99.2077 600,-80.2077 475,-80.2077"/>
 <text text-anchor="middle" x="537.5" y="-87.2077" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::cell_measure_2D</text>
 </a>
 </g>
 </g>
-<!-- Node241&#45;&gt;Node242 -->
+<!-- Node238&#45;&gt;Node239 -->
 <g id="edge19" class="edge">
-<title>Node241&#45;&gt;Node242</title>
+<title>Node238&#45;&gt;Node239</title>
 <path fill="none" stroke="#191970" d="M439.0647,-89.7077C447.5171,-89.7077 456.2727,-89.7077 464.9184,-89.7077"/>
 <polygon fill="#191970" stroke="#191970" points="464.9924,-93.2078 474.9924,-89.7077 464.9924,-86.2078 464.9924,-93.2078"/>
 </g>
-<!-- Node243&#45;&gt;Node231 -->
+<!-- Node240&#45;&gt;Node228 -->
 <g id="edge22" class="edge">
-<title>Node243&#45;&gt;Node231</title>
+<title>Node240&#45;&gt;Node228</title>
 <path fill="none" stroke="#191970" d="M435.9026,-398.7077C446.2163,-398.7077 457.0689,-398.7077 467.6874,-398.7077"/>
 <polygon fill="#191970" stroke="#191970" points="467.7712,-402.2078 477.7712,-398.7077 467.7711,-395.2078 467.7712,-402.2078"/>
 </g>
-<!-- Node243&#45;&gt;Node232 -->
+<!-- Node240&#45;&gt;Node229 -->
 <g id="edge23" class="edge">
-<title>Node243&#45;&gt;Node232</title>
+<title>Node240&#45;&gt;Node229</title>
 <path fill="none" stroke="#191970" d="M412.6695,-413.8214C458.2429,-431.5411 540.1219,-454.6883 600,-422.7077 646.6254,-397.8054 673.546,-337.2597 684.7753,-306.0369"/>
 <polygon fill="#191970" stroke="#191970" points="688.1733,-306.917 688.0994,-296.3224 681.5503,-304.6507 688.1733,-306.917"/>
 </g>

@@ -1,0 +1,11 @@
+<map id="flip" name="flip">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a8ab6fa4f05809e4cb6838ba724de2f88" title="triangulatepolygon" alt="" coords="92,5,219,32"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#a4ea48503ae03dd0ab0e1c9dc926c3ce2" title="delaunayfixup" alt="" coords="104,56,207,83"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#aded205ef0849b44d2a587f53fd720618" title="constrainededge" alt="" coords="267,56,384,83"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a9a6911e4ef926cd4546bb41819b1c8c5" title="deletevertex" alt="" coords="279,5,372,32"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#adca37fc9e90f78c9ae794662de5428bd" title="splitencsegs" alt="" coords="437,5,531,32"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a5a654ff6b304f2166c64ffe9183b2995" title="enforcequality" alt="" coords="584,5,687,32"/>
+<area shape="rect" id="node6" href="$triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. " alt="" coords="735,31,817,57"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#ae367b20189056436da2a1b633b392703" title="insertsegment" alt="" coords="432,56,536,83"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#a77e7549672629c06d5926b7edcafc337" title="formskeleton" alt="" coords="587,56,684,83"/>
+</map>

@@ -1,5 +1,6 @@
 <map id="River::Triangle::Triangle" name="River::Triangle::Triangle">
-<area shape="rect" id="node2" href="$classRiver_1_1Triangle.html#af65f8816f88a34c015cd5ca66aca1aef" title="River::Triangle::set\l_all_values_to_default" alt="" coords="215,5,365,47"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Triangle.html#aeb6108ef14cf1bd359ebc6b1a2ecdb1b" title="River::Triangle::print\l_options" alt="" coords="220,71,360,112"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" title="River::Triangle::update\l_options" alt="" coords="413,39,568,80"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Triangle.html#af65f8816f88a34c015cd5ca66aca1aef" title="o2 &#45; generates second order mesh " alt="" coords="215,71,365,112"/>
+<area shape="rect" id="node5" href="$classRiver_1_1Triangle.html#aeb6108ef14cf1bd359ebc6b1a2ecdb1b" title="Outupts options with or without detailed description. " alt="" coords="220,5,360,47"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" title="Updates options bassing on interface flags. " alt="" coords="413,9,568,51"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a2a3ed65e621942ea855e7b2b59a16b96" title="Set the triangulateio structure to default values. " alt="" coords="426,78,555,105"/>
 </map>

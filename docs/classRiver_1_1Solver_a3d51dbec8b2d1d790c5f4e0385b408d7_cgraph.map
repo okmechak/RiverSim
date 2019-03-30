@@ -1,10 +1,10 @@
 <map id="River::Solver::SetMesh" name="River::Solver::SetMesh">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac" title="tethex::Mesh::get_n\l_vertices" alt="" coords="240,5,379,47"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="tethex::Mesh::get_vertex" alt="" coords="226,71,393,98"/>
-<area shape="rect" id="node5" href="$classtethex_1_1Mesh.html#a1a776b3e42d2abc98be5d5ea89d46b1f" title="tethex::Mesh::get_n\l_quadrangles" alt="" coords="240,123,379,164"/>
-<area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#a5737e6675d86cce7410b4b690f25618f" title="tethex::Mesh::get_quadrangle" alt="" coords="212,189,407,215"/>
-<area shape="rect" id="node7" href="$classtethex_1_1MeshElement.html#a44ac13c3270bbf9d70c7e0ea85809979" title="tethex::MeshElement\l::get_material_id" alt="" coords="236,240,383,281"/>
-<area shape="rect" id="node8" href="$classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" title="tethex::MeshElement\l::get_vertex" alt="" coords="236,305,383,347"/>
-<area shape="rect" id="node9" href="$classtethex_1_1Mesh.html#a31af01d4cca474c530bcfa8dbda990c0" title="tethex::Mesh::get_line" alt="" coords="234,371,385,398"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac" title="Get the number of vertices. " alt="" coords="240,5,379,47"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="Get the copy of vertex. " alt="" coords="226,71,393,98"/>
+<area shape="rect" id="node5" href="$classtethex_1_1Mesh.html#a1a776b3e42d2abc98be5d5ea89d46b1f" title="Get the number of tetrahedra. " alt="" coords="240,123,379,164"/>
+<area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#a5737e6675d86cce7410b4b690f25618f" title="Get the mesh quadrangle. " alt="" coords="212,189,407,215"/>
+<area shape="rect" id="node7" href="$classtethex_1_1MeshElement.html#a44ac13c3270bbf9d70c7e0ea85809979" title="Get the material ID of the element. " alt="" coords="236,240,383,281"/>
+<area shape="rect" id="node8" href="$classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" title="Get the number of vertex describing the element. " alt="" coords="236,305,383,347"/>
+<area shape="rect" id="node9" href="$classtethex_1_1Mesh.html#a31af01d4cca474c530bcfa8dbda990c0" title="Get the physical line. " alt="" coords="234,371,385,398"/>
 <area shape="rect" id="node4" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="455,251,541,278"/>
 </map>

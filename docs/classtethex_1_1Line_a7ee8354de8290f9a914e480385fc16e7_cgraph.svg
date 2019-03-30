@@ -19,7 +19,7 @@
 <!-- Node8 -->
 <g id="node2" class="node">
 <title>Node8</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" target="_top" xlink:title="tethex::MeshElement\l::contains">
+<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" target="_top" xlink:title="Check &#45; whether the element contains the vertex or not. ">
 <polygon fill="#ffffff" stroke="#000000" points="147,-.5 147,-30.5 257,-30.5 257,-.5 147,-.5"/>
 <text text-anchor="start" x="155" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="202" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::contains</text>

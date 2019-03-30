@@ -18,7 +18,7 @@
 <!-- Node67 -->
 <g id="node2" class="node">
 <title>Node67</title>
-<g id="a_node2"><a xlink:href="namespacetethex.html#ab9f2665e34303a870a9a7c87d9c6ee6f" target="_top" xlink:title="tethex::write_elements">
+<g id="a_node2"><a xlink:href="namespacetethex.html#afd9ddbb6ed7cbe8a0e8505e7960b0e0a" target="_top" xlink:title="Since all mesh elements are derived from one base MeshElement class, we can use one procedure to trea...">
 <polygon fill="#ffffff" stroke="#000000" points="137,-.5 137,-19.5 253,-19.5 253,-.5 137,-.5"/>
 <text text-anchor="middle" x="195" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::write_elements</text>
 </a>
@@ -33,7 +33,7 @@
 <!-- Node68 -->
 <g id="node3" class="node">
 <title>Node68</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="tethex::Mesh::get_vertex">
+<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="Get the copy of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="289,-.5 289,-19.5 414,-19.5 414,-.5 289,-.5"/>
 <text text-anchor="middle" x="351.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_vertex</text>
 </a>

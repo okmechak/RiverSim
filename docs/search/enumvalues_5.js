@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['min',['Min',['../classRiver_1_1Model.html#abefa2326d6245730ee60d2024645e407a78d811e98514cd165dda532286610fd2',1,'River::Model']]]
+  ['leftcollinear',['LEFTCOLLINEAR',['../triangle_8cpp.html#a15c836267235f634792362d21484b054a004542c8c95d759feaf68dcef0150990',1,'triangle.cpp']]]
 ];

@@ -20,6 +20,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
    &#160;<span id="projectnumber">1.0.0</span>
@@ -63,6 +64,15 @@ $(function() {
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_s"></a>- s -</h3><ul>
+<li>samples
+: <a class="el" href="structmesh.html#a2db40a26df07dfcb14c6bb5597b97e5b">mesh</a>
+</li>
+<li>segmentlist
+: <a class="el" href="structtriangulateio.html#ad45fec0a70058760450e09b949a3d1c0">triangulateio</a>
+</li>
+<li>segmentmarkerlist
+: <a class="el" href="structtriangulateio.html#a8d88affa03ad1156b1d087448166bf04">triangulateio</a>
+</li>
 <li>set_all_values_to_default()
 : <a class="el" href="classRiver_1_1Triangle.html#af65f8816f88a34c015cd5ca66aca1aef">River::Triangle</a>
 </li>
@@ -80,7 +90,7 @@ $(function() {
 , <a class="el" href="classRiver_1_1Triangle.html#a34c23119bde9e7f3e5afb71246590d57">River::Triangle</a>
 </li>
 <li>set_lines()
-: <a class="el" href="classtethex_1_1Mesh.html#aab33b9e41b9b7c5a2eb798771aa4b865">tethex::Mesh</a>
+: <a class="el" href="classtethex_1_1Mesh.html#a893878b71e351600cbdee7db451bca9d">tethex::Mesh</a>
 </li>
 <li>set_new_vertices()
 : <a class="el" href="classtethex_1_1Mesh.html#a8e5d9c057c6f562d5036f262a23af29c">tethex::Mesh</a>
@@ -89,46 +99,31 @@ $(function() {
 : <a class="el" href="classRiver_1_1Gmsh.html#ab8efa2e99294237c8186a9b11394b4d5">River::Gmsh</a>
 </li>
 <li>set_points()
-: <a class="el" href="classtethex_1_1Mesh.html#ac58ff9d3852455551459c3f4fe6ed0e2">tethex::Mesh</a>
+: <a class="el" href="classtethex_1_1Mesh.html#a34d1d49f40a18e445d3e1afb7b6fafd0">tethex::Mesh</a>
 </li>
 <li>set_quadrangles()
-: <a class="el" href="classtethex_1_1Mesh.html#a2b6474f7195faa24c3040175baf4af3d">tethex::Mesh</a>
+: <a class="el" href="classtethex_1_1Mesh.html#ace2b9f50660b105b369b0b14c357380c">tethex::Mesh</a>
 </li>
 <li>set_triangles()
-: <a class="el" href="classtethex_1_1Mesh.html#a84431286c718d5570b253b73d3ef446f">tethex::Mesh</a>
+: <a class="el" href="classtethex_1_1Mesh.html#aaf8a07db236c4824186981a1b9cc42a4">tethex::Mesh</a>
 </li>
 <li>set_vertex()
 : <a class="el" href="classtethex_1_1MeshElement.html#a1292194d3034289522ad23b8e7366320">tethex::MeshElement</a>
 </li>
 <li>set_vertexes()
-: <a class="el" href="classtethex_1_1Mesh.html#a730ec5e40642f4048d86dbf9af191818">tethex::Mesh</a>
+: <a class="el" href="classtethex_1_1Mesh.html#a58afefb6ba6371c3ba47ba6e8305ab05">tethex::Mesh</a>
 </li>
 <li>SetBoundaryRegionValue()
 : <a class="el" href="classRiver_1_1Solver.html#a8d0a93ada5df466e04ef2eca9a5efe49">River::Solver</a>
 </li>
-<li>SetEps()
-: <a class="el" href="classRiver_1_1Geometry.html#afb3cec3dfa08fe7d6ae50ee3d345f066">River::Geometry</a>
-</li>
 <li>SetMesh()
 : <a class="el" href="classRiver_1_1Solver.html#a3d51dbec8b2d1d790c5f4e0385b408d7">River::Solver</a>
-</li>
-<li>SetSquareBoundary()
-: <a class="el" href="classRiver_1_1Geometry.html#a32291382ac1b38182c0a97063e69aacd">River::Geometry</a>
 </li>
 <li>setup_system()
 : <a class="el" href="classRiver_1_1Solver.html#adba0a10f694b0193b449efc4c68d7418">River::Solver</a>
 </li>
-<li>setWidth()
-: <a class="el" href="classRiver_1_1Branch.html#af14606c2d410ab32119d885320acf250">River::Branch</a>
-</li>
-<li>shrink()
-: <a class="el" href="classRiver_1_1Branch.html#a365b5758f3f1b6f6f67c962b4b95eaf9">River::Branch</a>
-</li>
 <li>Shrink()
 : <a class="el" href="classRiver_1_1BranchNew.html#a3d751724e8b8c4349c7ce25eee3a2995">River::BranchNew</a>
-</li>
-<li>size()
-: <a class="el" href="classRiver_1_1Branch.html#a28a8c207ba296169ca20b47e99a9e091">River::Branch</a>
 </li>
 <li>Size()
 : <a class="el" href="classRiver_1_1BranchNew.html#ad31e9de44351f77a06bce668094cf2f4">River::BranchNew</a>
@@ -157,8 +152,17 @@ $(function() {
 <li>sparsity_pattern
 : <a class="el" href="classRiver_1_1Solver.html#ae39c2ef1f316627aced677696a3d6c33">River::Solver</a>
 </li>
-<li>splitPoint()
-: <a class="el" href="classRiver_1_1Branch.html#a67e24ea2b1f521a1af4193fb7a9c0bed">River::Branch</a>
+<li>splaynodes
+: <a class="el" href="structmesh.html#a86186d96a9bac08ba51665bce57a4009">mesh</a>
+</li>
+<li>splitseg
+: <a class="el" href="structbehavior.html#ac51ca2ac278cc8cbf9abccbf1653231c">behavior</a>
+</li>
+<li>ss
+: <a class="el" href="structosub.html#ac8cba05ff0ad570decd4376b4916d150">osub</a>
+</li>
+<li>ssorient
+: <a class="el" href="structosub.html#aa9aac96631bf818c077048456dcf11ee">osub</a>
 </li>
 <li>start_ui()
 : <a class="el" href="classRiver_1_1Gmsh.html#a7021b8ecb83c2e5f2248c579ff2c1c6c">River::Gmsh</a>
@@ -166,11 +170,26 @@ $(function() {
 <li>statistics()
 : <a class="el" href="classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796">tethex::Mesh</a>
 </li>
+<li>steiner
+: <a class="el" href="structbehavior.html#a16a49e9ff6eefec8e56016b13d8134b0">behavior</a>
+</li>
+<li>steinerleft
+: <a class="el" href="structmesh.html#a733d949838b84a6f3bb3db1249629d4d">mesh</a>
+</li>
 <li>SteinerPointsOnBoundary
 : <a class="el" href="classRiver_1_1Triangle.html#ae4dda80b7bacd51aa36e80e3f0e90108">River::Triangle</a>
 </li>
 <li>SteinerPointsOnSegments
 : <a class="el" href="classRiver_1_1Triangle.html#afaa21e2d070694071f0a07bb76b03be8">River::Triangle</a>
+</li>
+<li>subsegdest
+: <a class="el" href="structbadsubseg.html#a8ca4f27968ded45a43c39be9b7e40770">badsubseg</a>
+</li>
+<li>subsegorg
+: <a class="el" href="structbadsubseg.html#ac06bcfaa89508ea06c7f4c003c74d463">badsubseg</a>
+</li>
+<li>subsegs
+: <a class="el" href="structmesh.html#a3c29f7e745ae22b5bb4cf08d49b77895">mesh</a>
 </li>
 <li>SuppressBoundaryMarkers
 : <a class="el" href="classRiver_1_1Triangle.html#a6827999215e3d40976ee81c41be453ac">River::Triangle</a>
@@ -192,6 +211,9 @@ $(function() {
 </li>
 <li>SuppressPolyFile
 : <a class="el" href="classRiver_1_1Triangle.html#a47b8a6b60088a8ab71f35bb6830e270d">River::Triangle</a>
+</li>
+<li>sweepline
+: <a class="el" href="structbehavior.html#a4878978d21e1761ee3af56acc46f6103">behavior</a>
 </li>
 <li>system_matrix
 : <a class="el" href="classRiver_1_1Solver.html#a501bf30878d338b90acfc9e33d1366dc">River::Solver</a>

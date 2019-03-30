@@ -9,102 +9,117 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 210.5)">
 <title>River::Solver::run</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-210.5 385,-210.5 385,4 -4,4"/>
-<!-- Node23 -->
+<!-- Node20 -->
 <g id="node1" class="node">
-<title>Node23</title>
+<title>Node20</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-94 0,-113 93,-113 93,-94 0,-94"/>
 <text text-anchor="middle" x="46.5" y="-101" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Solver::run</text>
 </g>
-<!-- Node24 -->
+<!-- Node21 -->
 <g id="node2" class="node">
-<title>Node24</title>
+<title>Node21</title>
 <g id="a_node2"><a xlink:href="classRiver_1_1Solver.html#a01eb2f2d7229b100f6da98420be1449f" target="_top" xlink:title="River::Solver::refine_grid">
 <polygon fill="#ffffff" stroke="#000000" points="129,-187 129,-206 254,-206 254,-187 129,-187"/>
 <text text-anchor="middle" x="191.5" y="-194" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Solver::refine_grid</text>
 </a>
 </g>
 </g>
-<!-- Node23&#45;&gt;Node24 -->
+<!-- Node20&#45;&gt;Node21 -->
 <g id="edge1" class="edge">
-<title>Node23&#45;&gt;Node24</title>
+<title>Node20&#45;&gt;Node21</title>
 <path fill="none" stroke="#191970" d="M54.6383,-113.1321C68.3982,-128.8283 97.8216,-159.9317 129,-177.5 132.8842,-179.6887 137.0494,-181.6532 141.3176,-183.4108"/>
 <polygon fill="#191970" stroke="#191970" points="140.1644,-186.7162 150.757,-186.9347 142.6126,-180.1583 140.1644,-186.7162"/>
 </g>
-<!-- Node25 -->
-<g id="node3" class="node">
-<title>Node25</title>
-<g id="a_node3"><a xlink:href="classRiver_1_1Solver.html#adba0a10f694b0193b449efc4c68d7418" target="_top" xlink:title="River::Solver::setup\l_system">
+<!-- Node23 -->
+<g id="node4" class="node">
+<title>Node23</title>
+<g id="a_node4"><a xlink:href="classRiver_1_1Solver.html#adba0a10f694b0193b449efc4c68d7418" target="_top" xlink:title="River::Solver::setup\l_system">
 <polygon fill="#ffffff" stroke="#000000" points="139.5,-137.5 139.5,-167.5 243.5,-167.5 243.5,-137.5 139.5,-137.5"/>
 <text text-anchor="start" x="147.5" y="-155.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Solver::setup</text>
 <text text-anchor="middle" x="191.5" y="-144.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_system</text>
 </a>
 </g>
 </g>
-<!-- Node23&#45;&gt;Node25 -->
-<g id="edge2" class="edge">
-<title>Node23&#45;&gt;Node25</title>
+<!-- Node20&#45;&gt;Node23 -->
+<g id="edge3" class="edge">
+<title>Node20&#45;&gt;Node23</title>
 <path fill="none" stroke="#191970" d="M74.8017,-113.064C92.598,-119.0779 116.1399,-127.0335 137.4157,-134.2232"/>
 <polygon fill="#191970" stroke="#191970" points="136.4086,-137.5773 147.0029,-137.463 138.6497,-130.9457 136.4086,-137.5773"/>
 </g>
-<!-- Node26 -->
-<g id="node4" class="node">
-<title>Node26</title>
-<g id="a_node4"><a xlink:href="classRiver_1_1Solver.html#af16fb58ac78609220538d62c2c491249" target="_top" xlink:title="River::Solver::assemble\l_system">
+<!-- Node24 -->
+<g id="node5" class="node">
+<title>Node24</title>
+<g id="a_node5"><a xlink:href="classRiver_1_1Solver.html#af16fb58ac78609220538d62c2c491249" target="_top" xlink:title="River::Solver::assemble\l_system">
 <polygon fill="#ffffff" stroke="#000000" points="130.5,-88.5 130.5,-118.5 252.5,-118.5 252.5,-88.5 130.5,-88.5"/>
 <text text-anchor="start" x="138.5" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Solver::assemble</text>
 <text text-anchor="middle" x="191.5" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_system</text>
 </a>
 </g>
 </g>
-<!-- Node23&#45;&gt;Node26 -->
-<g id="edge3" class="edge">
-<title>Node23&#45;&gt;Node26</title>
+<!-- Node20&#45;&gt;Node24 -->
+<g id="edge4" class="edge">
+<title>Node20&#45;&gt;Node24</title>
 <path fill="none" stroke="#191970" d="M93.1771,-103.5C101.7787,-103.5 110.9383,-103.5 120.075,-103.5"/>
 <polygon fill="#191970" stroke="#191970" points="120.3501,-107.0001 130.3501,-103.5 120.35,-100.0001 120.3501,-107.0001"/>
 </g>
-<!-- Node28 -->
-<g id="node6" class="node">
-<title>Node28</title>
-<g id="a_node6"><a xlink:href="classRiver_1_1Solver.html#acc631ad7d750f35bd33430a2b0410efe" target="_top" xlink:title="River::Solver::solve">
+<!-- Node26 -->
+<g id="node7" class="node">
+<title>Node26</title>
+<g id="a_node7"><a xlink:href="classRiver_1_1Solver.html#acc631ad7d750f35bd33430a2b0410efe" target="_top" xlink:title="River::Solver::solve">
 <polygon fill="#ffffff" stroke="#000000" points="140,-50 140,-69 243,-69 243,-50 140,-50"/>
 <text text-anchor="middle" x="191.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Solver::solve</text>
 </a>
 </g>
 </g>
-<!-- Node23&#45;&gt;Node28 -->
-<g id="edge5" class="edge">
-<title>Node23&#45;&gt;Node28</title>
+<!-- Node20&#45;&gt;Node26 -->
+<g id="edge6" class="edge">
+<title>Node20&#45;&gt;Node26</title>
 <path fill="none" stroke="#191970" d="M77.9628,-93.9527C99.149,-87.5237 127.3064,-78.9794 150.2797,-72.0082"/>
 <polygon fill="#191970" stroke="#191970" points="151.5458,-75.2817 160.0986,-69.0287 149.5131,-68.5833 151.5458,-75.2817"/>
 </g>
-<!-- Node29 -->
-<g id="node7" class="node">
-<title>Node29</title>
-<g id="a_node7"><a xlink:href="classRiver_1_1Solver.html#a328be2cd9739561d1d97ac6e59ebe261" target="_top" xlink:title="River::Solver::output\l_results">
+<!-- Node27 -->
+<g id="node8" class="node">
+<title>Node27</title>
+<g id="a_node8"><a xlink:href="classRiver_1_1Solver.html#a328be2cd9739561d1d97ac6e59ebe261" target="_top" xlink:title="River::Solver::output\l_results">
 <polygon fill="#ffffff" stroke="#000000" points="138,-.5 138,-30.5 245,-30.5 245,-.5 138,-.5"/>
 <text text-anchor="start" x="146" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Solver::output</text>
 <text text-anchor="middle" x="191.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_results</text>
 </a>
 </g>
 </g>
-<!-- Node23&#45;&gt;Node29 -->
-<g id="edge6" class="edge">
-<title>Node23&#45;&gt;Node29</title>
+<!-- Node20&#45;&gt;Node27 -->
+<g id="edge7" class="edge">
+<title>Node20&#45;&gt;Node27</title>
 <path fill="none" stroke="#191970" d="M57.0402,-93.9289C72.1153,-80.6086 101.1037,-56.337 129,-40.5 132.6015,-38.4554 136.4036,-36.4978 140.2816,-34.6423"/>
 <polygon fill="#191970" stroke="#191970" points="141.7465,-37.8211 149.4098,-30.5051 138.8568,-31.4454 141.7465,-37.8211"/>
 </g>
-<!-- Node27 -->
-<g id="node5" class="node">
-<title>Node27</title>
-<g id="a_node5"><a xlink:href="namespaceRiver.html#aeb51a1c35cf6a02863958bcfdb0034e9" target="_top" xlink:title="River::coefficient">
+<!-- Node22 -->
+<g id="node3" class="node">
+<title>Node22</title>
+<g id="a_node3"><a xlink:href="triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" target="_top" xlink:title="estimate">
+<polygon fill="#ffffff" stroke="#000000" points="308.5,-187 308.5,-206 362.5,-206 362.5,-187 308.5,-187"/>
+<text text-anchor="middle" x="335.5" y="-194" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">estimate</text>
+</a>
+</g>
+</g>
+<!-- Node21&#45;&gt;Node22 -->
+<g id="edge2" class="edge">
+<title>Node21&#45;&gt;Node22</title>
+<path fill="none" stroke="#191970" d="M254.2416,-196.5C269.1926,-196.5 284.6851,-196.5 298.0825,-196.5"/>
+<polygon fill="#191970" stroke="#191970" points="298.3275,-200.0001 308.3275,-196.5 298.3274,-193.0001 298.3275,-200.0001"/>
+</g>
+<!-- Node25 -->
+<g id="node6" class="node">
+<title>Node25</title>
+<g id="a_node6"><a xlink:href="namespaceRiver.html#a9f2ddb570f1162407d7829fa73e65eb8" target="_top" xlink:title="River::coefficient">
 <polygon fill="#ffffff" stroke="#000000" points="290,-94 290,-113 381,-113 381,-94 290,-94"/>
 <text text-anchor="middle" x="335.5" y="-101" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::coefficient</text>
 </a>
 </g>
 </g>
-<!-- Node26&#45;&gt;Node27 -->
-<g id="edge4" class="edge">
-<title>Node26&#45;&gt;Node27</title>
+<!-- Node24&#45;&gt;Node25 -->
+<g id="edge5" class="edge">
+<title>Node24&#45;&gt;Node25</title>
 <path fill="none" stroke="#191970" d="M252.569,-103.5C261.4944,-103.5 270.6494,-103.5 279.4678,-103.5"/>
 <polygon fill="#191970" stroke="#191970" points="279.6314,-107.0001 289.6314,-103.5 279.6313,-100.0001 279.6314,-107.0001"/>
 </g>

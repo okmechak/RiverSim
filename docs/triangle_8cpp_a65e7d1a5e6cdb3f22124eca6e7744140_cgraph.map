@@ -1,0 +1,7 @@
+<map id="insertsubseg" name="insertsubseg">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a38c1f489a079cd860973698d73d5128c" title="makesubseg" alt="" coords="149,5,245,32"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#ae5bee30bf48dcc4ac5ab46eb5fa3f059" title="printsubseg" alt="" coords="153,56,242,83"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#ab1760445583959132ffd9998372c9aac" title="poolalloc" alt="" coords="293,5,367,32"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="415,5,485,32"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="533,5,588,32"/>
+</map>

@@ -1,5 +1,0 @@
-<map id="River::Border::MakeRectangular" name="River::Border::MakeRectangular">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a730ec5e40642f4048d86dbf9af191818" title="tethex::Mesh::set_vertexes" alt="" coords="263,5,444,32"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#ac58ff9d3852455551459c3f4fe6ed0e2" title="tethex::Mesh::set_points" alt="" coords="270,56,437,83"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#aab33b9e41b9b7c5a2eb798771aa4b865" title="tethex::Mesh::set_lines" alt="" coords="274,107,433,133"/>
-</map>

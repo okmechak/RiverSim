@@ -18,7 +18,7 @@
 <!-- Node44 -->
 <g id="node2" class="node">
 <title>Node44</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a8f713135e7371c15cecacf03035c7683" target="_top" xlink:title="tethex::Mesh::clean">
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a8f713135e7371c15cecacf03035c7683" target="_top" xlink:title="Free the memory to read again, for example. ">
 <polygon fill="#ffffff" stroke="#000000" points="134,-38.5 134,-57.5 237,-57.5 237,-38.5 134,-38.5"/>
 <text text-anchor="middle" x="185.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::clean</text>
 </a>

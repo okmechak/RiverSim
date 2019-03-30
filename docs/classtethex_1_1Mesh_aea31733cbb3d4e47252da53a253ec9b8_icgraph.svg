@@ -95,7 +95,7 @@
 <!-- Node123 -->
 <g id="node8" class="node">
 <title>Node123</title>
-<g id="a_node8"><a xlink:href="classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" target="_top" xlink:title="tethex::Mesh::convert\l_quadrangles">
+<g id="a_node8"><a xlink:href="classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" target="_top" xlink:title="Convert quadrangles into quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="486,-116 486,-146 598,-146 598,-116 486,-116"/>
 <text text-anchor="start" x="494" y="-134" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 <text text-anchor="middle" x="542" y="-123" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_quadrangles</text>
@@ -111,7 +111,7 @@
 <!-- Node125 -->
 <g id="node10" class="node">
 <title>Node125</title>
-<g id="a_node10"><a xlink:href="classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796" target="_top" xlink:title="tethex::Mesh::statistics">
+<g id="a_node10"><a xlink:href="classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796" target="_top" xlink:title="Print some statistics (detailed information). ">
 <polygon fill="#ffffff" stroke="#000000" points="167.5,-88.5 167.5,-107.5 286.5,-107.5 286.5,-88.5 167.5,-88.5"/>
 <text text-anchor="middle" x="227" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::statistics</text>
 </a>
@@ -126,7 +126,7 @@
 <!-- Node126 -->
 <g id="node11" class="node">
 <title>Node126</title>
-<g id="a_node11"><a xlink:href="classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" target="_top" xlink:title="tethex::Mesh::find\l_face_from_two_edges">
+<g id="a_node11"><a xlink:href="classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" target="_top" xlink:title="Find the global number of face basing on numbers of 2 edges defining that face. ">
 <polygon fill="#ffffff" stroke="#000000" points="168,-39 168,-69 286,-69 286,-39 168,-39"/>
 <text text-anchor="start" x="176" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::find</text>
 <text text-anchor="middle" x="227" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_face_from_two_edges</text>
@@ -142,7 +142,7 @@
 <!-- Node129 -->
 <g id="node14" class="node">
 <title>Node129</title>
-<g id="a_node14"><a xlink:href="namespacetethex.html#ab9f2665e34303a870a9a7c87d9c6ee6f" target="_top" xlink:title="tethex::write_elements">
+<g id="a_node14"><a xlink:href="namespacetethex.html#afd9ddbb6ed7cbe8a0e8505e7960b0e0a" target="_top" xlink:title="Since all mesh elements are derived from one base MeshElement class, we can use one procedure to trea...">
 <polygon fill="#ffffff" stroke="#000000" points="169,-.5 169,-19.5 285,-19.5 285,-.5 169,-.5"/>
 <text text-anchor="middle" x="227" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::write_elements</text>
 </a>
@@ -172,7 +172,7 @@
 <!-- Node124 -->
 <g id="node9" class="node">
 <title>Node124</title>
-<g id="a_node9"><a xlink:href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" target="_top" xlink:title="tethex::Mesh::convert">
+<g id="a_node9"><a xlink:href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" target="_top" xlink:title="Conversion from simplices to bricks. ">
 <polygon fill="#ffffff" stroke="#000000" points="643,-90.5 643,-109.5 755,-109.5 755,-90.5 643,-90.5"/>
 <text text-anchor="middle" x="699" y="-97.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 </a>
@@ -187,7 +187,7 @@
 <!-- Node127 -->
 <g id="node12" class="node">
 <title>Node127</title>
-<g id="a_node12"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="tethex::Mesh::convert\l_triangles">
+<g id="a_node12"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="Conversion from triangles to quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="329,-44 329,-74 441,-74 441,-44 329,-44"/>
 <text text-anchor="start" x="337" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 <text text-anchor="middle" x="385" y="-51" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_triangles</text>
@@ -203,7 +203,7 @@
 <!-- Node128 -->
 <g id="node13" class="node">
 <title>Node128</title>
-<g id="a_node13"><a xlink:href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" target="_top" xlink:title="tethex::Mesh::convert_2D">
+<g id="a_node13"><a xlink:href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" target="_top" xlink:title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) ">
 <polygon fill="#ffffff" stroke="#000000" points="477,-68.5 477,-87.5 607,-87.5 607,-68.5 477,-68.5"/>
 <text text-anchor="middle" x="542" y="-75.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert_2D</text>
 </a>
@@ -224,7 +224,7 @@
 <!-- Node130 -->
 <g id="node15" class="node">
 <title>Node130</title>
-<g id="a_node15"><a xlink:href="classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09" target="_top" xlink:title="tethex::Mesh::write">
+<g id="a_node15"><a xlink:href="classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09" target="_top" xlink:title="Write the resulting brick mesh into the file. ">
 <polygon fill="#ffffff" stroke="#000000" points="334.5,-.5 334.5,-19.5 435.5,-19.5 435.5,-.5 334.5,-.5"/>
 <text text-anchor="middle" x="385" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::write</text>
 </a>

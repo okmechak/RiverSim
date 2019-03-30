@@ -39,7 +39,7 @@
 <!-- Node1 -->
 <g id="node2" class="node">
 <title>Node1</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Line.html" target="_top" xlink:title="{tethex::Line\n|+ n_vertices\l+ n_edges\l+ gmsh_el_type\l|+ Line()\l+ Line()\l+ Line()\l+ common_vertex()\l+ another_vertex()\l}">
+<g id="a_node2"><a xlink:href="classtethex_1_1Line.html" target="_top" xlink:title="Line keeps 3 numbers &#45; the number of beginning vertex, the number of the ending one, and a number of physical domain where this line takes place (material identificator &#45; in other words). ">
 <polygon fill="#ffffff" stroke="#000000" points="0,-.5 0,-123.5 101,-123.5 101,-.5 0,-.5"/>
 <text text-anchor="middle" x="50.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Line</text>
 <polyline fill="none" stroke="#000000" points="0,-104.5 101,-104.5 "/>
@@ -64,7 +64,7 @@
 <!-- Node2 -->
 <g id="node3" class="node">
 <title>Node2</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1PhysPoint.html" target="_top" xlink:title="{tethex::PhysPoint\n|+ n_vertices\l+ n_edges\l+ gmsh_el_type\l|+ PhysPoint()\l+ PhysPoint()\l+ PhysPoint()\l}">
+<g id="a_node3"><a xlink:href="classtethex_1_1PhysPoint.html" target="_top" xlink:title="PhysPoint keep 2 numbers &#45; the number of the vertex associated with the point, and the number of phys...">
 <polygon fill="#ffffff" stroke="#000000" points="119,-11.5 119,-112.5 214,-112.5 214,-11.5 119,-11.5"/>
 <text text-anchor="middle" x="166.5" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::PhysPoint</text>
 <polyline fill="none" stroke="#000000" points="119,-93.5 214,-93.5 "/>
@@ -87,7 +87,7 @@
 <!-- Node3 -->
 <g id="node4" class="node">
 <title>Node3</title>
-<g id="a_node4"><a xlink:href="classtethex_1_1Quadrangle.html" target="_top" xlink:title="{tethex::Quadrangle\n|+ n_vertices\l+ n_edges\l+ gmsh_el_type\l|+ Quadrangle()\l+ Quadrangle()\l+ Quadrangle()\l}">
+<g id="a_node4"><a xlink:href="classtethex_1_1Quadrangle.html" target="_top" xlink:title="Quadrangle &#45; 2&#45;dimensional shape with 4 straight edges. ">
 <polygon fill="#ffffff" stroke="#000000" points="232,-11.5 232,-112.5 331,-112.5 331,-11.5 232,-11.5"/>
 <text text-anchor="middle" x="281.5" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Quadrangle</text>
 <polyline fill="none" stroke="#000000" points="232,-93.5 331,-93.5 "/>
@@ -110,7 +110,7 @@
 <!-- Node4 -->
 <g id="node5" class="node">
 <title>Node4</title>
-<g id="a_node5"><a xlink:href="classtethex_1_1Triangle.html" target="_top" xlink:title="{tethex::Triangle\n|+ n_vertices\l+ n_edges\l+ gmsh_el_type\l|+ Triangle()\l+ Triangle()\l+ Triangle()\l}">
+<g id="a_node5"><a xlink:href="classtethex_1_1Triangle.html" target="_top" xlink:title="Triangle &#45; 2&#45;dimensional simplex. ">
 <polygon fill="#ffffff" stroke="#000000" points="349.5,-11.5 349.5,-112.5 435.5,-112.5 435.5,-11.5 349.5,-11.5"/>
 <text text-anchor="middle" x="392.5" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Triangle</text>
 <polyline fill="none" stroke="#000000" points="349.5,-93.5 435.5,-93.5 "/>

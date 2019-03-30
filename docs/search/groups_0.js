@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['stub_5flabel_5fname',['Stub_label_name',['../group__stub__label__name.html',1,'']]]
+  ['global_20integer_20variables',['Global integer variables',['../group__IntVariables.html',1,'']]],
+  ['global_20variables',['Global variables',['../group__Variables.html',1,'']]]
 ];

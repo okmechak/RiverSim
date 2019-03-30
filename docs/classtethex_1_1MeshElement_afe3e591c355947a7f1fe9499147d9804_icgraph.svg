@@ -19,7 +19,7 @@
 <!-- Node13 -->
 <g id="node2" class="node">
 <title>Node13</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#ac9fa106da52049721770a0eb4f46bcc1" target="_top" xlink:title="tethex::MeshElement\l::set_edge">
+<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#ac9fa106da52049721770a0eb4f46bcc1" target="_top" xlink:title="Set the number of edge. ">
 <polygon fill="#ffffff" stroke="#000000" points="146,-.5 146,-30.5 256,-30.5 256,-.5 146,-.5"/>
 <text text-anchor="start" x="154" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="201" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::set_edge</text>

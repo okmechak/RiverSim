@@ -56,7 +56,7 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html" target="_top" xlink:title="{tethex::Mesh\n||+ Mesh()\l+ Mesh()\l+ Mesh()\l+ operator=()\l+ Mesh()\l+ Mesh()\l+ ~Mesh()\l+ read()\l+ convert()\l+ write()\land 34 more...\l}">
+<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html" target="_top" xlink:title="Main class that stores all data during program execution. ">
 <polygon fill="#ffffff" stroke="#000000" points="307.5,-292.5 307.5,-459.5 387.5,-459.5 387.5,-292.5 307.5,-292.5"/>
 <text text-anchor="middle" x="347.5" y="-447.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh</text>
 <polyline fill="none" stroke="#000000" points="307.5,-440.5 387.5,-440.5 "/>

@@ -1,4 +1,4 @@
 <map id="tethex::Mesh::clean" name="tethex::Mesh::clean">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a299486a7d463657cb8b1209aac66e969" title="tethex::Mesh::~Mesh" alt="" coords="191,5,337,32"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#ae0f570a1892c8cf29a68bae0267f8f9b" title="tethex::Mesh::read" alt="" coords="199,56,329,83"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a299486a7d463657cb8b1209aac66e969" title="Destructor &#45; to clean the memory. " alt="" coords="191,5,337,32"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#ae0f570a1892c8cf29a68bae0267f8f9b" title="Read the mesh from file. " alt="" coords="199,56,329,83"/>
 </map>

@@ -1,6 +1,6 @@
 <map id="tethex::Mesh::convert_quadrangles" name="tethex::Mesh::convert_quadrangles">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="tethex::Mesh::get_vertex" alt="" coords="203,5,369,32"/>
-<area shape="rect" id="node4" href="$namespacetethex.html#a7f8708334371c722c41cab50445d7987" title="tethex::change_vertices\l_order" alt="" coords="205,57,367,98"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="Get the copy of vertex. " alt="" coords="203,5,369,32"/>
+<area shape="rect" id="node4" href="$namespacetethex.html#a7f8708334371c722c41cab50445d7987" title="Change the order of vertices in such a way, that it will be good for deal.II. " alt="" coords="205,57,367,98"/>
 <area shape="rect" id="node3" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="457,5,544,32"/>
-<area shape="rect" id="node5" href="$namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" title="tethex::cell_measure_2D" alt="" coords="417,64,584,91"/>
+<area shape="rect" id="node5" href="$namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" title="Since this project was originally designed to connect Gmsh&#39;s meshes with deal.II solvers, the main requirement for new meshes was to be properly read by deal.II. " alt="" coords="417,64,584,91"/>
 </map>

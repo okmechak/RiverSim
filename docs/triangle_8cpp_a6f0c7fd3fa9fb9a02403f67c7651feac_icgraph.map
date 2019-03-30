@@ -1,0 +1,13 @@
+<map id="checkseg4encroach" name="checkseg4encroach">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a2ede94743503e369e9b1c6c2a0ac9f7f" title="insertvertex" alt="" coords="192,132,283,159"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#adca37fc9e90f78c9ae794662de5428bd" title="splitencsegs" alt="" coords="353,183,447,209"/>
+<area shape="rect" id="node12" href="$triangle_8cpp.html#af8e72ce607fa7738b63bab87df6aef22" title="tallyencs" alt="" coords="200,233,275,260"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a4e3735a2f4c1fa18deb1a2e66aeda7bd" title="undovertex" alt="" coords="357,132,443,159"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a48fc63d369d988c08cbe8ab40f0b8af5" title="splittriangle" alt="" coords="525,132,613,159"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#a496c50bca0cf0c214a0204419c3b181a" title="segmentintersection" alt="" coords="331,31,469,57"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a5a654ff6b304f2166c64ffe9183b2995" title="enforcequality" alt="" coords="677,183,779,209"/>
+<area shape="rect" id="node6" href="$triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. " alt="" coords="845,183,928,209"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#ae9d4ed09a0fd07959568ba5f86cc4d0c" title="scoutsegment" alt="" coords="517,56,621,83"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#aded205ef0849b44d2a587f53fd720618" title="constrainededge" alt="" coords="669,5,787,32"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#ae367b20189056436da2a1b633b392703" title="insertsegment" alt="" coords="835,31,939,57"/>
+</map>

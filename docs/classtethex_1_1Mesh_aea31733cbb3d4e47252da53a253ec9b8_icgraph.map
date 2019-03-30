@@ -4,13 +4,13 @@
 <area shape="rect" id="node5" href="$classRiver_1_1Solver.html#a3d51dbec8b2d1d790c5f4e0385b408d7" title="River::Solver::SetMesh" alt="" coords="229,137,387,163"/>
 <area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#af7abffd9bc4bd64eb2f4cdd4aaf7fbe3" title="tethex::Mesh::Mesh" alt="" coords="239,187,377,214"/>
 <area shape="rect" id="node7" href="$classtethex_1_1Mesh.html#af992d5d2e64047656766e4afcbc95b8b" title="tethex::Mesh::operator=" alt="" coords="227,238,389,265"/>
-<area shape="rect" id="node8" href="$classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" title="tethex::Mesh::convert\l_quadrangles" alt="" coords="653,288,803,329"/>
-<area shape="rect" id="node10" href="$classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796" title="tethex::Mesh::statistics" alt="" coords="229,339,387,366"/>
-<area shape="rect" id="node11" href="$classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" title="tethex::Mesh::find\l_face_from_two_edges" alt="" coords="229,391,387,432"/>
-<area shape="rect" id="node14" href="$namespacetethex.html#ab9f2665e34303a870a9a7c87d9c6ee6f" title="tethex::write_elements" alt="" coords="231,457,385,483"/>
+<area shape="rect" id="node8" href="$classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" title="Convert quadrangles into quadrangles. " alt="" coords="653,288,803,329"/>
+<area shape="rect" id="node10" href="$classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796" title="Print some statistics (detailed information). " alt="" coords="229,339,387,366"/>
+<area shape="rect" id="node11" href="$classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" title="Find the global number of face basing on numbers of 2 edges defining that face. " alt="" coords="229,391,387,432"/>
+<area shape="rect" id="node14" href="$namespacetethex.html#afd9ddbb6ed7cbe8a0e8505e7960b0e0a" title="Since all mesh elements are derived from one base MeshElement class, we can use one procedure to trea..." alt="" coords="231,457,385,483"/>
 <area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="493,13,544,39"/>
-<area shape="rect" id="node9" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="tethex::Mesh::convert" alt="" coords="863,337,1012,363"/>
-<area shape="rect" id="node12" href="$classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" title="tethex::Mesh::convert\l_triangles" alt="" coords="444,384,593,425"/>
-<area shape="rect" id="node13" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="tethex::Mesh::convert_2D" alt="" coords="641,366,815,393"/>
-<area shape="rect" id="node15" href="$classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09" title="tethex::Mesh::write" alt="" coords="451,457,586,483"/>
+<area shape="rect" id="node9" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="Conversion from simplices to bricks. " alt="" coords="863,337,1012,363"/>
+<area shape="rect" id="node12" href="$classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" title="Conversion from triangles to quadrangles. " alt="" coords="444,384,593,425"/>
+<area shape="rect" id="node13" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) " alt="" coords="641,366,815,393"/>
+<area shape="rect" id="node15" href="$classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09" title="Write the resulting brick mesh into the file. " alt="" coords="451,457,586,483"/>
 </map>

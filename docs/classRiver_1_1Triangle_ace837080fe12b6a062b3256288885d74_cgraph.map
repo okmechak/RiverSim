@@ -1,5 +1,5 @@
 <map id="River::Triangle::io_to_tethex" name="River::Triangle::io_to_tethex">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a730ec5e40642f4048d86dbf9af191818" title="tethex::Mesh::set_vertexes" alt="" coords="179,5,360,32"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#aab33b9e41b9b7c5a2eb798771aa4b865" title="tethex::Mesh::set_lines" alt="" coords="190,56,349,83"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#a84431286c718d5570b253b73d3ef446f" title="tethex::Mesh::set_triangles" alt="" coords="179,107,359,133"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a58afefb6ba6371c3ba47ba6e8305ab05" title="Set the copy of vertex. " alt="" coords="179,5,360,32"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#a893878b71e351600cbdee7db451bca9d" title="Set the physical lines. " alt="" coords="190,56,349,83"/>
+<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#aaf8a07db236c4824186981a1b9cc42a4" title="Set the mesh triangles. " alt="" coords="179,107,359,133"/>
 </map>

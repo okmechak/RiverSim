@@ -1,8 +1,0 @@
-<map id="River::SimpleGeo::CustomRiverTree" name="River::SimpleGeo::CustomRiverTree">
-<area shape="rect" id="node2" href="$namespaceRiver_1_1SimpleGeo.html#aaeaf0931007ed0bb3f04ffe517b90708" title="River::SimpleGeo::AddBranches" alt="" coords="232,31,443,57"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Geometry.html#a19cefb054be17b7c1df84fd7ce69442a" title="River::Geometry::addPolar" alt="" coords="509,5,687,32"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Geometry.html#a2e00a634a0e948570540a2ab47335478" title="River::Geometry::AddBiffurcation" alt="" coords="491,56,705,83"/>
-<area shape="rect" id="node5" href="$classRiver_1_1Branch.html#ac530394680fc8ab073033352f251fe17" title="River::Branch::Branch" alt="" coords="753,56,904,83"/>
-<area shape="rect" id="node6" href="$classRiver_1_1Branch.html#a67e24ea2b1f521a1af4193fb7a9c0bed" title="River::Branch::splitPoint" alt="" coords="952,56,1116,83"/>
-<area shape="rect" id="node7" href="$classRiver_1_1GeomPoint.html#a8a4dd9e43fc222c4276c67bc258812ec" title="River::GeomPoint::rotate" alt="" coords="1164,56,1331,83"/>
-</map>

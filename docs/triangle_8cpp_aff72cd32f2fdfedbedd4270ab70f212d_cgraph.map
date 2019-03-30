@@ -1,0 +1,12 @@
+<map id="tallyfaces" name="tallyfaces">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#ac497210bc9192d88ed80659833ba5f55" title="traversalinit" alt="" coords="143,5,232,32"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#ac5f43264b4c12a0300c268142b0b3ee6" title="triangletraverse" alt="" coords="132,56,243,83"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a816cae4d440df52b7bc162b05f92cc75" title="testtriangle" alt="" coords="144,107,231,133"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a908560980328e10c897c5c34bb733e9d" title="traverse" alt="" coords="307,56,377,83"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#a6b67091e1472b3c8d48c8540148dc1a8" title="enqueuebadtri" alt="" coords="291,107,393,133"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#a435eb334f65dbd9268038e8881e24554" title="triunsuitable" alt="" coords="296,157,388,184"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#ab1760445583959132ffd9998372c9aac" title="poolalloc" alt="" coords="467,81,540,108"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#a8b69474415bac9ddab3a5879974338b5" title="enqueuebadtriang" alt="" coords="441,132,565,159"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="613,81,684,108"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="732,81,787,108"/>
+</map>

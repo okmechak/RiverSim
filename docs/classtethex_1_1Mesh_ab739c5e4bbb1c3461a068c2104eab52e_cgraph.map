@@ -1,13 +1,13 @@
 <map id="tethex::Mesh::convert_triangles" name="tethex::Mesh::convert_triangles">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" title="tethex::Mesh::edge\l_numeration" alt="" coords="216,119,351,160"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" title="Numerate the edges of simplices. " alt="" coords="216,119,351,160"/>
 <area shape="rect" id="node5" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="657,130,743,157"/>
-<area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" title="tethex::Mesh::find\l_face_from_two_edges" alt="" coords="205,211,362,252"/>
-<area shape="rect" id="node11" href="$namespacetethex.html#a7f8708334371c722c41cab50445d7987" title="tethex::change_vertices\l_order" alt="" coords="203,335,364,376"/>
-<area shape="rect" id="node3" href="$classtethex_1_1IncidenceMatrix.html#a35358d0c7bd51a6c7ce900237f3e7672" title="tethex::IncidenceMatrix\l::get_n_nonzero" alt="" coords="416,35,575,76"/>
-<area shape="rect" id="node4" href="$classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" title="tethex::IncidenceMatrix\l::find" alt="" coords="416,152,575,193"/>
-<area shape="rect" id="node7" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="tethex::Mesh::get_vertex" alt="" coords="412,218,579,245"/>
-<area shape="rect" id="node8" href="$classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" title="tethex::Line::common\l_vertex" alt="" coords="421,269,569,311"/>
-<area shape="rect" id="node10" href="$classtethex_1_1Line.html#abdc04877eb0feb0200f4e9bb8a4e3735" title="tethex::Line::another\l_vertex" alt="" coords="425,335,566,376"/>
-<area shape="rect" id="node9" href="$classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" title="tethex::MeshElement\l::contains" alt="" coords="627,269,773,311"/>
-<area shape="rect" id="node12" href="$namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" title="tethex::cell_measure_2D" alt="" coords="412,401,579,427"/>
+<area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" title="Find the global number of face basing on numbers of 2 edges defining that face. " alt="" coords="205,211,362,252"/>
+<area shape="rect" id="node11" href="$namespacetethex.html#a7f8708334371c722c41cab50445d7987" title="Change the order of vertices in such a way, that it will be good for deal.II. " alt="" coords="203,335,364,376"/>
+<area shape="rect" id="node3" href="$classtethex_1_1IncidenceMatrix.html#a35358d0c7bd51a6c7ce900237f3e7672" title="Get the number of non zero elements in the matrix. " alt="" coords="416,35,575,76"/>
+<area shape="rect" id="node4" href="$classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" title="Find a serial number of the non zero element in the matrix. " alt="" coords="416,152,575,193"/>
+<area shape="rect" id="node7" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="Get the copy of vertex. " alt="" coords="412,218,579,245"/>
+<area shape="rect" id="node8" href="$classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" title="Find common vertex between two lines. " alt="" coords="421,269,569,311"/>
+<area shape="rect" id="node10" href="$classtethex_1_1Line.html#abdc04877eb0feb0200f4e9bb8a4e3735" title="Get another vertex (different from that we have) " alt="" coords="425,335,566,376"/>
+<area shape="rect" id="node9" href="$classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" title="Check &#45; whether the element contains the vertex or not. " alt="" coords="627,269,773,311"/>
+<area shape="rect" id="node12" href="$namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" title="Since this project was originally designed to connect Gmsh&#39;s meshes with deal.II solvers, the main requirement for new meshes was to be properly read by deal.II. " alt="" coords="412,401,579,427"/>
 </map>

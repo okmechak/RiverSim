@@ -18,7 +18,7 @@
 <!-- Node38 -->
 <g id="node2" class="node">
 <title>Node38</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a9fefc160a592f20226064d1b03b3a14d" target="_top" xlink:title="tethex::Mesh::get_points">
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a9fefc160a592f20226064d1b03b3a14d" target="_top" xlink:title="Get reference to physical points vector. ">
 <polygon fill="#ffffff" stroke="#000000" points="166,-38.5 166,-57.5 291,-57.5 291,-38.5 166,-38.5"/>
 <text text-anchor="middle" x="228.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_points</text>
 </a>

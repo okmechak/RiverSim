@@ -26,7 +26,7 @@
 <!-- Node1 -->
 <g id="node2" class="node">
 <title>Node1</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html" target="_top" xlink:title="{tethex::MeshElement\n|# n_vertices\l# vertices\l# n_edges\l# edges\l# material_id\l# gmsh_el_type\l|+ ~MeshElement()\l+ get_n_vertices()\l+ get_n_edges()\l+ get_gmsh_el_type()\l+ get_material_id()\l+ get_vertex()\l+ get_edge()\l+ set_vertex()\l+ set_edge()\l+ contains()\l# MeshElement()\l# MeshElement()\l# operator=()\l}">
+<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html" target="_top" xlink:title="This class implements the most part of functionality of all elements of mesh: triangles, tetrahedra, quadrangles, hexahedra, etc. ">
 <polygon fill="#ffffff" stroke="#000000" points="0,-138.5 0,-382.5 111,-382.5 111,-138.5 0,-138.5"/>
 <text text-anchor="middle" x="55.5" y="-370.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <polyline fill="none" stroke="#000000" points="0,-363.5 111,-363.5 "/>

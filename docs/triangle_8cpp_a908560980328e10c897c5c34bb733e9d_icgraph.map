@@ -1,0 +1,30 @@
+<map id="traverse" name="traverse">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#ac5f43264b4c12a0300c268142b0b3ee6" title="triangletraverse" alt="" coords="133,259,244,285"/>
+<area shape="rect" id="node18" href="$triangle_8cpp.html#ad3192f7e5f00583e8041fdd4f5f1efb0" title="subsegtraverse" alt="" coords="133,512,244,539"/>
+<area shape="rect" id="node21" href="$triangle_8cpp.html#a51f4784502224728d80a16b668f17014" title="vertextraverse" alt="" coords="136,689,241,716"/>
+<area shape="rect" id="node26" href="$triangle_8cpp.html#abdc0a65518400e99b9a48b03aaca6d57" title="badsubsegtraverse" alt="" coords="123,461,255,488"/>
+<area shape="rect" id="node28" href="$triangle_8cpp.html#ac95223fa1691114186a9782fe701999d" title="plague" alt="" coords="159,44,219,71"/>
+<area shape="rect" id="node29" href="$triangle_8cpp.html#a4bd82f31b72b81818c6ff7671446cb47" title="regionplague" alt="" coords="141,132,236,159"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a0b4e7c06798ba40d7b435a2814f529d7" title="makevertexmap" alt="" coords="305,56,420,83"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#a711adeeb3c28e4f2e3e173d729912c13" title="reconstruct" alt="" coords="319,461,406,488"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#aa0ba1198ac22df6403aeaa25b4ebbe37" title="carveholes" alt="" coords="320,5,405,32"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#aff72cd32f2fdfedbedd4270ab70f212d" title="tallyfaces" alt="" coords="323,411,402,437"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#a0a88bbfa9e08844c589160c5b7c9d05e" title="highorder" alt="" coords="487,107,561,133"/>
+<area shape="rect" id="node12" href="$triangle_8cpp.html#ae2aeed2f2751cc1e7087cc0f94d9f78f" title="writeelements" alt="" coords="473,157,575,184"/>
+<area shape="rect" id="node13" href="$triangle_8cpp.html#ab285f09094d56a1431f965933235d7b3" title="writeedges" alt="" coords="481,208,567,235"/>
+<area shape="rect" id="node14" href="$triangle_8cpp.html#a63c072a0ec5fd1e7ab2f23ecc4dd576a" title="writevoronoi" alt="" coords="478,259,570,285"/>
+<area shape="rect" id="node15" href="$triangle_8cpp.html#a43c01b56c588d0fca5611eed8ee3404d" title="writeneighbors" alt="" coords="471,309,577,336"/>
+<area shape="rect" id="node16" href="$triangle_8cpp.html#ada18b75ad55debb3c033ba1db23ba2b4" title="quality_statistics" alt="" coords="303,360,423,387"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a77e7549672629c06d5926b7edcafc337" title="formskeleton" alt="" coords="475,56,573,83"/>
+<area shape="rect" id="node5" href="$triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. " alt="" coords="625,335,708,361"/>
+<area shape="rect" id="node6" href="$classRiver_1_1Triangle.html#a7bc9c5a5297dee136ab1489a923182dd" title="Generate mesh. " alt="" coords="756,335,921,361"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#a5a654ff6b304f2166c64ffe9183b2995" title="enforcequality" alt="" coords="473,465,575,492"/>
+<area shape="rect" id="node17" href="$triangle_8cpp.html#af5c7ca5685bbb13d38d7dbb7a686634d" title="statistics" alt="" coords="487,360,561,387"/>
+<area shape="rect" id="node19" href="$triangle_8cpp.html#af8e72ce607fa7738b63bab87df6aef22" title="tallyencs" alt="" coords="325,563,400,589"/>
+<area shape="rect" id="node20" href="$triangle_8cpp.html#a168edddc256973c655b26f8a00d11e18" title="writepoly" alt="" coords="487,523,561,549"/>
+<area shape="rect" id="node22" href="$triangle_8cpp.html#a4a13891380126c239a32b46c88f06223" title="divconqdelaunay" alt="" coords="303,664,422,691"/>
+<area shape="rect" id="node24" href="$triangle_8cpp.html#a140789d6f7ad5b771f6d130fa3711874" title="writenodes" alt="" coords="320,715,405,741"/>
+<area shape="rect" id="node25" href="$triangle_8cpp.html#a160128d1b9589687db5d740723c4299b" title="numbernodes" alt="" coords="313,765,413,792"/>
+<area shape="rect" id="node23" href="$triangle_8cpp.html#ab67faa70960c7c39ee1150ab4d55f0a5" title="delaunay" alt="" coords="487,585,561,612"/>
+<area shape="rect" id="node27" href="$triangle_8cpp.html#adca37fc9e90f78c9ae794662de5428bd" title="splitencsegs" alt="" coords="315,512,410,539"/>
+</map>

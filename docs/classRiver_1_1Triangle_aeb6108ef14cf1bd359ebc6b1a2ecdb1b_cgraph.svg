@@ -19,7 +19,7 @@
 <!-- Node30 -->
 <g id="node2" class="node">
 <title>Node30</title>
-<g id="a_node2"><a xlink:href="classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" target="_top" xlink:title="River::Triangle::update\l_options">
+<g id="a_node2"><a xlink:href="classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" target="_top" xlink:title="Updates options bassing on interface flags. ">
 <polygon fill="#ffffff" stroke="#000000" points="141,-.5 141,-30.5 257,-30.5 257,-.5 141,-.5"/>
 <text text-anchor="start" x="149" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::update</text>
 <text text-anchor="middle" x="199" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_options</text>

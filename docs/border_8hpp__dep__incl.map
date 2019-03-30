@@ -1,8 +1,8 @@
 <map id="/home/oleg/Dev/riversim/source/river/border.hpp" name="/home/oleg/Dev/riversim/source/river/border.hpp">
 <area shape="rect" id="node2" href="$border_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/border.cpp" alt="" coords="5,95,169,136"/>
-<area shape="rect" id="node3" href="$geometrynew_8hpp.html" title="Holds all functionality that you need to work with tree of river, its separate branches and generatio..." alt="" coords="193,95,395,136"/>
-<area shape="rect" id="node5" href="$riversim_8hpp.html" title="/home/oleg/Dev/riversim\l/source/river/riversim.hpp" alt="" coords="348,184,517,225"/>
-<area shape="rect" id="node4" href="$geometrynew_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/geometrynew.cpp" alt="" coords="123,184,324,225"/>
-<area shape="rect" id="node6" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="256,273,420,315"/>
-<area shape="rect" id="node7" href="$riversim_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/riversim.cpp" alt="" coords="444,273,613,315"/>
+<area shape="rect" id="node3" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree of river, its separate branches and generatio..." alt="" coords="245,95,409,136"/>
+<area shape="rect" id="node4" href="$riversim_8hpp.html" title="Rivers Simulation. " alt="" coords="123,184,292,225"/>
+<area shape="rect" id="node7" href="$tree_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/tree.cpp" alt="" coords="316,184,480,225"/>
+<area shape="rect" id="node5" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="31,273,195,315"/>
+<area shape="rect" id="node6" href="$riversim_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/riversim.cpp" alt="" coords="219,273,388,315"/>
 </map>

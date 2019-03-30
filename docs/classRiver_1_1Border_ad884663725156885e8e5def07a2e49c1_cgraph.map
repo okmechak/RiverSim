@@ -1,13 +1,13 @@
 <map id="River::Border::GetSourceNormalAngle" name="River::Border::GetSourceNormalAngle">
-<area shape="rect" id="node2" href="$classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" title="Return source poinst indexes(each source consist of two points at distance eps) " alt="" coords="227,129,397,171"/>
-<area shape="rect" id="node8" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="tethex::Mesh::get_vertex" alt="" coords="229,305,395,331"/>
-<area shape="rect" id="node9" href="$classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" title="Return source adjacent point(source has only one such points) " alt="" coords="223,239,401,280"/>
-<area shape="rect" id="node11" href="$classRiver_1_1Point.html#a24deaa21918d47a5d4fea7e0a7e4b61b" title="River::Point::angle" alt="" coords="247,355,377,382"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#a77dc945a9f65b5b1d41e39ec8d06adb8" title="tethex::Mesh::get_n\l_points" alt="" coords="459,71,598,112"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" title="tethex::Mesh::get_point" alt="" coords="449,137,608,163"/>
-<area shape="rect" id="node6" href="$classtethex_1_1MeshElement.html#a44ac13c3270bbf9d70c7e0ea85809979" title="tethex::MeshElement\l::get_material_id" alt="" coords="455,5,602,47"/>
-<area shape="rect" id="node7" href="$classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" title="tethex::MeshElement\l::get_vertex" alt="" coords="455,188,602,229"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" title="Return source poinst indexes(each source consist of two points at distance eps). " alt="" coords="227,129,397,171"/>
+<area shape="rect" id="node8" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="Get the copy of vertex. " alt="" coords="229,305,395,331"/>
+<area shape="rect" id="node9" href="$classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" title="Return source adjacent point(source has only one such points). " alt="" coords="223,239,401,280"/>
+<area shape="rect" id="node11" href="$classRiver_1_1Point.html#a24deaa21918d47a5d4fea7e0a7e4b61b" title="Returns angle. " alt="" coords="247,355,377,382"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#a77dc945a9f65b5b1d41e39ec8d06adb8" title="Get the number of physical points. " alt="" coords="459,71,598,112"/>
+<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" title="Get the physical point. " alt="" coords="449,137,608,163"/>
+<area shape="rect" id="node6" href="$classtethex_1_1MeshElement.html#a44ac13c3270bbf9d70c7e0ea85809979" title="Get the material ID of the element. " alt="" coords="455,5,602,47"/>
+<area shape="rect" id="node7" href="$classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" title="Get the number of vertex describing the element. " alt="" coords="455,188,602,229"/>
 <area shape="rect" id="node5" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="656,195,743,222"/>
-<area shape="rect" id="node10" href="$classtethex_1_1Mesh.html#a9927a3d84b3743cc37e09ea029b8fe26" title="tethex::Mesh::get_lines" alt="" coords="449,254,608,281"/>
-<area shape="rect" id="node12" href="$classRiver_1_1Point.html#a96d6c70f36acd051f5885163bc2de5b5" title="River::Point::norm" alt="" coords="465,355,593,382"/>
+<area shape="rect" id="node10" href="$classtethex_1_1Mesh.html#a9927a3d84b3743cc37e09ea029b8fe26" title="Get reference to physical lines vector. " alt="" coords="449,254,608,281"/>
+<area shape="rect" id="node12" href="$classRiver_1_1Point.html#a96d6c70f36acd051f5885163bc2de5b5" title="Returns norm of vector. " alt="" coords="465,355,593,382"/>
 </map>

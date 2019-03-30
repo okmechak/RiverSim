@@ -18,7 +18,7 @@
 <!-- Node3 -->
 <g id="node2" class="node">
 <title>Node3</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a730ec5e40642f4048d86dbf9af191818" target="_top" xlink:title="tethex::Mesh::set_vertexes">
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a58afefb6ba6371c3ba47ba6e8305ab05" target="_top" xlink:title="Set the copy of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="193,-76.5 193,-95.5 329,-95.5 329,-76.5 193,-76.5"/>
 <text text-anchor="middle" x="261" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::set_vertexes</text>
 </a>
@@ -33,7 +33,7 @@
 <!-- Node4 -->
 <g id="node3" class="node">
 <title>Node4</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#ac58ff9d3852455551459c3f4fe6ed0e2" target="_top" xlink:title="tethex::Mesh::set_points">
+<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#a34d1d49f40a18e445d3e1afb7b6fafd0" target="_top" xlink:title="Set the physical points. ">
 <polygon fill="#ffffff" stroke="#000000" points="198.5,-38.5 198.5,-57.5 323.5,-57.5 323.5,-38.5 198.5,-38.5"/>
 <text text-anchor="middle" x="261" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::set_points</text>
 </a>
@@ -48,7 +48,7 @@
 <!-- Node5 -->
 <g id="node4" class="node">
 <title>Node5</title>
-<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#aab33b9e41b9b7c5a2eb798771aa4b865" target="_top" xlink:title="tethex::Mesh::set_lines">
+<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#a893878b71e351600cbdee7db451bca9d" target="_top" xlink:title="Set the physical lines. ">
 <polygon fill="#ffffff" stroke="#000000" points="201.5,-.5 201.5,-19.5 320.5,-19.5 320.5,-.5 201.5,-.5"/>
 <text text-anchor="middle" x="261" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::set_lines</text>
 </a>

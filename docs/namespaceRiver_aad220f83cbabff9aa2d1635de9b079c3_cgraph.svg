@@ -9,57 +9,57 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 133)">
 <title>River::AppendTreeToMesh</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-133 285,-133 285,4 -4,4"/>
-<!-- Node18 -->
+<!-- Node22 -->
 <g id="node1" class="node">
-<title>Node18</title>
+<title>Node22</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-55 0,-74 134,-74 134,-55 0,-55"/>
 <text text-anchor="middle" x="67" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::AppendTreeToMesh</text>
 </g>
-<!-- Node19 -->
+<!-- Node23 -->
 <g id="node2" class="node">
-<title>Node19</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac" target="_top" xlink:title="tethex::Mesh::get_n\l_vertices">
+<title>Node23</title>
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac" target="_top" xlink:title="Get the number of vertices. ">
 <polygon fill="#ffffff" stroke="#000000" points="173.5,-98.5 173.5,-128.5 277.5,-128.5 277.5,-98.5 173.5,-98.5"/>
 <text text-anchor="start" x="181.5" y="-116.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="225.5" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertices</text>
 </a>
 </g>
 </g>
-<!-- Node18&#45;&gt;Node19 -->
+<!-- Node22&#45;&gt;Node23 -->
 <g id="edge1" class="edge">
-<title>Node18&#45;&gt;Node19</title>
+<title>Node22&#45;&gt;Node23</title>
 <path fill="none" stroke="#191970" d="M97.9367,-74.064C117.5652,-80.1321 143.5877,-88.177 167.0082,-95.4174"/>
 <polygon fill="#191970" stroke="#191970" points="166.2724,-98.8533 176.86,-98.463 168.3399,-92.1655 166.2724,-98.8533"/>
 </g>
-<!-- Node20 -->
+<!-- Node24 -->
 <g id="node3" class="node">
-<title>Node20</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#ae31ba46c6160f8445cc418c6af5206c7" target="_top" xlink:title="tethex::Mesh::append\l_vertexes">
+<title>Node24</title>
+<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#ae31ba46c6160f8445cc418c6af5206c7" target="_top" xlink:title="Set the copy of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="170,-49.5 170,-79.5 281,-79.5 281,-49.5 170,-49.5"/>
 <text text-anchor="start" x="178" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::append</text>
 <text text-anchor="middle" x="225.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertexes</text>
 </a>
 </g>
 </g>
-<!-- Node18&#45;&gt;Node20 -->
+<!-- Node22&#45;&gt;Node24 -->
 <g id="edge2" class="edge">
-<title>Node18&#45;&gt;Node20</title>
+<title>Node22&#45;&gt;Node24</title>
 <path fill="none" stroke="#191970" d="M134.2183,-64.5C142.6161,-64.5 151.1984,-64.5 159.5762,-64.5"/>
 <polygon fill="#191970" stroke="#191970" points="159.6676,-68.0001 169.6676,-64.5 159.6676,-61.0001 159.6676,-68.0001"/>
 </g>
-<!-- Node21 -->
+<!-- Node25 -->
 <g id="node4" class="node">
-<title>Node21</title>
-<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#ad779a1d2d8c8d5c8ecfd91d0e19d87a7" target="_top" xlink:title="tethex::Mesh::append\l_lines">
+<title>Node25</title>
+<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#ad779a1d2d8c8d5c8ecfd91d0e19d87a7" target="_top" xlink:title="Append the physical lines. ">
 <polygon fill="#ffffff" stroke="#000000" points="170,-.5 170,-30.5 281,-30.5 281,-.5 170,-.5"/>
 <text text-anchor="start" x="178" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::append</text>
 <text text-anchor="middle" x="225.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_lines</text>
 </a>
 </g>
 </g>
-<!-- Node18&#45;&gt;Node21 -->
+<!-- Node22&#45;&gt;Node25 -->
 <g id="edge3" class="edge">
-<title>Node18&#45;&gt;Node21</title>
+<title>Node22&#45;&gt;Node25</title>
 <path fill="none" stroke="#191970" d="M97.9367,-54.936C117.5652,-48.8679 143.5877,-40.823 167.0082,-33.5826"/>
 <polygon fill="#191970" stroke="#191970" points="168.3399,-36.8345 176.86,-30.537 166.2724,-30.1467 168.3399,-36.8345"/>
 </g>

@@ -19,7 +19,7 @@
 <!-- Node46 -->
 <g id="node2" class="node">
 <title>Node46</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#afe3e591c355947a7f1fe9499147d9804" target="_top" xlink:title="tethex::MeshElement\l::get_n_edges">
+<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#afe3e591c355947a7f1fe9499147d9804" target="_top" xlink:title="Get the number of edges. ">
 <polygon fill="#ffffff" stroke="#000000" points="146,-22.5 146,-52.5 256,-52.5 256,-22.5 146,-22.5"/>
 <text text-anchor="start" x="154" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="201" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_n_edges</text>

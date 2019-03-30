@@ -1,7 +1,0 @@
-<map id="River::Branch::addPolar" name="River::Branch::addPolar">
-<area shape="rect" id="node2" href="$classRiver_1_1Branch.html#a769ba8d295c72c53343ff2e4b0d91f29" title="River::Branch::getHeadAngle" alt="" coords="215,5,407,32"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Branch.html#a2bf375682c5b397c9bf04ab9f215a926" title="River::Branch::getHead" alt="" coords="231,56,390,83"/>
-<area shape="rect" id="node5" href="$classRiver_1_1Branch.html#a67e24ea2b1f521a1af4193fb7a9c0bed" title="River::Branch::splitPoint" alt="" coords="229,107,393,133"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Branch.html#a28a8c207ba296169ca20b47e99a9e091" title="River::Branch::size" alt="" coords="471,31,605,57"/>
-<area shape="rect" id="node6" href="$classRiver_1_1GeomPoint.html#a8a4dd9e43fc222c4276c67bc258812ec" title="River::GeomPoint::rotate" alt="" coords="455,107,621,133"/>
-</map>

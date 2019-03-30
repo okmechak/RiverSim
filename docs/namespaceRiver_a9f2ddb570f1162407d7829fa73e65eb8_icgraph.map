@@ -1,0 +1,5 @@
+<map id="River::coefficient" name="River::coefficient">
+<area shape="rect" id="node2" href="$classRiver_1_1Solver.html#af16fb58ac78609220538d62c2c491249" title="River::Solver::assemble\l_system" alt="" coords="175,5,337,47"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Solver.html#a4222fe744d607f870a5d7d22b11e8334" title="River::Solver::run" alt="" coords="385,13,509,39"/>
+<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="557,13,608,39"/>
+</map>

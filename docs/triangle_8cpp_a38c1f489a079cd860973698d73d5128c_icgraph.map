@@ -1,0 +1,16 @@
+<map id="makesubseg" name="makesubseg">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a65e7d1a5e6cdb3f22124eca6e7744140" title="insertsubseg" alt="" coords="149,132,245,159"/>
+<area shape="rect" id="node14" href="$triangle_8cpp.html#a711adeeb3c28e4f2e3e173d729912c13" title="reconstruct" alt="" coords="295,220,382,247"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a2ede94743503e369e9b1c6c2a0ac9f7f" title="insertvertex" alt="" coords="293,169,384,196"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#ae9d4ed09a0fd07959568ba5f86cc4d0c" title="scoutsegment" alt="" coords="619,43,723,69"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#aded205ef0849b44d2a587f53fd720618" title="constrainededge" alt="" coords="771,93,888,120"/>
+<area shape="rect" id="node15" href="$triangle_8cpp.html#ab7ca7ba248dc47379e3c0f2bb9962bd4" title="markhull" alt="" coords="953,5,1023,32"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a4e3735a2f4c1fa18deb1a2e66aeda7bd" title="undovertex" alt="" coords="458,296,545,323"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a48fc63d369d988c08cbe8ab40f0b8af5" title="splittriangle" alt="" coords="627,245,715,272"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#a496c50bca0cf0c214a0204419c3b181a" title="segmentintersection" alt="" coords="432,144,571,171"/>
+<area shape="rect" id="node13" href="$triangle_8cpp.html#adca37fc9e90f78c9ae794662de5428bd" title="splitencsegs" alt="" coords="623,195,718,221"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#a5a654ff6b304f2166c64ffe9183b2995" title="enforcequality" alt="" coords="778,220,881,247"/>
+<area shape="rect" id="node7" href="$triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. " alt="" coords="1233,220,1316,247"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#ae367b20189056436da2a1b633b392703" title="insertsegment" alt="" coords="936,68,1040,95"/>
+<area shape="rect" id="node12" href="$triangle_8cpp.html#a77e7549672629c06d5926b7edcafc337" title="formskeleton" alt="" coords="1088,68,1185,95"/>
+</map>

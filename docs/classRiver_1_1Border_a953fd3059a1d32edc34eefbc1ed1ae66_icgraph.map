@@ -3,5 +3,5 @@
 <area shape="rect" id="node6" href="$classRiver_1_1Border.html#a2f25dbd4abd2d3d684a4d01389e76a0d" title="Returns vector of sources points(both source point is merged into one). " alt="" coords="217,109,393,150"/>
 <area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="684,87,735,114"/>
 <area shape="rect" id="node4" href="$classRiver_1_1Border.html#a08df0eb89a5692e84d6b3fe5fe5bec37" title="Add border line to each source points. " alt="" coords="447,36,636,63"/>
-<area shape="rect" id="node5" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="River::BoundaryGenerator" alt="" coords="455,87,628,114"/>
+<area shape="rect" id="node5" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="Finnal Boudary Geneartor Class. " alt="" coords="455,87,628,114"/>
 </map>

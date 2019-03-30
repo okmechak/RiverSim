@@ -1,0 +1,8 @@
+<map id="markhull" name="markhull">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a65e7d1a5e6cdb3f22124eca6e7744140" title="insertsubseg" alt="" coords="124,31,220,57"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a38c1f489a079cd860973698d73d5128c" title="makesubseg" alt="" coords="268,5,364,32"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#ae5bee30bf48dcc4ac5ab46eb5fa3f059" title="printsubseg" alt="" coords="271,56,361,83"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#ab1760445583959132ffd9998372c9aac" title="poolalloc" alt="" coords="412,5,485,32"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="533,5,604,32"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="652,5,707,32"/>
+</map>

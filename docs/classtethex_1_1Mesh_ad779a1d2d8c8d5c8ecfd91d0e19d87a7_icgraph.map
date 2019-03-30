@@ -1,6 +1,6 @@
 <map id="tethex::Mesh::append_lines" name="tethex::Mesh::append_lines">
 <area shape="rect" id="node2" href="$classRiver_1_1Border.html#a08df0eb89a5692e84d6b3fe5fe5bec37" title="Add border line to each source points. " alt="" coords="201,5,391,32"/>
 <area shape="rect" id="node3" href="$namespaceRiver.html#aad220f83cbabff9aa2d1635de9b079c3" title="River::AppendTreeToMesh" alt="" coords="207,56,385,83"/>
-<area shape="rect" id="node4" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="River::BoundaryGenerator" alt="" coords="439,56,612,83"/>
+<area shape="rect" id="node4" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="Finnal Boudary Geneartor Class. " alt="" coords="439,56,612,83"/>
 <area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="660,56,711,83"/>
 </map>
