@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
 
 BOOST_AUTO_TEST_CASE( integration_test, 
-    *utf::tolerance(1e-1) * utf::disabled())
+    *utf::tolerance(1e-1))
 {
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
     Triangle tria;
     tria.AreaConstrain = tria.ConstrainAngle = tria.CustomConstraint = true;
-    tria.MaxTriaArea = 0.005;
+    tria.MaxTriaArea = 0.1;
     tria.MinAngle = 30;
     tria.generate(mesh, &ac);
     mesh.convert();
