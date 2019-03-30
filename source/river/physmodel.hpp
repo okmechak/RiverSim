@@ -13,11 +13,11 @@
  * GNU General Public License for more details.
  */
 
-/*! \file physmodel.hpp
-    Physical model incapsulation.
-
-    Holds all specific information about physical model of process.
-*/
+/** @file physmodel.hpp
+ *   Physical model incapsulation.
+ *
+ *   Holds all specific information about physical model of process.
+ */
 #pragma once
 
 #include <iostream>

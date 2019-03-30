@@ -13,15 +13,15 @@
  * GNU General Public License for more details.
  */
 
-/*! \file riversim.hpp
-    Rivers Simulation
-
-    Here is placed different routine functions, like
-        - forward river evolution
-        - backward river evolution
-        - statistics and postrocessing
-        - etc..
-*/
+/** @file riversim.hpp
+ *   Rivers Simulation
+ *
+ *   Here is placed different routine functions, like
+ *       - forward river evolution
+ *       - backward river evolution
+ *       - statistics and postrocessing
+ *       - etc..
+ */
 
 #pragma once
 

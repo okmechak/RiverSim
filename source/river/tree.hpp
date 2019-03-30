@@ -13,16 +13,16 @@
  * GNU General Public License for more details.
  */
 
-/*! \file tree.hpp
-    Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry
-    
-    This file holds several classes like __BranchNew__, __Tree__, __GeometryNew__.
-    BranchNew class represents single branch without any biffuracation points. 
-    These branches are combined into Tree by means 
-    of __Tree__ class. And finnaly __Tree__ class and __Border__ class are generated 
-    into geometry that is used in simmulation by means of
-    __GeometryNew__ class.
-*/
+/** @file tree.hpp
+ *   Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry
+ *   
+ *   This file holds several classes like __BranchNew__, __Tree__, __GeometryNew__.
+ *   BranchNew class represents single branch without any biffuracation points. 
+ *   These branches are combined into Tree by means 
+ *   of __Tree__ class. And finnaly __Tree__ class and __Border__ class are generated 
+ *   into geometry that is used in simmulation by means of
+ *   __GeometryNew__ class.
+ */
 
 #pragma once
 

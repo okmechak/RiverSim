@@ -13,11 +13,11 @@
  * GNU General Public License for more details.
  */
 
-/*! \file mesh.hpp
-    Wrappers classes to Triangle and Gmsh.
-    
-    Mesh generation and visualization.
-*/
+/** @file mesh.hpp
+ *   Wrappers classes to Triangle and Gmsh.
+ *   
+ *   Mesh generation and visualization.
+ */
 #pragma once
 
 #include <iostream>
