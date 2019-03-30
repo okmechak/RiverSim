@@ -1,4 +1,4 @@
-/*! \file tethex.hpp
+/*! \file triangle.hpp
 
     \brief Piece of Art Mesh Generation Tool, 
     Winner of the 2003 James Hardy Wilkinson Prize in Numerical Software.                                                     

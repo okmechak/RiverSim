@@ -1,4 +1,4 @@
-/**
+/*
  * riversim - river growth simulation.
  * Copyright (c) 2019 Oleg Kmechak
  * Report issues: github.com/okmechak/RiverSim/issues
@@ -13,6 +13,7 @@
  * GNU General Public License for more details.
  */
 #include "border.hpp"
+#include <math.h>
 
 namespace River
 {
