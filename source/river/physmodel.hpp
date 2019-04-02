@@ -82,16 +82,17 @@ namespace River
             ///Height of region
             double height = 1.;
             ///Biffurcation threshold.
-            double biffurcationThreshold = 0;//Probably should be -0.1
+            double biffurcation_threshold = -0.1;//Probably should be -0.1
             ///Biffurcation angle.
             double biff_angle = M_PI/5;
 
             ///Checks by evaluating series params for biffuraction condition.
             bool q_biffurcate(vector<double> a)
             {
-                cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcationThreshold << endl;
-                return a.at(2)/a.at(0) < biffurcationThreshold;
+                cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
+                return a.at(2)/a.at(0) < biffurcation_threshold;
             }
+            //TODO implement in this class parameter chacking
 
             ///Evaluate next point of simualtion based on series parameters around tip.
             Polar next_point(vector<double> series_params)

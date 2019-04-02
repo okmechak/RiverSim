@@ -32,12 +32,15 @@ int main(int argc, char *argv[])
     mdl.eps = vm["eps"].as<double>();
     mdl.ds = vm["ds"].as<double>();
     mdl.dx = vm["dx"].as<double>();
+    mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
+    mdl.width = vm["width"].as<double>();
+    mdl.height = vm["height"].as<double>();
 
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
     auto region_size = vector<double>{mdl.width, mdl.height};
-    auto sources_x_coord = vector<double>{mdl.dx};
-    auto sources_id = vector<int>{1};
+    auto sources_x_coord = vector<double>{mdl.dx, mdl.dx + 0.05, mdl.dx + 0.1};
+    auto sources_id = vector<int>{1, 2, 3};
 
     tethex::Mesh border_mesh;
     Border border(border_mesh);
