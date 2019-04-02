@@ -18,7 +18,7 @@
 <!-- Node28 -->
 <g id="node2" class="node">
 <title>Node28</title>
-<g id="a_node2"><a xlink:href="namespacetethex.html#a7132a071af39d1f1e9fbbfb34f3aab2f" target="_top" xlink:title="tethex::requirement\l_fails">
+<g id="a_node2"><a xlink:href="namespacetethex.html#a7132a071af39d1f1e9fbbfb34f3aab2f" target="_top" xlink:title="Throw an informative exception, if requirement or expectation fails. ">
 <polygon fill="#ffffff" stroke="#000000" points="123.5,-1107 123.5,-1137 224.5,-1137 224.5,-1107 123.5,-1107"/>
 <text text-anchor="start" x="131.5" y="-1125" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::requirement</text>
 <text text-anchor="middle" x="174" y="-1114" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_fails</text>
@@ -34,7 +34,7 @@
 <!-- Node29 -->
 <g id="node3" class="node">
 <title>Node29</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Point.html#afd64f338ed62a8735cde178689773f89" target="_top" xlink:title="tethex::Point::get\l_coord">
+<g id="a_node3"><a xlink:href="classtethex_1_1Point.html#afd64f338ed62a8735cde178689773f89" target="_top" xlink:title="Get the coordinate of the point. ">
 <polygon fill="#ffffff" stroke="#000000" points="128,-736 128,-766 220,-766 220,-736 128,-736"/>
 <text text-anchor="start" x="136" y="-754" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Point::get</text>
 <text text-anchor="middle" x="174" y="-743" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_coord</text>
@@ -50,7 +50,7 @@
 <!-- Node32 -->
 <g id="node6" class="node">
 <title>Node32</title>
-<g id="a_node6"><a xlink:href="classtethex_1_1Point.html#a67f61f4c0363e42205a4dd1056ccf189" target="_top" xlink:title="tethex::Point::set\l_coord">
+<g id="a_node6"><a xlink:href="classtethex_1_1Point.html#a67f61f4c0363e42205a4dd1056ccf189" target="_top" xlink:title="Set the value of specific coordinate. ">
 <polygon fill="#ffffff" stroke="#000000" points="128,-477 128,-507 220,-507 220,-477 128,-477"/>
 <text text-anchor="start" x="136" y="-495" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Point::set</text>
 <text text-anchor="middle" x="174" y="-484" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_coord</text>
@@ -66,7 +66,7 @@
 <!-- Node33 -->
 <g id="node7" class="node">
 <title>Node33</title>
-<g id="a_node7"><a xlink:href="classtethex_1_1MeshElement.html#adfcce5cfca86923678a212405ce784a4" target="_top" xlink:title="tethex::MeshElement\l::get_n_vertices">
+<g id="a_node7"><a xlink:href="classtethex_1_1MeshElement.html#adfcce5cfca86923678a212405ce784a4" target="_top" xlink:title="Get the number of vertices. ">
 <polygon fill="#ffffff" stroke="#000000" points="119,-389 119,-419 229,-419 229,-389 119,-389"/>
 <text text-anchor="start" x="127" y="-407" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="174" y="-396" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_n_vertices</text>
@@ -82,7 +82,7 @@
 <!-- Node34 -->
 <g id="node8" class="node">
 <title>Node34</title>
-<g id="a_node8"><a xlink:href="classtethex_1_1MeshElement.html#a1292194d3034289522ad23b8e7366320" target="_top" xlink:title="tethex::MeshElement\l::set_vertex">
+<g id="a_node8"><a xlink:href="classtethex_1_1MeshElement.html#a1292194d3034289522ad23b8e7366320" target="_top" xlink:title="Set the number of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="295,-401 295,-431 405,-431 405,-401 295,-401"/>
 <text text-anchor="start" x="303" y="-419" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="350" y="-408" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::set_vertex</text>
@@ -98,7 +98,7 @@
 <!-- Node35 -->
 <g id="node9" class="node">
 <title>Node35</title>
-<g id="a_node9"><a xlink:href="classtethex_1_1MeshElement.html#afe3e591c355947a7f1fe9499147d9804" target="_top" xlink:title="tethex::MeshElement\l::get_n_edges">
+<g id="a_node9"><a xlink:href="classtethex_1_1MeshElement.html#afe3e591c355947a7f1fe9499147d9804" target="_top" xlink:title="Get the number of edges. ">
 <polygon fill="#ffffff" stroke="#000000" points="119,-301 119,-331 229,-331 229,-301 119,-301"/>
 <text text-anchor="start" x="127" y="-319" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="174" y="-308" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_n_edges</text>
@@ -114,7 +114,7 @@
 <!-- Node36 -->
 <g id="node10" class="node">
 <title>Node36</title>
-<g id="a_node10"><a xlink:href="classtethex_1_1MeshElement.html#ac9fa106da52049721770a0eb4f46bcc1" target="_top" xlink:title="tethex::MeshElement\l::set_edge">
+<g id="a_node10"><a xlink:href="classtethex_1_1MeshElement.html#ac9fa106da52049721770a0eb4f46bcc1" target="_top" xlink:title="Set the number of edge. ">
 <polygon fill="#ffffff" stroke="#000000" points="295,-333 295,-363 405,-363 405,-333 295,-333"/>
 <text text-anchor="start" x="303" y="-351" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="350" y="-340" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::set_edge</text>
@@ -130,7 +130,7 @@
 <!-- Node37 -->
 <g id="node11" class="node">
 <title>Node37</title>
-<g id="a_node11"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="tethex::MeshElement\l::get_vertex">
+<g id="a_node11"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="Get the number of vertex describing the element. ">
 <polygon fill="#ffffff" stroke="#000000" points="119,-1019 119,-1049 229,-1049 229,-1019 119,-1019"/>
 <text text-anchor="start" x="127" y="-1037" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="174" y="-1026" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_vertex</text>
@@ -146,7 +146,7 @@
 <!-- Node46 -->
 <g id="node20" class="node">
 <title>Node46</title>
-<g id="a_node20"><a xlink:href="classtethex_1_1MeshElement.html#a81336e6acfc114735bac5f2d0bb63079" target="_top" xlink:title="tethex::MeshElement\l::get_edge">
+<g id="a_node20"><a xlink:href="classtethex_1_1MeshElement.html#a81336e6acfc114735bac5f2d0bb63079" target="_top" xlink:title="Get the number of edge describing the element. ">
 <polygon fill="#ffffff" stroke="#000000" points="119,-252 119,-282 229,-282 229,-252 119,-252"/>
 <text text-anchor="start" x="127" y="-270" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="174" y="-259" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_edge</text>
@@ -162,7 +162,7 @@
 <!-- Node47 -->
 <g id="node21" class="node">
 <title>Node47</title>
-<g id="a_node21"><a xlink:href="classtethex_1_1PhysPoint.html#a7869b6e9d79b512aaa102a08cb54e674" target="_top" xlink:title="tethex::PhysPoint::\lPhysPoint">
+<g id="a_node21"><a xlink:href="classtethex_1_1PhysPoint.html#a7869b6e9d79b512aaa102a08cb54e674" target="_top" xlink:title="Constructor with parameters. ">
 <polygon fill="#ffffff" stroke="#000000" points="123.5,-203 123.5,-233 224.5,-233 224.5,-203 123.5,-203"/>
 <text text-anchor="start" x="131.5" y="-221" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::PhysPoint::</text>
 <text text-anchor="middle" x="174" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">PhysPoint</text>
@@ -178,7 +178,7 @@
 <!-- Node48 -->
 <g id="node22" class="node">
 <title>Node48</title>
-<g id="a_node22"><a xlink:href="classtethex_1_1Line.html#a93a11c2ccbd126bc87fb3f490267fad4" target="_top" xlink:title="tethex::Line::Line">
+<g id="a_node22"><a xlink:href="classtethex_1_1Line.html#a93a11c2ccbd126bc87fb3f490267fad4" target="_top" xlink:title="Constructor with parameters. ">
 <polygon fill="#ffffff" stroke="#000000" points="128,-164.5 128,-183.5 220,-183.5 220,-164.5 128,-164.5"/>
 <text text-anchor="middle" x="174" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Line::Line</text>
 </a>
@@ -193,7 +193,7 @@
 <!-- Node49 -->
 <g id="node23" class="node">
 <title>Node49</title>
-<g id="a_node23"><a xlink:href="classtethex_1_1Triangle.html#ada5ab0c05b12d70f881ee58708cae514" target="_top" xlink:title="tethex::Triangle::Triangle">
+<g id="a_node23"><a xlink:href="classtethex_1_1Triangle.html#ada5ab0c05b12d70f881ee58708cae514" target="_top" xlink:title="Constructor with parameters. ">
 <polygon fill="#ffffff" stroke="#000000" points="111.5,-126.5 111.5,-145.5 236.5,-145.5 236.5,-126.5 111.5,-126.5"/>
 <text text-anchor="middle" x="174" y="-133.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Triangle::Triangle</text>
 </a>
@@ -208,7 +208,7 @@
 <!-- Node50 -->
 <g id="node24" class="node">
 <title>Node50</title>
-<g id="a_node24"><a xlink:href="classtethex_1_1Quadrangle.html#a0b5b803f8c4264e899c8e7d07e90fe53" target="_top" xlink:title="tethex::Quadrangle\l::Quadrangle">
+<g id="a_node24"><a xlink:href="classtethex_1_1Quadrangle.html#a0b5b803f8c4264e899c8e7d07e90fe53" target="_top" xlink:title="Constructor with parameters. ">
 <polygon fill="#ffffff" stroke="#000000" points="124.5,-77 124.5,-107 223.5,-107 223.5,-77 124.5,-77"/>
 <text text-anchor="start" x="132.5" y="-95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Quadrangle</text>
 <text text-anchor="middle" x="174" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::Quadrangle</text>
@@ -224,7 +224,7 @@
 <!-- Node51 -->
 <g id="node25" class="node">
 <title>Node51</title>
-<g id="a_node25"><a xlink:href="classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" target="_top" xlink:title="tethex::IncidenceMatrix\l::find">
+<g id="a_node25"><a xlink:href="classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" target="_top" xlink:title="Find a serial number of the non zero element in the matrix. ">
 <polygon fill="#ffffff" stroke="#000000" points="114.5,-679 114.5,-709 233.5,-709 233.5,-679 114.5,-679"/>
 <text text-anchor="start" x="122.5" y="-697" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::IncidenceMatrix</text>
 <text text-anchor="middle" x="174" y="-686" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::find</text>
@@ -240,7 +240,7 @@
 <!-- Node52 -->
 <g id="node26" class="node">
 <title>Node52</title>
-<g id="a_node26"><a xlink:href="classtethex_1_1Mesh.html#ac4c7819413f5941593722fa1024e1f25" target="_top" xlink:title="tethex::Mesh::redefine\l_lines">
+<g id="a_node26"><a xlink:href="classtethex_1_1Mesh.html#ac4c7819413f5941593722fa1024e1f25" target="_top" xlink:title="During mesh conversion we add new vertices. ">
 <polygon fill="#ffffff" stroke="#000000" points="293,-646 293,-676 407,-676 407,-646 293,-646"/>
 <text text-anchor="start" x="301" y="-664" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::redefine</text>
 <text text-anchor="middle" x="350" y="-653" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_lines</text>
@@ -256,7 +256,7 @@
 <!-- Node55 -->
 <g id="node29" class="node">
 <title>Node55</title>
-<g id="a_node29"><a xlink:href="classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" target="_top" xlink:title="tethex::Mesh::edge\l_numeration">
+<g id="a_node29"><a xlink:href="classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" target="_top" xlink:title="Numerate the edges of simplices. ">
 <polygon fill="#ffffff" stroke="#000000" points="299.5,-597 299.5,-627 400.5,-627 400.5,-597 299.5,-597"/>
 <text text-anchor="start" x="307.5" y="-615" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::edge</text>
 <text text-anchor="middle" x="350" y="-604" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_numeration</text>
@@ -272,7 +272,7 @@
 <!-- Node56 -->
 <g id="node30" class="node">
 <title>Node56</title>
-<g id="a_node30"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="tethex::Mesh::convert\l_triangles">
+<g id="a_node30"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="Conversion from triangles to quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="468,-564 468,-594 580,-594 580,-564 468,-564"/>
 <text text-anchor="start" x="476" y="-582" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 <text text-anchor="middle" x="524" y="-571" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_triangles</text>
@@ -288,7 +288,7 @@
 <!-- Node58 -->
 <g id="node32" class="node">
 <title>Node58</title>
-<g id="a_node32"><a xlink:href="classtethex_1_1Mesh.html#ae0f570a1892c8cf29a68bae0267f8f9b" target="_top" xlink:title="tethex::Mesh::read">
+<g id="a_node32"><a xlink:href="classtethex_1_1Mesh.html#ae0f570a1892c8cf29a68bae0267f8f9b" target="_top" xlink:title="Read the mesh from file. ">
 <polygon fill="#ffffff" stroke="#000000" points="125,-38.5 125,-57.5 223,-57.5 223,-38.5 125,-38.5"/>
 <text text-anchor="middle" x="174" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::read</text>
 </a>
@@ -303,7 +303,7 @@
 <!-- Node59 -->
 <g id="node33" class="node">
 <title>Node59</title>
-<g id="a_node33"><a xlink:href="classtethex_1_1Mesh.html#a8e5d9c057c6f562d5036f262a23af29c" target="_top" xlink:title="tethex::Mesh::set_new\l_vertices">
+<g id="a_node33"><a xlink:href="classtethex_1_1Mesh.html#a8e5d9c057c6f562d5036f262a23af29c" target="_top" xlink:title="During conversion we add new vertices &#45; at the centers of edges, triangles, tetrahedra. ">
 <polygon fill="#ffffff" stroke="#000000" points="466,-515 466,-545 582,-545 582,-515 466,-515"/>
 <text text-anchor="start" x="474" y="-533" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::set_new</text>
 <text text-anchor="middle" x="524" y="-522" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertices</text>
@@ -319,7 +319,7 @@
 <!-- Node60 -->
 <g id="node34" class="node">
 <title>Node60</title>
-<g id="a_node34"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="tethex::Mesh::get_vertex">
+<g id="a_node34"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="Get the copy of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="111.5,-847.5 111.5,-866.5 236.5,-866.5 236.5,-847.5 111.5,-847.5"/>
 <text text-anchor="middle" x="174" y="-854.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_vertex</text>
 </a>
@@ -334,7 +334,7 @@
 <!-- Node65 -->
 <g id="node39" class="node">
 <title>Node65</title>
-<g id="a_node39"><a xlink:href="classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" target="_top" xlink:title="tethex::Mesh::get_point">
+<g id="a_node39"><a xlink:href="classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" target="_top" xlink:title="Get the physical point. ">
 <polygon fill="#ffffff" stroke="#000000" points="114.5,-1068.5 114.5,-1087.5 233.5,-1087.5 233.5,-1068.5 114.5,-1068.5"/>
 <text text-anchor="middle" x="174" y="-1075.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_point</text>
 </a>
@@ -349,7 +349,7 @@
 <!-- Node66 -->
 <g id="node40" class="node">
 <title>Node66</title>
-<g id="a_node40"><a xlink:href="classtethex_1_1Mesh.html#a70088e99510407a2afcb64f070430d05" target="_top" xlink:title="tethex::Mesh::get_edge">
+<g id="a_node40"><a xlink:href="classtethex_1_1Mesh.html#a70088e99510407a2afcb64f070430d05" target="_top" xlink:title="Get the mesh edge. ">
 <polygon fill="#ffffff" stroke="#000000" points="114.5,-.5 114.5,-19.5 233.5,-19.5 233.5,-.5 114.5,-.5"/>
 <text text-anchor="middle" x="174" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_edge</text>
 </a>
@@ -364,7 +364,7 @@
 <!-- Node67 -->
 <g id="node41" class="node">
 <title>Node67</title>
-<g id="a_node41"><a xlink:href="classtethex_1_1Mesh.html#a31af01d4cca474c530bcfa8dbda990c0" target="_top" xlink:title="tethex::Mesh::get_line">
+<g id="a_node41"><a xlink:href="classtethex_1_1Mesh.html#a31af01d4cca474c530bcfa8dbda990c0" target="_top" xlink:title="Get the physical line. ">
 <polygon fill="#ffffff" stroke="#000000" points="117.5,-942.5 117.5,-961.5 230.5,-961.5 230.5,-942.5 117.5,-942.5"/>
 <text text-anchor="middle" x="174" y="-949.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_line</text>
 </a>
@@ -379,7 +379,7 @@
 <!-- Node68 -->
 <g id="node42" class="node">
 <title>Node68</title>
-<g id="a_node42"><a xlink:href="classtethex_1_1Mesh.html#a28ee91d1c112c5852cead4cbcdfc6dda" target="_top" xlink:title="tethex::Mesh::get_triangle">
+<g id="a_node42"><a xlink:href="classtethex_1_1Mesh.html#a28ee91d1c112c5852cead4cbcdfc6dda" target="_top" xlink:title="Get the mesh triangle. ">
 <polygon fill="#ffffff" stroke="#000000" points="109,-980.5 109,-999.5 239,-999.5 239,-980.5 109,-980.5"/>
 <text text-anchor="middle" x="174" y="-987.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_triangle</text>
 </a>
@@ -394,7 +394,7 @@
 <!-- Node69 -->
 <g id="node43" class="node">
 <title>Node69</title>
-<g id="a_node43"><a xlink:href="classtethex_1_1Mesh.html#a5737e6675d86cce7410b4b690f25618f" target="_top" xlink:title="tethex::Mesh::get_quadrangle">
+<g id="a_node43"><a xlink:href="classtethex_1_1Mesh.html#a5737e6675d86cce7410b4b690f25618f" target="_top" xlink:title="Get the mesh quadrangle. ">
 <polygon fill="#ffffff" stroke="#000000" points="101,-904.5 101,-923.5 247,-923.5 247,-904.5 101,-904.5"/>
 <text text-anchor="middle" x="174" y="-911.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_quadrangle</text>
 </a>
@@ -452,7 +452,7 @@
 <!-- Node38 -->
 <g id="node12" class="node">
 <title>Node38</title>
-<g id="a_node12"><a xlink:href="classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" target="_top" xlink:title="Return source adjacent point(source has only one such points) ">
+<g id="a_node12"><a xlink:href="classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" target="_top" xlink:title="Return source adjacent point(source has only one such points). ">
 <polygon fill="#ffffff" stroke="#000000" points="283,-1060 283,-1090 417,-1090 417,-1060 283,-1060"/>
 <text text-anchor="start" x="291" y="-1078" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Border::GetAdjacent</text>
 <text text-anchor="middle" x="350" y="-1067" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">PointId</text>
@@ -468,7 +468,7 @@
 <!-- Node40 -->
 <g id="node14" class="node">
 <title>Node40</title>
-<g id="a_node14"><a xlink:href="classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" target="_top" xlink:title="Return source poinst indexes(each source consist of two points at distance eps) ">
+<g id="a_node14"><a xlink:href="classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" target="_top" xlink:title="Return source poinst indexes(each source consist of two points at distance eps). ">
 <polygon fill="#ffffff" stroke="#000000" points="286.5,-1109 286.5,-1139 413.5,-1139 413.5,-1109 286.5,-1109"/>
 <text text-anchor="start" x="294.5" y="-1127" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Border::GetSource</text>
 <text text-anchor="middle" x="350" y="-1116" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">VerticesIndexById</text>
@@ -566,7 +566,7 @@
 <!-- Node42 -->
 <g id="node16" class="node">
 <title>Node42</title>
-<g id="a_node16"><a xlink:href="namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" target="_top" xlink:title="River::BoundaryGenerator">
+<g id="a_node16"><a xlink:href="namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" target="_top" xlink:title="Finnal Boudary Geneartor Class. ">
 <polygon fill="#ffffff" stroke="#000000" points="459,-1092.5 459,-1111.5 589,-1111.5 589,-1092.5 459,-1092.5"/>
 <text text-anchor="middle" x="524" y="-1099.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BoundaryGenerator</text>
 </a>
@@ -599,7 +599,7 @@
 <!-- Node57 -->
 <g id="node31" class="node">
 <title>Node57</title>
-<g id="a_node31"><a xlink:href="classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" target="_top" xlink:title="tethex::Mesh::find\l_face_from_two_edges">
+<g id="a_node31"><a xlink:href="classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" target="_top" xlink:title="Find the global number of face basing on numbers of 2 edges defining that face. ">
 <polygon fill="#ffffff" stroke="#000000" points="291,-695 291,-725 409,-725 409,-695 291,-695"/>
 <text text-anchor="start" x="299" y="-713" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::find</text>
 <text text-anchor="middle" x="350" y="-702" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_face_from_two_edges</text>
@@ -615,7 +615,7 @@
 <!-- Node53 -->
 <g id="node27" class="node">
 <title>Node53</title>
-<g id="a_node27"><a xlink:href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" target="_top" xlink:title="tethex::Mesh::convert_2D">
+<g id="a_node27"><a xlink:href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" target="_top" xlink:title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) ">
 <polygon fill="#ffffff" stroke="#000000" points="631,-613.5 631,-632.5 761,-632.5 761,-613.5 631,-613.5"/>
 <text text-anchor="middle" x="696" y="-620.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert_2D</text>
 </a>
@@ -630,7 +630,7 @@
 <!-- Node54 -->
 <g id="node28" class="node">
 <title>Node54</title>
-<g id="a_node28"><a xlink:href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" target="_top" xlink:title="tethex::Mesh::convert">
+<g id="a_node28"><a xlink:href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" target="_top" xlink:title="Conversion from simplices to bricks. ">
 <polygon fill="#ffffff" stroke="#000000" points="797,-703.5 797,-722.5 909,-722.5 909,-703.5 797,-703.5"/>
 <text text-anchor="middle" x="853" y="-710.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 </a>
@@ -711,7 +711,7 @@
 <!-- Node61 -->
 <g id="node35" class="node">
 <title>Node61</title>
-<g id="a_node35"><a xlink:href="classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" target="_top" xlink:title="tethex::Mesh::convert\l_quadrangles">
+<g id="a_node35"><a xlink:href="classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" target="_top" xlink:title="Convert quadrangles into quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="640,-788 640,-818 752,-818 752,-788 640,-788"/>
 <text text-anchor="start" x="648" y="-806" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 <text text-anchor="middle" x="696" y="-795" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_quadrangles</text>
@@ -727,7 +727,7 @@
 <!-- Node62 -->
 <g id="node36" class="node">
 <title>Node62</title>
-<g id="a_node36"><a xlink:href="classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796" target="_top" xlink:title="tethex::Mesh::statistics">
+<g id="a_node36"><a xlink:href="classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796" target="_top" xlink:title="Print some statistics (detailed information). ">
 <polygon fill="#ffffff" stroke="#000000" points="290.5,-831.5 290.5,-850.5 409.5,-850.5 409.5,-831.5 290.5,-831.5"/>
 <text text-anchor="middle" x="350" y="-838.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::statistics</text>
 </a>
@@ -742,7 +742,7 @@
 <!-- Node63 -->
 <g id="node37" class="node">
 <title>Node63</title>
-<g id="a_node37"><a xlink:href="namespacetethex.html#ab9f2665e34303a870a9a7c87d9c6ee6f" target="_top" xlink:title="tethex::write_elements">
+<g id="a_node37"><a xlink:href="namespacetethex.html#afd9ddbb6ed7cbe8a0e8505e7960b0e0a" target="_top" xlink:title="Since all mesh elements are derived from one base MeshElement class, we can use one procedure to trea...">
 <polygon fill="#ffffff" stroke="#000000" points="292,-869.5 292,-888.5 408,-888.5 408,-869.5 292,-869.5"/>
 <text text-anchor="middle" x="350" y="-876.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::write_elements</text>
 </a>
@@ -763,7 +763,7 @@
 <!-- Node64 -->
 <g id="node38" class="node">
 <title>Node64</title>
-<g id="a_node38"><a xlink:href="classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09" target="_top" xlink:title="tethex::Mesh::write">
+<g id="a_node38"><a xlink:href="classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09" target="_top" xlink:title="Write the resulting brick mesh into the file. ">
 <polygon fill="#ffffff" stroke="#000000" points="473.5,-869.5 473.5,-888.5 574.5,-888.5 574.5,-869.5 473.5,-869.5"/>
 <text text-anchor="middle" x="524" y="-876.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::write</text>
 </a>

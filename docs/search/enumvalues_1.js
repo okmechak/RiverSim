@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['conquer',['CONQUER',['../classRiver_1_1Triangle.html#a8e2bbe3bca48adc25544baef526c7555ae57281dda766d7549a904c22c0267046',1,'River::Triangle']]]
+  ['duplicatevertex',['DUPLICATEVERTEX',['../triangle_8cpp.html#a6455ccfc31cfd737442dc3f7476418ebac2284d1865efbe3944588406d45d5d9f',1,'triangle.cpp']]]
 ];

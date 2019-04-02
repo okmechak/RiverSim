@@ -1,0 +1,12 @@
+<map id="writevoronoi" name="writevoronoi">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="169,5,240,32"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#ac497210bc9192d88ed80659833ba5f55" title="traversalinit" alt="" coords="160,56,249,83"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#ac5f43264b4c12a0300c268142b0b3ee6" title="triangletraverse" alt="" coords="149,107,260,133"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#aeb60f84186be632487f896e6e0634e4a" title="findcircumcenter" alt="" coords="145,157,264,184"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="346,5,401,32"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#a908560980328e10c897c5c34bb733e9d" title="traverse" alt="" coords="339,107,408,133"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#adbb7ef8fc2a92efceb7c1c152fbd22f1" title="counterclockwise" alt="" coords="312,157,435,184"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#abd5587da82afca7f6403c3ec3d17139a" title="counterclockwiseadapt" alt="" coords="483,157,637,184"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="721,128,793,155"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="685,179,828,221"/>
+</map>

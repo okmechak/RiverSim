@@ -9,9 +9,9 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 189)">
 <title>River::Polar</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-189 72,-189 72,4 -4,4"/>
-<!-- Node2 -->
+<!-- Node1 -->
 <g id="node1" class="node">
-<title>Node2</title>
+<title>Node1</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-68.5 68,-68.5 68,-.5 0,-.5"/>
 <text text-anchor="middle" x="34" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Polar</text>
 <polyline fill="none" stroke="#000000" points="0,-49.5 68,-49.5 "/>
@@ -20,9 +20,9 @@
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">+ Polar()</text>
 <text text-anchor="start" x="8" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">+ Polar()</text>
 </g>
-<!-- Node3 -->
+<!-- Node2 -->
 <g id="node2" class="node">
-<title>Node3</title>
+<title>Node2</title>
 <polygon fill="#ffffff" stroke="#bfbfbf" points="11.5,-127.5 11.5,-184.5 56.5,-184.5 56.5,-127.5 11.5,-127.5"/>
 <text text-anchor="middle" x="34" y="-172.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">double</text>
 <polyline fill="none" stroke="#bfbfbf" points="11.5,-165.5 56.5,-165.5 "/>
@@ -30,9 +30,9 @@
 <polyline fill="none" stroke="#bfbfbf" points="11.5,-146.5 56.5,-146.5 "/>
 <text text-anchor="middle" x="34" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000"> </text>
 </g>
-<!-- Node3&#45;&gt;Node2 -->
+<!-- Node2&#45;&gt;Node1 -->
 <g id="edge1" class="edge">
-<title>Node3&#45;&gt;Node2</title>
+<title>Node2&#45;&gt;Node1</title>
 <path fill="none" stroke="#404040" d="M34,-127.2062C34,-113.3632 34,-96.4255 34,-80.8327"/>
 <polygon fill="none" stroke="#404040" points="34.0001,-80.7007 30,-74.7008 34,-68.7007 38,-74.7007 34.0001,-80.7007"/>
 <text text-anchor="middle" x="45" y="-101" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000"> +phi</text>

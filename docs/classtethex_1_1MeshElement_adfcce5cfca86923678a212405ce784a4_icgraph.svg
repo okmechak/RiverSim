@@ -19,7 +19,7 @@
 <!-- Node9 -->
 <g id="node2" class="node">
 <title>Node9</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#a1292194d3034289522ad23b8e7366320" target="_top" xlink:title="tethex::MeshElement\l::set_vertex">
+<g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#a1292194d3034289522ad23b8e7366320" target="_top" xlink:title="Set the number of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="146,-.5 146,-30.5 256,-30.5 256,-.5 146,-.5"/>
 <text text-anchor="start" x="154" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="201" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::set_vertex</text>

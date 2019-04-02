@@ -1,6 +1,0 @@
-<map id="River::Branch::addPoint" name="River::Branch::addPoint">
-<area shape="rect" id="node2" href="$classRiver_1_1Branch.html#a2bf375682c5b397c9bf04ab9f215a926" title="River::Branch::getHead" alt="" coords="217,5,376,32"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Branch.html#a67e24ea2b1f521a1af4193fb7a9c0bed" title="River::Branch::splitPoint" alt="" coords="215,56,379,83"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Branch.html#a28a8c207ba296169ca20b47e99a9e091" title="River::Branch::size" alt="" coords="443,5,577,32"/>
-<area shape="rect" id="node5" href="$classRiver_1_1GeomPoint.html#a8a4dd9e43fc222c4276c67bc258812ec" title="River::GeomPoint::rotate" alt="" coords="427,56,593,83"/>
-</map>

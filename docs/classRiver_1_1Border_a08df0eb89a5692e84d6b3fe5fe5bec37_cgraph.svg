@@ -33,7 +33,7 @@
 <!-- Node14 -->
 <g id="node5" class="node">
 <title>Node14</title>
-<g id="a_node5"><a xlink:href="classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" target="_top" xlink:title="Return source poinst indexes(each source consist of two points at distance eps) ">
+<g id="a_node5"><a xlink:href="classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" target="_top" xlink:title="Return source poinst indexes(each source consist of two points at distance eps). ">
 <polygon fill="#ffffff" stroke="#000000" points="184.5,-93.5 184.5,-123.5 311.5,-123.5 311.5,-93.5 184.5,-93.5"/>
 <text text-anchor="start" x="192.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Border::GetSource</text>
 <text text-anchor="middle" x="248" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">VerticesIndexById</text>
@@ -49,7 +49,7 @@
 <!-- Node20 -->
 <g id="node11" class="node">
 <title>Node20</title>
-<g id="a_node11"><a xlink:href="classtethex_1_1Mesh.html#ad779a1d2d8c8d5c8ecfd91d0e19d87a7" target="_top" xlink:title="tethex::Mesh::append\l_lines">
+<g id="a_node11"><a xlink:href="classtethex_1_1Mesh.html#ad779a1d2d8c8d5c8ecfd91d0e19d87a7" target="_top" xlink:title="Append the physical lines. ">
 <polygon fill="#ffffff" stroke="#000000" points="192.5,-44.5 192.5,-74.5 303.5,-74.5 303.5,-44.5 192.5,-44.5"/>
 <text text-anchor="start" x="200.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::append</text>
 <text text-anchor="middle" x="248" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_lines</text>
@@ -65,7 +65,7 @@
 <!-- Node12 -->
 <g id="node3" class="node">
 <title>Node12</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#a9fefc160a592f20226064d1b03b3a14d" target="_top" xlink:title="tethex::Mesh::get_points">
+<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#a9fefc160a592f20226064d1b03b3a14d" target="_top" xlink:title="Get reference to physical points vector. ">
 <polygon fill="#ffffff" stroke="#000000" points="354,-225 354,-244 479,-244 479,-225 354,-225"/>
 <text text-anchor="middle" x="416.5" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_points</text>
 </a>
@@ -95,7 +95,7 @@
 <!-- Node15 -->
 <g id="node6" class="node">
 <title>Node15</title>
-<g id="a_node6"><a xlink:href="classtethex_1_1Mesh.html#a77dc945a9f65b5b1d41e39ec8d06adb8" target="_top" xlink:title="tethex::Mesh::get_n\l_points">
+<g id="a_node6"><a xlink:href="classtethex_1_1Mesh.html#a77dc945a9f65b5b1d41e39ec8d06adb8" target="_top" xlink:title="Get the number of physical points. ">
 <polygon fill="#ffffff" stroke="#000000" points="364.5,-137.5 364.5,-167.5 468.5,-167.5 468.5,-137.5 364.5,-137.5"/>
 <text text-anchor="start" x="372.5" y="-155.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="416.5" y="-144.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_points</text>
@@ -111,7 +111,7 @@
 <!-- Node16 -->
 <g id="node7" class="node">
 <title>Node16</title>
-<g id="a_node7"><a xlink:href="classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" target="_top" xlink:title="tethex::Mesh::get_point">
+<g id="a_node7"><a xlink:href="classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" target="_top" xlink:title="Get the physical point. ">
 <polygon fill="#ffffff" stroke="#000000" points="357,-99 357,-118 476,-118 476,-99 357,-99"/>
 <text text-anchor="middle" x="416.5" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_point</text>
 </a>
@@ -126,7 +126,7 @@
 <!-- Node18 -->
 <g id="node9" class="node">
 <title>Node18</title>
-<g id="a_node9"><a xlink:href="classtethex_1_1MeshElement.html#a44ac13c3270bbf9d70c7e0ea85809979" target="_top" xlink:title="tethex::MeshElement\l::get_material_id">
+<g id="a_node9"><a xlink:href="classtethex_1_1MeshElement.html#a44ac13c3270bbf9d70c7e0ea85809979" target="_top" xlink:title="Get the material ID of the element. ">
 <polygon fill="#ffffff" stroke="#000000" points="361.5,-49.5 361.5,-79.5 471.5,-79.5 471.5,-49.5 361.5,-49.5"/>
 <text text-anchor="start" x="369.5" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="416.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_material_id</text>
@@ -142,7 +142,7 @@
 <!-- Node19 -->
 <g id="node10" class="node">
 <title>Node19</title>
-<g id="a_node10"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="tethex::MeshElement\l::get_vertex">
+<g id="a_node10"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="Get the number of vertex describing the element. ">
 <polygon fill="#ffffff" stroke="#000000" points="361.5,-.5 361.5,-30.5 471.5,-30.5 471.5,-.5 361.5,-.5"/>
 <text text-anchor="start" x="369.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="416.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_vertex</text>

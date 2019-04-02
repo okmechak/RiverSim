@@ -1,7 +1,7 @@
 <map id="tethex::MeshElement::contains" name="tethex::MeshElement::contains">
-<area shape="rect" id="node2" href="$classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" title="tethex::Line::common\l_vertex" alt="" coords="200,5,348,47"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" title="tethex::Mesh::find\l_face_from_two_edges" alt="" coords="396,5,553,47"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" title="tethex::Mesh::convert\l_triangles" alt="" coords="601,5,751,47"/>
-<area shape="rect" id="node5" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="tethex::Mesh::convert_2D" alt="" coords="799,13,972,39"/>
-<area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="tethex::Mesh::convert" alt="" coords="1020,13,1169,39"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" title="Find common vertex between two lines. " alt="" coords="200,5,348,47"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb" title="Find the global number of face basing on numbers of 2 edges defining that face. " alt="" coords="396,5,553,47"/>
+<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" title="Conversion from triangles to quadrangles. " alt="" coords="601,5,751,47"/>
+<area shape="rect" id="node5" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) " alt="" coords="799,13,972,39"/>
+<area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="Conversion from simplices to bricks. " alt="" coords="1020,13,1169,39"/>
 </map>

@@ -19,7 +19,7 @@
 <!-- Node13 -->
 <g id="node2" class="node">
 <title>Node13</title>
-<g id="a_node2"><a xlink:href="namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" target="_top" xlink:title="tethex::cell_measure_2D">
+<g id="a_node2"><a xlink:href="namespacetethex.html#a4829931502bfe6e2c614c95e59cda77b" target="_top" xlink:title="Since this project was originally designed to connect Gmsh&#39;s meshes with deal.II solvers, the main requirement for new meshes was to be properly read by deal.II. ">
 <polygon fill="#ffffff" stroke="#000000" points="157,-6 157,-25 282,-25 282,-6 157,-6"/>
 <text text-anchor="middle" x="219.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::cell_measure_2D</text>
 </a>

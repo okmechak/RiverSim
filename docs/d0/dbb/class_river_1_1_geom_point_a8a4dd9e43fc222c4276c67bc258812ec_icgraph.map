@@ -1,9 +1,0 @@
-<map id="River::GeomPoint::rotate" name="River::GeomPoint::rotate">
-<area shape="rect" id="node2" href="$dc/dfe/class_river_1_1_branch.html#ac530394680fc8ab073033352f251fe17" title="River::Branch::Branch" alt="" coords="220,42,371,69"/>
-<area shape="rect" id="node3" href="$d6/d93/class_river_1_1_geometry.html#a0c430d5eb103fe6016b805dc5278d247" title="River::Geometry::initiate\lRootBranch" alt="" coords="444,5,608,47"/>
-<area shape="rect" id="node4" href="$d6/d93/class_river_1_1_geometry.html#a2e00a634a0e948570540a2ab47335478" title="River::Geometry::AddBiffurcation" alt="" coords="419,71,633,98"/>
-<area shape="rect" id="node5" href="$df/dbf/namespace_river_1_1_simple_geo.html#aaeaf0931007ed0bb3f04ffe517b90708" title="River::SimpleGeo::AddBranches" alt="" coords="681,71,892,98"/>
-<area shape="rect" id="node6" href="$df/dbf/namespace_river_1_1_simple_geo.html#ab6e4b434f7b71839df562edbc13ddb5b" title="River::SimpleGeo::Custom\lRiverTree" alt="" coords="940,64,1119,105"/>
-<area shape="rect" id="node7" href="$d3/df2/namespace_river.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="1167,71,1360,98"/>
-<area shape="rect" id="node8" href="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="1408,71,1459,98"/>
-</map>

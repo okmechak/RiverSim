@@ -1,4 +1,4 @@
-/**
+/*
  * riversim - river growth simulation.
  * Copyright (c) 2019 Oleg Kmechak
  * Report issues: github.com/okmechak/RiverSim/issues
@@ -13,15 +13,15 @@
  * GNU General Public License for more details.
  */
 
-/*! \file riversim.hpp
-    Rivers Simulation
-
-    Here is placed different routine functions, like
-        - forward river evolution
-        - backward river evolution
-        - statistics and postrocessing
-        - etc..
-*/
+/** @file riversim.hpp
+ *   Rivers Simulation
+ *
+ *   Here is placed different routine functions, like
+ *       - forward river evolution
+ *       - backward river evolution
+ *       - statistics and postrocessing
+ *       - etc..
+ */
 
 #pragma once
 

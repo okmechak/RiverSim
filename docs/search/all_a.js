@@ -1,27 +1,8 @@
 var searchData=
 [
-  ['main',['main',['../main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;main.cpp'],['../tricall_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;tricall.c']]],
-  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['makerectangular',['MakeRectangular',['../classRiver_1_1Border.html#a15c063e3c9acabf547dfa4b2d815c42d',1,'River::Border']]],
-  ['markers',['Markers',['../classRiver_1_1Geometry.html#a5b2efa4c86032cbf90a7cc872fb386d3',1,'River::Geometry']]],
-  ['material_5fid',['material_id',['../classtethex_1_1MeshElement.html#ae5daa013375485c3f484c296cfb75457',1,'tethex::MeshElement']]],
-  ['max_5fangle',['MAX_ANGLE',['../mesh_8cpp.html#af3c82099d63a2d91d68bd62d954059c7',1,'mesh.cpp']]],
-  ['max_5fvalue',['max_value',['../classRiver_1_1Solver.html#a7e1bd14c74616bb987be414e3e246732',1,'River::Solver']]],
-  ['maxnumofsteinerpoints',['MaxNumOfSteinerPoints',['../classRiver_1_1Triangle.html#ab3676f03808d6b93e6fb5d5529448e10',1,'River::Triangle']]],
-  ['maxtriaarea',['MaxTriaArea',['../classRiver_1_1Triangle.html#a24f97e1664c5e59b183c2315649107a6',1,'River::Triangle']]],
-  ['mergedcenter',['mergedCenter',['../classRiver_1_1Geometry.html#ac33c6838a8c5d639f0e0636c816704de',1,'River::Geometry']]],
-  ['mergedleft',['mergedLeft',['../classRiver_1_1Geometry.html#a563e7a9ba7b4e02e979c885d4b271682',1,'River::Geometry']]],
-  ['mergedright',['mergedRight',['../classRiver_1_1Geometry.html#ad8c64223a3e141890044bafe11c33aa5',1,'River::Geometry']]],
-  ['mergepoints',['mergePoints',['../classRiver_1_1Branch.html#a56fbc87eb05a9f0d6304af0248519dbc',1,'River::Branch']]],
-  ['mesh',['Mesh',['../classtethex_1_1Mesh.html',1,'tethex::Mesh'],['../classtethex_1_1Mesh.html#aacb284a62f899aaa8c36c04f6a13abcc',1,'tethex::Mesh::Mesh()'],['../classtethex_1_1Mesh.html#af7abffd9bc4bd64eb2f4cdd4aaf7fbe3',1,'tethex::Mesh::Mesh(const Mesh &amp;msh)'],['../classtethex_1_1Mesh.html#a005574f4c8040e7583f7e748141184b7',1,'tethex::Mesh::Mesh(Mesh &amp;&amp;msh)=default'],['../classtethex_1_1Mesh.html#a8c57b3a7612136cc5fbf42f9ba7e5fa9',1,'tethex::Mesh::Mesh(std::vector&lt; Point &gt; &amp;verticesVal, std::vector&lt; MeshElement *&gt; &amp;pointsVal, std::vector&lt; MeshElement *&gt; &amp;linesVal, std::vector&lt; MeshElement *&gt; &amp;trianglesVal, std::vector&lt; MeshElement *&gt; &amp;quaddranglesVal)'],['../classtethex_1_1Mesh.html#a9af31ae3d83bedf96f6abe5a77749756',1,'tethex::Mesh::Mesh(std::vector&lt; Point &gt; &amp;verticesVal, std::vector&lt; MeshElement *&gt; &amp;linesVal, std::vector&lt; MeshElement *&gt; &amp;trianglesVal)']]],
-  ['mesh_2ecpp',['mesh.cpp',['../mesh_8cpp.html',1,'']]],
-  ['mesh_2ehpp',['mesh.hpp',['../mesh_8hpp.html',1,'']]],
-  ['mesh24format',['mesh24format',['../classRiver_1_1Gmsh.html#a6470b1f6dc2cbdfa9290af71a57abcd4',1,'River::Gmsh']]],
-  ['meshelement',['MeshElement',['../classtethex_1_1MeshElement.html',1,'tethex::MeshElement'],['../classtethex_1_1MeshElement.html#af616cb9840f6082afd3a5556ac1150a0',1,'tethex::MeshElement::MeshElement(int n_ver=0, int n_edg=0, int el_type=0)'],['../classtethex_1_1MeshElement.html#ace9a7cd10d931d68e48483624e8e9a48',1,'tethex::MeshElement::MeshElement(const MeshElement &amp;elem)']]],
-  ['meshsize',['meshSize',['../classRiver_1_1GeomPolar.html#a4a5d8d5030195e907e0611d1acda6a98',1,'River::GeomPolar::meshSize()'],['../classRiver_1_1GeomPoint.html#a331dbd3f6c8d939cdbfdfdc301c4f5af',1,'River::GeomPoint::meshSize()'],['../classtethex_1_1Point.html#a69a20aa2be301ceee1d74fbdbb2befcb',1,'tethex::Point::meshSize()']]],
-  ['method',['Method',['../classRiver_1_1Model.html#abefa2326d6245730ee60d2024645e407',1,'River::Model']]],
-  ['min',['Min',['../classRiver_1_1Model.html#abefa2326d6245730ee60d2024645e407a78d811e98514cd165dda532286610fd2',1,'River::Model']]],
-  ['minangle',['MinAngle',['../classRiver_1_1Triangle.html#a047ac07cf343afcfca99ddfedca41d5f',1,'River::Triangle']]],
-  ['model',['Model',['../classRiver_1_1Model.html',1,'River']]],
-  ['modelname',['modelName',['../classRiver_1_1Gmsh.html#a31f8c4cbf3de1e1d60aa3269531df6f4',1,'River::Gmsh']]]
+  ['key',['key',['../structbadtriang.html#afdb4dc4ae4b0b7578b64ae2742e7b1a9',1,'badtriang']]],
+  ['keydest',['keydest',['../structsplaynode.html#a63438aac02b8993141ebf848c347098d',1,'splaynode']]],
+  ['keyedge',['keyedge',['../structsplaynode.html#aaa9fc6e2d568c0be2a5a4c0831965c4f',1,'splaynode']]],
+  ['killsubseg',['killsubseg',['../triangle_8cpp.html#a54a10fec2a9252e4374fca5749d03860',1,'triangle.cpp']]],
+  ['killtri',['killtri',['../triangle_8cpp.html#a912e7e9bb1cd6535c636c40170ccaad1',1,'triangle.cpp']]]
 ];

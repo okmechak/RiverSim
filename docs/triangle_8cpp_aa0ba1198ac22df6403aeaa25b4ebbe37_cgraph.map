@@ -1,0 +1,25 @@
+<map id="carveholes" name="carveholes">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="477,44,547,71"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a50d34a398ff84c3d02a81d8d73dd0ee9" title="poolinit" alt="" coords="163,146,225,172"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#a9eec64a7b4f941f8e3d2df21477843bd" title="infecthull" alt="" coords="157,95,231,122"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#ab1760445583959132ffd9998372c9aac" title="poolalloc" alt="" coords="313,44,387,71"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#adbb7ef8fc2a92efceb7c1c152fbd22f1" title="counterclockwise" alt="" coords="451,450,573,476"/>
+<area shape="rect" id="node12" href="$triangle_8cpp.html#a51073193cbdba1daea4186d1458890e8" title="locate" alt="" coords="165,456,223,483"/>
+<area shape="rect" id="node15" href="$triangle_8cpp.html#ac95223fa1691114186a9782fe701999d" title="plague" alt="" coords="164,298,224,324"/>
+<area shape="rect" id="node16" href="$triangle_8cpp.html#ac497210bc9192d88ed80659833ba5f55" title="traversalinit" alt="" coords="305,196,395,223"/>
+<area shape="rect" id="node21" href="$triangle_8cpp.html#ac5f43264b4c12a0300c268142b0b3ee6" title="triangletraverse" alt="" coords="139,348,249,375"/>
+<area shape="rect" id="node22" href="$triangle_8cpp.html#a4bd82f31b72b81818c6ff7671446cb47" title="regionplague" alt="" coords="147,196,241,223"/>
+<area shape="rect" id="node23" href="$triangle_8cpp.html#adce8bbec9a21ffa945c9cca035fd1f7b" title="pooldeinit" alt="" coords="155,595,233,622"/>
+<area shape="rect" id="node24" href="$triangle_8cpp.html#a3b29a8b4c5ac87eff6c5b27e7e0c43c0" title="trifree" alt="" coords="323,602,377,628"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="671,44,726,71"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a2657afcbf1c107955b10ccf7dbf14c90" title="poolrestart" alt="" coords="309,146,391,172"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#abd5587da82afca7f6403c3ec3d17139a" title="counterclockwiseadapt" alt="" coords="621,450,776,476"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="859,420,931,447"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="824,472,967,513"/>
+<area shape="rect" id="node13" href="$triangle_8cpp.html#abafde1fa8bfde5489dced6485939a19f" title="randomnation" alt="" coords="300,551,400,578"/>
+<area shape="rect" id="node14" href="$triangle_8cpp.html#a34a6e2c35be028da265a50ab3d9d6be6" title="preciselocate" alt="" coords="301,500,399,527"/>
+<area shape="rect" id="node17" href="$triangle_8cpp.html#a908560980328e10c897c5c34bb733e9d" title="traverse" alt="" coords="315,247,385,274"/>
+<area shape="rect" id="node18" href="$triangle_8cpp.html#a97033ea575688968cec7d197fed57055" title="subsegdealloc" alt="" coords="297,298,403,324"/>
+<area shape="rect" id="node20" href="$triangle_8cpp.html#a3bd3bd17a942635e55f283dc27f32ddb" title="triangledealloc" alt="" coords="297,348,403,375"/>
+<area shape="rect" id="node19" href="$triangle_8cpp.html#a3f4425b06c516b9f5d647a1384c74d51" title="pooldealloc" alt="" coords="469,323,555,350"/>
+</map>

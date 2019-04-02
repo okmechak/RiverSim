@@ -20,6 +20,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
    &#160;<span id="projectnumber">1.0.0</span>
@@ -66,72 +67,56 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#friends">Friends</a> &#124;
 <a href="classRiver_1_1Tree-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">River::Tree Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>&gt;</code></p>
+<p>Combines <b><a class="el" href="classRiver_1_1BranchNew.html" title="BranchNew class holds all functionality that you need to work with single branch. ...">BranchNew</a></b> into tree like structure.  
+ <a href="classRiver_1_1Tree.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="tree_8hpp_source.html">tree.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for River::Tree:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Tree__coll__graph.svg" width="790" height="448"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Tree__coll__graph.svg" width="790" height="507"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae1b50980c4f002c791df44188c82fba5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ae1b50980c4f002c791df44188c82fba5">Tree</a> (vector&lt; <a class="el" href="classRiver_1_1Point.html">Point</a> &gt; sources_point, vector&lt; double &gt; sources_angle, vector&lt; int &gt; ids)</td></tr>
+<tr class="memdesc:ae1b50980c4f002c791df44188c82fba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of <b><a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Tree</a></b>.  <a href="#ae1b50980c4f002c791df44188c82fba5">More...</a><br /></td></tr>
 <tr class="separator:ae1b50980c4f002c791df44188c82fba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a962912e5e983212d60e1c1ad1e7f71ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a962912e5e983212d60e1c1ad1e7f71ea">AddPoints</a> (vector&lt; <a class="el" href="classRiver_1_1Point.html">Point</a> &gt; points, vector&lt; int &gt; tips_id)</td></tr>
-<tr class="memdesc:a962912e5e983212d60e1c1ad1e7f71ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds relatively  to Branches .  <a href="#a962912e5e983212d60e1c1ad1e7f71ea">More...</a><br /></td></tr>
+<tr class="memdesc:a962912e5e983212d60e1c1ad1e7f71ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds relatively <b>points</b> to Branches <b>tips_id</b>.  <a href="#a962912e5e983212d60e1c1ad1e7f71ea">More...</a><br /></td></tr>
 <tr class="separator:a962912e5e983212d60e1c1ad1e7f71ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb2b48d2d93ab153d751521da994f4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#aacb2b48d2d93ab153d751521da994f4b">AddPolars</a> (vector&lt; <a class="el" href="classRiver_1_1Polar.html">Polar</a> &gt; points, vector&lt; int &gt; tips_id)</td></tr>
+<tr class="memdesc:aacb2b48d2d93ab153d751521da994f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds relatively <b>points</b> to Branches <b>tips_id</b>.  <a href="#aacb2b48d2d93ab153d751521da994f4b">More...</a><br /></td></tr>
+<tr class="separator:aacb2b48d2d93ab153d751521da994f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae1a057d39e56dfa3dc207bdf54190c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#aae1a057d39e56dfa3dc207bdf54190c4">AddAbsolutePolars</a> (vector&lt; <a class="el" href="classRiver_1_1Polar.html">Polar</a> &gt; points, vector&lt; int &gt; tips_id)</td></tr>
+<tr class="memdesc:aae1a057d39e56dfa3dc207bdf54190c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds absolute <b>points</b> to Branches <b>tips_id</b>.  <a href="#aae1a057d39e56dfa3dc207bdf54190c4">More...</a><br /></td></tr>
+<tr class="separator:aae1a057d39e56dfa3dc207bdf54190c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae42603046cab7443cf549cbfb94c3351"><td class="memItemLeft" align="right" valign="top">pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ae42603046cab7443cf549cbfb94c3351">AddSubBranches</a> (int root_branch_id, <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;left_branch, <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;right_branch)</td></tr>
-<tr class="memdesc:ae42603046cab7443cf549cbfb94c3351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds Sub Branches ,  to .  <a href="#ae42603046cab7443cf549cbfb94c3351">More...</a><br /></td></tr>
+<tr class="memdesc:ae42603046cab7443cf549cbfb94c3351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds Sub Branches <b>left_bracnhs</b>, <b>right_branch</b> to <b>root_branch_id</b>.  <a href="#ae42603046cab7443cf549cbfb94c3351">More...</a><br /></td></tr>
 <tr class="separator:ae42603046cab7443cf549cbfb94c3351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52cafbadef53e2fe40b26dd1ca5aa350"><td class="memItemLeft" align="right" valign="top">vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a52cafbadef53e2fe40b26dd1ca5aa350">TipBranchesId</a> ()</td></tr>
-<tr class="memdesc:a52cafbadef53e2fe40b26dd1ca5aa350"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns vector of tip branches ds.  <a href="#a52cafbadef53e2fe40b26dd1ca5aa350">More...</a><br /></td></tr>
+<tr class="memdesc:a52cafbadef53e2fe40b26dd1ca5aa350"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns vector of tip branches ids.  <a href="#a52cafbadef53e2fe40b26dd1ca5aa350">More...</a><br /></td></tr>
 <tr class="separator:a52cafbadef53e2fe40b26dd1ca5aa350"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4563499cba0aa908a7c4c849bacaad41"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classRiver_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a4563499cba0aa908a7c4c849bacaad41">TipPoints</a> ()</td></tr>
+<tr class="memdesc:a4563499cba0aa908a7c4c849bacaad41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns vector of tip branches Points.  <a href="#a4563499cba0aa908a7c4c849bacaad41">More...</a><br /></td></tr>
+<tr class="separator:a4563499cba0aa908a7c4c849bacaad41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a853b9e0b7201e8b18e9b939c4f117ff8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a853b9e0b7201e8b18e9b939c4f117ff8">NumberOfSourceBranches</a> ()</td></tr>
 <tr class="memdesc:a853b9e0b7201e8b18e9b939c4f117ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of source branches.  <a href="#a853b9e0b7201e8b18e9b939c4f117ff8">More...</a><br /></td></tr>
 <tr class="separator:a853b9e0b7201e8b18e9b939c4f117ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0e88c8f19adb3c32c10a5bedf40c48c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#aa0e88c8f19adb3c32c10a5bedf40c48c">AddSourceBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;branch, int id)</td></tr>
-<tr class="memdesc:aa0e88c8f19adb3c32c10a5bedf40c48c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new source  with .  <a href="#aa0e88c8f19adb3c32c10a5bedf40c48c">More...</a><br /></td></tr>
-<tr class="separator:aa0e88c8f19adb3c32c10a5bedf40c48c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80d05a0a827037bff3fab40c231e3ee3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a80d05a0a827037bff3fab40c231e3ee3">AddBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;branch, int id)</td></tr>
-<tr class="separator:a80d05a0a827037bff3fab40c231e3ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7fbf1c674f7e0fab20f836a09a2d1bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ac7fbf1c674f7e0fab20f836a09a2d1bb">DoesExistBranch</a> (int id)</td></tr>
-<tr class="memdesc:ac7fbf1c674f7e0fab20f836a09a2d1bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if branch with  exists.  <a href="#ac7fbf1c674f7e0fab20f836a09a2d1bb">More...</a><br /></td></tr>
-<tr class="separator:ac7fbf1c674f7e0fab20f836a09a2d1bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e4887a6f4c0c6a0e164128e0fe5f19a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a7e4887a6f4c0c6a0e164128e0fe5f19a">GetBranch</a> (int id)</td></tr>
-<tr class="memdesc:a7e4887a6f4c0c6a0e164128e0fe5f19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns link to branch with .  <a href="#a7e4887a6f4c0c6a0e164128e0fe5f19a">More...</a><br /></td></tr>
-<tr class="separator:a7e4887a6f4c0c6a0e164128e0fe5f19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0df36a9d86f78e51104c0e028f3a2983"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a0df36a9d86f78e51104c0e028f3a2983">HasSubBranches</a> (int branch_id)</td></tr>
-<tr class="memdesc:a0df36a9d86f78e51104c0e028f3a2983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if <a class="el" href="classRiver_1_1Branch.html">Branch</a>  has subbranches.  <a href="#a0df36a9d86f78e51104c0e028f3a2983">More...</a><br /></td></tr>
-<tr class="separator:a0df36a9d86f78e51104c0e028f3a2983"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4f91f6a0be4f206a499cb73cbd7aa31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ad4f91f6a0be4f206a499cb73cbd7aa31">IsSubBranch</a> (int branch_id)</td></tr>
-<tr class="memdesc:ad4f91f6a0be4f206a499cb73cbd7aa31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if Branchs  has root(or source) branch.  <a href="#ad4f91f6a0be4f206a499cb73cbd7aa31">More...</a><br /></td></tr>
-<tr class="separator:ad4f91f6a0be4f206a499cb73cbd7aa31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac786472891277b4f0a3630e708762954"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ac786472891277b4f0a3630e708762954">GetSourceBranch</a> (int branch_id)</td></tr>
-<tr class="memdesc:ac786472891277b4f0a3630e708762954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns root(or source) branch of branch .  <a href="#ac786472891277b4f0a3630e708762954">More...</a><br /></td></tr>
-<tr class="separator:ac786472891277b4f0a3630e708762954"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87e5469392220bb6dcdfca99add6b1f8"><td class="memItemLeft" align="right" valign="top">pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a87e5469392220bb6dcdfca99add6b1f8">GetSubBranches</a> (int branch_id)</td></tr>
-<tr class="separator:a87e5469392220bb6dcdfca99add6b1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae049f4448ac34b641417aa998f317d50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ae049f4448ac34b641417aa998f317d50">IsValidBranchId</a> (int id)</td></tr>
-<tr class="separator:ae049f4448ac34b641417aa998f317d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44b0b2376897d431bdbb704ef4abb86e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a44b0b2376897d431bdbb704ef4abb86e">GenerateNewID</a> ()</td></tr>
-<tr class="memdesc:a44b0b2376897d431bdbb704ef4abb86e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates unique id number for new subbranch.  <a href="#a44b0b2376897d431bdbb704ef4abb86e">More...</a><br /></td></tr>
-<tr class="separator:a44b0b2376897d431bdbb704ef4abb86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
+Private</h2></td></tr>
 <tr class="memitem:a696ae2a797a683ba525c5dbf50652620"><td class="memItemLeft" align="right" valign="top">map&lt; int, pair&lt; int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a696ae2a797a683ba525c5dbf50652620">branches_relation</a></td></tr>
 <tr class="memdesc:a696ae2a797a683ba525c5dbf50652620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds realations between root branhces and its subbranches.  <a href="#a696ae2a797a683ba525c5dbf50652620">More...</a><br /></td></tr>
 <tr class="separator:a696ae2a797a683ba525c5dbf50652620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf9279f4411ae03e013dc0f2e7c6867c"><td class="memItemLeft" align="right" valign="top">map&lt; int, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#acf9279f4411ae03e013dc0f2e7c6867c">branches_index</a></td></tr>
-<tr class="memdesc:acf9279f4411ae03e013dc0f2e7c6867c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds branches ids and its position in  vector.  <a href="#acf9279f4411ae03e013dc0f2e7c6867c">More...</a><br /></td></tr>
+<tr class="memdesc:acf9279f4411ae03e013dc0f2e7c6867c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds branches ids and its position in BranchNew::branches vector.  <a href="#acf9279f4411ae03e013dc0f2e7c6867c">More...</a><br /></td></tr>
 <tr class="separator:acf9279f4411ae03e013dc0f2e7c6867c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a931fce9c2dfe5b0e879b9c77be3703be"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a931fce9c2dfe5b0e879b9c77be3703be">branches</a></td></tr>
 <tr class="memdesc:a931fce9c2dfe5b0e879b9c77be3703be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds all branches.  <a href="#a931fce9c2dfe5b0e879b9c77be3703be">More...</a><br /></td></tr>
@@ -142,17 +127,45 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a5176e746b0f2aa8b24c97db3254f36b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a5176e746b0f2aa8b24c97db3254f36b9">invalid_branch</a> = -2</td></tr>
 <tr class="memdesc:a5176e746b0f2aa8b24c97db3254f36b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid branch index. Used in error handling.  <a href="#a5176e746b0f2aa8b24c97db3254f36b9">More...</a><br /></td></tr>
 <tr class="separator:a5176e746b0f2aa8b24c97db3254f36b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
-Friends</h2></td></tr>
+<tr class="memitem:aa0e88c8f19adb3c32c10a5bedf40c48c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#aa0e88c8f19adb3c32c10a5bedf40c48c">AddSourceBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;branch, int id)</td></tr>
+<tr class="memdesc:aa0e88c8f19adb3c32c10a5bedf40c48c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new source <b>branch</b> with <b>id</b>.  <a href="#aa0e88c8f19adb3c32c10a5bedf40c48c">More...</a><br /></td></tr>
+<tr class="separator:aa0e88c8f19adb3c32c10a5bedf40c48c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80d05a0a827037bff3fab40c231e3ee3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a80d05a0a827037bff3fab40c231e3ee3">AddBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;branch, int id)</td></tr>
+<tr class="memdesc:a80d05a0a827037bff3fab40c231e3ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new <b>branch</b> with <b>id</b>(id should be unique).  <a href="#a80d05a0a827037bff3fab40c231e3ee3">More...</a><br /></td></tr>
+<tr class="separator:a80d05a0a827037bff3fab40c231e3ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7fbf1c674f7e0fab20f836a09a2d1bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ac7fbf1c674f7e0fab20f836a09a2d1bb">DoesExistBranch</a> (int id)</td></tr>
+<tr class="memdesc:ac7fbf1c674f7e0fab20f836a09a2d1bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if branch with <b>id</b> exists.  <a href="#ac7fbf1c674f7e0fab20f836a09a2d1bb">More...</a><br /></td></tr>
+<tr class="separator:ac7fbf1c674f7e0fab20f836a09a2d1bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e4887a6f4c0c6a0e164128e0fe5f19a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a7e4887a6f4c0c6a0e164128e0fe5f19a">GetBranch</a> (int id)</td></tr>
+<tr class="memdesc:a7e4887a6f4c0c6a0e164128e0fe5f19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns link to branch with <b>id</b>.  <a href="#a7e4887a6f4c0c6a0e164128e0fe5f19a">More...</a><br /></td></tr>
+<tr class="separator:a7e4887a6f4c0c6a0e164128e0fe5f19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0df36a9d86f78e51104c0e028f3a2983"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a0df36a9d86f78e51104c0e028f3a2983">HasSubBranches</a> (int branch_id)</td></tr>
+<tr class="memdesc:a0df36a9d86f78e51104c0e028f3a2983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if Branch <b>branch_id</b> has subbranches.  <a href="#a0df36a9d86f78e51104c0e028f3a2983">More...</a><br /></td></tr>
+<tr class="separator:a0df36a9d86f78e51104c0e028f3a2983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4f91f6a0be4f206a499cb73cbd7aa31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ad4f91f6a0be4f206a499cb73cbd7aa31">IsSubBranch</a> (int branch_id)</td></tr>
+<tr class="memdesc:ad4f91f6a0be4f206a499cb73cbd7aa31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if Branchs <b>branch_id</b> has root(or source) branch.  <a href="#ad4f91f6a0be4f206a499cb73cbd7aa31">More...</a><br /></td></tr>
+<tr class="separator:ad4f91f6a0be4f206a499cb73cbd7aa31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac786472891277b4f0a3630e708762954"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ac786472891277b4f0a3630e708762954">GetSourceBranch</a> (int branch_id)</td></tr>
+<tr class="memdesc:ac786472891277b4f0a3630e708762954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns root(or source) branch of branch <b>branch_id</b>(if there is no such - throw exception).  <a href="#ac786472891277b4f0a3630e708762954">More...</a><br /></td></tr>
+<tr class="separator:ac786472891277b4f0a3630e708762954"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e5469392220bb6dcdfca99add6b1f8"><td class="memItemLeft" align="right" valign="top">pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a87e5469392220bb6dcdfca99add6b1f8">GetSubBranches</a> (int branch_id)</td></tr>
+<tr class="memdesc:a87e5469392220bb6dcdfca99add6b1f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pair of ids of subranches.  <a href="#a87e5469392220bb6dcdfca99add6b1f8">More...</a><br /></td></tr>
+<tr class="separator:a87e5469392220bb6dcdfca99add6b1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae049f4448ac34b641417aa998f317d50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ae049f4448ac34b641417aa998f317d50">IsValidBranchId</a> (int id)</td></tr>
+<tr class="memdesc:ae049f4448ac34b641417aa998f317d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for validity of <b>id</b>.  <a href="#ae049f4448ac34b641417aa998f317d50">More...</a><br /></td></tr>
+<tr class="separator:ae049f4448ac34b641417aa998f317d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44b0b2376897d431bdbb704ef4abb86e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a44b0b2376897d431bdbb704ef4abb86e">GenerateNewID</a> ()</td></tr>
+<tr class="memdesc:a44b0b2376897d431bdbb704ef4abb86e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates unique id number for new subbranch.  <a href="#a44b0b2376897d431bdbb704ef4abb86e">More...</a><br /></td></tr>
+<tr class="separator:a44b0b2376897d431bdbb704ef4abb86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc3f8899b6d4acfc0ff992dbe904224d"><td class="memItemLeft" align="right" valign="top">ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#abc3f8899b6d4acfc0ff992dbe904224d">operator&lt;&lt;</a> (ostream &amp;write, const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;b)</td></tr>
+<tr class="memdesc:abc3f8899b6d4acfc0ff992dbe904224d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints tree to stream.  <a href="#abc3f8899b6d4acfc0ff992dbe904224d">More...</a><br /></td></tr>
 <tr class="separator:abc3f8899b6d4acfc0ff992dbe904224d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Combines  into tree like structure.</p>
-<p>At first its contains few source points and its directions, then they can be developed into a tree like structure Using AddPoints and other fucntions. </p>
+<div class="textblock"><p>Combines <b><a class="el" href="classRiver_1_1BranchNew.html" title="BranchNew class holds all functionality that you need to work with single branch. ...">BranchNew</a></b> into tree like structure. </p>
+<p>At first its contains few source points and its directions, then they can be developed into a tree like structure using AddPoints and other fucntions. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00192">192</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00227">227</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae1b50980c4f002c791df44188c82fba5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1b50980c4f002c791df44188c82fba5">&#9670;&nbsp;</a></span>Tree()</h2>
@@ -193,10 +206,11 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Constructor of .</p>
-<p>Takes as input vector of ,  and their , and for each entry creates instance of  object. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00198">198</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p>Constructor of <b><a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Tree</a></b>. </p>
+<p>Takes as input vector of <b>sources_point</b>, <b>sources_angle</b> and their <b>ids</b>, and for each entry creates instance of <b><a class="el" href="classRiver_1_1BranchNew.html" title="BranchNew class holds all functionality that you need to work with single branch. ...">BranchNew</a></b> object. </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00236">236</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -235,13 +249,103 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Adds relatively  to Branches . </p>
+<p>Adds relatively <b>points</b> to Branches <b>tips_id</b>. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00210">210</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00248">248</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Tree_a962912e5e983212d60e1c1ad1e7f71ea_cgraph.svg" width="404" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aacb2b48d2d93ab153d751521da994f4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacb2b48d2d93ab153d751521da994f4b">&#9670;&nbsp;</a></span>AddPolars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRiver_1_1Tree.html">Tree</a>&amp; River::Tree::AddPolars </td>
+          <td>(</td>
+          <td class="paramtype">vector&lt; <a class="el" href="classRiver_1_1Polar.html">Polar</a> &gt;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>tips_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds relatively <b>points</b> to Branches <b>tips_id</b>. </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00263">263</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Tree_aacb2b48d2d93ab153d751521da994f4b_cgraph.svg" width="404" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aae1a057d39e56dfa3dc207bdf54190c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae1a057d39e56dfa3dc207bdf54190c4">&#9670;&nbsp;</a></span>AddAbsolutePolars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRiver_1_1Tree.html">Tree</a>&amp; River::Tree::AddAbsolutePolars </td>
+          <td>(</td>
+          <td class="paramtype">vector&lt; <a class="el" href="classRiver_1_1Polar.html">Polar</a> &gt;&#160;</td>
+          <td class="paramname"><em>points</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>tips_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds absolute <b>points</b> to Branches <b>tips_id</b>. </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00279">279</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Tree_aae1a057d39e56dfa3dc207bdf54190c4_cgraph.svg" width="439" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -286,9 +390,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Adds Sub Branches ,  to . </p>
+<p>Adds Sub Branches <b>left_bracnhs</b>, <b>right_branch</b> to <b>root_branch_id</b>. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00226">226</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00295">295</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -315,9 +419,38 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns vector of tip branches ds. </p>
+<p>Returns vector of tip branches ids. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00250">250</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00319">319</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a4563499cba0aa908a7c4c849bacaad41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4563499cba0aa908a7c4c849bacaad41">&#9670;&nbsp;</a></span>TipPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="classRiver_1_1Point.html">Point</a>&gt; River::Tree::TipPoints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns vector of tip branches Points. </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00330">330</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -346,7 +479,7 @@ Here is the call graph for this function:</div>
 
 <p>Returns number of source branches. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00261">261</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00342">342</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -384,9 +517,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Adds new source  with . </p>
+<p>Adds new source <b>branch</b> with <b>id</b>. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00277">277</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00366">366</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -424,7 +557,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00283">283</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p>Adds new <b>branch</b> with <b>id</b>(id should be unique). </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00373">373</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -452,9 +587,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Checks if branch with  exists. </p>
+<p>Checks if branch with <b>id</b> exists. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00297">297</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00387">387</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -482,9 +617,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns link to branch with . </p>
+<p>Returns link to branch with <b>id</b>. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00300">300</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00390">390</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -517,9 +652,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Checks if <a class="el" href="classRiver_1_1Branch.html">Branch</a>  has subbranches. </p>
+<p>Checks if Branch <b>branch_id</b> has subbranches. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00309">309</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00399">399</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -552,9 +687,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Checks if Branchs  has root(or source) branch. </p>
+<p>Checks if Branchs <b>branch_id</b> has root(or source) branch. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00315">315</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00405">405</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -582,9 +717,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns root(or source) branch of branch . </p>
+<p>Returns root(or source) branch of branch <b>branch_id</b>(if there is no such - throw exception). </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00328">328</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00418">418</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -612,7 +747,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00343">343</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p>Returns pair of ids of subranches. </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00434">434</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -645,7 +782,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00352">352</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p>Checks for validity of <b>id</b>. </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00443">443</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -674,7 +813,7 @@ Here is the caller graph for this function:</div>
 
 <p>Generates unique id number for new subbranch. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00358">358</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00449">449</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -713,7 +852,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00373">373</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p>Prints tree to stream. </p>
+
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00466">466</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -732,7 +873,7 @@ Here is the caller graph for this function:</div>
 
 <p>Holds realations between root branhces and its subbranches. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00266">266</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00351">351</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -748,9 +889,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Holds branches ids and its position in  vector. </p>
+<p>Holds branches ids and its position in BranchNew::branches vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00268">268</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00354">354</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -768,7 +909,7 @@ Here is the caller graph for this function:</div>
 
 <p>Holds all branches. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00270">270</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00357">357</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -786,7 +927,7 @@ Here is the caller graph for this function:</div>
 
 <p>Holds all source branches. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00272">272</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00360">360</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
@@ -804,12 +945,12 @@ Here is the caller graph for this function:</div>
 
 <p>Invalid branch index. Used in error handling. </p>
 
-<p class="definition">Definition at line <a class="el" href="geometrynew_8hpp_source.html#l00274">274</a> of file <a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tree_8hpp_source.html#l00363">363</a> of file <a class="el" href="tree_8hpp_source.html">tree.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/oleg/Dev/riversim/source/river/<a class="el" href="geometrynew_8hpp_source.html">geometrynew.hpp</a></li>
+<li>/home/oleg/Dev/riversim/source/river/<a class="el" href="tree_8hpp_source.html">tree.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

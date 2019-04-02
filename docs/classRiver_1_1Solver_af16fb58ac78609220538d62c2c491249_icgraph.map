@@ -1,5 +1,4 @@
 <map id="River::Solver::assemble_system" name="River::Solver::assemble_system">
 <area shape="rect" id="node2" href="$classRiver_1_1Solver.html#a4222fe744d607f870a5d7d22b11e8334" title="River::Solver::run" alt="" coords="216,13,340,39"/>
-<area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="629,13,680,39"/>
-<area shape="rect" id="node4" href="$namespaceRiver.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="388,38,581,65"/>
+<area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="388,13,439,39"/>
 </map>

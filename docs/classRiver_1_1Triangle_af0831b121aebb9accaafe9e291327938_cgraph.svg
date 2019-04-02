@@ -18,56 +18,71 @@
 <!-- Node1 -->
 <g id="node2" class="node">
 <title>Node1</title>
-<g id="a_node2"><a xlink:href="classRiver_1_1Triangle.html#af65f8816f88a34c015cd5ca66aca1aef" target="_top" xlink:title="River::Triangle::set\l_all_values_to_default">
-<polygon fill="#ffffff" stroke="#000000" points="157,-49.5 157,-79.5 270,-79.5 270,-49.5 157,-49.5"/>
-<text text-anchor="start" x="165" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::set</text>
-<text text-anchor="middle" x="213.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_all_values_to_default</text>
+<g id="a_node2"><a xlink:href="classRiver_1_1Triangle.html#af65f8816f88a34c015cd5ca66aca1aef" target="_top" xlink:title="o2 &#45; generates second order mesh ">
+<polygon fill="#ffffff" stroke="#000000" points="157,-.5 157,-30.5 270,-30.5 270,-.5 157,-.5"/>
+<text text-anchor="start" x="165" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::set</text>
+<text text-anchor="middle" x="213.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_all_values_to_default</text>
 </a>
 </g>
 </g>
 <!-- Node0&#45;&gt;Node1 -->
 <g id="edge1" class="edge">
 <title>Node0&#45;&gt;Node1</title>
-<path fill="none" stroke="#191970" d="M118.7792,-49.0227C127.9577,-50.5225 137.5078,-52.083 146.8581,-53.6108"/>
-<polygon fill="#191970" stroke="#191970" points="146.4651,-57.0929 156.8987,-55.2514 147.594,-50.1845 146.4651,-57.0929"/>
+<path fill="none" stroke="#191970" d="M121.4093,-29.9456C129.7036,-28.6445 138.2532,-27.3034 146.6455,-25.987"/>
+<polygon fill="#191970" stroke="#191970" points="147.4397,-29.4053 156.7764,-24.3978 146.3548,-22.4899 147.4397,-29.4053"/>
 </g>
-<!-- Node3 -->
-<g id="node4" class="node">
-<title>Node3</title>
-<g id="a_node4"><a xlink:href="classRiver_1_1Triangle.html#aeb6108ef14cf1bd359ebc6b1a2ecdb1b" target="_top" xlink:title="River::Triangle::print\l_options">
-<polygon fill="#ffffff" stroke="#000000" points="161,-.5 161,-30.5 266,-30.5 266,-.5 161,-.5"/>
-<text text-anchor="start" x="169" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::print</text>
-<text text-anchor="middle" x="213.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_options</text>
+<!-- Node4 -->
+<g id="node5" class="node">
+<title>Node4</title>
+<g id="a_node5"><a xlink:href="classRiver_1_1Triangle.html#aeb6108ef14cf1bd359ebc6b1a2ecdb1b" target="_top" xlink:title="Outupts options with or without detailed description. ">
+<polygon fill="#ffffff" stroke="#000000" points="161,-49.5 161,-79.5 266,-79.5 266,-49.5 161,-49.5"/>
+<text text-anchor="start" x="169" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::print</text>
+<text text-anchor="middle" x="213.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_options</text>
 </a>
 </g>
 </g>
-<!-- Node0&#45;&gt;Node3 -->
-<g id="edge3" class="edge">
-<title>Node0&#45;&gt;Node3</title>
-<path fill="none" stroke="#191970" d="M121.4093,-29.9456C131.0577,-28.4321 141.0517,-26.8644 150.7416,-25.3445"/>
-<polygon fill="#191970" stroke="#191970" points="151.3654,-28.7895 160.7022,-23.782 150.2805,-21.8741 151.3654,-28.7895"/>
+<!-- Node0&#45;&gt;Node4 -->
+<g id="edge4" class="edge">
+<title>Node0&#45;&gt;Node4</title>
+<path fill="none" stroke="#191970" d="M118.7792,-49.0227C129.2746,-50.7377 140.2558,-52.532 150.8686,-54.2661"/>
+<polygon fill="#191970" stroke="#191970" points="150.4694,-57.7472 160.903,-55.9057 151.5983,-50.8388 150.4694,-57.7472"/>
 </g>
 <!-- Node2 -->
 <g id="node3" class="node">
 <title>Node2</title>
-<g id="a_node3"><a xlink:href="classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" target="_top" xlink:title="River::Triangle::update\l_options">
-<polygon fill="#ffffff" stroke="#000000" points="306,-24.5 306,-54.5 422,-54.5 422,-24.5 306,-24.5"/>
-<text text-anchor="start" x="314" y="-42.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::update</text>
-<text text-anchor="middle" x="364" y="-31.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_options</text>
+<g id="a_node3"><a xlink:href="classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" target="_top" xlink:title="Updates options bassing on interface flags. ">
+<polygon fill="#ffffff" stroke="#000000" points="306,-46.5 306,-76.5 422,-76.5 422,-46.5 306,-46.5"/>
+<text text-anchor="start" x="314" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::update</text>
+<text text-anchor="middle" x="364" y="-53.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_options</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge2" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="#191970" d="M270.3976,-55.0486C278.7138,-53.6671 287.3485,-52.2328 295.8607,-50.8188"/>
-<polygon fill="#191970" stroke="#191970" points="296.4794,-54.2641 305.7707,-49.1726 295.3323,-47.3587 296.4794,-54.2641"/>
+<path fill="none" stroke="#191970" d="M262.7793,-30.5621C276.3617,-34.7135 291.2307,-39.2582 305.2894,-43.5552"/>
+<polygon fill="#191970" stroke="#191970" points="304.2808,-46.9067 314.8671,-46.4826 306.3269,-40.2124 304.2808,-46.9067"/>
 </g>
-<!-- Node3&#45;&gt;Node2 -->
-<g id="edge4" class="edge">
-<title>Node3&#45;&gt;Node2</title>
-<path fill="none" stroke="#191970" d="M266.1376,-23.894C275.7373,-25.4249 285.8782,-27.042 295.8513,-28.6324"/>
-<polygon fill="#191970" stroke="#191970" points="295.3157,-32.0912 305.7421,-30.2097 296.4181,-25.1785 295.3157,-32.0912"/>
+<!-- Node3 -->
+<g id="node4" class="node">
+<title>Node3</title>
+<g id="a_node4"><a xlink:href="triangle_8cpp.html#a2a3ed65e621942ea855e7b2b59a16b96" target="_top" xlink:title="Set the triangulateio structure to default values. ">
+<polygon fill="#ffffff" stroke="#000000" points="315.5,-6 315.5,-25 412.5,-25 412.5,-6 315.5,-6"/>
+<text text-anchor="middle" x="364" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">set_tria_to_default</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node3 -->
+<g id="edge3" class="edge">
+<title>Node1&#45;&gt;Node3</title>
+<path fill="none" stroke="#191970" d="M270.3976,-15.5C281.7417,-15.5 293.6784,-15.5 305.0885,-15.5"/>
+<polygon fill="#191970" stroke="#191970" points="305.387,-19.0001 315.387,-15.5 305.387,-12.0001 305.387,-19.0001"/>
+</g>
+<!-- Node4&#45;&gt;Node2 -->
+<g id="edge5" class="edge">
+<title>Node4&#45;&gt;Node2</title>
+<path fill="none" stroke="#191970" d="M266.1376,-63.4507C275.6373,-63.2614 285.667,-63.0615 295.5395,-62.8647"/>
+<polygon fill="#191970" stroke="#191970" points="295.8139,-66.36 305.7421,-62.6613 295.6743,-59.3614 295.8139,-66.36"/>
 </g>
 </g>
 </svg>

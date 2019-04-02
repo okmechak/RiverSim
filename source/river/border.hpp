@@ -1,4 +1,4 @@
-/**
+/*
  * riversim - river growth simulation.
  * Copyright (c) 2019 Oleg Kmechak
  * Report issues: github.com/okmechak/RiverSim/issues
@@ -13,13 +13,13 @@
  * GNU General Public License for more details.
  */
 
-/*! \file border.hpp
-    Generate initial predefinide border geometry and its source positions.
-    
-    First step at beginning of solving this problem is defining a region. It should be quite flexible, cos
-    for testing purposes we want to use simple rectangular region, but for real models we need almost any shape
-    with any source position on tis border
-*/
+/** @file border.hpp
+ *  Generate initial predefinide border geometry and its source positions.
+ *  
+ *  First step at beginning of solving this problem is defining a region. It should be quite flexible, cos
+ *  for testing purposes we want to use simple rectangular region, but for real models we need almost any shape
+ *  with any source position on tis border
+ */
 
 #pragma once
 

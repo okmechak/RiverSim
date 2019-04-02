@@ -1,6 +1,6 @@
 <map id="tethex::IncidenceMatrix::get_n_nonzero" name="tethex::IncidenceMatrix::get_n_nonzero">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" title="tethex::Mesh::edge\l_numeration" alt="" coords="212,5,347,47"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="tethex::Mesh::convert_2D" alt="" coords="592,13,765,39"/>
-<area shape="rect" id="node5" href="$classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" title="tethex::Mesh::convert\l_triangles" alt="" coords="395,35,544,76"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="tethex::Mesh::convert" alt="" coords="813,13,963,39"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2" title="Numerate the edges of simplices. " alt="" coords="212,5,347,47"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) " alt="" coords="592,13,765,39"/>
+<area shape="rect" id="node5" href="$classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" title="Conversion from triangles to quadrangles. " alt="" coords="395,35,544,76"/>
+<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="Conversion from simplices to bricks. " alt="" coords="813,13,963,39"/>
 </map>

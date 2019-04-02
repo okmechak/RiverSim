@@ -19,7 +19,7 @@
 <!-- Node58 -->
 <g id="node2" class="node">
 <title>Node58</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a9927a3d84b3743cc37e09ea029b8fe26" target="_top" xlink:title="tethex::Mesh::get_lines">
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a9927a3d84b3743cc37e09ea029b8fe26" target="_top" xlink:title="Get reference to physical lines vector. ">
 <polygon fill="#ffffff" stroke="#000000" points="170,-50 170,-69 289,-69 289,-50 170,-50"/>
 <text text-anchor="middle" x="229.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_lines</text>
 </a>
@@ -34,7 +34,7 @@
 <!-- Node59 -->
 <g id="node3" class="node">
 <title>Node59</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="tethex::MeshElement\l::get_vertex">
+<g id="a_node3"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="Get the number of vertex describing the element. ">
 <polygon fill="#ffffff" stroke="#000000" points="174.5,-.5 174.5,-30.5 284.5,-30.5 284.5,-.5 174.5,-.5"/>
 <text text-anchor="start" x="182.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="229.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_vertex</text>

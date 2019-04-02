@@ -1,4 +1,4 @@
 <map id="tethex::Mesh::redefine_lines" name="tethex::Mesh::redefine_lines">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="tethex::Mesh::convert_2D" alt="" coords="205,13,379,39"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="tethex::Mesh::convert" alt="" coords="427,13,576,39"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) " alt="" coords="205,13,379,39"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="Conversion from simplices to bricks. " alt="" coords="427,13,576,39"/>
 </map>

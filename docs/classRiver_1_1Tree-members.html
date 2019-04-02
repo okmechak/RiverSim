@@ -20,6 +20,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
    &#160;<span id="projectnumber">1.0.0</span>
@@ -71,8 +72,10 @@ $(function() {
 
 <p>This is the complete list of members for <a class="el" href="classRiver_1_1Tree.html">River::Tree</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a80d05a0a827037bff3fab40c231e3ee3">AddBranch</a>(const BranchNew &amp;branch, int id)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a962912e5e983212d60e1c1ad1e7f71ea">AddPoints</a>(vector&lt; Point &gt; points, vector&lt; int &gt; tips_id)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#aae1a057d39e56dfa3dc207bdf54190c4">AddAbsolutePolars</a>(vector&lt; Polar &gt; points, vector&lt; int &gt; tips_id)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a80d05a0a827037bff3fab40c231e3ee3">AddBranch</a>(const BranchNew &amp;branch, int id)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a962912e5e983212d60e1c1ad1e7f71ea">AddPoints</a>(vector&lt; Point &gt; points, vector&lt; int &gt; tips_id)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classRiver_1_1Tree.html#aacb2b48d2d93ab153d751521da994f4b">AddPolars</a>(vector&lt; Polar &gt; points, vector&lt; int &gt; tips_id)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#aa0e88c8f19adb3c32c10a5bedf40c48c">AddSourceBranch</a>(const BranchNew &amp;branch, int id)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="classRiver_1_1Tree.html#ae42603046cab7443cf549cbfb94c3351">AddSubBranches</a>(int root_branch_id, BranchNew &amp;left_branch, BranchNew &amp;right_branch)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a931fce9c2dfe5b0e879b9c77be3703be">branches</a></td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"></td></tr>
@@ -91,7 +94,8 @@ $(function() {
   <tr><td class="entry"><a class="el" href="classRiver_1_1Tree.html#abc3f8899b6d4acfc0ff992dbe904224d">operator&lt;&lt;</a>(ostream &amp;write, const Tree &amp;b)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a0365677b5c58bc04b380bc88dbd9fb83">source_branches_id</a></td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a52cafbadef53e2fe40b26dd1ca5aa350">TipBranchesId</a>()</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#ae1b50980c4f002c791df44188c82fba5">Tree</a>(vector&lt; Point &gt; sources_point, vector&lt; double &gt; sources_angle, vector&lt; int &gt; ids)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classRiver_1_1Tree.html#a4563499cba0aa908a7c4c849bacaad41">TipPoints</a>()</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classRiver_1_1Tree.html#ae1b50980c4f002c791df44188c82fba5">Tree</a>(vector&lt; Point &gt; sources_point, vector&lt; double &gt; sources_angle, vector&lt; int &gt; ids)</td><td class="entry"><a class="el" href="classRiver_1_1Tree.html">River::Tree</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

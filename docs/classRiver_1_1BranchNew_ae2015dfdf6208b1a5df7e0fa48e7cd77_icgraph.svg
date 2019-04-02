@@ -9,25 +9,25 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 35)">
 <title>River::BranchNew::RemoveTipPoint</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-35 311,-35 311,4 -4,4"/>
-<!-- Node19 -->
+<!-- Node21 -->
 <g id="node1" class="node">
-<title>Node19</title>
+<title>Node21</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-30.5 140,-30.5 140,-.5 0,-.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew::Remove</text>
 <text text-anchor="middle" x="70" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">TipPoint</text>
 </g>
-<!-- Node20 -->
+<!-- Node22 -->
 <g id="node2" class="node">
-<title>Node20</title>
-<g id="a_node2"><a xlink:href="classRiver_1_1BranchNew.html#a3d751724e8b8c4349c7ce25eee3a2995" target="_top" xlink:title="River::BranchNew::Shrink">
+<title>Node22</title>
+<g id="a_node2"><a xlink:href="classRiver_1_1BranchNew.html#a3d751724e8b8c4349c7ce25eee3a2995" target="_top" xlink:title="Reduces lenght of branch by lenght. ">
 <polygon fill="#ffffff" stroke="#000000" points="176,-6 176,-25 307,-25 307,-6 176,-6"/>
 <text text-anchor="middle" x="241.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew::Shrink</text>
 </a>
 </g>
 </g>
-<!-- Node19&#45;&gt;Node20 -->
+<!-- Node21&#45;&gt;Node22 -->
 <g id="edge1" class="edge">
-<title>Node19&#45;&gt;Node20</title>
+<title>Node21&#45;&gt;Node22</title>
 <path fill="none" stroke="#191970" d="M150.5165,-15.5C158.9789,-15.5 167.5095,-15.5 175.777,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="150.2505,-12.0001 140.2504,-15.5 150.2504,-19.0001 150.2505,-12.0001"/>
 </g>

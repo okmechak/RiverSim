@@ -1,7 +1,0 @@
-<map id="River::Border::GetSourceVerticesIndexById" name="River::Border::GetSourceVerticesIndexById">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a77dc945a9f65b5b1d41e39ec8d06adb8" title="tethex::Mesh::get_n\l_points" alt="" coords="233,5,371,47"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" title="tethex::Mesh::get_point" alt="" coords="223,71,381,98"/>
-<area shape="rect" id="node5" href="$classtethex_1_1MeshElement.html#a44ac13c3270bbf9d70c7e0ea85809979" title="tethex::MeshElement\l::get_material_id" alt="" coords="229,123,375,164"/>
-<area shape="rect" id="node6" href="$classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" title="tethex::MeshElement\l::get_vertex" alt="" coords="229,188,375,229"/>
-<area shape="rect" id="node4" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="429,134,516,161"/>
-</map>

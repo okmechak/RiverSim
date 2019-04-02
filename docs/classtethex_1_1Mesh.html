@@ -20,6 +20,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
    &#160;<span id="projectnumber">1.0.0</span>
@@ -74,6 +75,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Main class that stores all data during program execution.  
+ <a href="classtethex_1_1Mesh.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for tethex::Mesh:</div>
@@ -89,6 +93,7 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aacb284a62f899aaa8c36c04f6a13abcc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#aacb284a62f899aaa8c36c04f6a13abcc">Mesh</a> ()</td></tr>
+<tr class="memdesc:aacb284a62f899aaa8c36c04f6a13abcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor - nothing special.  <a href="#aacb284a62f899aaa8c36c04f6a13abcc">More...</a><br /></td></tr>
 <tr class="separator:aacb284a62f899aaa8c36c04f6a13abcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7abffd9bc4bd64eb2f4cdd4aaf7fbe3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#af7abffd9bc4bd64eb2f4cdd4aaf7fbe3">Mesh</a> (const <a class="el" href="classtethex_1_1Mesh.html">Mesh</a> &amp;msh)</td></tr>
 <tr class="separator:af7abffd9bc4bd64eb2f4cdd4aaf7fbe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -97,109 +102,156 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af992d5d2e64047656766e4afcbc95b8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1Mesh.html">Mesh</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#af992d5d2e64047656766e4afcbc95b8b">operator=</a> (const <a class="el" href="classtethex_1_1Mesh.html">Mesh</a> &amp;msh)</td></tr>
 <tr class="separator:af992d5d2e64047656766e4afcbc95b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c57b3a7612136cc5fbf42f9ba7e5fa9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a8c57b3a7612136cc5fbf42f9ba7e5fa9">Mesh</a> (std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt; &amp;verticesVal, std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;pointsVal, std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;linesVal, std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;trianglesVal, std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;quaddranglesVal)</td></tr>
+<tr class="memdesc:a8c57b3a7612136cc5fbf42f9ba7e5fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor - nothing special.  <a href="#a8c57b3a7612136cc5fbf42f9ba7e5fa9">More...</a><br /></td></tr>
 <tr class="separator:a8c57b3a7612136cc5fbf42f9ba7e5fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9af31ae3d83bedf96f6abe5a77749756"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a9af31ae3d83bedf96f6abe5a77749756">Mesh</a> (std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt; &amp;verticesVal, std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;linesVal, std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;trianglesVal)</td></tr>
 <tr class="separator:a9af31ae3d83bedf96f6abe5a77749756"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a299486a7d463657cb8b1209aac66e969"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a299486a7d463657cb8b1209aac66e969">~Mesh</a> ()</td></tr>
+<tr class="memdesc:a299486a7d463657cb8b1209aac66e969"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor - to clean the memory.  <a href="#a299486a7d463657cb8b1209aac66e969">More...</a><br /></td></tr>
 <tr class="separator:a299486a7d463657cb8b1209aac66e969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0f570a1892c8cf29a68bae0267f8f9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ae0f570a1892c8cf29a68bae0267f8f9b">read</a> (const std::string &amp;file)</td></tr>
+<tr class="memdesc:ae0f570a1892c8cf29a68bae0267f8f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the mesh from file.  <a href="#ae0f570a1892c8cf29a68bae0267f8f9b">More...</a><br /></td></tr>
 <tr class="separator:ae0f570a1892c8cf29a68bae0267f8f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa882d21498571cbd84d4f7129fd6e32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32">convert</a> ()</td></tr>
+<tr class="memdesc:aaa882d21498571cbd84d4f7129fd6e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion from simplices to bricks.  <a href="#aaa882d21498571cbd84d4f7129fd6e32">More...</a><br /></td></tr>
 <tr class="separator:aaa882d21498571cbd84d4f7129fd6e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a209c3153eb17d86e8fe320369b2dfe09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09">write</a> (const std::string &amp;file)</td></tr>
+<tr class="memdesc:a209c3153eb17d86e8fe320369b2dfe09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the resulting brick mesh into the file.  <a href="#a209c3153eb17d86e8fe320369b2dfe09">More...</a><br /></td></tr>
 <tr class="separator:a209c3153eb17d86e8fe320369b2dfe09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e8f11687058c84b30c1501731a35508"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a6e8f11687058c84b30c1501731a35508">get_n_converted_quadrangles</a> () const</td></tr>
+<tr class="memdesc:a6e8f11687058c84b30c1501731a35508"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of converted quadrangles.  <a href="#a6e8f11687058c84b30c1501731a35508">More...</a><br /></td></tr>
 <tr class="separator:a6e8f11687058c84b30c1501731a35508"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aa9c2737b989945d2d233f7200cb3ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac">get_n_vertices</a> () const</td></tr>
+<tr class="memdesc:a7aa9c2737b989945d2d233f7200cb3ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of vertices.  <a href="#a7aa9c2737b989945d2d233f7200cb3ac">More...</a><br /></td></tr>
 <tr class="separator:a7aa9c2737b989945d2d233f7200cb3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77dc945a9f65b5b1d41e39ec8d06adb8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a77dc945a9f65b5b1d41e39ec8d06adb8">get_n_points</a> () const</td></tr>
+<tr class="memdesc:a77dc945a9f65b5b1d41e39ec8d06adb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of physical points.  <a href="#a77dc945a9f65b5b1d41e39ec8d06adb8">More...</a><br /></td></tr>
 <tr class="separator:a77dc945a9f65b5b1d41e39ec8d06adb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d5bf2be83f6181124a1014602f5c4ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a9d5bf2be83f6181124a1014602f5c4ca">get_n_lines</a> () const</td></tr>
+<tr class="memdesc:a9d5bf2be83f6181124a1014602f5c4ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of lines (physical lines).  <a href="#a9d5bf2be83f6181124a1014602f5c4ca">More...</a><br /></td></tr>
 <tr class="separator:a9d5bf2be83f6181124a1014602f5c4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e2cf18a97625017e9fc39e770455f4a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a2e2cf18a97625017e9fc39e770455f4a">get_n_triangles</a> () const</td></tr>
+<tr class="memdesc:a2e2cf18a97625017e9fc39e770455f4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of triangles.  <a href="#a2e2cf18a97625017e9fc39e770455f4a">More...</a><br /></td></tr>
 <tr class="separator:a2e2cf18a97625017e9fc39e770455f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a776b3e42d2abc98be5d5ea89d46b1f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a1a776b3e42d2abc98be5d5ea89d46b1f">get_n_quadrangles</a> () const</td></tr>
+<tr class="memdesc:a1a776b3e42d2abc98be5d5ea89d46b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of tetrahedra.  <a href="#a1a776b3e42d2abc98be5d5ea89d46b1f">More...</a><br /></td></tr>
 <tr class="separator:a1a776b3e42d2abc98be5d5ea89d46b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cf280b3e66e9033298da8df3a67ccb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a5cf280b3e66e9033298da8df3a67ccb5">info</a> (std::ostream &amp;out=std::cout) const</td></tr>
+<tr class="memdesc:a5cf280b3e66e9033298da8df3a67ccb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print short information.  <a href="#a5cf280b3e66e9033298da8df3a67ccb5">More...</a><br /></td></tr>
 <tr class="separator:a5cf280b3e66e9033298da8df3a67ccb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a451d2cd1bc4968e4a6342369736a2796"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a451d2cd1bc4968e4a6342369736a2796">statistics</a> (std::ostream &amp;out=std::cout) const</td></tr>
+<tr class="memdesc:a451d2cd1bc4968e4a6342369736a2796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print some statistics (detailed information).  <a href="#a451d2cd1bc4968e4a6342369736a2796">More...</a><br /></td></tr>
 <tr class="separator:a451d2cd1bc4968e4a6342369736a2796"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea31733cbb3d4e47252da53a253ec9b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8">get_vertex</a> (int number) const</td></tr>
+<tr class="memdesc:aea31733cbb3d4e47252da53a253ec9b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the copy of vertex.  <a href="#aea31733cbb3d4e47252da53a253ec9b8">More...</a><br /></td></tr>
 <tr class="separator:aea31733cbb3d4e47252da53a253ec9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a662e5df32c04d894bbc9598d3fe4d3f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0">get_point</a> (int number) const</td></tr>
+<tr class="memdesc:a662e5df32c04d894bbc9598d3fe4d3f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the physical point.  <a href="#a662e5df32c04d894bbc9598d3fe4d3f0">More...</a><br /></td></tr>
 <tr class="separator:a662e5df32c04d894bbc9598d3fe4d3f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70088e99510407a2afcb64f070430d05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a70088e99510407a2afcb64f070430d05">get_edge</a> (int number) const</td></tr>
+<tr class="memdesc:a70088e99510407a2afcb64f070430d05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mesh edge.  <a href="#a70088e99510407a2afcb64f070430d05">More...</a><br /></td></tr>
 <tr class="separator:a70088e99510407a2afcb64f070430d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31af01d4cca474c530bcfa8dbda990c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a31af01d4cca474c530bcfa8dbda990c0">get_line</a> (int number) const</td></tr>
+<tr class="memdesc:a31af01d4cca474c530bcfa8dbda990c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the physical line.  <a href="#a31af01d4cca474c530bcfa8dbda990c0">More...</a><br /></td></tr>
 <tr class="separator:a31af01d4cca474c530bcfa8dbda990c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28ee91d1c112c5852cead4cbcdfc6dda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a28ee91d1c112c5852cead4cbcdfc6dda">get_triangle</a> (int number) const</td></tr>
+<tr class="memdesc:a28ee91d1c112c5852cead4cbcdfc6dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mesh triangle.  <a href="#a28ee91d1c112c5852cead4cbcdfc6dda">More...</a><br /></td></tr>
 <tr class="separator:a28ee91d1c112c5852cead4cbcdfc6dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5737e6675d86cce7410b4b690f25618f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a5737e6675d86cce7410b4b690f25618f">get_quadrangle</a> (int number) const</td></tr>
+<tr class="memdesc:a5737e6675d86cce7410b4b690f25618f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mesh quadrangle.  <a href="#a5737e6675d86cce7410b4b690f25618f">More...</a><br /></td></tr>
 <tr class="separator:a5737e6675d86cce7410b4b690f25618f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f31f5995461a64756fd75aff9e8040b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a8f31f5995461a64756fd75aff9e8040b">get_vertices</a> ()</td></tr>
+<tr class="memdesc:a8f31f5995461a64756fd75aff9e8040b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the reference of vertices vector.  <a href="#a8f31f5995461a64756fd75aff9e8040b">More...</a><br /></td></tr>
 <tr class="separator:a8f31f5995461a64756fd75aff9e8040b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fefc160a592f20226064d1b03b3a14d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a9fefc160a592f20226064d1b03b3a14d">get_points</a> ()</td></tr>
+<tr class="memdesc:a9fefc160a592f20226064d1b03b3a14d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference to physical points vector.  <a href="#a9fefc160a592f20226064d1b03b3a14d">More...</a><br /></td></tr>
 <tr class="separator:a9fefc160a592f20226064d1b03b3a14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9927a3d84b3743cc37e09ea029b8fe26"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a9927a3d84b3743cc37e09ea029b8fe26">get_lines</a> ()</td></tr>
+<tr class="memdesc:a9927a3d84b3743cc37e09ea029b8fe26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference to physical lines vector.  <a href="#a9927a3d84b3743cc37e09ea029b8fe26">More...</a><br /></td></tr>
 <tr class="separator:a9927a3d84b3743cc37e09ea029b8fe26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae354ebdb4a109725ee7c7f068bdff091"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ae354ebdb4a109725ee7c7f068bdff091">get_triangles</a> ()</td></tr>
+<tr class="memdesc:ae354ebdb4a109725ee7c7f068bdff091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference to mesh triangles vector.  <a href="#ae354ebdb4a109725ee7c7f068bdff091">More...</a><br /></td></tr>
 <tr class="separator:ae354ebdb4a109725ee7c7f068bdff091"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba88753fb0c39b5f4e148814c1150a70"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#aba88753fb0c39b5f4e148814c1150a70">get_quadrangles</a> ()</td></tr>
+<tr class="memdesc:aba88753fb0c39b5f4e148814c1150a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference to mesh quadrangles vector.  <a href="#aba88753fb0c39b5f4e148814c1150a70">More...</a><br /></td></tr>
 <tr class="separator:aba88753fb0c39b5f4e148814c1150a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a730ec5e40642f4048d86dbf9af191818"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a730ec5e40642f4048d86dbf9af191818">set_vertexes</a> (std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt; &amp;vertexes)</td></tr>
-<tr class="separator:a730ec5e40642f4048d86dbf9af191818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58afefb6ba6371c3ba47ba6e8305ab05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a58afefb6ba6371c3ba47ba6e8305ab05">set_vertexes</a> (std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt; &amp;vertexesVal)</td></tr>
+<tr class="memdesc:a58afefb6ba6371c3ba47ba6e8305ab05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the copy of vertex.  <a href="#a58afefb6ba6371c3ba47ba6e8305ab05">More...</a><br /></td></tr>
+<tr class="separator:a58afefb6ba6371c3ba47ba6e8305ab05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae31ba46c6160f8445cc418c6af5206c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ae31ba46c6160f8445cc418c6af5206c7">append_vertexes</a> (std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt; &amp;vertexes_val)</td></tr>
+<tr class="memdesc:ae31ba46c6160f8445cc418c6af5206c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the copy of vertex.  <a href="#ae31ba46c6160f8445cc418c6af5206c7">More...</a><br /></td></tr>
 <tr class="separator:ae31ba46c6160f8445cc418c6af5206c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac58ff9d3852455551459c3f4fe6ed0e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ac58ff9d3852455551459c3f4fe6ed0e2">set_points</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;<a class="el" href="classtethex_1_1Mesh.html#ae32b3306507c97436ea0057e86b57e47">points</a>)</td></tr>
-<tr class="separator:ac58ff9d3852455551459c3f4fe6ed0e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab33b9e41b9b7c5a2eb798771aa4b865"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#aab33b9e41b9b7c5a2eb798771aa4b865">set_lines</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;<a class="el" href="classtethex_1_1Mesh.html#aaa10b4f9ada17672e2519adbda9eddac">lines</a>)</td></tr>
-<tr class="separator:aab33b9e41b9b7c5a2eb798771aa4b865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34d1d49f40a18e445d3e1afb7b6fafd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a34d1d49f40a18e445d3e1afb7b6fafd0">set_points</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;pointsVal)</td></tr>
+<tr class="memdesc:a34d1d49f40a18e445d3e1afb7b6fafd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the physical points.  <a href="#a34d1d49f40a18e445d3e1afb7b6fafd0">More...</a><br /></td></tr>
+<tr class="separator:a34d1d49f40a18e445d3e1afb7b6fafd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893878b71e351600cbdee7db451bca9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a893878b71e351600cbdee7db451bca9d">set_lines</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;linesVal)</td></tr>
+<tr class="memdesc:a893878b71e351600cbdee7db451bca9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the physical lines.  <a href="#a893878b71e351600cbdee7db451bca9d">More...</a><br /></td></tr>
+<tr class="separator:a893878b71e351600cbdee7db451bca9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad779a1d2d8c8d5c8ecfd91d0e19d87a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ad779a1d2d8c8d5c8ecfd91d0e19d87a7">append_lines</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;lines_val)</td></tr>
+<tr class="memdesc:ad779a1d2d8c8d5c8ecfd91d0e19d87a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the physical lines.  <a href="#ad779a1d2d8c8d5c8ecfd91d0e19d87a7">More...</a><br /></td></tr>
 <tr class="separator:ad779a1d2d8c8d5c8ecfd91d0e19d87a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84431286c718d5570b253b73d3ef446f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a84431286c718d5570b253b73d3ef446f">set_triangles</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;<a class="el" href="classtethex_1_1Mesh.html#a44c310a5066d0ee02fefc3d9474c6a07">triangles</a>)</td></tr>
-<tr class="separator:a84431286c718d5570b253b73d3ef446f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b6474f7195faa24c3040175baf4af3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a2b6474f7195faa24c3040175baf4af3d">set_quadrangles</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;<a class="el" href="classtethex_1_1Mesh.html#a3fcc2b60eb78d3011a42758e4ca5d3c4">quadrangles</a>)</td></tr>
-<tr class="separator:a2b6474f7195faa24c3040175baf4af3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf8a07db236c4824186981a1b9cc42a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#aaf8a07db236c4824186981a1b9cc42a4">set_triangles</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;trianglesVal)</td></tr>
+<tr class="memdesc:aaf8a07db236c4824186981a1b9cc42a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the mesh triangles.  <a href="#aaf8a07db236c4824186981a1b9cc42a4">More...</a><br /></td></tr>
+<tr class="separator:aaf8a07db236c4824186981a1b9cc42a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace2b9f50660b105b369b0b14c357380c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ace2b9f50660b105b369b0b14c357380c">set_quadrangles</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;quadranglesVal)</td></tr>
+<tr class="memdesc:ace2b9f50660b105b369b0b14c357380c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the mesh quadrangles.  <a href="#ace2b9f50660b105b369b0b14c357380c">More...</a><br /></td></tr>
+<tr class="separator:ace2b9f50660b105b369b0b14c357380c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f713135e7371c15cecacf03035c7683"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a8f713135e7371c15cecacf03035c7683">clean</a> ()</td></tr>
+<tr class="memdesc:a8f713135e7371c15cecacf03035c7683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free the memory to read again, for example.  <a href="#a8f713135e7371c15cecacf03035c7683">More...</a><br /></td></tr>
 <tr class="separator:a8f713135e7371c15cecacf03035c7683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6757f5eeaca6b0cae07fb85b5f40cb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ad6757f5eeaca6b0cae07fb85b5f40cb2">edge_numeration</a> (std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;cells, const <a class="el" href="classtethex_1_1IncidenceMatrix.html">IncidenceMatrix</a> &amp;incidence_matrix, bool initialize_edges)</td></tr>
+<tr class="memdesc:ad6757f5eeaca6b0cae07fb85b5f40cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numerate the edges of simplices.  <a href="#ad6757f5eeaca6b0cae07fb85b5f40cb2">More...</a><br /></td></tr>
 <tr class="separator:ad6757f5eeaca6b0cae07fb85b5f40cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb803e48ce7101318531730a512ecbc8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8">convert_2D</a> ()</td></tr>
+<tr class="memdesc:adb803e48ce7101318531730a512ecbc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion of 2D meshes (triangles -&gt; quadrangles)  <a href="#adb803e48ce7101318531730a512ecbc8">More...</a><br /></td></tr>
 <tr class="separator:adb803e48ce7101318531730a512ecbc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc261df76b5f1090b366386fdcb495cb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#abc261df76b5f1090b366386fdcb495cb">find_face_from_two_edges</a> (int edge1, int edge2, const <a class="el" href="classtethex_1_1IncidenceMatrix.html">IncidenceMatrix</a> &amp;vertices_incidence, const <a class="el" href="classtethex_1_1Mesh.html#af79c03489aa8b60aab2a9f76a5b3dfe7">VectorMap</a> &amp;edge_vertex_incidence) const</td></tr>
+<tr class="memdesc:abc261df76b5f1090b366386fdcb495cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the global number of face basing on numbers of 2 edges defining that face.  <a href="#abc261df76b5f1090b366386fdcb495cb">More...</a><br /></td></tr>
 <tr class="separator:abc261df76b5f1090b366386fdcb495cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e5d9c057c6f562d5036f262a23af29c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a8e5d9c057c6f562d5036f262a23af29c">set_new_vertices</a> (const std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> *&gt; &amp;elements, int n_old_vertices, int shift)</td></tr>
+<tr class="memdesc:a8e5d9c057c6f562d5036f262a23af29c"><td class="mdescLeft">&#160;</td><td class="mdescRight">During conversion we add new vertices - at the centers of edges, triangles, tetrahedra.  <a href="#a8e5d9c057c6f562d5036f262a23af29c">More...</a><br /></td></tr>
 <tr class="separator:a8e5d9c057c6f562d5036f262a23af29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab739c5e4bbb1c3461a068c2104eab52e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e">convert_triangles</a> (const <a class="el" href="classtethex_1_1IncidenceMatrix.html">IncidenceMatrix</a> &amp;incidence_matrix, int n_old_vertices, bool numerate_edges, const <a class="el" href="classtethex_1_1Mesh.html#af79c03489aa8b60aab2a9f76a5b3dfe7">VectorMap</a> &amp;edge_vertex_incidence=<a class="el" href="classtethex_1_1Mesh.html#af79c03489aa8b60aab2a9f76a5b3dfe7">VectorMap</a>())</td></tr>
+<tr class="memdesc:ab739c5e4bbb1c3461a068c2104eab52e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion from triangles to quadrangles.  <a href="#ab739c5e4bbb1c3461a068c2104eab52e">More...</a><br /></td></tr>
 <tr class="separator:ab739c5e4bbb1c3461a068c2104eab52e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4c7819413f5941593722fa1024e1f25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ac4c7819413f5941593722fa1024e1f25">redefine_lines</a> (const <a class="el" href="classtethex_1_1IncidenceMatrix.html">IncidenceMatrix</a> &amp;incidence_matrix, int n_old_vertices)</td></tr>
+<tr class="memdesc:ac4c7819413f5941593722fa1024e1f25"><td class="mdescLeft">&#160;</td><td class="mdescRight">During mesh conversion we add new vertices.  <a href="#ac4c7819413f5941593722fa1024e1f25">More...</a><br /></td></tr>
 <tr class="separator:ac4c7819413f5941593722fa1024e1f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b6a5b6110e347f12f084408a9919720"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720">convert_quadrangles</a> ()</td></tr>
+<tr class="memdesc:a3b6a5b6110e347f12f084408a9919720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert quadrangles into quadrangles.  <a href="#a3b6a5b6110e347f12f084408a9919720">More...</a><br /></td></tr>
 <tr class="separator:a3b6a5b6110e347f12f084408a9919720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ac3b3ea20ab16b248c8f389909822b03d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ac3b3ea20ab16b248c8f389909822b03d">vertices</a></td></tr>
+<tr class="memdesc:ac3b3ea20ab16b248c8f389909822b03d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> vertices (nodes in terms of Gmsh)  <a href="#ac3b3ea20ab16b248c8f389909822b03d">More...</a><br /></td></tr>
 <tr class="separator:ac3b3ea20ab16b248c8f389909822b03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae32b3306507c97436ea0057e86b57e47"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#ae32b3306507c97436ea0057e86b57e47">points</a></td></tr>
+<tr class="memdesc:ae32b3306507c97436ea0057e86b57e47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Physical points.  <a href="#ae32b3306507c97436ea0057e86b57e47">More...</a><br /></td></tr>
 <tr class="separator:ae32b3306507c97436ea0057e86b57e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa10b4f9ada17672e2519adbda9eddac"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#aaa10b4f9ada17672e2519adbda9eddac">lines</a></td></tr>
+<tr class="memdesc:aaa10b4f9ada17672e2519adbda9eddac"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> lines - mean physical lines.  <a href="#aaa10b4f9ada17672e2519adbda9eddac">More...</a><br /></td></tr>
 <tr class="separator:aaa10b4f9ada17672e2519adbda9eddac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a4adb943ceca34909104b3974f7fa9f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a2a4adb943ceca34909104b3974f7fa9f">edges</a></td></tr>
+<tr class="memdesc:a2a4adb943ceca34909104b3974f7fa9f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> edges (oriented lines)  <a href="#a2a4adb943ceca34909104b3974f7fa9f">More...</a><br /></td></tr>
 <tr class="separator:a2a4adb943ceca34909104b3974f7fa9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44c310a5066d0ee02fefc3d9474c6a07"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a44c310a5066d0ee02fefc3d9474c6a07">triangles</a></td></tr>
+<tr class="memdesc:a44c310a5066d0ee02fefc3d9474c6a07"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> triangles.  <a href="#a44c310a5066d0ee02fefc3d9474c6a07">More...</a><br /></td></tr>
 <tr class="separator:a44c310a5066d0ee02fefc3d9474c6a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fcc2b60eb78d3011a42758e4ca5d3c4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtethex_1_1MeshElement.html">MeshElement</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a3fcc2b60eb78d3011a42758e4ca5d3c4">quadrangles</a></td></tr>
+<tr class="memdesc:a3fcc2b60eb78d3011a42758e4ca5d3c4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> quadrangles.  <a href="#a3fcc2b60eb78d3011a42758e4ca5d3c4">More...</a><br /></td></tr>
 <tr class="separator:a3fcc2b60eb78d3011a42758e4ca5d3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb5e39d5fa93baf4b1c88958b3572591"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#acb5e39d5fa93baf4b1c88958b3572591">n_converted_quadrangles</a></td></tr>
+<tr class="memdesc:acb5e39d5fa93baf4b1c88958b3572591"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of quadrangles that existed in the input mesh and then were converted to have the same order of vertices for all elements.  <a href="#acb5e39d5fa93baf4b1c88958b3572591">More...</a><br /></td></tr>
 <tr class="separator:acb5e39d5fa93baf4b1c88958b3572591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f5f2145553284eb132ef0aeebf914dc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtethex_1_1Mesh.html#a7f5f2145553284eb132ef0aeebf914dc">physical_names</a></td></tr>
+<tr class="memdesc:a7f5f2145553284eb132ef0aeebf914dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vector of strings representing names of physical entities of the mesh.  <a href="#a7f5f2145553284eb132ef0aeebf914dc">More...</a><br /></td></tr>
 <tr class="separator:a7f5f2145553284eb132ef0aeebf914dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main class that stores all data during program execution. </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00629">629</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00653">653</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="af79c03489aa8b60aab2a9f76a5b3dfe7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af79c03489aa8b60aab2a9f76a5b3dfe7">&#9670;&nbsp;</a></span>VectorMap</h2>
@@ -213,7 +265,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00868">868</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00889">889</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +284,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructor - nothing special </p>
+
+<p>Constructor - nothing special. </p>
 
 <p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00531">531</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
@@ -332,9 +385,10 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructor - nothing special </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00673">673</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Constructor - nothing special. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00675">675</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
 </div>
 </div>
@@ -370,7 +424,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00660">660</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00662">662</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
 </div>
 </div>
@@ -388,9 +442,10 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Destructor - to clean the memory </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00689">689</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Destructor - to clean the memory. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00691">691</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -440,14 +495,16 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Read the mesh from file </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Read the mesh from file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file</td><td>- the name of the mesh file </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00795">795</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00783">783</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -470,9 +527,11 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Conversion from simplices to bricks. Specifically, in 2D - conversion from triangles to quadrangles, in 3D - conversion from tetrahedra to hexahedra. </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00986">986</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Conversion from simplices to bricks. </p>
+<p>Specifically, in 2D - conversion from triangles to quadrangles, in 3D - conversion from tetrahedra to hexahedra. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00974">974</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -496,14 +555,16 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Write the resulting brick mesh into the file </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Write the resulting brick mesh into the file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file</td><td>- the name of mesh file where we write the results of conversion </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01257">1257</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01245">1245</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -526,9 +587,10 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the number of converted quadrangles </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01334">1334</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get the number of converted quadrangles. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01322">1322</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -551,9 +613,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the number of vertices </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01308">1308</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get the number of vertices. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01296">1296</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -576,9 +639,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the number of physical points </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01313">1313</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get the number of physical points. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01301">1301</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -601,9 +665,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the number of lines (physical lines) </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01318">1318</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get the number of lines (physical lines). </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01306">1306</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -626,9 +691,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the number of triangles </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01323">1323</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get the number of triangles. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01311">1311</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -651,9 +717,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the number of tetrahedra </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01328">1328</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get the number of tetrahedra. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01316">1316</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -677,9 +744,11 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Print short information about mesh into choosing stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01419">1419</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Print short information. </p>
+<p>about mesh into choosing stream. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01407">1407</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
 </div>
 </div>
@@ -698,9 +767,11 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Print some statistics (detailed information) about mesh into choosing stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01494">1494</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Print some statistics (detailed information). </p>
+<p>about mesh into choosing stream. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01482">1482</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -724,14 +795,16 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the copy of vertex </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the copy of vertex. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">number</td><td>- the number of vertex </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01341">1341</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01329">1329</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -760,14 +833,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the physical point </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the physical point. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">number</td><td>- the number of point </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01349">1349</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01337">1337</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -796,14 +871,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the mesh edge </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the mesh edge. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">number</td><td>- the number of edge </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01357">1357</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01345">1345</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -827,14 +904,16 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the physical line </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the physical line. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">number</td><td>- the number of line </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01365">1365</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01353">1353</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -863,14 +942,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the mesh triangle </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the mesh triangle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">number</td><td>- the number of triangle </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01373">1373</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01361">1361</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -899,14 +980,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the mesh quadrangle </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Get the mesh quadrangle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">number</td><td>- the number of quadrangle </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01381">1381</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01369">1369</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -934,14 +1017,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the copy of vertex </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">number</td><td>- the number of vertex </td></tr>
-  </table>
-  </dd>
-</dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01391">1391</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get the reference of vertices vector. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01379">1379</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
 </div>
 </div>
@@ -959,14 +1038,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the physical point </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">number</td><td>- the number of point </td></tr>
-  </table>
-  </dd>
-</dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01396">1396</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get reference to physical points vector. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01384">1384</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -989,14 +1064,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the physical line </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">number</td><td>- the number of line </td></tr>
-  </table>
-  </dd>
-</dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01401">1401</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get reference to physical lines vector. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01389">1389</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1019,14 +1090,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the mesh triangle </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">number</td><td>- the number of triangle </td></tr>
-  </table>
-  </dd>
-</dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01406">1406</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get reference to mesh triangles vector. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01394">1394</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
 </div>
 </div>
@@ -1044,19 +1111,15 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the mesh quadrangle </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">number</td><td>- the number of quadrangle </td></tr>
-  </table>
-  </dd>
-</dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01411">1411</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Get reference to mesh quadrangles vector. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01399">1399</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a730ec5e40642f4048d86dbf9af191818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a730ec5e40642f4048d86dbf9af191818">&#9670;&nbsp;</a></span>set_vertexes()</h2>
+<a id="a58afefb6ba6371c3ba47ba6e8305ab05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58afefb6ba6371c3ba47ba6e8305ab05">&#9670;&nbsp;</a></span>set_vertexes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1065,23 +1128,25 @@ Here is the caller graph for this function:</div>
           <td class="memname">void tethex::Mesh::set_vertexes </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; <a class="el" href="classtethex_1_1Point.html">Point</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>vertexes</em></td><td>)</td>
+          <td class="paramname"><em>vertexesVal</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the copy of vertex </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the copy of vertex. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">vertexes</td><td>- the vector of vertexes </td></tr>
+    <tr><td class="paramname">vertexesVal</td><td>- the vector of vertexes </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00697">697</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00699">699</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_a730ec5e40642f4048d86dbf9af191818_icgraph.svg" width="963" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_a58afefb6ba6371c3ba47ba6e8305ab05_icgraph.svg" width="722" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1101,20 +1166,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the copy of vertex </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the copy of vertex. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">vertexes</td><td>- the vector of vertexes</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Append the vertex vector </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">vertexes</td><td>- the vector of vertexes </td></tr>
+    <tr><td class="paramname">vertexes_val</td><td>- the vector of vertexes </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00705">705</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00706">706</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1123,8 +1184,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ac58ff9d3852455551459c3f4fe6ed0e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac58ff9d3852455551459c3f4fe6ed0e2">&#9670;&nbsp;</a></span>set_points()</h2>
+<a id="a34d1d49f40a18e445d3e1afb7b6fafd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34d1d49f40a18e445d3e1afb7b6fafd0">&#9670;&nbsp;</a></span>set_points()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1138,24 +1199,26 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the physical points </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the physical points. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">points</td><td>- the vector of points </td></tr>
+    <tr><td class="paramname">pointsVal</td><td>- the vector of points </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00713">713</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00712">712</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_ac58ff9d3852455551459c3f4fe6ed0e2_icgraph.svg" width="534" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_a34d1d49f40a18e445d3e1afb7b6fafd0_icgraph.svg" width="534" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="aab33b9e41b9b7c5a2eb798771aa4b865"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab33b9e41b9b7c5a2eb798771aa4b865">&#9670;&nbsp;</a></span>set_lines()</h2>
+<a id="a893878b71e351600cbdee7db451bca9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a893878b71e351600cbdee7db451bca9d">&#9670;&nbsp;</a></span>set_lines()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1169,18 +1232,20 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the physical lines </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the physical lines. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lines</td><td>- the vector of lines </td></tr>
+    <tr><td class="paramname">linesVal</td><td>- the vector of lines </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00725">725</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00721">721</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_aab33b9e41b9b7c5a2eb798771aa4b865_icgraph.svg" width="940" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_a893878b71e351600cbdee7db451bca9d_icgraph.svg" width="699" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1200,20 +1265,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Append the physical lines </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Append the physical lines. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lines</td><td>- the vector of lines</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Set the physical lines </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lines</td><td>- the vector of lines </td></tr>
+    <tr><td class="paramname">lines_val</td><td>- new vector of lines </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00735">735</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00729">729</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1222,8 +1283,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a84431286c718d5570b253b73d3ef446f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84431286c718d5570b253b73d3ef446f">&#9670;&nbsp;</a></span>set_triangles()</h2>
+<a id="aaf8a07db236c4824186981a1b9cc42a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf8a07db236c4824186981a1b9cc42a4">&#9670;&nbsp;</a></span>set_triangles()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1237,24 +1298,26 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the mesh triangles </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the mesh triangles. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">triangles</td><td>- the vector of triangles </td></tr>
+    <tr><td class="paramname">trianglesVal</td><td>- the vector of triangles </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00744">744</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00735">735</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_a84431286c718d5570b253b73d3ef446f_icgraph.svg" width="918" height="71"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtethex_1_1Mesh_aaf8a07db236c4824186981a1b9cc42a4_icgraph.svg" width="676" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a2b6474f7195faa24c3040175baf4af3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b6474f7195faa24c3040175baf4af3d">&#9670;&nbsp;</a></span>set_quadrangles()</h2>
+<a id="ace2b9f50660b105b369b0b14c357380c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace2b9f50660b105b369b0b14c357380c">&#9670;&nbsp;</a></span>set_quadrangles()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1268,14 +1331,16 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the mesh quadrangles </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the mesh quadrangles. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">quadrangles</td><td>- the vector of quadrangles </td></tr>
+    <tr><td class="paramname">quadranglesVal</td><td>- the vector of quadrangles </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00757">757</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00745">745</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 
 </div>
 </div>
@@ -1293,9 +1358,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Free the memory to read again, for example </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00768">768</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Free the memory to read again, for example. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00756">756</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1335,7 +1401,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Numerate the edges of simplices </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Numerate the edges of simplices. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cells</td><td>- edges of what elements should me numerated - triangles or tetrahedra </td></tr>
     <tr><td class="paramname">incidence_matrix</td><td>- matrix of vertices incidence </td></tr>
@@ -1344,7 +1412,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01207">1207</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01195">1195</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1372,9 +1440,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Conversion of 2D meshes (triangles -&gt; quadrangles) </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01023">1023</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01011">1011</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1425,7 +1494,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Find the global number of face basing on numbers of 2 edges defining that face </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Find the global number of face basing on numbers of 2 edges defining that face. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">edge1</td><td>- one edge of the face </td></tr>
     <tr><td class="paramname">edge2</td><td>- another edge of the face </td></tr>
@@ -1435,7 +1506,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01517">1517</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01505">1505</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1480,7 +1551,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>During conversion we add new vertices - at the centers of edges, triangles, tetrahedra. This procedure unifies the approach to adding new vertices </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>During conversion we add new vertices - at the centers of edges, triangles, tetrahedra. </p>
+<p>This procedure unifies the approach to adding new vertices </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">elements</td><td>- elements to which new vertices belong. They may be edges, triangles or tetrahedra. </td></tr>
     <tr><td class="paramname">n_old_vertices</td><td>- the number of original mesh vertices </td></tr>
@@ -1489,7 +1562,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00997">997</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l00985">985</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1540,7 +1613,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Conversion from triangles to quadrangles. It's called from 2 different places. One call is held during 2D mesh conversion. Another call - during 3D mesh conversion, when we need to convert boundary triangles. </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Conversion from triangles to quadrangles. </p>
+<p>It's called from 2 different places. One call is held during 2D mesh conversion. Another call - during 3D mesh conversion, when we need to convert boundary triangles. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">incidence_matrix</td><td>- the matrix of incidence between mesh nodes </td></tr>
     <tr><td class="paramname">n_old_vertices</td><td>- the number of original mesh vertices </td></tr>
@@ -1550,7 +1625,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01069">1069</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01057">1057</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1589,7 +1664,9 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>During mesh conversion we add new vertices. They lie at the middle of all lines. So original physical lines are not valid anymore, and therefore we need to redefine them. </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>During mesh conversion we add new vertices. </p>
+<p>They lie at the middle of all lines. So original physical lines are not valid anymore, and therefore we need to redefine them. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">incidence_matrix</td><td>- the matrix of incidence between mesh nodes </td></tr>
     <tr><td class="paramname">n_old_vertices</td><td>- the number of original mesh vertices </td></tr>
@@ -1597,7 +1674,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01179">1179</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01167">1167</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1625,9 +1702,11 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Convert quadrangles into quadrangles. It sounds odd, but there is a sense. Gmsh's numeration of quadrangle vertices differs from deal.II's one. We make quadrangle vertices numeration in such an order, that it will be understandable by deal.II </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01155">1155</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
+<p>Convert quadrangles into quadrangles. </p>
+<p>It sounds odd, but there is a sense. Gmsh's numeration of quadrangle vertices differs from deal.II's one. We make quadrangle vertices numeration in such an order, that it will be understandable by deal.II </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8cpp_source.html#l01143">1143</a> of file <a class="el" href="tethex_8cpp_source.html">tethex.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1653,9 +1732,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="classtethex_1_1Mesh.html">Mesh</a> vertices (nodes in terms of Gmsh) </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00840">840</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> vertices (nodes in terms of Gmsh) </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00861">861</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -1670,9 +1750,11 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Physical points. They are not treated - just copied into new mesh file. </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00846">846</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p>Physical points. </p>
+<p>They are not treated - just copied into new mesh file. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00867">867</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -1687,9 +1769,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="classtethex_1_1Mesh.html">Mesh</a> lines - mean physical lines </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00851">851</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> lines - mean physical lines. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00872">872</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -1704,9 +1787,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="classtethex_1_1Mesh.html">Mesh</a> edges (oriented lines) </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00856">856</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> edges (oriented lines) </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00877">877</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -1721,9 +1805,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="classtethex_1_1Mesh.html">Mesh</a> triangles </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00861">861</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> triangles. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00882">882</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -1738,9 +1823,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="classtethex_1_1Mesh.html">Mesh</a> quadrangles </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00866">866</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p><a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">Mesh</a> quadrangles. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00887">887</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -1755,9 +1841,10 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The number of quadrangles that existed in the input mesh and then were converted to have the same order of vertices for all elements </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00874">874</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p>The number of quadrangles that existed in the input mesh and then were converted to have the same order of vertices for all elements. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00895">895</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>
@@ -1772,9 +1859,11 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The vector of strings representing names of physical entities of the mesh. This section may or may not be presented in the mesh file. </p>
 
-<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00881">881</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
+<p>The vector of strings representing names of physical entities of the mesh. </p>
+<p>This section may or may not be presented in the mesh file. </p>
+
+<p class="definition">Definition at line <a class="el" href="tethex_8hpp_source.html#l00902">902</a> of file <a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>.</p>
 
 </div>
 </div>

@@ -19,7 +19,7 @@
 <!-- Node15 -->
 <g id="node2" class="node">
 <title>Node15</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="tethex::Mesh::convert\l_triangles">
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="Conversion from triangles to quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="157,-44.5 157,-74.5 269,-74.5 269,-44.5 157,-44.5"/>
 <text text-anchor="start" x="165" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 <text text-anchor="middle" x="213" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_triangles</text>
@@ -35,7 +35,7 @@
 <!-- Node18 -->
 <g id="node5" class="node">
 <title>Node18</title>
-<g id="a_node5"><a xlink:href="classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" target="_top" xlink:title="tethex::Mesh::convert\l_quadrangles">
+<g id="a_node5"><a xlink:href="classtethex_1_1Mesh.html#a3b6a5b6110e347f12f084408a9919720" target="_top" xlink:title="Convert quadrangles into quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="314,-.5 314,-30.5 426,-30.5 426,-.5 314,-.5"/>
 <text text-anchor="start" x="322" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 <text text-anchor="middle" x="370" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_quadrangles</text>
@@ -51,7 +51,7 @@
 <!-- Node16 -->
 <g id="node3" class="node">
 <title>Node16</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" target="_top" xlink:title="tethex::Mesh::convert_2D">
+<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" target="_top" xlink:title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) ">
 <polygon fill="#ffffff" stroke="#000000" points="305,-50 305,-69 435,-69 435,-50 305,-50"/>
 <text text-anchor="middle" x="370" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert_2D</text>
 </a>
@@ -66,7 +66,7 @@
 <!-- Node17 -->
 <g id="node4" class="node">
 <title>Node17</title>
-<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" target="_top" xlink:title="tethex::Mesh::convert">
+<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" target="_top" xlink:title="Conversion from simplices to bricks. ">
 <polygon fill="#ffffff" stroke="#000000" points="471,-28 471,-47 583,-47 583,-28 471,-28"/>
 <text text-anchor="middle" x="527" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 </a>

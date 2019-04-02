@@ -1,4 +1,4 @@
 <map id="tethex::Mesh::get_lines" name="tethex::Mesh::get_lines">
-<area shape="rect" id="node2" href="$classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" title="Return source adjacent point(source has only one such points) " alt="" coords="212,5,391,47"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" title="Return source adjacent point(source has only one such points). " alt="" coords="212,5,391,47"/>
 <area shape="rect" id="node3" href="$classRiver_1_1Border.html#ad884663725156885e8e5def07a2e49c1" title="Return normal line angle to boundary at point where is located source with source_id ..." alt="" coords="439,5,608,47"/>
 </map>

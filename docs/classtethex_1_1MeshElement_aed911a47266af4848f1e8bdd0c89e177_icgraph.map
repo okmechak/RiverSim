@@ -1,11 +1,11 @@
 <map id="tethex::MeshElement::get_vertex" name="tethex::MeshElement::get_vertex">
-<area shape="rect" id="node2" href="$classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" title="Return source adjacent point(source has only one such points) " alt="" coords="200,5,379,47"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" title="Return source poinst indexes(each source consist of two points at distance eps) " alt="" coords="205,71,374,112"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Border.html#a9f0bb13fcc42d824d94903b6ae7eabd0" title="Return source adjacent point(source has only one such points). " alt="" coords="200,5,379,47"/>
+<area shape="rect" id="node4" href="$classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" title="Return source poinst indexes(each source consist of two points at distance eps). " alt="" coords="205,71,374,112"/>
 <area shape="rect" id="node8" href="$classRiver_1_1Solver.html#a3d51dbec8b2d1d790c5f4e0385b408d7" title="River::Solver::SetMesh" alt="" coords="210,137,369,163"/>
 <area shape="rect" id="node9" href="$classtethex_1_1Mesh.html#af7abffd9bc4bd64eb2f4cdd4aaf7fbe3" title="tethex::Mesh::Mesh" alt="" coords="220,187,359,214"/>
 <area shape="rect" id="node10" href="$classtethex_1_1Mesh.html#af992d5d2e64047656766e4afcbc95b8b" title="tethex::Mesh::operator=" alt="" coords="209,238,370,265"/>
 <area shape="rect" id="node3" href="$classRiver_1_1Border.html#ad884663725156885e8e5def07a2e49c1" title="Return normal line angle to boundary at point where is located source with source_id ..." alt="" coords="437,8,606,49"/>
 <area shape="rect" id="node5" href="$classRiver_1_1Border.html#a08df0eb89a5692e84d6b3fe5fe5bec37" title="Add border line to each source points. " alt="" coords="427,77,616,103"/>
-<area shape="rect" id="node6" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="River::BoundaryGenerator" alt="" coords="435,127,608,154"/>
+<area shape="rect" id="node6" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="Finnal Boudary Geneartor Class. " alt="" coords="435,127,608,154"/>
 <area shape="rect" id="node7" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="664,127,715,154"/>
 </map>

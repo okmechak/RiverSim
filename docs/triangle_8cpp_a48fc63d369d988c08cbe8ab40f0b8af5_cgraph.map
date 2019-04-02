@@ -1,0 +1,34 @@
+<map id="splittriangle" name="splittriangle">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#ab1760445583959132ffd9998372c9aac" title="poolalloc" alt="" coords="819,483,892,510"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#aeb60f84186be632487f896e6e0634e4a" title="findcircumcenter" alt="" coords="289,167,408,194"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#a98df73a1a399900d056c423c18d5fd72" title="vertexdealloc" alt="" coords="142,762,241,789"/>
+<area shape="rect" id="node12" href="$triangle_8cpp.html#a2ede94743503e369e9b1c6c2a0ac9f7f" title="insertvertex" alt="" coords="303,407,394,434"/>
+<area shape="rect" id="node30" href="$triangle_8cpp.html#a4e3735a2f4c1fa18deb1a2e66aeda7bd" title="undovertex" alt="" coords="148,635,235,662"/>
+<area shape="rect" id="node33" href="$triangle_8cpp.html#a82ca659affb40214baeea87b1b0ce480" title="precisionerror" alt="" coords="141,813,241,839"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="1007,483,1078,510"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="1228,483,1283,510"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#adbb7ef8fc2a92efceb7c1c152fbd22f1" title="counterclockwise" alt="" coords="794,129,917,155"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#abd5587da82afca7f6403c3ec3d17139a" title="counterclockwiseadapt" alt="" coords="965,134,1120,161"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="1219,193,1291,219"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="1184,127,1327,168"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#a3f4425b06c516b9f5d647a1384c74d51" title="pooldealloc" alt="" coords="482,661,569,687"/>
+<area shape="rect" id="node13" href="$triangle_8cpp.html#a51073193cbdba1daea4186d1458890e8" title="locate" alt="" coords="497,117,554,143"/>
+<area shape="rect" id="node15" href="$triangle_8cpp.html#a34a6e2c35be028da265a50ab3d9d6be6" title="preciselocate" alt="" coords="645,27,743,54"/>
+<area shape="rect" id="node16" href="$triangle_8cpp.html#a5f18f6286348f31f222aedb01e8516d4" title="maketriangle" alt="" coords="646,534,742,561"/>
+<area shape="rect" id="node17" href="$triangle_8cpp.html#a65e7d1a5e6cdb3f22124eca6e7744140" title="insertsubseg" alt="" coords="477,458,573,485"/>
+<area shape="rect" id="node20" href="$triangle_8cpp.html#a2657afcbf1c107955b10ccf7dbf14c90" title="poolrestart" alt="" coords="484,407,567,434"/>
+<area shape="rect" id="node21" href="$triangle_8cpp.html#a62ccb7c855c68af7a6918e23ccb158e6" title="printtriangle" alt="" coords="481,610,570,637"/>
+<area shape="rect" id="node22" href="$triangle_8cpp.html#a6f0c7fd3fa9fb9a02403f67c7651feac" title="checkseg4encroach" alt="" coords="456,559,595,586"/>
+<area shape="rect" id="node23" href="$triangle_8cpp.html#abbd721e83ed16c99082c2152fa55e2ee" title="incircle" alt="" coords="824,225,887,251"/>
+<area shape="rect" id="node26" href="$triangle_8cpp.html#a816cae4d440df52b7bc162b05f92cc75" title="testtriangle" alt="" coords="482,306,569,333"/>
+<area shape="rect" id="node14" href="$triangle_8cpp.html#abafde1fa8bfde5489dced6485939a19f" title="randomnation" alt="" coords="644,78,744,105"/>
+<area shape="rect" id="node18" href="$triangle_8cpp.html#a38c1f489a079cd860973698d73d5128c" title="makesubseg" alt="" coords="646,433,742,459"/>
+<area shape="rect" id="node19" href="$triangle_8cpp.html#ae5bee30bf48dcc4ac5ab46eb5fa3f059" title="printsubseg" alt="" coords="649,483,739,510"/>
+<area shape="rect" id="node24" href="$triangle_8cpp.html#ade6dfff2bcdf2f287e419bc4e2a211dc" title="incircleadapt" alt="" coords="995,214,1090,241"/>
+<area shape="rect" id="node25" href="$triangle_8cpp.html#abdcdaa8948d9a2937154d9d67f67da8d" title="scale_expansion_zeroelim" alt="" coords="1168,243,1343,270"/>
+<area shape="rect" id="node27" href="$triangle_8cpp.html#a6b67091e1472b3c8d48c8540148dc1a8" title="enqueuebadtri" alt="" coords="643,281,745,307"/>
+<area shape="rect" id="node29" href="$triangle_8cpp.html#a435eb334f65dbd9268038e8881e24554" title="triunsuitable" alt="" coords="648,331,740,358"/>
+<area shape="rect" id="node28" href="$triangle_8cpp.html#a8b69474415bac9ddab3a5879974338b5" title="enqueuebadtriang" alt="" coords="793,281,917,307"/>
+<area shape="rect" id="node31" href="$triangle_8cpp.html#a3bd3bd17a942635e55f283dc27f32ddb" title="triangledealloc" alt="" coords="296,661,401,687"/>
+<area shape="rect" id="node32" href="$triangle_8cpp.html#ad0519b3b99595506b2c45d5b0c5aa7cf" title="unflip" alt="" coords="322,610,375,637"/>
+</map>

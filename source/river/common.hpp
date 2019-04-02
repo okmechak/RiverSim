@@ -1,4 +1,4 @@
-/**
+/*
  * riversim - river growth simulation.
  * Copyright (c) 2019 Oleg Kmechak
  * Report issues: github.com/okmechak/RiverSim/issues
@@ -13,12 +13,12 @@
  * GNU General Public License for more details.
  */
 
-/*! \file comon.hpp
-    \brief Common geometric entities to whole program.
-    
-    Like Point(or Vector), Polar - same vector but in Polar coordinates and simple
-    Line element.
-*/
+/** @file common.hpp
+ *   Common geometric entities to whole program.
+ *   
+ *   Like Point(or Vector), Polar - same vector but in Polar coordinates and simple
+ *   Line element.
+ */
 #pragma once
 
 #include <vector>

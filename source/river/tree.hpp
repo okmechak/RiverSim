@@ -1,4 +1,4 @@
-/**
+/*
  * riversim - river growth simulation.
  * Copyright (c) 2019 Oleg Kmechak
  * Report issues: github.com/okmechak/RiverSim/issues
@@ -13,16 +13,16 @@
  * GNU General Public License for more details.
  */
 
-/*! \file tree.hpp
-    Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry
-    
-    This file holds several classes like \ref BranchNew, \ref Tree, \ref GeometryNew.
-    BranchNew class represents single branch without any biffuracation points. 
-    These branches are combined into Tree by means 
-    of \ref Tree class. And finnaly \ref Tree class and \ref Border class are generated 
-    into geometry that is used in simmulation by means of
-    \ref GeometryNew class.
-*/
+/** @file tree.hpp
+ *   Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry
+ *   
+ *   This file holds several classes like __BranchNew__, __Tree__, __GeometryNew__.
+ *   BranchNew class represents single branch without any biffuracation points. 
+ *   These branches are combined into Tree by means 
+ *   of __Tree__ class. And finnaly __Tree__ class and __Border__ class are generated 
+ *   into geometry that is used in simmulation by means of
+ *   __GeometryNew__ class.
+ */
 
 #pragma once
 
@@ -176,7 +176,7 @@ namespace River
             ///Returns number of points in branch
             unsigned int Size() const {return points.size();}
 
-            ///Returns @Lenght divided by @Size
+            ///Returns BranchNew::Lenght() divided by BranchNew::Size()
             double AverageSpeed() const
             {
                 if(Size() == 1)
@@ -350,7 +350,7 @@ namespace River
             ///Holds realations between root branhces and its subbranches.
             map<int, pair<int, int>> branches_relation;
 
-            ///Holds branches ids and its position in @branches vector.
+            ///Holds branches ids and its position in BranchNew::branches vector.
             map<int, unsigned int> branches_index;
 
             ///Holds all branches.

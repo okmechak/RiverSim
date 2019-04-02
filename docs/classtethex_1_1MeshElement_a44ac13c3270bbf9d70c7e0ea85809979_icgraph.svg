@@ -19,7 +19,7 @@
 <!-- Node18 -->
 <g id="node2" class="node">
 <title>Node18</title>
-<g id="a_node2"><a xlink:href="classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" target="_top" xlink:title="Return source poinst indexes(each source consist of two points at distance eps) ">
+<g id="a_node2"><a xlink:href="classRiver_1_1Border.html#acf71aa49ddf1244f1aba474fe0457eba" target="_top" xlink:title="Return source poinst indexes(each source consist of two points at distance eps). ">
 <polygon fill="#ffffff" stroke="#000000" points="146,-115 146,-145 273,-145 273,-115 146,-115"/>
 <text text-anchor="start" x="154" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Border::GetSource</text>
 <text text-anchor="middle" x="209.5" y="-122" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">VerticesIndexById</text>
@@ -111,7 +111,7 @@
 <!-- Node21 -->
 <g id="node5" class="node">
 <title>Node21</title>
-<g id="a_node5"><a xlink:href="namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" target="_top" xlink:title="River::BoundaryGenerator">
+<g id="a_node5"><a xlink:href="namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" target="_top" xlink:title="Finnal Boudary Geneartor Class. ">
 <polygon fill="#ffffff" stroke="#000000" points="315,-76.5 315,-95.5 445,-95.5 445,-76.5 315,-76.5"/>
 <text text-anchor="middle" x="380" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BoundaryGenerator</text>
 </a>

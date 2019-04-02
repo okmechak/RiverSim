@@ -1,4 +1,4 @@
-/**
+/*
  * riversim - river growth simulation.
  * Copyright (c) 2019 Oleg Kmechak
  * Report issues: github.com/okmechak/RiverSim/issues
@@ -13,13 +13,13 @@
  * GNU General Public License for more details.
  */
 
-/*! 
-  \file riversim.hpp
-  
-  PDE Solver and Integration tool.
-
-  Incapsulates all logic of Deal.II PDE solver library and postprocessing of its results.
-*/
+/** 
+ * @file solver.hpp
+ * 
+ * PDE Solver and Integration tool.
+ *
+ * Incapsulates all logic of Deal.II PDE solver library and postprocessing of its results.
+ */
 #pragma once
 
 #include <deal.II/base/quadrature_lib.h>

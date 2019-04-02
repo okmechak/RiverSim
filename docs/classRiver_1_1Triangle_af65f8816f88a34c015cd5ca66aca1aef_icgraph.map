@@ -1,6 +1,5 @@
 <map id="River::Triangle::set_all_values_to_default" name="River::Triangle::set_all_values_to_default">
 <area shape="rect" id="node2" href="$classRiver_1_1Triangle.html#af0831b121aebb9accaafe9e291327938" title="River::Triangle::Triangle" alt="" coords="206,5,367,32"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="River::Triangle::generate" alt="" coords="204,56,369,83"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="659,56,709,83"/>
-<area shape="rect" id="node5" href="$namespaceRiver.html#a494b68e2992de95500d6d81770de62ed" title="River::ForwardRiverEvolution" alt="" coords="417,81,611,108"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a7bc9c5a5297dee136ab1489a923182dd" title="Generate mesh. " alt="" coords="204,56,369,83"/>
+<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="417,56,468,83"/>
 </map>

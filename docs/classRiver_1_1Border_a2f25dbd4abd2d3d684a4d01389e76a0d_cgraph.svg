@@ -19,7 +19,7 @@
 <!-- Node30 -->
 <g id="node2" class="node">
 <title>Node30</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a9fefc160a592f20226064d1b03b3a14d" target="_top" xlink:title="tethex::Mesh::get_points">
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a9fefc160a592f20226064d1b03b3a14d" target="_top" xlink:title="Get reference to physical points vector. ">
 <polygon fill="#ffffff" stroke="#000000" points="168,-126 168,-145 293,-145 293,-126 168,-126"/>
 <text text-anchor="middle" x="230.5" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_points</text>
 </a>
@@ -49,7 +49,7 @@
 <!-- Node32 -->
 <g id="node4" class="node">
 <title>Node32</title>
-<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="tethex::Mesh::get_vertex">
+<g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" target="_top" xlink:title="Get the copy of vertex. ">
 <polygon fill="#ffffff" stroke="#000000" points="168,-50 168,-69 293,-69 293,-50 168,-50"/>
 <text text-anchor="middle" x="230.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_vertex</text>
 </a>
@@ -64,7 +64,7 @@
 <!-- Node34 -->
 <g id="node6" class="node">
 <title>Node34</title>
-<g id="a_node6"><a xlink:href="classtethex_1_1Point.html#afd64f338ed62a8735cde178689773f89" target="_top" xlink:title="tethex::Point::get\l_coord">
+<g id="a_node6"><a xlink:href="classtethex_1_1Point.html#afd64f338ed62a8735cde178689773f89" target="_top" xlink:title="Get the coordinate of the point. ">
 <polygon fill="#ffffff" stroke="#000000" points="184.5,-.5 184.5,-30.5 276.5,-30.5 276.5,-.5 184.5,-.5"/>
 <text text-anchor="start" x="192.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Point::get</text>
 <text text-anchor="middle" x="230.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_coord</text>

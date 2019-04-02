@@ -1,0 +1,15 @@
+<map id="testtriangle" name="testtriangle">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#a2ede94743503e369e9b1c6c2a0ac9f7f" title="insertvertex" alt="" coords="158,132,249,159"/>
+<area shape="rect" id="node12" href="$triangle_8cpp.html#a8ab6fa4f05809e4cb6838ba724de2f88" title="triangulatepolygon" alt="" coords="140,183,267,209"/>
+<area shape="rect" id="node13" href="$triangle_8cpp.html#a9a6911e4ef926cd4546bb41819b1c8c5" title="deletevertex" alt="" coords="337,233,431,260"/>
+<area shape="rect" id="node14" href="$triangle_8cpp.html#aff72cd32f2fdfedbedd4270ab70f212d" title="tallyfaces" alt="" coords="164,284,243,311"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a4e3735a2f4c1fa18deb1a2e66aeda7bd" title="undovertex" alt="" coords="341,132,427,159"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#a48fc63d369d988c08cbe8ab40f0b8af5" title="splittriangle" alt="" coords="509,132,597,159"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#a496c50bca0cf0c214a0204419c3b181a" title="segmentintersection" alt="" coords="315,31,453,57"/>
+<area shape="rect" id="node11" href="$triangle_8cpp.html#adca37fc9e90f78c9ae794662de5428bd" title="splitencsegs" alt="" coords="506,208,601,235"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a5a654ff6b304f2166c64ffe9183b2995" title="enforcequality" alt="" coords="661,208,763,235"/>
+<area shape="rect" id="node6" href="$triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. " alt="" coords="829,208,912,235"/>
+<area shape="rect" id="node8" href="$triangle_8cpp.html#ae9d4ed09a0fd07959568ba5f86cc4d0c" title="scoutsegment" alt="" coords="501,56,605,83"/>
+<area shape="rect" id="node9" href="$triangle_8cpp.html#aded205ef0849b44d2a587f53fd720618" title="constrainededge" alt="" coords="653,5,771,32"/>
+<area shape="rect" id="node10" href="$triangle_8cpp.html#ae367b20189056436da2a1b633b392703" title="insertsegment" alt="" coords="819,31,923,57"/>
+</map>

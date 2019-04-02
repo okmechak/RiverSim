@@ -1,0 +1,8 @@
+<map id="regionplague" name="regionplague">
+<area shape="rect" id="node2" href="$triangle_8cpp.html#ac497210bc9192d88ed80659833ba5f55" title="traversalinit" alt="" coords="148,5,237,32"/>
+<area shape="rect" id="node3" href="$triangle_8cpp.html#a908560980328e10c897c5c34bb733e9d" title="traverse" alt="" coords="158,56,227,83"/>
+<area shape="rect" id="node4" href="$triangle_8cpp.html#ab1760445583959132ffd9998372c9aac" title="poolalloc" alt="" coords="156,107,229,133"/>
+<area shape="rect" id="node7" href="$triangle_8cpp.html#a2657afcbf1c107955b10ccf7dbf14c90" title="poolrestart" alt="" coords="151,157,234,184"/>
+<area shape="rect" id="node5" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="285,107,356,133"/>
+<area shape="rect" id="node6" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="404,107,459,133"/>
+</map>
