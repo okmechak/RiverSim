@@ -33,7 +33,6 @@ using namespace std;
 
 namespace River
 {
-    //FIXME:
     /**
      * Adaptive mesh area constraint function.
      */

@@ -69,8 +69,8 @@ void Solver::SetMesh(tethex::Mesh &meshio)
         auto v3 = cells[i].vertices[3] = meshio.get_quadrangle(i).get_vertex(3);
         
         /*
-                        TODO: boundary conditions here are wrong! fix it
-                    */
+            TODO: boundary conditions here are wrong! fix it
+        */
         auto cellEdges = 
             //vector<pair<unsigned int, unsigned int>>{{v0, v2}, {v1, v3}, {v0, v1}, {v2, v3}};
             vector<pair<unsigned int, unsigned int>>{{v0, v1}, {v1, v2}, {v2, v3}, {v3, v0}};

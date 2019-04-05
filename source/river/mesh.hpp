@@ -101,9 +101,6 @@ namespace River
       ///Freeups allocated memory for interface variables(in, out, vorout).
       void free_allocated_memory();
 
-      ///Allocates memory. Not Implemented. FIXME
-      void* allocate_memory(int size);
-
       ///Updates options bassing on interface flags.
       string update_options();
 

@@ -81,7 +81,7 @@ namespace River
              * 
              * File have several consrtaints. 
              * 1. First of all it should
-             * be of msh version 2 format.  
+             * be of msh version 2.2 format.  
              * 2. It should contain only points and lines.  
              * 3. Points with marker equal to Border::hole_point_index indicates holes. 
              * Remember that hole points should be circled by lines in other case all mesh will

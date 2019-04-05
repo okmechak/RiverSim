@@ -216,7 +216,6 @@ struct triangulateio {
   int numberofedges;                                             /* Out only */
 };
 
-//FIXME: mdl
 
 /**                                                           
  * Call Triangle.                                 

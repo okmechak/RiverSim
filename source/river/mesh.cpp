@@ -171,8 +171,8 @@ namespace River{
             int i = 0;
             for(auto l: mesh.lines)
             {
-                io.segmentlist[2 * i ] = l->get_vertex(0) + 1;//HOTFIX FIXME
-                io.segmentlist[2 * i + 1] = l->get_vertex(1) + 1;//HOTFIX FIXME
+                io.segmentlist[2 * i ] = l->get_vertex(0) + 1;
+                io.segmentlist[2 * i + 1] = l->get_vertex(1) + 1;
                 io.segmentmarkerlist[i] = l->get_material_id();
                 ++i;
             }
@@ -187,9 +187,9 @@ namespace River{
             int i = 0;
             for(auto t: mesh.triangles)
             {
-                io.trianglelist[3 * i ] = t->get_vertex(0);
-                io.trianglelist[3 * i + 1] = t->get_vertex(1);
-                io.trianglelist[3 * i + 2] = t->get_vertex(2);
+                io.trianglelist[3 * i ] = t->get_vertex(0) + 1;
+                io.trianglelist[3 * i + 1] = t->get_vertex(1) + 1;
+                io.trianglelist[3 * i + 2] = t->get_vertex(2) + 1;
                 io.triangleattributelist[i] = t->get_material_id();
                 ++i;
             }
@@ -386,7 +386,7 @@ namespace River{
 
 
 
-    void Triangle::set_geometry(struct triangulateio &geom)//TODO check passing by references
+    void Triangle::set_geometry(struct triangulateio &geom)
     {
         in = geom;
     }
