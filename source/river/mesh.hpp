@@ -14,7 +14,7 @@
  */
 
 /** @file mesh.hpp
- *   Wrappers classes to Triangle and Gmsh.
+ *   Wrappers class of Triangle.
  *   
  *   Mesh generation and visualization.
  */
@@ -25,7 +25,6 @@
 #include <iterator>//ostream_iterator
 
 //mesh generation tools
-#include <gmsh.h>
 #include "triangle.hpp"
 
 //mesh convertor tool
@@ -35,10 +34,6 @@
 #include "physmodel.hpp"
 
 using namespace std;
-
-namespace mdl = gmsh::model;
-namespace msh = gmsh::model::mesh;
-namespace geo = gmsh::model::geo;
 
 
 namespace River
@@ -188,47 +183,5 @@ namespace River
        */
       void generate(tethex::Mesh &initMesh, AreaConstraint* mdl = NULL);
       //FIXME: make a better interface to area constraint function
-
   };
-
-  /**
-   * Mesh Visualization
-   */
-  class Gmsh
-  {
-    public:
-      //some flags
-      bool recombine = true;
-      bool mesh24format = true;
-      bool Verbose = true;
-      //GMSH
-      
-      Gmsh();
-      ~Gmsh();
-      void init();
-      void open(string fileName);
-      void write(string fileName);
-      void clear();
-      //MESH
-      void set_nodes(vector<double> nodes, int dim = 2, int tag = 1);//<- implement first
-      void set_elements(vector<int> elements, int elType = 2, int dim = 2, int tag = 1);
-      void set_geometry(tethex::Mesh &meshio);
-      void generate(vector<Point> points);
-      void generate(tethex::Mesh & meshio);
-      void test_mesh();
-      void start_ui();
-
-    private:
-      string modelName = "basic";
-      //string fileName = "quadrangle.msh";
-      const int dim = 1;
-
-      vector<int> evaluate_tags(int size, int tag0)
-      {
-        auto tags = vector<int>(size);
-        iota(begin(tags), end(tags), tag0);
-        return tags;
-      }
-  };
-
 } //namespace mesh

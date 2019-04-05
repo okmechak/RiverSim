@@ -66,7 +66,6 @@ namespace River
         ("Q,quiet", "print detailed log to terminal")
 
         //obsolete
-        ("G,use-gmsh", "Mesh Generator: false(default) - Triangle - obsolete, true - Gmsh")
         ("g,geom-type", "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip - obsolete", value<int>()->default_value("0"))
 
         //Development flags
@@ -74,10 +73,6 @@ namespace River
         ("D,dev-mode", "Suppress standart flow", value<bool>()->default_value("false"))
         ("m,mesh", "Turn on/off mesh generation, development purposes only", value<bool>()->default_value("true"))
         ("t,test-flag", "Test flag for development purposes")
-        
-        //Visualization
-        ("d,draw-mesh", "draw mesh using gmsh fltk submodule", value<bool>()->default_value("true"))
-        ("Z,visualise", "Run GMSH gui and visualise current mesh", value<bool>()->default_value("true"))
 
         //Model parameters
         ("n,number-of-steps", "Number of steps to simulate(-1 - infinity)", value<int>()->default_value("-1"))

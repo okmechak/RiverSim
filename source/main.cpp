@@ -4,7 +4,7 @@
     Main incorporates user commands handling and managing of inner simulation objects.
     User commands are simple terminal commands(run ./riversim --help to check them all).
     It setups initial conditions and parameters. Initializes all object that are used in
-    simulation like: Geometry, Mesh, Triangle, Gmsh and Simualtion, which are all combined
+    simulation like: Geometry, Mesh, Triangle and Simualtion, which are all combined
     into the loop.
     Please review code for further details
 */
@@ -132,10 +132,6 @@ int main(int argc, char *argv[])
     tria.generate(mesh, &ac);
     mesh.convert();
     mesh.write(vm["output-mesh"].as<string>());
-    
-    Gmsh gmsh;
-    gmsh.open(vm["output-mesh"].as<string>());
-    gmsh.start_ui();
-    
+        
     return 0;
 }
