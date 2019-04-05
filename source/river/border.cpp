@@ -13,6 +13,7 @@
  * GNU General Public License for more details.
  */
 #include "border.hpp"
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 namespace River
@@ -178,7 +179,7 @@ namespace River
     ///Returns source ver
     pair<int, int> Border::GetSourceVerticesIndexById(int source_id) const
     {
-        for(int i = 0; i < borderMesh.get_n_points(); ++i)
+        for(unsigned i = 0; i < borderMesh.get_n_points(); ++i)
             if(borderMesh.get_point(i).get_material_id() == source_id)
                 return {borderMesh.get_point(i).get_vertex(0), borderMesh.get_point(i).get_vertex(0) + 1};
 
