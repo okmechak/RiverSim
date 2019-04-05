@@ -1293,33 +1293,33 @@ void Mesh::write(const std::string &file)
 
 
 
-int Mesh::get_n_vertices() const
+unsigned Mesh::get_n_vertices() const
 {
   return vertices.size();
 }
 
-int Mesh::get_n_points() const
+unsigned Mesh::get_n_points() const
 {
   return points.size();
 }
 
-int Mesh::get_n_lines() const
+unsigned Mesh::get_n_lines() const
 {
   return lines.size();
 }
 
-int Mesh::get_n_triangles() const
+unsigned Mesh::get_n_triangles() const
 {
   return triangles.size();
 }
 
-int Mesh::get_n_quadrangles() const
+unsigned Mesh::get_n_quadrangles() const
 {
   return quadrangles.size();
 }
 
 
-int Mesh::get_n_converted_quadrangles() const
+unsigned Mesh::get_n_converted_quadrangles() const
 {
   return n_converted_quadrangles;
 }

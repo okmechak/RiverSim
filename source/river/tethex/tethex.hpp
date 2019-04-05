@@ -706,32 +706,32 @@ public:
                 /**
                  * Get the number of converted quadrangles
                  */
-  int get_n_converted_quadrangles() const;
+  unsigned get_n_converted_quadrangles() const;
 
   /**
    * Get the number of vertices.
    */
-  int get_n_vertices() const;
+  unsigned get_n_vertices() const;
 
   /**
    * Get the number of physical points.
    */
-  int get_n_points() const;
+  unsigned get_n_points() const;
 
   /**
    * Get the number of lines (physical lines).
    */
-  int get_n_lines() const;
+  unsigned get_n_lines() const;
 
   /**
    * Get the number of triangles.
    */
-  int get_n_triangles() const;
+  unsigned get_n_triangles() const;
 
   /**
    * Get the number of tetrahedra.
    */
-  int get_n_quadrangles() const;
+  unsigned get_n_quadrangles() const;
 
   /**
    * Print short information.
@@ -892,7 +892,7 @@ public:
    * The number of quadrangles that existed in the input mesh
    * and then were converted to have the same order of vertices for all elements
    */
-  int n_converted_quadrangles;
+  unsigned n_converted_quadrangles;
 
   /**
    * The vector of strings representing names of physical entities

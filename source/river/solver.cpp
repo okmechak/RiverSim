@@ -43,7 +43,7 @@ void Solver::SetMesh(tethex::Mesh &meshio)
     //VERTICES
     auto n_vertices = meshio.get_n_vertices(); 
     vector<dealii::Point<dim>> vertices(n_vertices);
-    for (int i = 0; i < n_vertices; ++i)
+    for (unsigned i = 0; i < n_vertices; ++i)
     {
         auto vertice = meshio.get_vertex(i);
         vertices[i] = dealii::Point<dim>(vertice.get_coord(0), vertice.get_coord(1));
@@ -59,7 +59,7 @@ void Solver::SetMesh(tethex::Mesh &meshio)
     vector<CellData<dim>> cells(n_cells, CellData<dim>());
     SubCellData sub_cells;
     cout << "for" << endl;
-    for(int i = 0; i < n_cells; ++i)
+    for(unsigned i = 0; i < n_cells; ++i)
     {
         cells[i].material_id = meshio.get_quadrangle(i).get_material_id();
         

@@ -104,7 +104,7 @@ namespace River
         lines.reserve(tree_vector.size() + 4/*some enough positive number cos lines number is a little bigger then points*/);
         lines.push_back(new tethex::Line(vertice_left, first_index, boundary_id));
         lines.push_back(new tethex::Line(vertice_right, last_index, boundary_id));
-        for(int i = first_index; i < last_index; ++i)
+        for(unsigned i = first_index; i < last_index; ++i)
         {
             lines.push_back(new tethex::Line(i, i + 1, boundary_id));
         }
