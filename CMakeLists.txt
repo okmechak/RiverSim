@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION ${min_version})
 
 project(riversim C CXX)
 
+set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(source)
 add_subdirectory(doxy)
