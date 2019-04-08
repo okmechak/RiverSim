@@ -208,7 +208,7 @@ namespace River
             Point GetPoint(unsigned i){return points.at(i);}
 
             
-        //private:
+        //private: FIXME
             ///Initial angle of source(or direction of source)
             double source_angle;
 
