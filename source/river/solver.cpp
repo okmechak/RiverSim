@@ -190,7 +190,7 @@ void Solver::assemble_system()
                                           fe_values.shape_grad(j, q_index) *
                                           fe_values.JxW(q_index));
                 cell_rhs(i) += (fe_values.shape_value(i, q_index) *
-                                1.0 *
+                                0.0 *
                                 fe_values.JxW(q_index));
             }
         }

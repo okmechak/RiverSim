@@ -36,11 +36,11 @@ int main(int argc, char *argv[])
     mdl.width = vm["width"].as<double>();
     mdl.height = vm["height"].as<double>();
 
-    auto river_boundary_id = 3;
-    auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
+    auto river_boundary_id = 4;
+    auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
     auto region_size = vector<double>{mdl.width, mdl.height};
-    auto sources_x_coord = vector<double>{mdl.dx, mdl.dx + 0.05, mdl.dx + 0.1};
-    auto sources_id = vector<int>{1, 2, 3};
+    auto sources_x_coord = vector<double>{mdl.dx};
+    auto sources_id = vector<int>{1};
 
     tethex::Mesh border_mesh;
     Border border(border_mesh);
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
         boundary_ids,
         sources_x_coord,
         sources_id);
-
+    border_mesh.write("lala.msh");
     Tree tr(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
 
     //MAIN LOOP
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
         {
         auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
         cout << "-------" << endl;
-        cout << "---"<<i<< endl;
+        cout << "  "<<i<< endl;
         cout << "-------" << endl;
         //FIXME:
         //preparing mesh constraint function
@@ -85,7 +85,8 @@ int main(int argc, char *argv[])
         {
             River::Solver sim;
             sim.numOfRefinments = vm["ref-num"].as<int>();
-            sim.SetBoundaryRegionValue(boundary_ids, 0.);
+            sim.SetBoundaryRegionValue({river_boundary_id}, 0.);
+            sim.SetBoundaryRegionValue({boundary_ids.at(1)}, 1.);
             sim.OpenMesh(vm["output-mesh"].as<string>());
             sim.run(i);
 
@@ -126,12 +127,14 @@ int main(int argc, char *argv[])
     tria.MaxTriaArea = vm["mesh-max-area"].as<double>();
     tria.MinAngle = vm["mesh-min-angle"].as<double>();
     tria.Verbose = vm["verbose"].as<bool>();
-    tria.CustomConstraint = vm.count("test-flag");
+    tria.CustomConstraint = true;
     AreaConstraint ac;
     ac.tip_points = tr.TipPoints();
     tria.generate(mesh, &ac);
     mesh.convert();
     mesh.write(vm["output-mesh"].as<string>());
+
+    tr.Save("tree_geometry.msh");
         
     return 0;
 }
