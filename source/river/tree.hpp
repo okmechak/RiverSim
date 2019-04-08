@@ -30,6 +30,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <string>
 #include "common.hpp"
 #include "tethex.hpp"
 #include "physmodel.hpp"
@@ -207,7 +208,7 @@ namespace River
             Point GetPoint(unsigned i){return points.at(i);}
 
             
-        private:
+        //private:
             ///Initial angle of source(or direction of source)
             double source_angle;
 
@@ -243,6 +244,20 @@ namespace River
                             ids.at(i));
                 }
             }
+
+            /**
+             * Loads __Tree__ from file.
+             * 
+             * File should be of msh version 2.2 format. And consist only from points and lines
+             */
+            Tree(const string ifile_name);
+            
+            /**
+             * Loads __Tree__ from file.
+             * 
+             * File should be of msh version 2.2 format. And consist only from points and lines.
+             */
+            Tree& Save(const string ofile_name);
 
             ///Adds  relatively __points__ to Branches __tips_id__.
             Tree& AddPoints(vector<Point> points, vector<int> tips_id)
