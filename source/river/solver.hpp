@@ -92,6 +92,8 @@ class Solver
       system_matrix.clear();
     }
 
+    double field_value = 1.;
+
   private:
     const static int dim = 2;
 

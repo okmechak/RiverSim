@@ -54,12 +54,13 @@ namespace River
             "full documentation is placed here https://okmechak.github.io/RiverSim/")
 
         //file system interface
-        ("f,input-mesh", "input mesh file: obsolete, use positional option instead", value<string>())
-        ("o,output-mesh", "save mesh", value<string>()->default_value("out_mesh.msh"))
-        ("u,output-sim", "save simulation", value<string>()->default_value("sim"))
+        ("output-mesh", "save mesh", value<string>()->default_value("mesh.msh"))
+        ("o,output-sim", "save simulation data to file", value<string>()->default_value("simulation_data.toml"))
+        ("i,input-sim", "open simulation data", value<string>()->default_value(""))
+        ("p,prefix", "prefix used in name of output file", value<string>()->default_value(""))
         ("input",
             "First option is boundary mesh file name(read documentation for detailed file format)."
-            "Second[optional] - is the tree structure file", cxxopts::value<std::vector<std::string>>())
+            "Second[optional] - is the tree structure file", cxxopts::value<string>())
 
         //prints/logs
         ("V,verbose", "print detailed log to terminal")
@@ -75,6 +76,7 @@ namespace River
         ("t,test-flag", "Test flag for development purposes")
 
         //Model parameters
+        ("f,field-value", "value of filed used for Poisson conditions", value<double>()->default_value("0.25"))
         ("n,number-of-steps", "Number of steps to simulate(-1 - infinity)", value<int>()->default_value("-1"))
         ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.01"))
         ("dx", "dx - shift of initial river position from beginning of coordinates", value<double>()->default_value("0.1"))

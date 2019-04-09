@@ -40,6 +40,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     ac.tip_points = {River::Point{0.25, 0.1}};
     tethex::Mesh border_mesh;
     Border border(border_mesh);
+    border.river_boundary_id = river_boundary_id;
     border.eps = mdl.eps;
     border.MakeRectangular(
         region_size, 
@@ -47,10 +48,11 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
         sources_x_coord,
         sources_id);
 
-    Tree tr(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+    Tree tr;
+    tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
     tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
+    auto mesh = BoundaryGenerator(mdl, tr, border);
 
     Triangle tria;
     tria.ConstrainAngle = tria.CustomConstraint = true;
@@ -65,6 +67,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     River::Solver sim;
     
     sim.numOfRefinments = 1;
+    sim.field_value = 1;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run(0);
@@ -108,16 +111,18 @@ BOOST_AUTO_TEST_CASE( integration_test,
     tethex::Mesh border_mesh;
     Border border(border_mesh);
     border.eps = mdl.eps;
+    border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
 
-    Tree tr(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+    Tree tr;
+    tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
     tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, tr, border, river_boundary_id);
+    auto mesh = BoundaryGenerator(mdl, tr, border);
 
     Triangle tria;
     tria.AreaConstrain = tria.ConstrainAngle = tria.CustomConstraint = true;
@@ -134,6 +139,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run(0);
+    sim.field_value = 1;
     
     auto tip_ids = tr.TipBranchesId();
     auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();

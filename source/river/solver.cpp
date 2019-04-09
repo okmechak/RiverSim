@@ -190,7 +190,7 @@ void Solver::assemble_system()
                                           fe_values.shape_grad(j, q_index) *
                                           fe_values.JxW(q_index));
                 cell_rhs(i) += (fe_values.shape_value(i, q_index) *
-                                0.0 *
+                                field_value *
                                 fe_values.JxW(q_index));
             }
         }
@@ -379,12 +379,14 @@ void Solver::output_results(const unsigned int cycle) const
     data_out.attach_dof_handler(dof_handler);
     data_out.add_data_vector(solution, "solution");
     data_out.build_patches();
-    std::ofstream output("solution-" + std::to_string(cycle) + ".vtk");
+    string name = "solution-" + std::to_string(cycle) + ".vtk";
+    std::ofstream output("solution.vtk");
     data_out.write_vtk(output);
 
-    std::ofstream out("grid-"+std::to_string(cycle)+".eps");
-    GridOut       grid_out;
-    grid_out.write_eps(triangulation, out);
+    //FIXME
+    //std::ofstream out("grid-"+std::to_string(cycle)+".eps");
+    //GridOut       grid_out;
+    //grid_out.write_eps(triangulation, out);
 
 }
 

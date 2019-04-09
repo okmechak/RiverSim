@@ -143,7 +143,8 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     *utf::tolerance(eps))
 {   
     vector<int> ids{3, 4, 5};
-    Tree tr(
+    Tree tr;
+    tr.Initialize(
         {{0.0, 0}, {0.1, 0}, {0.2, 0}}, 
         {0, 0, 0},
         ids);
@@ -192,7 +193,8 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     *utf::tolerance(eps))
 {   
     vector<int> ids{5, 4, 9};
-    Tree tr(
+    Tree tr;
+    tr.Initialize(
         {{0.0, 0}, {0.1, 0}, {0.2, 0}}, 
         {0.0, 0.1, 0.2},
         ids);
@@ -214,7 +216,8 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_CHECK_THROW(tr.AddBranch(right_branch, b2), invalid_argument);
 
     ids = vector{10};
-    tr = Tree{{{0.0, 0}}, {0.0}, ids};
+    tr = Tree();
+    tr.Initialize({{0.0, 0}}, {0.0}, ids);
     
     BOOST_TEST(tr.TipBranchesId() == ids);
     auto [c1, c2] = tr.AddSubBranches(10, left_branch, right_branch);
@@ -237,7 +240,8 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
 
 
     //GENERATE NEW ID
-    tr = Tree{{{0.0, 0}}, {0.0}, {1}};
+    tr = Tree();
+    tr.Initialize({{0.0, 0}}, {0.0}, {1});
 
     BOOST_TEST(!tr.IsValidBranchId(0));
     BOOST_TEST(tr.IsValidBranchId(1));
@@ -269,7 +273,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
         {0 ,1, 2, 3},
         {0.5},{1});
 
-    Tree tr(
+    Tree tr;
+    tr.Initialize(
         border.GetSourcesPoint(), 
         border.GetSourcesNormalAngle(),
         border.GetSourcesId());
@@ -347,7 +352,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
         {0 ,1, 2, 3},
         {0.5},{1});
 
-    Tree tr(
+    Tree tr;
+    tr.Initialize(
         border.GetSourcesPoint(), 
         border.GetSourcesNormalAngle(),
         border.GetSourcesId());
@@ -385,7 +391,8 @@ BOOST_AUTO_TEST_CASE( tree_tips_point_method,
         {0 ,1, 2, 3},
         {0.5}, {1});
 
-    Tree tr(
+    Tree tr;
+    tr.Initialize(
         border.GetSourcesPoint(), 
         border.GetSourcesNormalAngle(),
         border.GetSourcesId());
@@ -404,7 +411,8 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
         {0 ,1, 2, 3},
         {0.5, 0.6, 0.7}, {1, 2, 3});
 
-    Tree tr(
+    Tree tr;
+    tr.Initialize(
         border.GetSourcesPoint(), 
         border.GetSourcesNormalAngle(),
         border.GetSourcesId());

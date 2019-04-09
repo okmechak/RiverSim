@@ -44,84 +44,6 @@ namespace River
         return *this;
     }
     
-    /*
-        Tree Class
-    */
-   
-    Tree::Tree(const string ifile_name)
-    {
-        //TODO
-    }
-
-        
-    //code example used from tethex
-    Tree& Tree::Save(const string ofile_name)
-    {
-        
-        ofstream out(ofile_name);
-        if(!out) throw invalid_argument("Tree. Can't create file for write");
-
-        //Numbers accuracy
-        out.setf(ios::scientific);
-        out.precision(16);
-
-        //HEADER
-        //2.2 - VERSION,  0 - 'FILE-TYPE'(ASCII) 8 - 'DATA-SIZE'
-        out << "$MeshFormat\n2.2 0 8\n$EndMeshFormat\n";
-        
-
-        unsigned n_nodes = 0;
-        for(auto &branch: branches)
-            n_nodes += branch.Size();
-        
-        //forming data - nodes and lines
-        vector<Point *> nodes;
-        nodes.reserve(n_nodes);
-        vector<tuple<unsigned, unsigned, unsigned>> lines;
-        lines.reserve(n_nodes);
-        
-        for(auto &id_index: branches_index)
-        {
-            BranchNew& branch = GetBranch(id_index.first);
-            for(unsigned i = 0; i < branch.Size(); ++i)
-            {
-                nodes.push_back(&branch.points[i]);
-                if(i < branch.Size() - 1)
-                    lines.push_back({nodes.size(), nodes.size() + 1, 
-                        id_index.first/*branch id*/});
-            }
-        }
-        
-        //Nodes
-        out << "$Nodes\n" << nodes.size() << "\n";
-        unsigned i = 1;
-        for(auto node: nodes)
-            out << i++ << " " 
-                << node->x << " "
-                << node->y << " "
-                << 0.0/*z-coord*/ << " \n";
-        
-        //Elements
-        out << "$EndNodes\n$Elements\n" << lines.size() << "\n";
-        i = 1;
-        for(auto line: lines)
-        {
-            out << i << " ";//serial number of element
-            out << 1 << " ";//GMSH element type
-            out << 1 << " ";//number of tags
-            out << get<2>(line)/* tag */ << " "
-                << get<0>(line) << " " 
-                << get<1>(line) << " \n";
-            ++i;
-        }
-        out << "$EndElements\n";
-
-        out.close();
-
-        return *this;
-    }
-
-
 
     /*
         Tree Vector Generation
@@ -197,7 +119,7 @@ namespace River
         mesh.append_lines(lines);
     }
     
-    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br, int boundary_id)
+    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br)
     {
         tethex::Mesh boundary_mesh = br.borderMesh;
 
@@ -213,7 +135,7 @@ namespace River
                 tree_vector.erase(begin(tree_vector));
                 tree_vector.erase(end(tree_vector));
             }
-            AppendTreeToMesh(tree_vector, vertice_left, vertice_right, boundary_id, boundary_mesh);
+            AppendTreeToMesh(tree_vector, vertice_left, vertice_right, br.river_boundary_id, boundary_mesh);
             tree_vector.clear();
         }
 

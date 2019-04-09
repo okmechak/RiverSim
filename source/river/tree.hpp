@@ -227,15 +227,20 @@ namespace River
      */
     class Tree
     {
-        public: 
+        public:
+            /**
+             *Default constructor 
+             */
+            Tree() = default; 
             /**
              * Constructor of __Tree__.
              * 
              * Takes as input vector of __sources_point__, __sources_angle__ and their __ids__, 
              * and for each entry creates instance of __BranchNew__ object.
              */
-            Tree(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids)
+            Tree& Initialize(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids)
             {
+                Clear();
                 for(unsigned int i = 0; i < ids.size(); ++i)
                 {
                     AddSourceBranch(BranchNew{
@@ -243,21 +248,9 @@ namespace River
                             sources_angle.at(i)}, 
                             ids.at(i));
                 }
-            }
 
-            /**
-             * Loads __Tree__ from file.
-             * 
-             * File should be of msh version 2.2 format. And consist only from points and lines
-             */
-            Tree(const string ifile_name);
-            
-            /**
-             * Loads __Tree__ from file.
-             * 
-             * File should be of msh version 2.2 format. And consist only from points and lines.
-             */
-            Tree& Save(const string ofile_name);
+                return *this;
+            }
 
             ///Adds  relatively __points__ to Branches __tips_id__.
             Tree& AddPoints(vector<Point> points, vector<int> tips_id)
@@ -315,7 +308,6 @@ namespace River
                 if(HasSubBranches(root_branch_id))
                     throw invalid_argument("This branch already has subbranches");
                 
-
                 //adding new branches
                 pair<int, int> sub_branches_id;
                 sub_branches_id.first = GenerateNewID();
@@ -355,6 +347,8 @@ namespace River
 
             ///Returns number of source branches.
             int NumberOfSourceBranches(){return source_branches_id.size();}
+            ///Return vector of source branches ids.
+            vector<int> SourceBranchesID(){return source_branches_id;}
 
         //private:  FIXME: cos i need somehow test private members
             /**
@@ -376,6 +370,17 @@ namespace River
 
             ///Invalid branch index. Used in error handling.
             int invalid_branch = -2;
+
+            ///Clear data from class
+            Tree& Clear()
+            {
+                branches_relation.clear();
+                source_branches_id.clear();
+                branches.clear();
+                branches_index.clear();
+
+                return *this;
+            }
 
             ///Adds new source __branch__ with __id__.
             Tree& AddSourceBranch(const BranchNew &branch, int id)
@@ -505,5 +510,5 @@ namespace River
      * 
      * Sticks together all components: Tree class, boudary class and model parameters
      */ 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br, int boundary_id);
+    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br);
 }
