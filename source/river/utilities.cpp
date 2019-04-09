@@ -55,7 +55,7 @@ namespace River
 
         //file system interface
         ("output-mesh", "save mesh", value<string>()->default_value("mesh.msh"))
-        ("o,output-sim", "save simulation data to file", value<string>()->default_value("simulation_data.toml"))
+        ("o,output-sim", "save simulation data to file", value<string>()->default_value("simulation_data.json"))
         ("i,input-sim", "open simulation data", value<string>()->default_value(""))
         ("p,prefix", "prefix used in name of output file", value<string>()->default_value(""))
         ("input",
