@@ -242,12 +242,10 @@ namespace River
             {
                 Clear();
                 for(unsigned int i = 0; i < ids.size(); ++i)
-                {
                     AddSourceBranch(BranchNew{
                             sources_point.at(i), 
                             sources_angle.at(i)}, 
                             ids.at(i));
-                }
 
                 return *this;
             }
