@@ -31,6 +31,7 @@
 #include "solver.hpp"
 #include "physmodel.hpp"
 #include "border.hpp"
+#include "io.hpp"
 
 namespace River
 {
@@ -45,4 +46,43 @@ namespace River
             - other
     
     */
+
+
+   ///One step of forward river evolution.
+   void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string mesh_file, vector<int> boundary_ids)
+   {
+        auto mesh = BoundaryGenerator(mdl, tree, border);
+        
+        //FIXME:
+        //preparing mesh constraint function
+        mdl.ac.tip_points = tree.TipPoints();
+        tria.generate(mesh, &mdl.ac);
+        mesh.convert();
+        mesh.write(mesh_file);
+
+        //Simulation
+        //Deal.II library
+        sim.SetBoundaryRegionValue(boundary_ids, 0.);
+        sim.OpenMesh(mesh_file);
+        sim.run(0/*FIXME*/);
+
+        for(auto id: tree.TipBranchesId())
+        {
+            auto tip_point = tree.GetBranch(id).TipPoint();
+            auto tip_angle = tree.GetBranch(id).TipAngle();
+            auto series_params = sim.integrate(tip_point, tip_angle);
+
+            if(mdl.q_biffurcate(series_params))
+            {
+                auto br_left = BranchNew(tip_point, tip_angle + mdl.biff_angle);
+                br_left.AddPoint(Polar{mdl.ds, 0});
+                auto br_right = BranchNew(tip_point, tip_angle - mdl.biff_angle);
+                br_right.AddPoint(Polar{mdl.ds, 0});
+                tree.AddSubBranches(id, br_left, br_right);
+            }
+            else
+                tree.GetBranch(id).AddPoint(mdl.next_point(series_params));
+        }
+        sim.clear();
+   }
 }
