@@ -53,3 +53,4 @@ tests/solution-0.vtk
 tests/grid-0.eps
 tests/test.msh
 tests/solution.vtk
+tests/iotest.json
