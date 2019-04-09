@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
     //Comparing to result given by Mathematica program
     //see for notebook Testing.nb in results folder
-    BOOST_TEST(Model::Rmax == 0.01);
+    BOOST_TEST(mdl.Rmax == 0.01);
     BOOST_TEST(integration == 0.00000162911);
 
     BOOST_TEST(integration_of_whole_region == 0.03420202360857102);

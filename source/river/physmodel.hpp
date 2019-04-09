@@ -110,19 +110,19 @@ namespace River
             
 
             ///Circle radius with centrum in tip point.
-            static constexpr double Rmax = 0.01;
+            double Rmax = 0.01;
 
             ///Parameter is used in evaluation of weight function.
-            static constexpr int exponant = 2;
+            int exponant = 2;
             
             ///Weight function used in computation of series parameters.
-            static double WeightFunction(double r)
+            double WeightFunction(double r)
             {
                 return exp(-pow(r/Rmax, exponant));
             }
             
             ///Base Vector function used in computation of series parameters.
-            static double BaseVector(int nf, complex<double> zf)
+            double BaseVector(int nf, complex<double> zf)
             {
                 if( (nf % 2) == 0)
                     return -imag(pow(zf, nf/2.));

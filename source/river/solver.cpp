@@ -260,17 +260,18 @@ vector<double> Solver::integrate(Point point, double angle)
             dist = sqrt(dx*dx + dy*dy);
         
         //Integrates over points only in this circle
-        if(dist <= 3*Model::Rmax)
+        Model mdl;//FIXME we should use global mdl object
+        if(dist <= 3*mdl.Rmax)
         {
             fe_values.reinit (dof_cell);
             fe_values.get_function_values(solution, values);
-            auto weight_func_value = Model::WeightFunction(dist);
+            auto weight_func_value = mdl.WeightFunction(dist);//FIXME we should use global mdl object
 
             //cycle over all series parameters order
             for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
             {
                 //preevaluate basevector value
-                auto base_vector_value = Model::BaseVector(param_index + 1, exp(-1i*angle)*(dx + 1i*dy));
+                auto base_vector_value = mdl.BaseVector(param_index + 1, exp(-1i*angle)*(dx + 1i*dy));
 
                 //sum over all quadrature points over single mesh element
                 for (unsigned q_point = 0; q_point < quadrature_formula.size(); ++q_point)
@@ -287,7 +288,6 @@ vector<double> Solver::integrate(Point point, double angle)
                         += weight_func_value
                         * pow(base_vector_value, 2)
                         * fe_values.JxW(q_point);
-                    
                 }       
             }
         }
