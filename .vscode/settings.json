@@ -56,7 +56,8 @@
         "variant": "cpp",
         "algorithm": "cpp",
         "unordered_set": "cpp",
-        "*.edp": "cpp"
+        "*.edp": "cpp",
+        "*.ipp": "cpp"
     },
     "files.watcherExclude" :{
         "**/.git/objects/**": true,
