@@ -137,6 +137,11 @@ namespace River
             /**
              * @}
              */
+            
+
+            ///River Boundary ID.
+            ///Used to specify Boundary ID of river lines.
+            int river_boundary_id;
 
         //private: for testing purposes
 
