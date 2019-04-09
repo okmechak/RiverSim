@@ -71,7 +71,8 @@ namespace River
             ///Width of branch.
             double eps = 1e-6;
             ///Enumeration of growth methods.
-            enum class Method {Royal, Simple, Min, Integral};
+            enum Method {Royal, Simple, Min, Integral} 
+                method = Method::Simple;
             ///Proportionality value to one step growth.
             double ds = 0.01;
             ///Initial x position of source.
@@ -85,6 +86,10 @@ namespace River
             double biffurcation_threshold = -0.1;//Probably should be -0.1
             ///Biffurcation angle.
             double biff_angle = M_PI/5;
+            ///Field value used for Poisson conditions.
+            double field_value = 0.0;
+
+            AreaConstraint ac;
 
             ///Checks by evaluating series params for biffuraction condition.
             bool q_biffurcate(vector<double> a)
