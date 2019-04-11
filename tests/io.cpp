@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE( io_methods,
     Save(mdl, time, border, tree, "iotest.json");
     mdl = Model();
     tree = Tree();
-    //border = Border(border_mesh);
+    border = Border();
     BOOST_TEST_CHECKPOINT("6");
     Open(mdl, border, tree, "iotest.json");
 
@@ -97,5 +97,6 @@ BOOST_AUTO_TEST_CASE( io_methods,
     //TODO
 
     //Border Test
-    //TODO
+    BOOST_TEST((border.vertices.front() == Point{2, 0}));
+    BOOST_TEST((border.vertices.back() == Point{0.5, 0}));
 }

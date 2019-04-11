@@ -33,6 +33,8 @@ namespace River
         ofstream out(file_name);
         if(!out) throw invalid_argument("Save. Can't create file for write");
 
+
+        //Branches
         json branches;
         for(auto id: tr.branches_index)
         {
@@ -49,6 +51,25 @@ namespace River
                 {"coords", coords},
                 {"id", branch_id}});
         }
+        
+        //Border
+        json jborder;
+        {
+            vector<pair<double, double>> coords;
+            vector<vector<int>> lines;
+            coords.reserve(border.vertices.size());
+            coords.reserve(border.lines.size());
+            for(auto& p: border.vertices)
+                coords.push_back({p.x, p.y});
+            for(auto& l: border.lines)
+                lines.push_back({(int)l.p1, (int)l.p2, l.id});
+            jborder = {
+                {"SourceIndexes", border.sources}, 
+                {"SomeDetails", "points and lines should be in counterclockwise order!"},
+                {"coords", coords},
+                {"lines", lines}};
+        }
+
 
         //implementation with json
         json j = {
@@ -58,8 +79,8 @@ namespace River
                 {"StartDate",  time.CreationtDate()},
                 {"EndDate",  time.CurrentDate()},
                 {"TotalTime",  time.Total()},
-                {"EachCycleTime",  time.records}}},
-                //TODO add input files names
+                {"EachCycleTime",  time.records},
+                {"InputFile", "TODO"}}},
 
             {"Model", {
                 {"eps", mdl.eps},
@@ -77,7 +98,7 @@ namespace River
                     {"exponant", mdl.ac.exponant},
                     {"min_area", mdl.ac.min_area}}}}},
             
-            {"Border", "Implement Me!!!"},
+            {"Border", jborder},
 
             {"Trees", {
                 {"SourceIds", tr.source_branches_id},
@@ -148,8 +169,21 @@ namespace River
         }
         if(j.count("Border"))
         {
-            //TODO
-            cout << j["Border"] << endl;
+            auto jtrees = j["Border"];
+            vector<pair<double, double>> coords;
+            vector<vector<int>> lines;
+
+            jtrees.at("SourceIndexes").get_to(border.sources);
+            jtrees.at("coords").get_to(coords);
+            jtrees.at("lines").get_to(lines);
+
+            border.vertices.reserve(coords.size());
+            border.lines.reserve(lines.size());
+            for(auto &p: coords)
+                border.vertices.push_back({p.first, p.second});
+
+            for(auto &l: lines)
+                border.lines.push_back({(long unsigned)l.at(0)/*p1*/, (long unsigned)l.at(1)/*p2*/, l.at(2)/*id*/});
         }
     }
 

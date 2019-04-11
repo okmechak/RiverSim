@@ -22,7 +22,7 @@ namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( integration_params_test, 
-    *utf::tolerance(1e-1))
+    *utf::tolerance(1e-1)*utf::disabled())
 {   
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
 
 BOOST_AUTO_TEST_CASE( integration_test, 
-    *utf::tolerance(1e-1))
+    *utf::tolerance(1e-1)*utf::disabled())
 {
     auto river_boundary_id = 3;
     auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
