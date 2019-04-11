@@ -266,8 +266,7 @@ void TEST_POINT(Point p1, Point p2)
 BOOST_AUTO_TEST_CASE( boundary_generator_new, 
     *utf::tolerance(eps))
 {   
-    tethex::Mesh mesh;
-    Border border(mesh);
+    Border border;
     border.MakeRectangular(
         {1, 1},
         {0 ,1, 2, 3},
@@ -345,8 +344,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
 BOOST_AUTO_TEST_CASE( boundary_generator_new_2, 
     *utf::tolerance(eps))
 {   
-    tethex::Mesh mesh;
-    Border border(mesh);
+    Border border;
     border.MakeRectangular(
         {1, 1},
         {0 ,1, 2, 3},
@@ -384,8 +382,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
 BOOST_AUTO_TEST_CASE( tree_tips_point_method, 
     *utf::tolerance(eps))
 {
-    tethex::Mesh mesh;
-    Border border(mesh);
+    Border border;
     border.MakeRectangular(
         {1, 1},
         {0 ,1, 2, 3},
@@ -404,8 +401,7 @@ BOOST_AUTO_TEST_CASE( tree_tips_point_method,
 BOOST_AUTO_TEST_CASE( add_points_tests, 
     *utf::tolerance(eps))
 {
-    tethex::Mesh mesh;
-    Border border(mesh);
+    Border border;
     border.MakeRectangular(
         {1, 1},
         {0 ,1, 2, 3},

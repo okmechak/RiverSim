@@ -205,7 +205,10 @@ namespace River
             ///Returns points vector
             vector<Point> GetPoints(){return points;}
             ///Returns i-th point vector
-            Point GetPoint(unsigned i){return points.at(i);}
+            Point GetPoint(unsigned i) const 
+            {
+                return points.at(i);
+            }
 
             
         //private: FIXME
@@ -402,7 +405,16 @@ namespace River
             }
 
             ///Checks if branch with __id__ exists.
-            bool DoesExistBranch(int id){return branches_index.count(id);}
+            bool DoesExistBranch(int id)const{return branches_index.count(id);}
+
+            ///Returns link to branch with __id__.
+            const BranchNew& GetBranch(int id) const
+            {
+                if(!DoesExistBranch(id))
+                    throw invalid_argument("there is no such branch");
+                
+                return branches.at(branches_index.at(id));
+            }
 
             ///Returns link to branch with __id__.
             BranchNew& GetBranch(int id)
@@ -410,11 +422,11 @@ namespace River
                 if(!DoesExistBranch(id))
                     throw invalid_argument("there is no such branch");
                 
-                return branches.at(branches_index[id]);
+                return branches.at(branches_index.at(id));
             }
 
             ///Checks if Branch __branch_id__ has subbranches.
-            bool HasSubBranches(int branch_id)
+            bool HasSubBranches(int branch_id) const
             {
                 return branches_relation.count(branch_id);
             }
@@ -449,11 +461,12 @@ namespace River
             }
 
             ///Returns pair of ids of subranches.
-            pair<int, int> GetSubBranches(int branch_id)
+            pair<int, int> GetSubBranches(int branch_id) const
             {   
                 if(!HasSubBranches(branch_id))
                     throw invalid_argument("branch does't have sub branches");
-                return branches_relation[branch_id];
+
+                return branches_relation.at(branch_id);
             }
 
 
@@ -501,12 +514,12 @@ namespace River
     };
 
     ///Generates trees boundary
-    void TreeVector(vector<Point> &tree_vector, int id, Tree& tr, double eps);
+    void TreeVector(vector<Point> &tree_vector, int id, const Tree& tree, double eps);
 
     /**
      * Finnal Boudary Geneartor Class
      * 
      * Sticks together all components: Tree class, boudary class and model parameters
      */ 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br);
+    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br);
 }

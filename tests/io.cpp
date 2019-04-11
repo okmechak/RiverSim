@@ -43,9 +43,7 @@ BOOST_AUTO_TEST_CASE( io_methods,
     auto sources_id = vector<int>{1};
     
     BOOST_TEST_CHECKPOINT("2");
-    tethex::Mesh border_mesh;
-    Border border(border_mesh);
-    border.eps = mdl.eps;
+    Border border;
     border.river_boundary_id = river_boundary_id;
     
     BOOST_TEST_CHECKPOINT("3");

@@ -48,11 +48,8 @@ int main(int argc, char *argv[])
     auto sources_x_coord = vector<double>{mdl.dx};
     auto sources_id = vector<int>{1};
     
-    tethex::Mesh border_mesh;
-    Border border(border_mesh);
-    border.eps = mdl.eps;
+    Border border;
     border.river_boundary_id = river_boundary_id;
-    
     border.MakeRectangular(
         region_size, 
         boundary_ids,

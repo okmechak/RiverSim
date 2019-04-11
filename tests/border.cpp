@@ -20,101 +20,69 @@ BOOST_AUTO_TEST_CASE( constructor_and_methods,
     *utf::tolerance(eps))
 {   
     //empty borderMesh
-    tethex::Mesh border_mesh;
-    Border border(border_mesh);
+    Border border;
 
-    BOOST_TEST(border.GetHolesId().empty());
     BOOST_TEST(border.GetSourcesId().empty());
+    BOOST_TEST(border.GetSourcesPoint().empty());
+    BOOST_TEST(border.GetSourcesNormalAngle().empty());
     
     //now with some initialization
     border.MakeRectangular(
-        {1, 4}, 
-        {0, 1, 2, 3},
+        {1, 1}, 
+        {1, 2, 3, 4},
         {0.5},
-        {1});
-    
-    BOOST_TEST(!border.GetSourcesId().empty()); 
-    BOOST_TEST(border.GetSourcesId().size() == 1);
-    BOOST_TEST((border.GetSourcesId().at(0) == 1));
-    BOOST_TEST(border_mesh.get_point(0).get_vertex(0) == 4);
-    BOOST_TEST(border_mesh.get_point(1).get_vertex(0) == 5);
-    BOOST_TEST(border_mesh.get_vertex(4).get_coord(0) == 0.5 - border.eps/2);
-    BOOST_TEST(border_mesh.get_vertex(5).get_coord(0) == 0.5 + border.eps/2);
+        {7});
+
+    BOOST_TEST(border.vertices.size() == border.lines.size());
+
+    BOOST_TEST((border.vertices.at(0) == Point{1, 0}));
+    BOOST_TEST((border.vertices.at(1) == Point{1, 1}));
+    BOOST_TEST((border.vertices.at(2) == Point{0, 1}));
+    BOOST_TEST((border.vertices.at(3) == Point{0, 0}));
+    BOOST_TEST((border.vertices.at(4) == Point{0.5, 0}));
+
+    BOOST_TEST(border.lines.at(0).p1 == 0);
+    BOOST_TEST(border.lines.at(0).p2 == 1);
+    BOOST_TEST(border.lines.at(1).p1 == 1);
+    BOOST_TEST(border.lines.at(1).p2 == 2);
+    BOOST_TEST(border.lines.at(2).p1 == 2);
+    BOOST_TEST(border.lines.at(2).p2 == 3);
+    BOOST_TEST(border.lines.at(3).p1 == 3);
+    BOOST_TEST(border.lines.at(3).p2 == 4);
+    BOOST_TEST(border.lines.at(4).p1 == 4);
+    BOOST_TEST(border.lines.at(4).p2 == 0);
+
+    BOOST_TEST((border.GetSourcesId().at(0) == 7));
+    BOOST_TEST(border.vertices.at(4).x == 0.5);
+    BOOST_TEST(border.vertices.at(4).y == 0.);
+    BOOST_TEST(border.GetSourceVerticeIndex(7) == 4);
 
     BOOST_TEST(border.GetSourcesNormalAngle().at(0) = M_PI/2);
-    BOOST_TEST(true);
     
-
-
-    border_mesh.clean();
     vector<double> coords = {0.5, 0.6, 0.7};
     vector<int> ids = {1, 2, 3};
     border.MakeRectangular(
         {1, 4}, 
         {0, 1, 2, 3},
         coords, ids);
+
+    BOOST_TEST(border.vertices.size() == border.lines.size());
+    BOOST_TEST(border.vertices.size() == 7);
+
+    BOOST_TEST(border.GetSourcesId() == ids);
+    BOOST_TEST(border.GetSourcesPoint().back() == Point(0.7, 0.));
+    BOOST_TEST(border.GetSourceVerticeIndex(1) == 4);
+    BOOST_TEST(border.GetSourceVerticeIndex(2) == 5);
+    BOOST_TEST(border.GetSourceVerticeIndex(3) == 6);
     
-    BOOST_TEST(border.GetHolesId().empty());
-    //FIXME: we should also read from file and compare to it
-    //this case is very common
-
-    //TEST of MAkeRectangular
-    BOOST_TEST(border_mesh.get_point(0).get_vertex(0) == 4);
-    BOOST_TEST(border_mesh.get_point(1).get_vertex(0) == 5);
-    BOOST_TEST(border_mesh.get_point(2).get_vertex(0) == 6);
-    BOOST_TEST(border_mesh.get_point(3).get_vertex(0) == 7);
-    BOOST_TEST(border_mesh.get_point(4).get_vertex(0) == 8);
-    BOOST_TEST(border_mesh.get_point(5).get_vertex(0) == 9);
-
-    auto[p1_i, p2_i] = border.GetSourceVerticesIndexById(1);
-    BOOST_TEST(p1_i == 4);
-    BOOST_TEST(p2_i == 5);
-    BOOST_TEST(border_mesh.get_vertex(4).get_coord(0) == 0.5 - border.eps/2);
-    BOOST_TEST(border_mesh.get_vertex(5).get_coord(0) == 0.5 + border.eps/2);
-    BOOST_TEST(border_mesh.get_vertex(6).get_coord(0) == 0.6 - border.eps/2);
-    BOOST_TEST(border_mesh.get_vertex(7).get_coord(0) == 0.6 + border.eps/2);
-    BOOST_TEST(border_mesh.get_vertex(8).get_coord(0) == 0.7 - border.eps/2);
-    BOOST_TEST(border_mesh.get_vertex(9).get_coord(0) == 0.7 + border.eps/2);
-    BOOST_TEST(border_mesh.get_vertex(4).get_coord(1) == 0);
-    BOOST_TEST(border_mesh.get_vertex(5).get_coord(1) == 0);
-    BOOST_TEST(border_mesh.get_vertex(6).get_coord(1) == 0);
-    BOOST_TEST(border_mesh.get_vertex(7).get_coord(1) == 0);
-    BOOST_TEST(border_mesh.get_vertex(8).get_coord(1) == 0);
-    BOOST_TEST(border_mesh.get_vertex(9).get_coord(1) == 0);
-
-    BOOST_TEST(border_mesh.get_n_points() == 6);
-
-    auto adjacent_left = border_mesh.get_vertex(border.GetAdjacentPointId(4));
-    BOOST_TEST(adjacent_left.get_coord(0) == 0);
-    BOOST_TEST(adjacent_left.get_coord(1) == 0);
-    adjacent_left = border_mesh.get_vertex(border.GetAdjacentPointId(5));
-    BOOST_TEST(adjacent_left.get_coord(0) == 0.6 - border.eps/2);
-    BOOST_TEST(adjacent_left.get_coord(1) == 0);
-    adjacent_left = border_mesh.get_vertex(border.GetAdjacentPointId(6));
-    BOOST_TEST(adjacent_left.get_coord(0) == 0.5 + border.eps/2);
-    BOOST_TEST(adjacent_left.get_coord(1) == 0);
-    adjacent_left = border_mesh.get_vertex(border.GetAdjacentPointId(7));
-    BOOST_TEST(adjacent_left.get_coord(0) == 0.7 - border.eps/2);
-    BOOST_TEST(adjacent_left.get_coord(1) == 0);
-    adjacent_left = border_mesh.get_vertex(border.GetAdjacentPointId(8));
-    BOOST_TEST(adjacent_left.get_coord(0) == 0.6 + border.eps/2);
-    BOOST_TEST(adjacent_left.get_coord(1) == 0);
-    adjacent_left = border_mesh.get_vertex(border.GetAdjacentPointId(9));
-    BOOST_TEST(adjacent_left.get_coord(0) == 1);
-    BOOST_TEST(adjacent_left.get_coord(1) == 0);
-
     for(auto id: ids)
-    {
-        auto angle = border.GetSourceNormalAngle(id);
-        BOOST_TEST(angle == M_PI/2.);
-    }
+        BOOST_TEST(border.GetSourceNormalAngle(id) == M_PI/2.);
 }
 
 BOOST_AUTO_TEST_CASE( get_sources_point, 
     *utf::tolerance(eps))
 {
-    tet::Mesh border_mesh;
-    Border border(border_mesh);
+    Border border;
     vector<Point> p;
     BOOST_TEST(border.GetSourcesPoint() == p);
     
@@ -128,23 +96,5 @@ BOOST_AUTO_TEST_CASE( get_sources_point,
         {0.5, 0}};
     
     BOOST_TEST(border.GetSourcesPoint() == p);
-
     BOOST_TEST(border.GetSourcesId() == ids);
-}
-
-BOOST_AUTO_TEST_CASE( close_sources_method, 
-    *utf::tolerance(eps))
-{
-    tet::Mesh border_mesh;
-    Border border(border_mesh);
-    border.MakeRectangular(
-        {2, 2}, 
-        {0, 1, 2, 3/*line id*/}, 
-        {0.1, 0.2, 0.3, 0.4, 0.5}, 
-        {1,2,3,4,5});
-    auto num_of_lines = border_mesh.get_n_lines();
-    border.CloseSources(3/*line id*/);
-    BOOST_TEST(border_mesh.get_n_lines() - num_of_lines == 5 );
-
-
 }

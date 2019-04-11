@@ -38,10 +38,8 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     ac.r0 = 0.25;
     ac.exponant = 4;
     ac.tip_points = {River::Point{0.25, 0.1}};
-    tethex::Mesh border_mesh;
-    Border border(border_mesh);
+    Border border;
     border.river_boundary_id = river_boundary_id;
-    border.eps = mdl.eps;
     border.MakeRectangular(
         region_size, 
         boundary_ids,
@@ -108,9 +106,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     ac.r0 = 0.25;
     ac.exponant = 4;
     ac.tip_points = {River::Point{0.25, 0.1}};
-    tethex::Mesh border_mesh;
-    Border border(border_mesh);
-    border.eps = mdl.eps;
+    Border border;
     border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 

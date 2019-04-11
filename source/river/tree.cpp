@@ -48,9 +48,9 @@ namespace River
     /*
         Tree Vector Generation
     */
-    void TreeVector(vector<Point> &tree_vector, int id, Tree& tr, double eps)
+    void TreeVector(vector<Point> &tree_vector, int id, const Tree& tr, double eps)
     {
-        BranchNew& br = tr.GetBranch(id);
+        const BranchNew& br = tr.GetBranch(id);
         vector<Point> left_vector, right_vector;
         left_vector.reserve(br.Size());
         right_vector.reserve(br.Size());
@@ -95,50 +95,48 @@ namespace River
         }
     }
 
-    void AppendTreeToMesh(vector<Point> tree_vector, int vertice_left, int vertice_right, int boundary_id, tethex::Mesh& mesh)
+    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br)
     {
-        vector<tethex::Point> vertices;
-        vertices.reserve(tree_vector.size());
-        for(auto &el: tree_vector)
-            vertices.push_back(tethex::Point{el.x, el.y});
+        vector<tethex::Point> tet_vertices;
+        vector<tethex::MeshElement *> tet_lines, tet_triangles;
+        //TODO reserve size.
 
-        //FIXME: What if tree_vector has only one point. we should handle this cases
-
-        auto first_index = mesh.get_n_vertices();
-        mesh.append_vertexes(vertices);
-        auto last_index = mesh.get_n_vertices() - 1;
-
-        vector<tethex::MeshElement *> lines;
-        lines.reserve(tree_vector.size() + 4/*some enough positive number cos lines number is a little bigger then points*/);
-        lines.push_back(new tethex::Line(vertice_left, first_index, boundary_id));
-        lines.push_back(new tethex::Line(vertice_right, last_index, boundary_id));
-        for(unsigned i = first_index; i < last_index; ++i)
+        auto m = br.SourceByVerticeIdMap();
+        auto lines = br.lines;
+        auto vertices = br.vertices;
+        
+        for(long unsigned i = 0; i < vertices.size(); ++i)
         {
-            lines.push_back(new tethex::Line(i, i + 1, boundary_id));
-        }
-        mesh.append_lines(lines);
-    }
-    
-    tethex::Mesh BoundaryGenerator(const Model& mdl, Tree& tr, Border &br)
-    {
-        tethex::Mesh boundary_mesh = br.borderMesh;
-
-        for(auto source_id: br.GetSourcesId())
-        {
-            auto[vertice_left, vertice_right] = br.GetSourceVerticesIndexById(source_id);
-            vector<Point> tree_vector;
-            TreeVector(tree_vector, source_id, tr, mdl.eps);
-            
-            if(tree_vector.size() >= 3)
+            if(!m.count(i))
             {
-                //if we do not delete first and last point it will coincidice with  border points
-                tree_vector.erase(begin(tree_vector));
-                tree_vector.erase(end(tree_vector));
+                tet_vertices.push_back({vertices.at(i).x, vertices.at(i).y});
+                tet_lines.push_back(new tethex::Line(lines.at(i).p1, lines.at(i).p2, lines.at(i).id));
             }
-            AppendTreeToMesh(tree_vector, vertice_left, vertice_right, br.river_boundary_id, boundary_mesh);
-            tree_vector.clear();
+            else
+            {
+                vector<Point> tree_vector;
+                TreeVector(tree_vector, m[i]/*source id*/, tree, mdl.eps);
+                long unsigned shift = tet_vertices.size(); 
+                for(long unsigned i = 0; i < tree_vector.size(); ++i)
+                {
+                    tet_vertices.push_back({tree_vector.at(i).x, tree_vector.at(i).y});
+                    tet_lines.push_back(
+                        new tethex::Line(
+                            shift + i, 
+                            shift + i + 1, 
+                            br.river_boundary_id));
+                }
+                for(auto& line: lines)
+                    if(line.p2 > i)//TODO Test this
+                    {
+                        line.p1 += tree_vector.size();
+                        line.p2 += tree_vector.size();
+                    }
+            }
         }
+        //close line loop
+        tet_lines.back()->set_vertex(1, 0);
 
-        return boundary_mesh;
+        return tethex::Mesh{tet_vertices, tet_lines, tet_triangles};
     }
 }

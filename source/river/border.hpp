@@ -24,13 +24,11 @@
 #pragma once
 
 #include <vector>
-#include <algorithm>
 #include <string>
-#include "tethex.hpp"
+#include <map>
 #include "common.hpp"
 
 using namespace std;
-namespace tet = tethex;
 
 /**
  * River namespace holds everything that is related to River simulation.
@@ -60,9 +58,8 @@ namespace River
             
             /** 
              * Border constructor.
-             * \param b_mesh - can be empty or initialized with __special geometry__(see ReadFromFile() for more details).
              */
-            Border(tet::Mesh& b_mesh): borderMesh(b_mesh){};
+            Border() = default;
 
             /**
              * Initializes Border::borderMesh object of type tethex::Mesh by setting lines and vertices to rectangular shape.
@@ -76,38 +73,6 @@ namespace River
                 vector<double> regionSize, vector<int> boundariesId,
                 vector<double> sourcesXCoord = {}, vector<int> sourcesId = {});
 
-            /**
-             * Read region information from __file_name__ msh file
-             * 
-             * File have several consrtaints. 
-             * 1. First of all it should
-             * be of msh version 2.2 format.  
-             * 2. It should contain only points and lines.  
-             * 3. Points with marker equal to Border::hole_point_index indicates holes. 
-             * Remember that hole points should be circled by lines in other case all mesh will
-             * seeing as hole.  
-             * 4. Points with, marker equal to Border::source_point_index - are source points.
-             * They should be set in very special way, for example:
-             * --*--*  *--*--*--* *--*
-             * where those points aroud gap are points of __same__ source. And should have same index >= 1.
-             * 5. Line markers indicates boundary condition.
-             */
-            Border& ReadFromFile(string file_name)
-            {
-                borderMesh.read(file_name);
-                return *this;
-            }
-
-            /**
-             * Add border line to each source points.
-             * 
-             * As each source consist of two points with gap in between, 
-             * this function will fill this gap by adding line.
-             * \param boundary_id of additional lines. 
-             * Used only for test purposes.
-             */
-            Border& CloseSources(int boundary_id);
-
 
             /**
              * @name Getters for sources parametets
@@ -119,8 +84,14 @@ namespace River
             /// Returns vector of sources points(both source point is merged into one).
             vector<Point> GetSourcesPoint() const;
             
-            /// Returns holes ids.
-            vector<int> GetHolesId() const ;
+            ///Return Source Point
+            Point GetSourcePoint(int source_id) const;
+            
+            ///Return source point vertice position
+            long unsigned GetSourceVerticeIndex(int source_id) const
+            {
+                return sources.at(source_id);
+            }
             
             /// Return __normal line angle__ to boundary at point where is located source with __source_id__
             double GetSourceNormalAngle(int source_id) const;
@@ -137,6 +108,14 @@ namespace River
             /**
              * @}
              */
+
+            map<long unsigned, int> SourceByVerticeIdMap() const
+            {
+                map<long unsigned, int> r;
+                for (const auto& kv : sources)
+                    r[kv.second] = kv.first;
+                return r;
+            } 
             
 
             ///River Boundary ID.
@@ -149,8 +128,10 @@ namespace River
              * @name Private
              * @{
              */
-            double eps = 1e-10; ///< width between points at each source
-            tet::Mesh& borderMesh; ///< tethex::Mesh object with geometry info inside
+            vector<Point> vertices;///<
+            vector<Line> lines;
+            map<int, long unsigned> sources;
+            vector<long unsigned> holes;
             
             /**
              * Return source adjacent point(source has __only one__ such points).
@@ -161,32 +142,8 @@ namespace River
              * Used to evalute normal vector. 
              * \see GetSourceNormalAngle()
              */
-            int GetAdjacentPointId(int point_id) const;
+            pair<Point, Point>  GetAdjacentPoints(int source_id) const;
             
-            /**
-             * Return source poinst indexes(each source consist of two points at distance \ref eps).
-             *
-             * \param source_id source id
-             * \result pair of points indexes position in vertices vector.
-             */
-            pair<int, int> GetSourceVerticesIndexById(int source_id) const;
-
-            /// All hole points should be indicated with \ref hole_point_index material_id.
-            const int hole_point_index = -1;
-            /// All source points should be indicated with material_id >= \ref first_source_index.
-            const int first_source_index = 1;
-            
-            /// Checks if point id value represents hole.
-            bool IsHole(int point_id) const
-            {
-                return point_id == hole_point_index;
-            }
-
-            /// Checks if point id value represents source.
-            bool IsSource(int point_id) const
-            {
-                return point_id >= first_source_index;
-            }
             /**
              * @}
              */
