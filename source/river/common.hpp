@@ -47,105 +47,109 @@ struct hash<pair<int, int>>
 
 namespace River
 {
-/**
- * Vector represented in polar coordinates.
- */
-class Polar
-{
-  public:
+  /**
+   * Vector represented in polar coordinates.
+   */
+  class Polar
+  {
+    public:
 
-    Polar() = default;
-    Polar(double dlval, double phival):
-      r{dlval}, phi{phival} {};
-    ///radius of points
-    double r = 0.;
-    ///angle of point
-    double phi = 0.;
-    
-    friend ostream& operator <<(ostream& write, const Polar & p)
-    {
-      cout << "Polar: " << p.r << " " << p.phi << endl;
-      return write;
-    }
-};
+      Polar() = default;
+      Polar(double dlval, double phival):
+        r{dlval}, phi{phival} {};
+      ///radius of points
+      double r = 0.;
+      ///angle of point
+      double phi = 0.;
 
-/**
- * Point struct and feew functions to work with it.
- */
-class Point
-{
-  private:
-    ///Absolute precission parameter, used in Point comparsion
-    double eps = 1e-13;
+      friend ostream& operator <<(ostream& write, const Polar & p)
+      {
+        cout << "Polar: " << p.r << " " << p.phi << endl;
+        return write;
+      }
+  };
 
-  public:
-    ///Point coordinates;
-    double x = 0, y = 0;
+  /**
+   * Point struct and feew functions to work with it.
+   */
+  class Point
+  {
+    private:
+      ///Absolute precission parameter, used in Point comparsion
+      double eps = 1e-13;
 
-    Point() = default;
-    ~Point() = default;
-    Point(double xval, double yval);
-    Point(const Point &p) = default;
-    ///Converts Polar coordinates to Cartesian of Point.
-    Point(const Polar &p);
+    public:
+      ///Point coordinates;
+      double x = 0, y = 0;
 
-    ///Returns norm of vector.
-    double norm() const;
+      Point() = default;
+      ~Point() = default;
+      Point(double xval, double yval);
+      Point(const Point &p) = default;
+      ///Converts Polar coordinates to Cartesian of Point.
+      Point(const Polar &p);
 
-    ///Evaluates norm of vector {x, y}.
-    static double norm(double x, double y);
+      ///Returns norm of vector.
+      double norm() const;
 
-    ///Returns normalized vector of current Point.
-    Point getNormalized();
+      ///Evaluates norm of vector {x, y}.
+      static double norm(double x, double y);
 
-    ///Rotates point on __phi__ angle(counterclockwise)
-    Point& rotate(double phi);
+      ///Returns normalized vector of current Point.
+      Point getNormalized();
 
-    ///Returns Polar representation of vector.
-    Polar getPolar() const;
+      ///Rotates point on __phi__ angle(counterclockwise)
+      Point& rotate(double phi);
 
-    ///Normalizes current Point.
-    Point& normalize();
+      ///Returns Polar representation of vector.
+      Polar getPolar() const;
 
-    ///Returns angle.
-    double angle() const;
+      ///Normalizes current Point.
+      Point& normalize();
 
-    ///Returns angle of {x, y} vector.
-    static double angle(double x, double y);
+      ///Returns angle.
+      double angle() const;
 
-    ///Returns angle relatively to __p__ Point
-    double angle(Point &p) const;
+      ///Returns angle of {x, y} vector.
+      static double angle(double x, double y);
 
-    ///Prints point
-    Point& print();
+      ///Returns angle relatively to __p__ Point
+      double angle(Point &p) const;
 
-    /**
-    * @name Math operations
-    * @{
-    */
-    Point& operator=(const Point& p) = default;
-    Point operator+(const Point& p) const;
-    Point& operator+=(const Point& p);
-    Point operator-(const Point& p) const;
-    Point& operator-=(const Point& p);
-    double operator*(const Point& p) const;
-    double operator[](const int index) const;
-    Point operator*(const double gain) const;
-    Point& operator*=(const double gain);
-    Point operator/(const double gain) const;
-    Point& operator/=(const double gain);
-    bool operator==(const Point& p) const;
-    /**
-     * @}
-     */
+      ///Prints point
+      Point& print();
 
-    friend ostream& operator <<(ostream& write, const Point & p);
-};
+      /**
+      * @name Math operations
+      * @{
+      */
+      Point& operator=(const Point& p) = default;
+      Point operator+(const Point& p) const;
+      Point& operator+=(const Point& p);
+      Point operator-(const Point& p) const;
+      Point& operator-=(const Point& p);
+      double operator*(const Point& p) const;
+      double operator[](const int index) const;
+      Point operator*(const double gain) const;
+      Point& operator*=(const double gain);
+      Point operator/(const double gain) const;
+      Point& operator/=(const double gain);
+      bool operator==(const Point& p) const;
+      /**
+       * @}
+       */
 
-///Line - holds indexes of __p1__ and __p2__ vertices.
-class Line
-{
-  unsigned int p1, p2;
-};
+      friend ostream& operator <<(ostream& write, const Point & p);
+  };
+
+  ///Line - holds indexes of __p1__ and __p2__ vertices.
+  class Line
+  {
+    public:
+      Line() = default;
+      Line(long unsigned p1v, long unsigned p2v, int idv):p1(p1v), p2(p2v), id(idv){};
+      long unsigned p1, p2;
+      int id;
+  };
 
 } // namespace River

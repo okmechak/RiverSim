@@ -43,11 +43,11 @@ namespace River
             ///Vector of tip points.
             vector<Point> tip_points;
             ///Radius of refinment.
-            double r0 = 0.2;
+            double r0 = 0.3;
             ///Power.
             double exponant = 4;
             ///Minimal area of mesh.
-            double min_area = 1e-8;
+            double min_area = 5e-9;
 
             double operator()(double x, double y)
             {

@@ -1344,7 +1344,7 @@ void set_tria_to_default(struct triangulateio *io)
   io->edgemarkerlist = NULL; /* Not used with Voronoi diagram; out only */
   io->normlist = NULL;       /* Used only with Voronoi diagram; out only */
   io->numberofedges = 0;     /* Out only */
-};
+}
 
   /*****************************************************************************/
   /*                                                                           */

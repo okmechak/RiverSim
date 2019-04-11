@@ -1328,50 +1328,32 @@ unsigned Mesh::get_n_converted_quadrangles() const
 
 Point Mesh::get_vertex(int number) const
 {
-  expect(number >= 0 && number < vertices.size(),
-         "The required number (" + d2s(number) +
-         " is bigger than the number of vertices (" + d2s(vertices.size()) + "))");
-  return vertices[number];
+  return vertices.at(number);
 }
 
 MeshElement& Mesh::get_point(int number) const
 {
-  expect(number >= 0 && number < points.size(),
-         "The required number (" + d2s(number) +
-         " is bigger than the number of physical points (" + d2s(points.size()) + "))");
-  return *(points[number]);
+  return *(points.at(number));
 }
 
 MeshElement& Mesh::get_edge(int number) const
 {
-  expect(number >= 0 && number < edges.size(),
-         "The required number (" + d2s(number) +
-         " is bigger than the number of edges (" + d2s(edges.size()) + "))");
-  return *(edges[number]);
+  return *(edges.at(number));
 }
 
 MeshElement& Mesh::get_line(int number) const
 {
-  expect(number >= 0 && number < lines.size(),
-         "The required number (" + d2s(number) +
-         " is bigger than the number of lines (" + d2s(lines.size()) + "))");
-  return *(lines[number]);
+  return *(lines.at(number));
 }
 
 MeshElement& Mesh::get_triangle(int number) const
 {
-  expect(number >= 0 && number < triangles.size(),
-         "The required number (" + d2s(number) +
-         " is bigger than the number of triangles (" + d2s(triangles.size()) + "))");
-  return *(triangles[number]);
+  return *(triangles.at(number));
 }
 
 MeshElement& Mesh::get_quadrangle(int number) const
 {
-  expect(number >= 0 && number < quadrangles.size(),
-         "The required number (" + d2s(number) +
-         " is bigger than the number of quadrangles (" + d2s(quadrangles.size()) + "))");
-  return *(quadrangles[number]);
+  return *(quadrangles.at(number));
 }
 
 
