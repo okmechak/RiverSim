@@ -1835,7 +1835,7 @@ void printtriangle(struct mesh *m, struct behavior *b, struct otri *t)
 /*                                                                           */
 /*****************************************************************************/
 
-void printsubseg(struct mesh *m, struct behavior *b, struct osub *s)
+void printsubseg(struct mesh *m, struct behavior *, struct osub *s)
 {
   struct osub printsh;
   struct otri printtri;
@@ -2003,7 +2003,7 @@ void poolrestart(struct memorypool *pool)
 /*****************************************************************************/
 
 void poolinit(struct memorypool *pool, int bytecount, int itemcount,
-              int firstitemcount, int alignment)
+              int firstitemcount, long unsigned alignment)
 
 {
   /* Find the proper alignment, which must be at least as large as:   */
@@ -2338,7 +2338,7 @@ void initializevertexpool(struct mesh *m, struct behavior *b)
 
 void initializetrisubpools(struct mesh *m, struct behavior *b)
 {
-  int trisize;
+  long unsigned trisize;
 
   /* The index within each triangle at which the extra nodes (above three)  */
   /*   associated with high order elements are found.  There are three      */
@@ -8383,7 +8383,6 @@ void segmentintersection(struct mesh *m, struct behavior *b,
   vertex leftvertex, rightvertex;
   vertex newvertex;
   enum insertvertexresult success;
-  enum finddirectionresult collinear;
   REAL ex, ey;
   REAL tx, ty;
   REAL etx, ety;
@@ -8459,7 +8458,7 @@ void segmentintersection(struct mesh *m, struct behavior *b,
 
   /* Inserting the vertex may have caused edge flips.  We wish to rediscover */
   /*   the edge connecting endpoint1 to the new intersection vertex.         */
-  collinear = finddirection(m, b, splittri, endpoint1);
+  finddirection(m, b, splittri, endpoint1);
   dest(*splittri, rightvertex);
   apex(*splittri, leftvertex);
   if ((leftvertex[0] == endpoint1[0]) && (leftvertex[1] == endpoint1[1]))
@@ -9747,7 +9746,6 @@ void carveholes(struct mesh *m, struct behavior *b, REAL *holelist, int holes,
 void tallyencs(struct mesh *m, struct behavior *b)
 {
   struct osub subsegloop;
-  int dummy;
 
   traversalinit(&m->subsegs);
   subsegloop.ssorient = 0;
@@ -9755,7 +9753,7 @@ void tallyencs(struct mesh *m, struct behavior *b)
   while (subsegloop.ss != (subseg *)NULL)
   {
     /* If the segment is encroached, add it to the list. */
-    dummy = checkseg4encroach(m, b, &subsegloop);
+    checkseg4encroach(m, b, &subsegloop);
     subsegloop.ss = subsegtraverse(m);
   }
 }
@@ -9809,7 +9807,6 @@ void splitencsegs(struct mesh *m, struct behavior *b, int triflaws)
   REAL split;
   REAL multiplier, divisor;
   int acuteorg, acuteorg2, acutedest, acutedest2;
-  int dummy;
   int i;
   triangle ptr; /* Temporary variable used by stpivot(). */
   subseg sptr;  /* Temporary variable used by snext(). */
@@ -10002,9 +9999,9 @@ void splitencsegs(struct mesh *m, struct behavior *b, int triflaws)
           m->steinerleft--;
         }
         /* Check the two new subsegments to see if they're encroached. */
-        dummy = checkseg4encroach(m, b, &currentenc);
+        checkseg4encroach(m, b, &currentenc);
         snextself(currentenc);
-        dummy = checkseg4encroach(m, b, &currentenc);
+        checkseg4encroach(m, b, &currentenc);
       }
 
       badsubsegdealloc(m, encloop);
