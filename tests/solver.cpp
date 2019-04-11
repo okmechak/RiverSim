@@ -152,3 +152,11 @@ BOOST_AUTO_TEST_CASE( integration_test,
     BOOST_TEST(integration_of_whole_region == 0.03420202360857102);
     BOOST_TEST(max_value == 0.07257921834603551);
 }
+
+
+BOOST_AUTO_TEST_CASE( memory_leak, 
+    *utf::tolerance(1e-1))
+{
+    for(unsigned long int i = 0; i < 1e6; ++i)
+        River::Solver sim;
+}
