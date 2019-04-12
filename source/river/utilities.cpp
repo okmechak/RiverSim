@@ -95,17 +95,17 @@ namespace River
 
         options.add_options("Series parameters integral")
         //Integration parameters
-        ("weight-exp", "Parameter used in integration.", value<double>()->default_value("4"))
-        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.3"));
+        ("weight-exp", "Parameter used in integration.", value<double>()->default_value("3"))
+        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.03"));
 
         options.add_options("Mesh refinment parameters")
         //Mesh parameters
         ("mesh-exp", "Parameter used in mesh refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("4"))
-        ("e,eps", "Width of branch", value<double>()->default_value("0.000001"))
-        ("q,mesh-min-angle", "Constraints minimal angle of triangle element", value<double>()->default_value("30."))
-        ("A,mesh-max-area", "Constraints maximal area of triangle element", value<double>()->default_value("1."))
-        ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("0.00000001"))
-        ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", value<double>()->default_value("0.3"));
+        ("e,eps", "Width of branch", value<double>()->default_value("1e-5"))
+        ("q,mesh-min-angle", "Constraints minimal angle of triangle element", value<double>()->default_value("33."))
+        ("A,mesh-max-area", "Constraints maximal area of triangle element", value<double>()->default_value("10."))
+        ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("1e-8"))
+        ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", value<double>()->default_value("0.15"));
 
         options.parse_positional({"input"});
 
