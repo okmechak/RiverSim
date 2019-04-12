@@ -23,34 +23,14 @@ BOOST_AUTO_TEST_CASE( phys_model_methods,
 {
     River::Model mdl;
 
-    BOOST_TEST(mdl.BaseVector(1, 1) == 1.);
-    BOOST_TEST(mdl.BaseVector(1, 2) == sqrt(2.));
-    BOOST_TEST(mdl.BaseVector(2, 1) == 0.);
-    BOOST_TEST(mdl.BaseVector(2, 1i) == -1.);
-    BOOST_TEST(mdl.BaseVector(3, 1) == 1.);
-    BOOST_TEST(mdl.BaseVector(3, 2i) == -2.);
-
-
-    //const values valid only for next Rmax
-    BOOST_TEST(mdl.Rmax == 0.01);
-    //Values from similar Mathematica formula
-    BOOST_TEST(mdl.WeightFunction( Point{0.25, 0.1}.norm()) == 1.369306341561314E-315);
-    BOOST_TEST(mdl.WeightFunction( Point{0.01, 0.01}.norm()) == 0.1353352832366125);
+    BOOST_TEST(mdl.integr.BaseVector(1, 1) == 1.);
+    BOOST_TEST(mdl.integr.BaseVector(1, 2) == sqrt(2.));
+    BOOST_TEST(mdl.integr.BaseVector(2, 1) == 0.);
+    BOOST_TEST(mdl.integr.BaseVector(2, 1i) == -1.);
+    BOOST_TEST(mdl.integr.BaseVector(3, 1) == 1.);
+    BOOST_TEST(mdl.integr.BaseVector(3, 2i) == -2.);
 }
 
-BOOST_AUTO_TEST_CASE( area_constraint_test, 
-    *utf::tolerance(eps))
-{
-    River::AreaConstraint ac;
-    ac.exponant = 2;
-    ac.min_area = 0.0001;
-    ac.r0 = 0.05;
-    ac.tip_points = {{0, 0}, {0, 0}, {0,0}};
-    BOOST_TEST(ac(0, 0) == ac.min_area);
-    
-    ac.tip_points = {{0, 0}, {0.1, 0.1}, {0.1,0}};
-    BOOST_TEST(ac(0.05, 0.05) == 0.8647647167633872);
-}
 
 BOOST_AUTO_TEST_CASE( next_point_method, 
     *utf::tolerance(eps))

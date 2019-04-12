@@ -31,15 +31,13 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     auto sources_id = vector<int>{1};
 
     Model mdl;
-    //FIXME
-    AreaConstraint ac;
+
     //1e-12 - is to small and we receive strange mesh
-    ac.min_area = 1e-10;
-    ac.r0 = 0.25;
-    ac.exponant = 4;
-    ac.tip_points = {River::Point{0.25, 0.1}};
+    mdl.mesh.min_area = 1e-10;
+    mdl.mesh.refinment_radius = 0.25;
+    mdl.mesh.exponant = 4;
+    mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
     Border border;
-    border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 
         boundary_ids,
@@ -57,7 +55,8 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     tria.MinAngle = 30;
     tria.AreaConstrain = true;
     tria.MaxTriaArea = 0.01;
-    tria.generate(mesh, &ac);
+    tria.ref = &mdl.mesh;
+    tria.generate(mesh);
     mesh.convert();
     mesh.write("test.msh");
 
@@ -73,7 +72,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     auto tip_ids = tr.TipBranchesId();
     auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();
     auto angle = tr.GetBranch(tip_ids.at(0)).TipAngle();
-    auto series_params = sim.integrate(point, angle);
+    auto series_params = sim.integrate(mdl, point, angle);
 
     BOOST_TEST(angle == M_PI/2);
     BOOST_TEST((point == River::Point{0.25, 0.1}));
@@ -99,15 +98,12 @@ BOOST_AUTO_TEST_CASE( integration_test,
     auto sources_id = vector<int>{1};
 
     Model mdl;
-    //FIXME
-    AreaConstraint ac;
     //1e-12 - is to small and we receive strange mesh
-    ac.min_area = 1e-10;
-    ac.r0 = 0.25;
-    ac.exponant = 4;
-    ac.tip_points = {River::Point{0.25, 0.1}};
+    mdl.mesh.min_area = 1e-10;
+    mdl.mesh.refinment_radius = 0.25;
+    mdl.mesh.exponant = 4;
+    mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
     Border border;
-    border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 
         boundary_ids,
@@ -124,7 +120,8 @@ BOOST_AUTO_TEST_CASE( integration_test,
     tria.AreaConstrain = tria.ConstrainAngle = tria.CustomConstraint = true;
     tria.MaxTriaArea = 0.1;
     tria.MinAngle = 30;
-    tria.generate(mesh, &ac);
+    tria.ref = &mdl.mesh;
+    tria.generate(mesh);
     mesh.convert();
     mesh.write("test.msh");
 
@@ -146,7 +143,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
     //Comparing to result given by Mathematica program
     //see for notebook Testing.nb in results folder
-    BOOST_TEST(mdl.Rmax == 0.01);
+    BOOST_TEST(mdl.integr.integration_radius == 0.01);
     BOOST_TEST(integration == 0.00000162911);
 
     BOOST_TEST(integration_of_whole_region == 0.03420202360857102);

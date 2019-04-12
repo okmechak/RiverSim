@@ -28,54 +28,83 @@ int main(int argc, char *argv[])
     if (!vm.count("supprchess-signature"))
         print_ascii_signature();
 
+
+    //test
+    vector<double> v = vm["test-flag"].as<vector<double>>();
+    for(auto e: v)
+        cout << e << endl;
+    cout << "----------" << endl;
+
+
     //Model object setup
     Model mdl;
-    mdl.eps = vm["eps"].as<double>();
-    mdl.ds = vm["ds"].as<double>();
-    mdl.dx = vm["dx"].as<double>();
-    mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
-    mdl.width = vm["width"].as<double>();
-    mdl.height = vm["height"].as<double>();
-    mdl.field_value = vm["field-value"].as<double>();
+    if(!vm.count("input"))
+    {
+        //geometry
+        mdl.width = vm["width"].as<double>();
+        mdl.height = vm["height"].as<double>();
+        mdl.dx = vm["dx"].as<double>();
+        //model parameters
+        mdl.boundary_condition = vm["boundary-condition"].as<int>();
+        mdl.field_value = vm["field-value"].as<double>();
+        mdl.eta = vm["eta"].as<double>();
+        mdl.biffurcation_type = vm["biffurcation-type"].as<int>();
+        mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
+        mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
+        mdl.growth_type = vm["growth-type"].as<int>();
+        mdl.growth_threshold = vm["growth-threshold"].as<double>();
+        mdl.ds = vm["ds"].as<double>();
+        //mesh options
+        mdl.mesh.eps = vm["eps"].as<double>();
+        mdl.mesh.exponant = vm["mesh-exp"].as<double>();
+        mdl.mesh.max_area = vm["mesh-max-area"].as<double>();
+        mdl.mesh.min_area = vm["mesh-min-area"].as<double>();
+        mdl.mesh.min_angle = vm["mesh-min-angle"].as<double>();
+        mdl.mesh.refinment_radius = vm["refinment-radius"].as<double>();
+        //integration options
+        mdl.integr.integration_radius = vm["integration-radius"].as<double>();
+        mdl.integr.exponant = vm["weight-exp"].as<double>();
+    }
 
     //Timing Object setup
     Timing time;
 
     //Border object setup.. Rectangular boundaries
-    auto river_boundary_id = 4;
-    auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
-    auto region_size = vector<double>{mdl.width, mdl.height};
-    auto sources_x_coord = vector<double>{mdl.dx};
-    auto sources_id = vector<int>{1};
     
     Border border;
-    border.river_boundary_id = river_boundary_id;
-    border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    if(!vm.count("input"))
+    {
+        border.MakeRectangular(
+            {mdl.width, mdl.height}, 
+            mdl.boundary_ids,
+            {mdl.dx},
+            {1});
+    }
     
     //Tree object setup
     Tree tree;
-    tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+    if(!vm.count("input"))
+        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
 
     if(border.GetSourcesId() != tree.SourceBranchesID())
         throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
 
+    if(vm.count("input"))
+        Open(mdl, border, tree, vm["input"].as<string>());
 
     //Triangle mesh object setup
     Triangle tria;
-    tria.AreaConstrain = tria.ConstrainAngle = true;
-    tria.MaxTriaArea = vm["mesh-max-area"].as<double>();
-    tria.MinAngle = vm["mesh-min-angle"].as<double>();
-    tria.Verbose = vm["verbose"].as<bool>();
-    tria.Quite =  true;
+    //TODO move those options into physmodel object
+    tria.AreaConstrain = true;
     tria.CustomConstraint = true;
+    tria.MaxTriaArea = mdl.mesh.max_area;
+    tria.MinAngle = mdl.mesh.min_angle;
+    tria.Verbose = vm["verbose"].as<bool>();
+    tria.Quite =  vm["quiet"].as<bool>();
+    tria.ref = &mdl.mesh;
 
     //Simulation object setup
     River::Solver sim;
-    sim.numOfRefinments = vm["ref-num"].as<int>();
     sim.field_value = mdl.field_value;
 
     //MAIN LOOP
@@ -87,7 +116,7 @@ int main(int argc, char *argv[])
         cout << "  "<<i<< endl;
         cout << "-------" << endl;
 
-        ForwardRiverEvolution(mdl, tria, sim, tree, border, vm["output-mesh"].as<string>(), boundary_ids);
+        ForwardRiverEvolution(mdl, tria, sim, tree, border, vm["output-mesh"].as<string>());
 
         time.Record();//Timing
         Save(mdl, time, border, tree, vm["output-sim"].as<string>());

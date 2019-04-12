@@ -233,7 +233,7 @@ void Solver::refine_grid()
 
 
 
-vector<double> Solver::integrate(Point point, double angle)
+vector<double> Solver::integrate(Model& mdl, Point point, double angle)
 {   
 
     FEValues<dim> fe_values(fe, quadrature_formula,
@@ -260,20 +260,19 @@ vector<double> Solver::integrate(Point point, double angle)
             dist = sqrt(dx*dx + dy*dy);
         
         //Integrates over points only in this circle
-        Model mdl;//FIXME we should use global mdl object
-        if(dist <= 3*mdl.Rmax)
+        if(dist <= mdl.integr.integration_radius)
         {
             fe_values.reinit (dof_cell);
             fe_values.get_function_values(solution, values);
-            auto weight_func_value = mdl.WeightFunction(dist);//FIXME we should use global mdl object
+            auto weight_func_value = mdl.integr.WeightFunction(dist);
 
             //cycle over all series parameters order
             for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
             {
                 //preevaluate basevector value
-                auto base_vector_value = mdl.BaseVector(param_index + 1, exp(-1i*angle)*(dx + 1i*dy));
+                auto base_vector_value = mdl.integr.BaseVector(param_index + 1, exp(-1i*angle)*(dx + 1i*dy));
 
-                //sum over all quadrature points over single mesh element
+                //sum over all quadrature points overIntegrationRadius single mesh element
                 for (unsigned q_point = 0; q_point < quadrature_formula.size(); ++q_point)
                 {
                     //integration of weighted integral..

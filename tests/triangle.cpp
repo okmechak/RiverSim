@@ -28,14 +28,12 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
     Model mdl;
 
     //Border object setup.. Rectangular boundaries
-    auto river_boundary_id = 4;
-    auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
+    auto boundary_ids = mdl.boundary_ids;
     auto region_size = vector<double>{mdl.width, mdl.height};
     auto sources_x_coord = vector<double>{mdl.dx};
     auto sources_id = vector<int>{1};
     
     Border border;
-    border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 
         boundary_ids,

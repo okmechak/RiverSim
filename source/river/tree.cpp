@@ -115,7 +115,7 @@ namespace River
             else
             {
                 vector<Point> tree_vector;
-                TreeVector(tree_vector, m[i]/*source id*/, tree, mdl.eps);
+                TreeVector(tree_vector, m.at(i)/*source id*/, tree, mdl.mesh.eps);
                 long unsigned shift = tet_vertices.size(); 
                 for(long unsigned i = 0; i < tree_vector.size(); ++i)
                 {
@@ -124,7 +124,7 @@ namespace River
                         new tethex::Line(
                             shift + i, 
                             shift + i + 1, 
-                            br.river_boundary_id));
+                            mdl.river_boundary_id));
                 }
                 for(auto& line: lines)
                     if(line.p2 > i)//TODO Test this

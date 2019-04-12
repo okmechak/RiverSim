@@ -407,7 +407,7 @@ namespace River{
 
 
 
-    void Triangle::generate(tethex::Mesh &initMesh, AreaConstraint* area_constraint)
+    void Triangle::generate(tethex::Mesh &initMesh)
     {
         set_all_values_to_default();
 
@@ -420,7 +420,7 @@ namespace River{
         }
 
         //Main call to Triangle
-        triangulate(options.c_str(), &in, &out, &vorout, area_constraint);
+        triangulate(options.c_str(), &in, &out, &vorout, ref);
 
         if (Verbose)
         {

@@ -116,11 +116,6 @@ namespace River
                     r[kv.second] = kv.first;
                 return r;
             } 
-            
-
-            ///River Boundary ID.
-            ///Used to specify Boundary ID of river lines.
-            int river_boundary_id;
 
         //private: for testing purposes
 

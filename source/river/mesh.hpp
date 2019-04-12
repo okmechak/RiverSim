@@ -145,7 +145,7 @@ namespace River
       ///r - refine previously generated mesh, with preserving of segments
       bool Refine = false;
       ///q - quality(minimu 20 degree).. also angle can be specified by q30
-      bool ConstrainAngle = false;
+      bool ConstrainAngle = true;
       double MinAngle = 20;
       ///a - maximum triangle area constrain. a0.1
       double MaxTriaArea = -1.;
@@ -169,6 +169,9 @@ namespace River
       ///V - verbose
       bool Verbose = false;
 
+      ///Mesh refinment object
+      MeshParams* ref;
+
       Triangle();
       ~Triangle();
       
@@ -178,7 +181,7 @@ namespace River
        * @param initMesh tethex::Mesh object which holds boundary constrains, holes etc. 
        * @param mdl holds functionality for adaptive mesh generation.
        */
-      void generate(tethex::Mesh &initMesh, AreaConstraint* mdl = NULL);
+      void generate(tethex::Mesh &initMesh);
       //FIXME: make a better interface to area constraint function
   };
 } //namespace mesh

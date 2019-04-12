@@ -42,58 +42,86 @@ namespace River
         using namespace cxxopts;
 
         Options options(
-            "riversim", ProgramTitle + " is used in my master work to simulate river growth according to \nLaplace model(for more details pls see references)");
+            "riversim", ProgramTitle + " is used in my master work to simulate river growth according to \n"
+            "Laplace model(for more details pls see references)\n" + 
+            "full documentation is placed here https://okmechak.github.io/RiverSim/\n");
 
         //declare supported options
-        options.add_options()
-        //different
-        ("h,help", "produce help message")
-        ("v,version", "print version string")
-        ("suppress-signature", "suppress signature printing")
-        ("long-description",
-            "full documentation is placed here https://okmechak.github.io/RiverSim/")
+        options.add_options("Basic")
+        //basic
+        ("h,help", "Produce help message.")
+        ("v,version", "Print version string.")
+        ("suppress-signature", "Suppress signature printing.");
 
+        options.add_options("File interface")
         //file system interface
-        ("output-mesh", "save mesh", value<string>()->default_value("mesh.msh"))
-        ("o,output-sim", "save simulation data to file", value<string>()->default_value("simulation_data.json"))
-        ("i,input-sim", "open simulation data", value<string>()->default_value(""))
-        ("p,prefix", "prefix used in name of output file", value<string>()->default_value(""))
+        ("output-mesh", "Name of output mesh file.", value<string>()->default_value("mesh.msh"))
+        ("o,output-sim", "Name of simulation data and state of program data.", value<string>()->default_value("simulation_data.json"))
         ("input",
-            "First option is boundary mesh file name(read documentation for detailed file format)."
-            "Second[optional] - is the tree structure file", cxxopts::value<string>())
+            "input simaultion data, boundary, tree, model parameters.", cxxopts::value<string>());
 
-        //prints/logs
-        ("V,verbose", "print detailed log to terminal")
-        ("Q,quiet", "print detailed log to terminal")
-
-        //obsolete
-        ("g,geom-type", "Geometry type: 0 - Simple Box, 1 - Simple River, 2 - Single Tip - obsolete", value<int>()->default_value("0"))
+        options.add_options("Logs")
+        //prints and logs
+        ("V,verbose", "print detailed log to terminal.", value<bool>()->default_value("False"))
+        ("Q,quiet", "print detailed log to terminal.", value<bool>()->default_value("True"))
 
         //Development flags
-        ("s,simulate", "Run simulation in Deal.II", value<bool>()->default_value("true"))
-        ("D,dev-mode", "Suppress standart flow", value<bool>()->default_value("false"))
-        ("m,mesh", "Turn on/off mesh generation, development purposes only", value<bool>()->default_value("true"))
-        ("t,test-flag", "Test flag for development purposes")
+        ("t,test-flag", "Test flag for development purposes.", value<vector<double>>()->default_value("1020 30 4 5"));
 
+        options.add_options("Simulation parameters")
+        //Simulation parameters
+        ("n,number-of-steps", "Number of steps to simulate(-1 - infinity).", value<int>()->default_value("-1"))
+        ("simulation-type", "Forward river growth or backward river growth TODO.");
+        
+        options.add_options("Geometry parameters")
+        //Geometry parameters
+        ("width", "Width of rectangular region.", value<double>()->default_value("1"))
+        ("height", "Height of rectangular region.", value<double>()->default_value("1"))
+        ("dx", "dx - shift of initial river position from beginning of coordinates.", value<double>()->default_value("0.2"));
+
+        options.add_options("Model parameters")
         //Model parameters
-        ("f,field-value", "value of filed used for Poisson conditions", value<double>()->default_value("0.25"))
-        ("n,number-of-steps", "Number of steps to simulate(-1 - infinity)", value<int>()->default_value("-1"))
-        ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.01"))
-        ("dx", "dx - shift of initial river position from beginning of coordinates", value<double>()->default_value("0.1"))
-        ("b,biffurcation-threshold", "biffuraction threshold", value<double>()->default_value("-0.1"))
-        ("width", "width of rectangular region", value<double>()->default_value("1"))
-        ("height", "height of rectangular region", value<double>()->default_value("1"))
-        ("A,mesh-max-area", "constraints maximal area of triangle element", value<double>()->default_value("0.01."))
-        ("q,mesh-min-angle", "constraints minimal angle of triangle element", value<double>()->default_value("20."))
+        ("c,boundary-condition", "0 - Poisson, 1 - Laplacea", value<int>()->default_value("0"))
+        ("f,field-value", "Value of filed used for Poisson conditions.", value<double>()->default_value("0.25"))
+        ("eta", "Power of a1^eta.", value<double>()->default_value("0"))
+        ("biffurcation-type", "Biffurcation method type. 0 - a3/a1 > biffurcation_threshold, 1 - a1 > biffurcation_threshold.", value<int>()->default_value("0"))
+        ("b,biffurcation-threshold", "Biffuraction threshold.", value<double>()->default_value("-0.1"))
+        ("biffurcation-angle", "Biffurcation angle between branches. default Pi/5", value<double>()->default_value("0.62831853071795864"))
+        ("growth-type", "0 - arctan(a2/a1), 1 - {dx, dy}.", value<int>()->default_value("0"))
+        ("growth-threshold", "Growth of branch will be done only if a1 > growth-threshold.", value<double>()->default_value("0."))
+
+        //Numerical parameters
+        ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.01"));
+
+        options.add_options("Series parameters integral")
+        //Integration parameters
+        ("weight-exp", "Parameter used in integration.", value<double>()->default_value("4"))
+        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.3"));
+
+        options.add_options("Mesh refinment parameters")
+        //Mesh parameters
+        ("mesh-exp", "Parameter used in mesh refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("4"))
         ("e,eps", "Width of branch", value<double>()->default_value("0.000001"))
-        ("r,ref-num", "Number of solver adaptive refinments", value<int>()->default_value("1"));
+        ("q,mesh-min-angle", "Constraints minimal angle of triangle element", value<double>()->default_value("30."))
+        ("A,mesh-max-area", "Constraints maximal area of triangle element", value<double>()->default_value("1."))
+        ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("0.00000001"))
+        ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", value<double>()->default_value("0.3"));
 
         options.parse_positional({"input"});
 
         auto result = options.parse(argc, argv);
 
         if (result.count("help"))
-            cout << options.help({""}) << endl;
+            cout << options.help({
+                "Basic", 
+                "File interface", 
+                "Logs",
+                "Simulation parameters",
+                "Geometry parameters",
+                "Model parameters",
+                "Series parameters integral",
+                "Mesh refinment parameters"}) 
+                << endl;
 
         if (result.count("version"))
             print_version();

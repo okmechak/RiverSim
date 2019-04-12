@@ -21,16 +21,16 @@ BOOST_AUTO_TEST_CASE( io_methods,
     *utf::tolerance(eps))
 {
     Model mdl;
-    mdl.eps = 0.1;
+    mdl.mesh.eps = 0.1;
     mdl.ds = 2;
     mdl.dx = 0.5;
     mdl.biffurcation_threshold = 0;
     mdl.width = 2;
     mdl.height = 3;
     mdl.field_value = 4;
-    mdl.ac.exponant = 100;
-    mdl.ac.min_area = 101;
-    mdl.ac.r0 = 102;
+    mdl.mesh.exponant = 100;
+    mdl.mesh.min_area = 101;
+    mdl.mesh.refinment_radius = 102;
     BOOST_TEST_CHECKPOINT("1");
     //Timing Object setup
     Timing time;
@@ -44,7 +44,6 @@ BOOST_AUTO_TEST_CASE( io_methods,
     
     BOOST_TEST_CHECKPOINT("2");
     Border border;
-    border.river_boundary_id = river_boundary_id;
     
     BOOST_TEST_CHECKPOINT("3");
     border.MakeRectangular(
@@ -77,16 +76,16 @@ BOOST_AUTO_TEST_CASE( io_methods,
     Open(mdl, border, tree, "iotest.json");
 
     //Model TEST
-    BOOST_TEST(mdl.eps == 0.1);
+    BOOST_TEST(mdl.mesh.eps == 0.1);
     BOOST_TEST(mdl.ds == 2);
     BOOST_TEST(mdl.dx == 0.5);
     BOOST_TEST(mdl.biffurcation_threshold == 0);
     BOOST_TEST(mdl.width == 2);
     BOOST_TEST(mdl.height == 3);
     BOOST_TEST(mdl.field_value == 4);
-    BOOST_TEST(mdl.ac.exponant == 100);
-    BOOST_TEST(mdl.ac.min_area == 101);
-    BOOST_TEST(mdl.ac.r0 == 102);
+    BOOST_TEST(mdl.mesh.exponant == 100);
+    BOOST_TEST(mdl.mesh.min_area == 101);
+    BOOST_TEST(mdl.mesh.refinment_radius == 102);
 
     //Tree Test
     BOOST_TEST(tree.source_branches_id == sources_id);

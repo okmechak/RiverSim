@@ -281,7 +281,7 @@ struct triangulateio {
  * as described above.                                                                                                                           
  */
 void triangulate(const char *, struct triangulateio *, struct triangulateio *,
-                 struct triangulateio *, River::AreaConstraint *ac = NULL);//FIXME: mdl
+                 struct triangulateio *, River::MeshParams *ac = NULL);//FIXME: mdl
 
 /**
  * @brief Free memory. 

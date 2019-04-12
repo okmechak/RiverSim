@@ -81,7 +81,7 @@ class Solver
     void SetMesh(tethex::Mesh &meshio);
     void OpenMesh(string fileName = "river.msh");
     void run(int step);
-    vector<double> integrate(Point point, double angle);
+    vector<double> integrate(Model& mdl, Point point, double angle);
     double integration_test(Point point, double dr);
     double max_value();
     void clear()

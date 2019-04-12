@@ -1371,7 +1371,7 @@ void set_tria_to_default(struct triangulateio *io)
 
 
 //FIXME: remove this hardcode with global variable!!!
-River::AreaConstraint* ac_global = NULL;
+River::MeshParams* ac_global = NULL;
 int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
 {
   //test of adaptive mesh function
@@ -11389,7 +11389,7 @@ void statistics(struct mesh *m, struct behavior *b)
 /*****************************************************************************/
 
 void triangulate(const char *triswitches, struct triangulateio *in,
-                 struct triangulateio *out, struct triangulateio *vorout, River::AreaConstraint* ac)
+                 struct triangulateio *out, struct triangulateio *vorout, River::MeshParams* ac)
 {
   struct mesh m;
   struct behavior b;

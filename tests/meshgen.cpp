@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
     *utf::tolerance(eps))
 {   
     Model mdl;
-    mdl.eps = 0.01;
+    mdl.mesh.eps = 0.01;
     auto river_boundary_id = 4;
     auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
     auto region_size = vector<double>{1, 1};
@@ -29,7 +29,6 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
     auto sources_id = vector<int>{1, 2, 3, 4};
     
     Border border;
-    border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 
         boundary_ids,
@@ -105,7 +104,7 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     *utf::tolerance(eps))
 {   
     Model mdl;
-    mdl.eps = 0.02;
+    mdl.mesh.eps = 0.02;
     auto river_boundary_id = 4;
     auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
     auto region_size = vector<double>{1, 1};
@@ -113,7 +112,6 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     auto sources_id = vector<int>{1, 2, 3, 4};
     
     Border border;
-    border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 
         boundary_ids,
@@ -246,7 +244,7 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
     *utf::tolerance(eps))
 {   
     Model mdl;
-    mdl.eps = 0.02;
+    mdl.mesh.eps = 0.02;
     auto river_boundary_id = 4;
     auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
     auto region_size = vector<double>{1, 1};
@@ -254,7 +252,6 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
     auto sources_id = vector<int>{1, 2};
     
     Border border;
-    border.river_boundary_id = river_boundary_id;
     border.MakeRectangular(
         region_size, 
         boundary_ids,

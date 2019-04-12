@@ -83,20 +83,33 @@ namespace River
                 {"InputFile", "TODO"}}},
 
             {"Model", {
-                {"eps", mdl.eps},
-                {"biff_angle", mdl.biff_angle},
-                {"method", (int)mdl.method},
-                {"ds", mdl.ds},
+                {"dx", mdl.dx},
                 {"width", mdl.width},
                 {"height", mdl.height},
-                {"biffurcation_threshold", mdl.biffurcation_threshold},
-                {"Rmax", mdl.Rmax},
-                {"exponant", mdl.exponant},
-                {"field_value", mdl.field_value},
+                {"river-boundary-id", mdl.river_boundary_id},
+                {"boundary-ids", mdl.boundary_ids}, 
+
+                {"boundary-condition", mdl.boundary_condition},
+                {"field-value", mdl.field_value},
+                {"eta", mdl.eta},
+                {"biffurcation-type", mdl.biffurcation_type},
+                {"biffurcation-threshold", mdl.biffurcation_threshold},
+                {"biffurcation-angle", mdl.biffurcation_angle},
+                {"growth-type", mdl.growth_type},
+                {"growth-threshold", mdl.growth_threshold},
+                {"ds", mdl.ds},
+
+                {"Integration",{
+                    {"radius", mdl.integr.integration_radius},
+                    {"exponant", mdl.integr.exponant}}},
+
                 {"Mesh", {
-                    {"r0", mdl.ac.r0},
-                    {"exponant", mdl.ac.exponant},
-                    {"min_area", mdl.ac.min_area}}}}},
+                    {"eps", mdl.mesh.eps},
+                    {"exponant", mdl.mesh.exponant},
+                    {"refinment-radius", mdl.mesh.refinment_radius},
+                    {"min-area", mdl.mesh.min_area},
+                    {"max-area", mdl.mesh.max_area},
+                    {"min-angle", mdl.mesh.min_angle}}}}},
             
             {"Border", jborder},
 
@@ -120,23 +133,41 @@ namespace River
         if(j.count("Model"))
         {
             json jmdl = j["Model"];
-            jmdl.at("eps").get_to(mdl.eps);
-            jmdl.at("biff_angle").get_to(mdl.biff_angle);
-            jmdl.at("method").get_to(mdl.method);
-            jmdl.at("ds").get_to(mdl.ds);
+
             jmdl.at("width").get_to(mdl.width);
             jmdl.at("height").get_to(mdl.height);
-            jmdl.at("biffurcation_threshold").get_to(mdl.biffurcation_threshold);
-            jmdl.at("Rmax").get_to(mdl.Rmax);
-            jmdl.at("exponant").get_to(mdl.exponant);
-            jmdl.at("field_value").get_to(mdl.field_value);
+            jmdl.at("dx").get_to(mdl.dx);
+            jmdl.at("river-boundary-id").get_to(mdl.river_boundary_id);
+            jmdl.at("boundary-ids").get_to(mdl.boundary_ids);
+            
+            jmdl.at("boundary-condition").get_to(mdl.boundary_condition);
+            jmdl.at("field-value").get_to(mdl.field_value);
+            jmdl.at("eta").get_to(mdl.eta);
+            jmdl.at("biffurcation-type").get_to(mdl.biffurcation_type);
+            jmdl.at("biffurcation-threshold").get_to(mdl.biffurcation_threshold);
+            jmdl.at("biffurcation-angle").get_to(mdl.biffurcation_angle);
+            jmdl.at("biffurcation-threshold").get_to(mdl.biffurcation_threshold);
+            jmdl.at("growth-type").get_to(mdl.growth_type);
+            jmdl.at("growth-threshold").get_to(mdl.growth_threshold);
+            jmdl.at("ds").get_to(mdl.ds);
             
             if(jmdl.count("Mesh"))
             {
                 auto jmesh = jmdl["Mesh"];
-                jmesh.at("r0").get_to(mdl.ac.r0);
-                jmesh.at("exponant").get_to(mdl.ac.exponant);
-                jmesh.at("min_area").get_to(mdl.ac.min_area);
+
+                jmesh.at("eps").get_to(mdl.mesh.eps);
+                jmesh.at("exponant").get_to(mdl.mesh.exponant);
+                jmesh.at("max-area").get_to(mdl.mesh.max_area);
+                jmesh.at("min-area").get_to(mdl.mesh.min_area);
+                jmesh.at("min-angle").get_to(mdl.mesh.min_angle);
+                jmesh.at("refinment-radius").get_to(mdl.mesh.refinment_radius);
+            }
+            if(jmdl.count("Integration"))
+            {
+                auto jinteg = jmdl["Integration"];
+
+                jinteg.at("radius").get_to(mdl.integr.integration_radius);
+                jinteg.at("exponant").get_to(mdl.integr.exponant);
             }
         }
         if(j.count("Trees"))
@@ -169,13 +200,13 @@ namespace River
         }
         if(j.count("Border"))
         {
-            auto jtrees = j["Border"];
+            auto jborder = j["Border"];
             vector<pair<double, double>> coords;
             vector<vector<int>> lines;
 
-            jtrees.at("SourceIndexes").get_to(border.sources);
-            jtrees.at("coords").get_to(coords);
-            jtrees.at("lines").get_to(lines);
+            jborder.at("SourceIndexes").get_to(border.sources);
+            jborder.at("coords").get_to(coords);
+            jborder.at("lines").get_to(lines);
 
             border.vertices.reserve(coords.size());
             border.lines.reserve(lines.size());
