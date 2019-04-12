@@ -14,4 +14,54 @@
  */
 
 #include "riversim.hpp"
-namespace River{}   
+namespace River
+{
+    void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string mesh_file)
+   {
+        auto mesh = BoundaryGenerator(mdl, tree, border);
+        
+        //FIXME:
+        //preparing mesh constraint function
+        tria.ref->tip_points = tree.TipPoints();
+        tria.generate(mesh);
+        mesh.convert();
+        mesh.write(mesh_file);
+
+        //Simulation
+        //Deal.II library
+        sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
+        sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
+        sim.OpenMesh(mesh_file);
+        sim.run(0/*FIXME*/);
+
+        for(auto id: tree.TipBranchesId())
+        {
+            auto tip_point = tree.GetBranch(id).TipPoint();
+            auto tip_angle = tree.GetBranch(id).TipAngle();
+            auto series_params = sim.integrate(mdl, tip_point, tip_angle);
+
+            if(mdl.q_growth(series_params))
+            {
+                if(mdl.q_biffurcate(series_params))
+                {
+                    auto br_left = BranchNew(tip_point, tip_angle + mdl.biffurcation_angle);
+                    br_left.AddPoint(Polar{mdl.ds, 0});
+                    auto br_right = BranchNew(tip_point, tip_angle - mdl.biffurcation_angle);
+                    br_right.AddPoint(Polar{mdl.ds, 0});
+                    tree.AddSubBranches(id, br_left, br_right);
+                }
+                else
+                    tree.GetBranch(id).AddPoint(mdl.next_point(series_params));
+            }
+        }
+        sim.clear();
+   }
+
+
+   void BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string mesh_file)
+   {
+
+       
+   }
+   
+}//namespace River
