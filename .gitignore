@@ -54,3 +54,6 @@ tests/grid-0.eps
 tests/test.msh
 tests/solution.vtk
 tests/iotest.json
+mesh.msh
+simulation_data.json
+solution.vtk
