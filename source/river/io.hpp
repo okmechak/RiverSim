@@ -28,6 +28,7 @@
 
 namespace River
 {
+    Model SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm);
     void Save(Model& mdl, Timing& time, Border& border, Tree& tr, string file_name);
     void Open(Model& mdl, Border& border, Tree& tr, string file_name);
 

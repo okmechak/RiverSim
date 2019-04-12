@@ -24,6 +24,39 @@ using json = nlohmann::json;
 
 namespace River
 {
+    Model SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm)
+    {
+        Model mdl;
+
+        //geometry
+        mdl.width = vm["width"].as<double>();
+        mdl.height = vm["height"].as<double>();
+        mdl.dx = vm["dx"].as<double>();
+
+        //model parameters
+        mdl.boundary_condition = vm["boundary-condition"].as<int>();
+        mdl.field_value = vm["field-value"].as<double>();
+        mdl.eta = vm["eta"].as<double>();
+        mdl.biffurcation_type = vm["biffurcation-type"].as<int>();
+        mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
+        mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
+        mdl.growth_type = vm["growth-type"].as<int>();
+        mdl.growth_threshold = vm["growth-threshold"].as<double>();
+        mdl.ds = vm["ds"].as<double>();
+
+        //mesh options
+        mdl.mesh.eps = vm["eps"].as<double>();
+        mdl.mesh.exponant = vm["mesh-exp"].as<double>();
+        mdl.mesh.max_area = vm["mesh-max-area"].as<double>();
+        mdl.mesh.min_area = vm["mesh-min-area"].as<double>();
+        mdl.mesh.min_angle = vm["mesh-min-angle"].as<double>();
+        mdl.mesh.refinment_radius = vm["refinment-radius"].as<double>();
+
+        //integration options
+        mdl.integr.integration_radius = vm["integration-radius"].as<double>();
+        mdl.integr.exponant = vm["weight-exp"].as<double>();
+        return mdl;
+    }
 
     void Save(Model& mdl, Timing& time, Border& border, Tree& tr, string file_name)
     {
