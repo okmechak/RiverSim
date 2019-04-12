@@ -29,13 +29,6 @@ int main(int argc, char *argv[])
         print_ascii_signature();
 
 
-    //test
-    vector<double> v = vm["test-flag"].as<vector<double>>();
-    for(auto e: v)
-        cout << e << endl;
-    cout << "----------" << endl;
-
-
     //Model object setup
     Model mdl;
     if(!vm.count("input"))
@@ -70,7 +63,6 @@ int main(int argc, char *argv[])
     Timing time;
 
     //Border object setup.. Rectangular boundaries
-    
     Border border;
     if(!vm.count("input"))
     {
@@ -94,7 +86,6 @@ int main(int argc, char *argv[])
 
     //Triangle mesh object setup
     Triangle tria;
-    //TODO move those options into physmodel object
     tria.AreaConstrain = true;
     tria.CustomConstraint = true;
     tria.MaxTriaArea = mdl.mesh.max_area;
