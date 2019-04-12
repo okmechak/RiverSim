@@ -6,7 +6,6 @@ project(riversim C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Shared libs are preffered over static if ON.")
-set(CMAKE_BUILD_TYPE Release)
 
 add_subdirectory(source)
 add_subdirectory(doxy)
