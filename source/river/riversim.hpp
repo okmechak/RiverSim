@@ -49,10 +49,10 @@ namespace River
 
 
    ///One step of forward river evolution.
-   void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string mesh_file);
+   void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name);
 
    ///One step of backward river evolution and its data.
-   void BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string mesh_file);
+   void BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name);
    
 
 }

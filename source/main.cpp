@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
     if (!vm.count("supprchess-signature"))
         print_ascii_signature();
 
+    string output_file_name = vm["output"].as<string>();
 
     //Model object setup
     Model mdl;
@@ -82,10 +83,10 @@ int main(int argc, char *argv[])
         cout << "  "<<i<< endl;
         cout << "-------" << endl;
 
-        ForwardRiverEvolution(mdl, tria, sim, tree, border, vm["output-mesh"].as<string>());
+        ForwardRiverEvolution(mdl, tria, sim, tree, border, output_file_name);
 
         time.Record();//Timing
-        Save(mdl, time, border, tree, vm["output-sim"].as<string>());
+        Save(mdl, time, border, tree, output_file_name);
     }
 
     return 0;

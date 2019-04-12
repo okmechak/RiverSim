@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE( io_methods,
     tree.AddSubBranches(3, br2left, br2right);
 
     BOOST_TEST_CHECKPOINT("5");
-    Save(mdl, time, border, tree, "iotest.json");
+    Save(mdl, time, border, tree, "iotest");
     mdl = Model();
     tree = Tree();
     border = Border();

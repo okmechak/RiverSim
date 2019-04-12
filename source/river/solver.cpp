@@ -372,17 +372,15 @@ double Solver::max_value()
 }
 
 
-void Solver::output_results(const unsigned int cycle) const
+void Solver::output_results(const string file_name) const
 {
     DataOut<dim> data_out;
     data_out.attach_dof_handler(dof_handler);
     data_out.add_data_vector(solution, "solution");
     data_out.build_patches();
-    string name = "solution-" + std::to_string(cycle) + ".vtk";
-    std::ofstream output("solution.vtk");
+    std::ofstream output(file_name + ".vtk");
     data_out.write_vtk(output);
 
-    //FIXME
     //std::ofstream out("grid-"+std::to_string(cycle)+".eps");
     //GridOut       grid_out;
     //grid_out.write_eps(triangulation, out);
@@ -390,11 +388,11 @@ void Solver::output_results(const unsigned int cycle) const
 }
 
 
-void Solver::run(int step)
+void Solver::run()
 {
     for (unsigned int cycle = 0; cycle < numOfRefinments; ++cycle)
     {
-        std::cout << "Cycle " << cycle << ':' << std::endl;
+        //std::cout << "Cycle " << cycle << ':' << std::endl;
         if (cycle > 0)
             refine_grid();
 
@@ -406,11 +404,8 @@ void Solver::run(int step)
                   << dof_handler.n_dofs()
                   << std::endl;
         assemble_system();
-        solve();
-        
+        solve();        
     }
-
-    output_results(step);
 }
 
 } // namespace River

@@ -55,8 +55,7 @@ namespace River
 
         options.add_options("File interface")
         //file system interface
-        ("output-mesh", "Name of output mesh file.", value<string>()->default_value("mesh.msh"))
-        ("o,output-sim", "Name of simulation data and state of program data.", value<string>()->default_value("simulation_data.json"))
+        ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value("simdata"))
         ("input",
             "input simaultion data, boundary, tree, model parameters.", cxxopts::value<string>());
 

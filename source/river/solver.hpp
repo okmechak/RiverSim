@@ -80,7 +80,8 @@ class Solver
     void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
     void SetMesh(tethex::Mesh &meshio);
     void OpenMesh(string fileName = "river.msh");
-    void run(int step);
+    void run();
+    void output_results(const string file_name) const;
     vector<double> integrate(Model& mdl, Point point, double angle);
     double integration_test(Point point, double dr);
     double max_value();
@@ -118,7 +119,6 @@ class Solver
     void assemble_system();
     void solve();
     void refine_grid();
-    void output_results(const unsigned int cycle) const;
     
     void TryInsertCellBoundary(
         CellData<dim> &cellData,

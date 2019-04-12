@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     sim.field_value = 1;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
-    sim.run(0);
+    sim.run();
     
     auto tip_ids = tr.TipBranchesId();
     auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     sim.numOfRefinments = 1;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
-    sim.run(0);
+    sim.run();
     sim.field_value = 1;
     
     auto tip_ids = tr.TipBranchesId();

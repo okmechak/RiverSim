@@ -16,7 +16,7 @@
 #include "riversim.hpp"
 namespace River
 {
-    void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string mesh_file)
+    void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name)
    {
         auto mesh = BoundaryGenerator(mdl, tree, border);
         
@@ -25,14 +25,15 @@ namespace River
         tria.ref->tip_points = tree.TipPoints();
         tria.generate(mesh);
         mesh.convert();
-        mesh.write(mesh_file);
+        mesh.write(file_name + ".msh");//FIXME
 
         //Simulation
         //Deal.II library
         sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
         sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
-        sim.OpenMesh(mesh_file);
-        sim.run(0/*FIXME*/);
+        sim.OpenMesh(file_name + ".msh");
+        sim.run();
+        sim.output_results(file_name);
 
         for(auto id: tree.TipBranchesId())
         {
@@ -58,7 +59,7 @@ namespace River
    }
 
 
-   void BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string mesh_file)
+   void BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name)
    {
 
        

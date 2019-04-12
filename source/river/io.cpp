@@ -62,9 +62,9 @@ namespace River
     void Save(Model& mdl, Timing& time, Border& border, Tree& tr, string file_name)
     {
         if(file_name.length() == 0)
-            return;
+            throw invalid_argument("Save. File name is not set.");
 
-        ofstream out(file_name);
+        ofstream out(file_name + ".json");
         if(!out) throw invalid_argument("Save. Can't create file for write");
 
 
