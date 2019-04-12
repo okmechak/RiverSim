@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION ${min_version})
 
-set(BUILD_PROGRAM ON CACHE BOOL "Build(Compile) Option is handy for build only docs")
+set(BUILD_PROGRAM ON CACHE BOOL "Build(Compile) Option is handy for build only docs.")
+set(DEAL_II_PREFER_STATIC_LIBS ON CACHE BOOL "Static linkage of Deal.II library will be prefferable.")
 
 if(BUILD_PROGRAM)
 
     message("========================================")
     message("Deal II setup")
-    set(DEALII_DIR "/usr/local/dealii" CACHE STRING "Deal.II SDK directory location")
-    set(deal.II_USE_STATIC_LIBS "ON")
+    set(DEALII_DIR "/usr/local/dealii" CACHE STRING "Deal.II SDK directory location") 
     find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
     deal_ii_initialize_cached_variables()
 
