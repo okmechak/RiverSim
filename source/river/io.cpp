@@ -79,8 +79,8 @@ namespace River
 
 
             branches.push_back({
-                {"source_point", {branch.SourcePoint().x , branch.SourcePoint().y}},
-                {"source_angle", branch.SourceAngle()},
+                {"sourcePoint", {branch.SourcePoint().x , branch.SourcePoint().y}},
+                {"sourceAngle", branch.SourceAngle()},
                 {"coords", coords},
                 {"id", branch_id}});
         }
@@ -97,7 +97,7 @@ namespace River
             for(auto& l: border.lines)
                 lines.push_back({(int)l.p1, (int)l.p2, l.id});
             jborder = {
-                {"SourceIndexes", border.sources}, 
+                {"SourceIds", border.sources}, 
                 {"SomeDetails", "points and lines should be in counterclockwise order!"},
                 {"coords", coords},
                 {"lines", lines}};
@@ -119,17 +119,17 @@ namespace River
                 {"dx", mdl.dx},
                 {"width", mdl.width},
                 {"height", mdl.height},
-                {"river-boundary-id", mdl.river_boundary_id},
-                {"boundary-ids", mdl.boundary_ids}, 
+                {"riverBoundaryId", mdl.river_boundary_id},
+                {"boundaryIds", mdl.boundary_ids}, 
 
-                {"boundary-condition", mdl.boundary_condition},
-                {"field-value", mdl.field_value},
+                {"boundaryCondition", mdl.boundary_condition},
+                {"fieldValue", mdl.field_value},
                 {"eta", mdl.eta},
-                {"biffurcation-type", mdl.biffurcation_type},
-                {"biffurcation-threshold", mdl.biffurcation_threshold},
-                {"biffurcation-angle", mdl.biffurcation_angle},
-                {"growth-type", mdl.growth_type},
-                {"growth-threshold", mdl.growth_threshold},
+                {"biffurcationType", mdl.biffurcation_type},
+                {"biffurcationThreshold", mdl.biffurcation_threshold},
+                {"biffurcationAngle", mdl.biffurcation_angle},
+                {"growthType", mdl.growth_type},
+                {"growthThreshold", mdl.growth_threshold},
                 {"ds", mdl.ds},
 
                 {"Integration",{
@@ -139,10 +139,10 @@ namespace River
                 {"Mesh", {
                     {"eps", mdl.mesh.eps},
                     {"exponant", mdl.mesh.exponant},
-                    {"refinment-radius", mdl.mesh.refinment_radius},
-                    {"min-area", mdl.mesh.min_area},
-                    {"max-area", mdl.mesh.max_area},
-                    {"min-angle", mdl.mesh.min_angle}}}}},
+                    {"refinmentRadius", mdl.mesh.refinment_radius},
+                    {"minArea", mdl.mesh.min_area},
+                    {"maxArea", mdl.mesh.max_area},
+                    {"minAngle", mdl.mesh.min_angle}}}}},
             
             {"Border", jborder},
 
@@ -170,18 +170,18 @@ namespace River
             jmdl.at("width").get_to(mdl.width);
             jmdl.at("height").get_to(mdl.height);
             jmdl.at("dx").get_to(mdl.dx);
-            jmdl.at("river-boundary-id").get_to(mdl.river_boundary_id);
-            jmdl.at("boundary-ids").get_to(mdl.boundary_ids);
+            jmdl.at("riverBoundaryId").get_to(mdl.river_boundary_id);
+            jmdl.at("boundaryIds").get_to(mdl.boundary_ids);
             
-            jmdl.at("boundary-condition").get_to(mdl.boundary_condition);
-            jmdl.at("field-value").get_to(mdl.field_value);
+            jmdl.at("boundaryCondition").get_to(mdl.boundary_condition);
+            jmdl.at("fieldValue").get_to(mdl.field_value);
             jmdl.at("eta").get_to(mdl.eta);
-            jmdl.at("biffurcation-type").get_to(mdl.biffurcation_type);
-            jmdl.at("biffurcation-threshold").get_to(mdl.biffurcation_threshold);
-            jmdl.at("biffurcation-angle").get_to(mdl.biffurcation_angle);
-            jmdl.at("biffurcation-threshold").get_to(mdl.biffurcation_threshold);
-            jmdl.at("growth-type").get_to(mdl.growth_type);
-            jmdl.at("growth-threshold").get_to(mdl.growth_threshold);
+            jmdl.at("biffurcationType").get_to(mdl.biffurcation_type);
+            jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
+            jmdl.at("biffurcationAngle").get_to(mdl.biffurcation_angle);
+            jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
+            jmdl.at("growthType").get_to(mdl.growth_type);
+            jmdl.at("growthThreshold").get_to(mdl.growth_threshold);
             jmdl.at("ds").get_to(mdl.ds);
             
             if(jmdl.count("Mesh"))
@@ -190,10 +190,10 @@ namespace River
 
                 jmesh.at("eps").get_to(mdl.mesh.eps);
                 jmesh.at("exponant").get_to(mdl.mesh.exponant);
-                jmesh.at("max-area").get_to(mdl.mesh.max_area);
-                jmesh.at("min-area").get_to(mdl.mesh.min_area);
-                jmesh.at("min-angle").get_to(mdl.mesh.min_angle);
-                jmesh.at("refinment-radius").get_to(mdl.mesh.refinment_radius);
+                jmesh.at("maxArea").get_to(mdl.mesh.max_area);
+                jmesh.at("minArea").get_to(mdl.mesh.min_area);
+                jmesh.at("minAngle").get_to(mdl.mesh.min_angle);
+                jmesh.at("refinmentRadius").get_to(mdl.mesh.refinment_radius);
             }
             if(jmdl.count("Integration"))
             {
@@ -216,8 +216,8 @@ namespace River
                 vector<pair<double, double>> coords;
                 double source_angle;
                 int id;
-                value.at("source_point").get_to(s_point);
-                value.at("source_angle").get_to(source_angle);
+                value.at("sourcePoint").get_to(s_point);
+                value.at("sourceAngle").get_to(source_angle);
                 value.at("coords").get_to(coords);
                 value.at("id").get_to(id);
                 
@@ -237,7 +237,7 @@ namespace River
             vector<pair<double, double>> coords;
             vector<vector<int>> lines;
 
-            jborder.at("SourceIndexes").get_to(border.sources);
+            jborder.at("SourceIds").get_to(border.sources);
             jborder.at("coords").get_to(coords);
             jborder.at("lines").get_to(lines);
 
