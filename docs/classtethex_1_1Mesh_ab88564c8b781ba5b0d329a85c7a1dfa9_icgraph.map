@@ -1,0 +1,8 @@
+<map id="tethex::Mesh::get_n_vertices" name="tethex::Mesh::get_n_vertices">
+<area shape="rect" id="node2" href="$classRiver_1_1Solver.html#a3d51dbec8b2d1d790c5f4e0385b408d7" title="River::Solver::SetMesh" alt="" coords="193,5,352,32"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#af7abffd9bc4bd64eb2f4cdd4aaf7fbe3" title="tethex::Mesh::Mesh" alt="" coords="203,56,342,83"/>
+<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#af992d5d2e64047656766e4afcbc95b8b" title="tethex::Mesh::operator=" alt="" coords="192,107,353,133"/>
+<area shape="rect" id="node5" href="$classtethex_1_1Mesh.html#a8e5d9c057c6f562d5036f262a23af29c" title="During conversion we add new vertices &#45; at the centers of edges, triangles, tetrahedra. " alt="" coords="195,158,350,199"/>
+<area shape="rect" id="node6" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) " alt="" coords="401,165,575,192"/>
+<area shape="rect" id="node7" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="Conversion from simplices to bricks. " alt="" coords="623,165,772,192"/>
+</map>

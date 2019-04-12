@@ -9,54 +9,54 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 62)">
 <title>numbernodes</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-62 282,-62 282,4 -4,4"/>
-<!-- Node1822 -->
+<!-- Node1911 -->
 <g id="node1" class="node">
-<title>Node1822</title>
+<title>Node1911</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-19.5 0,-38.5 75,-38.5 75,-19.5 0,-19.5"/>
 <text text-anchor="middle" x="37.5" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">numbernodes</text>
 </g>
-<!-- Node1823 -->
+<!-- Node1912 -->
 <g id="node2" class="node">
-<title>Node1823</title>
+<title>Node1912</title>
 <g id="a_node2"><a xlink:href="triangle_8cpp.html#ac497210bc9192d88ed80659833ba5f55" target="_top" xlink:title="traversalinit">
 <polygon fill="#ffffff" stroke="#000000" points="117,-38.5 117,-57.5 184,-57.5 184,-38.5 117,-38.5"/>
 <text text-anchor="middle" x="150.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">traversalinit</text>
 </a>
 </g>
 </g>
-<!-- Node1822&#45;&gt;Node1823 -->
+<!-- Node1911&#45;&gt;Node1912 -->
 <g id="edge1" class="edge">
-<title>Node1822&#45;&gt;Node1823</title>
+<title>Node1911&#45;&gt;Node1912</title>
 <path fill="none" stroke="#191970" d="M75.1274,-35.3267C85.2393,-37.027 96.2624,-38.8804 106.6792,-40.6319"/>
 <polygon fill="#191970" stroke="#191970" points="106.3958,-44.1333 116.8377,-42.34 107.5566,-37.2302 106.3958,-44.1333"/>
 </g>
-<!-- Node1824 -->
+<!-- Node1913 -->
 <g id="node3" class="node">
-<title>Node1824</title>
+<title>Node1913</title>
 <g id="a_node3"><a xlink:href="triangle_8cpp.html#a51f4784502224728d80a16b668f17014" target="_top" xlink:title="vertextraverse">
 <polygon fill="#ffffff" stroke="#000000" points="111,-.5 111,-19.5 190,-19.5 190,-.5 111,-.5"/>
 <text text-anchor="middle" x="150.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">vertextraverse</text>
 </a>
 </g>
 </g>
-<!-- Node1822&#45;&gt;Node1824 -->
+<!-- Node1911&#45;&gt;Node1913 -->
 <g id="edge2" class="edge">
-<title>Node1822&#45;&gt;Node1824</title>
+<title>Node1911&#45;&gt;Node1913</title>
 <path fill="none" stroke="#191970" d="M75.1274,-22.6733C83.3413,-21.2922 92.1565,-19.81 100.7595,-18.3634"/>
 <polygon fill="#191970" stroke="#191970" points="101.4314,-21.7997 110.7126,-16.6899 100.2706,-14.8966 101.4314,-21.7997"/>
 </g>
-<!-- Node1825 -->
+<!-- Node1914 -->
 <g id="node4" class="node">
-<title>Node1825</title>
+<title>Node1914</title>
 <g id="a_node4"><a xlink:href="triangle_8cpp.html#a908560980328e10c897c5c34bb733e9d" target="_top" xlink:title="traverse">
 <polygon fill="#ffffff" stroke="#000000" points="226,-.5 226,-19.5 278,-19.5 278,-.5 226,-.5"/>
 <text text-anchor="middle" x="252" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">traverse</text>
 </a>
 </g>
 </g>
-<!-- Node1824&#45;&gt;Node1825 -->
+<!-- Node1913&#45;&gt;Node1914 -->
 <g id="edge3" class="edge">
-<title>Node1824&#45;&gt;Node1825</title>
+<title>Node1913&#45;&gt;Node1914</title>
 <path fill="none" stroke="#191970" d="M190.0332,-10C198.487,-10 207.378,-10 215.7029,-10"/>
 <polygon fill="#191970" stroke="#191970" points="215.8695,-13.5001 225.8695,-10 215.8694,-6.5001 215.8695,-13.5001"/>
 </g>

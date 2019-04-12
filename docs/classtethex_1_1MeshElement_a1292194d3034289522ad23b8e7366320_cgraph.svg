@@ -9,16 +9,16 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 57)">
 <title>tethex::MeshElement::set_vertex</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-57 361,-57 361,4 -4,4"/>
-<!-- Node41 -->
+<!-- Node30 -->
 <g id="node1" class="node">
-<title>Node41</title>
+<title>Node30</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-30.5 110,-30.5 110,-.5 0,-.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="55" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::set_vertex</text>
 </g>
-<!-- Node42 -->
+<!-- Node31 -->
 <g id="node2" class="node">
-<title>Node42</title>
+<title>Node31</title>
 <g id="a_node2"><a xlink:href="classtethex_1_1MeshElement.html#adfcce5cfca86923678a212405ce784a4" target="_top" xlink:title="Get the number of vertices. ">
 <polygon fill="#ffffff" stroke="#000000" points="146,-22.5 146,-52.5 256,-52.5 256,-22.5 146,-22.5"/>
 <text text-anchor="start" x="154" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
@@ -26,30 +26,30 @@
 </a>
 </g>
 </g>
-<!-- Node41&#45;&gt;Node42 -->
+<!-- Node30&#45;&gt;Node31 -->
 <g id="edge1" class="edge">
-<title>Node41&#45;&gt;Node42</title>
+<title>Node30&#45;&gt;Node31</title>
 <path fill="none" stroke="#191970" d="M110.1963,-23.8173C118.5541,-25.0766 127.2434,-26.386 135.7888,-27.6737"/>
 <polygon fill="#191970" stroke="#191970" points="135.3157,-31.1418 145.7256,-29.171 136.3588,-24.2199 135.3157,-31.1418"/>
 </g>
-<!-- Node43 -->
+<!-- Node32 -->
 <g id="node3" class="node">
-<title>Node43</title>
+<title>Node32</title>
 <g id="a_node3"><a xlink:href="namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" target="_top" xlink:title="tethex::d2s">
 <polygon fill="#ffffff" stroke="#000000" points="292,-6 292,-25 357,-25 357,-6 292,-6"/>
 <text text-anchor="middle" x="324.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::d2s</text>
 </a>
 </g>
 </g>
-<!-- Node41&#45;&gt;Node43 -->
+<!-- Node30&#45;&gt;Node32 -->
 <g id="edge3" class="edge">
-<title>Node41&#45;&gt;Node43</title>
+<title>Node30&#45;&gt;Node32</title>
 <path fill="none" stroke="#191970" d="M110.338,-14.0894C122.1089,-13.8438 134.4649,-13.6267 146,-13.5 194.8859,-12.9629 207.1163,-12.7865 256,-13.5 264.2883,-13.621 273.1389,-13.8242 281.6318,-14.056"/>
 <polygon fill="#191970" stroke="#191970" points="281.6548,-17.5581 291.752,-14.3493 281.8577,-10.561 281.6548,-17.5581"/>
 </g>
-<!-- Node42&#45;&gt;Node43 -->
+<!-- Node31&#45;&gt;Node32 -->
 <g id="edge2" class="edge">
-<title>Node42&#45;&gt;Node43</title>
+<title>Node31&#45;&gt;Node32</title>
 <path fill="none" stroke="#191970" d="M256.248,-27.6582C264.9233,-26.1129 273.7716,-24.5366 282.0978,-23.0534"/>
 <polygon fill="#191970" stroke="#191970" points="282.7172,-26.4983 291.9484,-21.2987 281.4895,-19.6068 282.7172,-26.4983"/>
 </g>

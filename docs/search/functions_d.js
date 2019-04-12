@@ -8,7 +8,7 @@ var searchData=
   ['poolalloc',['poolalloc',['../triangle_8cpp.html#ab1760445583959132ffd9998372c9aac',1,'triangle.cpp']]],
   ['pooldealloc',['pooldealloc',['../triangle_8cpp.html#a3f4425b06c516b9f5d647a1384c74d51',1,'triangle.cpp']]],
   ['pooldeinit',['pooldeinit',['../triangle_8cpp.html#adce8bbec9a21ffa945c9cca035fd1f7b',1,'triangle.cpp']]],
-  ['poolinit',['poolinit',['../triangle_8cpp.html#a50d34a398ff84c3d02a81d8d73dd0ee9',1,'triangle.cpp']]],
+  ['poolinit',['poolinit',['../triangle_8cpp.html#aea60f72bb0dc95698c995a1375b83743',1,'triangle.cpp']]],
   ['poolrestart',['poolrestart',['../triangle_8cpp.html#a2657afcbf1c107955b10ccf7dbf14c90',1,'triangle.cpp']]],
   ['poolzero',['poolzero',['../triangle_8cpp.html#a648dd8087d1bb748e403c1fefe8f720e',1,'triangle.cpp']]],
   ['preciselocate',['preciselocate',['../triangle_8cpp.html#a34a6e2c35be028da265a50ab3d9d6be6',1,'triangle.cpp']]],
@@ -18,7 +18,7 @@ var searchData=
   ['print_5fgeometry',['print_geometry',['../classRiver_1_1Triangle.html#ab4a007be4739f8e3781b190f5c6c0b09',1,'River::Triangle']]],
   ['print_5foptions',['print_options',['../classRiver_1_1Triangle.html#aeb6108ef14cf1bd359ebc6b1a2ecdb1b',1,'River::Triangle']]],
   ['print_5fversion',['print_version',['../namespaceRiver.html#ab5576a99dc50334ad837bfa492dfc4ec',1,'River']]],
-  ['printsubseg',['printsubseg',['../triangle_8cpp.html#ae5bee30bf48dcc4ac5ab46eb5fa3f059',1,'triangle.cpp']]],
+  ['printsubseg',['printsubseg',['../triangle_8cpp.html#a3ced5ec1374d5a837ece08d2efe7bcb0',1,'triangle.cpp']]],
   ['printtriangle',['printtriangle',['../triangle_8cpp.html#a62ccb7c855c68af7a6918e23ccb158e6',1,'triangle.cpp']]],
   ['process_5fprogram_5foptions',['process_program_options',['../namespaceRiver.html#affa8f88114842f27d0a7b829d69120cf',1,'River']]]
 ];

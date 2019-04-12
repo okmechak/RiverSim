@@ -18,7 +18,7 @@
 <!-- Node3 -->
 <g id="node2" class="node">
 <title>Node3</title>
-<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a6e8f11687058c84b30c1501731a35508" target="_top" xlink:title="Get the number of converted quadrangles. ">
+<g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#a433b551470046cc7a95e4592f9851119" target="_top" xlink:title="Get the number of converted quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="152,-538 152,-568 274,-568 274,-538 152,-538"/>
 <text text-anchor="start" x="160" y="-556" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="213" y="-545" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_converted_quadrangles</text>
@@ -34,7 +34,7 @@
 <!-- Node4 -->
 <g id="node3" class="node">
 <title>Node4</title>
-<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#a7aa9c2737b989945d2d233f7200cb3ac" target="_top" xlink:title="Get the number of vertices. ">
+<g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#ab88564c8b781ba5b0d329a85c7a1dfa9" target="_top" xlink:title="Get the number of vertices. ">
 <polygon fill="#ffffff" stroke="#000000" points="161,-489 161,-519 265,-519 265,-489 161,-489"/>
 <text text-anchor="start" x="169" y="-507" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="213" y="-496" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_vertices</text>
@@ -62,50 +62,50 @@
 <path fill="none" stroke="#191970" d="M54.3752,-288.8003C61.7594,-317.1039 87.0627,-399.5831 140,-441 142.3207,-442.8157 144.7974,-444.4589 147.3847,-445.9461"/>
 <polygon fill="#191970" stroke="#191970" points="146.0208,-449.1752 156.5418,-450.4246 149.0963,-442.887 146.0208,-449.1752"/>
 </g>
-<!-- Node7 -->
-<g id="node6" class="node">
-<title>Node7</title>
-<g id="a_node6"><a xlink:href="classtethex_1_1Mesh.html#a77dc945a9f65b5b1d41e39ec8d06adb8" target="_top" xlink:title="Get the number of physical points. ">
+<!-- Node6 -->
+<g id="node5" class="node">
+<title>Node6</title>
+<g id="a_node5"><a xlink:href="classtethex_1_1Mesh.html#a6ce5b68ae1669faa214948051eea279c" target="_top" xlink:title="Get the number of physical points. ">
 <polygon fill="#ffffff" stroke="#000000" points="161,-401 161,-431 265,-431 265,-401 161,-401"/>
 <text text-anchor="start" x="169" y="-419" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="213" y="-408" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_points</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node7 -->
-<g id="edge5" class="edge">
-<title>Node2&#45;&gt;Node7</title>
+<!-- Node2&#45;&gt;Node6 -->
+<g id="edge4" class="edge">
+<title>Node2&#45;&gt;Node6</title>
 <path fill="none" stroke="#191970" d="M57.0014,-288.6233C68.6461,-310.1146 99.6731,-362.3691 140,-391 143.6627,-393.6004 147.6183,-395.9485 151.7272,-398.0658"/>
 <polygon fill="#191970" stroke="#191970" points="150.3701,-401.2946 160.9132,-402.3405 153.3235,-394.9481 150.3701,-401.2946"/>
 </g>
-<!-- Node8 -->
-<g id="node7" class="node">
-<title>Node8</title>
-<g id="a_node7"><a xlink:href="classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" target="_top" xlink:title="Get the physical point. ">
+<!-- Node7 -->
+<g id="node6" class="node">
+<title>Node7</title>
+<g id="a_node6"><a xlink:href="classtethex_1_1Mesh.html#a662e5df32c04d894bbc9598d3fe4d3f0" target="_top" xlink:title="Get the physical point. ">
 <polygon fill="#ffffff" stroke="#000000" points="153.5,-362.5 153.5,-381.5 272.5,-381.5 272.5,-362.5 153.5,-362.5"/>
 <text text-anchor="middle" x="213" y="-369.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_point</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node8 -->
-<g id="edge6" class="edge">
-<title>Node2&#45;&gt;Node8</title>
+<!-- Node2&#45;&gt;Node7 -->
+<g id="edge5" class="edge">
+<title>Node2&#45;&gt;Node7</title>
 <path fill="none" stroke="#191970" d="M60.7418,-288.7499C75.5064,-304.6154 107.0145,-335.9568 140,-353 144.5375,-355.3445 149.3867,-357.4156 154.3473,-359.2422"/>
 <polygon fill="#191970" stroke="#191970" points="153.3778,-362.6084 163.9716,-362.4611 155.5982,-355.9699 153.3778,-362.6084"/>
 </g>
-<!-- Node9 -->
-<g id="node8" class="node">
-<title>Node9</title>
-<g id="a_node8"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="Get the number of vertex describing the element. ">
+<!-- Node8 -->
+<g id="node7" class="node">
+<title>Node8</title>
+<g id="a_node7"><a xlink:href="classtethex_1_1MeshElement.html#aed911a47266af4848f1e8bdd0c89e177" target="_top" xlink:title="Get the number of vertex describing the element. ">
 <polygon fill="#ffffff" stroke="#000000" points="158,-313 158,-343 268,-343 268,-313 158,-313"/>
 <text text-anchor="start" x="166" y="-331" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::MeshElement</text>
 <text text-anchor="middle" x="213" y="-320" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::get_vertex</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node9 -->
-<g id="edge8" class="edge">
-<title>Node2&#45;&gt;Node9</title>
+<!-- Node2&#45;&gt;Node8 -->
+<g id="edge6" class="edge">
+<title>Node2&#45;&gt;Node8</title>
 <path fill="none" stroke="#191970" d="M83.4246,-288.564C103.4517,-294.6592 130.0319,-302.7488 153.9041,-310.0143"/>
 <polygon fill="#191970" stroke="#191970" points="153.007,-313.3997 163.5928,-312.963 155.0452,-306.703 153.007,-313.3997"/>
 </g>
@@ -120,7 +120,7 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node10 -->
-<g id="edge10" class="edge">
+<g id="edge8" class="edge">
 <title>Node2&#45;&gt;Node10</title>
 <path fill="none" stroke="#191970" d="M104.2721,-279C118.0886,-279 133.1753,-279 147.5923,-279"/>
 <polygon fill="#191970" stroke="#191970" points="147.944,-282.5001 157.9439,-279 147.9439,-275.5001 147.944,-282.5001"/>
@@ -128,7 +128,7 @@
 <!-- Node11 -->
 <g id="node10" class="node">
 <title>Node11</title>
-<g id="a_node10"><a xlink:href="classtethex_1_1Mesh.html#a9d5bf2be83f6181124a1014602f5c4ca" target="_top" xlink:title="Get the number of lines (physical lines). ">
+<g id="a_node10"><a xlink:href="classtethex_1_1Mesh.html#a5bc67888bd55417ea5ae69660194479b" target="_top" xlink:title="Get the number of lines (physical lines). ">
 <polygon fill="#ffffff" stroke="#000000" points="161,-215 161,-245 265,-245 265,-215 161,-215"/>
 <text text-anchor="start" x="169" y="-233" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="213" y="-222" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_lines</text>
@@ -136,7 +136,7 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node11 -->
-<g id="edge11" class="edge">
+<g id="edge9" class="edge">
 <title>Node2&#45;&gt;Node11</title>
 <path fill="none" stroke="#191970" d="M83.4246,-269.436C103.4517,-263.3408 130.0319,-255.2512 153.9041,-247.9857"/>
 <polygon fill="#191970" stroke="#191970" points="155.0452,-251.297 163.5928,-245.037 153.007,-244.6003 155.0452,-251.297"/>
@@ -151,7 +151,7 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node12 -->
-<g id="edge12" class="edge">
+<g id="edge10" class="edge">
 <title>Node2&#45;&gt;Node12</title>
 <path fill="none" stroke="#191970" d="M60.7946,-269.4346C75.6353,-253.8593 107.2501,-223.048 140,-206 145.227,-203.2791 150.8627,-200.8977 156.6036,-198.8204"/>
 <polygon fill="#191970" stroke="#191970" points="157.9184,-202.072 166.3108,-195.6054 155.7175,-195.427 157.9184,-202.072"/>
@@ -159,7 +159,7 @@
 <!-- Node13 -->
 <g id="node12" class="node">
 <title>Node13</title>
-<g id="a_node12"><a xlink:href="classtethex_1_1Mesh.html#a2e2cf18a97625017e9fc39e770455f4a" target="_top" xlink:title="Get the number of triangles. ">
+<g id="a_node12"><a xlink:href="classtethex_1_1Mesh.html#ab0dbfb48a0cf7176cb1f48b8c657d530" target="_top" xlink:title="Get the number of triangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="161,-127 161,-157 265,-157 265,-127 161,-127"/>
 <text text-anchor="start" x="169" y="-145" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="213" y="-134" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_triangles</text>
@@ -167,7 +167,7 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node13 -->
-<g id="edge14" class="edge">
+<g id="edge11" class="edge">
 <title>Node2&#45;&gt;Node13</title>
 <path fill="none" stroke="#191970" d="M57.0014,-269.3767C68.6461,-247.8854 99.6731,-195.6309 140,-167 143.6627,-164.3996 147.6183,-162.0515 151.7272,-159.9342"/>
 <polygon fill="#191970" stroke="#191970" points="153.3235,-163.0519 160.9132,-155.6595 150.3701,-156.7054 153.3235,-163.0519"/>
@@ -182,7 +182,7 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node14 -->
-<g id="edge15" class="edge">
+<g id="edge12" class="edge">
 <title>Node2&#45;&gt;Node14</title>
 <path fill="none" stroke="#191970" d="M54.42,-269.2918C61.9256,-241.2485 87.5254,-159.4874 140,-118 142.817,-115.7728 145.8645,-113.7932 149.0611,-112.0337"/>
 <polygon fill="#191970" stroke="#191970" points="150.8426,-115.0634 158.3972,-107.6351 147.8592,-108.731 150.8426,-115.0634"/>
@@ -190,7 +190,7 @@
 <!-- Node15 -->
 <g id="node14" class="node">
 <title>Node15</title>
-<g id="a_node14"><a xlink:href="classtethex_1_1Mesh.html#a1a776b3e42d2abc98be5d5ea89d46b1f" target="_top" xlink:title="Get the number of tetrahedra. ">
+<g id="a_node14"><a xlink:href="classtethex_1_1Mesh.html#a8526bdc64d01aa4d7e1c9d0af264eb05" target="_top" xlink:title="Get the number of tetrahedra. ">
 <polygon fill="#ffffff" stroke="#000000" points="161,-39 161,-69 265,-69 265,-39 161,-39"/>
 <text text-anchor="start" x="169" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::get_n</text>
 <text text-anchor="middle" x="213" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_quadrangles</text>
@@ -198,7 +198,7 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node15 -->
-<g id="edge17" class="edge">
+<g id="edge13" class="edge">
 <title>Node2&#45;&gt;Node15</title>
 <path fill="none" stroke="#191970" d="M53.4272,-269.4995C58.6931,-237.7431 79.9425,-134.1822 140,-79 143.5728,-75.7172 147.5958,-72.863 151.8702,-70.3816"/>
 <polygon fill="#191970" stroke="#191970" points="153.5916,-73.4332 160.9332,-65.7943 150.4303,-67.1876 153.5916,-73.4332"/>
@@ -213,55 +213,25 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node16 -->
-<g id="edge18" class="edge">
+<g id="edge14" class="edge">
 <title>Node2&#45;&gt;Node16</title>
 <path fill="none" stroke="#191970" d="M52.3627,-269.4382C54.2921,-232.6037 66.3116,-98.5443 140,-30 142.1649,-27.9863 144.5131,-26.172 146.9957,-24.5377"/>
 <polygon fill="#191970" stroke="#191970" points="148.8101,-27.5343 155.8834,-19.6463 145.4349,-21.4017 148.8101,-27.5343"/>
 </g>
-<!-- Node6 -->
-<g id="node5" class="node">
-<title>Node6</title>
-<g id="a_node5"><a xlink:href="namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" target="_top" xlink:title="tethex::d2s">
-<polygon fill="#ffffff" stroke="#000000" points="322,-247.5 322,-266.5 387,-266.5 387,-247.5 322,-247.5"/>
-<text text-anchor="middle" x="354.5" y="-254.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::d2s</text>
+<!-- Node9 -->
+<g id="node8" class="node">
+<title>Node9</title>
+<g id="a_node8"><a xlink:href="namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" target="_top" xlink:title="tethex::d2s">
+<polygon fill="#ffffff" stroke="#000000" points="322,-318.5 322,-337.5 387,-337.5 387,-318.5 322,-318.5"/>
+<text text-anchor="middle" x="354.5" y="-325.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::d2s</text>
 </a>
 </g>
 </g>
-<!-- Node5&#45;&gt;Node6 -->
-<g id="edge4" class="edge">
-<title>Node5&#45;&gt;Node6</title>
-<path fill="none" stroke="#191970" d="M271.4736,-450.4364C276.7607,-447.9577 281.7236,-444.862 286,-441 334.8317,-396.9008 348.9687,-314.6909 352.9689,-276.9164"/>
-<polygon fill="#191970" stroke="#191970" points="356.4768,-276.9909 353.9121,-266.7112 349.5065,-276.3466 356.4768,-276.9909"/>
-</g>
-<!-- Node8&#45;&gt;Node6 -->
+<!-- Node8&#45;&gt;Node9 -->
 <g id="edge7" class="edge">
-<title>Node8&#45;&gt;Node6</title>
-<path fill="none" stroke="#191970" d="M267.5015,-362.3887C274.0479,-359.9374 280.3905,-356.861 286,-353 314.537,-333.3579 335.2755,-297.7426 346.0578,-275.8499"/>
-<polygon fill="#191970" stroke="#191970" points="349.3209,-277.1362 350.4229,-266.5988 342.9902,-274.1491 349.3209,-277.1362"/>
-</g>
-<!-- Node9&#45;&gt;Node6 -->
-<g id="edge9" class="edge">
-<title>Node9&#45;&gt;Node6</title>
-<path fill="none" stroke="#191970" d="M265.1767,-312.8657C272.3034,-310.2179 279.4235,-307.2542 286,-304 303.2246,-295.4769 321.0768,-283.0928 334.2365,-273.1763"/>
-<polygon fill="#191970" stroke="#191970" points="336.7479,-275.6596 342.532,-266.783 332.4748,-270.1152 336.7479,-275.6596"/>
-</g>
-<!-- Node12&#45;&gt;Node6 -->
-<g id="edge13" class="edge">
-<title>Node12&#45;&gt;Node6</title>
-<path fill="none" stroke="#191970" d="M258.3597,-195.6033C267.737,-198.3627 277.3778,-201.7956 286,-206 304.5842,-215.0622 323.2481,-229.3851 336.3901,-240.5481"/>
-<polygon fill="#191970" stroke="#191970" points="334.337,-243.4018 344.1726,-247.3405 338.94,-238.128 334.337,-243.4018"/>
-</g>
-<!-- Node14&#45;&gt;Node6 -->
-<g id="edge16" class="edge">
-<title>Node14&#45;&gt;Node6</title>
-<path fill="none" stroke="#191970" d="M268.1495,-107.572C274.5901,-110.2413 280.7307,-113.6496 286,-118 324.0626,-149.4251 342.7514,-207.2006 350.2859,-237.4165"/>
-<polygon fill="#191970" stroke="#191970" points="346.8888,-238.2606 352.5724,-247.2019 353.7052,-236.6678 346.8888,-238.2606"/>
-</g>
-<!-- Node16&#45;&gt;Node6 -->
-<g id="edge19" class="edge">
-<title>Node16&#45;&gt;Node6</title>
-<path fill="none" stroke="#191970" d="M270.678,-19.6055C276.3177,-22.2872 281.5772,-25.6892 286,-30 316.2888,-59.5213 342.0887,-187.9137 351.0901,-237.4263"/>
-<polygon fill="#191970" stroke="#191970" points="347.681,-238.2464 352.8819,-247.4768 354.5723,-237.0177 347.681,-238.2464"/>
+<title>Node8&#45;&gt;Node9</title>
+<path fill="none" stroke="#191970" d="M268.1128,-328C282.5826,-328 297.9711,-328 311.6897,-328"/>
+<polygon fill="#191970" stroke="#191970" points="311.8122,-331.5001 321.8121,-328 311.8121,-324.5001 311.8122,-331.5001"/>
 </g>
 </g>
 </svg>

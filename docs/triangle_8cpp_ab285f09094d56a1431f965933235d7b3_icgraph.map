@@ -1,5 +1,6 @@
 <map id="writeedges" name="writeedges">
-<area shape="rect" id="node2" href="$triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. " alt="" coords="139,5,221,32"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a7bc9c5a5297dee136ab1489a923182dd" title="Generate mesh. " alt="" coords="269,5,435,32"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="483,5,533,32"/>
+<area shape="rect" id="node2" href="$triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. " alt="" coords="139,5,221,32"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="Generate mesh. " alt="" coords="269,5,435,32"/>
+<area shape="rect" id="node4" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="483,5,676,32"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="724,5,775,32"/>
 </map>

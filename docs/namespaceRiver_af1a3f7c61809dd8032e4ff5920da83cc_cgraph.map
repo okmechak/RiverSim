@@ -1,0 +1,51 @@
+<map id="River::ForwardRiverEvolution" name="River::ForwardRiverEvolution">
+<area shape="rect" id="node2" href="$namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7" title="Finnal Boudary Geneartor Class. " alt="" coords="258,325,431,352"/>
+<area shape="rect" id="node5" href="$classRiver_1_1Tree.html#a47f13208e26100fb6f1301ebd6a1daf0" title="Returns link to branch with id. " alt="" coords="764,427,921,453"/>
+<area shape="rect" id="node14" href="$classRiver_1_1Tree.html#a4563499cba0aa908a7c4c849bacaad41" title="Returns vector of tip branches Points. " alt="" coords="269,641,420,668"/>
+<area shape="rect" id="node15" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="Generate mesh. " alt="" coords="262,692,427,719"/>
+<area shape="rect" id="node28" href="$classRiver_1_1Solver.html#a8d0a93ada5df466e04ef2eca9a5efe49" title="River::Solver::SetBoundary\lRegionValue" alt="" coords="254,743,435,785"/>
+<area shape="rect" id="node29" href="$classRiver_1_1Model.html#a2dce19c362748f76f810de451ec4cb09" title="River::Model::GetZeroIndices" alt="" coords="248,809,441,836"/>
+<area shape="rect" id="node30" href="$classRiver_1_1Model.html#ab8e5c29a609f7b5a32f3907c56b2644a" title="River::Model::GetNonZero\lIndices" alt="" coords="257,861,432,902"/>
+<area shape="rect" id="node31" href="$classRiver_1_1Solver.html#ab82147ca4342c3c4d038a17824437a53" title="River::Solver::OpenMesh" alt="" coords="260,927,429,953"/>
+<area shape="rect" id="node32" href="$classRiver_1_1Solver.html#a4222fe744d607f870a5d7d22b11e8334" title="River::Solver::run" alt="" coords="283,977,407,1004"/>
+<area shape="rect" id="node38" href="$classRiver_1_1Tree.html#a52cafbadef53e2fe40b26dd1ca5aa350" title="Returns vector of tip branches ids. " alt="" coords="255,1028,434,1055"/>
+<area shape="rect" id="node39" href="$classRiver_1_1BranchNew.html#a413cf341c51f3c40648394d78b6bafbc" title="Return TipPoint of branch(last point in branch) " alt="" coords="252,1079,437,1105"/>
+<area shape="rect" id="node40" href="$classRiver_1_1BranchNew.html#a93139b44ba252c1ea9dfc86edf9c8067" title="Returns angle of tip of branch. " alt="" coords="251,1129,439,1156"/>
+<area shape="rect" id="node41" href="$classRiver_1_1Solver.html#a66fbdd0a7309f3c278de7e3e46a0fda8" title="River::Solver::integrate" alt="" coords="267,1180,423,1207"/>
+<area shape="rect" id="node44" href="$classRiver_1_1Model.html#a1dbc3e6176af5470bf3fded3ee725f7b" title="Checks by evaluating series param for growth condition. " alt="" coords="266,1231,423,1257"/>
+<area shape="rect" id="node45" href="$classRiver_1_1Model.html#a13d66be4045b141c13b6e16e472afe44" title="Checks by evaluating series params for biffuraction condition. " alt="" coords="259,1281,431,1308"/>
+<area shape="rect" id="node46" href="$classRiver_1_1Tree.html#ae42603046cab7443cf549cbfb94c3351" title="Adds Sub Branches left_bracnhs, right_branch to root_branch_id. " alt="" coords="247,1332,443,1359"/>
+<area shape="rect" id="node47" href="$classRiver_1_1BranchNew.html#a81a7a1477541ef4310d9e49197643146" title="Adds point p to branch in tip relative coord system. " alt="" coords="249,1383,440,1409"/>
+<area shape="rect" id="node48" href="$classRiver_1_1Model.html#ad22bc4fecfe36e2cde033df2a5220c07" title="Evaluate next point of simualtion based on series parameters around tip. " alt="" coords="280,1434,409,1475"/>
+<area shape="rect" id="node50" href="$classRiver_1_1Solver.html#aa3edfad041ae11e84fb29720e2eb7b80" title="River::Solver::clear" alt="" coords="277,1500,412,1527"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Border.html#a666af04bf7a9be4fce8dac5fabcd8b31" title="River::Border::SourceByVertice\lIdMap" alt="" coords="491,318,696,359"/>
+<area shape="rect" id="node4" href="$namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a" title="Generates trees boundary. " alt="" coords="531,245,656,272"/>
+<area shape="rect" id="node6" href="$classRiver_1_1BranchNew.html#ad31e9de44351f77a06bce668094cf2f4" title="Returns number of points in branch. " alt="" coords="761,376,924,403"/>
+<area shape="rect" id="node7" href="$classRiver_1_1BranchNew.html#a1e3a5b41f9e8e0a0336ad298cf4de281" title="Returns i&#45;th point vector. " alt="" coords="749,5,937,32"/>
+<area shape="rect" id="node8" href="$classRiver_1_1BranchNew.html#a5d3d81efc31f625bbddcbd5b17f405b9" title="Returns SourceAngle of branch &#45; initial source_angle " alt="" coords="753,57,932,98"/>
+<area shape="rect" id="node9" href="$classRiver_1_1BranchNew.html#a4e49c832969fde3d72bf9049a819cc04" title="Returns vector of i&#45;th segment of branch. " alt="" coords="755,123,930,149"/>
+<area shape="rect" id="node10" href="$classRiver_1_1Point.html#aa6005dcc4bb5ded97a0b9a5eb28bc528" title="Normalizes current Point. " alt="" coords="765,173,920,200"/>
+<area shape="rect" id="node11" href="$classRiver_1_1Point.html#a99648a8a3af61babbcbcdbe0de12db71" title="Rotates point on phi angle(counterclockwise) " alt="" coords="777,224,909,251"/>
+<area shape="rect" id="node12" href="$classRiver_1_1Tree.html#a69137f4816bba370246bb6c6bc40432e" title="Checks if Branch branch_id has subbranches. " alt="" coords="744,275,941,301"/>
+<area shape="rect" id="node13" href="$classRiver_1_1Tree.html#ae31f3d283572b952d587b171a26a07ee" title="Returns pair of ids of subranches. " alt="" coords="745,325,940,352"/>
+<area shape="rect" id="node16" href="$classRiver_1_1Triangle.html#af65f8816f88a34c015cd5ca66aca1aef" title="o2 &#45; generates second order mesh " alt="" coords="518,815,669,857"/>
+<area shape="rect" id="node19" href="$classRiver_1_1Triangle.html#aef5e3aa8a5f87ca8557c1a0886b925c3" title="Converts tethex::Mesh to triangulateio used by Triangle. " alt="" coords="518,619,669,661"/>
+<area shape="rect" id="node20" href="$classRiver_1_1Triangle.html#ab4a007be4739f8e3781b190f5c6c0b09" title="Outputs to consloe geometry. " alt="" coords="523,554,663,595"/>
+<area shape="rect" id="node21" href="$triangle_8cpp.html#a2437307f91cae6cb54bd21bdfc561597" title="Call Triangle. " alt="" coords="552,503,635,529"/>
+<area shape="rect" id="node26" href="$classRiver_1_1Triangle.html#ace837080fe12b6a062b3256288885d74" title="Converts triangulateio to tethex::Mesh used by rest of program. " alt="" coords="531,685,656,726"/>
+<area shape="rect" id="node27" href="$classRiver_1_1Triangle.html#a3f7788026746dcc85d607cfe375b7d20" title="Freeups allocated memory for interface variables(in, out, vorout). " alt="" coords="525,750,662,791"/>
+<area shape="rect" id="node17" href="$classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" title="Updates options bassing on interface flags. " alt="" coords="765,815,920,857"/>
+<area shape="rect" id="node18" href="$triangle_8cpp.html#a2a3ed65e621942ea855e7b2b59a16b96" title="Set the triangulateio structure to default values. " alt="" coords="778,709,907,736"/>
+<area shape="rect" id="node22" href="$triangle_8cpp.html#affc45e9bc533a0e18b0d5ba8dc1409e9" title="triangleinit" alt="" coords="802,629,883,656"/>
+<area shape="rect" id="node23" href="$triangle_8cpp.html#af155f553f3ca55deda271a63bff8117a" title="parsecommandline" alt="" coords="777,477,908,504"/>
+<area shape="rect" id="node24" href="$triangle_8cpp.html#aa2533f1e76d587a6bed1eb2e56d3713c" title="transfernodes" alt="" coords="792,528,893,555"/>
+<area shape="rect" id="node25" href="$triangle_8cpp.html#a711adeeb3c28e4f2e3e173d729912c13" title="reconstruct" alt="" coords="799,579,886,605"/>
+<area shape="rect" id="node33" href="$classRiver_1_1Solver.html#a01eb2f2d7229b100f6da98420be1449f" title="River::Solver::refine_grid" alt="" coords="510,999,677,1025"/>
+<area shape="rect" id="node34" href="$classRiver_1_1Solver.html#adba0a10f694b0193b449efc4c68d7418" title="River::Solver::setup\l_system" alt="" coords="524,1050,663,1091"/>
+<area shape="rect" id="node35" href="$classRiver_1_1Solver.html#af16fb58ac78609220538d62c2c491249" title="River::Solver::assemble\l_system" alt="" coords="512,1115,675,1157"/>
+<area shape="rect" id="node36" href="$classRiver_1_1Solver.html#acc631ad7d750f35bd33430a2b0410efe" title="River::Solver::solve" alt="" coords="525,881,662,908"/>
+<area shape="rect" id="node37" href="$classRiver_1_1Solver.html#a328be2cd9739561d1d97ac6e59ebe261" title="River::Solver::output\l_results" alt="" coords="522,933,665,974"/>
+<area shape="rect" id="node42" href="$classRiver_1_1IntegrationParams.html#aa249fc71c13c39e0698b21d461eb7e09" title="Weight function used in computation of series parameters. " alt="" coords="510,1246,677,1287"/>
+<area shape="rect" id="node43" href="$classRiver_1_1IntegrationParams.html#aac7570ed475400eed41c4499d95fe072" title="Base Vector function used in computation of series parameters. " alt="" coords="510,1181,677,1222"/>
+<area shape="rect" id="node49" href="$classRiver_1_1Point.html#a5a80f76067f92be8434cafff8cf55380" title="Returns Polar representation of vector. " alt="" coords="520,1441,667,1468"/>
+</map>

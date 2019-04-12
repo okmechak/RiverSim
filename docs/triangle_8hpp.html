@@ -94,7 +94,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtriangulateio.html">triangulateio</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to pass data into and out of the <a class="el" href="triangle_8cpp.html#a3a02be6afba3cc27cf3fb951ecb081c5" title="Call Triangle. ">triangulate()</a> procedure.  <a href="structtriangulateio.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to pass data into and out of the <a class="el" href="triangle_8cpp.html#a2437307f91cae6cb54bd21bdfc561597" title="Call Triangle. ">triangulate()</a> procedure.  <a href="structtriangulateio.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -106,9 +106,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a848df2990f66cdbdc9d1ac87f4646527"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527">triangulate</a> (const char *, struct <a class="el" href="structtriangulateio.html">triangulateio</a> *, struct <a class="el" href="structtriangulateio.html">triangulateio</a> *, struct <a class="el" href="structtriangulateio.html">triangulateio</a> *, <a class="el" href="classRiver_1_1AreaConstraint.html">River::AreaConstraint</a> *ac=NULL)</td></tr>
-<tr class="memdesc:a848df2990f66cdbdc9d1ac87f4646527"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call Triangle.  <a href="#a848df2990f66cdbdc9d1ac87f4646527">More...</a><br /></td></tr>
-<tr class="separator:a848df2990f66cdbdc9d1ac87f4646527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ca59bf5fe569672944651426b662ba6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6">triangulate</a> (const char *, struct <a class="el" href="structtriangulateio.html">triangulateio</a> *, struct <a class="el" href="structtriangulateio.html">triangulateio</a> *, struct <a class="el" href="structtriangulateio.html">triangulateio</a> *, <a class="el" href="classRiver_1_1MeshParams.html">River::MeshParams</a> *ac=NULL)</td></tr>
+<tr class="memdesc:a4ca59bf5fe569672944651426b662ba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call Triangle.  <a href="#a4ca59bf5fe569672944651426b662ba6">More...</a><br /></td></tr>
+<tr class="separator:a4ca59bf5fe569672944651426b662ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada47ea391d89d06dac40d6745756f8d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="triangle_8hpp.html#ada47ea391d89d06dac40d6745756f8d2">trifree</a> (void *memptr)</td></tr>
 <tr class="memdesc:ada47ea391d89d06dac40d6745756f8d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free memory.  <a href="#ada47ea391d89d06dac40d6745756f8d2">More...</a><br /></td></tr>
 <tr class="separator:ada47ea391d89d06dac40d6745756f8d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,8 +160,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a848df2990f66cdbdc9d1ac87f4646527"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a848df2990f66cdbdc9d1ac87f4646527">&#9670;&nbsp;</a></span>triangulate()</h2>
+<a id="a4ca59bf5fe569672944651426b662ba6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ca59bf5fe569672944651426b662ba6">&#9670;&nbsp;</a></span>triangulate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +193,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classRiver_1_1AreaConstraint.html">River::AreaConstraint</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classRiver_1_1MeshParams.html">River::MeshParams</a> *&#160;</td>
           <td class="paramname"><em>ac</em> = <code>NULL</code>&#160;</td>
         </tr>
         <tr>
@@ -206,10 +206,10 @@ Functions</h2></td></tr>
 
 <p>Call Triangle. </p>
 <p>If you haven't read Triangle's instructions (run "triangle -h" to read them), you won't understand what follows.</p>
-<p>Triangle must be compiled into an object file (triangle.o) with the TRILIBRARY symbol defined (generally by using the -DTRILIBRARY compiler switch). The makefile included with Triangle will do this for you if you run "make trilibrary". The resulting object file can be called via the procedure <a class="el" href="triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. ">triangulate()</a>.</p>
+<p>Triangle must be compiled into an object file (triangle.o) with the TRILIBRARY symbol defined (generally by using the -DTRILIBRARY compiler switch). The makefile included with Triangle will do this for you if you run "make trilibrary". The resulting object file can be called via the procedure <a class="el" href="triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. ">triangulate()</a>.</p>
 <p>If the size of the object file is important to you, you may wish to generate a reduced version of triangle.o. The REDUCED symbol gets rid of all features that are primarily of research interest. Specifically, the -DREDUCED switch eliminates Triangle's -i, -F, -s, and -C switches. The CDT_ONLY symbol gets rid of all meshing algorithms above and beyond constrained Delaunay triangulation. Specifically, the -DCDT_ONLY switch eliminates Triangle's -r, -q, -a, -u, -D, -Y, -S, and -s switches.</p>
 <p>IMPORTANT: These definitions (TRILIBRARY, REDUCED, CDT_ONLY) must be made in the makefile or in triangle.c itself. Putting these definitions in this file (<a class="el" href="triangle_8hpp.html" title="Piece of Art Mesh Generation Tool, Winner of the 2003 James Hardy Wilkinson Prize in Numerical Softwa...">triangle.hpp</a>) will not create the desired effect.</p>
-<p>The calling convention for <a class="el" href="triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. ">triangulate()</a> follows. </p><pre class="fragment">void triangulate(triswitches, in, out, vorout)                       
+<p>The calling convention for <a class="el" href="triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. ">triangulate()</a> follows. </p><pre class="fragment">void triangulate(triswitches, in, out, vorout)                       
 char *triswitches;                                                   
 struct triangulateio *in;                                            
 struct triangulateio *out;                                           
@@ -218,22 +218,22 @@ struct triangulateio *vorout;
 <ul>
 <li>You'll probably find it convenient to use the `z' switch so that points (and other items) are numbered from zero. This simplifies indexing, because the first item of any type always starts at index [0] of the corresponding array, whether that item's number is zero or one.</li>
 <li>You'll probably want to use the `Q' (quiet) switch in your final code, but you can take advantage of Triangle's printed output (including the `V' switch) while debugging.</li>
-<li>If you are not using the `q', `a', `u', `D', `j', or `s' switches, then the output points will be identical to the input points, except possibly for the boundary markers. If you don't need the boundary markers, you should use the `N' (no nodes output) switch to save memory. (If you do need boundary markers, but need to save memory, a good nasty trick is to set out-&gt;pointlist equal to in-&gt;pointlist before calling <a class="el" href="triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. ">triangulate()</a>, so that Triangle overwrites the input points with identical copies.)</li>
+<li>If you are not using the `q', `a', `u', `D', `j', or `s' switches, then the output points will be identical to the input points, except possibly for the boundary markers. If you don't need the boundary markers, you should use the `N' (no nodes output) switch to save memory. (If you do need boundary markers, but need to save memory, a good nasty trick is to set out-&gt;pointlist equal to in-&gt;pointlist before calling <a class="el" href="triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. ">triangulate()</a>, so that Triangle overwrites the input points with identical copies.)</li>
 <li>The `I' (no iteration numbers) and `g' (.off file output) switches have no effect when Triangle is compiled with TRILIBRARY defined.</li>
 </ul>
 <p>`in', `out', and `vorout' are descriptions of the input, the output, and the Voronoi output. If the `v' (Voronoi output) switch is not used, `vorout' may be NULL. `in' and `out' may never be NULL.</p>
 <p>Certain fields of the input and output structures must be initialized, as described above. </p>
 
-<p class="definition">Definition at line <a class="el" href="triangle_8cpp_source.html#l11394">11394</a> of file <a class="el" href="triangle_8cpp_source.html">triangle.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="triangle_8cpp_source.html#l11391">11391</a> of file <a class="el" href="triangle_8cpp_source.html">triangle.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a848df2990f66cdbdc9d1ac87f4646527_cgraph.svg" width="1144" height="2338"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a4ca59bf5fe569672944651426b662ba6_cgraph.svg" width="1144" height="2338"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a848df2990f66cdbdc9d1ac87f4646527_icgraph.svg" width="406" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a4ca59bf5fe569672944651426b662ba6_icgraph.svg" width="647" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -280,7 +280,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a97e75b06abc90f1edd5e926bf22ac430_icgraph.svg" width="623" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a97e75b06abc90f1edd5e926bf22ac430_icgraph.svg" width="864" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -313,7 +313,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a2a3ed65e621942ea855e7b2b59a16b96_icgraph.svg" width="651" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="triangle_8hpp_a2a3ed65e621942ea855e7b2b59a16b96_icgraph.svg" width="892" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -1,3 +1,4 @@
 <map id="River::Model::q_biffurcate" name="River::Model::q_biffurcate">
-<area shape="rect" id="node2" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="225,5,276,32"/>
+<area shape="rect" id="node2" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="225,5,419,32"/>
+<area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="467,5,517,32"/>
 </map>

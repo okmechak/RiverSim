@@ -9,16 +9,16 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 35)">
 <title>River::Triangle::print_options</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-35 261,-35 261,4 -4,4"/>
-<!-- Node29 -->
+<!-- Node30 -->
 <g id="node1" class="node">
-<title>Node29</title>
+<title>Node30</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-30.5 105,-30.5 105,-.5 0,-.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::print</text>
 <text text-anchor="middle" x="52.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_options</text>
 </g>
-<!-- Node30 -->
+<!-- Node31 -->
 <g id="node2" class="node">
-<title>Node30</title>
+<title>Node31</title>
 <g id="a_node2"><a xlink:href="classRiver_1_1Triangle.html#a98666335bc441895b9c13ba84d8f7981" target="_top" xlink:title="Updates options bassing on interface flags. ">
 <polygon fill="#ffffff" stroke="#000000" points="141,-.5 141,-30.5 257,-30.5 257,-.5 141,-.5"/>
 <text text-anchor="start" x="149" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Triangle::update</text>
@@ -26,9 +26,9 @@
 </a>
 </g>
 </g>
-<!-- Node29&#45;&gt;Node30 -->
+<!-- Node30&#45;&gt;Node31 -->
 <g id="edge1" class="edge">
-<title>Node29&#45;&gt;Node30</title>
+<title>Node30&#45;&gt;Node31</title>
 <path fill="none" stroke="#191970" d="M105.3899,-15.5C113.5474,-15.5 122.0708,-15.5 130.5097,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="130.7311,-19.0001 140.731,-15.5 130.731,-12.0001 130.7311,-19.0001"/>
 </g>

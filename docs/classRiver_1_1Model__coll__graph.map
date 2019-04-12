@@ -1,2 +1,4 @@
 <map id="River::Model" name="River::Model">
+<area shape="rect" id="node5" href="$classRiver_1_1MeshParams.html" title="Adaptive mesh area constraint function. " alt="" coords="11,246,150,323"/>
+<area shape="rect" id="node7" href="$classRiver_1_1IntegrationParams.html" title="{River::IntegrationParams\n||+ WeightFunction()\l+ BaseVector()\l}" alt="" coords="371,239,537,331"/>
 </map>

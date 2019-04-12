@@ -1,6 +1,7 @@
 <map id="River::BranchNew::Size" name="River::BranchNew::Size">
-<area shape="rect" id="node2" href="$namespaceRiver.html#aa5a21f7169be41bacdb7bab009a2e7be" title="Generates trees boundary. " alt="" coords="246,5,371,32"/>
-<area shape="rect" id="node5" href="$classRiver_1_1BranchNew.html#a4ae4087275d76ff330e81189638b1b86" title="Returns BranchNew::Lenght() divided by BranchNew::Size() " alt="" coords="216,57,401,98"/>
-<area shape="rect" id="node3" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="Finnal Boudary Geneartor Class. " alt="" coords="449,5,623,32"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="671,5,721,32"/>
+<area shape="rect" id="node2" href="$namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a" title="Generates trees boundary. " alt="" coords="246,5,371,32"/>
+<area shape="rect" id="node6" href="$classRiver_1_1BranchNew.html#a4ae4087275d76ff330e81189638b1b86" title="Returns BranchNew::Lenght() divided by BranchNew::Size() " alt="" coords="216,57,401,98"/>
+<area shape="rect" id="node3" href="$namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7" title="Finnal Boudary Geneartor Class. " alt="" coords="449,5,623,32"/>
+<area shape="rect" id="node4" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="671,5,864,32"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="912,5,963,32"/>
 </map>

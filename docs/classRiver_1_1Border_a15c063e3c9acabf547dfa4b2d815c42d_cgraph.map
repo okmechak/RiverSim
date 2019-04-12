@@ -1,5 +1,0 @@
-<map id="River::Border::MakeRectangular" name="River::Border::MakeRectangular">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#a58afefb6ba6371c3ba47ba6e8305ab05" title="Set the copy of vertex. " alt="" coords="263,5,444,32"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#a34d1d49f40a18e445d3e1afb7b6fafd0" title="Set the physical points. " alt="" coords="270,56,437,83"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#a893878b71e351600cbdee7db451bca9d" title="Set the physical lines. " alt="" coords="274,107,433,133"/>
-</map>

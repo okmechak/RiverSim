@@ -1,3 +1,4 @@
 <map id="River::Solver::OpenMesh" name="River::Solver::OpenMesh">
-<area shape="rect" id="node2" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="223,5,273,32"/>
+<area shape="rect" id="node2" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="223,5,416,32"/>
+<area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="464,5,515,32"/>
 </map>

@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['within',['WITHIN',['../triangle_8cpp.html#a15c836267235f634792362d21484b054aaf4f72867f549a6505e6ca054b27a1e6',1,'triangle.cpp']]]
+  ['name_5fseparator',['name_separator',['../classnlohmann_1_1detail_1_1lexer.html#a3f313cdbe187cababfc5e06f0b69b098acc3c64f8ae08c00de1b33f19a4d2913a',1,'nlohmann::detail::lexer']]],
+  ['null',['null',['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985a37a6259cc0c1dae299a7866489dff0bd',1,'nlohmann::detail']]],
+  ['number_5ffloat',['number_float',['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985ad9966ecb59667235a57b4b999a649eef',1,'nlohmann::detail']]],
+  ['number_5finteger',['number_integer',['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985a5763da164f8659d94a56e29df64b4bcc',1,'nlohmann::detail']]],
+  ['number_5funsigned',['number_unsigned',['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985adce7cc8ec29055c4158828921f2f265e',1,'nlohmann::detail']]]
 ];

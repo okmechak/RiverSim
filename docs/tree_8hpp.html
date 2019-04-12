@@ -80,6 +80,7 @@ $(function() {
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 <code>#include &quot;<a class="el" href="common_8hpp_source.html">common.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tethex_8hpp_source.html">tethex.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="physmodel_8hpp_source.html">physmodel.hpp</a>&quot;</code><br />
@@ -87,12 +88,12 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tree.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tree_8hpp__incl.svg" width="924" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tree_8hpp__incl.svg" width="1050" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tree_8hpp__dep__incl.svg" width="460" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tree_8hpp__dep__incl.svg" width="486" height="320"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="tree_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -114,12 +115,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa5a21f7169be41bacdb7bab009a2e7be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#aa5a21f7169be41bacdb7bab009a2e7be">River::TreeVector</a> (vector&lt; Point &gt; &amp;tree_vector, int id, Tree &amp;tr, double eps)</td></tr>
-<tr class="memdesc:aa5a21f7169be41bacdb7bab009a2e7be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates trees boundary.  <a href="namespaceRiver.html#aa5a21f7169be41bacdb7bab009a2e7be">More...</a><br /></td></tr>
-<tr class="separator:aa5a21f7169be41bacdb7bab009a2e7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa226e8aa15b4b21c82a2ea177e1faee6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1Mesh.html">tethex::Mesh</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6">River::BoundaryGenerator</a> (const Model &amp;mdl, Tree &amp;tr, Border &amp;br, int boundary_id)</td></tr>
-<tr class="memdesc:aa226e8aa15b4b21c82a2ea177e1faee6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finnal Boudary Geneartor Class.  <a href="namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6">More...</a><br /></td></tr>
-<tr class="separator:aa226e8aa15b4b21c82a2ea177e1faee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace7057edc24ee07f8265dad28b73a41a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a">River::TreeVector</a> (vector&lt; Point &gt; &amp;tree_vector, int id, const Tree &amp;tree, double eps)</td></tr>
+<tr class="memdesc:ace7057edc24ee07f8265dad28b73a41a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates trees boundary.  <a href="namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a">More...</a><br /></td></tr>
+<tr class="separator:ace7057edc24ee07f8265dad28b73a41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43d55da8d0508b984518c4ebed6e0ad7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1Mesh.html">tethex::Mesh</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7">River::BoundaryGenerator</a> (const Model &amp;mdl, const Tree &amp;tree, const Border &amp;br)</td></tr>
+<tr class="memdesc:a43d55da8d0508b984518c4ebed6e0ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finnal Boudary Geneartor Class.  <a href="namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7">More...</a><br /></td></tr>
+<tr class="separator:a43d55da8d0508b984518c4ebed6e0ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry. </p>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['subseg',['subseg',['../triangle_8cpp.html#ab3c08a79b1e89941155cf26a101aff57',1,'triangle.cpp']]]
+  ['json',['json',['../io_8cpp.html#ab701e3ac61a85b337ec5c1abaad6742d',1,'io.cpp']]]
 ];

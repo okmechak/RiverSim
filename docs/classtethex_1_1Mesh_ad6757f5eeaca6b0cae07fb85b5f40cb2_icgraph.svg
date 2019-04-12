@@ -9,31 +9,31 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 57)">
 <title>tethex::Mesh::edge_numeration</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-57 567,-57 567,4 -4,4"/>
-<!-- Node221 -->
+<!-- Node181 -->
 <g id="node1" class="node">
-<title>Node221</title>
+<title>Node181</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-22.5 0,-52.5 101,-52.5 101,-22.5 0,-22.5"/>
 <text text-anchor="start" x="8" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::edge</text>
 <text text-anchor="middle" x="50.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">_numeration</text>
 </g>
-<!-- Node222 -->
+<!-- Node182 -->
 <g id="node2" class="node">
-<title>Node222</title>
+<title>Node182</title>
 <g id="a_node2"><a xlink:href="classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" target="_top" xlink:title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) ">
 <polygon fill="#ffffff" stroke="#000000" points="285,-28 285,-47 415,-47 415,-28 285,-28"/>
 <text text-anchor="middle" x="350" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert_2D</text>
 </a>
 </g>
 </g>
-<!-- Node221&#45;&gt;Node222 -->
+<!-- Node181&#45;&gt;Node182 -->
 <g id="edge1" class="edge">
-<title>Node221&#45;&gt;Node222</title>
+<title>Node181&#45;&gt;Node182</title>
 <path fill="none" stroke="#191970" d="M111.2947,-39.8743C119.9226,-40.1338 128.6851,-40.3559 137,-40.5 186.7703,-41.3628 199.2277,-41.239 249,-40.5 260.5767,-40.3281 272.8974,-40.0454 284.809,-39.7206"/>
 <polygon fill="#191970" stroke="#191970" points="111.3693,-36.375 101.2629,-39.5549 111.1464,-43.3715 111.3693,-36.375"/>
 </g>
-<!-- Node224 -->
+<!-- Node184 -->
 <g id="node4" class="node">
-<title>Node224</title>
+<title>Node184</title>
 <g id="a_node4"><a xlink:href="classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" target="_top" xlink:title="Conversion from triangles to quadrangles. ">
 <polygon fill="#ffffff" stroke="#000000" points="137,-.5 137,-30.5 249,-30.5 249,-.5 137,-.5"/>
 <text text-anchor="start" x="145" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
@@ -41,30 +41,30 @@
 </a>
 </g>
 </g>
-<!-- Node221&#45;&gt;Node224 -->
+<!-- Node181&#45;&gt;Node184 -->
 <g id="edge3" class="edge">
-<title>Node221&#45;&gt;Node224</title>
+<title>Node181&#45;&gt;Node184</title>
 <path fill="none" stroke="#191970" d="M111.2955,-28.114C119.728,-26.8122 128.3602,-25.4795 136.7058,-24.191"/>
 <polygon fill="#191970" stroke="#191970" points="110.4903,-24.6968 101.1414,-29.6817 111.5584,-31.6148 110.4903,-24.6968"/>
 </g>
-<!-- Node223 -->
+<!-- Node183 -->
 <g id="node3" class="node">
-<title>Node223</title>
+<title>Node183</title>
 <g id="a_node3"><a xlink:href="classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" target="_top" xlink:title="Conversion from simplices to bricks. ">
 <polygon fill="#ffffff" stroke="#000000" points="451,-28 451,-47 563,-47 563,-28 451,-28"/>
 <text text-anchor="middle" x="507" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">tethex::Mesh::convert</text>
 </a>
 </g>
 </g>
-<!-- Node222&#45;&gt;Node223 -->
+<!-- Node182&#45;&gt;Node183 -->
 <g id="edge2" class="edge">
-<title>Node222&#45;&gt;Node223</title>
+<title>Node182&#45;&gt;Node183</title>
 <path fill="none" stroke="#191970" d="M425.2433,-37.5C433.8245,-37.5 442.4576,-37.5 450.7317,-37.5"/>
 <polygon fill="#191970" stroke="#191970" points="425.2182,-34.0001 415.2182,-37.5 425.2182,-41.0001 425.2182,-34.0001"/>
 </g>
-<!-- Node224&#45;&gt;Node222 -->
+<!-- Node184&#45;&gt;Node182 -->
 <g id="edge4" class="edge">
-<title>Node224&#45;&gt;Node222</title>
+<title>Node184&#45;&gt;Node182</title>
 <path fill="none" stroke="#191970" d="M259.3808,-24.8018C267.7962,-25.981 276.402,-27.1869 284.7987,-28.3635"/>
 <polygon fill="#191970" stroke="#191970" points="259.6261,-21.302 249.2372,-23.3804 258.6547,-28.2343 259.6261,-21.302"/>
 </g>

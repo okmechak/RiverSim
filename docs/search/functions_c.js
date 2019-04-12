@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['open',['open',['../classRiver_1_1Gmsh.html#a1fb9948bbf52b97b066880954919850c',1,'River::Gmsh']]],
+  ['open',['Open',['../namespaceRiver.html#ab2e6cbc1f3bbe0e9879ff60bb4a6df3c',1,'River']]],
   ['openmesh',['OpenMesh',['../classRiver_1_1Solver.html#ab82147ca4342c3c4d038a17824437a53',1,'River::Solver']]],
-  ['operator_28_29',['operator()',['../structstd_1_1hash_3_01pair_3_01int_00_01int_01_4_01_4.html#a53fc40f4e74044e2557eb4bd779cc374',1,'std::hash&lt; pair&lt; int, int &gt; &gt;::operator()()'],['../classRiver_1_1AreaConstraint.html#a6daaba51c92933b79474e174654678a4',1,'River::AreaConstraint::operator()()']]],
+  ['operator_28_29',['operator()',['../structstd_1_1hash_3_01pair_3_01int_00_01int_01_4_01_4.html#a53fc40f4e74044e2557eb4bd779cc374',1,'std::hash&lt; pair&lt; int, int &gt; &gt;::operator()()'],['../classRiver_1_1MeshParams.html#aa6576b1daa814e2f0fc4a01e2dbf8e6a',1,'River::MeshParams::operator()()']]],
   ['operator_2a',['operator*',['../classRiver_1_1Point.html#ad7c4ee4de8f94900f79c708061b7f8ee',1,'River::Point::operator*(const Point &amp;p) const'],['../classRiver_1_1Point.html#ac93f900f6f442f5ba1ee79f7c7a2d551',1,'River::Point::operator*(const double gain) const']]],
   ['operator_2a_3d',['operator*=',['../classRiver_1_1Point.html#acbf633a9c143747ba794c5b40199c51a',1,'River::Point']]],
   ['operator_2b',['operator+',['../classRiver_1_1Point.html#ab314f2dc1d919d9e215ba22a1fc478b8',1,'River::Point']]],

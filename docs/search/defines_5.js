@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['inexact',['INEXACT',['../triangle_8cpp.html#ad49beae4f708cdfe26352d865ed2eb95',1,'triangle.cpp']]],
-  ['infect',['infect',['../triangle_8cpp.html#a3ff90b2651e2330cf85c2e462f4791c0',1,'triangle.cpp']]],
-  ['infected',['infected',['../triangle_8cpp.html#ae1feaef3ebe846d261b9193139a22b7b',1,'triangle.cpp']]],
-  ['inputlinesize',['INPUTLINESIZE',['../triangle_8cpp.html#a402e023bf75621df7eb202c28a8b59c5',1,'triangle.cpp']]],
-  ['inputvertex',['INPUTVERTEX',['../triangle_8cpp.html#a9818c8a0df42e65b01124594baa4895f',1,'triangle.cpp']]],
-  ['int_5fptr',['INT_PTR',['../triangle_8cpp.html#af9141fb557ba7e8dae6682c4ec222402',1,'triangle.cpp']]]
+  ['fast_5ftwo_5fsum',['Fast_Two_Sum',['../triangle_8cpp.html#ae85afbfee038480d9baf7796514cb121',1,'triangle.cpp']]],
+  ['fast_5ftwo_5fsum_5ftail',['Fast_Two_Sum_Tail',['../triangle_8cpp.html#afdb937df435c24d5c402eb0fdd97f6da',1,'triangle.cpp']]],
+  ['filenamesize',['FILENAMESIZE',['../triangle_8cpp.html#a373ac5e350a5f9d149a7ff93a6188a47',1,'triangle.cpp']]],
+  ['flipstackerperblock',['FLIPSTACKERPERBLOCK',['../triangle_8cpp.html#acd8946cc1a91525488276334039fc639',1,'triangle.cpp']]],
+  ['freevertex',['FREEVERTEX',['../triangle_8cpp.html#a54bbac8e5f8ffc3dd88586416678064c',1,'triangle.cpp']]]
 ];

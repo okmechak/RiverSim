@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tip_5fpoints',['tip_points',['../classRiver_1_1AreaConstraint.html#aee6337723b718a9c8414cfab0aa74da6',1,'River::AreaConstraint']]],
+  ['tip_5fpoints',['tip_points',['../classRiver_1_1MeshParams.html#aea141b8cc3b209e769e58e7963b9250f',1,'River::MeshParams']]],
   ['tri',['tri',['../structotri.html#a238238ab7eb61074eceb8382b6bdc835',1,'otri']]],
   ['triangapex',['triangapex',['../structbadtriang.html#a44ad69b4811716b4adf50f50b98ab7f0',1,'badtriang']]],
   ['triangdest',['triangdest',['../structbadtriang.html#ab1ad44ac98c5e8fd7940ad45f6ef25d1',1,'badtriang']]],

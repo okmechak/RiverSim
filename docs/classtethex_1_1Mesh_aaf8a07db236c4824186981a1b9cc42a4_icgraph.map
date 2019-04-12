@@ -1,5 +1,6 @@
 <map id="tethex::Mesh::set_triangles" name="tethex::Mesh::set_triangles">
 <area shape="rect" id="node2" href="$classRiver_1_1Triangle.html#ace837080fe12b6a062b3256288885d74" title="Converts triangulateio to tethex::Mesh used by rest of program. " alt="" coords="233,5,359,47"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a7bc9c5a5297dee136ab1489a923182dd" title="Generate mesh. " alt="" coords="407,13,572,39"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="620,13,671,39"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="Generate mesh. " alt="" coords="407,13,572,39"/>
+<area shape="rect" id="node4" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="620,13,813,39"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="861,13,912,39"/>
 </map>

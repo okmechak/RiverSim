@@ -1,0 +1,25 @@
+<map id="nlohmann::basic_json::patch" name="nlohmann::basic_json::patch">
+<area shape="rect" id="node2" href="$classnlohmann_1_1json__pointer.html#a649252bda4a2e75a0915b11a25d8bcc3" title="return whether pointer points to the root document " alt="" coords="215,5,371,47"/>
+<area shape="rect" id="node3" href="$classnlohmann_1_1json__pointer.html#a00eff109d9a0091e42ada9b16b90c8d9" title="nlohmann::json_pointer::top" alt="" coords="201,370,384,397"/>
+<area shape="rect" id="node4" href="$classnlohmann_1_1detail_1_1out__of__range.html#a3f6d82a6f967c4728a1ec735a7867073" title="nlohmann::detail::out\l_of_range::create" alt="" coords="442,312,585,353"/>
+<area shape="rect" id="node6" href="$classnlohmann_1_1basic__json.html#a73ae333487310e3302135189ce8ff5d8" title="access specified array element with bounds checking " alt="" coords="209,421,376,447"/>
+<area shape="rect" id="node8" href="$classnlohmann_1_1json__pointer.html#a6bd5b554c10f15672135c216893eef31" title="return last reference token " alt="" coords="215,123,371,164"/>
+<area shape="rect" id="node9" href="$classnlohmann_1_1json__pointer.html#a4b1ee4d511ca195bed896a3da47e264c" title="remove last reference token " alt="" coords="215,188,371,229"/>
+<area shape="rect" id="node10" href="$classnlohmann_1_1basic__json.html#ac8e523ddc8c2dd7e5d2daf0d49a9c0d7" title="add an object to an array " alt="" coords="219,472,367,513"/>
+<area shape="rect" id="node11" href="$classnlohmann_1_1json__pointer.html#ac53f5b79dd91da78743c437832f57ce4" title="nlohmann::json_pointer\l::array_index" alt="" coords="215,253,371,295"/>
+<area shape="rect" id="node12" href="$classnlohmann_1_1basic__json.html#a25e27ad0c6d53c01871c5485e1f75b96" title="returns the number of elements " alt="" coords="219,720,367,761"/>
+<area shape="rect" id="node13" href="$classnlohmann_1_1basic__json.html#a0136728f5db69d4051c77b94307abd6c" title="inserts element " alt="" coords="219,603,367,644"/>
+<area shape="rect" id="node15" href="$classnlohmann_1_1basic__json.html#a0ff28dac23f2bdecee9564d07f51dcdc" title="returns an iterator to the first element " alt="" coords="219,785,367,827"/>
+<area shape="rect" id="node17" href="$classnlohmann_1_1basic__json.html#af8f511af124e82e4579f444b4175787c" title="return whether value is an object " alt="" coords="219,851,367,892"/>
+<area shape="rect" id="node18" href="$classnlohmann_1_1basic__json.html#a89eb3928f57903677051c80534be9cb1" title="find an element in a JSON object " alt="" coords="219,916,367,957"/>
+<area shape="rect" id="node19" href="$classnlohmann_1_1basic__json.html#a13e032a02a7fd8a93fdddc2fcbc4763c" title="returns an iterator to one past the last element " alt="" coords="204,982,381,1009"/>
+<area shape="rect" id="node21" href="$classnlohmann_1_1basic__json.html#a068a16e76be178e83da6a192916923ed" title="remove element given an iterator " alt="" coords="219,537,367,579"/>
+<area shape="rect" id="node22" href="$classnlohmann_1_1basic__json.html#aef9ce5dd2381caee1f8ddcdb5bdd9c65" title="return whether value is an array " alt="" coords="219,1033,367,1075"/>
+<area shape="rect" id="node23" href="$classnlohmann_1_1detail_1_1parse__error.html#a137ea4d27de45d8a844fd13451d40f3d" title="create a parse error exception " alt="" coords="435,632,592,673"/>
+<area shape="rect" id="node24" href="$classnlohmann_1_1detail_1_1other__error.html#a87e8ab894e8c85c0d97a0919782d3683" title="nlohmann::detail::other\l_error::create" alt="" coords="436,156,591,197"/>
+<area shape="rect" id="node5" href="$classnlohmann_1_1detail_1_1exception.html#abf41a7e9178356314082284e6cfea278" title="nlohmann::detail::exception\l::name" alt="" coords="643,472,824,513"/>
+<area shape="rect" id="node7" href="$classnlohmann_1_1detail_1_1type__error.html#aecc083aea4b698c33d042670ba50c10f" title="nlohmann::detail::type\l_error::create" alt="" coords="438,472,589,513"/>
+<area shape="rect" id="node14" href="$classnlohmann_1_1detail_1_1invalid__iterator.html#a4e849260a3caa1b288c7e619130c6c09" title="nlohmann::detail::invalid\l_iterator::create" alt="" coords="432,537,595,579"/>
+<area shape="rect" id="node16" href="$classnlohmann_1_1detail_1_1iter__impl.html#a5d5f92c7f6848814bc82cf7e4e541820" title="set the iterator to the first value " alt="" coords="442,785,585,827"/>
+<area shape="rect" id="node20" href="$classnlohmann_1_1detail_1_1iter__impl.html#a23e50ad4c13aa62d9ac7f60a123823ee" title="set the iterator past the last value " alt="" coords="442,975,585,1016"/>
+</map>

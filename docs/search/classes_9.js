@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['osub',['osub',['../structosub.html',1,'']]],
-  ['otri',['otri',['../structotri.html',1,'']]]
+  ['quadrangle',['Quadrangle',['../classtethex_1_1Quadrangle.html',1,'tethex']]]
 ];

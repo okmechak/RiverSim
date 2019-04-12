@@ -6,6 +6,7 @@ var searchData=
   ['solution',['solution',['../classRiver_1_1Solver.html#af8aa78733383166d91dd6e3398542316',1,'River::Solver']]],
   ['source_5fangle',['source_angle',['../classRiver_1_1BranchNew.html#aa09b22ab98c64dadbee6e8e9de1d9dcd',1,'River::BranchNew']]],
   ['source_5fbranches_5fid',['source_branches_id',['../classRiver_1_1Tree.html#a0365677b5c58bc04b380bc88dbd9fb83',1,'River::Tree']]],
+  ['sources',['sources',['../classRiver_1_1Border.html#a7e9541244b68346b109ed880a6d6ef90',1,'River::Border']]],
   ['sparsity_5fpattern',['sparsity_pattern',['../classRiver_1_1Solver.html#ae39c2ef1f316627aced677696a3d6c33',1,'River::Solver']]],
   ['splaynodes',['splaynodes',['../structmesh.html#a86186d96a9bac08ba51665bce57a4009',1,'mesh']]],
   ['splitseg',['splitseg',['../structbehavior.html#ac51ca2ac278cc8cbf9abccbf1653231c',1,'behavior']]],

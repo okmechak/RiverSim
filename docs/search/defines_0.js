@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['absolute',['Absolute',['../triangle_8cpp.html#aef0ab760424f561c08ca685b4fd28a3f',1,'triangle.cpp']]],
-  ['apex',['apex',['../triangle_8cpp.html#a0b31a2defa2257c2b0443873db5d39e1',1,'triangle.cpp']]],
-  ['areabound',['areabound',['../triangle_8cpp.html#a7486174abb0d03f5d516376c9e193ff9',1,'triangle.cpp']]]
+  ['_5fuse_5fmath_5fdefines',['_USE_MATH_DEFINES',['../border_8cpp.html#a525335710b53cb064ca56b936120431e',1,'_USE_MATH_DEFINES():&#160;border.cpp'],['../physmodel_8hpp.html#a525335710b53cb064ca56b936120431e',1,'_USE_MATH_DEFINES():&#160;physmodel.hpp']]]
 ];

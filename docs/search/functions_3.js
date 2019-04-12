@@ -7,6 +7,6 @@ var searchData=
   ['dequeuebadtriang',['dequeuebadtriang',['../triangle_8cpp.html#a8c2582a53e8bb23010a0092224829689',1,'triangle.cpp']]],
   ['divconqdelaunay',['divconqdelaunay',['../triangle_8cpp.html#a4a13891380126c239a32b46c88f06223',1,'triangle.cpp']]],
   ['divconqrecurse',['divconqrecurse',['../triangle_8cpp.html#ae64549179195e9fea8a3589a003e44ac',1,'triangle.cpp']]],
-  ['doesexistbranch',['DoesExistBranch',['../classRiver_1_1Tree.html#ac7fbf1c674f7e0fab20f836a09a2d1bb',1,'River::Tree']]],
+  ['doesexistbranch',['DoesExistBranch',['../classRiver_1_1Tree.html#ab615380beb3e61077a8af733f4f796eb',1,'River::Tree']]],
   ['dummyinit',['dummyinit',['../triangle_8cpp.html#ad5a7f66d52301dfbfe436b749004fc09',1,'triangle.cpp']]]
 ];

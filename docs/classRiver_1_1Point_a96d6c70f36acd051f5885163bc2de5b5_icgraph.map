@@ -1,11 +1,12 @@
 <map id="River::Point::norm" name="River::Point::norm">
 <area shape="rect" id="node2" href="$classRiver_1_1Point.html#af33df3fef6945d57925744ad1b128cf4" title="Returns normalized vector of current Point. " alt="" coords="181,5,364,32"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Point.html#a5a80f76067f92be8434cafff8cf55380" title="Returns Polar representation of vector. " alt="" coords="423,107,570,133"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Point.html#aa6005dcc4bb5ded97a0b9a5eb28bc528" title="Normalizes current Point. " alt="" coords="195,56,350,83"/>
-<area shape="rect" id="node8" href="$classRiver_1_1Point.html#a24deaa21918d47a5d4fea7e0a7e4b61b" title="Returns angle. " alt="" coords="207,157,338,184"/>
-<area shape="rect" id="node10" href="$classRiver_1_1BranchNew.html#a3d751724e8b8c4349c7ce25eee3a2995" title="Reduces lenght of branch by lenght. " alt="" coords="185,208,360,235"/>
-<area shape="rect" id="node5" href="$namespaceRiver.html#aa5a21f7169be41bacdb7bab009a2e7be" title="Generates trees boundary. " alt="" coords="434,56,559,83"/>
-<area shape="rect" id="node6" href="$namespaceRiver.html#aa226e8aa15b4b21c82a2ea177e1faee6" title="Finnal Boudary Geneartor Class. " alt="" coords="629,56,803,83"/>
-<area shape="rect" id="node7" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="851,56,901,83"/>
-<area shape="rect" id="node9" href="$classRiver_1_1Border.html#ad884663725156885e8e5def07a2e49c1" title="Return normal line angle to boundary at point where is located source with source_id ..." alt="" coords="412,158,581,199"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Point.html#a5a80f76067f92be8434cafff8cf55380" title="Returns Polar representation of vector. " alt="" coords="412,99,559,125"/>
+<area shape="rect" id="node7" href="$classRiver_1_1Point.html#aa6005dcc4bb5ded97a0b9a5eb28bc528" title="Normalizes current Point. " alt="" coords="195,157,350,184"/>
+<area shape="rect" id="node10" href="$classRiver_1_1Point.html#a24deaa21918d47a5d4fea7e0a7e4b61b" title="Returns angle. " alt="" coords="207,107,338,133"/>
+<area shape="rect" id="node11" href="$classRiver_1_1BranchNew.html#a3d751724e8b8c4349c7ce25eee3a2995" title="Reduces lenght of branch by lenght. " alt="" coords="185,208,360,235"/>
+<area shape="rect" id="node4" href="$classRiver_1_1Model.html#ad22bc4fecfe36e2cde033df2a5220c07" title="Evaluate next point of simualtion based on series parameters around tip. " alt="" coords="629,91,758,133"/>
+<area shape="rect" id="node5" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="828,128,1021,155"/>
+<area shape="rect" id="node6" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="1069,128,1120,155"/>
+<area shape="rect" id="node8" href="$namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a" title="Generates trees boundary. " alt="" coords="423,157,548,184"/>
+<area shape="rect" id="node9" href="$namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7" title="Finnal Boudary Geneartor Class. " alt="" coords="607,157,780,184"/>
 </map>

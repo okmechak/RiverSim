@@ -1,5 +1,4 @@
 <map id="tethex::Mesh::write" name="tethex::Mesh::write">
 <area shape="rect" id="node2" href="$namespacetethex.html#afd9ddbb6ed7cbe8a0e8505e7960b0e0a" title="Since all mesh elements are derived from one base MeshElement class, we can use one procedure to trea..." alt="" coords="188,5,343,32"/>
 <area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="Get the copy of vertex. " alt="" coords="391,5,557,32"/>
-<area shape="rect" id="node4" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="605,5,692,32"/>
 </map>

@@ -9,55 +9,55 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
 <title>River::BranchNew::AverageSpeed</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-100 311,-100 311,4 -4,4"/>
-<!-- Node53 -->
+<!-- Node62 -->
 <g id="node1" class="node">
-<title>Node53</title>
+<title>Node62</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-33 0,-63 139,-63 139,-33 0,-33"/>
 <text text-anchor="start" x="8" y="-51" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew::Average</text>
 <text text-anchor="middle" x="69.5" y="-40" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Speed</text>
 </g>
-<!-- Node54 -->
+<!-- Node63 -->
 <g id="node2" class="node">
-<title>Node54</title>
+<title>Node63</title>
 <g id="a_node2"><a xlink:href="namespaceRiver.html#a82b7a87fc444a0c1758d9079d97e3ecf" target="_top" xlink:title="River::operator\&lt;\&lt;">
 <polygon fill="#ffffff" stroke="#000000" points="194.5,-76.5 194.5,-95.5 287.5,-95.5 287.5,-76.5 194.5,-76.5"/>
 <text text-anchor="middle" x="241" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::operator&lt;&lt;</text>
 </a>
 </g>
 </g>
-<!-- Node53&#45;&gt;Node54 -->
+<!-- Node62&#45;&gt;Node63 -->
 <g id="edge1" class="edge">
-<title>Node53&#45;&gt;Node54</title>
+<title>Node62&#45;&gt;Node63</title>
 <path fill="none" stroke="#191970" d="M137.2813,-63.0186C154.2615,-66.781 172.226,-70.7614 188.3468,-74.3334"/>
 <polygon fill="#191970" stroke="#191970" points="187.6004,-77.7528 198.1208,-76.4991 189.1148,-70.9186 187.6004,-77.7528"/>
 </g>
-<!-- Node55 -->
+<!-- Node64 -->
 <g id="node3" class="node">
-<title>Node55</title>
+<title>Node64</title>
 <g id="a_node3"><a xlink:href="classRiver_1_1BranchNew.html#a748a3596e4e852ca785d7c529f960ed5" target="_top" xlink:title="Returns Lenght of whole branch. ">
 <polygon fill="#ffffff" stroke="#000000" points="175,-38.5 175,-57.5 307,-57.5 307,-38.5 175,-38.5"/>
 <text text-anchor="middle" x="241" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew::Lenght</text>
 </a>
 </g>
 </g>
-<!-- Node53&#45;&gt;Node55 -->
+<!-- Node62&#45;&gt;Node64 -->
 <g id="edge2" class="edge">
-<title>Node53&#45;&gt;Node55</title>
+<title>Node62&#45;&gt;Node64</title>
 <path fill="none" stroke="#191970" d="M139.2556,-48C147.6286,-48 156.2126,-48 164.6727,-48"/>
 <polygon fill="#191970" stroke="#191970" points="164.9083,-51.5001 174.9083,-48 164.9082,-44.5001 164.9083,-51.5001"/>
 </g>
-<!-- Node56 -->
+<!-- Node65 -->
 <g id="node4" class="node">
-<title>Node56</title>
+<title>Node65</title>
 <g id="a_node4"><a xlink:href="classRiver_1_1BranchNew.html#ad31e9de44351f77a06bce668094cf2f4" target="_top" xlink:title="Returns number of points in branch. ">
 <polygon fill="#ffffff" stroke="#000000" points="180,-.5 180,-19.5 302,-19.5 302,-.5 180,-.5"/>
 <text text-anchor="middle" x="241" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew::Size</text>
 </a>
 </g>
 </g>
-<!-- Node53&#45;&gt;Node56 -->
+<!-- Node62&#45;&gt;Node65 -->
 <g id="edge3" class="edge">
-<title>Node53&#45;&gt;Node56</title>
+<title>Node62&#45;&gt;Node65</title>
 <path fill="none" stroke="#191970" d="M137.2813,-32.9814C154.2615,-29.219 172.226,-25.2386 188.3468,-21.6666"/>
 <polygon fill="#191970" stroke="#191970" points="189.1148,-25.0814 198.1208,-19.5009 187.6004,-18.2472 189.1148,-25.0814"/>
 </g>

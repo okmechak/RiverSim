@@ -1,0 +1,14 @@
+<map id="River::BoundaryGenerator" name="River::BoundaryGenerator">
+<area shape="rect" id="node2" href="$classRiver_1_1Border.html#a666af04bf7a9be4fce8dac5fabcd8b31" title="River::Border::SourceByVertice\lIdMap" alt="" coords="227,158,432,199"/>
+<area shape="rect" id="node3" href="$namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a" title="Generates trees boundary. " alt="" coords="267,224,392,251"/>
+<area shape="rect" id="node4" href="$classRiver_1_1Tree.html#a47f13208e26100fb6f1301ebd6a1daf0" title="Returns link to branch with id. " alt="" coords="500,5,657,32"/>
+<area shape="rect" id="node5" href="$classRiver_1_1BranchNew.html#ad31e9de44351f77a06bce668094cf2f4" title="Returns number of points in branch. " alt="" coords="497,56,660,83"/>
+<area shape="rect" id="node6" href="$classRiver_1_1BranchNew.html#a1e3a5b41f9e8e0a0336ad298cf4de281" title="Returns i&#45;th point vector. " alt="" coords="485,107,673,133"/>
+<area shape="rect" id="node7" href="$classRiver_1_1BranchNew.html#a5d3d81efc31f625bbddcbd5b17f405b9" title="Returns SourceAngle of branch &#45; initial source_angle " alt="" coords="489,158,668,199"/>
+<area shape="rect" id="node8" href="$classRiver_1_1BranchNew.html#a4e49c832969fde3d72bf9049a819cc04" title="Returns vector of i&#45;th segment of branch. " alt="" coords="491,224,666,251"/>
+<area shape="rect" id="node9" href="$classRiver_1_1Point.html#aa6005dcc4bb5ded97a0b9a5eb28bc528" title="Normalizes current Point. " alt="" coords="501,275,656,301"/>
+<area shape="rect" id="node11" href="$classRiver_1_1Point.html#a99648a8a3af61babbcbcdbe0de12db71" title="Rotates point on phi angle(counterclockwise) " alt="" coords="513,325,645,352"/>
+<area shape="rect" id="node12" href="$classRiver_1_1Tree.html#a69137f4816bba370246bb6c6bc40432e" title="Checks if Branch branch_id has subbranches. " alt="" coords="480,376,677,403"/>
+<area shape="rect" id="node13" href="$classRiver_1_1Tree.html#ae31f3d283572b952d587b171a26a07ee" title="Returns pair of ids of subranches. " alt="" coords="481,427,676,453"/>
+<area shape="rect" id="node10" href="$classRiver_1_1Point.html#a96d6c70f36acd051f5885163bc2de5b5" title="Returns norm of vector. " alt="" coords="725,275,853,301"/>
+</map>

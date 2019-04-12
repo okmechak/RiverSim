@@ -1,6 +1,7 @@
 <map id="poolzero" name="poolzero">
 <area shape="rect" id="node2" href="$triangle_8cpp.html#affc45e9bc533a0e18b0d5ba8dc1409e9" title="triangleinit" alt="" coords="124,5,205,32"/>
-<area shape="rect" id="node3" href="$triangle_8hpp.html#a848df2990f66cdbdc9d1ac87f4646527" title="Call Triangle. " alt="" coords="253,5,336,32"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Triangle.html#a7bc9c5a5297dee136ab1489a923182dd" title="Generate mesh. " alt="" coords="384,5,549,32"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="597,5,648,32"/>
+<area shape="rect" id="node3" href="$triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. " alt="" coords="253,5,336,32"/>
+<area shape="rect" id="node4" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="Generate mesh. " alt="" coords="384,5,549,32"/>
+<area shape="rect" id="node5" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="597,5,791,32"/>
+<area shape="rect" id="node6" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="839,5,889,32"/>
 </map>

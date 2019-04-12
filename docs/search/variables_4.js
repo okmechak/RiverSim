@@ -8,8 +8,9 @@ var searchData=
   ['elemattribindex',['elemattribindex',['../structmesh.html#adf87a63b4bf9e70afb435d1394c3b31b',1,'mesh']]],
   ['encloseconvexhull',['EncloseConvexHull',['../classRiver_1_1Triangle.html#a347c7cfdbf251f740b43235f78f7a8dc',1,'River::Triangle']]],
   ['encsubseg',['encsubseg',['../structbadsubseg.html#ad48ae5d8b70757545ba8f6fe33143b64',1,'badsubseg']]],
-  ['eps',['eps',['../classRiver_1_1Border.html#a97989df95e7e2209705a0d184d8aadfb',1,'River::Border::eps()'],['../classRiver_1_1Point.html#a5a7559993c93be66182f7527ae2fa83f',1,'River::Point::eps()'],['../classRiver_1_1Model.html#a99eac57318178734b30f28977ed8583d',1,'River::Model::eps()']]],
+  ['eps',['eps',['../classRiver_1_1Point.html#a5a7559993c93be66182f7527ae2fa83f',1,'River::Point::eps()'],['../classRiver_1_1MeshParams.html#ab87118de33a97fcf7ef33dd25df497cb',1,'River::MeshParams::eps()']]],
   ['epsilon',['epsilon',['../triangle_8cpp.html#a92508a9fbb1db78d0bbedbf68cf93d1b',1,'triangle.cpp']]],
+  ['eta',['eta',['../classRiver_1_1Model.html#a054b9615ce764e5b4b69e72e407dfbc6',1,'River::Model']]],
   ['eventptr',['eventptr',['../structevent.html#ae5fd20373d30ff0819348af30beb33f3',1,'event']]],
-  ['exponant',['exponant',['../classRiver_1_1AreaConstraint.html#a7eb9fef72196a26523ab275c5e8d28dd',1,'River::AreaConstraint::exponant()'],['../classRiver_1_1Model.html#af11c1466a08f0e197af0f74d20b69907',1,'River::Model::exponant()']]]
+  ['exponant',['exponant',['../classRiver_1_1MeshParams.html#a0f19b1efab06288e0e00a532191ae6e2',1,'River::MeshParams::exponant()'],['../classRiver_1_1IntegrationParams.html#ae4f0171b45aa83515718db255359e148',1,'River::IntegrationParams::exponant()']]]
 ];

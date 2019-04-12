@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['weightfunction',['WeightFunction',['../classRiver_1_1Model.html#ae92c4c74d374723ca5c70f62f8d2d60e',1,'River::Model']]],
-  ['write',['write',['../classRiver_1_1Gmsh.html#a20263b039fb43d850938f041e9bd7201',1,'River::Gmsh::write()'],['../classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09',1,'tethex::Mesh::write()']]],
+  ['weightfunction',['WeightFunction',['../classRiver_1_1IntegrationParams.html#aa249fc71c13c39e0698b21d461eb7e09',1,'River::IntegrationParams']]],
+  ['write',['write',['../classtethex_1_1Mesh.html#a209c3153eb17d86e8fe320369b2dfe09',1,'tethex::Mesh']]],
   ['write_5felements',['write_elements',['../namespacetethex.html#afd9ddbb6ed7cbe8a0e8505e7960b0e0a',1,'tethex']]],
   ['writeedges',['writeedges',['../triangle_8cpp.html#ab285f09094d56a1431f965933235d7b3',1,'triangle.cpp']]],
   ['writeelements',['writeelements',['../triangle_8cpp.html#ae2aeed2f2751cc1e7087cc0f94d9f78f',1,'triangle.cpp']]],

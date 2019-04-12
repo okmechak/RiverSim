@@ -1,0 +1,34 @@
+<map id="nlohmann::detail::parse_error::create" name="nlohmann::detail::parse_error::create">
+<area shape="rect" id="node2" href="$classnlohmann_1_1detail_1_1binary__reader.html#ab94a54d6e595c2620b07589cf4116256" title="nlohmann::detail::binary\l_reader::sax_parse" alt="" coords="233,103,393,144"/>
+<area shape="rect" id="node7" href="$classnlohmann_1_1detail_1_1binary__reader.html#a46bf64d7193eea97cac6dd4d4abdb4fa" title="Parses a zero&#45;terminated string of length len from the BSON input. " alt="" coords="231,168,396,209"/>
+<area shape="rect" id="node8" href="$classnlohmann_1_1detail_1_1binary__reader.html#a2fdd24de008063e7fef896327daeffa1" title="Read a BSON document element of the given element_type. " alt="" coords="217,234,410,290"/>
+<area shape="rect" id="node9" href="$classnlohmann_1_1detail_1_1binary__reader.html#a2fc47768d484a22fcd04e20106da1399" title="nlohmann::detail::binary\l_reader::parse_cbor_internal" alt="" coords="220,315,407,356"/>
+<area shape="rect" id="node10" href="$classnlohmann_1_1detail_1_1binary__reader.html#acca76844160000e1d8215cb5c7afbba1" title="reads a CBOR string " alt="" coords="232,380,395,421"/>
+<area shape="rect" id="node11" href="$classnlohmann_1_1detail_1_1binary__reader.html#a81611d8a5faec1348d31f7e98fcd05ef" title="nlohmann::detail::binary\l_reader::parse_msgpack\l_internal" alt="" coords="231,446,396,502"/>
+<area shape="rect" id="node12" href="$classnlohmann_1_1detail_1_1binary__reader.html#a5526ed98ca4c436cbae6f8a77ea207b8" title="reads a MessagePack string " alt="" coords="218,527,409,568"/>
+<area shape="rect" id="node13" href="$classnlohmann_1_1detail_1_1binary__reader.html#a2e01eab458020d18c975e8df55b20eca" title="reads a UBJSON string " alt="" coords="226,592,401,633"/>
+<area shape="rect" id="node14" href="$classnlohmann_1_1detail_1_1binary__reader.html#a435be58e83c8491556d8f1a1b3439155" title="nlohmann::detail::binary\l_reader::get_ubjson_size_value" alt="" coords="211,657,416,699"/>
+<area shape="rect" id="node15" href="$classnlohmann_1_1detail_1_1binary__reader.html#a4eae4604064b5dfe6d04e42ffc9e0753" title="determine the type and size for a container " alt="" coords="214,723,413,764"/>
+<area shape="rect" id="node16" href="$classnlohmann_1_1detail_1_1binary__reader.html#a5f425199a77f403e32f076ff8487f853" title="nlohmann::detail::binary\l_reader::get_ubjson_value" alt="" coords="226,788,401,829"/>
+<area shape="rect" id="node17" href="$classnlohmann_1_1detail_1_1binary__reader.html#a91dd7341d9d74c58866877ddfe58dd03" title="nlohmann::detail::binary\l_reader::unexpect_eof" alt="" coords="233,853,393,895"/>
+<area shape="rect" id="node18" href="$classnlohmann_1_1detail_1_1parser.html#a14338d8f3174601c0b2b7ef28752ab17" title="public parser interface " alt="" coords="233,919,394,960"/>
+<area shape="rect" id="node21" href="$classnlohmann_1_1detail_1_1parser.html#a14e34931965064b26e118eb72cbd5e25" title="nlohmann::detail::parser\l::sax_parse" alt="" coords="233,984,394,1025"/>
+<area shape="rect" id="node23" href="$classnlohmann_1_1detail_1_1parser.html#ad256ac6f45b213d29096a04b5aa3c587" title="nlohmann::detail::parser\l::sax_parse_internal" alt="" coords="233,1049,394,1091"/>
+<area shape="rect" id="node24" href="$classnlohmann_1_1json__pointer.html#a583c726016f440ffe65553935c101ff5" title="create and return a reference to the pointed to value " alt="" coords="235,1115,391,1156"/>
+<area shape="rect" id="node27" href="$classnlohmann_1_1json__pointer.html#a577512ee6b7f030e8872b4d29fa5c3e5" title="return a reference to the pointed to value " alt="" coords="235,1180,391,1221"/>
+<area shape="rect" id="node29" href="$classnlohmann_1_1json__pointer.html#a366d68a67e40d86676d3bdb52e167294" title="nlohmann::json_pointer\l::get_checked" alt="" coords="235,1245,391,1287"/>
+<area shape="rect" id="node32" href="$classnlohmann_1_1json__pointer.html#ae01c32c6a071c2e5198d5dfcce290e50" title="split the string input to reference tokens " alt="" coords="235,1311,391,1352"/>
+<area shape="rect" id="node33" href="$classnlohmann_1_1basic__json.html#a81e0c41a4a9dff4df2f6973f7f8b2a83" title="applies a JSON patch " alt="" coords="239,1376,387,1417"/>
+<area shape="rect" id="node3" href="$classnlohmann_1_1basic__json.html#a02ede1bab3adc87939a9300a43300480" title="create a JSON value from an input in CBOR format " alt="" coords="473,5,621,47"/>
+<area shape="rect" id="node4" href="$classnlohmann_1_1basic__json.html#a28da90379559be7927836fd081a82aca" title="create a JSON value from an input in MessagePack format " alt="" coords="473,71,621,112"/>
+<area shape="rect" id="node5" href="$classnlohmann_1_1basic__json.html#ae884591dd3497f237c89a8ef83271fc4" title="create a JSON value from an input in UBJSON format " alt="" coords="473,136,621,177"/>
+<area shape="rect" id="node6" href="$classnlohmann_1_1basic__json.html#a89a4a1834883de313280a85266ae292a" title="Create a JSON value from an input in BSON format. " alt="" coords="473,201,621,243"/>
+<area shape="rect" id="node19" href="$classnlohmann_1_1basic__json.html#afd4ef1ac8ad50a5894a9afebca69140a" title="deserialize from a compatible input " alt="" coords="473,919,621,960"/>
+<area shape="rect" id="node20" href="$json_8hpp.html#a106b949d848bb8243a7cf94f11bcebf1" title="user&#45;defined string literal for JSON values " alt="" coords="695,926,810,953"/>
+<area shape="rect" id="node22" href="$classnlohmann_1_1basic__json.html#a8a3dd150c2d1f0df3502d937de0871db" title="generate SAX events " alt="" coords="473,984,621,1025"/>
+<area shape="rect" id="node25" href="$classnlohmann_1_1json__pointer.html#a920065221e3c81676c3211c100d024a7" title="nlohmann::json_pointer\l::unflatten" alt="" coords="469,1115,625,1156"/>
+<area shape="rect" id="node26" href="$classnlohmann_1_1basic__json.html#a74fa3ab2003f2f6f2b69deaafed9126d" title="unflatten a previously flattened JSON value " alt="" coords="679,1115,827,1156"/>
+<area shape="rect" id="node28" href="$classnlohmann_1_1basic__json.html#ac6946dffeb3be5aa173645f0467a44b3" title="access specified element via JSON Pointer " alt="" coords="473,1180,621,1221"/>
+<area shape="rect" id="node30" href="$classnlohmann_1_1basic__json.html#a671aea68432ecb28770bbc482918f023" title="access specified object element via JSON Pointer with default value " alt="" coords="473,1245,621,1287"/>
+<area shape="rect" id="node31" href="$classnlohmann_1_1basic__json.html#a8ab61397c10f18b305520da7073b2b45" title="access specified element via JSON Pointer " alt="" coords="464,1311,631,1338"/>
+</map>

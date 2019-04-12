@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['method',['Method',['../classRiver_1_1Model.html#abefa2326d6245730ee60d2024645e407',1,'River::Model']]]
+  ['locateresult',['locateresult',['../triangle_8cpp.html#a780d12d8ee18a0060da76c91611d1391',1,'triangle.cpp']]]
 ];

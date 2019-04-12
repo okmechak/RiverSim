@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['event',['event',['../structevent.html',1,'']]]
+  ['flipstacker',['flipstacker',['../structflipstacker.html',1,'']]],
+  ['function',['Function',['../classFunction.html',1,'']]]
 ];

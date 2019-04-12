@@ -75,34 +75,23 @@ $(function() {
 </ul>
 <h4>External dependencies:</h4>
 <ul>
-<li><a href="http://gmsh.info/"><b>Gmsh</b></a> - also mesh generation tool, with priority on GUI. And mostly used, in this case, for mesh visualization.</li>
 <li><a href="https://www.dealii.org/"><b>Deal.II</b></a> - A C++ software library supporting the creation of finite element codes and an open community of users and developers.</li>
 <li><a href="https://www.boost.org/doc/libs/1_66_0/libs/test/doc/html/index.html"><b>Boost</b></a> - used for unit testing.</li>
 </ul>
 <h2>1. System setup</h2>
-<p>As we discussed above product contains few external dependencies: <b>Deal.II</b>, <b>Gmsh</b> and <b>Boost</b>. To build system on computer</p>
+<p>As we discussed above product contains few external dependencies: <b>Deal.II</b> and <b>Boost</b>. To build system on computer</p>
 <h4>Deal.II setup:</h4>
 <ul>
 <li>Using ubuntu package system: &gt; sudo apt install libdeal.ii-dev</li>
 <li>Download prebuild files from official site.</li>
 <li>Build from repository(Read INSTALL instruction for details, static lib options shoud be turned ON).</li>
 </ul>
-<h4>Gmsh setup:</h4>
-<ul>
-<li>Download SDK files from official site.</li>
-<li>Build from repository(Read INSTALL instruction for details, static lib and share lib options shoud be turned ON).</li>
-</ul>
-<h4>Gmsh setup:</h4>
-<ul>
-<li>Using Ubuntu package system is the most starightforward in this case: &gt; sudo apt install libboost-all</li>
-</ul>
 <h2>2. Compiling and running Tests</h2>
 <p>When you have configured and setuped all dependencies. Now you can build RiverSim source code using <b>cmake</b>. It is very easy and fast(in comparsion to Deal.II compiling process), you just have to setup two variables in cmake:</p><ul>
 <li>DEALII_DIR - path too Deal.II files, and</li>
-<li>GMSH_DIR - path to Gmsh SDK files.</li>
 </ul>
 <blockquote class="doxtable">
-<p>cmake -DDEALII_DIR:STRING=/path/to/deal/ii -DGMSH_DIR:STRING=/path/to/gmsh /path/to/riversim/project/folder </p>
+<p>cmake -DDEALII_DIR:STRING=/path/to/deal/ii /path/to/riversim/project/folder </p>
 </blockquote>
 <p>Makefile will be generated, which next is used for compiling of program:</p>
 <blockquote class="doxtable">
@@ -124,8 +113,6 @@ $(function() {
 </blockquote>
 <p>add more details about workflow with program(TODO)..</p>
 <h2>4. Notes</h2>
-<p>Gmsh and Triangle are interchangable, but both will be included into project. Gmsh even is based on functionality of Tetgen, which is further development of <b>Triangle</b>.</p>
-<p>But Gmsh is preferrable, cos it inludes some postprocess functionality and quadric mehs elemts, which are mandatory for Deal.II.</p>
 <h2>5. References</h2>
 <p>[1]: Add links on scientific work(TODO)</p>
 <h2>6. Links</h2>

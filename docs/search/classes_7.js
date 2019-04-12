@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['line',['Line',['../classtethex_1_1Line.html',1,'tethex::Line'],['../classRiver_1_1Line.html',1,'River::Line']]]
+  ['osub',['osub',['../structosub.html',1,'']]],
+  ['otri',['otri',['../structotri.html',1,'']]]
 ];

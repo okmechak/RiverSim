@@ -1,4 +1,6 @@
 <map id="River::Point::angle" name="River::Point::angle">
-<area shape="rect" id="node2" href="$classRiver_1_1Border.html#ad884663725156885e8e5def07a2e49c1" title="Return normal line angle to boundary at point where is located source with source_id ..." alt="" coords="184,5,353,47"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Point.html#a5a80f76067f92be8434cafff8cf55380" title="Returns Polar representation of vector. " alt="" coords="195,71,342,98"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Point.html#a5a80f76067f92be8434cafff8cf55380" title="Returns Polar representation of vector. " alt="" coords="184,13,331,39"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Model.html#ad22bc4fecfe36e2cde033df2a5220c07" title="Evaluate next point of simualtion based on series parameters around tip. " alt="" coords="379,5,508,47"/>
+<area shape="rect" id="node4" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="556,13,749,39"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="797,13,848,39"/>
 </map>

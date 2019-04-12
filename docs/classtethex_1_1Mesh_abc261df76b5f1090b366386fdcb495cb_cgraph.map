@@ -1,8 +1,8 @@
 <map id="tethex::Mesh::find_face_from_two_edges" name="tethex::Mesh::find_face_from_two_edges">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="Get the copy of vertex. " alt="" coords="211,71,377,98"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" title="Find common vertex between two lines. " alt="" coords="220,5,368,47"/>
-<area shape="rect" id="node6" href="$classtethex_1_1Line.html#abdc04877eb0feb0200f4e9bb8a4e3735" title="Get another vertex (different from that we have) " alt="" coords="223,123,365,164"/>
-<area shape="rect" id="node7" href="$classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" title="Find a serial number of the non zero element in the matrix. " alt="" coords="215,188,373,229"/>
-<area shape="rect" id="node3" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="455,133,542,159"/>
-<area shape="rect" id="node5" href="$classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" title="Check &#45; whether the element contains the vertex or not. " alt="" coords="425,5,572,47"/>
+<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#aea31733cbb3d4e47252da53a253ec9b8" title="Get the copy of vertex. " alt="" coords="211,5,377,32"/>
+<area shape="rect" id="node3" href="$classtethex_1_1Line.html#a7ee8354de8290f9a914e480385fc16e7" title="Find common vertex between two lines. " alt="" coords="220,57,368,98"/>
+<area shape="rect" id="node5" href="$classtethex_1_1Line.html#abdc04877eb0feb0200f4e9bb8a4e3735" title="Get another vertex (different from that we have) " alt="" coords="223,122,365,163"/>
+<area shape="rect" id="node6" href="$classtethex_1_1IncidenceMatrix.html#a1d659ff5b0bba8be07196b23ded3d58d" title="Find a serial number of the non zero element in the matrix. " alt="" coords="215,187,373,229"/>
+<area shape="rect" id="node4" href="$classtethex_1_1MeshElement.html#aa7d8e4c101b47e1087917a42c0a3074a" title="Check &#45; whether the element contains the vertex or not. " alt="" coords="425,57,572,98"/>
+<area shape="rect" id="node7" href="$namespacetethex.html#a31a6ad16911dd58abefe17ab46534aa4" title="tethex::d2s" alt="" coords="455,195,542,221"/>
 </map>
