@@ -42,13 +42,11 @@ int main(int argc, char *argv[])
     //Border object setup.. Rectangular boundaries
     Border border;
     if(!vm.count("input"))
-    {
         border.MakeRectangular(
             {mdl.width, mdl.height}, 
             mdl.boundary_ids,
             {mdl.dx},
             {1});
-    }
     
     //Tree object setup
     Tree tree;

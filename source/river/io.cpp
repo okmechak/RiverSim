@@ -18,6 +18,7 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+#include <iostream>
 
 using namespace std;
 using json = nlohmann::json;
@@ -156,7 +157,7 @@ namespace River
     }
 
 
-    void Open(Model& mdl, Border& border, Tree& tr, string file_name)
+    void Open(Model& mdl, Border& border, Tree& tree, string file_name)
     {
         ifstream in(file_name);
         if(!in) throw invalid_argument("Open. Can't create file for read.");
@@ -166,7 +167,7 @@ namespace River
         if(j.count("Model"))
         {
             json jmdl = j["Model"];
-
+            
             jmdl.at("width").get_to(mdl.width);
             jmdl.at("height").get_to(mdl.height);
             jmdl.at("dx").get_to(mdl.dx);
@@ -203,34 +204,10 @@ namespace River
                 jinteg.at("exponant").get_to(mdl.integr.exponant);
             }
         }
-        if(j.count("Trees"))
-        {
-            auto jtrees = j["Trees"];
-            jtrees.at("SourceIds").get_to(tr.source_branches_id);
-            jtrees.at("Relations").get_to(tr.branches_relation);
+        else
+            throw invalid_argument("No <Model> key in JSON.");
 
-            
-            for (auto& [key, value] : jtrees["Branches"].items()) 
-            {   
-                vector<double> s_point;
-                vector<pair<double, double>> coords;
-                double source_angle;
-                int id;
-                value.at("sourcePoint").get_to(s_point);
-                value.at("sourceAngle").get_to(source_angle);
-                value.at("coords").get_to(coords);
-                value.at("id").get_to(id);
-                
-                BranchNew branch(River::Point{s_point.at(0), s_point.at(1)}, source_angle);
-                branch.points.resize(coords.size());
-                for(unsigned i = 0; i < coords.size(); ++i)
-                {
-                    branch.points[i] = River::Point{coords.at(i).first, coords.at(i).second};
-                }
-                tr.AddBranch(branch, id);
-            }
-            
-        }
+
         if(j.count("Border"))
         {
             auto jborder = j["Border"];
@@ -249,6 +226,47 @@ namespace River
             for(auto &l: lines)
                 border.lines.push_back({(long unsigned)l.at(0)/*p1*/, (long unsigned)l.at(1)/*p2*/, l.at(2)/*id*/});
         }
+        else
+            //if no border provided in input data
+            border.MakeRectangular(
+                {mdl.width, mdl.height}, 
+                mdl.boundary_ids,
+                {mdl.dx},
+                {1});
+        
+
+        if(j.count("Trees"))
+        {
+            auto jtrees = j["Trees"];
+            jtrees.at("SourceIds").get_to(tree.source_branches_id);
+            jtrees.at("Relations").get_to(tree.branches_relation);
+
+            
+            for(auto& [key, value] : jtrees["Branches"].items()) 
+            {   
+                vector<double> s_point;
+                vector<pair<double, double>> coords;
+                double source_angle;
+                int id;
+                value.at("sourcePoint").get_to(s_point);
+                value.at("sourceAngle").get_to(source_angle);
+                value.at("coords").get_to(coords);
+                value.at("id").get_to(id);
+                
+                BranchNew branch(River::Point{s_point.at(0), s_point.at(1)}, source_angle);
+                branch.points.resize(coords.size());
+                for(unsigned i = 0; i < coords.size(); ++i)
+                {
+                    branch.points[i] = River::Point{coords.at(i).first, coords.at(i).second};
+                }
+                tree.AddBranch(branch, id);
+            }
+            
+        }
+        else
+            //If no tree provided in input data
+            tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+        
     }
 
 }//namespace River
