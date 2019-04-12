@@ -7,7 +7,7 @@ if(BUILD_PROGRAM)
 
     message("========================================")
     message("Deal II setup")
-    set(DEALII_DIR "/usr/local/dealii" CACHE STRING "Deal.II SDK directory location") 
+    set(DEALII_DIR "/usr/local/dealii_release" CACHE STRING "Deal.II SDK directory location") 
     find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
     deal_ii_initialize_cached_variables()
 
