@@ -70,7 +70,7 @@ namespace River
 
         options.add_options("Simulation parameters")
         //Simulation parameters
-        ("n,number-of-steps", "Number of steps to simulate(-1 - infinity).", value<int>()->default_value("-1"))
+        ("n,number-of-steps", "Number of steps to simulate(-1 - infinity).", value<int>()->default_value("10"))
         ("simulation-type", "Forward river growth or backward river growth TODO.");
         
         options.add_options("Geometry parameters")
@@ -86,7 +86,7 @@ namespace River
         ("eta", "Power of a1^eta.", value<double>()->default_value("0"))
         ("biffurcation-type", "Biffurcation method type. 0 - a3/a1 > biffurcation_threshold, 1 - a1 > biffurcation_threshold.", value<int>()->default_value("0"))
         ("b,biffurcation-threshold", "Biffuraction threshold.", value<double>()->default_value("-0.1"))
-        ("biffurcation-angle", "Biffurcation angle between branches. default Pi/5", value<double>()->default_value("0.62831853071795864"))
+        ("biffurcation-angle", "Biffurcation angle between branches. default Pi/5 or Pi/10?? FIXME", value<double>()->default_value("0.62831853071795864"))
         ("growth-type", "0 - arctan(a2/a1), 1 - {dx, dy}.", value<int>()->default_value("0"))
         ("growth-threshold", "Growth of branch will be done only if a1 > growth-threshold.", value<double>()->default_value("0."))
 
