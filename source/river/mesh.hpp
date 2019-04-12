@@ -179,7 +179,6 @@ namespace River
        * Generate mesh.
        * 
        * @param initMesh tethex::Mesh object which holds boundary constrains, holes etc. 
-       * @param mdl holds functionality for adaptive mesh generation.
        */
       void generate(tethex::Mesh &initMesh);
       //FIXME: make a better interface to area constraint function

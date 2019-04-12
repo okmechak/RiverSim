@@ -129,9 +129,9 @@ namespace River
             vector<long unsigned> holes;
             
             /**
-             * Return source adjacent point(source has __only one__ such points).
+             * Return source adjacent points.
              *
-             * \param point_id current point index of position in tethex::Mesh::vertices vector.
+             * \param source_id current point index of position in tethex::Mesh::vertices vector.
              * \result adjacent point index of position in same \ref tethex vector.
              * 
              * Used to evalute normal vector. 

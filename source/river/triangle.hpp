@@ -10,7 +10,7 @@
  *                                                                            
  *   Copyright 1996, 2005                                                     
  *   Jonathan Richard Shewchuk                                                
- *   2360 Woolsey #H                                                          
+ *   2360 Woolsey \#H                                                          
  *   Berkeley, California  94705-1927                                         
  *   jrs@cs.berkeley.edu                                                      
  */
