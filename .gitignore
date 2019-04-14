@@ -57,3 +57,7 @@ tests/iotest.json
 mesh.msh
 simulation_data.json
 solution.vtk
+research/*.vtk
+research/*.json
+research/*.msh
+research/experiment_results/*
