@@ -130,7 +130,7 @@ namespace River
             double eta = 0.0;
             ///Biffurcation threshold.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
-            ///Biffurcation type. 0 - a3/a2, 1 - proportionallity to a1.
+            ///Biffurcation type. 0 - a3/a2, 1 - proportionallity to a1, 2 - no biffurcation.
             int biffurcation_type = 0;
             ///Biffurcation angle.
             double biffurcation_angle = M_PI/5;
@@ -162,6 +162,8 @@ namespace River
                     cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
                     return a.at(0) > biffurcation_threshold;
                 }
+                else if(biffurcation_type == 2)
+                    return false;
                 else 
                     throw invalid_argument("Wrong biffurcation_type value!");
             }
