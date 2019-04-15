@@ -128,10 +128,11 @@ namespace River
             double field_value = 0.0;
             ///Eta. Power of a1^eta
             double eta = 0.0;
+            ///Biffurcation type. 0 - a3/a2, 1 - proportionallity to a1,2 - combines both types,  3 - no biffurcation.
+            int biffurcation_type = 2;
             ///Biffurcation threshold.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
-            ///Biffurcation type. 0 - a3/a2, 1 - proportionallity to a1, 2 - no biffurcation.
-            int biffurcation_type = 0;
+            double biffurcation_threshold_2 = 0.001;//Probably should be -0.1
             ///Biffurcation angle.
             double biffurcation_angle = M_PI/5;
             ///Growth type. 0 - arctan(a2/a1), 1 - {dx, dy}
@@ -159,10 +160,16 @@ namespace River
                 }
                 else if(biffurcation_type == 1)
                 {
-                    cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
+                    cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
                     return a.at(0) > biffurcation_threshold;
                 }
                 else if(biffurcation_type == 2)
+                {
+                    cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
+                    cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
+                    return a.at(2)/a.at(0) < biffurcation_threshold && a.at(0) > biffurcation_threshold_2;
+                }
+                else if(biffurcation_type == 3)
                     return false;
                 else 
                     throw invalid_argument("Wrong biffurcation_type value!");

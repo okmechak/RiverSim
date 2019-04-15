@@ -40,6 +40,7 @@ namespace River
         mdl.eta = vm["eta"].as<double>();
         mdl.biffurcation_type = vm["biffurcation-type"].as<int>();
         mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
+        mdl.biffurcation_threshold_2 = vm["biffurcation-threshold-2"].as<double>();
         mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
         mdl.growth_type = vm["growth-type"].as<int>();
         mdl.growth_threshold = vm["growth-threshold"].as<double>();
@@ -128,6 +129,7 @@ namespace River
                 {"eta", mdl.eta},
                 {"biffurcationType", mdl.biffurcation_type},
                 {"biffurcationThreshold", mdl.biffurcation_threshold},
+                {"biffurcationThreshold2", mdl.biffurcation_threshold_2},
                 {"biffurcationAngle", mdl.biffurcation_angle},
                 {"growthType", mdl.growth_type},
                 {"growthThreshold", mdl.growth_threshold},
@@ -179,6 +181,7 @@ namespace River
             jmdl.at("eta").get_to(mdl.eta);
             jmdl.at("biffurcationType").get_to(mdl.biffurcation_type);
             jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
+            jmdl.at("biffurcationThreshold2").get_to(mdl.biffurcation_threshold_2);
             jmdl.at("biffurcationAngle").get_to(mdl.biffurcation_angle);
             jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
             jmdl.at("growthType").get_to(mdl.growth_type);

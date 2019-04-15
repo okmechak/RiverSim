@@ -83,8 +83,9 @@ namespace River
         ("c,boundary-condition", "0 - Poisson, 1 - Laplacea", value<int>()->default_value("0"))
         ("f,field-value", "Value of filed used for Poisson conditions.", value<double>()->default_value("0.25"))
         ("eta", "Power of a1^eta.", value<double>()->default_value("0"))
-        ("biffurcation-type", "Biffurcation method type. 0 - a3/a1 > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - no biffurcation.", value<int>()->default_value("0"))
-        ("b,biffurcation-threshold", "Biffuraction threshold.", value<double>()->default_value("-0.1"))
+        ("biffurcation-type", "Biffurcation method type. 0 - a3/a1 > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.", value<int>()->default_value("2"))
+        ("b,biffurcation-threshold", "Biffuraction threshold for a(3)/a(1) > kcrit", value<double>()->default_value("-0.1"))
+        ("biffurcation-threshold-2", "Biffuraction threshold for a(1) > kcrit", value<double>()->default_value("0.001"))
         ("biffurcation-angle", "Biffurcation angle between branches. default Pi/5 or Pi/10?? FIXME", value<double>()->default_value("0.62831853071795864"))
         ("growth-type", "0 - arctan(a2/a1), 1 - {dx, dy}.", value<int>()->default_value("0"))
         ("growth-threshold", "Growth of branch will be done only if a1 > growth-threshold.", value<double>()->default_value("0."))
@@ -95,7 +96,7 @@ namespace River
         options.add_options("Series parameters integral")
         //Integration parameters
         ("weight-exp", "Parameter used in integration.", value<double>()->default_value("3"))
-        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.03"));
+        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.01"));
 
         options.add_options("Mesh refinment parameters")
         //Mesh parameters
