@@ -119,15 +119,15 @@ namespace River
         
         //tree_A is represent current river geometry,
         //tree_B will be representing simulated river geometry with new parameters.
-        Tree tree_A = tree, tree_B;
+        Tree tree_A = tree;
         
         //this vector holds ids of branches which adjacent branch reached biffurcation point
         vector<int> deleted_branches;
         for(auto id: tree.TipBranchesId())
         {
             //if remove one branch then adjacent branch is removed too, so we should ommit them
-            if(find(begin(deleted_branches), end(deleted_branches), id)!= end(deleted_branches))
-            {
+            //if(find(begin(deleted_branches), end(deleted_branches), id) == end(deleted_branches))
+            //{
                 auto tip_point = tree.GetBranch(id).TipPoint();
                 auto tip_angle = tree.GetBranch(id).TipAngle();
                 auto series_params = sim.integrate(mdl, tip_point, tip_angle);
@@ -145,18 +145,26 @@ namespace River
                         stop_flag = true;
                     else if(branch.Lenght() == 0 && !tree.IsSourceBranch(id))
                     {
-                        auto adjacent_branch_id = tree.GetAdjacentBranchId(id);
-                        gd.Add(tree.GetBranch(adjacent_branch_id).Lenght());
-                        tree.DeleteSubBranches(tree.GetSourceBranch(id));
-                        deleted_branches.push_back(adjacent_branch_id);
+                        //FIXME handle this situation in other way
+                        try
+                        {
+                            auto adjacent_branch_id = tree.GetAdjacentBranchId(id);
+                            gd.Add(tree.GetBranch(adjacent_branch_id).Lenght());
+                            tree.DeleteSubBranches(tree.GetSourceBranch(id));
+                            //deleted_branches.push_back(adjacent_branch_id);
+                        }
+                        catch (const exception&)
+                        {
+                            
+                        }
                     }       
                 }
-            }
+            //}
         }
 
         sim.clear();
 
-        tree_B = tree;
+        Tree tree_B = tree;
 
         Model mdl_B = mdl;
         mdl_B.biffurcation_type = 3;//3 - means no biffuraction at all.
