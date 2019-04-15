@@ -224,7 +224,44 @@ namespace River
 
             //TODO implement in this class parameter checking
             void CheckParametersConsistency();
-            
+    };
 
+
+    /**
+     * This structure holds comparsion data from Backward river simulation.
+     */
+    class GeometryDifference
+    {
+        public:
+            GeometryDifference& Add(double biffurcation_difference)
+            {
+                biff_inconsistencies.push_back(biffurcation_difference);
+                return *this;
+            }
+
+            GeometryDifference& Add(vector<double> series_params)
+            {
+                biff_values.push_back(series_params.at(2)/series_params.at(0));
+                return *this;
+            }
+
+            GeometryDifference& Add(Point orig, Point sim)
+            {
+                angle_differences.push_back(orig.angle(sim));
+                distance_differences.push_back((orig - sim).norm());
+                return *this;
+            }
+
+
+
+            vector<double> 
+                ///Holds difference of dirrection of growth.
+                angle_differences,
+                ///Holds distance between old and new point of growth.
+                distance_differences,
+                ///Holds value that correspond to biffurcation.
+                biff_values,
+                ///When branch reaches biffurcation point it holds lenght of adjacent branch.
+                biff_inconsistencies;
     };
 }

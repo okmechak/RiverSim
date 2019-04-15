@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     }
 
     //Timing Object setup
-    Timing time;
+    Timing timing;
 
     //Border object setup.. Rectangular boundaries
     Border border;
@@ -54,11 +54,14 @@ int main(int argc, char *argv[])
     if(!vm.count("input"))
         tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
 
+    //Geometry difference
+    GeometryDifference gd;
+
     if(border.GetSourcesId() != tree.SourceBranchesID())
         throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
 
     if(vm.count("input"))
-        Open(mdl, border, tree, vm["input"].as<string>());
+        Open(mdl, border, tree, gd, vm["input"].as<string>());
 
     //Triangle mesh object setup
     Triangle tria;
@@ -74,20 +77,52 @@ int main(int argc, char *argv[])
     River::Solver sim;
     sim.field_value = mdl.field_value;
 
+
     //MAIN LOOP
-    for(int i = 0; 
-        (vm["number-of-steps"].as<int>() == -1)? true: i < vm["number-of-steps"].as<int>(); 
-        ++i)    
+    int i = 0;
+    if(vm["simulation-type"].as<int>() == 0)
+        //forward simulation case
+        //FIXME stop condition doesn't handle all conditions.
+        while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<int>())
+        {
+            cout << "-------" << endl;
+            cout << "  "<<i<< endl;
+            cout << "-------" << endl;
+
+            string str = output_file_name;
+            if(vm.count("save-each-step"))
+                str += "_" + to_string(i);
+
+            ForwardRiverEvolution(mdl, tria, sim, tree, border, str);
+            
+            timing.Record();//Timing
+            Save(mdl, timing, border, tree, gd, str);
+            ++i;
+        }
+    else if(vm["simulation-type"].as<int>() == 1)
     {
-        cout << "-------" << endl;
-        cout << "  "<<i<< endl;
-        cout << "-------" << endl;
+        //backward simmulation
+        GeometryDifference gd;
+        bool stop_flag = false;
+        while(!stop_flag && !tree.HasEmptySourceBranch() && i < vm["number-of-steps"].as<int>())    
+        {
+            cout << "-------" << endl;
+            cout << "  "<<i<< endl;
+            cout << "-------" << endl;
+            
+            string str = output_file_name;
+            if(vm.count("save-each-step"))
+                str += "_" + to_string(i);
+            
+            stop_flag = BackwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
 
-        ForwardRiverEvolution(mdl, tria, sim, tree, border, output_file_name);
-
-        time.Record();//Timing
-        Save(mdl, time, border, tree, output_file_name);
+            timing.Record();//Timing
+            Save(mdl, timing, border, tree, gd, str);
+            ++i;
+        }
     }
+    else 
+        throw invalid_argument("Invalid simulation type value");
 
     return 0;
 }

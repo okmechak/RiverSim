@@ -27,9 +27,17 @@ namespace River
         while(lenght > 0)
         {
             auto dl = TipVector().norm();
-            if(lenght >= dl)
+            if(lenght >= dl + eps)
+            {
                 RemoveTipPoint();
-            else 
+                lenght -= dl;
+            }
+            else if(lenght > dl - eps && lenght < dl + eps)
+            {
+                RemoveTipPoint();
+                lenght = 0;
+            }
+            else if(lenght <= dl - eps)
             {
                 auto k = lenght/dl;
                 auto new_tip = TipVector()*k;
@@ -37,10 +45,10 @@ namespace River
                 AddPoint(new_tip);
                 lenght = 0;
             }
-            lenght -= dl;
+            else
+                throw invalid_argument("Unhandled case in Shrink method.");
         }
         
-
         return *this;
     }
     

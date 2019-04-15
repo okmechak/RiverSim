@@ -58,6 +58,12 @@ BOOST_AUTO_TEST_CASE( io_methods,
     BOOST_TEST_CHECKPOINT("4.5");
     tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
 
+    GeometryDifference gd;
+    gd.angle_differences = {1, 2, 3, 4};
+    gd.biff_inconsistencies = {5, 6, 7, 8};
+    gd.biff_values = {9, 10, 11, 12};
+    gd.distance_differences = {13, 14, 15, 16};
+
     BranchNew br1left({0, 1}, 2), br1right({3, 4}, 5), br2left({6, 7}, 8), br2right({9, 10}, 11);
     br1left.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
     br1right.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
@@ -68,12 +74,13 @@ BOOST_AUTO_TEST_CASE( io_methods,
     tree.AddSubBranches(3, br2left, br2right);
 
     BOOST_TEST_CHECKPOINT("5");
-    Save(mdl, time, border, tree, "iotest");
+    Save(mdl, time, border, tree, gd, "iotest");
     mdl = Model();
     tree = Tree();
     border = Border();
+    gd = GeometryDifference();
     BOOST_TEST_CHECKPOINT("6");
-    Open(mdl, border, tree, "iotest.json");
+    Open(mdl, border, tree, gd, "iotest.json");
 
     //Model TEST
     BOOST_TEST(mdl.mesh.eps == 0.1);
@@ -98,4 +105,14 @@ BOOST_AUTO_TEST_CASE( io_methods,
     //Border Test
     BOOST_TEST((border.vertices.front() == Point{2, 0}));
     BOOST_TEST((border.vertices.back() == Point{0.5, 0}));
+
+    //GeometryDifference
+    auto a1 = vector<double>{1, 2, 3, 4},
+        a2 = vector<double>{5, 6, 7, 8},
+        a3 = vector<double>{9, 10, 11, 12},
+        a4 = vector<double>{13, 14, 15, 16};
+    BOOST_TEST(gd.angle_differences == a1);
+    BOOST_TEST(gd.biff_inconsistencies == a2);
+    BOOST_TEST(gd.biff_values == a3);
+    BOOST_TEST(gd.distance_differences == a4);
 }

@@ -60,7 +60,7 @@ namespace River
         return mdl;
     }
 
-    void Save(Model& mdl, Timing& time, Border& border, Tree& tr, string file_name)
+    void Save(Model& mdl, Timing& time, Border& border, Tree& tr, GeometryDifference &gd, string file_name)
     {
         if(file_name.length() == 0)
             throw invalid_argument("Save. File name is not set.");
@@ -94,10 +94,13 @@ namespace River
             vector<vector<int>> lines;
             coords.reserve(border.vertices.size());
             coords.reserve(border.lines.size());
+
             for(auto& p: border.vertices)
                 coords.push_back({p.x, p.y});
+
             for(auto& l: border.lines)
                 lines.push_back({(int)l.p1, (int)l.p2, l.id});
+
             jborder = {
                 {"SourceIds", border.sources}, 
                 {"SomeDetails", "points and lines should be in counterclockwise order!"},
@@ -152,14 +155,22 @@ namespace River
             {"Trees", {
                 {"SourceIds", tr.source_branches_id},
                 {"Relations", tr.branches_relation},
-                {"Branches", branches}}}};
+                {"Branches", branches}}},
+                
+            {"GeometryDifference", {
+                {"description", "this structure holds info about backward river simulation."},
+                {"angles", gd.angle_differences},
+                {"distances", gd.distance_differences},
+                {"biffurcationValues", gd.biff_values},
+                {"biffurcationDifference", gd.biff_inconsistencies}}}
+        };
 
         out << setw(4) << j;
         out.close();
     }
 
 
-    void Open(Model& mdl, Border& border, Tree& tree, string file_name)
+    void Open(Model& mdl, Border& border, Tree& tree, GeometryDifference &gd, string file_name)
     {
         ifstream in(file_name);
         if(!in) throw invalid_argument("Open. Can't create file for read.");
@@ -269,6 +280,16 @@ namespace River
         else
             //If no tree provided in input data
             tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+
+        if(j.count("GeometryDifference"))
+        { 
+            json jgd = j["GeometryDifference"];
+            
+            jgd.at("angles").get_to(gd.angle_differences);
+            jgd.at("distances").get_to(gd.distance_differences);
+            jgd.at("biffurcationValues").get_to(gd.biff_values);
+            jgd.at("biffurcationDifference").get_to(gd.biff_inconsistencies);
+        }
         
     }
 

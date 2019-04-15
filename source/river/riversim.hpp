@@ -47,12 +47,12 @@ namespace River
     
     */
 
+   //Stop condition of river growth simulation.
+   bool StopConditionOfRiverGrowth(Border& border, Tree& tree);
 
    ///One step of forward river evolution.
    void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name);
 
    ///One step of backward river evolution and its data.
-   void BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name);
-   
-
+   bool BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, GeometryDifference& gd, string file_name);
 }

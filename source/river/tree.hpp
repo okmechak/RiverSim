@@ -218,6 +218,11 @@ namespace River
             ///Vector which holds all points of branch
             vector<Point> points;
 
+            ///Used in Shrink function call
+            ///If after shrink lenght of between adjacent to tip point
+            ///is less then eps then we delete it.
+            double eps = 1e-5;
+
     };
 
 
@@ -323,6 +328,23 @@ namespace River
                 return sub_branches_id;
             }
 
+            Tree& DeleteSubBranches(int root_branch_id)
+            {
+                if(!DoesExistBranch(root_branch_id))
+                    throw invalid_argument("root branch doesn't exis.");
+
+                if(!HasSubBranches(root_branch_id))
+                    throw invalid_argument("This branch doesn't has subbranches.");
+
+                //FIXME also we should delete branches
+                //not only relations
+
+                branches_relation.erase(root_branch_id);
+                
+
+                return *this;
+            }
+
             ///Returns vector of tip branches ids.
             vector<int> TipBranchesId()
             {
@@ -344,6 +366,19 @@ namespace River
                     tip_points.push_back(GetBranch(id).TipPoint());
                 
                 return tip_points;
+            }
+
+            ///Returns vector of tip branches Points.
+            map<int, Point> TipIdsAndPoints()
+            {   
+                map<int, Point> ids_points_map;
+                auto points = TipPoints();
+                auto ids = TipBranchesId();
+
+                for(unsigned i = 0; i < ids.size(); ++i)
+                    ids_points_map[ids.at(i)] = points.at(i);
+                
+                return ids_points_map;
             }
 
             ///Returns number of source branches.
@@ -425,6 +460,25 @@ namespace River
                 return branches.at(branches_index.at(id));
             }
 
+            ///Returns link to adjacent branch with __id__.
+            BranchNew& GetAdjacentBranch(int sub_branch_id)
+            {
+                return GetBranch(GetAdjacentBranchId(sub_branch_id));
+            }
+
+            ///Returns id of adjacent branch with __id__.
+            int GetAdjacentBranchId(int sub_branch_id)
+            {
+                auto [left_branch, right_branch] = GetSubBranches(GetSourceBranch(sub_branch_id));
+
+                if(left_branch == sub_branch_id)
+                    return right_branch;
+                else if(right_branch == sub_branch_id)
+                    return left_branch;
+                else
+                    throw invalid_argument("something wrong with GetAdjacentBranch");
+            }
+
             ///Checks if Branch __branch_id__ has subbranches.
             bool HasSubBranches(int branch_id) const
             {
@@ -444,7 +498,19 @@ namespace River
                 return false;
             }
 
+
+            ///Checks if tree has non zero sized branches.
+            bool HasEmptySourceBranch()
+            {   
+                for(auto id: source_branches_id)
+                    if(GetBranch(id).Empty())
+                        return true;
+
+                return false;
+            }
+
             ///Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
+            ///FIXME change name to GetParentBranch
             int GetSourceBranch(int branch_id)
             {
                 if(IsSubBranch(branch_id))
@@ -458,6 +524,12 @@ namespace River
                     throw invalid_argument("Branch doesn't have source branch. probabaly it is source itself");
 
                 return invalid_branch;
+            }
+
+            ///Checks if current id of branch is source or not.
+            int IsSourceBranch(int branch_id)
+            {
+                return find(source_branches_id.begin(), source_branches_id.end(), branch_id) != source_branches_id.end();
             }
 
             ///Returns pair of ids of subranches.

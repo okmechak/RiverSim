@@ -56,6 +56,7 @@ namespace River
         options.add_options("File interface")
         //file system interface
         ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value("simdata"))
+        ("save-each-step", "Save each step of simulation if separate file.")
         ("input",
             "input simaultion data, boundary, tree, model parameters.", cxxopts::value<string>());
 
