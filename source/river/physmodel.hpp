@@ -165,8 +165,8 @@ namespace River
                 }
                 else if(biffurcation_type == 2)
                 {
-                    cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
-                    cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
+                    cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold
+                        << " a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
                     return a.at(2)/a.at(0) < biffurcation_threshold && a.at(0) > biffurcation_threshold_2;
                 }
                 else if(biffurcation_type == 3)
