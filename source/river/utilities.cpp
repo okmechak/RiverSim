@@ -47,40 +47,40 @@ namespace River
             "full documentation is placed here https://okmechak.github.io/RiverSim/\n");
 
         //declare supported options
-        options.add_options("Basic")
         //basic
+        options.add_options("Basic")
         ("h,help", "Produce help message.")
         ("v,version", "Print version string.")
         ("suppress-signature", "Suppress signature printing.");
 
-        options.add_options("File interface")
         //file system interface
+        options.add_options("File interface")
         ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value("simdata"))
         ("save-each-step", "Save each step of simulation if separate file.")
         ("input",
             "input simaultion data, boundary, tree, model parameters.", cxxopts::value<string>());
 
-        options.add_options("Logs")
         //prints and logs
+        options.add_options("Logs")
         ("V,verbose", "print detailed log to terminal.", value<bool>()->default_value("False"))
         ("Q,quiet", "print detailed log to terminal.", value<bool>()->default_value("True"))
 
         //Development flags
         ("t,test-flag", "Test flag for development purposes.", value<vector<double>>()->default_value("1020 30 4 5"));
 
-        options.add_options("Simulation parameters")
         //Simulation parameters
+        options.add_options("Simulation parameters")
         ("n,number-of-steps", "Number of steps to simulate(-1 - infinity).", value<int>()->default_value("10"))
         ("simulation-type", "Forward river growth or backward river growth. 0 - Forward, 1 - Backward.", value<int>()->default_value("0"));
         
-        options.add_options("Geometry parameters")
         //Geometry parameters
+        options.add_options("Geometry parameters")
         ("width", "Width of rectangular region.", value<double>()->default_value("1"))
         ("height", "Height of rectangular region.", value<double>()->default_value("1"))
         ("dx", "dx - shift of initial river position from beginning of coordinates.", value<double>()->default_value("0.2"));
 
-        options.add_options("Model parameters")
         //Model parameters
+        options.add_options("Model parameters")
         ("c,boundary-condition", "0 - Poisson, 1 - Laplacea", value<int>()->default_value("0"))
         ("f,field-value", "Value of filed used for Poisson conditions.", value<double>()->default_value("0.25"))
         ("eta", "Power of a1^eta.", value<double>()->default_value("0"))
@@ -94,19 +94,22 @@ namespace River
         //Numerical parameters
         ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.01"));
 
-        options.add_options("Series parameters integral")
         //Integration parameters
+        options.add_options("Series parameters integral")
         ("weight-exp", "Parameter used in integration.", value<double>()->default_value("3"))
         ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.01"));
 
-        options.add_options("Mesh refinment parameters")
         //Mesh parameters
+        options.add_options("Mesh refinment parameters")
         ("mesh-exp", "Parameter used in mesh refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("4"))
         ("e,eps", "Width of branch", value<double>()->default_value("1e-5"))
         ("q,mesh-min-angle", "Constraints minimal angle of triangle element", value<double>()->default_value("33."))
         ("A,mesh-max-area", "Constraints maximal area of triangle element", value<double>()->default_value("10."))
         ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("1e-8"))
         ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", value<double>()->default_value("0.15"));
+
+        options.add_options("Solver Parameters")
+        ("quadrature-degree", "quadrature polynomials degree used in numerical integration of Solver.", value<int>()->default_value("2"));
 
         options.parse_positional({"input"});
 
@@ -121,7 +124,8 @@ namespace River
                 "Geometry parameters",
                 "Model parameters",
                 "Series parameters integral",
-                "Mesh refinment parameters"}) 
+                "Mesh refinment parameters",
+                "Solver Parameters"}) 
                 << endl;
 
         if (result.count("version"))

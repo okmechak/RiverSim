@@ -57,6 +57,10 @@ namespace River
         //integration options
         mdl.integr.integration_radius = vm["integration-radius"].as<double>();
         mdl.integr.exponant = vm["weight-exp"].as<double>();
+
+        //solver options
+        mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<int>();
+
         return mdl;
     }
 
@@ -148,7 +152,10 @@ namespace River
                     {"refinmentRadius", mdl.mesh.refinment_radius},
                     {"minArea", mdl.mesh.min_area},
                     {"maxArea", mdl.mesh.max_area},
-                    {"minAngle", mdl.mesh.min_angle}}}}},
+                    {"minAngle", mdl.mesh.min_angle}}},
+                    
+                {"Solver", 
+                    {"quadratureDegree", mdl.solver_params.quadrature_degree}}}},
             
             {"Border", jborder},
 
@@ -216,6 +223,12 @@ namespace River
 
                 jinteg.at("radius").get_to(mdl.integr.integration_radius);
                 jinteg.at("exponant").get_to(mdl.integr.exponant);
+            }
+            if(jmdl.count("Solver"))
+            {
+                auto jsolver = jmdl["Solver"];
+                
+                jsolver.at("quadratureDegree").get_to(mdl.solver_params.quadrature_degree);
             }
         }
         else

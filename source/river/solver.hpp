@@ -69,79 +69,80 @@ using namespace dealii;
 
 namespace River
 {
-
-class Solver
-{
-  public:
-    Solver(): fe(2), dof_handler(triangulation),quadrature_formula(3){};
-    ~Solver(){clear();}
-
-    unsigned int numOfRefinments = 1;
-    void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
-    void SetMesh(tethex::Mesh &meshio);
-    void OpenMesh(string fileName = "river.msh");
-    void run();
-    void output_results(const string file_name) const;
-    vector<double> integrate(Model& mdl, Point point, double angle);
-    double integration_test(Point point, double dr);
-    double max_value();
-    void clear()
+    /**
+     * Deal.II Solver Wrapper 
+     */
+    class Solver
     {
-      dof_handler.clear();
-      triangulation.clear();
-      constraints.clear();
-      system_matrix.clear();
-    }
+        public:
+          Solver(int quadrature_degree = 2): fe(2), dof_handler(triangulation),quadrature_formula(quadrature_degree){};
+          ~Solver(){clear();}
 
-    double field_value = 1.;
+          unsigned int numOfRefinments = 1;
+          void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
+          void SetMesh(tethex::Mesh &meshio);
+          void OpenMesh(string fileName = "river.msh");
+          void run();
+          void output_results(const string file_name) const;
+          vector<double> integrate(Model& mdl, Point point, double angle);
+          double integration_test(Point point, double dr);
+          double max_value();
+          void clear()
+          {
+            dof_handler.clear();
+            triangulation.clear();
+            constraints.clear();
+            system_matrix.clear();
+          }
 
-  private:
-    const static int dim = 2;
+          double field_value = 1.;
 
-    Triangulation<dim> triangulation;
+        private:
+          const static int dim = 2;
 
-    std::map<double, std::vector<int>> boundaryRegionValue;
+          Triangulation<dim> triangulation;
 
-    FE_Q<dim> fe;
-    DoFHandler<dim> dof_handler;
-    const QGauss<dim> quadrature_formula;
+          std::map<double, std::vector<int>> boundaryRegionValue;
 
-    ConstraintMatrix constraints;
+          FE_Q<dim> fe;
+          DoFHandler<dim> dof_handler;
+          const QGauss<dim> quadrature_formula;
 
-    SparseMatrix<double> system_matrix;
-    SparsityPattern sparsity_pattern;
+          ConstraintMatrix constraints;
 
-    Vector<double> solution;
-    Vector<double> system_rhs;
+          SparseMatrix<double> system_matrix;
+          SparsityPattern sparsity_pattern;
+
+          Vector<double> solution;
+          Vector<double> system_rhs;
 
 
-    void setup_system();
-    void assemble_system();
-    void solve();
-    void refine_grid();
-    
-    void TryInsertCellBoundary(
-        CellData<dim> &cellData,
-        struct SubCellData &subcelldata,
-        std::unordered_map<std::pair<int, int>, int> &bound_ids,
-        int v1, int v2);
+          void setup_system();
+          void assemble_system();
+          void solve();
+          void refine_grid();
 
-    class RightHandSide : public Function<dim>
-    {
-      public:
-        double fieldValue = 1.;
-        RightHandSide() : Function<dim>() {}
-        virtual double value(const dealii::Point<dim> &p,
-                             const unsigned int component = 0) const;
+          void TryInsertCellBoundary(
+              CellData<dim> &cellData,
+              struct SubCellData &subcelldata,
+              std::unordered_map<std::pair<int, int>, int> &bound_ids,
+              int v1, int v2);
+
+          class RightHandSide : public Function<dim>
+          {
+            public:
+              double fieldValue = 1.;
+              RightHandSide() : Function<dim>() {}
+              virtual double value(const dealii::Point<dim> &p,
+                                   const unsigned int component = 0) const;
+          };
+
+          class BoundaryValues : public Function<dim>
+          {
+            public:
+              BoundaryValues() : Function<dim>() {}
+              virtual double value(const dealii::Point<dim> &p,
+                                   const unsigned int component = 0) const;
+          };
     };
-
-    class BoundaryValues : public Function<dim>
-    {
-      public:
-        BoundaryValues() : Function<dim>() {}
-        virtual double value(const dealii::Point<dim> &p,
-                             const unsigned int component = 0) const;
-    };
-};
-
 } // namespace River

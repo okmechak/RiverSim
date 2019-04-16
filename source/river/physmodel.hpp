@@ -97,7 +97,15 @@ namespace River
                     return real(pow(zf, nf/2.));
                 
             }
-
+    };
+    /**
+     * Holds All parameters used in solver.
+     */
+    class SolverParams
+    {
+        public:
+            //Polynom degree of quadrature integration.
+            int quadrature_degree = 2;
     };
 
     /**
@@ -144,11 +152,14 @@ namespace River
             ///Proportionality value to one step growth.
             double ds = 0.01;
             
-            //Mesh and mesh refinment parameters
+            ///Mesh and mesh refinment parameters
             MeshParams mesh;
 
-            //Series parameteres integral parameters
+            ///Series parameteres integral parameters
             IntegrationParams integr;
+
+            ///Solver parameters used by Deal.II
+            SolverParams solver_params;
 
             ///Checks by evaluating series params for biffuraction condition.
             bool q_biffurcate(vector<double> a)

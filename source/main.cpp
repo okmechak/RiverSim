@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     tria.ref = &mdl.mesh;
 
     //Simulation object setup
-    River::Solver sim;
+    River::Solver sim(vm["quadrature-degree"].as<int>());
     sim.field_value = mdl.field_value;
 
 
