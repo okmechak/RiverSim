@@ -44,7 +44,7 @@ namespace River
             vector<Point> tip_points;
 
             ///Radius of refinment.
-            double refinment_radius = 0.2;
+            double refinment_radius = 0.02;
 
             ///Power.
             double exponant = 5.e2;
@@ -79,10 +79,10 @@ namespace River
     {
         public:
             ///Circle radius with centrum in tip point.
-            double weigth_func_radius = 0.1;
+            double weigth_func_radius = 0.01;
 
             ///Circle radius with centrum in tip point.
-            double integration_radius = 5 * weigth_func_radius;
+            double integration_radius = 3 * weigth_func_radius;
 
             ///Parameter is used in evaluation of weight function.
             double exponant = 2.;

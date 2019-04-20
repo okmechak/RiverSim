@@ -97,8 +97,8 @@ namespace River
         //Integration parameters
         options.add_options("Series parameters integral")
         ("weight-exp", "Parameter used in integration.", value<double>()->default_value("2"))
-        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.5"))
-        ("weight-radius", "Weight radius parameter.", value<double>()->default_value("0.1"));
+        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.03"))
+        ("weight-radius", "Weight radius parameter.", value<double>()->default_value("0.01"));
 
         //Mesh parameters
         options.add_options("Mesh refinment parameters")
@@ -110,9 +110,9 @@ namespace River
         ("A,mesh-max-area", "Constraints maximal area of triangle element", 
             value<double>()->default_value("10."))
         ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", 
-            value<double>()->default_value("1e-10"))
+            value<double>()->default_value("1e-11"))
         ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", 
-            value<double>()->default_value("0.2"));
+            value<double>()->default_value("0.05"));
 
         options.add_options("Solver Parameters")
         ("quadrature-degree", "quadrature polynomials degree used in numerical integration of Solver.", value<int>()->default_value("2"))
