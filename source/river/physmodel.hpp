@@ -44,32 +44,34 @@ namespace River
             vector<Point> tip_points;
 
             ///Radius of refinment.
-            double refinment_radius = 0.3;
+            double refinment_radius = 0.2;
 
             ///Power.
-            double exponant = 4;
+            double exponant = 5.e2;
 
             ///Minimal area of mesh.
-            double min_area = 5e-9;
+            double min_area = 5.e-9;
 
             ///Maximal area of mesh element.
-            double max_area = 10;
+            double max_area = 10.;
 
             ///Minimal angle of mesh element.
-            double min_angle = 30;
+            double min_angle = 30.;
 
             ///Width of branch.
             double eps = 1e-6;
 
-
             double operator()(double x, double y)
             {
-                vector<double> area_constraint(tip_points.size(), 100/*some large area value*/);
+                vector<double> area_constraint(tip_points.size(), 10000000/*some large area value*/);
                 for(auto& tip: tip_points)
                     area_constraint.push_back(
-                        1 + min_area - exp( - pow( (Point{x, y} - tip).norm()/refinment_radius, exponant))
+                        exp( -pow( (Point{x, y} - tip).norm()/refinment_radius/2, 2) / 2)
                     );
-                return *min_element(area_constraint.begin(), area_constraint.end());
+
+                auto exp = *min_element(area_constraint.begin(), area_constraint.end());
+                
+                return (max_area - min_area)*(1 - exp)/(1 + exponant* exp) + min_area;
             }
     };
 
@@ -77,7 +79,10 @@ namespace River
     {
         public:
             ///Circle radius with centrum in tip point.
-            double integration_radius = 0.01;
+            double weigth_func_radius = 0.1;
+
+            ///Circle radius with centrum in tip point.
+            double integration_radius = 5 * weigth_func_radius;
 
             ///Parameter is used in evaluation of weight function.
             double exponant = 2.;
@@ -85,7 +90,7 @@ namespace River
             ///Weight function used in computation of series parameters.
             double WeightFunction(double r)
             {
-                return exp(-pow(r/integration_radius, exponant));
+                return exp(-pow(r / weigth_func_radius, exponant));
             }
             
             ///Base Vector function used in computation of series parameters.
@@ -104,8 +109,14 @@ namespace River
     class SolverParams
     {
         public:
-            //Polynom degree of quadrature integration.
+            ///Polynom degree of quadrature integration.
             int quadrature_degree = 2;
+            
+            ///Fraction of refined mesh elements.
+            double refinment_fraction = 0.01;
+
+            ///Number of refinment steps.
+            int refinment_steps = 5;
     };
 
     /**
@@ -135,14 +146,14 @@ namespace River
             ///Field value used for Poisson conditions.
             double field_value = 0.0;
             ///Eta. Power of a1^eta
-            double eta = 0.0;
+            double eta = 1.0;
             ///Biffurcation type. 0 - a3/a2, 1 - proportionallity to a1,2 - combines both types,  3 - no biffurcation.
             int biffurcation_type = 2;
             ///Biffurcation threshold.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
             double biffurcation_threshold_2 = 0.001;//Probably should be -0.1
             ///Biffurcation angle.
-            double biffurcation_angle = M_PI/5;
+            double biffurcation_angle = M_PI/10;
             ///Growth type. 0 - arctan(a2/a1), 1 - {dx, dy}
             int growth_type = 0;
             ///Growth of branch will be done only if a1 > growth-threshold.

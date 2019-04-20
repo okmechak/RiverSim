@@ -56,10 +56,13 @@ namespace River
 
         //integration options
         mdl.integr.integration_radius = vm["integration-radius"].as<double>();
+        mdl.integr.weigth_func_radius = vm["weight-radius"].as<double>();
         mdl.integr.exponant = vm["weight-exp"].as<double>();
 
         //solver options
         mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<int>();
+        mdl.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
+        mdl.solver_params.refinment_steps = vm["refinment-steps"].as<int>();
 
         return mdl;
     }
@@ -144,7 +147,8 @@ namespace River
 
                 {"Integration",{
                     {"radius", mdl.integr.integration_radius},
-                    {"exponant", mdl.integr.exponant}}},
+                    {"exponant", mdl.integr.exponant},
+                    {"weightRadius", mdl.integr.weigth_func_radius}}},
 
                 {"Mesh", {
                     {"eps", mdl.mesh.eps},
@@ -154,8 +158,11 @@ namespace River
                     {"maxArea", mdl.mesh.max_area},
                     {"minAngle", mdl.mesh.min_angle}}},
                     
-                {"Solver", 
-                    {"quadratureDegree", mdl.solver_params.quadrature_degree}}}},
+                {"Solver", {
+                    {"quadratureDegree", mdl.solver_params.quadrature_degree},
+                    {"refinmentFraction", mdl.solver_params.refinment_fraction},
+                    {"refinmentSteps", mdl.solver_params.refinment_steps}}}}
+            },
             
             {"Border", jborder},
 
@@ -223,12 +230,15 @@ namespace River
 
                 jinteg.at("radius").get_to(mdl.integr.integration_radius);
                 jinteg.at("exponant").get_to(mdl.integr.exponant);
+                jinteg.at("weightRadius").get_to(mdl.integr.weigth_func_radius);
             }
             if(jmdl.count("Solver"))
             {
                 auto jsolver = jmdl["Solver"];
                 
                 jsolver.at("quadratureDegree").get_to(mdl.solver_params.quadrature_degree);
+                jsolver.at("refinmentFraction").get_to(mdl.solver_params.refinment_fraction);
+                jsolver.at("refinmentSteps").get_to(mdl.solver_params.refinment_steps);
             }
         }
         else

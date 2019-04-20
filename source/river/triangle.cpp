@@ -210,7 +210,7 @@
 
 /* #define SINGLE */
 
-#define REAL double
+#define REAL long double
 
 /* If yours is not a Unix system, define the NO_TIMER compiler switch to     */
 /*   remove the Unix-specific timing code.                                   */
@@ -1378,7 +1378,7 @@ int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
   bool q_refine = false;
   if(ac_global != NULL)
   {
-    double 
+    REAL 
       vert_val_1 = (*ac_global)(triorg[0], triorg[1]), 
       vert_val_2 = (*ac_global)(tridest[0], tridest[1]), 
       vert_val_3 = (*ac_global)(triapex[0], triapex[1]);
@@ -1778,21 +1778,21 @@ void printtriangle(struct mesh *m, struct behavior *b, struct otri *t)
   if (printvertex == (vertex)NULL)
     printf("    Origin[%d] = NULL\n", (t->orient + 1) % 3 + 3);
   else
-    printf("    Origin[%d] = x%lx  (%.12g, %.12g)\n",
+    printf("    Origin[%d] = x%lx  (%.12Lg, %.12Lg)\n",
            (t->orient + 1) % 3 + 3, (unsigned long)printvertex,
            printvertex[0], printvertex[1]);
   dest(*t, printvertex);
   if (printvertex == (vertex)NULL)
     printf("    Dest  [%d] = NULL\n", (t->orient + 2) % 3 + 3);
   else
-    printf("    Dest  [%d] = x%lx  (%.12g, %.12g)\n",
+    printf("    Dest  [%d] = x%lx  (%.12Lg, %.12Lg)\n",
            (t->orient + 2) % 3 + 3, (unsigned long)printvertex,
            printvertex[0], printvertex[1]);
   apex(*t, printvertex);
   if (printvertex == (vertex)NULL)
     printf("    Apex  [%d] = NULL\n", t->orient + 3);
   else
-    printf("    Apex  [%d] = x%lx  (%.12g, %.12g)\n",
+    printf("    Apex  [%d] = x%lx  (%.12Lg, %.12Lg)\n",
            t->orient + 3, (unsigned long)printvertex,
            printvertex[0], printvertex[1]);
 
@@ -1820,7 +1820,7 @@ void printtriangle(struct mesh *m, struct behavior *b, struct otri *t)
 
   if (b->vararea)
   {
-    printf("    Area constraint:  %.4g\n", areabound(*t));
+    printf("    Area constraint:  %.4Lg\n", areabound(*t));
   }
 }
 
@@ -1868,14 +1868,14 @@ void printsubseg(struct mesh *m, struct behavior *, struct osub *s)
   if (printvertex == (vertex)NULL)
     printf("    Origin[%d] = NULL\n", 2 + s->ssorient);
   else
-    printf("    Origin[%d] = x%lx  (%.12g, %.12g)\n",
+    printf("    Origin[%d] = x%lx  (%.12Lg, %.12Lg)\n",
            2 + s->ssorient, (unsigned long)printvertex,
            printvertex[0], printvertex[1]);
   sdest(*s, printvertex);
   if (printvertex == (vertex)NULL)
     printf("    Dest  [%d] = NULL\n", 3 - s->ssorient);
   else
-    printf("    Dest  [%d] = x%lx  (%.12g, %.12g)\n",
+    printf("    Dest  [%d] = x%lx  (%.12Lg, %.12Lg)\n",
            3 - s->ssorient, (unsigned long)printvertex,
            printvertex[0], printvertex[1]);
 
@@ -1904,14 +1904,14 @@ void printsubseg(struct mesh *m, struct behavior *, struct osub *s)
   if (printvertex == (vertex)NULL)
     printf("    Segment origin[%d] = NULL\n", 4 + s->ssorient);
   else
-    printf("    Segment origin[%d] = x%lx  (%.12g, %.12g)\n",
+    printf("    Segment origin[%d] = x%lx  (%.12Lg, %.12Lg)\n",
            4 + s->ssorient, (unsigned long)printvertex,
            printvertex[0], printvertex[1]);
   segdest(*s, printvertex);
   if (printvertex == (vertex)NULL)
     printf("    Segment dest  [%d] = NULL\n", 5 - s->ssorient);
   else
-    printf("    Segment dest  [%d] = x%lx  (%.12g, %.12g)\n",
+    printf("    Segment dest  [%d] = x%lx  (%.12Lg, %.12Lg)\n",
            5 - s->ssorient, (unsigned long)printvertex,
            printvertex[0], printvertex[1]);
 }
@@ -4734,7 +4734,7 @@ void enqueuebadtriang(struct mesh *m, struct behavior *b,
   if (b->verbose > 2)
   {
     printf("  Queueing bad triangle:\n");
-    printf("    (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n",
+    printf("    (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n",
            badtri->triangorg[0], badtri->triangorg[1],
            badtri->triangdest[0], badtri->triangdest[1],
            badtri->triangapex[0], badtri->triangapex[1]);
@@ -4992,7 +4992,7 @@ int checkseg4encroach(struct mesh *m, struct behavior *b,
     if (b->verbose > 2)
     {
       printf(
-          "  Queueing encroached subsegment (%.12g, %.12g) (%.12g, %.12g).\n",
+          "  Queueing encroached subsegment (%.12Lg, %.12Lg) (%.12Lg, %.12Lg).\n",
           eorg[0], eorg[1], edest[0], edest[1]);
     }
     /* Add the subsegment to the list of encroached subsegments. */
@@ -5333,7 +5333,7 @@ enum locateresult preciselocate(struct mesh *m, struct behavior *b,
 
   if (b->verbose > 2)
   {
-    printf("  Searching for point (%.12g, %.12g).\n",
+    printf("  Searching for point (%.12Lg, %.12Lg).\n",
            searchpoint[0], searchpoint[1]);
   }
   /* Where are we? */
@@ -5344,7 +5344,7 @@ enum locateresult preciselocate(struct mesh *m, struct behavior *b,
   {
     if (b->verbose > 2)
     {
-      printf("    At (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n",
+      printf("    At (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n",
              forg[0], forg[1], fdest[0], fdest[1], fapex[0], fapex[1]);
     }
     /* Check whether the apex is the point we seek. */
@@ -5491,7 +5491,7 @@ enum locateresult locate(struct mesh *m, struct behavior *b,
 
   if (b->verbose > 2)
   {
-    printf("  Randomly sampling for a triangle near point (%.12g, %.12g).\n",
+    printf("  Randomly sampling for a triangle near point (%.12Lg, %.12Lg).\n",
            searchpoint[0], searchpoint[1]);
   }
   /* Record the distance from the suggested starting triangle to the */
@@ -5501,7 +5501,7 @@ enum locateresult locate(struct mesh *m, struct behavior *b,
                (searchpoint[1] - torg[1]) * (searchpoint[1] - torg[1]);
   if (b->verbose > 2)
   {
-    printf("    Boundary triangle has origin (%.12g, %.12g).\n",
+    printf("    Boundary triangle has origin (%.12Lg, %.12Lg).\n",
            torg[0], torg[1]);
   }
 
@@ -5525,7 +5525,7 @@ enum locateresult locate(struct mesh *m, struct behavior *b,
         searchdist = dist;
         if (b->verbose > 2)
         {
-          printf("    Choosing recent triangle with origin (%.12g, %.12g).\n",
+          printf("    Choosing recent triangle with origin (%.12Lg, %.12Lg).\n",
                  torg[0], torg[1]);
         }
       }
@@ -5588,7 +5588,7 @@ enum locateresult locate(struct mesh *m, struct behavior *b,
           searchdist = dist;
           if (b->verbose > 2)
           {
-            printf("    Choosing triangle with origin (%.12g, %.12g).\n",
+            printf("    Choosing triangle with origin (%.12Lg, %.12Lg).\n",
                    torg[0], torg[1]);
           }
         }
@@ -6065,7 +6065,7 @@ enum insertvertexresult insertvertex(struct mesh *m, struct behavior *b,
 
   if (b->verbose > 1)
   {
-    printf("  Inserting (%.12g, %.12g).\n", newvertex[0], newvertex[1]);
+    printf("  Inserting (%.12Lg, %.12Lg).\n", newvertex[0], newvertex[1]);
   }
 
   if (splitseg == (struct osub *)NULL)
@@ -6134,7 +6134,7 @@ enum insertvertexresult insertvertex(struct mesh *m, struct behavior *b,
             if (b->verbose > 2)
             {
               printf(
-                  "  Queueing encroached subsegment (%.12g, %.12g) (%.12g, %.12g).\n",
+                  "  Queueing encroached subsegment (%.12Lg, %.12Lg) (%.12Lg, %.12Lg).\n",
                   encroached->subsegorg[0], encroached->subsegorg[1],
                   encroached->subsegdest[0], encroached->subsegdest[1]);
             }
@@ -6692,7 +6692,7 @@ void triangulatepolygon(struct mesh *m, struct behavior *b,
   if (b->verbose > 2)
   {
     printf("  Triangulating interior polygon at edge\n");
-    printf("    (%.12g, %.12g) (%.12g, %.12g)\n", leftbasevertex[0],
+    printf("    (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n", leftbasevertex[0],
            leftbasevertex[1], rightbasevertex[0], rightbasevertex[1]);
   }
   /* Find the best vertex to connect the base to. */
@@ -6715,7 +6715,7 @@ void triangulatepolygon(struct mesh *m, struct behavior *b,
   }
   if (b->verbose > 2)
   {
-    printf("    Connecting edge to (%.12g, %.12g)\n", bestvertex[0],
+    printf("    Connecting edge to (%.12Lg, %.12Lg)\n", bestvertex[0],
            bestvertex[1]);
   }
   if (bestnumber > 1)
@@ -6785,7 +6785,7 @@ void deletevertex(struct mesh *m, struct behavior *b, struct otri *deltri)
   org(*deltri, delvertex);
   if (b->verbose > 1)
   {
-    printf("  Deleting (%.12g, %.12g).\n", delvertex[0], delvertex[1]);
+    printf("  Deleting (%.12Lg, %.12Lg).\n", delvertex[0], delvertex[1]);
   }
   vertexdealloc(m, delvertex);
 
@@ -7828,7 +7828,7 @@ long divconqdelaunay(struct mesh *m, struct behavior *b)
       if (!b->quiet)
       {
         printf(
-            "Warning:  A duplicate vertex at (%.12g, %.12g) appeared and was ignored.\n",
+            "Warning:  A duplicate vertex at (%.12Lg, %.12Lg) appeared and was ignored.\n",
             sortarray[j][0], sortarray[j][1]);
       }
       setvertextype(sortarray[j], UNDEADVERTEX);
@@ -8314,9 +8314,9 @@ enum finddirectionresult finddirection(struct mesh *m, struct behavior *b,
     if (searchtri->tri == m->dummytri)
     {
       printf("Internal error in finddirection():  Unable to find a\n");
-      printf("  triangle leading from (%.12g, %.12g) to", startvertex[0],
+      printf("  triangle leading from (%.12Lg, %.12Lg) to", startvertex[0],
              startvertex[1]);
-      printf("  (%.12g, %.12g).\n", searchpoint[0], searchpoint[1]);
+      printf("  (%.12Lg, %.12Lg).\n", searchpoint[0], searchpoint[1]);
       internalerror();
     }
     apex(*searchtri, leftvertex);
@@ -8331,9 +8331,9 @@ enum finddirectionresult finddirection(struct mesh *m, struct behavior *b,
     if (searchtri->tri == m->dummytri)
     {
       printf("Internal error in finddirection():  Unable to find a\n");
-      printf("  triangle leading from (%.12g, %.12g) to", startvertex[0],
+      printf("  triangle leading from (%.12Lg, %.12Lg) to", startvertex[0],
              startvertex[1]);
-      printf("  (%.12g, %.12g).\n", searchpoint[0], searchpoint[1]);
+      printf("  (%.12Lg, %.12Lg).\n", searchpoint[0], searchpoint[1]);
       internalerror();
     }
     dest(*searchtri, rightvertex);
@@ -8422,7 +8422,7 @@ void segmentintersection(struct mesh *m, struct behavior *b,
   if (b->verbose > 1)
   {
     printf(
-        "  Splitting subsegment (%.12g, %.12g) (%.12g, %.12g) at (%.12g, %.12g).\n",
+        "  Splitting subsegment (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) at (%.12Lg, %.12Lg).\n",
         torg[0], torg[1], tdest[0], tdest[1], newvertex[0], newvertex[1]);
   }
   /* Insert the intersection vertex.  This should always succeed. */
@@ -8841,7 +8841,7 @@ void insertsegment(struct mesh *m, struct behavior *b,
 
   if (b->verbose > 1)
   {
-    printf("  Connecting (%.12g, %.12g) to (%.12g, %.12g).\n",
+    printf("  Connecting (%.12Lg, %.12Lg) to (%.12Lg, %.12Lg).\n",
            endpoint1[0], endpoint1[1], endpoint2[0], endpoint2[1]);
   }
 
@@ -8864,7 +8864,7 @@ void insertsegment(struct mesh *m, struct behavior *b,
     {
       printf(
           "Internal error in insertsegment():  Unable to locate PSLG vertex\n");
-      printf("  (%.12g, %.12g) in triangulation.\n",
+      printf("  (%.12Lg, %.12Lg) in triangulation.\n",
              endpoint1[0], endpoint1[1]);
       internalerror();
     }
@@ -8901,7 +8901,7 @@ void insertsegment(struct mesh *m, struct behavior *b,
     {
       printf(
           "Internal error in insertsegment():  Unable to locate PSLG vertex\n");
-      printf("  (%.12g, %.12g) in triangulation.\n",
+      printf("  (%.12Lg, %.12Lg) in triangulation.\n",
              endpoint2[0], endpoint2[1]);
       internalerror();
     }
@@ -9214,7 +9214,7 @@ void plague(struct mesh *m, struct behavior *b)
       org(testtri, deadorg);
       dest(testtri, deaddest);
       apex(testtri, deadapex);
-      printf("    Checking (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n",
+      printf("    Checking (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n",
              deadorg[0], deadorg[1], deaddest[0], deaddest[1],
              deadapex[0], deadapex[1]);
     }
@@ -9256,7 +9256,7 @@ void plague(struct mesh *m, struct behavior *b)
             dest(neighbor, deaddest);
             apex(neighbor, deadapex);
             printf(
-                "    Marking (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n",
+                "    Marking (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n",
                 deadorg[0], deadorg[1], deaddest[0], deaddest[1],
                 deadapex[0], deadapex[1]);
           }
@@ -9361,7 +9361,7 @@ void plague(struct mesh *m, struct behavior *b)
         {
           if (b->verbose > 1)
           {
-            printf("    Deleting vertex (%.12g, %.12g)\n",
+            printf("    Deleting vertex (%.12Lg, %.12Lg)\n",
                    testvertex[0], testvertex[1]);
           }
           setvertextype(testvertex, UNDEADVERTEX);
@@ -9461,7 +9461,7 @@ void regionplague(struct mesh *m, struct behavior *b,
       org(testtri, regionorg);
       dest(testtri, regiondest);
       apex(testtri, regionapex);
-      printf("    Checking (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n",
+      printf("    Checking (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n",
              regionorg[0], regionorg[1], regiondest[0], regiondest[1],
              regionapex[0], regionapex[1]);
     }
@@ -9481,7 +9481,7 @@ void regionplague(struct mesh *m, struct behavior *b,
           org(neighbor, regionorg);
           dest(neighbor, regiondest);
           apex(neighbor, regionapex);
-          printf("    Marking (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n",
+          printf("    Marking (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n",
                  regionorg[0], regionorg[1], regiondest[0], regiondest[1],
                  regionapex[0], regionapex[1]);
         }
@@ -9969,7 +9969,7 @@ void splitencsegs(struct mesh *m, struct behavior *b, int triflaws)
         if (b->verbose > 1)
         {
           printf(
-              "  Splitting subsegment (%.12g, %.12g) (%.12g, %.12g) at (%.12g, %.12g).\n",
+              "  Splitting subsegment (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) at (%.12Lg, %.12Lg).\n",
               eorg[0], eorg[1], edest[0], edest[1],
               newvertex[0], newvertex[1]);
         }
@@ -9977,7 +9977,7 @@ void splitencsegs(struct mesh *m, struct behavior *b, int triflaws)
         if (((newvertex[0] == eorg[0]) && (newvertex[1] == eorg[1])) ||
             ((newvertex[0] == edest[0]) && (newvertex[1] == edest[1])))
         {
-          printf("Error:  Ran out of precision at (%.12g, %.12g).\n",
+          printf("Error:  Ran out of precision at (%.12Lg, %.12Lg).\n",
                  newvertex[0], newvertex[1]);
           printf("I attempted to split a segment to a smaller size than\n");
           printf("  can be accommodated by the finite precision of\n");
@@ -10075,7 +10075,7 @@ void splittriangle(struct mesh *m, struct behavior *b,
     if (b->verbose > 1)
     {
       printf("  Splitting this triangle at its circumcenter:\n");
-      printf("    (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n", borg[0],
+      printf("    (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n", borg[0],
              borg[1], bdest[0], bdest[1], bapex[0], bapex[1]);
     }
 
@@ -10092,7 +10092,7 @@ void splittriangle(struct mesh *m, struct behavior *b,
       if (!b->quiet)
       {
         printf(
-            "Warning:  New vertex (%.12g, %.12g) falls on existing vertex.\n",
+            "Warning:  New vertex (%.12Lg, %.12Lg) falls on existing vertex.\n",
             newvertex[0], newvertex[1]);
         errorflag = 1;
       }
@@ -10140,7 +10140,7 @@ void splittriangle(struct mesh *m, struct behavior *b,
         undovertex(m, b);
         if (b->verbose > 1)
         {
-          printf("  Rejecting (%.12g, %.12g).\n", newvertex[0], newvertex[1]);
+          printf("  Rejecting (%.12Lg, %.12Lg).\n", newvertex[0], newvertex[1]);
         }
         vertexdealloc(m, newvertex);
       }
@@ -10156,7 +10156,7 @@ void splittriangle(struct mesh *m, struct behavior *b,
         if (!b->quiet)
         {
           printf(
-              "Warning:  New vertex (%.12g, %.12g) falls on existing vertex.\n",
+              "Warning:  New vertex (%.12Lg, %.12Lg) falls on existing vertex.\n",
               newvertex[0], newvertex[1]);
           errorflag = 1;
         }
@@ -10168,7 +10168,7 @@ void splittriangle(struct mesh *m, struct behavior *b,
       if (b->verbose)
       {
         printf("  The new vertex is at the circumcenter of triangle\n");
-        printf("    (%.12g, %.12g) (%.12g, %.12g) (%.12g, %.12g)\n",
+        printf("    (%.12Lg, %.12Lg) (%.12Lg, %.12Lg) (%.12Lg, %.12Lg)\n",
                borg[0], borg[1], bdest[0], bdest[1], bapex[0], bapex[1]);
       }
       printf("This probably means that I am trying to refine triangles\n");
@@ -10358,7 +10358,7 @@ void highorder(struct mesh *m, struct behavior *b)
         }
         if (b->verbose > 1)
         {
-          printf("  Creating (%.12g, %.12g).\n", newvertex[0], newvertex[1]);
+          printf("  Creating (%.12Lg, %.12Lg).\n", newvertex[0], newvertex[1]);
         }
         /* Record the new node in the (one or two) adjacent elements. */
         triangleloop.tri[m->highorderindex + triangleloop.orient] =
@@ -11219,29 +11219,29 @@ void quality_statistics(struct mesh *m, struct behavior *b)
     }
   }
 
-  printf("  Smallest area: %16.5g   |  Largest area: %16.5g\n",
+  printf("  Smallest area: %16.5Lg   |  Largest area: %16.5Lg\n",
          smallestarea, biggestarea);
-  printf("  Shortest edge: %16.5g   |  Longest edge: %16.5g\n",
+  printf("  Shortest edge: %16.5Lg   |  Longest edge: %16.5Lg\n",
          shortest, longest);
-  printf("  Shortest altitude: %12.5g   |  Largest aspect ratio: %8.5g\n\n",
+  printf("  Shortest altitude: %12.5Lg   |  Largest aspect ratio: %8.5Lf\n\n",
          minaltitude, worstaspect);
 
   printf("  Triangle aspect ratio histogram:\n");
-  printf("  1.1547 - %-6.6g    :  %8d    | %6.6g - %-6.6g     :  %8d\n",
+  printf("  1.1547 - %-6.6Lg    :  %8d    | %6.6Lg - %-6.6Lg     :  %8d\n",
          ratiotable[0], aspecttable[0], ratiotable[7], ratiotable[8],
          aspecttable[8]);
   for (i = 1; i < 7; i++)
   {
-    printf("  %6.6g - %-6.6g    :  %8d    | %6.6g - %-6.6g     :  %8d\n",
+    printf("  %6.6Lf - %-6.6Lf    :  %8d    | %6.6Lf - %-6.6Lf     :  %8d\n",
            ratiotable[i - 1], ratiotable[i], aspecttable[i],
            ratiotable[i + 7], ratiotable[i + 8], aspecttable[i + 8]);
   }
-  printf("  %6.6g - %-6.6g    :  %8d    | %6.6g -            :  %8d\n",
+  printf("  %6.6Lf - %-6.6Lf    :  %8d    | %6.6Lf -            :  %8d\n",
          ratiotable[6], ratiotable[7], aspecttable[7], ratiotable[14],
          aspecttable[15]);
   printf("  (Aspect ratio is longest edge divided by shortest altitude)\n\n");
 
-  printf("  Smallest angle: %15.5g   |  Largest angle: %15.5g\n\n",
+  printf("  Smallest angle: %15.5Lf   |  Largest angle: %15.5Lf\n\n",
          smallestangle, biggestangle);
 
   printf("  Angle histogram:\n");

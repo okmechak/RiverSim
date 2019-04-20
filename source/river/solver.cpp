@@ -226,7 +226,7 @@ void Solver::refine_grid()
                                        estimated_error_per_cell);
     GridRefinement::refine_and_coarsen_fixed_number(triangulation,
                                                     estimated_error_per_cell,
-                                                    0.3, 0.03);
+                                                    refinment_fraction, coarsening_fraction);
     triangulation.execute_coarsening_and_refinement();
 }
 
@@ -390,7 +390,7 @@ void Solver::output_results(const string file_name) const
 
 void Solver::run()
 {
-    for (unsigned int cycle = 0; cycle < numOfRefinments; ++cycle)
+    for (unsigned int cycle = 0; cycle < num_of_refinments; ++cycle)
     {
         //std::cout << "Cycle " << cycle << ':' << std::endl;
         if (cycle > 0)
@@ -404,7 +404,9 @@ void Solver::run()
                   << dof_handler.n_dofs()
                   << std::endl;
         assemble_system();
-        solve();        
+        solve();    
+
+        output_results("refinment_test_" + to_string(cycle));    
     }
 }
 

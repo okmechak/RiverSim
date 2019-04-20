@@ -96,20 +96,29 @@ namespace River
 
         //Integration parameters
         options.add_options("Series parameters integral")
-        ("weight-exp", "Parameter used in integration.", value<double>()->default_value("3"))
-        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.01"));
+        ("weight-exp", "Parameter used in integration.", value<double>()->default_value("2"))
+        ("integration-radius", "Integration radius around tips for series parameters", value<double>()->default_value("0.5"))
+        ("weight-radius", "Weight radius parameter.", value<double>()->default_value("0.1"));
 
         //Mesh parameters
         options.add_options("Mesh refinment parameters")
-        ("mesh-exp", "Parameter used in mesh refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("4"))
+        ("mesh-exp", "Parameter used in mesh refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", 
+            value<double>()->default_value("500."))
         ("e,eps", "Width of branch", value<double>()->default_value("1e-5"))
-        ("q,mesh-min-angle", "Constraints minimal angle of triangle element", value<double>()->default_value("33."))
-        ("A,mesh-max-area", "Constraints maximal area of triangle element", value<double>()->default_value("10."))
-        ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", value<double>()->default_value("1e-8"))
-        ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", value<double>()->default_value("0.15"));
+        ("q,mesh-min-angle", "Constraints minimal angle of triangle element", 
+            value<double>()->default_value("30."))
+        ("A,mesh-max-area", "Constraints maximal area of triangle element", 
+            value<double>()->default_value("10."))
+        ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", 
+            value<double>()->default_value("1e-10"))
+        ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", 
+            value<double>()->default_value("0.2"));
 
         options.add_options("Solver Parameters")
-        ("quadrature-degree", "quadrature polynomials degree used in numerical integration of Solver.", value<int>()->default_value("2"));
+        ("quadrature-degree", "quadrature polynomials degree used in numerical integration of Solver.", value<int>()->default_value("2"))
+        ("refinment-fraction", "Fraction of refined mesh elements.", value<double>()->default_value("0.01"))
+        ("refinment-steps", "Number of refinment steps.", value<int>()->default_value("3"));
+
 
         options.parse_positional({"input"});
 

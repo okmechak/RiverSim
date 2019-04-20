@@ -74,8 +74,10 @@ int main(int argc, char *argv[])
     tria.ref = &mdl.mesh;
 
     //Simulation object setup
-    River::Solver sim(vm["quadrature-degree"].as<int>());
+    River::Solver sim(mdl.solver_params.quadrature_degree);
     sim.field_value = mdl.field_value;
+    sim.num_of_refinments = mdl.solver_params.refinment_steps;
+    sim.refinment_fraction = mdl.solver_params.refinment_fraction;
 
 
     //MAIN LOOP

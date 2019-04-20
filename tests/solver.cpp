@@ -62,8 +62,6 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
     //Simulation
     River::Solver sim;
-    
-    sim.numOfRefinments = 1;
     sim.field_value = 1;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
@@ -128,7 +126,6 @@ BOOST_AUTO_TEST_CASE( integration_test,
     //Simulation
     River::Solver sim;
     
-    sim.numOfRefinments = 1;
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run();

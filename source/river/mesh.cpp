@@ -148,7 +148,7 @@ namespace River{
         //Points
         if(!mesh.vertices.empty())
         {
-            io.pointlist = new double[2 * mesh.vertices.size()];
+            io.pointlist = new REAL[2 * mesh.vertices.size()];
             io.pointmarkerlist = new int[mesh.vertices.size()];
             io.numberofpoints = mesh.vertices.size();
 
@@ -182,7 +182,7 @@ namespace River{
         {
             io.trianglelist = new int[3 * mesh.lines.size()];
             io.numberoftriangleattributes = 1;
-            io.triangleattributelist = new double[mesh.lines.size()];
+            io.triangleattributelist = new REAL[mesh.lines.size()];
             io.numberofsegments = mesh.lines.size();
             int i = 0;
             for(auto t: mesh.triangles)
