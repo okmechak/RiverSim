@@ -65,13 +65,15 @@ namespace River
             {
                 vector<double> area_constraint(tip_points.size(), 10000000/*some large area value*/);
                 for(auto& tip: tip_points)
-                    area_constraint.push_back(
-                        exp( -pow( (Point{x, y} - tip).norm()/refinment_radius/2, 2) / 2)
-                    );
-
-                auto exp = *min_element(area_constraint.begin(), area_constraint.end());
+                {
+                    auto exp_val = exp( -pow( (Point{x, y} - tip).norm()/refinment_radius/2, 2) / 2);
                 
-                return (max_area - min_area)*(1 - exp)/(1 + exponant* exp) + min_area;
+                    area_constraint.push_back(
+                        (max_area - min_area)*(1 - exp_val)/(1 + exponant* exp_val) + min_area
+                    );
+                }
+                
+                return *min_element(area_constraint.begin(), area_constraint.end());
             }
     };
 
