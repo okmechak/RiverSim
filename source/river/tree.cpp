@@ -52,6 +52,236 @@ namespace River
         return *this;
     }
     
+    
+    /*
+        Tree Class
+    */
+    Tree& Tree::Initialize(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids)
+    {
+        Clear();
+        for(unsigned int i = 0; i < ids.size(); ++i)
+            AddSourceBranch(BranchNew{
+                    sources_point.at(i), 
+                    sources_angle.at(i)}, 
+                    ids.at(i));
+        return *this;
+    }
+
+
+    Tree& Tree::AddPoints(vector<Point> points, vector<int> tips_id)
+    {
+        for(unsigned i = 0; i < tips_id.size(); ++i)
+            if(DoesExistBranch(tips_id.at(i)))
+            {
+                BranchNew& br = GetBranch(tips_id.at(i));
+                br.AddPoint(points.at(i));
+            }
+            else
+                throw invalid_argument("Such branch does not exist");
+
+        return *this;
+    }
+
+
+    Tree& Tree::AddPolars(vector<Polar> points, vector<int> tips_id)
+    {
+        for(unsigned i = 0; i < tips_id.size(); ++i)
+            if(DoesExistBranch(tips_id.at(i)))
+            {
+                BranchNew& br = GetBranch(tips_id.at(i));
+                br.AddPoint(points.at(i));
+            }
+            else
+                throw invalid_argument("Such branch does not exist");
+
+        return *this;
+    }
+
+
+    Tree& Tree::AddAbsolutePolars(vector<Polar> points, vector<int> tips_id)
+    {
+        for(unsigned int i = 0; i < tips_id.size(); ++i)
+            if(DoesExistBranch(tips_id.at(i)))
+            {
+                BranchNew& br = GetBranch(tips_id.at(i));
+                br.AddAbsolutePoint(points.at(i));
+            }
+            else
+                throw invalid_argument("Such branch does not exist");
+
+        return *this;
+    }
+
+
+    pair<int, int> Tree::AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch)
+    {   
+        if(!DoesExistBranch(root_branch_id))
+            throw invalid_argument("root branch doesn't exis");
+
+        if(HasSubBranches(root_branch_id))
+            throw invalid_argument("This branch already has subbranches");
+                
+        //adding new branches
+        pair<int, int> sub_branches_id;
+        sub_branches_id.first = GenerateNewID();
+        AddBranch(left_branch, sub_branches_id.first);
+                
+        sub_branches_id.second = GenerateNewID();
+        AddBranch(right_branch, sub_branches_id.second);
+
+        //setting relation
+        branches_relation[root_branch_id] = sub_branches_id;
+
+        return sub_branches_id;
+    }
+
+
+    Tree& Tree::DeleteSubBranches(int root_branch_id)
+    {
+        if(!DoesExistBranch(root_branch_id))
+            throw invalid_argument("root branch doesn't exis.");
+
+        if(!HasSubBranches(root_branch_id))
+            throw invalid_argument("This branch doesn't has subbranches.");
+
+        //FIXME also we should delete branches
+        //not only relations
+
+        branches_relation.erase(root_branch_id);
+                
+
+        return *this;
+    }
+
+
+    vector<int> Tree::TipBranchesId()
+    {
+        vector<int> tip_branches_id;
+        for(auto p: branches_index)
+            if(!HasSubBranches(p.first))
+                tip_branches_id.push_back(p.first);
+
+        return tip_branches_id;
+    }
+    
+
+    vector<Point> Tree::TipPoints()
+    {   
+        vector<Point> tip_points;
+        auto tip_branches_id = TipBranchesId();
+        tip_points.reserve(tip_branches_id.size());
+        for(auto id: tip_branches_id)
+            tip_points.push_back(GetBranch(id).TipPoint());
+                
+        return tip_points;
+    }
+
+
+    map<int, Point> Tree::TipIdsAndPoints()
+    {   
+        map<int, Point> ids_points_map;
+        auto points = TipPoints();
+        auto ids = TipBranchesId();
+
+        for(unsigned i = 0; i < ids.size(); ++i)
+            ids_points_map[ids.at(i)] = points.at(i);
+                
+        return ids_points_map;
+    }
+
+
+    Tree& Tree::AddBranch(const BranchNew &branch, int id)
+    {
+        if(DoesExistBranch(id))
+            throw invalid_argument("Invalid Id, such branch already exists");
+        if(!IsValidBranchId(id))
+            throw invalid_argument("Invalid Id, id should be greater then 0");
+                
+        branches.push_back(branch);
+        branches_index[id] = branches.size() - 1;
+
+        return *this;
+    }
+
+
+    ///Returns link to branch with __id__.
+    const BranchNew& Tree::GetBranch(int id) const
+    {
+        if(!DoesExistBranch(id))
+            throw invalid_argument("there is no such branch");
+                
+        return branches.at(branches_index.at(id));
+    }
+
+    ///Returns link to branch with __id__.
+    BranchNew& Tree::GetBranch(int id)
+    {
+        if(!DoesExistBranch(id))
+            throw invalid_argument("there is no such branch");
+                
+        return branches.at(branches_index.at(id));
+    }
+
+
+    int Tree::GetAdjacentBranchId(int sub_branch_id)
+    {
+        auto [left_branch, right_branch] = GetSubBranches(GetSourceBranch(sub_branch_id));
+
+        if(left_branch == sub_branch_id)
+            return right_branch;
+        else if(right_branch == sub_branch_id)
+            return left_branch;
+        else
+            throw invalid_argument("something wrong with GetAdjacentBranch");
+    }
+
+
+    int Tree::GetSourceBranch(int branch_id)
+    {
+        if(IsSubBranch(branch_id))
+        {
+            for(auto key_val: branches_relation)
+                if(key_val.second.first == branch_id 
+                    || key_val.second.second == branch_id)
+                    return key_val.first;
+        }
+        else
+            throw invalid_argument("Branch doesn't have source branch. probabaly it is source itself");
+
+        return invalid_branch;
+    }
+
+
+    unsigned int Tree::GenerateNewID()
+    {
+        unsigned max_id = 1;
+                
+        vector<int> branches_id;
+        branches_id.reserve(branches_index.size());
+
+        for(auto &key_val: branches_index)
+            branches_id.push_back(key_val.first);
+
+        while(find(begin(branches_id), end(branches_id), ++max_id)!= branches_id.end());
+
+        return max_id;
+    }
+
+    
+    ostream& operator<<(ostream& write, const Tree & b)
+    {
+        write << "source branches ids" << endl;
+        for(auto s_id: b.source_branches_id)
+            write << s_id << ", ";
+        write << endl;
+
+        write << "branches relation" << endl;
+        for(auto key_val: b.branches_relation)
+            write << key_val.first << " left: " << key_val.second.first 
+                << " right: " << key_val.second.second << endl;
+        
+        return write;
+    }
 
     /*
         Tree Vector Generation

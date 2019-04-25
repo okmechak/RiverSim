@@ -240,146 +240,142 @@ namespace River
              *Default constructor 
              */
             Tree() = default; 
+            
+            /**
+             * @name Modificators
+             * @{
+             */
             /**
              * Constructor of __Tree__.
              * 
              * Takes as input vector of __sources_point__, __sources_angle__ and their __ids__, 
              * and for each entry creates instance of __BranchNew__ object.
              */
-            Tree& Initialize(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids)
-            {
-                Clear();
-                for(unsigned int i = 0; i < ids.size(); ++i)
-                    AddSourceBranch(BranchNew{
-                            sources_point.at(i), 
-                            sources_angle.at(i)}, 
-                            ids.at(i));
-
-                return *this;
-            }
+            Tree& Initialize(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids);
 
             ///Adds  relatively __points__ to Branches __tips_id__.
-            Tree& AddPoints(vector<Point> points, vector<int> tips_id)
-            {
-                for(unsigned int i = 0; i < tips_id.size(); ++i)
-                    if(DoesExistBranch(tips_id.at(i)))
-                    {
-                        BranchNew& br = GetBranch(tips_id.at(i));
-                        br.AddPoint(points.at(i));
-                    }
-                    else
-                        throw invalid_argument("Such branch does not exist");
-
-                return *this;
-            }
+            Tree& AddPoints(vector<Point> points, vector<int> tips_id);
 
             ///Adds  relatively __points__ to Branches __tips_id__.
-            Tree& AddPolars(vector<Polar> points, vector<int> tips_id)
-            {
-                for(unsigned int i = 0; i < tips_id.size(); ++i)
-                    if(DoesExistBranch(tips_id.at(i)))
-                    {
-                        BranchNew& br = GetBranch(tips_id.at(i));
-                        br.AddPoint(points.at(i));
-                    }
-                    else
-                        throw invalid_argument("Such branch does not exist");
-
-                return *this;
-            }
-
+            Tree& AddPolars(vector<Polar> points, vector<int> tips_id);
 
             ///Adds  absolute __points__ to Branches __tips_id__.
-            Tree& AddAbsolutePolars(vector<Polar> points, vector<int> tips_id)
-            {
-                for(unsigned int i = 0; i < tips_id.size(); ++i)
-                    if(DoesExistBranch(tips_id.at(i)))
-                    {
-                        BranchNew& br = GetBranch(tips_id.at(i));
-                        br.AddAbsolutePoint(points.at(i));
-                    }
-                    else
-                        throw invalid_argument("Such branch does not exist");
+            Tree& AddAbsolutePolars(vector<Polar> points, vector<int> tips_id);
 
-                return *this;
+            ///Adds new source __branch__ with __id__.
+            Tree& AddSourceBranch(const BranchNew &branch, int id)
+            {
+                source_branches_id.push_back(id);
+                return AddBranch(branch, id);
             }
 
+            ///Adds new __branch__ with __id__(id should be unique).
+            Tree& AddBranch(const BranchNew &branch, int id);
 
             ///Adds Sub Branches __left_bracnhs__, __right_branch__ to __root_branch_id__.
-            pair<int, int> AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch)
-            {   
-                if(!DoesExistBranch(root_branch_id))
-                    throw invalid_argument("root branch doesn't exis");
+            pair<int, int> AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch);
 
-                if(HasSubBranches(root_branch_id))
-                    throw invalid_argument("This branch already has subbranches");
-                
-                //adding new branches
-                pair<int, int> sub_branches_id;
-                sub_branches_id.first = GenerateNewID();
-                AddBranch(left_branch, sub_branches_id.first);
-                
-                sub_branches_id.second = GenerateNewID();
-                AddBranch(right_branch, sub_branches_id.second);
+            Tree& DeleteSubBranches(int root_branch_id);
 
-                //setting relation
-                branches_relation[root_branch_id] = sub_branches_id;
+            ///Returns link to branch with __id__.
+            const BranchNew& GetBranch(int id) const;
 
-                return sub_branches_id;
-            }
+            ///Returns link to branch with __id__.
+            BranchNew& GetBranch(int id);
 
-            Tree& DeleteSubBranches(int root_branch_id)
+            ///Clear data from class
+            Tree& Clear()
             {
-                if(!DoesExistBranch(root_branch_id))
-                    throw invalid_argument("root branch doesn't exis.");
-
-                if(!HasSubBranches(root_branch_id))
-                    throw invalid_argument("This branch doesn't has subbranches.");
-
-                //FIXME also we should delete branches
-                //not only relations
-
-                branches_relation.erase(root_branch_id);
-                
+                branches_relation.clear();
+                source_branches_id.clear();
+                branches.clear();
+                branches_index.clear();
 
                 return *this;
             }
 
+            /**
+             * @}
+             */
+
+            /**
+             * @name Functional
+             * @{
+             */
+
             ///Returns vector of tip branches ids.
-            vector<int> TipBranchesId()
+            vector<int> TipBranchesId();
+
+            ///Returns vector of tip branches Points.
+            vector<Point> TipPoints();
+
+            ///Returns vector of tip branches Points.
+            map<int, Point> TipIdsAndPoints();
+
+            ///Returns link to adjacent branch with __id__.
+            BranchNew& GetAdjacentBranch(int sub_branch_id)
             {
-                vector<int> tip_branches_id;
-                for(auto p: branches_index)
-                    if(!HasSubBranches(p.first))
-                        tip_branches_id.push_back(p.first);
-
-                return tip_branches_id;
+                return GetBranch(GetAdjacentBranchId(sub_branch_id));
             }
 
-            ///Returns vector of tip branches Points.
-            vector<Point> TipPoints()
-            {   
-                vector<Point> tip_points;
-                auto tip_branches_id = TipBranchesId();
-                tip_points.reserve(tip_branches_id.size());
-                for(auto id: tip_branches_id)
-                    tip_points.push_back(GetBranch(id).TipPoint());
+            ///Checks if branch with __id__ exists.
+            bool DoesExistBranch(int id)const{return branches_index.count(id);}
+
+            ///Checks if Branchs __branch_id__ has root(or source) branch.
+            bool IsSubBranch(int branch_id)
+            {
+                if(!DoesExistBranch(branch_id))
+                    throw invalid_argument("there is no such branch");
                 
-                return tip_points;
+                for(auto key_val: branches_relation)
+                    if(key_val.second.first == branch_id || key_val.second.second == branch_id)
+                        return true;
+
+                return false;
             }
 
-            ///Returns vector of tip branches Points.
-            map<int, Point> TipIdsAndPoints()
+            ///Checks if tree has non zero sized branches.
+            bool HasEmptySourceBranch()
             {   
-                map<int, Point> ids_points_map;
-                auto points = TipPoints();
-                auto ids = TipBranchesId();
+                for(auto id: source_branches_id)
+                    if(GetBranch(id).Empty())
+                        return true;
 
-                for(unsigned i = 0; i < ids.size(); ++i)
-                    ids_points_map[ids.at(i)] = points.at(i);
-                
-                return ids_points_map;
+                return false;
             }
+
+            ///Checks if Branch __branch_id__ has subbranches.
+            bool HasSubBranches(int branch_id) const
+            {
+                return branches_relation.count(branch_id);
+            }
+
+            ///Returns pair of ids of subranches.
+            pair<int, int> GetSubBranches(int branch_id) const
+            {   
+                if(!HasSubBranches(branch_id))
+                    throw invalid_argument("branch does't have sub branches");
+
+                return branches_relation.at(branch_id);
+            }
+
+            ///Returns id of adjacent branch with __id__.
+            int GetAdjacentBranchId(int sub_branch_id);
+
+            ///Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
+            ///FIXME change name to GetParentBranch
+            int GetSourceBranch(int branch_id);
+
+            ///Checks if current id of branch is source or not.
+            int IsSourceBranch(int branch_id)
+            {return find(source_branches_id.begin(), source_branches_id.end(), branch_id) != source_branches_id.end();}
+
+
+
+            /**
+             * @}
+             */
+
 
             ///Returns number of source branches.
             int NumberOfSourceBranches(){return source_branches_id.size();}
@@ -405,181 +401,18 @@ namespace River
             vector<int> source_branches_id;
 
             ///Invalid branch index. Used in error handling.
-            int invalid_branch = -2;
-
-            ///Clear data from class
-            Tree& Clear()
-            {
-                branches_relation.clear();
-                source_branches_id.clear();
-                branches.clear();
-                branches_index.clear();
-
-                return *this;
-            }
-
-            ///Adds new source __branch__ with __id__.
-            Tree& AddSourceBranch(const BranchNew &branch, int id)
-            {
-                source_branches_id.push_back(id);
-                return AddBranch(branch, id);
-            }
-
-            ///Adds new __branch__ with __id__(id should be unique).
-            Tree& AddBranch(const BranchNew &branch, int id)
-            {
-                if(DoesExistBranch(id))
-                    throw invalid_argument("Invalid Id, such branch already exists");
-                if(!IsValidBranchId(id))
-                    throw invalid_argument("Invalid Id, id should be greater then 0");
-                
-                branches.push_back(branch);
-                branches_index[id] = branches.size() - 1;
-
-                return *this;
-            }
-
-            ///Checks if branch with __id__ exists.
-            bool DoesExistBranch(int id)const{return branches_index.count(id);}
-
-            ///Returns link to branch with __id__.
-            const BranchNew& GetBranch(int id) const
-            {
-                if(!DoesExistBranch(id))
-                    throw invalid_argument("there is no such branch");
-                
-                return branches.at(branches_index.at(id));
-            }
-
-            ///Returns link to branch with __id__.
-            BranchNew& GetBranch(int id)
-            {
-                if(!DoesExistBranch(id))
-                    throw invalid_argument("there is no such branch");
-                
-                return branches.at(branches_index.at(id));
-            }
-
-            ///Returns link to adjacent branch with __id__.
-            BranchNew& GetAdjacentBranch(int sub_branch_id)
-            {
-                return GetBranch(GetAdjacentBranchId(sub_branch_id));
-            }
-
-            ///Returns id of adjacent branch with __id__.
-            int GetAdjacentBranchId(int sub_branch_id)
-            {
-                auto [left_branch, right_branch] = GetSubBranches(GetSourceBranch(sub_branch_id));
-
-                if(left_branch == sub_branch_id)
-                    return right_branch;
-                else if(right_branch == sub_branch_id)
-                    return left_branch;
-                else
-                    throw invalid_argument("something wrong with GetAdjacentBranch");
-            }
-
-            ///Checks if Branch __branch_id__ has subbranches.
-            bool HasSubBranches(int branch_id) const
-            {
-                return branches_relation.count(branch_id);
-            }
-
-            ///Checks if Branchs __branch_id__ has root(or source) branch.
-            bool IsSubBranch(int branch_id)
-            {
-                if(!DoesExistBranch(branch_id))
-                    throw invalid_argument("there is no such branch");
-                
-                for(auto key_val: branches_relation)
-                    if(key_val.second.first == branch_id || key_val.second.second == branch_id)
-                        return true;
-
-                return false;
-            }
-
-
-            ///Checks if tree has non zero sized branches.
-            bool HasEmptySourceBranch()
-            {   
-                for(auto id: source_branches_id)
-                    if(GetBranch(id).Empty())
-                        return true;
-
-                return false;
-            }
-
-            ///Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
-            ///FIXME change name to GetParentBranch
-            int GetSourceBranch(int branch_id)
-            {
-                if(IsSubBranch(branch_id))
-                {
-                    for(auto key_val: branches_relation)
-                        if(key_val.second.first == branch_id 
-                            || key_val.second.second == branch_id)
-                            return key_val.first;
-                }
-                else
-                    throw invalid_argument("Branch doesn't have source branch. probabaly it is source itself");
-
-                return invalid_branch;
-            }
-
-            ///Checks if current id of branch is source or not.
-            int IsSourceBranch(int branch_id)
-            {
-                return find(source_branches_id.begin(), source_branches_id.end(), branch_id) != source_branches_id.end();
-            }
-
-            ///Returns pair of ids of subranches.
-            pair<int, int> GetSubBranches(int branch_id) const
-            {   
-                if(!HasSubBranches(branch_id))
-                    throw invalid_argument("branch does't have sub branches");
-
-                return branches_relation.at(branch_id);
-            }
-
+            int invalid_branch = -2;        
 
             ///Checks for validity of __id__.
             bool IsValidBranchId(int id)
-            {
-                return id >= 1;
-            }
+            {return id >= 1;}
 
             ///Generates unique id number for new subbranch.
-            unsigned int GenerateNewID()
-            {
-                unsigned max_id = 1;
-                
-                vector<int> branches_id;
-                branches_id.reserve(branches_index.size());
-
-                for(auto &key_val: branches_index)
-                    branches_id.push_back(key_val.first);
-
-                while(find(begin(branches_id), end(branches_id), ++max_id)!= branches_id.end());
-
-                return max_id;
-            }
+            unsigned int GenerateNewID();
 
 
             ///Prints tree to stream.
-            friend ostream& operator<<(ostream& write, const Tree & b)
-            {
-                write << "source branches ids" << endl;
-                for(auto s_id: b.source_branches_id)
-                    write << s_id << ", ";
-                write << endl;
-
-                write << "branches relation" << endl;
-                for(auto key_val: b.branches_relation)
-                    write << key_val.first << " left: " << key_val.second.first 
-                        << " right: " << key_val.second.second << endl;
-                
-                return write;
-            }
+            friend ostream& operator<<(ostream& write, const Tree & b);
             /**
              * @}
              */
