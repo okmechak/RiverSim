@@ -15,8 +15,20 @@ Program is written in C++ Language.  And contains few built-in  and external dep
 
 
 ## 1. System setup
+##### This setup applies to Ubuntu, Mint and Windows Linux Subsyste, at least those are tested.
 As we discussed above product contains few external  dependencies: __Deal.II__ and __Boost__.
 To build system on computer
+
+#### Build environmet
+To build from source at every beginning you need tools like: _CMake_, _Make_, _GCC compiler_ etc.
+easiest way to install them all is:
+> sudo apt install build-esential
+
+also _Cmake_ with curses gui(Terminal gui) is very handy:
+> sudo app install cmake-curses-gui
+
+and call command is same as cmake, but:
+> ccmake <path-to-source> 
 
 #### Deal.II setup:
 
@@ -24,6 +36,9 @@ To build system on computer
     > sudo apt install libdeal.ii-dev  
 * Download prebuild files from official site.
 * Build from repository(Read INSTALL instruction for details, static lib options shoud be turned ON).
+
+#### Boost:
+> sudo apt install libbost-all-dev
 
 
 ## 2. Compiling and running Tests
@@ -36,6 +51,8 @@ It is very easy and fast(in comparsion to Deal.II compiling process), you just h
 Makefile will be generated, which next is used for compiling of program:
 
   > make
+  or for faster(multithread build) type
+  > make -j5
 
 #### Running Tests
 After compiling, simply type a command:
@@ -51,7 +68,13 @@ More details about parameters you can find in __help__ of program:
   > ./riversim -h
 or
   > ./riversim --help
+  
+Typical forward river simulation command:
+> ./riversim -n 100 -o simdata
 
+And after that, typical backward simulation commnad:
+> ./riversim -n 130 -o revsim --simulation-type=1 simdata.json
+  
 add more details about workflow with program(TODO)..
 
 
@@ -59,7 +82,8 @@ add more details about workflow with program(TODO)..
 
 
 ## 5. References
-[1]: Add links on scientific work(TODO)
+[1]: [Problem odwrotny do ewolucji sieci rzecznych](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf).
+[2]: Todo add other referneces.
 
 ## 6. Links
 
