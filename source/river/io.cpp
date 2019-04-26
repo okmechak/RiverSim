@@ -81,15 +81,15 @@ namespace River
         for(auto id: tr.branches_index)
         {
             auto branch_id = id.first;
-            auto& branch = tr.GetBranch(branch_id);
-            vector<pair<double, double>> coords(branch.Size());
-            for(unsigned i = 0; i < branch.Size(); ++i)
-                coords[i] = {branch.GetPoint(i).x, branch.GetPoint(i).y};
+            auto branch = tr.GetBranch(branch_id);
+            vector<pair<double, double>> coords(branch->Size());
+            for(unsigned i = 0; i < branch->Size(); ++i)
+                coords[i] = {branch->GetPoint(i).x, branch->GetPoint(i).y};
 
 
             branches.push_back({
-                {"sourcePoint", {branch.SourcePoint().x , branch.SourcePoint().y}},
-                {"sourceAngle", branch.SourceAngle()},
+                {"sourcePoint", {branch->SourcePoint().x , branch->SourcePoint().y}},
+                {"sourceAngle", branch->SourceAngle()},
                 {"coords", coords},
                 {"id", branch_id}});
         }

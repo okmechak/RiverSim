@@ -98,8 +98,8 @@ BOOST_AUTO_TEST_CASE( io_methods,
     BOOST_TEST(tree.source_branches_id == sources_id);
     map<int, pair<int, int>> t = {{1, {2, 3}}, {3, {4, 5}}};
     BOOST_TEST(tree.branches_relation == t);
-    BOOST_TEST(tree.GetBranch(5).TipPoint().x == 11);
-    BOOST_TEST(tree.GetBranch(5).TipPoint().y == 10);
+    BOOST_TEST(tree.GetBranch(5)->TipPoint().x == 11);
+    BOOST_TEST(tree.GetBranch(5)->TipPoint().y == 10);
     //TODO
 
     //Border Test

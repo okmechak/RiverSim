@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
     Tree tr;
     tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.1, 0});
+    tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
     auto mesh = BoundaryGenerator(mdl, tr, border);
 
@@ -68,8 +68,8 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     sim.run();
     
     auto tip_ids = tr.TipBranchesId();
-    auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();
-    auto angle = tr.GetBranch(tip_ids.at(0)).TipAngle();
+    auto point = tr.GetBranch(tip_ids.at(0))->TipPoint();
+    auto angle = tr.GetBranch(tip_ids.at(0))->TipAngle();
     auto series_params = sim.integrate(mdl, point, angle);
 
     BOOST_TEST(angle == M_PI/2);
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
     Tree tr;
     tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tr.GetBranch(sources_id.at(0)).AddPoint(Polar{0.1, 0});
+    tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
     auto mesh = BoundaryGenerator(mdl, tr, border);
 
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     sim.field_value = 1;
     
     auto tip_ids = tr.TipBranchesId();
-    auto point = tr.GetBranch(tip_ids.at(0)).TipPoint();
+    auto point = tr.GetBranch(tip_ids.at(0))->TipPoint();
     auto dr = 0.01;
     auto integration = sim.integration_test(point, dr);
     auto integration_of_whole_region = sim.integration_test(point, 10);

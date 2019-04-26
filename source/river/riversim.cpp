@@ -15,6 +15,8 @@
 
 #include "riversim.hpp"
 
+#include <math.h>
+
 namespace River
 {
     //FIXME this will be walid only for quad region
@@ -57,13 +59,16 @@ namespace River
         return xmax > rxmax - dl || ymax > rymax - dl || xmin < rxmin + dl;
     }
 
+
+
+
     void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name)
     {
+        //initial boundaries of mesh
         auto mesh = BoundaryGenerator(mdl, tree, border);
-        
         tria.ref->tip_points = tree.TipPoints();
-        tria.generate(mesh);
-        mesh.convert();
+        tria.generate(mesh);//triangulation
+        mesh.convert();//convertaion from triangles to quadrangles
         mesh.write(file_name + ".msh");
 
         //Simulation
@@ -76,8 +81,8 @@ namespace River
 
         for(auto id: tree.TipBranchesId())
         {
-            auto tip_point = tree.GetBranch(id).TipPoint();
-            auto tip_angle = tree.GetBranch(id).TipAngle();
+            auto tip_point = tree.GetBranch(id)->TipPoint();
+            auto tip_angle = tree.GetBranch(id)->TipAngle();
             auto series_params = sim.integrate(mdl, tip_point, tip_angle);
 
             if(mdl.q_growth(series_params))
@@ -91,11 +96,12 @@ namespace River
                     tree.AddSubBranches(id, br_left, br_right);
                 }
                 else
-                    tree.GetBranch(id).AddPoint(mdl.next_point(series_params));
+                    tree.GetBranch(id)->AddPoint(mdl.next_point(series_params));
             }
         }
         sim.clear();
     }
+
 
 
 
@@ -120,67 +126,65 @@ namespace River
         //tree_A is represent current river geometry,
         //tree_B will be representing simulated river geometry with new parameters.
         Tree tree_A = tree;
-        
-        //this vector holds ids of branches which adjacent branch reached biffurcation point
-        vector<int> deleted_branches;
-        for(auto id: tree.TipBranchesId())
-        {
-            //if remove one branch then adjacent branch is removed too, so we should ommit them
-            //if(find(begin(deleted_branches), end(deleted_branches), id) == end(deleted_branches))
-            //{
-                auto tip_point = tree.GetBranch(id).TipPoint();
-                auto tip_angle = tree.GetBranch(id).TipAngle();
-                auto series_params = sim.integrate(mdl, tip_point, tip_angle);
-            
-                gd.Add(series_params);
 
+        {
+            //preevaluation series params to each tip point.
+            map<int, vector<double>> ids_seriesparams_map;
+            for(auto id: tree.TipBranchesId())
+            {
+                auto tip_point = tree.GetBranch(id)->TipPoint();
+                auto tip_angle = tree.GetBranch(id)->TipAngle();
+                auto series_params = sim.integrate(mdl, tip_point, tip_angle);
+                gd.Add(series_params);
+                ids_seriesparams_map[id] = series_params;
+            }
+            sim.clear();
+
+        
+            //Processing backward growth by iterating over each tip id and its series_params
+            for(auto[id, series_params]: ids_seriesparams_map)
                 if(mdl.q_growth(series_params))
+                    tree.GetBranch(id)->
+                        Shrink(mdl.next_point(series_params).r);
+
+            //collect branches which reached zero lenght(biffurcation point)
+            vector<int> zero_size_branches_id;
+            for(auto tip_id: tree.TipBranchesId())
+                if(tree.HasParentBranch(tip_id) && tree.GetBranch(tip_id)->Lenght() == 0)
+                    zero_size_branches_id.push_back(tree.GetParentBranchId(tip_id));
+        
+            //collect difference between branches lenght to and delete them
+            for(int parent_id: zero_size_branches_id)
+                //for each pair of subbranches we can delete them only once
+                if(tree.HasSubBranches(parent_id))
                 {
-                    auto& branch = tree.GetBranch(id);
-                    if(branch.Lenght() > 0)
-                        branch.Shrink(mdl.next_point(series_params).r);
-                
-                    if(branch.Lenght() == 0 && tree.IsSourceBranch(id))
-                        //stop simulation
-                        stop_flag = true;
-                    else if(branch.Lenght() == 0 && !tree.IsSourceBranch(id))
-                    {
-                        //FIXME handle this situation in other way
-                        try
-                        {
-                            auto adjacent_branch_id = tree.GetAdjacentBranchId(id);
-                            gd.Add(tree.GetBranch(adjacent_branch_id).Lenght());
-                            tree.DeleteSubBranches(tree.GetSourceBranch(id));
-                            //deleted_branches.push_back(adjacent_branch_id);
-                        }
-                        catch (const exception&)
-                        {
-                            
-                        }
-                    }       
+                    auto[branch_left, branch_right] = tree.GetSubBranches(parent_id);
+                    gd.Add(abs(branch_left->Lenght() - branch_right->Lenght()));
+                    tree.DeleteSubBranches(parent_id);
                 }
-            //}
         }
 
-        sim.clear();
-
-        Tree tree_B = tree;
-
-        Model mdl_B = mdl;
-        mdl_B.biffurcation_type = 3;//3 - means no biffuraction at all.
-        ForwardRiverEvolution(mdl, tria, sim, tree_B, border, file_name);
-
-        ///TODO compare tip points
-        auto original_points = tree_A.TipIdsAndPoints(),
-            simulated_points = tree_B.TipIdsAndPoints();
-
-        for(auto& el: original_points)
-            if(simulated_points.count(el.first))
-            {
-                auto orig_point = el.second,
-                    sim_point = simulated_points.at(el.first);
-                gd.Add(orig_point, sim_point);
-            }
+        
+        //One step forward growth
+        if(false){
+            Tree tree_B = tree;
+            Model mdl_B = mdl;
+            mdl_B.biffurcation_type = 3;//3 - means no biffuraction at all.
+            cout << "-><- One Step Forward" << endl;
+            ForwardRiverEvolution(mdl, tria, sim, tree_B, border, "backward_forward_"+file_name);
+             
+            //comparsion of tip points with the same ids.
+            auto original_points = tree_A.TipIdsAndPoints(),
+                simulated_points = tree_B.TipIdsAndPoints();
+             
+            for(auto& el: original_points)
+                if(simulated_points.count(el.first))
+                {
+                    auto orig_point = el.second,
+                        sim_point = simulated_points.at(el.first);
+                    gd.Add(orig_point, sim_point);
+                }
+        }
         return stop_flag;
     }
 }//namespace River
