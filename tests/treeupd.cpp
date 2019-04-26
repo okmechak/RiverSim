@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE( Tree_UPD,
     BOOST_TEST(tree.TipIdsAndPoints().size() == 4);
     BOOST_TEST(tree.TipPoints().size() == 4);
     BOOST_TEST(tree.HasEmptySourceBranch() == false);
-    BOOST_TEST((tree.GenerateNewID() == id7 + 1));
+    BOOST_TEST((tree.GenerateNewID() == (unsigned int)(id7 + 1)));
 
 
     //delete
