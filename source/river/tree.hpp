@@ -252,9 +252,19 @@ namespace River
     {
         public:
             /**
-             *Default constructor 
+             *Default constructor.
              */
             Tree() = default; 
+
+            /**
+             * Copy constructor.
+             */
+            Tree(const Tree& t);
+
+            /**
+             * Assignment.
+             */
+            Tree& operator= (const Tree &t);
             
             /**
              * @name Modificators

@@ -166,7 +166,7 @@ namespace River
 
         
         //One step forward growth
-        if(false){
+        {
             Tree tree_B = tree;
             Model mdl_B = mdl;
             mdl_B.biffurcation_type = 3;//3 - means no biffuraction at all.

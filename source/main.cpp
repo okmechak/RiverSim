@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
         //backward simmulation
         GeometryDifference gd;
         bool stop_flag = false;
-        while(!stop_flag && !tree.HasEmptySourceBranch() && i < vm["number-of-steps"].as<int>())    
+        while(stop_flag == false && tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<int>())    
         {
             cout << "-------" << endl;
             cout << "  "<<i<< endl;

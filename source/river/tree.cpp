@@ -24,9 +24,13 @@ namespace River
     */
     BranchNew& BranchNew::Shrink(double lenght)
     {
+        if(Size() <= 1)//case of zero branch
+            lenght = 0;
+
         while(lenght > 0)
         {
             auto dl = TipVector().norm();
+
             if(lenght >= dl + eps)
             {
                 RemoveTipPoint();
@@ -56,6 +60,32 @@ namespace River
     /*
         Tree Class
     */
+    Tree::Tree(const Tree& t)
+    {
+        source_branches_id = t.source_branches_id;
+        branches_relation = t.branches_relation;
+
+        for(auto[id, br]: t.branches_index)
+        {
+            branches.push_back(*br);
+            branches_index[id] = &branches.back();
+        }
+    }
+
+    Tree& Tree::operator=(const Tree &t)
+    {
+        source_branches_id = t.source_branches_id;
+        branches_relation = t.branches_relation;
+
+        for(auto[id, br]: t.branches_index)
+        {
+            branches.push_back(*br);
+            branches_index[id] = &branches.back();
+        }
+
+        return *this;
+    }
+
     Tree& Tree::Initialize(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids)
     {
         Clear();
