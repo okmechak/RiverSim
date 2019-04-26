@@ -229,7 +229,7 @@ namespace River
             vector<int> GetZeroIndices()
             {
                 if(boundary_condition == 0)
-                    return boundary_ids;
+                    return {river_boundary_id};//boundary_ids;
                 else if(boundary_condition == 1)
                     return {river_boundary_id};
                 else
