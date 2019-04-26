@@ -15,6 +15,7 @@
 
 #include "utilities.hpp"
 #include <iostream>
+#include <string>
 
 namespace River
 {
@@ -31,10 +32,17 @@ namespace River
         cout << endl;            
     }
 
+    string version_string()
+    {
+        return to_string(VERSION_MAJOR) + "." 
+            + to_string(VERSION_MINOR) + "."
+            + to_string(VERSION_PATCH);
+    }
 
     void print_version()
     {
-        cout << ProgramTitle+ " version: 1.0.0" << endl;
+        cout << ProgramTitle+ " version: " 
+            + version_string() << endl;
     }
 
     cxxopts::ParseResult process_program_options(int argc, char *argv[])

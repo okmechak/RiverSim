@@ -22,6 +22,7 @@
 #pragma once
 
 #include "cxxopts.hpp"
+#include "version.hpp"
 #include <chrono>
 #include <ctime>
 
@@ -32,6 +33,9 @@ namespace River{
     
     ///Prints to console program logo.
     void print_ascii_signature();
+
+    ///Returns version string defined in @ref version.hpp.
+    string version_string();
 
     ///Prints to console program Version.
     void print_version();

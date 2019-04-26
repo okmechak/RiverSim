@@ -119,6 +119,7 @@ namespace River
         //implementation with json
         json j = {
             {"Description", "This is RiverSim simulation data"},
+            {"Version", version_string()},
 
             {"RuntimeInfo", {
                 {"StartDate",  time.CreationtDate()},

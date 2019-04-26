@@ -13,6 +13,7 @@ set(SOURCE_FILES
     triangle.cpp
     riversim.cpp
     riversim.hpp
+    version.hpp
     common.hpp
     common.cpp
     tree.hpp
@@ -36,4 +37,4 @@ add_library(river STATIC ${SOURCE_FILES})
 deal_ii_setup_target(river)
 
 #FIXME
-target_link_libraries(river tethex ${GMSH_LIB}) #triangle 
+target_link_libraries(river tethex) #triangle 
