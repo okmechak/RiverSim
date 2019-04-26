@@ -210,8 +210,6 @@
 
 /* #define SINGLE */
 
-#define REAL long double
-
 /* If yours is not a Unix system, define the NO_TIMER compiler switch to     */
 /*   remove the Unix-specific timing code.                                   */
 

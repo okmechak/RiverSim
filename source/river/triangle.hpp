@@ -16,7 +16,8 @@
  */
 
 #define VOID void
-#define REAL long double
+typedef long double longdouble;
+#define REAL longdouble
 #include <vector>
 
 //FIXME:
