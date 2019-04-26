@@ -28,9 +28,6 @@
                 "${workspaceFolder}/source/river/tethex/**",
                 "C:/Users/ofcra/Libs/Deal.II/**"
             ],
-            "exludePath" : [
-                "${workspaceFolder}/docs/**"
-            ],
             "defines": [],
             "cStandard": "c11",
             "cppStandard": "c++17",
