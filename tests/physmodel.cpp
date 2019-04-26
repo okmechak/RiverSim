@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE( phys_model_methods,
     BOOST_TEST(mdl.integr.BaseVector(1, 1) == 1.);
     BOOST_TEST(mdl.integr.BaseVector(1, 2) == sqrt(2.));
     BOOST_TEST(mdl.integr.BaseVector(2, 1) == 0.);
-    BOOST_TEST(mdl.integr.BaseVector(2, 1i) == -1.);
+    BOOST_TEST(mdl.integr.BaseVector(2, complex<double>(0., 1.)) == -1.);
     BOOST_TEST(mdl.integr.BaseVector(3, 1) == 1.);
     BOOST_TEST(mdl.integr.BaseVector(3, 2i) == -2.);
 }
