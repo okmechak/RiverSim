@@ -141,8 +141,11 @@ namespace River
             ///Returns angle of tip of branch
             double TipAngle() const 
             {
-                if(Size() == 1)
+                if(Size() < 1)
+                    throw invalid_argument("TipAngle: size is less then 1!");
+                else if(Size() == 1)
                     return source_angle; 
+
                 return TipVector().angle();
             }
 
