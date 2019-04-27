@@ -154,12 +154,16 @@ namespace River
             ///Biffurcation threshold.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
             double biffurcation_threshold_2 = 0.001;//Probably should be -0.1
+            ///Minimal distance between adjacent biffurcation points. Reduces numerical noise.
+            double biffurcation_min_dist = 0.05;
             ///Biffurcation angle.
             double biffurcation_angle = M_PI/10;
             ///Growth type. 0 - arctan(a2/a1), 1 - {dx, dy}
             int growth_type = 0;
             ///Growth of branch will be done only if a1 > growth-threshold.
             int growth_threshold = 0;
+            ///Distance of constant tip growing after biffurcation point. Reduces numerical noise.
+            double growth_min_distance = 0.01;
             
             //Numeriacal parameters
             ///Proportionality value to one step growth.
@@ -175,23 +179,25 @@ namespace River
             SolverParams solver_params;
 
             ///Checks by evaluating series params for biffuraction condition.
-            bool q_biffurcate(vector<double> a)
+            bool q_biffurcate(vector<double> a, double branch_lenght)
             {
+                bool dist_flag = branch_lenght > biffurcation_min_dist;
+
                 if(biffurcation_type == 0)
                 {
                     cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
-                    return a.at(2)/a.at(0) < biffurcation_threshold;
+                    return a.at(2)/a.at(0) < biffurcation_threshold && dist_flag;
                 }
                 else if(biffurcation_type == 1)
                 {
                     cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
-                    return a.at(0) > biffurcation_threshold;
+                    return a.at(0) > biffurcation_threshold && dist_flag;
                 }
                 else if(biffurcation_type == 2)
                 {
                     cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold
                         << " a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
-                    return a.at(2)/a.at(0) < biffurcation_threshold && a.at(0) > biffurcation_threshold_2;
+                    return a.at(2)/a.at(0) < biffurcation_threshold && a.at(0) > biffurcation_threshold_2 && dist_flag;
                 }
                 else if(biffurcation_type == 3)
                     return false;
@@ -206,10 +212,15 @@ namespace River
             }
 
             ///Evaluate next point of simualtion based on series parameters around tip.
-            Polar next_point(vector<double> series_params)
+            Polar next_point(vector<double> series_params, double branch_lenght)
             {
+                //handle situation near biffurcation point, to reduce killing one branch by another
+                auto eta_local = eta;
+                if(branch_lenght < growth_min_distance)
+                    eta_local = 0;//constant growth of both branches.
+
                 auto beta = series_params.at(0)/series_params.at(1),
-                    dl = ds * pow(series_params.at(0), eta);
+                    dl = ds * pow(series_params.at(0), eta_local);
                 if(growth_type == 0)
                 {
                     double phi = -atan(2 / beta * sqrt(dl));

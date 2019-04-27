@@ -95,11 +95,11 @@ namespace River
         ("biffurcation-type", "Biffurcation method type. 0 - a3/a1 > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.", value<int>()->default_value("2"))
         ("b,biffurcation-threshold", "Biffuraction threshold for a(3)/a(1) > kcrit", value<double>()->default_value("-0.1"))
         ("biffurcation-threshold-2", "Biffuraction threshold for a(1) > kcrit", value<double>()->default_value("0.002"))
+        ("biffurcation-min-distance", "Minimal distance between adjacent biffurcation points. Reduces numerical noise", value<double>()->default_value("0.01"))
         ("biffurcation-angle", "Biffurcation angle between branches. default Pi/5 or Pi/10?? FIXME", value<double>()->default_value("0.62831853071795864"))
         ("growth-type", "0 - arctan(a2/a1), 1 - {dx, dy}.", value<int>()->default_value("0"))
         ("growth-threshold", "Growth of branch will be done only if a1 > growth-threshold.", value<double>()->default_value("0."))
-
-        //Numerical parameters
+        ("growth-min-distance", "Distance of constant tip growing after biffurcation point. Reduces numerical noise", value<double>()->default_value("0.01"))
         ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.01"));
 
         //Integration parameters

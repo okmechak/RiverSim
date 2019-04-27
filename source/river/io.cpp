@@ -42,8 +42,10 @@ namespace River
         mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
         mdl.biffurcation_threshold_2 = vm["biffurcation-threshold-2"].as<double>();
         mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
+        mdl.biffurcation_min_dist = vm["biffurcation-min-distance"].as<double>();
         mdl.growth_type = vm["growth-type"].as<int>();
         mdl.growth_threshold = vm["growth-threshold"].as<double>();
+        mdl.growth_min_distance = vm["growth-min-distance"].as<double>();
         mdl.ds = vm["ds"].as<double>();
 
         //mesh options
@@ -141,9 +143,11 @@ namespace River
                 {"biffurcationType", mdl.biffurcation_type},
                 {"biffurcationThreshold", mdl.biffurcation_threshold},
                 {"biffurcationThreshold2", mdl.biffurcation_threshold_2},
+                {"biffurcationMinDistance", mdl.biffurcation_min_dist},
                 {"biffurcationAngle", mdl.biffurcation_angle},
                 {"growthType", mdl.growth_type},
                 {"growthThreshold", mdl.growth_threshold},
+                {"growthMinDistance", mdl.growth_min_distance},
                 {"ds", mdl.ds},
 
                 {"Integration",{
@@ -208,10 +212,12 @@ namespace River
             jmdl.at("biffurcationType").get_to(mdl.biffurcation_type);
             jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
             jmdl.at("biffurcationThreshold2").get_to(mdl.biffurcation_threshold_2);
+            jmdl.at("biffurcationMinDistance").get_to(mdl.biffurcation_min_dist);
             jmdl.at("biffurcationAngle").get_to(mdl.biffurcation_angle);
             jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
             jmdl.at("growthType").get_to(mdl.growth_type);
             jmdl.at("growthThreshold").get_to(mdl.growth_threshold);
+            jmdl.at("growthMinDistance").get_to(mdl.growth_min_distance);
             jmdl.at("ds").get_to(mdl.ds);
             
             if(jmdl.count("Mesh"))

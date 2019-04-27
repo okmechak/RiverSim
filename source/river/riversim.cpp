@@ -87,7 +87,7 @@ namespace River
 
             if(mdl.q_growth(series_params))
             {
-                if(mdl.q_biffurcate(series_params))
+                if(mdl.q_biffurcate(series_params, tree.GetBranch(id)->Lenght()))
                 {
                     auto br_left = BranchNew(tip_point, tip_angle + mdl.biffurcation_angle);
                     br_left.AddPoint(Polar{mdl.ds, 0});
@@ -96,7 +96,7 @@ namespace River
                     tree.AddSubBranches(id, br_left, br_right);
                 }
                 else
-                    tree.GetBranch(id)->AddPoint(mdl.next_point(series_params));
+                    tree.GetBranch(id)->AddPoint(mdl.next_point(series_params, tree.GetBranch(id)->Lenght()));
             }
         }
         sim.clear();
@@ -145,7 +145,10 @@ namespace River
             for(auto[id, series_params]: ids_seriesparams_map)
                 if(mdl.q_growth(series_params))
                     tree.GetBranch(id)->
-                        Shrink(mdl.next_point(series_params).r);
+                        Shrink(mdl.next_point(
+                            series_params, 
+                            0 /*we are not constraining here speed growth near 
+                            biffuraction points*/).r);
 
             //collect branches which reached zero lenght(biffurcation point)
             vector<int> zero_size_branches_id;
