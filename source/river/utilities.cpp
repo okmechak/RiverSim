@@ -95,12 +95,12 @@ namespace River
         ("biffurcation-type", "Biffurcation method type. 0 - a3/a1 > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.", value<int>()->default_value("2"))
         ("b,biffurcation-threshold", "Biffuraction threshold for a(3)/a(1) > kcrit", value<double>()->default_value("-0.1"))
         ("biffurcation-threshold-2", "Biffuraction threshold for a(1) > kcrit", value<double>()->default_value("0.002"))
-        ("biffurcation-min-distance", "Minimal distance between adjacent biffurcation points. Reduces numerical noise", value<double>()->default_value("0.01"))
+        ("biffurcation-min-distance", "Minimal distance between adjacent biffurcation points. Reduces numerical noise", value<double>()->default_value("0.025"))
         ("biffurcation-angle", "Biffurcation angle between branches. default Pi/5 or Pi/10?? FIXME", value<double>()->default_value("0.62831853071795864"))
         ("growth-type", "0 - arctan(a2/a1), 1 - {dx, dy}.", value<int>()->default_value("0"))
         ("growth-threshold", "Growth of branch will be done only if a1 > growth-threshold.", value<double>()->default_value("0."))
-        ("growth-min-distance", "Distance of constant tip growing after biffurcation point. Reduces numerical noise", value<double>()->default_value("0.01"))
-        ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.01"));
+        ("growth-min-distance", "Distance of constant tip growing after biffurcation point. Reduces numerical noise", value<double>()->default_value("0.02"))
+        ("ds", "ds - minimal lenght of growing", value<double>()->default_value("0.004"));
 
         //Integration parameters
         options.add_options("Series parameters integral")
@@ -120,7 +120,7 @@ namespace River
         ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", 
             value<double>()->default_value("1e-11"))
         ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", 
-            value<double>()->default_value("0.05"));
+            value<double>()->default_value("0.2"));
 
         options.add_options("Solver Parameters")
         ("quadrature-degree", "quadrature polynomials degree used in numerical integration of Solver.", value<int>()->default_value("2"))
