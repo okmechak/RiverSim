@@ -32,10 +32,7 @@ int main(int argc, char *argv[])
 
     //Model object setup
     Model mdl;
-    if(!vm.count("input"))
-    {
-        mdl = SetupModelParamsFromProgramOptions(vm);
-    }
+    mdl = SetupModelParamsFromProgramOptions(vm);
 
     //Timing Object setup
     Timing timing;
