@@ -379,6 +379,7 @@ void Solver::output_results(const string file_name) const
     data_out.add_data_vector(solution, "solution");
     data_out.build_patches();
     std::ofstream output(file_name + ".vtk");
+    output.precision(20);//Fix for paraview
     data_out.write_vtk(output);
 
     //std::ofstream out("grid-"+std::to_string(cycle)+".eps");
