@@ -178,10 +178,8 @@ namespace River
                 
             {"GeometryDifference", {
                 {"description", "this structure holds info about backward river simulation."},
-                {"angles", gd.angle_differences},
-                {"distances", gd.distance_differences},
-                {"biffurcationValues", gd.biff_values},
-                {"biffurcationDifference", gd.biff_inconsistencies}}}
+                {"AlongBranches", gd.branches_series_params_and_geom_diff},
+                {"BiffuractionPoints", gd.branches_biffuraction_info}}}
         };
 
         out << setw(4) << j;
@@ -292,6 +290,7 @@ namespace River
                 vector<pair<double, double>> coords;
                 double source_angle;
                 int id;
+
                 value.at("sourcePoint").get_to(s_point);
                 value.at("sourceAngle").get_to(source_angle);
                 value.at("coords").get_to(coords);
@@ -303,7 +302,14 @@ namespace River
                 {
                     branch.points[i] = River::Point{coords.at(i).first, coords.at(i).second};
                 }
-                tree.AddBranch(branch, id);
+                try
+                {
+                    tree.AddBranch(branch, id);
+                }
+                catch (...)
+                {
+                    cout << "ivalid inser" << endl;
+                }
             }
             
         }
@@ -314,11 +320,9 @@ namespace River
         if(j.count("GeometryDifference"))
         { 
             json jgd = j["GeometryDifference"];
-            
-            jgd.at("angles").get_to(gd.angle_differences);
-            jgd.at("distances").get_to(gd.distance_differences);
-            jgd.at("biffurcationValues").get_to(gd.biff_values);
-            jgd.at("biffurcationDifference").get_to(gd.biff_inconsistencies);
+
+            jgd.at("AlongBranches").get_to(gd.branches_series_params_and_geom_diff);
+            jgd.at("BiffuractionPoints").get_to(gd.branches_biffuraction_info);
         }
         
     }

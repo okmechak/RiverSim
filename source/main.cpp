@@ -101,7 +101,6 @@ int main(int argc, char *argv[])
     else if(vm["simulation-type"].as<int>() == 1)
     {
         //backward simmulation
-        GeometryDifference gd;
         bool stop_flag = false;
         while(stop_flag == false && tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<int>())    
         {

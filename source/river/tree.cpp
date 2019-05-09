@@ -104,10 +104,19 @@ namespace River
             id = GenerateNewID();
         
         if(DoesExistBranch(id))
-            throw invalid_argument("Invalid Id, such branch already exists");
+        {
+            stringstream ss;
+            ss << endl;
+            for(auto[key, val]: branches_index)
+                ss << key << ": " << *val << endl;
+            ss << "Invalid Id, such branch already exists. Id value: " << id << endl;
+            ss << "inserted branch: " << endl;
+            ss << branch;
+            throw invalid_argument(ss.str());
+        }
 
         if(!IsValidBranchId(id))
-            throw invalid_argument("Invalid Id, id should be greater then 0");
+            throw invalid_argument("Invalid Id, id should be greater then 0. Id value: " + to_string(id));
                 
         branches.push_back(branch);
         branches_index[id] = &branches.back();

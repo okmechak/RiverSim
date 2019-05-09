@@ -26,6 +26,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
+#include <map>
 
 #include "common.hpp"
 
@@ -262,41 +263,86 @@ namespace River
     };
 
 
+
+
     /**
      * This structure holds comparsion data from Backward river simulation.
      */
-    class GeometryDifference
+    struct GeometryDifference
     {
-        public:
-            GeometryDifference& Add(double biffurcation_difference)
+        ///holds for each branch id all its series parameters: a1, a2, a3
+        map<int, vector<vector<double>>> branches_series_params_and_geom_diff;
+        ///series params info in biffurcation points
+        map<int, vector<vector<double>>> branches_biffuraction_info;
+
+
+        void StartBiffurcationRecord(int br_id, double biffurcation_difference)
+        {
+            if(bif_difference.count(br_id))
+                throw invalid_argument("StartBiffurcationRecord. Such branch already recorded, id: " + to_string(br_id));
+            else
             {
-                biff_inconsistencies.push_back(biffurcation_difference);
-                return *this;
+                bif_difference[br_id] = biffurcation_difference;
             }
+        }
 
-            GeometryDifference& Add(vector<double> series_params)
+        void EndBiffurcationRecord(int br_id, vector<double> series_params)
+        {
+            if(bif_difference.count(br_id))
             {
-                biff_values.push_back(series_params.at(2)/series_params.at(0));
-                return *this;
+                RecordBiffurcationPoint(br_id, bif_difference[br_id], series_params);
+                bif_difference.erase(br_id);
             }
+        }
 
-            GeometryDifference& Add(Point orig, Point sim)
+
+        void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, vector<double> series_params)
+        {
+            if(!branches_series_params_and_geom_diff.count(branch_id))
             {
-                angle_differences.push_back(orig.angle(sim));
-                distance_differences.push_back((orig - sim).norm());
-                return *this;
+                branches_series_params_and_geom_diff[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}, {0}};
+
+                branches_series_params_and_geom_diff[branch_id].at(0/*biff difference index*/).at(0) = dalpha;
+                branches_series_params_and_geom_diff[branch_id].at(1/*biff difference index*/).at(0) = ds;
+
+                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).at(0) = series_params.at(0);
+                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).at(0) = series_params.at(1);
+                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).at(0) = series_params.at(2);
             }
+            else
+            {
+                branches_series_params_and_geom_diff[branch_id].at(0/*biff difference index*/).push_back( dalpha);
+                branches_series_params_and_geom_diff[branch_id].at(1/*biff difference index*/).push_back( ds);
 
+                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).push_back(series_params.at(0));
+                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).push_back(series_params.at(1));
+                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).push_back(series_params.at(2));
+            }
+        }
 
+        private: 
 
-            vector<double> 
-                ///Holds difference of dirrection of growth.
-                angle_differences,
-                ///Holds distance between old and new point of growth.
-                distance_differences,
-                ///Holds value that correspond to biffurcation.
-                biff_values,
-                ///When branch reaches biffurcation point it holds lenght of adjacent branch.
-                biff_inconsistencies;
+            map<int, double> bif_difference;
+
+            void RecordBiffurcationPoint(int branch_id, double bif_difference, vector<double> bif_series_params)
+            {
+                if(!branches_biffuraction_info.count(branch_id))
+                {
+                    branches_biffuraction_info[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}};
+                    branches_biffuraction_info[branch_id].at(0/*biff difference index*/).at(0) = bif_difference;
+
+                    branches_biffuraction_info[branch_id].at(1/*a1 index*/).at(0) = bif_series_params.at(0);
+                    branches_biffuraction_info[branch_id].at(2/*a2 index*/).at(0) = bif_series_params.at(1);
+                    branches_biffuraction_info[branch_id].at(3/*a3 index*/).at(0) = bif_series_params.at(2);
+                }
+                else
+                {
+                    branches_biffuraction_info[branch_id][0/*biff difference index*/].push_back(bif_difference);
+
+                    branches_biffuraction_info[branch_id].at(1/*a1 index*/).push_back(bif_series_params.at(0));
+                    branches_biffuraction_info[branch_id].at(2/*a2 index*/).push_back(bif_series_params.at(1));
+                    branches_biffuraction_info[branch_id].at(3/*a3 index*/).push_back(bif_series_params.at(2));
+                }
+            }
     };
 }

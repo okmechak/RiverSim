@@ -59,10 +59,8 @@ BOOST_AUTO_TEST_CASE( io_methods,
     tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
 
     GeometryDifference gd;
-    gd.angle_differences = {1, 2, 3, 4};
-    gd.biff_inconsistencies = {5, 6, 7, 8};
-    gd.biff_values = {9, 10, 11, 12};
-    gd.distance_differences = {13, 14, 15, 16};
+    gd.branches_biffuraction_info[1] = {{2, 3}, {3, 4}, {4, 5}, {5, 6}};
+    gd.branches_series_params_and_geom_diff[1] = {{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
 
     BranchNew br1left({0, 1}, 2), br1right({3, 4}, 5), br2left({6, 7}, 8), br2right({9, 10}, 11);
     br1left.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
@@ -76,11 +74,11 @@ BOOST_AUTO_TEST_CASE( io_methods,
     BOOST_TEST_CHECKPOINT("5");
     Save(mdl, time, border, tree, gd, "iotest");
     mdl = Model();
-    tree = Tree();
+    auto tree_b = Tree();//FIXME
     border = Border();
     gd = GeometryDifference();
     BOOST_TEST_CHECKPOINT("6");
-    Open(mdl, border, tree, gd, "iotest.json");
+    Open(mdl, border, tree_b, gd, "iotest.json");
 
     //Model TEST
     BOOST_TEST(mdl.mesh.eps == 0.1);
@@ -95,11 +93,11 @@ BOOST_AUTO_TEST_CASE( io_methods,
     BOOST_TEST(mdl.mesh.refinment_radius == 102);
 
     //Tree Test
-    BOOST_TEST(tree.source_branches_id == sources_id);
+    BOOST_TEST(tree_b.source_branches_id == sources_id);
     map<int, pair<int, int>> t = {{1, {2, 3}}, {3, {4, 5}}};
-    BOOST_TEST(tree.branches_relation == t);
-    BOOST_TEST(tree.GetBranch(5)->TipPoint().x == 11);
-    BOOST_TEST(tree.GetBranch(5)->TipPoint().y == 10);
+    BOOST_TEST(tree_b.branches_relation == t);
+    BOOST_TEST(tree_b.GetBranch(5)->TipPoint().x == 11);
+    BOOST_TEST(tree_b.GetBranch(5)->TipPoint().y == 10);
     //TODO
 
     //Border Test
@@ -107,12 +105,9 @@ BOOST_AUTO_TEST_CASE( io_methods,
     BOOST_TEST((border.vertices.back() == Point{0.5, 0}));
 
     //GeometryDifference
-    auto a1 = vector<double>{1, 2, 3, 4},
-        a2 = vector<double>{5, 6, 7, 8},
-        a3 = vector<double>{9, 10, 11, 12},
-        a4 = vector<double>{13, 14, 15, 16};
-    BOOST_TEST(gd.angle_differences == a1);
-    BOOST_TEST(gd.biff_inconsistencies == a2);
-    BOOST_TEST(gd.biff_values == a3);
-    BOOST_TEST(gd.distance_differences == a4);
+    auto a1 = vector<vector<double>>{{2, 3}, {3, 4}, {4, 5}, {5, 6}},
+        a2 = vector<vector<double>>{{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
+
+    BOOST_TEST(gd.branches_biffuraction_info[1] == a1);
+    BOOST_TEST(gd.branches_series_params_and_geom_diff[1] == a2);
 }

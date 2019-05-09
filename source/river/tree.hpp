@@ -101,6 +101,9 @@ namespace River
                 points.pop_back();
                 return *this;
             }
+
+            ///Clear Branch
+            BranchNew& Clear(){ points.clear(); return *this; }
             /**
              * @}
              */
@@ -260,6 +263,14 @@ namespace River
              * Copy constructor.
              */
             Tree(const Tree& t);
+
+            /**
+             * Destructor
+             */
+            ~Tree()
+            {
+                Clear();
+            }
 
             /**
              * Assignment.
