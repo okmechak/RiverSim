@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+
 set(BUILD_TEST ON CACHE BOOL "Build Boost Unit Tests")
 
 if(BUILD_TEST)
