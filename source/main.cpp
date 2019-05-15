@@ -37,6 +37,10 @@ int main(int argc, char *argv[])
     //Timing Object setup
     Timing timing;
 
+    string input_file;
+    if(vm.count("input"))
+        input_file = vm["input"].as<string>();
+
     //Border object setup.. Rectangular boundaries
     Border border;
     if(!vm.count("input"))
@@ -95,7 +99,7 @@ int main(int argc, char *argv[])
             ForwardRiverEvolution(mdl, tria, sim, tree, border, str);
             
             timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str);
+            Save(mdl, timing, border, tree, gd, str, input_file);
             ++i;
         }
     else if(vm["simulation-type"].as<int>() == 1)
@@ -115,9 +119,33 @@ int main(int argc, char *argv[])
             stop_flag = BackwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
 
             timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str);
+            Save(mdl, timing, border, tree, gd, str, input_file);
             ++i;
         }
+    }
+    else if(vm["simulation-type"].as<int>() == 2)
+    {   
+        cout << "-------------------------" << endl;
+        cout << "Series parameters testing" << endl;
+        cout << "-------------------------" << endl;
+
+        //reinitialize geometry
+        auto b_id = mdl.river_boundary_id;
+        border.MakeRectangular(
+            {mdl.width, mdl.height}, 
+            {b_id, b_id, b_id, b_id},
+            {mdl.dx},
+            {1});
+
+        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+
+        auto source_branch_id = border.GetSourcesId().back();
+        tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
+
+        EvaluateSeriesParams(mdl, tria, sim, tree, border, gd, output_file_name);
+        timing.Record();//Timing
+        Save(mdl, timing, border, tree, gd, output_file_name);
+
     }
     else 
         throw invalid_argument("Invalid simulation type value");

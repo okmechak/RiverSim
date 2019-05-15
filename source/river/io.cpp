@@ -69,7 +69,7 @@ namespace River
         return mdl;
     }
 
-    void Save(Model& mdl, Timing& time, Border& border, Tree& tr, GeometryDifference &gd, string file_name)
+    void Save(Model& mdl, Timing& time, Border& border, Tree& tr, GeometryDifference &gd, string file_name, string input_file)
     {
         if(file_name.length() == 0)
             throw invalid_argument("Save. File name is not set.");
@@ -77,6 +77,7 @@ namespace River
         ofstream out(file_name + ".json");
         if(!out) throw invalid_argument("Save. Can't create file for write");
 
+        out.precision(16);
 
         //Branches
         json branches;
@@ -128,7 +129,7 @@ namespace River
                 {"EndDate",  time.CurrentDate()},
                 {"TotalTime",  time.Total()},
                 {"EachCycleTime",  time.records},
-                {"InputFile", "TODO"}}},
+                {"InputFile", input_file}}},
 
             {"Model", {
                 {"dx", mdl.dx},

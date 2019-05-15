@@ -24,7 +24,9 @@
 #include "cxxopts.hpp"
 #include "version.hpp"
 #include <chrono>
-#include <ctime>
+#include <time.h>
+#include <numeric>
+#include <iterator>
 
 using namespace std;
 
@@ -43,6 +45,7 @@ namespace River{
     ///Processing of program options.
     cxxopts::ParseResult process_program_options(int argc, char* argv[]);
 
+
     ///FIXME time isn't in seconds or is wrong
     ///Timing
     class Timing
@@ -50,40 +53,34 @@ namespace River{
         public:
             
             ///Default Constructor, save time of creation.
-            Timing()
+            Timing():
+                tik(clock()),
+                creation_date(chrono::high_resolution_clock::to_time_t(chrono::high_resolution_clock::now()))
             {
-                last_time_point = chrono::system_clock::now();
+                tik = clock();
             }
 
             ///Return current date string.
             string CurrentDate()
             {   
-                auto now = chrono::system_clock::now();
-                auto t_time = chrono::system_clock::to_time_t(now);
+                auto now = chrono::high_resolution_clock::now();
+                auto t_time = chrono::high_resolution_clock::to_time_t(now);
                 return ctime(&t_time);
             }
 
             ///Return date of object creation string.
             string CreationtDate()
             {   
-                auto t_time = chrono::system_clock::to_time_t(last_time_point);
-                return ctime(&t_time);
+                
+                return ctime(&creation_date);
             }
 
             ///Returns elapsed time, and save it into vector.
             double Record()
             {
-                records.push_back(
-                    (chrono::system_clock::now() 
-                    - last_time_point).count()
-                );
-                if(flag)
-                {
-                    //quickfix
-                    records.erase(begin(records));
-                    flag = false;
-                }
-
+                auto tok = clock();
+                records.push_back((double)(tok - tik)/CLOCKS_PER_SEC);
+                tik = tok;
                 return records.back();
             }
 
@@ -92,8 +89,8 @@ namespace River{
             double Total()
             {
                 double sum = 0;
-                for(auto el: records)
-                    sum += el;
+                for(auto t: records)
+                    sum += t;
                 return sum;
             }
 
@@ -102,10 +99,8 @@ namespace River{
         
         private:
 
-            //quickfix
-            bool flag = true;
-
             ///Stores last time from callig Record function.
-            chrono::system_clock::time_point last_time_point;
+            clock_t tik, tok;
+            time_t creation_date;
     };
 }

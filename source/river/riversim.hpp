@@ -51,8 +51,16 @@ namespace River
    bool StopConditionOfRiverGrowth(Border& border, Tree& tree);
 
    ///One step of forward river evolution.
-   void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name);
+   void ForwardRiverEvolution(
+       Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name);
 
    ///One step of backward river evolution and its data.
-   bool BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, GeometryDifference& gd, string file_name);
+   bool BackwardRiverEvolution(
+       Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, 
+       GeometryDifference& gd, string file_name);
+
+   ///Evaluate series parameters near tip in predefined geometry. Used fot testing purposes
+   bool EvaluateSeriesParams(
+       Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, 
+       GeometryDifference& gd, string file_name);
 }

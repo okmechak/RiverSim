@@ -167,7 +167,7 @@ namespace River
              */
 
             ///Checks if branch is empyt - but it never should
-            bool Empty() const {return points.empty();}
+            bool Empty() const {return points.empty() || points.size() == 1/*branch with one point is empty too*/ || Lenght() < eps;}
 
             ///Returns Lenght of whole branch
             double Lenght() const 
@@ -229,7 +229,7 @@ namespace River
             }
 
             
-        //private: FIXME
+        //private: FIXME implement this as friend function of test and to rest of classes too..
             ///Initial angle of source(or direction of source)
             double source_angle;
 

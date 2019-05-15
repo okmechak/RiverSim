@@ -79,7 +79,7 @@ namespace River
         //Simulation parameters
         options.add_options("Simulation parameters")
         ("n,number-of-steps", "Number of steps to simulate(-1 - infinity).", value<int>()->default_value("10"))
-        ("simulation-type", "Forward river growth or backward river growth. 0 - Forward, 1 - Backward.", value<int>()->default_value("0"));
+        ("simulation-type", "Forward river growth or backward river growth. 0 - Forward, 1 - Backward, 2 - Test of series params", value<int>()->default_value("0"));
         
         //Geometry parameters
         options.add_options("Geometry parameters")

@@ -193,4 +193,37 @@ namespace River
 
         return stop_flag;
     }
+
+
+
+
+    bool EvaluateSeriesParams(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, GeometryDifference& gd, string file_name)
+    {
+        //initial boundaries of mesh
+        auto mesh = BoundaryGenerator(mdl, tree, border);
+        tria.ref->tip_points = tree.TipPoints();
+        tria.generate(mesh);//triangulation
+        mesh.convert();//convertaion from triangles to quadrangles
+        mesh.write(file_name + ".msh");
+
+        //Simulation
+        //Deal.II library
+        sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
+        sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
+        sim.OpenMesh(file_name + ".msh");
+        sim.run();
+        sim.output_results(file_name);
+
+        for(auto id: tree.TipBranchesId())
+        {
+            auto tip_point = tree.GetBranch(id)->TipPoint();
+            auto tip_angle = tree.GetBranch(id)->TipAngle();
+            auto series_params = sim.integrate(mdl, tip_point, tip_angle);
+
+            gd.RecordBranchSeriesParamsAndGeomDiff(id, -1/*dalpha*/, -1/*ds*/, series_params);
+        }
+        sim.clear();
+
+        return true;
+    }
 }//namespace River
