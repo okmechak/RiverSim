@@ -107,6 +107,7 @@ for(int order = 1; order <= a.n; ++order)
 cout << endl << endl << endl;
 cout << "Final parameters of integration used in test" << endl << endl;
 cout << " - series params: " << endl;
+cout.precision(16);
 for(int i = 0; i < a.n; ++i)
 	cout << "   " << a[i] << endl;
 //0.101866
