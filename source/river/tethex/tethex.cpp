@@ -27,12 +27,12 @@ namespace tethex {
 //-------------------------------------------------------
 void requirement_fails(const char *file,
                        int line,
-                       std::string message)
+                       string message)
 {
-  std::string exc = "Exception:\nfile = " + std::string(file) +
+  string exc = "Exception:\nfile = " + string(file) +
                     "\nline = " + d2s(line) +
                     "\nmessage = " + message + "\n";
-  throw std::runtime_error(exc);
+  throw runtime_error(exc);
 }
 
 
@@ -43,79 +43,15 @@ void requirement_fails(const char *file,
 // Point
 //
 //-------------------------------------------------------
-Point::Point()
+ostream & operator<< (ostream &out, const Point &p)
 {
-  for (int i = 0; i < n_coord; ++i)
-    coord[i] = 0.;
-}
-
-Point::Point(const double coordinates[])
-{
-  for (int i = 0; i < n_coord; ++i)
-    coord[i] = coordinates[i];
-}
-
-
-Point::Point(const double x_coord,
-             const double y_coord,
-             const double z_coord,
-             const int regionTagVal,
-             const double mesh_size)
-{
-  regionTag = regionTagVal;
-  coord[0] = x_coord;
-  if (n_coord > 1) coord[1] = y_coord;
-  if (n_coord > 2) coord[2] = z_coord;
-  meshSize = mesh_size;
-}
-
-Point::Point(const Point &p)
-{
-  for (int i = 0; i < n_coord; ++i)
-    coord[i] = p.coord[i];
-  regionTag = p.regionTag;
-  meshSize = p.meshSize;
-}
-
-Point& Point::operator =(const Point &p)
-{
-  for (int i = 0; i < n_coord; ++i)
-    coord[i] = p.coord[i];
-  regionTag = p.regionTag;
-  meshSize = p.meshSize;
-  return *this;
-}
-
-double Point::get_coord(int number) const
-{
-  expect(number >= 0 && number < n_coord,
-         "The number of coordinate is incorrect: " +
-         d2s(number) + ". It should be in the range: [0, " +
-         d2s(n_coord) + ")");
-
-  return coord[number];
-}
-
-void Point::set_coord(int number, double value)
-{
-  expect(number >= 0 && number < n_coord,
-         "The number of coordinate is incorrect: " +
-         d2s(number) + ". It should be in the range: [0, " +
-         d2s(n_coord) + ")");
-
-  coord[number] = value;
-}
-
-
-std::ostream & operator<< (std::ostream &out, const Point &p)
-{
-  std::cout << "Point{";
+  cout << "Point{";
   for(int i = 0; i < p.n_coord - 1; ++i)
-    std::cout << p.coord[i] << ", ";
+    cout << p.coord[i] << ", ";
 
-  std::cout << p.coord[p.n_coord - 1] << "}  ";
-  std::cout << "region tag: " << p.regionTag;
-  std::cout << ", mesh size: " << p.meshSize;
+  cout << p.coord[p.n_coord - 1] << "}  ";
+  cout << "region tag: " << p.regionTag;
+  cout << ", mesh size: " << p.meshSize;
   
   return out;
 }
@@ -142,34 +78,6 @@ MeshElement::MeshElement(int n_ver,
   edges.resize(n_edges, 0);
 }
 
-MeshElement::~MeshElement()
-{ }
-
-inline int MeshElement::get_n_vertices() const
-{
-  expect(n_vertices == vertices.size(),
-         "Memory for vertices is not allocated properly (size is " + d2s(vertices.size()) +
-         "), or n_vertices (" + d2s(n_vertices) + ") is set to wrong number");
-  return n_vertices;
-}
-
-inline int MeshElement::get_n_edges() const
-{
-  expect(n_edges == edges.size(),
-         "Memory for edges is not allocated properly (size is " + d2s(edges.size()) +
-         "), or n_edges (" + d2s(n_edges) + ") is set to wrong number");
-  return n_edges;
-}
-
-inline int MeshElement::get_gmsh_el_type() const
-{
-  return gmsh_el_type;
-}
-
-int MeshElement::get_material_id() const
-{
-  return material_id;
-}
 
 MeshElement::MeshElement(const MeshElement &elem)
   : n_vertices(elem.n_vertices)
@@ -189,22 +97,6 @@ MeshElement& MeshElement::operator =(const MeshElement &elem)
   vertices = elem.vertices;
   edges = elem.edges;
   return *this;
-}
-
-int MeshElement::get_vertex(int number) const
-{
-  expect(number >= 0 && number < n_vertices,
-         "The local number of vertex is incorrect: " + d2s(number) +
-         ". It has to be in range [0, " + d2s(n_vertices) + ").");
-  return vertices[number];
-}
-
-int MeshElement::get_edge(int number) const
-{
-  expect(number >= 0 && number < n_edges,
-         "The local number of edge is incorrect: " + d2s(number) +
-         ". It has to be in range [0, " + d2s(n_edges) + ").");
-  return edges[number];
 }
 
 
@@ -233,25 +125,25 @@ bool MeshElement::contains(int vertex) const
   return false;
 }
 
-std::ostream & operator<< (std::ostream &out, const MeshElement &el)
+ostream & operator<< (ostream &out, const MeshElement &el)
 {
-  std::cout << "gmsh type: " << el.gmsh_el_type;
-  std::cout << "  vert {";
+  cout << "gmsh type: " << el.gmsh_el_type;
+  cout << "  vert {";
   for(int i = 0; i < el.n_vertices - 1; ++i)
-    std::cout << el.vertices[i] << ", ";
+    cout << el.vertices[i] << ", ";
   
   if(el.n_vertices != 0)
-    std::cout << el.vertices[el.n_vertices - 1];
+    cout << el.vertices[el.n_vertices - 1];
 
 
-  std::cout << "}  edges {";
+  cout << "}  edges {";
   for(int i = 0; i < el.n_edges - 1; ++i)
-    std::cout << el.edges[i] << ", ";
+    cout << el.edges[i] << ", ";
   if(el.n_edges != 0)
-    std::cout << el.edges[el.n_edges - 1];
+    cout << el.edges[el.n_edges - 1];
 
 
-  std::cout << "}  mat id " << el.material_id;
+  cout << "}  mat id " << el.material_id;
 
   return out;
 }
@@ -268,7 +160,7 @@ PhysPoint::PhysPoint()
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 { }
 
-PhysPoint::PhysPoint(const std::vector<int> &ver,
+PhysPoint::PhysPoint(const vector<int> &ver,
                      int mat_id)
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 {
@@ -298,7 +190,7 @@ Line::Line()
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 { }
 
-Line::Line(const std::vector<int> &ver,
+Line::Line(const vector<int> &ver,
            int mat_id)
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 {
@@ -353,7 +245,7 @@ Triangle::Triangle()
 { }
 
 
-Triangle::Triangle(const std::vector<int> &ver,
+Triangle::Triangle(const vector<int> &ver,
                    int mat_id)
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 {
@@ -387,7 +279,7 @@ Quadrangle::Quadrangle()
 { }
 
 
-Quadrangle::Quadrangle(const std::vector<int> &ver,
+Quadrangle::Quadrangle(const vector<int> &ver,
                        int mat_id)
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 {
@@ -420,13 +312,13 @@ Quadrangle::Quadrangle(int v1,
 //
 //-------------------------------------------------------
 IncidenceMatrix::IncidenceMatrix(int n_vertices,
-                                 const std::vector<MeshElement*> &cells)
+                                 const vector<MeshElement*> &cells)
   : dim(n_vertices)
   , n_non_zero(0)
   , row(nullptr)
   , col(nullptr)
 {
-  std::vector<int> *vec = new std::vector<int>[dim]; // for lower triangle
+  vector<int> *vec = new vector<int>[dim]; // for lower triangle
   // look through all mesh cells
   for (size_t cell = 0; cell < cells.size(); ++cell)
   {
@@ -449,7 +341,7 @@ IncidenceMatrix::IncidenceMatrix(int n_vertices,
 
   // sorting the vectors
   for (int i = 0; i < dim; ++i)
-    std::sort(vec[i].begin(), vec[i].end());
+    sort(vec[i].begin(), vec[i].end());
 
   // the number of non zero elements in each row of lower triangle
   row = new int[dim + 1];
@@ -512,12 +404,6 @@ int IncidenceMatrix::find(int row_number,
   //        "The right value wasn't found for such row and column numbers: row_number = " +
   //        d2s(row_number) + ", col_number = " + d2s(col_number) + "!");
   return -1; // to calm compiler down about returned value
-}
-
-
-inline int IncidenceMatrix::get_n_nonzero() const
-{
-  return n_non_zero;
 }
 
 
@@ -660,9 +546,9 @@ Mesh& Mesh::operator =(const Mesh& msh)
 
 
 Mesh::Mesh(
-    std::vector<Point> &verticesVal, 
-    std::vector<MeshElement *> &linesVal,
-    std::vector<MeshElement *> &trianglesVal
+    vector<Point> &verticesVal, 
+    vector<MeshElement *> &linesVal,
+    vector<MeshElement *> &trianglesVal
   ): vertices(verticesVal)
   , points()
   , lines(linesVal)
@@ -673,11 +559,11 @@ Mesh::Mesh(
 {}
 
 Mesh::Mesh(
-  std::vector<Point> &verticesVal, 
-  std::vector<MeshElement *> &pointsVal, 
-  std::vector<MeshElement *> &linesVal,
-  std::vector<MeshElement *> &trianglesVal,
-  std::vector<MeshElement *> &quaddranglesVal
+  vector<Point> &verticesVal, 
+  vector<MeshElement *> &pointsVal, 
+  vector<MeshElement *> &linesVal,
+  vector<MeshElement *> &trianglesVal,
+  vector<MeshElement *> &quaddranglesVal
 ): vertices(verticesVal)
   , points(pointsVal)
   , lines(linesVal)
@@ -687,29 +573,9 @@ Mesh::Mesh(
   , physical_names()//TODO implement this if necessery
 {}
 
+          
 
-Mesh::~Mesh()
-{
-  clean();
-}
-
-
-
-
-void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
-{
-  vertices = vertexesVal;
-}
-
-
-
-  void Mesh::append_vertexes(std::vector<Point> &vertexes_val)
-  {
-    vertices.insert(end(vertices), vertexes_val.begin(), vertexes_val.end());
-  }
-               
-
-  void Mesh::set_points(std::vector<MeshElement *> &pointsVal)
+  void Mesh::set_points(const vector<MeshElement *> &pointsVal)
   {
     for (size_t i = 0; i < points.size(); ++i)
       delete points.at(i);
@@ -718,21 +584,15 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
   }
 
 
-  void Mesh::set_lines(std::vector<MeshElement *> &linesVal)
+  void Mesh::set_lines(const vector<MeshElement *> &linesVal)
   { 
     for (size_t i = 0; i < lines.size(); ++i)
       delete lines.at(i);
     lines = linesVal;
   }
- 
-
-  void Mesh::append_lines(std::vector<MeshElement *> &lines_val)
-  {
-    lines.insert(end(lines), lines_val.begin(), lines_val.end());
-  }
 
 
-  void Mesh::set_triangles(std::vector<MeshElement *> &trianglesVal)
+  void Mesh::set_triangles(const vector<MeshElement *> &trianglesVal)
   {
     for (size_t i = 0; i < triangles.size(); ++i)
       delete triangles[i];
@@ -742,7 +602,7 @@ void Mesh::set_vertexes(std::vector<Point> &vertexesVal)
   }
    
   
-  void Mesh::set_quadrangles(std::vector<MeshElement *> &quadranglesVal)
+  void Mesh::set_quadrangles(const vector<MeshElement *> &quadranglesVal)
   {
     for (size_t i = 0; i < quadrangles.size(); ++i)
       delete quadrangles[i];
@@ -780,14 +640,14 @@ void Mesh::clean()
 
 
 
-void Mesh::read(const std::string &file)
+void Mesh::read(const string &file)
 {
-  std::ifstream in(file.c_str());
+  ifstream in(file.c_str());
   require(in, "File " + file + " cannot be opened!");
 
   clean(); // free the memory for mesh elements
 
-  std::string str;
+  string str;
   in >> str; // the first string of Gmsh file is "$MeshFormat"
   expect(str == "$MeshFormat", "The first string of the Gmsh file " + file +
          " doesn't equal to \"$MeshFormat\". The actual string is \"" + str + "\"");
@@ -819,7 +679,7 @@ void Mesh::read(const std::string &file)
 
   // we make a map between serial number of the vertex and its number in the file.
   // it will help us when we create mesh elements
-  std::map<int, int> vertices_map;
+  map<int, int> vertices_map;
 
   // read lines of mesh file.
   // if we face specific keyword, we'll treat the section.
@@ -886,7 +746,7 @@ void Mesh::read(const std::string &file)
 
       // the map between the type of the element,
       // and the number of nodes that describe it
-      std::map<int, int> type_nodes;
+      map<int, int> type_nodes;
       type_nodes[1] = 2; // 2-nodes line
       type_nodes[2] = 3; // 3-nodes triangle
       type_nodes[3] = 4; // 4-nodes quadrangle
@@ -898,7 +758,7 @@ void Mesh::read(const std::string &file)
         for (int el = 0; el < n_elements; ++el)
         {
           in >> number >> el_type >> n_tags;
-          std::vector<int> data(n_tags); // allocate the memory for some data
+          vector<int> data(n_tags); // allocate the memory for some data
           for (int i = 0; i < n_tags; ++i) // read this information
             in >> data[i];
           phys_domain = (n_tags > 0) ? data[0] : 0; // physical domain - the most important value
@@ -907,7 +767,7 @@ void Mesh::read(const std::string &file)
           data.clear(); // other data isn't interesting for us
 
           // how many vertices (nodes) describe the element
-          std::map<int, int>::const_iterator el_type_iter =
+          map<int, int>::const_iterator el_type_iter =
               type_nodes.find(el_type);
 
          require(el_type_iter != type_nodes.end(),
@@ -915,7 +775,7 @@ void Mesh::read(const std::string &file)
                   ") in the mesh file \"" + file + "\" is unknown!");
 
           const int n_elem_nodes = el_type_iter->second; // the number of nodes
-          std::vector<int> nodes(n_elem_nodes); // allocate memory for nodes
+          vector<int> nodes(n_elem_nodes); // allocate memory for nodes
           for (int i = 0; i < n_elem_nodes; ++i)
           {
             in >> nodes[i]; // read the numbers of nodes
@@ -982,7 +842,7 @@ void Mesh::convert()
 
 
 
-void Mesh::set_new_vertices(const std::vector<MeshElement*> &elements,
+void Mesh::set_new_vertices(const vector<MeshElement*> &elements,
                             int n_old_vertices,
                             int shift)
 {
@@ -1060,7 +920,7 @@ void Mesh::convert_triangles(const IncidenceMatrix &incidence_matrix,
                              const VectorMap &edge_vertex_incidence)
 {
   // quadrangles generation
-  std::vector<int> quadrangle_vertices(Quadrangle::n_vertices);
+  vector<int> quadrangle_vertices(Quadrangle::n_vertices);
 
   // we need to numerate edges of boundary triangles
   // numerate_edges = true - the case of 3D mesh, when we numerate edges of boundary triangles,
@@ -1081,7 +941,7 @@ void Mesh::convert_triangles(const IncidenceMatrix &incidence_matrix,
       const int cur_vertex = triangles[tri]->get_vertex(ver);
 
       // we are looking for 2 edges that contain current vertex
-      std::vector<int> seek_edges;
+      vector<int> seek_edges;
       for (int edge = 0; edge < Triangle::n_edges; ++edge)
       {
         const int cur_edge = triangles[tri]->get_edge(edge);
@@ -1122,7 +982,7 @@ void Mesh::convert_triangles(const IncidenceMatrix &incidence_matrix,
 //      // taken from deal.II
 //      if (cell_measure_2D(vertices, quadrangle_vertices) < 0)
 //        // change 2 vertices to reverse the order
-//        std::swap(quadrangle_vertices[1], quadrangle_vertices[3]);
+//        swap(quadrangle_vertices[1], quadrangle_vertices[3]);
 
       // now we are ready to generate quadrangle
       quadrangles.push_back(new Quadrangle(quadrangle_vertices,
@@ -1144,7 +1004,7 @@ void Mesh::convert_quadrangles()
 {
   for (size_t elem = 0; elem < quadrangles.size(); ++elem)
   {
-    std::vector<int> quad_vertices(Quadrangle::n_vertices);
+    vector<int> quad_vertices(Quadrangle::n_vertices);
     for (int i = 0; i < Quadrangle::n_vertices; ++i)
       quad_vertices[i] = quadrangles[elem]->get_vertex(i);
 
@@ -1173,8 +1033,8 @@ void Mesh::redefine_lines(const IncidenceMatrix &incidence_matrix,
     // we need to find an edge that coincides with this line
     const int ver1 = lines[line]->get_vertex(0);
     const int ver2 = lines[line]->get_vertex(1);
-    const int edge = incidence_matrix.find(std::max(ver1, ver2),
-                                                    std::min(ver1, ver2));
+    const int edge = incidence_matrix.find(max(ver1, ver2),
+                                                    min(ver1, ver2));
 
     // we change existing line and add new line at the end of list
     lines[line]->set_vertex(1, n_old_vertices + edge); // changing existing line
@@ -1192,7 +1052,7 @@ void Mesh::redefine_lines(const IncidenceMatrix &incidence_matrix,
 
 
 
-void Mesh::edge_numeration(std::vector<MeshElement*> &cells,
+void Mesh::edge_numeration(vector<MeshElement*> &cells,
                            const IncidenceMatrix &incidence_matrix,
                            bool initialize_edges)
 {
@@ -1225,8 +1085,8 @@ void Mesh::edge_numeration(std::vector<MeshElement*> &cells,
           if (initialize_edges)
           {
             delete edges[gne];
-            edges[gne] = new Line(std::min(ii, jj),
-                                  std::max(ii, jj),
+            edges[gne] = new Line(min(ii, jj),
+                                  max(ii, jj),
                                   cells[cell]->get_material_id());
           }
           // increase local number of edge
@@ -1242,12 +1102,12 @@ void Mesh::edge_numeration(std::vector<MeshElement*> &cells,
 } // edge numeration
 
 
-void Mesh::write(const std::string &file)
+void Mesh::write(const string &file)
 {
-  std::ofstream out(file.c_str());
+  ofstream out(file.c_str());
   require(out, "File " + file + " cannot be opened for writing!");
 
-  out.setf(std::ios::scientific);
+  out.setf(ios::scientific);
   out.precision(16);
 
   out << "$MeshFormat\n2.2 0 8\n$EndMeshFormat\n";
@@ -1293,100 +1153,7 @@ void Mesh::write(const std::string &file)
 
 
 
-unsigned Mesh::get_n_vertices() const
-{
-  return vertices.size();
-}
-
-unsigned Mesh::get_n_points() const
-{
-  return points.size();
-}
-
-unsigned Mesh::get_n_lines() const
-{
-  return lines.size();
-}
-
-unsigned Mesh::get_n_triangles() const
-{
-  return triangles.size();
-}
-
-unsigned Mesh::get_n_quadrangles() const
-{
-  return quadrangles.size();
-}
-
-
-unsigned Mesh::get_n_converted_quadrangles() const
-{
-  return n_converted_quadrangles;
-}
-
-
-
-Point Mesh::get_vertex(int number) const
-{
-  return vertices.at(number);
-}
-
-MeshElement& Mesh::get_point(int number) const
-{
-  return *(points.at(number));
-}
-
-MeshElement& Mesh::get_edge(int number) const
-{
-  return *(edges.at(number));
-}
-
-MeshElement& Mesh::get_line(int number) const
-{
-  return *(lines.at(number));
-}
-
-MeshElement& Mesh::get_triangle(int number) const
-{
-  return *(triangles.at(number));
-}
-
-MeshElement& Mesh::get_quadrangle(int number) const
-{
-  return *(quadrangles.at(number));
-}
-
-
-
-std::vector<Point>& Mesh::get_vertices()
-{
-  return vertices;
-}
-
-std::vector<MeshElement*>& Mesh::get_points()
-{
-  return points;
-}
-
-std::vector<MeshElement*>& Mesh::get_lines()
-{
-  return lines;
-}
-
-std::vector<MeshElement*>& Mesh::get_triangles()
-{
-  return triangles;
-}
-
-std::vector<MeshElement*>& Mesh::get_quadrangles()
-{
-  return quadrangles;
-}
-
-
-
-
-void Mesh::info(std::ostream &out) const
+void Mesh::info(ostream &out) const
 {
   out << "\nvertices       : " << vertices.size()
       << "\npoints (phys)  : " << points.size()
@@ -1398,62 +1165,62 @@ void Mesh::info(std::ostream &out) const
   
   //Vertices
   int i = 0;
-  std::cout << std::endl;
-  std::cout << "----------" << std::endl;
-  std::cout << "Vertices" << std::endl;
-  std::cout << "----------" << std::endl;
+  cout << endl;
+  cout << "----------" << endl;
+  cout << "Vertices" << endl;
+  cout << "----------" << endl;
   for(auto & p: vertices)
   {
-    std::cout << i << ") "<< p << std::endl;
+    cout << i << ") "<< p << endl;
     i++;
   }
 
   //Points
   i = 0;
-  std::cout << std::endl;
-  std::cout << "----------" << std::endl;
-  std::cout << "Points" << std::endl;
-  std::cout << "----------" << std::endl;
+  cout << endl;
+  cout << "----------" << endl;
+  cout << "Points" << endl;
+  cout << "----------" << endl;
   for(auto & p: points)
   {
-    std::cout << i << ") "<< *p << std::endl;
+    cout << i << ") "<< *p << endl;
     i++;
   }
 
   //Lines
   i = 0;
-  std::cout << std::endl;
-  std::cout << "----------" << std::endl;
-  std::cout << "Lines" << std::endl;
-  std::cout << "----------" << std::endl;
+  cout << endl;
+  cout << "----------" << endl;
+  cout << "Lines" << endl;
+  cout << "----------" << endl;
   for(auto l: lines)
   {
-    std::cout << i << ") " << *l << std::endl;
+    cout << i << ") " << *l << endl;
     i++;
   }
 
   //Triangles
   i = 0;
-  std::cout << std::endl;
-  std::cout << "----------" << std::endl;
-  std::cout << "Triangles" << std::endl;
-  std::cout << "----------" << std::endl;
+  cout << endl;
+  cout << "----------" << endl;
+  cout << "Triangles" << endl;
+  cout << "----------" << endl;
   for(auto t: triangles)
   {
-    std::cout << i << ") "<< *t << std::endl;
+    cout << i << ") "<< *t << endl;
     i++;
   }
 
 
   //Quadrangles
   i = 0;
-  std::cout << std::endl;
-  std::cout << "----------" << std::endl;
-  std::cout << "Quadrangles" << std::endl;
-  std::cout << "----------" << std::endl;
+  cout << endl;
+  cout << "----------" << endl;
+  cout << "Quadrangles" << endl;
+  cout << "----------" << endl;
   for(auto q: quadrangles)
   {
-    std::cout << i << ") "<< *q << std::endl;
+    cout << i << ") "<< *q << endl;
     i++;
   }
    
@@ -1461,7 +1228,7 @@ void Mesh::info(std::ostream &out) const
 
 
 
-void Mesh::statistics(std::ostream &out) const
+void Mesh::statistics(ostream &out) const
 {
   out << "\nvertices:\n";
   for (size_t i = 0; i < vertices.size(); ++i)
@@ -1500,7 +1267,7 @@ int Mesh::find_face_from_two_edges(int edge1, int edge2,
   const int ver2 = line2.another_vertex(common_vertex);
 
   // find opposite edge
-  const int opposite_edge = vertices_incidence.find(std::max(ver1, ver2), std::min(ver1, ver2));
+  const int opposite_edge = vertices_incidence.find(max(ver1, ver2), min(ver1, ver2));
 
   // find the number of face
   return edge_vertex_incidence[opposite_edge].find(common_vertex)->second;
@@ -1515,8 +1282,8 @@ int Mesh::find_face_from_two_edges(int edge1, int edge2,
 // Auxiliary functions
 //
 //-------------------------------------------------------
-void write_elements(std::ostream &out,
-                    const std::vector<MeshElement*> &elems,
+void write_elements(ostream &out,
+                    const vector<MeshElement*> &elems,
                     int &serial_number)
 {
   for (size_t el = 0; el < elems.size(); ++el, ++serial_number)
@@ -1536,13 +1303,13 @@ void write_elements(std::ostream &out,
 
 
 void change_vertices_order(int dimension,
-                           const std::vector<Point> &all_mesh_vertices,
-                           std::vector<int> &vertices)
+                           const vector<Point> &all_mesh_vertices,
+                           vector<int> &vertices)
 {
   if (dimension == 2)
   {
     // convert the order of vertices to suitable for deal.II to check the cell measure
-    std::vector<int> vertices_dealII_order(Quadrangle::n_vertices);
+    vector<int> vertices_dealII_order(Quadrangle::n_vertices);
     int order_to_deal[] = { 0, 1, 3, 2 };
 
     for (int i = 0; i < Quadrangle::n_vertices; ++i)
@@ -1550,7 +1317,7 @@ void change_vertices_order(int dimension,
 
     if (cell_measure_2D(all_mesh_vertices, vertices_dealII_order) < 0)
       // reorder vertices - swap first and third vertices
-      std::swap(vertices[1], vertices[3]);
+      swap(vertices[1], vertices[3]);
   }else
     require(false, "This feature is not implemented!");
 }
@@ -1558,8 +1325,8 @@ void change_vertices_order(int dimension,
 
 
 
-double cell_measure_2D(const std::vector<Point> &vertices,
-                       const std::vector<int> &indices)
+double cell_measure_2D(const vector<Point> &vertices,
+                       const vector<int> &indices)
 {
   const double x[] = { vertices[indices[0]].get_coord(0),
                        vertices[indices[1]].get_coord(0),
@@ -1577,4 +1344,3 @@ double cell_measure_2D(const std::vector<Point> &vertices,
           x[2]*y[3]+x[3]*y[2]) / 2.;
 }
 } // namespace tethex
-

@@ -146,14 +146,15 @@ namespace River{
         set_tria_to_default(&io);
 
         //Points
-        if(!mesh.vertices.empty())
+        if(mesh.get_n_vertices())
         {
-            io.pointlist = new REAL[2 * mesh.vertices.size()];
-            io.pointmarkerlist = new int[mesh.vertices.size()];
-            io.numberofpoints = mesh.vertices.size();
+            auto vertices_num = mesh.get_n_vertices();
+            io.pointlist = new REAL[2 * vertices_num];
+            io.pointmarkerlist = new int[vertices_num];
+            io.numberofpoints = vertices_num;
 
             int i = 0;
-            for(auto &p: mesh.vertices)
+            for(auto &p: mesh.get_vertices())
             {
                 io.pointlist[2 * i ] = p.get_coord(0);
                 io.pointlist[2 * i + 1] = p.get_coord(1);
@@ -163,13 +164,14 @@ namespace River{
         }
 
         //Segments
-        if(!mesh.lines.empty())
+        if(mesh.get_n_lines())
         {
-            io.segmentlist = new int[2 * mesh.lines.size()];
-            io.segmentmarkerlist = new int[mesh.lines.size()];
-            io.numberofsegments = mesh.lines.size();
+            auto lines_num = mesh.get_n_lines();
+            io.segmentlist = new int[2 * lines_num];
+            io.segmentmarkerlist = new int[lines_num];
+            io.numberofsegments = lines_num;
             int i = 0;
-            for(auto l: mesh.lines)
+            for(auto l: mesh.get_lines())
             {
                 io.segmentlist[2 * i ] = l->get_vertex(0) + 1;
                 io.segmentlist[2 * i + 1] = l->get_vertex(1) + 1;
@@ -178,14 +180,15 @@ namespace River{
             }
         }
 
-        if(!mesh.triangles.empty())
+        if(mesh.get_n_triangles())
         {
-            io.trianglelist = new int[3 * mesh.lines.size()];
+            auto triangles_num = mesh.get_n_triangles();
+            io.trianglelist = new int[3 * triangles_num];
             io.numberoftriangleattributes = 1;
-            io.triangleattributelist = new REAL[mesh.lines.size()];
-            io.numberofsegments = mesh.lines.size();
+            io.triangleattributelist = new REAL[triangles_num];
+            io.numberofsegments = triangles_num;
             int i = 0;
-            for(auto t: mesh.triangles)
+            for(auto t: mesh.get_triangles())
             {
                 io.trianglelist[3 * i ] = t->get_vertex(0) + 1;
                 io.trianglelist[3 * i + 1] = t->get_vertex(1) + 1;

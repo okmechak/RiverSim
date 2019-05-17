@@ -51,7 +51,7 @@ void Solver::SetMesh(tethex::Mesh &meshio)
 
     cout << "incidence_matrix" << endl;
     //initialize edge enumeration structure
-    auto incidence_matrix = tethex::IncidenceMatrix(meshio.get_n_vertices(), meshio.lines);
+    auto incidence_matrix = tethex::IncidenceMatrix(meshio.get_n_vertices(), meshio.get_lines());
 
     //QUADRANGLES
     cout << "quads" << endl << flush;

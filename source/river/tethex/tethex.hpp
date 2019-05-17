@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 
+using namespace std;
 
 namespace tethex {
 
@@ -39,11 +40,11 @@ namespace tethex {
 //
 //-------------------------------------------------------
 template <typename T>
-inline std::string d2s(T data)
+inline string d2s(T data)
 {
-  std::ostringstream o;
+  ostringstream o;
   if (!(o << data))
-    throw std::runtime_error("Bad conversion of data to string!");
+    throw runtime_error("Bad conversion of data to string!");
   return o.str();
 }
 
@@ -73,7 +74,7 @@ inline std::string d2s(T data)
                  */
 void requirement_fails(const char *file,
                        int line,
-                       std::string message);
+                       string message);
 
 
 
@@ -102,25 +103,33 @@ public:
   /**
    * Indicates to which region this point bellongs similiat to __material_id__
    */
-  int regionTag;
+  int regionTag = 0;
 
   /**
    * Used by mesh generators to refine mesh size.
    */
-  double meshSize;
+  double meshSize = 1.;
 
   /**
   * Default constructor.
   * Coordinates are initialized by 0.
   */
-  Point();
+  inline Point()
+  {
+    for (int i = 0; i < n_coord; ++i)
+      coord[i] = 0.;
+  }
 
   /**
   * Constructor with parameter.
   * Coordinates are initialized by array of numbers.
   * @param coordinates - array of point coordinates
   */
-  Point(const double coordinates[]);
+  inline Point(const double coordinates[])
+  {
+    for (int i = 0; i < n_coord; ++i)
+      coord[i] = coordinates[i];
+  }
 
   /**
   * Constructor with parameters.
@@ -131,43 +140,79 @@ public:
   * @param regionIdTag - region tag describes geometric region.
   * @param mesh_size - used by mesh generators for mesh refinmnet.
   */
-  Point(const double x_coord,
+  inline Point(const double x_coord,
         const double y_coord = 0,
         const double z_coord =0 ,
         const int regionIdTag = 0,
-        const double mesh_size = 0);
+        const double mesh_size = 0)
+  {
+    regionTag = regionIdTag;
+    coord[0] = x_coord;
+    if (n_coord > 1) coord[1] = y_coord;
+    if (n_coord > 2) coord[2] = z_coord;
+    meshSize = mesh_size;
+  }
 
   /**
   * Copy constructor
   */
-  Point(const Point &p);
+  inline Point(const Point &p)
+  {
+    for (int i = 0; i < n_coord; ++i)
+      coord[i] = p.coord[i];
+    regionTag = p.regionTag;
+    meshSize = p.meshSize;
+  }
 
   /**
   * Copy assignment operator
   */
-  Point& operator =(const Point &p);
+  inline Point& operator =(const Point &p)
+  {
+    for (int i = 0; i < n_coord; ++i)
+      coord[i] = p.coord[i];
+    regionTag = p.regionTag;
+    meshSize = p.meshSize;
+    return *this;
+  }
 
   /**
    * Get the coordinate of the point
    * @param number - the serial number of coordinate [0, n_coord)
    */
-  double get_coord(int number) const;
+  inline double get_coord(int number) const
+  {
+    expect(number >= 0 && number < n_coord,
+           "The number of coordinate is incorrect: " +
+           d2s(number) + ". It should be in the range: [0, " +
+           d2s(n_coord) + ")");
+
+    return coord[number];
+  }
 
   /**
    * Set the value of specific coordinate
    * @param number - the number of coordinate that we want to set
    * @param value - new value of coordinate
    */
-  void set_coord(int number, double value);
+  inline void set_coord(int number, double value)
+  {
+    expect(number >= 0 && number < n_coord,
+           "The number of coordinate is incorrect: " +
+           d2s(number) + ". It should be in the range: [0, " +
+           d2s(n_coord) + ")");
+
+    coord[number] = value;
+  }
 
   /**
    * @brief outputs Point to stream
    * 
    * @param out - out stream, usually cout 
    * @param p  - point itself
-   * @return std::ostream& - stream
+   * @return ostream& - stream
    */
-  friend std::ostream & operator<< (std::ostream &out, const Point &p);
+  friend ostream & operator<< (ostream &out, const Point &p);
 
 private:
   /**
@@ -199,43 +244,73 @@ public:
   /**
    * Destructor
    */
-  virtual ~MeshElement();
+  virtual ~MeshElement(){};
 
   /**
    * Get the number of vertices
    */
-  int get_n_vertices() const;
+  inline int get_n_vertices() const
+  {
+    expect(n_vertices == vertices.size(),
+           "Memory for vertices is not allocated properly (size is " + d2s(vertices.size()) +
+           "), or n_vertices (" + d2s(n_vertices) + ") is set to wrong number");
+    return n_vertices;
+  }
 
   /**
    * Get the number of edges
    */
-  int get_n_edges() const;
+  inline int get_n_edges() const
+  {
+    expect(n_edges == edges.size(),
+           "Memory for edges is not allocated properly (size is " + d2s(edges.size()) +
+           "), or n_edges (" + d2s(n_edges) + ") is set to wrong number");
+    return n_edges;
+  }
 
   /**
    * Get type of the element that is used in Gmsh
    */
-  int get_gmsh_el_type() const;
+  inline int get_gmsh_el_type() const
+  {
+    return gmsh_el_type;
+  }
 
   /**
    * Get the material ID of the element.
    * It's a number that describes the physical domain
    * to which the element belongs.
    */
-  int get_material_id() const;
+  inline int get_material_id() const
+  {
+    return material_id;
+  }
 
   /**
    * Get the number of vertex describing the element
    * @param number - local number of vertex [0, n_vertices)
    * @return global number of vertex (among other mesh vertices)
    */
-  int get_vertex(int number) const;
+  inline int get_vertex(int number) const
+  {
+    expect(number >= 0 && number < n_vertices,
+           "The local number of vertex is incorrect: " + d2s(number) +
+           ". It has to be in range [0, " + d2s(n_vertices) + ").");
+    return vertices[number];
+  }
 
   /**
    * Get the number of edge describing the element
    * @param number - local number of edge [0, n_edges)
    * @return global number of edge (among other mesh edges)
    */
-  int get_edge(int number) const;
+  inline int get_edge(int number) const
+  {
+    expect(number >= 0 && number < n_edges,
+           "The local number of edge is incorrect: " + d2s(number) +
+           ". It has to be in range [0, " + d2s(n_edges) + ").");
+    return edges[number];
+  }
 
   /**
    * Set the number of vertex
@@ -257,7 +332,7 @@ public:
    */
   bool contains(const int vertex) const;
 
-  friend std::ostream & operator<< (std::ostream &out, const MeshElement &el);
+  friend ostream & operator<< (ostream &out, const MeshElement &el);
 
 protected:
   /**
@@ -270,7 +345,7 @@ protected:
   /**
    * Vertices (i.e. their global numbers) describing the element
    */
-  std::vector<int> vertices;
+  vector<int> vertices;
 
   /**
    * The number of edges describing the element.
@@ -283,7 +358,7 @@ protected:
    * Edges (i.e. their global numbers) describing the element
    * It's not always used.
    */
-  std::vector<int> edges;
+  vector<int> edges;
 
   /**
    * ID of the physical domain where the element takes place.
@@ -316,7 +391,7 @@ protected:
   /**
    * Copy assignment operator
    */
-  MeshElement& operator =(const MeshElement &elem);
+  MeshElement& operator= (const MeshElement &elem);
 };
 
 
@@ -360,7 +435,7 @@ public:
    * @param ver - the list of vertices
    * @param mat_id - the material ID
    */
-  PhysPoint(const std::vector<int> &ver,
+  PhysPoint(const vector<int> &ver,
             int mat_id = 0);
 
   /**
@@ -415,7 +490,7 @@ public:
    * @param ver - the list of vertices
    * @param mat_id - the material ID
    */
-  Line(const std::vector<int> &ver,
+  Line(const vector<int> &ver,
        const int mat_id = 0);
 
   /**
@@ -485,7 +560,7 @@ public:
    * @param ver - triangle vertices
    * @param mat_id - material ID
    */
-  Triangle(const std::vector<int> &ver,
+  Triangle(const vector<int> &ver,
            int mat_id = 0);
 
   /**
@@ -543,7 +618,7 @@ public:
    * @param ver - quadrangle vertices
    * @param mat_id - material ID
    */
-  Quadrangle(const std::vector<int> &ver,
+  Quadrangle(const vector<int> &ver,
              int mat_id = 0);
 
   /**
@@ -587,7 +662,7 @@ public:
    * @param cells - the list of all mesh cells
    */
   IncidenceMatrix(int n_vertices,
-                  const std::vector<MeshElement*> &cells);
+                  const vector<MeshElement*> &cells);
 
   /**
    * Destructor
@@ -609,7 +684,10 @@ public:
    * Get the number of non zero elements in the matrix.
    * Can be used to know the number of mesh edges.
    */
-  int get_n_nonzero() const;
+  inline int get_n_nonzero() const
+  {
+    return n_non_zero;
+  }
 
 private:
   /**
@@ -665,30 +743,30 @@ public:
    * Constructor - nothing special
    */
   Mesh(
-    std::vector<Point> &verticesVal, 
-    std::vector<MeshElement *> &pointsVal, 
-    std::vector<MeshElement *> &linesVal,
-    std::vector<MeshElement *> &trianglesVal,
-    std::vector<MeshElement *> &quaddranglesVal
+    vector<Point> &verticesVal, 
+    vector<MeshElement *> &pointsVal, 
+    vector<MeshElement *> &linesVal,
+    vector<MeshElement *> &trianglesVal,
+    vector<MeshElement *> &quaddranglesVal
   );
 
   Mesh(
-    std::vector<Point> &verticesVal, 
-    std::vector<MeshElement *> &linesVal,
-    std::vector<MeshElement *> &trianglesVal
+    vector<Point> &verticesVal, 
+    vector<MeshElement *> &linesVal,
+    vector<MeshElement *> &trianglesVal
   );
 
 
   /**
    * Destructor - to clean the memory
    */
-  ~Mesh();
+  inline ~Mesh(){clean();}
 
   /**
    * Read the mesh from file
    * @param file - the name of the mesh file
    */
-  void read(const std::string &file);
+  void read(const string &file);
 
   /**
    * Conversion from simplices to bricks.
@@ -701,192 +779,251 @@ public:
    * Write the resulting brick mesh into the file
    * @param file - the name of mesh file where we write the results of conversion
    */
-  void write(const std::string &file);
+  void write(const string &file);
 
                 /**
                  * Get the number of converted quadrangles
                  */
-  unsigned get_n_converted_quadrangles() const;
+  inline unsigned get_n_converted_quadrangles() const
+  {
+    return n_converted_quadrangles;
+  }
 
   /**
    * Get the number of vertices.
    */
-  unsigned get_n_vertices() const;
+  inline unsigned get_n_vertices() const
+  {
+    return vertices.size();
+  }
 
   /**
    * Get the number of physical points.
    */
-  unsigned get_n_points() const;
+  inline unsigned get_n_points() const
+  {
+    return points.size();
+  }
 
   /**
    * Get the number of lines (physical lines).
    */
-  unsigned get_n_lines() const;
+  inline unsigned get_n_lines() const
+  {
+    return lines.size();
+  }
 
   /**
    * Get the number of triangles.
    */
-  unsigned get_n_triangles() const;
+  inline unsigned get_n_triangles() const
+  {
+    return triangles.size();
+  }
 
   /**
    * Get the number of tetrahedra.
    */
-  unsigned get_n_quadrangles() const;
+  inline unsigned get_n_quadrangles() const
+  {
+    return quadrangles.size();
+  }
 
   /**
    * Print short information.
    * about mesh into choosing stream.
    */
-  void info(std::ostream &out = std::cout) const;
+  void info(ostream &out = cout) const;
 
   /**
    * Print some statistics (detailed information).
    * about mesh into choosing stream.
    */
-  void statistics(std::ostream &out = std::cout) const;
+  void statistics(ostream &out = cout) const;
 
   /**
    * Get the copy of vertex.
    * @param number - the number of vertex
    */
-  Point get_vertex(int number) const;
+  inline const Point& get_vertex(int number) const
+  {
+    return vertices.at(number);
+  }
 
   /**
    * Get the physical point.
    * @param number - the number of point
    */
-  MeshElement& get_point(int number) const;
+  inline const MeshElement& get_point(int number) const
+  {
+    return *(points.at(number));
+  }
 
   /**
    * Get the mesh edge.
    * @param number - the number of edge
    */
-  MeshElement& get_edge(int number) const;
+  inline const MeshElement& get_edge(int number) const
+  {
+   return *(edges.at(number));
+  }
   
   /**
    * Get the physical line.
    * @param number - the number of line
    */
-  MeshElement& get_line(int number) const;
+  inline const MeshElement& get_line(int number) const
+  {
+    return *(lines.at(number));
+  }
 
   /**
    * Get the mesh triangle.
    * @param number - the number of triangle
    */
-  MeshElement& get_triangle(int number) const;
+  inline const MeshElement& get_triangle(int number) const
+  {
+    return *(triangles.at(number));
+  }
 
   /**
    * Get the mesh quadrangle.
    * @param number - the number of quadrangle
    */
-  MeshElement& get_quadrangle(int number) const;
+  inline const MeshElement& get_quadrangle(int number) const
+  {
+    return *(quadrangles.at(number));
+  }
 
   /**
    * Get the reference of vertices vector.
    */
-  std::vector<Point>& get_vertices();
+  inline const vector<Point>& get_vertices() const
+  {
+    return vertices;
+  }
 
   /**
    * Get reference to physical points vector. 
    */
-  std::vector<MeshElement*>& get_points();
+  inline const vector<MeshElement*>& get_points() const
+  {
+    return points;
+  }
 
   /**
    * Get reference to physical lines vector. 
    */
-  std::vector<MeshElement*>& get_lines();
+  inline const vector<MeshElement*>& get_lines() const
+  {
+    return lines;
+  }
 
   /**
    * Get reference to mesh triangles vector.
    */
-  std::vector<MeshElement*>& get_triangles();
+  inline const vector<MeshElement*>& get_triangles() const
+  {
+    return triangles;
+  }
 
   /**
    * Get reference to mesh quadrangles vector.
    */
-  std::vector<MeshElement*>& get_quadrangles();
+  inline const vector<MeshElement*>& get_quadrangles() const
+  {
+    return quadrangles;
+  }
 
 
   /**
    * Set the copy of vertex
    * @param vertexesVal - the vector of vertexes
    */
-  void set_vertexes(std::vector<Point> &vertexesVal);
+  inline void set_vertexes(const vector<Point> &vertexesVal)
+  {
+    vertices = vertexesVal;
+  }
   
   /**
    * Set the copy of vertex
    * @param vertexes_val - the vector of vertexes
    */
-  void append_vertexes(std::vector<Point> &vertexes_val);
+  inline void append_vertexes(const vector<Point> &vertexes_val)
+  {
+    vertices.insert(end(vertices), vertexes_val.begin(), vertexes_val.end());
+  }
 
   /**
    * Set the physical points
    * @param pointsVal - the vector of points
    */
-  void set_points(std::vector<MeshElement *> &pointsVal);
+  void set_points(const vector<MeshElement *> &pointsVal);
 
   /**
    * Set the physical lines
    * @param linesVal - the vector of lines
    */
-  void set_lines(std::vector<MeshElement *> &linesVal);
+  void set_lines(const vector<MeshElement *> &linesVal);
   
   /**
    * Append the physical lines
    * @param lines_val - new vector of lines
    */
-  void append_lines(std::vector<MeshElement *> &lines_val);
-
+  inline void append_lines(const vector<MeshElement *> &lines_val)
+  {
+    lines.insert(end(lines), lines_val.begin(), lines_val.end());
+  }
   /**
    * Set the mesh triangles
    * @param trianglesVal - the vector of triangles
    */
-  void set_triangles(std::vector<MeshElement *> &trianglesVal);
+  void set_triangles(const vector<MeshElement *> &trianglesVal);
 
   /**
    * Set the mesh quadrangles
    * @param quadranglesVal - the vector of quadrangles
    */
-  void set_quadrangles(std::vector<MeshElement *> &quadranglesVal);
+  void set_quadrangles(const vector<MeshElement *> &quadranglesVal);
 
   /**
    * Free the memory to read again, for example
    */
   void clean();
   
-//protected: FIXME!
+protected:
   /**
    * Mesh vertices (nodes in terms of Gmsh)
    */
-  std::vector<Point> vertices;
+  vector<Point> vertices;
 
   /**
    * Physical points.
    *They are not treated - just copied into new mesh file.
    */
-  std::vector<MeshElement*> points;
+  vector<MeshElement*> points;
 
   /**
    * Mesh lines - mean physical lines
    */
-  std::vector<MeshElement*> lines;
+  vector<MeshElement*> lines;
 
   /**
    * Mesh edges (oriented lines)
    */
-  std::vector<MeshElement*> edges;
+  vector<MeshElement*> edges;
 
   /**
    * Mesh triangles
    */
-  std::vector<MeshElement*> triangles;
+  vector<MeshElement*> triangles;
 
   /**
    * Mesh quadrangles
    */
-  std::vector<MeshElement*> quadrangles;
+  vector<MeshElement*> quadrangles;
 
-  typedef std::vector<std::map<int, int> > VectorMap;
+  typedef vector<map<int, int> > VectorMap;
 
   /**
    * The number of quadrangles that existed in the input mesh
@@ -899,7 +1036,7 @@ public:
    * of the mesh. This section may or may not be presented in the
    * mesh file.
    */
-  std::vector<std::string> physical_names;
+  vector<string> physical_names;
 
   /**
    * Numerate the edges of simplices
@@ -908,7 +1045,7 @@ public:
    * @param initialize_edges - wether we need to initialize the vector of all edges of the mesh
    *                           Sometimes we need to do it, sometimes we don't need (or even shouldn't).
    */
-  void edge_numeration(std::vector<MeshElement*> &cells,
+  void edge_numeration(vector<MeshElement*> &cells,
                        const IncidenceMatrix &incidence_matrix,
                        bool initialize_edges);
 
@@ -938,7 +1075,7 @@ public:
    * @param shift - to make dense sequence of vertices we need to
    *                point out from what number new type of vertices starts
    */
-  void set_new_vertices(const std::vector<MeshElement*> &elements,
+  void set_new_vertices(const vector<MeshElement*> &elements,
                         int n_old_vertices,
                         int shift);
 
@@ -1003,8 +1140,8 @@ public:
    * like deal.II authors do - using cell_measure.
    * This procedure is taken from deal.II sources.
    */
-  double cell_measure_2D(const std::vector<Point> &vertices,
-                       const std::vector<int> &indices);
+  double cell_measure_2D(const vector<Point> &vertices,
+                       const vector<int> &indices);
 
   /**
    * Since all mesh elements are derived from one base MeshElement class,
@@ -1013,8 +1150,8 @@ public:
    * @param elems - vector of mesh elements
    * @param serial_number - serial number of mesh element in mesh file
    */
-  void write_elements(std::ostream &out,
-                    const std::vector<MeshElement*> &elems,
+  void write_elements(ostream &out,
+                    const vector<MeshElement*> &elems,
                     int &serial_number);
 
   /**
@@ -1025,7 +1162,7 @@ public:
    * @param vertices - vertices indices of the element, that we need to order
    */
   void change_vertices_order(int dimension,
-                             const std::vector<Point> &all_mesh_vertices,
-                             std::vector<int> &vertices);
+                             const vector<Point> &all_mesh_vertices,
+                             vector<int> &vertices);
 
 } // namespace tethex
