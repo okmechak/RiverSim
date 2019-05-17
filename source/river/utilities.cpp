@@ -71,15 +71,12 @@ namespace River
         //prints and logs
         options.add_options("Logs")
         ("V,verbose", "print detailed log to terminal.", value<bool>()->default_value("False"))
-        ("Q,quiet", "print detailed log to terminal.", value<bool>()->default_value("True"))
-
-        //Development flags
-        ("t,test-flag", "Test flag for development purposes.", value<vector<double>>()->default_value("1020 30 4 5"));
+        ("Q,quiet", "print detailed log to terminal.", value<bool>()->default_value("True"));
 
         //Simulation parameters
         options.add_options("Simulation parameters")
         ("n,number-of-steps", "Number of steps to simulate(-1 - infinity).", value<int>()->default_value("10"))
-        ("simulation-type", "Forward river growth or backward river growth. 0 - Forward, 1 - Backward, 2 - Test of series params", value<int>()->default_value("0"));
+        ("t,simulation-type", "Forward river growth or backward river growth. 0 - Forward, 1 - Backward, 2 - Test of series params", value<int>()->default_value("0"));
         
         //Geometry parameters
         options.add_options("Geometry parameters")
