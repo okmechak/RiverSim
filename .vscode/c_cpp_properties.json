@@ -9,7 +9,7 @@
                 "${workspaceFolder}/source/river/tethex/**",
                 "/usr/local/dealii_release/**"
             ],
-            "exludePath" : [
+            "exludePath": [
                 "${workspaceFolder}/docs/**"
             ],
             "defines": [],
@@ -17,7 +17,8 @@
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",
-            "configurationProvider": "vector-of-bool.cmake-tools"
+            "configurationProvider": "vector-of-bool.cmake-tools",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
         },
         {
             "name": "Windows",
@@ -33,7 +34,6 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",
             "configurationProvider": "vector-of-bool.cmake-tools"
-
         }
     ],
     "version": 4
