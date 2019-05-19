@@ -149,7 +149,7 @@ namespace River
     }
 
 
-    int Tree::GetParentBranchId(int branch_id)
+    int Tree::GetParentBranchId(int branch_id) const
     {
         if(HasParentBranch(branch_id))
         {
@@ -165,7 +165,7 @@ namespace River
     }
 
 
-    int Tree::GetAdjacentBranchId(int sub_branch_id)
+    int Tree::GetAdjacentBranchId(int sub_branch_id) const
     {
         auto [left_branch, right_branch] = GetSubBranchesId(GetParentBranchId(sub_branch_id));
 
@@ -178,7 +178,7 @@ namespace River
     }
 
 
-    Tree& Tree::AddPoints(vector<Point> points, vector<int> tips_id)
+    Tree& Tree::AddPoints(const vector<Point>& points, const vector<int>& tips_id)
     {
         for(unsigned i = 0; i < tips_id.size(); ++i)
             if(DoesExistBranch(tips_id.at(i)))
@@ -193,7 +193,7 @@ namespace River
     }
 
 
-    unsigned int Tree::GenerateNewID()
+    unsigned int Tree::GenerateNewID() const
     {
         unsigned max_id = 1;
                 
@@ -228,7 +228,7 @@ namespace River
     }
 
 
-    Tree& Tree::AddPolars(vector<Polar> points, vector<int> tips_id)
+    Tree& Tree::AddPolars(const vector<Polar> &points, const vector<int>& tips_id)
     {
         for(unsigned i = 0; i < tips_id.size(); ++i)
             if(DoesExistBranch(tips_id.at(i)))
@@ -243,7 +243,7 @@ namespace River
     }
 
 
-    Tree& Tree::AddAbsolutePolars(vector<Polar> points, vector<int> tips_id)
+    Tree& Tree::AddAbsolutePolars(const vector<Polar>& points, const vector<int>& tips_id)
     {
         for(unsigned int i = 0; i < tips_id.size(); ++i)
             if(DoesExistBranch(tips_id.at(i)))
@@ -289,7 +289,7 @@ namespace River
     }
 
 
-    vector<int> Tree::TipBranchesId()
+    vector<int> Tree::TipBranchesId() const
     {
         vector<int> tip_branches_id;
         for(auto p: branches_index)
@@ -300,7 +300,7 @@ namespace River
     }
     
 
-    vector<Point> Tree::TipPoints()
+    vector<Point> Tree::TipPoints() const
     {   
         vector<Point> tip_points;
         auto tip_branches_id = TipBranchesId();
@@ -312,7 +312,7 @@ namespace River
     }
 
 
-    map<int, Point> Tree::TipIdsAndPoints()
+    map<int, Point> Tree::TipIdsAndPoints() const
     {   
         map<int, Point> ids_points_map;
         auto points = TipPoints();

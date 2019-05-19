@@ -17,7 +17,7 @@
 
 namespace River{
 
-    void Triangle::print_geometry(struct triangulateio &io) const
+    void Triangle::print_geometry(const struct triangulateio &io) const
     {
         int i, j, shift = 1;
         //if(StartNumberingFromZero)
@@ -140,7 +140,7 @@ namespace River{
     }
 
 
-    struct triangulateio Triangle::tethex_to_io(tethex::Mesh &mesh) const
+    struct triangulateio Triangle::tethex_to_io(const tethex::Mesh &mesh) const
     {
         struct triangulateio io;
         set_tria_to_default(&io);
@@ -202,7 +202,7 @@ namespace River{
     }
 
         void  Triangle::io_to_tethex(
-            struct triangulateio &io, tethex::Mesh &initMesh)
+            const struct triangulateio &io, tethex::Mesh &initMesh) const
     {
         vector<tethex::Point> pointsVal;
         vector<tethex::MeshElement*> segmentsVal;
@@ -386,14 +386,6 @@ namespace River{
         if (Quite)          cout << "(Q) quite" << endl;
         if (Verbose)        cout << "(V) verbose" << endl;
     }
-
-
-
-    void Triangle::set_geometry(struct triangulateio &geom)
-    {
-        in = geom;
-    }
-
 
     struct triangulateio* Triangle::get_geometry()
     {

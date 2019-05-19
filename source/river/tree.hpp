@@ -60,28 +60,28 @@ namespace River
              * @{
              */
             ///Adds point __p__ to branch with absolute coords.
-            BranchNew& AddAbsolutePoint(const Point& p)
+            inline BranchNew& AddAbsolutePoint(const Point& p)
             {
                 points.push_back(p);
                 return *this;
             }
             
             ///Adds polar __p__ coords to branch with absolute angle, but position is relative to tip
-            BranchNew& AddAbsolutePoint(const Polar& p)
+            inline BranchNew& AddAbsolutePoint(const Polar& p)
             {
                 points.push_back(TipPoint() + Point{p});
                 return *this;
             }
             
             ///Adds point __p__ to branch in tip relative coord system.
-            BranchNew& AddPoint(const Point &p)
+            inline BranchNew& AddPoint(const Point &p)
             {
                 points.push_back(TipPoint() + p);
                 return *this;
             }
 
             ///Adds polar __p__ to branch in tip relative coord and angle system.
-            BranchNew& AddPoint(const Polar& p)
+            inline BranchNew& AddPoint(const Polar& p)
             {
                 auto p_new = Polar{p};
                 p_new.phi += TipAngle();
@@ -94,7 +94,7 @@ namespace River
             BranchNew& Shrink(double lenght);
 
             ///Remove tip point from branch(simply pops element from vector)
-            BranchNew& RemoveTipPoint()
+            inline BranchNew& RemoveTipPoint()
             {
                 if(Size() == 1)
                     throw invalid_argument("Can't remove last point");   
@@ -103,7 +103,7 @@ namespace River
             }
 
             ///Clear Branch
-            BranchNew& Clear(){ points.clear(); return *this; }
+            inline BranchNew& Clear(){ points.clear(); return *this; }
             /**
              * @}
              */
@@ -113,7 +113,7 @@ namespace River
              * @{
              */
             ///Return TipPoint of branch(last point in branch)
-            Point TipPoint() const 
+            inline Point TipPoint() const 
             {
                 if(Size() == 0)
                     throw invalid_argument("Can't return TipPoint size is zero");
@@ -122,7 +122,7 @@ namespace River
 
             ///Returns vector of tip - difference between two adjacent points.
             ///If __size__ is <= 0exception is rised.
-            Point TipVector() const 
+            inline Point TipVector() const 
             {
                 if(Size() == 1)
                     throw invalid_argument("Can't return TipVector size is 1");
@@ -131,7 +131,7 @@ namespace River
             }
 
             ///Returns vector of i-th segment of branch.
-            Point Vector(unsigned i) const
+            inline Point Vector(unsigned i) const
             {
                 if(Size() == 1)
                     throw invalid_argument("Can't return Vector. Size is 1");
@@ -153,10 +153,10 @@ namespace River
             }
 
             ///Returns SourcePoint of branch(the first one)
-            Point SourcePoint() const{return points.at(0);}
+            inline Point SourcePoint() const{return points.at(0);}
 
             ///Returns SourceAngle of branch - initial __source_angle__
-            double SourceAngle() const {return source_angle;}
+            inline double SourceAngle() const {return source_angle;}
             /**
              * @}
              */
@@ -167,7 +167,11 @@ namespace River
              */
 
             ///Checks if branch is empyt - but it never should
-            bool Empty() const {return points.empty() || points.size() == 1/*branch with one point is empty too*/ || Lenght() < eps;}
+            inline bool Empty() const 
+            {
+                return points.empty() || points.size() == 1/*branch with one point is empty too*/ 
+                    || Lenght() < eps;
+            }
 
             ///Returns Lenght of whole branch
             double Lenght() const 
@@ -182,7 +186,7 @@ namespace River
 
 
             ///Returns number of points in branch
-            unsigned int Size() const {return points.size();}
+            inline unsigned int Size() const {return points.size();}
 
             ///Returns BranchNew::Lenght() divided by BranchNew::Size()
             double AverageSpeed() const
@@ -221,9 +225,9 @@ namespace River
             }
 
             ///Returns points vector
-            vector<Point> GetPoints(){return points;}
+            inline vector<Point> GetPoints(){return points;}
             ///Returns i-th point vector
-            Point GetPoint(unsigned i) const 
+            inline Point GetPoint(unsigned i) const 
             {
                 return points.at(i);
             }
@@ -314,7 +318,7 @@ namespace River
 
             //Getters of ids
             ///Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
-            int GetParentBranchId(int branch_id);
+            int GetParentBranchId(int branch_id) const;
 
             ///Returns pair of ids of subranches.
             pair<int, int> GetSubBranchesId(int branch_id) const
@@ -326,10 +330,10 @@ namespace River
             }
 
             ///Returns id of adjacent branch with __id__.
-            int GetAdjacentBranchId(int sub_branch_id);
+            int GetAdjacentBranchId(int sub_branch_id) const;
 
             ///Generates unique id number for new subbranch.
-            unsigned int GenerateNewID();
+            unsigned int GenerateNewID() const;
 
 
             //Getters of Branches
@@ -381,21 +385,21 @@ namespace River
 
             //Growth
             ///Adds  relatively __points__ to Branches __tips_id__.
-            Tree& AddPoints(vector<Point> points, vector<int> tips_id);
+            Tree& AddPoints(const vector<Point>& points, const vector<int>& tips_id);
 
             ///Adds  relatively __points__ to Branches __tips_id__.
-            Tree& AddPolars(vector<Polar> points, vector<int> tips_id);
+            Tree& AddPolars(const vector<Polar>& points, const vector<int>& tips_id);
 
             ///Adds  absolute __points__ to Branches __tips_id__.
-            Tree& AddAbsolutePolars(vector<Polar> points, vector<int> tips_id);
+            Tree& AddAbsolutePolars(const vector<Polar>& points, const vector<int>& tips_id);
 
 
             //Checks
             ///Checks if branch with __id__ exists.
-            bool DoesExistBranch(int id)const{return branches_index.count(id);}
+            inline bool DoesExistBranch(int id)const{return branches_index.count(id);}
 
             ///Checks if current id of branch is source or not.
-            int IsSourceBranch(int branch_id)
+            int IsSourceBranch(int branch_id) const
             {
                 if(!DoesExistBranch(branch_id))
                     throw invalid_argument("HasParentBranch: there is no such branch");
@@ -404,7 +408,7 @@ namespace River
             }
 
             ///Checks if Branchs __branch_id__ has root(or source) branch.
-            bool HasParentBranch(int branch_id)
+            bool HasParentBranch(int branch_id) const
             {
                 if(!DoesExistBranch(branch_id))
                     throw invalid_argument("HasParentBranch: there is no such branch");
@@ -425,7 +429,7 @@ namespace River
             }
 
             ///Checks if tree has non zero sized branches.
-            bool HasEmptySourceBranch()
+            bool HasEmptySourceBranch() const
             {   
                 //No branches at all means empty source too.
                 //It will stop simulation immediately.
@@ -440,7 +444,7 @@ namespace River
             }
 
             ///Checks for validity of __id__.
-            bool IsValidBranchId(int id)
+            bool IsValidBranchId(int id) const
             {return id >= 1;}
             /**
              * @}
@@ -452,22 +456,22 @@ namespace River
              */
 
             ///Returns vector of tip branches ids.
-            vector<int> TipBranchesId();
+            vector<int> TipBranchesId() const;
 
             ///Returns vector of tip branches Points.
-            vector<Point> TipPoints();
+            vector<Point> TipPoints() const;
 
             ///Returns vector of tip branches Points.
-            map<int, Point> TipIdsAndPoints();
+            map<int, Point> TipIdsAndPoints() const;
             /**
              * @}
              */
 
             //Some properties
             ///Returns number of source branches.
-            int NumberOfSourceBranches(){return source_branches_id.size();}
+            inline int NumberOfSourceBranches() const {return source_branches_id.size();}
             ///Return vector of source branches ids.
-            vector<int> SourceBranchesID(){return source_branches_id;}
+            inline vector<int> SourceBranchesID() const {return source_branches_id;}
 
         //private:  FIXME: cos i need somehow test private members
             /**

@@ -102,7 +102,7 @@ namespace River
         return phi;
     }
 
-    double Point::angle(Point &p) const
+    double Point::angle(const Point &p) const
     {
       //order of points is important
       auto n = norm();
@@ -115,10 +115,9 @@ namespace River
       phi *= sign;
       return phi;
     }
-    Point& Point::print()
+    void Point::print() const
     {
       cout << *this << endl;
-      return *this;
     }
 
     bool Point::operator==(const Point& p) const

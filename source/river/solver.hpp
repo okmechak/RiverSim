@@ -79,13 +79,13 @@ namespace River
           ~Solver(){clear();}
 
           unsigned int num_of_refinments = 1;
-          void SetBoundaryRegionValue(std::vector<int> regionTags, double value);
-          void SetMesh(tethex::Mesh &meshio);
-          void OpenMesh(string fileName = "river.msh");
+          void SetBoundaryRegionValue(const vector<int>& regionTags, const double value);
+          void SetMesh(const tethex::Mesh &meshio);
+          void OpenMesh(const string fileName = "river.msh");
           void run();
           void output_results(const string file_name) const;
-          vector<double> integrate(Model& mdl, Point point, double angle);
-          double integration_test(Point point, double dr);
+          vector<double> integrate(const Model& mdl, const Point& point, const double angle);
+          double integration_test(const Point& point, const double dr);
           double max_value();
           void clear()
           {
@@ -104,7 +104,7 @@ namespace River
 
           Triangulation<dim> triangulation;
 
-          std::map<double, std::vector<int>> boundaryRegionValue;
+          map<double, vector<int>> boundaryRegionValue;
 
           FE_Q<dim> fe;
           DoFHandler<dim> dof_handler;

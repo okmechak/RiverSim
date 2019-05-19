@@ -21,23 +21,23 @@ namespace River
     Solver Class
 
 */
-void Solver::SetBoundaryRegionValue(std::vector<int> regionTags, double value)
+void Solver::SetBoundaryRegionValue(const vector<int>& regionTags, const double value)
 {
-    boundaryRegionValue.insert(std::make_pair(value, regionTags));
+    boundaryRegionValue.insert(make_pair(value, regionTags));
 }
 
 
-void Solver::OpenMesh(string fileName)
+void Solver::OpenMesh(const string fileName)
 {
     GridIn<dim> gridin;
     gridin.attach_triangulation(triangulation);
-    std::ifstream f(fileName);
+    ifstream f(fileName);
     gridin.read_msh(f);
 }
 
 
 
-void Solver::SetMesh(tethex::Mesh &meshio)
+void Solver::SetMesh(const tethex::Mesh &meshio)
 {
     cout << "set_mesh" << endl;
     //VERTICES
@@ -233,7 +233,7 @@ void Solver::refine_grid()
 
 
 
-vector<double> Solver::integrate(Model& mdl, Point point, double angle)
+vector<double> Solver::integrate(const Model& mdl, const Point& point, const double angle)
 {   
 
     FEValues<dim> fe_values(fe, quadrature_formula,
@@ -299,7 +299,7 @@ vector<double> Solver::integrate(Model& mdl, Point point, double angle)
 }
 
 
-double Solver::integration_test(Point point, double dr)
+double Solver::integration_test(const Point& point, const double dr)
 {
 
     FEValues<dim> fe_values(fe, quadrature_formula,

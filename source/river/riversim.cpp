@@ -21,9 +21,9 @@ namespace River
 {
     //FIXME this will be walid only for quad region
     //FIXME handle case ymin too!
-    bool StopConditionOfRiverGrowth(Border& border, Tree& tree)
+    bool StopConditionOfRiverGrowth(const Border& border, const Tree& tree)
     {
-        auto tips = tree.TipPoints();
+        const auto tips = tree.TipPoints();
 
         auto border_init_point = border.GetVertices().back(),
             tip_init_point = tips.back();
@@ -62,7 +62,8 @@ namespace River
 
 
 
-    void ForwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, string file_name)
+    void ForwardRiverEvolution(const Model& mdl, Triangle& tria, River::Solver& sim, 
+        Tree& tree, const Border& border, const string file_name)
     {
         //initial boundaries of mesh
         auto mesh = BoundaryGenerator(mdl, tree, border);
@@ -105,7 +106,8 @@ namespace River
 
 
 
-    bool BackwardRiverEvolution(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, GeometryDifference& gd, string file_name)
+    bool BackwardRiverEvolution(const Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, 
+        const Border& border, GeometryDifference& gd, const string file_name)
     {   
         bool stop_flag = false;
         auto mesh = BoundaryGenerator(mdl, tree, border);
@@ -197,7 +199,8 @@ namespace River
 
 
 
-    bool EvaluateSeriesParams(Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, Border& border, GeometryDifference& gd, string file_name)
+    bool EvaluateSeriesParams(const Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, 
+        const Border& border, GeometryDifference& gd, const string file_name)
     {
         //initial boundaries of mesh
         auto mesh = BoundaryGenerator(mdl, tree, border);

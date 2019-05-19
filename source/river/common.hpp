@@ -28,7 +28,7 @@ using namespace std;
 
 
 /**
- * Hash pairing function used for uordered map 
+ * Hash pairing function used for unordered map in Solver::TryInsertCellBoundary()
  */
 namespace std
 {
@@ -114,10 +114,10 @@ namespace River
       static double angle(double x, double y);
 
       ///Returns angle relatively to __p__ Point
-      double angle(Point &p) const;
+      double angle(const Point &p) const;
 
       ///Prints point
-      Point& print();
+      void print() const;
 
       /**
       * @name Math operations

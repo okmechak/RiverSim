@@ -62,7 +62,7 @@ namespace River
             ///Width of branch.
             double eps = 1e-6;
 
-            double operator()(double x, double y)
+            inline double operator()(double x, double y) const
             {
                 vector<double> area_constraint(tip_points.size(), 10000000/*some large area value*/);
                 for(auto& tip: tip_points)
@@ -91,13 +91,13 @@ namespace River
             double exponant = 2.;
             
             ///Weight function used in computation of series parameters.
-            double WeightFunction(double r)
+            inline double WeightFunction(double r) const
             {
                 return exp(-pow(r / weigth_func_radius, exponant));
             }
             
             ///Base Vector function used in computation of series parameters.
-            double BaseVector(int nf, complex<double> zf)
+            inline double BaseVector(int nf, complex<double> zf) const
             {
                 if( (nf % 2) == 0)
                     return -imag(pow(zf, nf/2.));
@@ -180,7 +180,7 @@ namespace River
             SolverParams solver_params;
 
             ///Checks by evaluating series params for biffuraction condition.
-            bool q_biffurcate(vector<double> a, double branch_lenght)
+            bool q_biffurcate(vector<double> a, double branch_lenght) const
             {
                 bool dist_flag = branch_lenght > biffurcation_min_dist;
 
@@ -207,13 +207,13 @@ namespace River
             }
 
             ///Checks by evaluating series param for growth condition.
-            bool q_growth(vector<double> a)
+            inline bool q_growth(vector<double> a) const
             {
                 return a.at(0) > growth_threshold;
             }
 
             ///Evaluate next point of simualtion based on series parameters around tip.
-            Polar next_point(vector<double> series_params, double branch_lenght)
+            Polar next_point(vector<double> series_params, double branch_lenght) const
             {
                 //handle situation near biffurcation point, to reduce killing one branch by another
                 auto eta_local = eta;
@@ -238,7 +238,7 @@ namespace River
                     throw invalid_argument("Invalid value of growth_type!");
             }
             
-            vector<int> GetZeroIndices()
+            vector<int> GetZeroIndices() const
             {
                 if(boundary_condition == 0)
                     return {river_boundary_id};//boundary_ids;
@@ -248,7 +248,7 @@ namespace River
                     throw invalid_argument("Invalid value of boundary_condition");   
             }
 
-            vector<int> GetNonZeroIndices()
+            vector<int> GetNonZeroIndices() const
             {
                 if(boundary_condition == 0)
                     return {};
@@ -259,7 +259,7 @@ namespace River
             }
 
             //TODO implement in this class parameter checking
-            void CheckParametersConsistency();
+            void CheckParametersConsistency() const;
     };
 
 
@@ -296,7 +296,7 @@ namespace River
         }
 
 
-        void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, vector<double> series_params)
+        void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, const vector<double>& series_params)
         {
             if(!branches_series_params_and_geom_diff.count(branch_id))
             {
@@ -324,7 +324,7 @@ namespace River
 
             map<int, double> bif_difference;
 
-            void RecordBiffurcationPoint(int branch_id, double bif_difference, vector<double> bif_series_params)
+            void RecordBiffurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
             {
                 if(!branches_biffuraction_info.count(branch_id))
                 {

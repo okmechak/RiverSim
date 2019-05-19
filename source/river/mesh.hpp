@@ -108,9 +108,6 @@ namespace River
       ///Outupts options with or without detailed description.
       void print_options(bool qDetailedDescription = true);
       
-      ///Set input geometry structure.
-      void set_geometry(struct triangulateio &geom);
-      
       ///Get output geometry. e.g generated mesh.
       struct triangulateio* get_geometry();
 
@@ -118,15 +115,15 @@ namespace River
       struct triangulateio* get_voronoi();
 
       ///Converts tethex::Mesh to \ref triangulateio used by Triangle.
-      struct triangulateio tethex_to_io(tethex::Mesh &initMesh) const;
+      struct triangulateio tethex_to_io(const tethex::Mesh &initMesh) const;
 
       ///Converts \ref triangulateio to tethex::Mesh used by rest of program.
-      void io_to_tethex(struct triangulateio &io, tethex::Mesh &initMesh);
+      void io_to_tethex(const struct triangulateio &io, tethex::Mesh &initMesh) const;
       
     public:
       
       ///Outputs to consloe geometry.
-      void print_geometry(struct triangulateio &io) const;
+      void print_geometry(const struct triangulateio &io) const;
 
       ///Enumerating all algorithm stragies. 
       ///CONQUER is default and the fastest.
