@@ -7,6 +7,7 @@
                 "${workspaceFolder}/source/**",
                 "${workspaceFolder}/source/river/**",
                 "${workspaceFolder}/source/river/tethex/**",
+                "/usr/local/dealii/**",
                 "/usr/local/dealii_release/**"
             ],
             "exludePath": [

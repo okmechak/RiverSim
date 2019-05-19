@@ -69,7 +69,7 @@ namespace River
         return mdl;
     }
 
-    void Save(Model& mdl, Timing& time, Border& border, Tree& tr, GeometryDifference &gd, string file_name, string input_file)
+    void Save(const Model& mdl, const Timing& time, const Border& border, const Tree& tr, const GeometryDifference &gd, const string file_name, string const input_file)
     {
         if(file_name.length() == 0)
             throw invalid_argument("Save. File name is not set.");
@@ -102,17 +102,17 @@ namespace River
         {
             vector<pair<double, double>> coords;
             vector<vector<int>> lines;
-            coords.reserve(border.vertices.size());
-            coords.reserve(border.lines.size());
+            coords.reserve(border.GetVertices().size());
+            coords.reserve(border.GetLines().size());
 
-            for(auto& p: border.vertices)
+            for(auto& p: border.GetVertices())
                 coords.push_back({p.x, p.y});
 
-            for(auto& l: border.lines)
+            for(auto& l: border.GetLines())
                 lines.push_back({(int)l.p1, (int)l.p2, l.id});
 
             jborder = {
-                {"SourceIds", border.sources}, 
+                {"SourceIds", border.GetSourceMap()}, 
                 {"SomeDetails", "points and lines should be in counterclockwise order!"},
                 {"coords", coords},
                 {"lines", lines}};
@@ -255,19 +255,24 @@ namespace River
         {
             auto jborder = j["Border"];
             vector<pair<double, double>> coords;
-            vector<vector<int>> lines;
+            vector<Point> points;
+            vector<vector<int>> lines_raw;
+            vector<Line> lines;
+            map<int, long unsigned> sources;
 
-            jborder.at("SourceIds").get_to(border.sources);
+            jborder.at("SourceIds").get_to(sources);
+
             jborder.at("coords").get_to(coords);
-            jborder.at("lines").get_to(lines);
+            points.reserve(coords.size());
+            for(auto& c : coords)
+                points.push_back(Point{c.first, c.second});
 
-            border.vertices.reserve(coords.size());
-            border.lines.reserve(lines.size());
-            for(auto &p: coords)
-                border.vertices.push_back({p.first, p.second});
+            jborder.at("lines").get_to(lines_raw);
+            lines.reserve(lines_raw.size());
+            for(auto& l : lines_raw)
+                lines.push_back(Line{(long unsigned)l.at(0), (long unsigned)l.at(1), l.at(2)});
 
-            for(auto &l: lines)
-                border.lines.push_back({(long unsigned)l.at(0)/*p1*/, (long unsigned)l.at(1)/*p2*/, l.at(2)/*id*/});
+            border = Border{points, lines, sources};
         }
         else
             //if no border provided in input data

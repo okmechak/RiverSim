@@ -400,8 +400,8 @@ namespace River
         //TODO reserve size.
 
         auto m = br.SourceByVerticeIdMap();
-        auto lines = br.lines;
-        auto vertices = br.vertices;
+        auto vertices = br.GetVertices();
+        auto lines = br.GetLines();
         
         for(long unsigned i = 0; i < vertices.size(); ++i)
         {

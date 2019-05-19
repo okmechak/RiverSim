@@ -59,7 +59,16 @@ namespace River
             /** 
              * Border constructor.
              */
-            Border() = default;
+            Border(const vector<Point>& vertices = {}, const vector<Line>& lines = {},
+                const map<int, long unsigned>& sources = {}, const vector<long unsigned>& holes = {})
+            {
+                Border::vertices = vertices;
+                Border::lines = lines;
+                Border::sources = sources;
+                Border::holes = holes;
+            }
+            
+                
 
             /**
              * Initializes Border::borderMesh object of type tethex::Mesh by setting lines and vertices to rectangular shape.
@@ -70,10 +79,23 @@ namespace River
              * \param sourcesId vector of sources Ids. Each id should be __unique__
              */
             Border& MakeRectangular(
-                vector<double> regionSize, vector<int> boundariesId,
-                vector<double> sourcesXCoord = {}, vector<int> sourcesId = {});
+                const vector<double>& regionSize, const vector<int>& boundariesId,
+                const vector<double>& sourcesXCoord = {}, const vector<int>& sourcesId = {});
 
+            inline const vector<Point>& GetVertices() const
+            {
+                return vertices;
+            }
+            
+            inline const vector<Line>& GetLines() const
+            {
+                return lines;
+            }
 
+            inline const map<int, long unsigned>& GetSourceMap() const
+            {
+                return sources;
+            }
             /**
              * @name Getters for sources parametets
              * @{
@@ -88,7 +110,7 @@ namespace River
             Point GetSourcePoint(int source_id) const;
             
             ///Return source point vertice position
-            long unsigned GetSourceVerticeIndex(int source_id) const
+            inline long unsigned GetSourceVerticeIndex(int source_id) const
             {
                 return sources.at(source_id);
             }
@@ -97,7 +119,7 @@ namespace River
             double GetSourceNormalAngle(int source_id) const;
 
             /// Returns vector of all nolrmall angles.
-            vector<double> GetSourcesNormalAngle() const
+            inline vector<double> GetSourcesNormalAngle() const
             {
                 vector<double> norm_angles;
                 for(auto id: GetSourcesId())
@@ -109,7 +131,7 @@ namespace River
              * @}
              */
 
-            map<long unsigned, int> SourceByVerticeIdMap() const
+            inline map<long unsigned, int> SourceByVerticeIdMap() const
             {
                 map<long unsigned, int> r;
                 for (const auto& kv : sources)
@@ -117,7 +139,9 @@ namespace River
                 return r;
             } 
 
-        //private: for testing purposes
+            friend class border_test_class;
+
+        //private:  FIXME
 
             /**
              * @name Private

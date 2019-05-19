@@ -61,7 +61,7 @@ namespace River{
             }
 
             ///Return current date string.
-            string CurrentDate()
+            string CurrentDate() const
             {   
                 auto now = chrono::high_resolution_clock::now();
                 auto t_time = chrono::high_resolution_clock::to_time_t(now);
@@ -69,9 +69,8 @@ namespace River{
             }
 
             ///Return date of object creation string.
-            string CreationtDate()
+            string CreationtDate() const
             {   
-                
                 return ctime(&creation_date);
             }
 
@@ -86,7 +85,7 @@ namespace River{
 
 
             ///Return total time of simmulation.
-            double Total()
+            double Total() const
             {
                 double sum = 0;
                 for(auto t: records)

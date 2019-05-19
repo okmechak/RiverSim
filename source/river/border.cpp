@@ -21,8 +21,8 @@ namespace River
 {
 
     Border& Border::MakeRectangular(
-                vector<double> regionSize, vector<int> boundariesId,
-                vector<double> sourcesXCoord, vector<int> sourcesId)
+                const vector<double>& regionSize, const vector<int>& boundariesId,
+                const vector<double>& sourcesXCoord, const vector<int>& sourcesId)
     {
         //clear all data
         vertices.clear();

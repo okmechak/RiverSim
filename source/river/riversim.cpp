@@ -25,7 +25,7 @@ namespace River
     {
         auto tips = tree.TipPoints();
 
-        auto border_init_point = border.vertices.back(),
+        auto border_init_point = border.GetVertices().back(),
             tip_init_point = tips.back();
 
         double xmin = tip_init_point.x, 
@@ -35,7 +35,7 @@ namespace River
             rxmax = rxmin, 
             rymax = border_init_point.y;
 
-        for(auto &p :border.vertices)
+        for(auto &p :border.GetVertices())
         {
             if(p.x > rxmax)
                 rxmax = p.x;
