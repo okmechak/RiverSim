@@ -46,7 +46,6 @@ namespace River{
     cxxopts::ParseResult process_program_options(int argc, char* argv[]);
 
 
-    ///FIXME time isn't in seconds or is wrong
     ///Timing
     class Timing
     {

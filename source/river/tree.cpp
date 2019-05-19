@@ -267,9 +267,6 @@ namespace River
         if(!HasSubBranches(root_branch_id))
             throw invalid_argument("This branch doesn't has subbranches.");
 
-        //FIXME also we should delete branches
-        //not only relations
-
         auto[sub_left, sub_right] = GetSubBranchesId(root_branch_id);
         
         //recursively look up for left branch
@@ -425,7 +422,7 @@ namespace River
                             mdl.river_boundary_id));
                 }
                 for(auto& line: lines)
-                    if(line.p2 > i)//TODO Test this
+                    if(line.p2 > i)
                     {
                         line.p1 += tree_vector.size();
                         line.p2 += tree_vector.size();

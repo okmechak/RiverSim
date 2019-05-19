@@ -35,18 +35,6 @@
 
 namespace River
 {
-    /* 
-        TODO: 
-        Implementation of some standard workflows 
-        like:
-            - forward river evolution
-            - backward river evolution
-            - statistics and postrocessing
-            - evaluation of parameters
-            - other
-    
-    */
-
    //Stop condition of river growth simulation.
    bool StopConditionOfRiverGrowth(const Border& border, const Tree& tree);
 
