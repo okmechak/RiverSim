@@ -82,6 +82,7 @@ namespace River
           void SetBoundaryRegionValue(const vector<int>& regionTags, const double value);
           void SetMesh(const tethex::Mesh &meshio);
           void OpenMesh(const string fileName = "river.msh");
+          void static_refine_grid(const Model& mdl, const vector<Point>& tips_points);
           void run();
           void output_results(const string file_name) const;
           vector<double> integrate(const Model& mdl, const Point& point, const double angle);

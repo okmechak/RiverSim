@@ -214,6 +214,7 @@ namespace River
         sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
         sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
         sim.OpenMesh(file_name + ".msh");
+        sim.static_refine_grid(mdl, tree.TipPoints());
         sim.run();
         sim.output_results(file_name);
 

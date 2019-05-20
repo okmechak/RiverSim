@@ -115,9 +115,9 @@ namespace River
         ("A,mesh-max-area", "Constraints maximal area of triangle element", 
             value<double>()->default_value("10."))
         ("mesh-min-area", "Constraints minimal area of triangle element. Aplied at refinment: 1 + min_area - exp(-(r/ro)^{mesh-exp}).", 
-            value<double>()->default_value("1e-11"))
+            value<double>()->default_value("1e-6"))
         ("refinment-radius", "r0 - refinment radius from this formula: 1 + min_area - exp(-(r/ro)^{mesh-exp})", 
-            value<double>()->default_value("0.2"));
+            value<double>()->default_value("0.03"));
 
         options.add_options("Solver Parameters")
         ("quadrature-degree", "quadrature polynomials degree used in numerical integration of Solver.", value<int>()->default_value("2"))

@@ -48,10 +48,10 @@ namespace River
             double refinment_radius = 0.02;
 
             ///Power.
-            double exponant = 500.;
+            double exponant = 100.;
 
             ///Minimal area of mesh.
-            double min_area = 5e-9;
+            double min_area = 1e-9;
 
             ///Maximal area of mesh element.
             double max_area = 10.;
@@ -62,19 +62,22 @@ namespace River
             ///Width of branch.
             double eps = 1e-6;
 
+            ///Sigma used in exponence(same as in Gauss formula)
+            double sigma = 2.;
+
             inline double operator()(double x, double y) const
             {
-                vector<double> area_constraint(tip_points.size(), 10000000/*some large area value*/);
+                double result_area = 10000000/*some large area value*/;
                 for(auto& tip: tip_points)
                 {
-                    auto exp_val = exp( -pow( (Point{x, y} - tip).norm()/refinment_radius/2, 2) / 2);
-                
-                    area_constraint.push_back(
-                        (max_area - min_area)*(1 - exp_val)/(1 + exponant* exp_val) + min_area
-                    );
+                    auto r = (Point{x, y} - tip).norm();
+                    auto exp_val = exp( -pow(r/refinment_radius, exponant)/2/sigma/sigma);
+                    auto cur_area = min_area + (max_area - min_area)*(1 - exp_val)/(1 + exp_val);
+                    if(result_area > cur_area)
+                        result_area = cur_area;   
                 }
                 
-                return *min_element(area_constraint.begin(), area_constraint.end());
+                return result_area;
             }
     };
 

@@ -230,6 +230,34 @@ void Solver::refine_grid()
     triangulation.execute_coarsening_and_refinement();
 }
 
+void Solver::static_refine_grid(const Model& mdl, const vector<Point>& tips_points)
+{
+    //iterating over refinment steps
+    for (int step = 1; step < mdl.solver_params.refinment_steps; ++step)
+    {
+        //iterating over each mesh cell
+        for (auto cell: triangulation.active_cell_iterators())
+        {
+            for (unsigned int v = 0; v < GeometryInfo<2>::vertices_per_cell; ++v)
+            {
+                for(auto& p: tips_points)
+                {
+                    auto vertex = cell->vertex(v);
+                    auto r = dealii::Point<2>{p.x, p.y}.distance(vertex);
+                    if(r < mdl.integr.integration_radius)
+                    {
+                        cell->set_refine_flag ();
+                        break;
+                    }
+                }
+                if(cell->refine_flag_set())
+                    break;
+            }
+        }
+        triangulation.execute_coarsening_and_refinement ();
+    }
+}
+
 
 
 
