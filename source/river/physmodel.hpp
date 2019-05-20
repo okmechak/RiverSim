@@ -48,10 +48,10 @@ namespace River
             double refinment_radius = 0.02;
 
             ///Power.
-            double exponant = 5.e2;
+            double exponant = 500.;
 
             ///Minimal area of mesh.
-            double min_area = 5.e-9;
+            double min_area = 5e-9;
 
             ///Maximal area of mesh element.
             double max_area = 10.;

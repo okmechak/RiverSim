@@ -217,14 +217,19 @@ namespace River
         sim.run();
         sim.output_results(file_name);
 
-        for(auto id: tree.TipBranchesId())
-        {
-            auto tip_point = tree.GetBranch(id)->TipPoint();
-            auto tip_angle = tree.GetBranch(id)->TipAngle();
-            auto series_params = sim.integrate(mdl, tip_point, tip_angle);
+        auto branch_id = tree.TipBranchesId().back();
+        if(branch_id != 1)
+            throw invalid_argument("EvaluateSeriesParams: Branch does not equal to 1: " + to_string(branch_id));
+                
+        auto tip_point = tree.GetBranch(branch_id)->TipPoint();
+        auto tip_angle = tree.GetBranch(branch_id)->TipAngle();
+        auto series_params = sim.integrate(mdl, tip_point, tip_angle);
+        auto circle_integr = sim.integration_test(tip_point, 0.1/*dr same as in FreeFEM++*/);
+        auto whole_integr = sim.integration_test(tip_point, 10/*large enough to cover whole region*/);
 
-            gd.RecordBranchSeriesParamsAndGeomDiff(id, -1/*dalpha*/, -1/*ds*/, series_params);
-        }
+        gd.RecordBranchSeriesParamsAndGeomDiff(branch_id, 
+            whole_integr/*whole region*/, circle_integr/*circle_integr*/, series_params);
+        
         sim.clear();
 
         return true;
