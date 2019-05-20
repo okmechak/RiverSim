@@ -67,6 +67,8 @@ namespace River
     {
         //initial boundaries of mesh
         auto mesh = BoundaryGenerator(mdl, tree, border);
+        mesh.write(file_name + "_boundary.msh");
+        
         tria.ref->tip_points = tree.TipPoints();
         tria.generate(mesh);//triangulation
         mesh.convert();//convertaion from triangles to quadrangles
@@ -111,6 +113,7 @@ namespace River
     {   
         bool stop_flag = false;
         auto mesh = BoundaryGenerator(mdl, tree, border);
+        mesh.write(file_name + "_boundary.msh");
 
         tria.ref->tip_points = tree.TipPoints();
         tria.generate(mesh);
@@ -204,6 +207,8 @@ namespace River
     {
         //initial boundaries of mesh
         auto mesh = BoundaryGenerator(mdl, tree, border);
+        mesh.write(file_name + "_boundary.msh");
+
         tria.ref->tip_points = tree.TipPoints();
         tria.generate(mesh);//triangulation
         mesh.convert();//convertaion from triangles to quadrangles

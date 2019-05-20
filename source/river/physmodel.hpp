@@ -195,7 +195,7 @@ namespace River
                 else if(biffurcation_type == 1)
                 {
                     cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
-                    return a.at(0) > biffurcation_threshold && dist_flag;
+                    return a.at(0) > biffurcation_threshold_2 && dist_flag;
                 }
                 else if(biffurcation_type == 2)
                 {

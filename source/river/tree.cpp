@@ -27,30 +27,37 @@ namespace River
         if(Size() <= 1)//case of zero branch
             lenght = 0;
 
-        while(lenght > 0)
+        while(lenght > 0 && Size() > 1)
         {
-            auto dl = TipVector().norm();
-
-            if(lenght >= dl + eps)
-            {
-                RemoveTipPoint();
-                lenght -= dl;
+            try{
+                
+                auto dl = TipVector().norm();
+                if(lenght >= dl + eps)
+                {
+                    RemoveTipPoint();
+                    lenght -= dl;
+                }
+                else if(lenght > dl - eps && lenght < dl + eps)
+                {
+                    RemoveTipPoint();
+                    lenght = 0;
+                }
+                else if(lenght <= dl - eps)
+                {
+                    auto k = lenght/dl;
+                    auto new_tip = TipVector()*k;
+                    RemoveTipPoint();
+                    AddPoint(new_tip);
+                    lenght = 0;
+                }
+                else
+                    throw invalid_argument("Unhandled case in Shrink method.");
             }
-            else if(lenght > dl - eps && lenght < dl + eps)
+            catch(const invalid_argument& e)
             {
-                RemoveTipPoint();
-                lenght = 0;
+                cerr << e.what() << '\n';
+                throw invalid_argument("Shrinikng error: problem with RemoveTipPoint() or TipVector()");
             }
-            else if(lenght <= dl - eps)
-            {
-                auto k = lenght/dl;
-                auto new_tip = TipVector()*k;
-                RemoveTipPoint();
-                AddPoint(new_tip);
-                lenght = 0;
-            }
-            else
-                throw invalid_argument("Unhandled case in Shrink method.");
         }
         
         return *this;
