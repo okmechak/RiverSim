@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     auto source_point = Point{0, 0};
     auto br = BranchNew(source_point, M_PI/2);
 
-    BOOST_TEST(!br.Empty());
+    BOOST_TEST(br.Empty());
     BOOST_TEST(br.Size() == 1);
     BOOST_TEST(br.Lenght() == 0);
     BOOST_CHECK_THROW(br.AverageSpeed(), std::invalid_argument);
