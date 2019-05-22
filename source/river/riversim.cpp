@@ -177,7 +177,7 @@ namespace River
         Model mdl_B = mdl;
         mdl_B.biffurcation_type = 3;//3 - means no biffuraction at all.
         cout << "-><- One Step Forward" << endl;
-        ForwardRiverEvolution(mdl, tria, sim, tree_B, border, "backward_forward_"+file_name);
+        ForwardRiverEvolution(mdl, tria, sim, tree_B, border, file_name + "_backward_forward");
              
         //comparsion of tip points with the same ids.
         auto original_points = tree_A.TipIdsAndPoints(),

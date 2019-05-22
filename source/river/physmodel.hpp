@@ -32,8 +32,11 @@
 
 using namespace std;
 
+#define Radius 1e-2
+
 namespace River
 {
+    
     /**
      * Adaptive mesh area constraint function.
      */
@@ -45,16 +48,16 @@ namespace River
             vector<Point> tip_points;
 
             ///Radius of refinment.
-            double refinment_radius = 0.02;
+            double refinment_radius = 2*Radius;
 
             ///Power.
             double exponant = 100.;
 
             ///Minimal area of mesh.
-            double min_area = 1e-9;
+            double min_area = 1e-8;
 
             ///Maximal area of mesh element.
-            double max_area = 10.;
+            double max_area = 1e5;
 
             ///Minimal angle of mesh element.
             double min_angle = 30.;
@@ -85,10 +88,10 @@ namespace River
     {
         public:
             ///Circle radius with centrum in tip point.
-            double weigth_func_radius = 0.01;
+            double weigth_func_radius = Radius;
 
             ///Circle radius with centrum in tip point.
-            double integration_radius = 3 * weigth_func_radius;
+            double integration_radius = 3 * Radius;
 
             ///Parameter is used in evaluation of weight function.
             double exponant = 2.;
@@ -122,7 +125,7 @@ namespace River
             double refinment_fraction = 0.01;
 
             ///Number of refinment steps.
-            int refinment_steps = 5;
+            int refinment_steps = 3;
     };
 
     /**
@@ -136,42 +139,57 @@ namespace River
             //Geometrical parameters
             ///Initial x position of source.
             ///Valid only for rectangular area.
-            double dx = 0.5;
+            double dx = 0.2;
+
             ///Width of region
             double width = 1.;
+
             ///Height of region
             double height = 1.;
+
             ///river boundary id and bottom line
             int river_boundary_id = 4;
+
             ///all boundaries ids in next order - right, top, left, bottom and river.
             vector<int> boundary_ids{1, 2, 3, river_boundary_id};
 
             //Model parameters
-            ///Boundary conditions, 0 - Poisson, 1 - Laplacea
+            ///Boundary conditions, 0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 
+            ///1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)
             int boundary_condition = 0;
+
             ///Field value used for Poisson conditions.
-            double field_value = 0.0;
+            double field_value = 1.0;
+
             ///Eta. Power of a1^eta
             double eta = 1.0;
-            ///Biffurcation type. 0 - a3/a2, 1 - proportionallity to a1,2 - combines both types,  3 - no biffurcation.
-            int biffurcation_type = 2;
-            ///Biffurcation threshold.
+
+            ///Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 
+            ///1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.
+            int biffurcation_type = 1;
+            
+            ///Biffurcation threshold. first for 0 biffurcation type, second for 1.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
             double biffurcation_threshold_2 = 0.001;//Probably should be -0.1
+
             ///Minimal distance between adjacent biffurcation points. Reduces numerical noise.
             double biffurcation_min_dist = 0.05;
+
             ///Biffurcation angle.
-            double biffurcation_angle = M_PI/10;
+            double biffurcation_angle = M_PI/5;
+
             ///Growth type. 0 - arctan(a2/a1), 1 - {dx, dy}
             int growth_type = 0;
+
             ///Growth of branch will be done only if a1 > growth-threshold.
             int growth_threshold = 0;
+
             ///Distance of constant tip growing after biffurcation point. Reduces numerical noise.
             double growth_min_distance = 0.01;
             
             //Numeriacal parameters
             ///Proportionality value to one step growth.
-            double ds = 0.01;
+            double ds = 0.003;
             
             ///Mesh and mesh refinment parameters
             MeshParams mesh;

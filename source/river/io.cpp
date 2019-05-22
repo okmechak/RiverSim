@@ -25,46 +25,46 @@ using json = nlohmann::json;
 
 namespace River
 {
-    Model SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm)
+    Model& SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl)
     {
-        Model mdl;
 
         //geometry
-        mdl.width = vm["width"].as<double>();
-        mdl.height = vm["height"].as<double>();
-        mdl.dx = vm["dx"].as<double>();
+        if (vm.count("width")) mdl.width = vm["width"].as<double>();
+        if (vm.count("height")) mdl.height = vm["height"].as<double>();
+        if (vm.count("dx")) mdl.dx = vm["dx"].as<double>();
 
         //model parameters
-        mdl.boundary_condition = vm["boundary-condition"].as<int>();
-        mdl.field_value = vm["field-value"].as<double>();
-        mdl.eta = vm["eta"].as<double>();
-        mdl.biffurcation_type = vm["biffurcation-type"].as<int>();
-        mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
-        mdl.biffurcation_threshold_2 = vm["biffurcation-threshold-2"].as<double>();
-        mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
-        mdl.biffurcation_min_dist = vm["biffurcation-min-distance"].as<double>();
-        mdl.growth_type = vm["growth-type"].as<int>();
-        mdl.growth_threshold = vm["growth-threshold"].as<double>();
-        mdl.growth_min_distance = vm["growth-min-distance"].as<double>();
-        mdl.ds = vm["ds"].as<double>();
+        if (vm.count("boundary-condition")) mdl.boundary_condition = vm["boundary-condition"].as<int>();
+        if (vm.count("field-value")) mdl.field_value = vm["field-value"].as<double>();
+        if (vm.count("eta")) mdl.eta = vm["eta"].as<double>();
+        if (vm.count("biffurcation-type")) mdl.biffurcation_type = vm["biffurcation-type"].as<int>();
+        if (vm.count("biffurcation-threshold")) mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
+        if (vm.count("biffurcation-threshold-2")) mdl.biffurcation_threshold_2 = vm["biffurcation-threshold-2"].as<double>();
+        if (vm.count("biffurcation-angle")) mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
+        if (vm.count("biffurcation-min-distance")) mdl.biffurcation_min_dist = vm["biffurcation-min-distance"].as<double>();
+        if (vm.count("growth-type")) mdl.growth_type = vm["growth-type"].as<int>();
+        if (vm.count("growth-threshold")) mdl.growth_threshold = vm["growth-threshold"].as<double>();
+        if (vm.count("growth-min-distance")) mdl.growth_min_distance = vm["growth-min-distance"].as<double>();
+        if (vm.count("ds")) mdl.ds = vm["ds"].as<double>();
 
         //mesh options
-        mdl.mesh.eps = vm["eps"].as<double>();
-        mdl.mesh.exponant = vm["mesh-exp"].as<double>();
-        mdl.mesh.max_area = vm["mesh-max-area"].as<double>();
-        mdl.mesh.min_area = vm["mesh-min-area"].as<double>();
-        mdl.mesh.min_angle = vm["mesh-min-angle"].as<double>();
-        mdl.mesh.refinment_radius = vm["refinment-radius"].as<double>();
+        if (vm.count("eps")) mdl.mesh.eps = vm["eps"].as<double>();
+        if (vm.count("mesh-exp")) mdl.mesh.exponant = vm["mesh-exp"].as<double>();
+        if (vm.count("mesh-max-area")) mdl.mesh.max_area = vm["mesh-max-area"].as<double>();
+        if (vm.count("mesh-min-area")) mdl.mesh.min_area = vm["mesh-min-area"].as<double>();
+        if (vm.count("mesh-min-angle")) mdl.mesh.min_angle = vm["mesh-min-angle"].as<double>();
+        if (vm.count("refinment-radius")) mdl.mesh.refinment_radius = vm["refinment-radius"].as<double>();
+        if (vm.count("mesh-sigma")) mdl.mesh.sigma = vm["mesh-sigma"].as<double>();
 
         //integration options
-        mdl.integr.integration_radius = vm["integration-radius"].as<double>();
-        mdl.integr.weigth_func_radius = vm["weight-radius"].as<double>();
-        mdl.integr.exponant = vm["weight-exp"].as<double>();
+        if (vm.count("integration-radius")) mdl.integr.integration_radius = vm["integration-radius"].as<double>();
+        if (vm.count("weight-radius")) mdl.integr.weigth_func_radius = vm["weight-radius"].as<double>();
+        if (vm.count("weight-exp")) mdl.integr.exponant = vm["weight-exp"].as<double>();
 
         //solver options
-        mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<int>();
-        mdl.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
-        mdl.solver_params.refinment_steps = vm["refinment-steps"].as<int>();
+        if (vm.count("quadrature-degree")) mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<int>();
+        if (vm.count("refinment-fraction")) mdl.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
+        if (vm.count("refinment-steps")) mdl.solver_params.refinment_steps = vm["refinment-steps"].as<int>();
 
         return mdl;
     }
@@ -72,10 +72,10 @@ namespace River
     void Save(const Model& mdl, const Timing& time, const Border& border, const Tree& tr, const GeometryDifference &gd, const string file_name, string const input_file)
     {
         if(file_name.length() == 0)
-            throw invalid_argument("Save. File name is not set.");
+            throw invalid_argument("Save: File name is not set.");
 
         ofstream out(file_name + ".json");
-        if(!out) throw invalid_argument("Save. Can't create file for write");
+        if(!out) throw invalid_argument("Save: Can't create file for write");
 
         out.precision(16);
 
@@ -93,6 +93,7 @@ namespace River
             branches.push_back({
                 {"sourcePoint", {branch->SourcePoint().x , branch->SourcePoint().y}},
                 {"sourceAngle", branch->SourceAngle()},
+                {"Desciption", "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents direction of branch growing when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique to each branch and ir referenced in Trees->Relations structure."},
                 {"coords", coords},
                 {"id", branch_id}});
         }
@@ -113,7 +114,7 @@ namespace River
 
             jborder = {
                 {"SourceIds", border.GetSourceMap()}, 
-                {"SomeDetails", "points and lines should be in counterclockwise order!"},
+                {"SomeDetails", "Points and lines should be in counterclockwise order. SourcesIDs is array of pairs - where first number - is related branch id(source branche), and second is index of related point in coords array(after initialization it will be source point of related branch). Lines consist of three numbers: first and second - point index in coords array, third - configures boundary condition(See --boundary-condition option in program: ./riversim -h)."},
                 {"coords", coords},
                 {"lines", lines}};
         }
@@ -121,10 +122,11 @@ namespace River
 
         //implementation with json
         json j = {
-            {"Description", "This is RiverSim simulation data"},
+            {"Description", "RiverSim simulation data and state of program"},
             {"Version", version_string()},
 
             {"RuntimeInfo", {
+                {"Description", "Units are in seconds."},
                 {"StartDate",  time.CreationtDate()},
                 {"EndDate",  time.CurrentDate()},
                 {"TotalTime",  time.Total()},
@@ -132,6 +134,7 @@ namespace River
                 {"InputFile", input_file}}},
 
             {"Model", {
+                {"Description", "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) "},
                 {"dx", mdl.dx},
                 {"width", mdl.width},
                 {"height", mdl.height},
@@ -162,7 +165,8 @@ namespace River
                     {"refinmentRadius", mdl.mesh.refinment_radius},
                     {"minArea", mdl.mesh.min_area},
                     {"maxArea", mdl.mesh.max_area},
-                    {"minAngle", mdl.mesh.min_angle}}},
+                    {"minAngle", mdl.mesh.min_angle},
+                    {"sigma", mdl.mesh.sigma}}},
                     
                 {"Solver", {
                     {"quadratureDegree", mdl.solver_params.quadrature_degree},
@@ -173,12 +177,13 @@ namespace River
             {"Border", jborder},
 
             {"Trees", {
+                {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
                 {"SourceIds", tr.source_branches_id},
                 {"Relations", tr.branches_relation},
                 {"Branches", branches}}},
                 
             {"GeometryDifference", {
-                {"description", "this structure holds info about backward river simulation."},
+                {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements"},
                 {"AlongBranches", gd.branches_series_params_and_geom_diff},
                 {"BiffuractionPoints", gd.branches_biffuraction_info}}}
         };
@@ -199,56 +204,54 @@ namespace River
         {
             json jmdl = j["Model"];
             
-            jmdl.at("width").get_to(mdl.width);
-            jmdl.at("height").get_to(mdl.height);
-            jmdl.at("dx").get_to(mdl.dx);
-            jmdl.at("riverBoundaryId").get_to(mdl.river_boundary_id);
-            jmdl.at("boundaryIds").get_to(mdl.boundary_ids);
+            if (jmdl.count("width")) jmdl.at("width").get_to(mdl.width);
+            if (jmdl.count("height")) jmdl.at("height").get_to(mdl.height);
+            if (jmdl.count("dx")) jmdl.at("dx").get_to(mdl.dx);
+            if (jmdl.count("riverBoundaryId")) jmdl.at("riverBoundaryId").get_to(mdl.river_boundary_id);
+            if (jmdl.count("boundaryIds")) jmdl.at("boundaryIds").get_to(mdl.boundary_ids);
             
-            jmdl.at("boundaryCondition").get_to(mdl.boundary_condition);
-            jmdl.at("fieldValue").get_to(mdl.field_value);
-            jmdl.at("eta").get_to(mdl.eta);
-            jmdl.at("biffurcationType").get_to(mdl.biffurcation_type);
-            jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
-            jmdl.at("biffurcationThreshold2").get_to(mdl.biffurcation_threshold_2);
-            jmdl.at("biffurcationMinDistance").get_to(mdl.biffurcation_min_dist);
-            jmdl.at("biffurcationAngle").get_to(mdl.biffurcation_angle);
-            jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
-            jmdl.at("growthType").get_to(mdl.growth_type);
-            jmdl.at("growthThreshold").get_to(mdl.growth_threshold);
-            jmdl.at("growthMinDistance").get_to(mdl.growth_min_distance);
-            jmdl.at("ds").get_to(mdl.ds);
+            if (jmdl.count("boundaryCondition")) jmdl.at("boundaryCondition").get_to(mdl.boundary_condition);
+            if (jmdl.count("fieldValue")) jmdl.at("fieldValue").get_to(mdl.field_value);
+            if (jmdl.count("eta")) jmdl.at("eta").get_to(mdl.eta);
+            if (jmdl.count("biffurcationType")) jmdl.at("biffurcationType").get_to(mdl.biffurcation_type);
+            if (jmdl.count("biffurcationThreshold")) jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
+            if (jmdl.count("biffurcationThreshold2")) jmdl.at("biffurcationThreshold2").get_to(mdl.biffurcation_threshold_2);
+            if (jmdl.count("biffurcationMinDistance")) jmdl.at("biffurcationMinDistance").get_to(mdl.biffurcation_min_dist);
+            if (jmdl.count("biffurcationAngle")) jmdl.at("biffurcationAngle").get_to(mdl.biffurcation_angle);
+            if (jmdl.count("biffurcationThreshold")) jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
+            if (jmdl.count("growthType")) jmdl.at("growthType").get_to(mdl.growth_type);
+            if (jmdl.count("growthThreshold")) jmdl.at("growthThreshold").get_to(mdl.growth_threshold);
+            if (jmdl.count("growthMinDistance")) jmdl.at("growthMinDistance").get_to(mdl.growth_min_distance);
+            if (jmdl.count("ds")) jmdl.at("ds").get_to(mdl.ds);
             
             if(jmdl.count("Mesh"))
             {
                 auto jmesh = jmdl["Mesh"];
 
-                jmesh.at("eps").get_to(mdl.mesh.eps);
-                jmesh.at("exponant").get_to(mdl.mesh.exponant);
-                jmesh.at("maxArea").get_to(mdl.mesh.max_area);
-                jmesh.at("minArea").get_to(mdl.mesh.min_area);
-                jmesh.at("minAngle").get_to(mdl.mesh.min_angle);
-                jmesh.at("refinmentRadius").get_to(mdl.mesh.refinment_radius);
+                if (jmesh.count("eps")) jmesh.at("eps").get_to(mdl.mesh.eps);
+                if (jmesh.count("exponant")) jmesh.at("exponant").get_to(mdl.mesh.exponant);
+                if (jmesh.count("maxArea")) jmesh.at("maxArea").get_to(mdl.mesh.max_area);
+                if (jmesh.count("minArea")) jmesh.at("minArea").get_to(mdl.mesh.min_area);
+                if (jmesh.count("minAngle")) jmesh.at("minAngle").get_to(mdl.mesh.min_angle);
+                if (jmesh.count("refinmentRadius")) jmesh.at("refinmentRadius").get_to(mdl.mesh.refinment_radius);
             }
             if(jmdl.count("Integration"))
             {
                 auto jinteg = jmdl["Integration"];
 
-                jinteg.at("radius").get_to(mdl.integr.integration_radius);
-                jinteg.at("exponant").get_to(mdl.integr.exponant);
-                jinteg.at("weightRadius").get_to(mdl.integr.weigth_func_radius);
+                if (jinteg.count("radius")) jinteg.at("radius").get_to(mdl.integr.integration_radius);
+                if (jinteg.count("exponant")) jinteg.at("exponant").get_to(mdl.integr.exponant);
+                if (jinteg.count("weightRadius")) jinteg.at("weightRadius").get_to(mdl.integr.weigth_func_radius);
             }
             if(jmdl.count("Solver"))
             {
                 auto jsolver = jmdl["Solver"];
                 
-                jsolver.at("quadratureDegree").get_to(mdl.solver_params.quadrature_degree);
-                jsolver.at("refinmentFraction").get_to(mdl.solver_params.refinment_fraction);
-                jsolver.at("refinmentSteps").get_to(mdl.solver_params.refinment_steps);
+                if (jsolver.count("quadratureDegree")) jsolver.at("quadratureDegree").get_to(mdl.solver_params.quadrature_degree);
+                if (jsolver.count("refinmentFraction")) jsolver.at("refinmentFraction").get_to(mdl.solver_params.refinment_fraction);
+                if (jsolver.count("refinmentSteps")) jsolver.at("refinmentSteps").get_to(mdl.solver_params.refinment_steps);
             }
         }
-        else
-            throw invalid_argument("No <Model> key in JSON.");
 
 
         if(j.count("Border"))
@@ -285,6 +288,9 @@ namespace River
 
         if(j.count("Trees"))
         {
+            if(!j.count("Border"))
+                throw invalid_argument("Input json file contains Trees and do not contain Border. Make sure that you created corresponding Border object(Trees and Border should contain same source/branches ids - its values and number)");
+
             auto jtrees = j["Trees"];
             jtrees.at("SourceIds").get_to(tree.source_branches_id);
             jtrees.at("Relations").get_to(tree.branches_relation);

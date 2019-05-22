@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 
     //Model object setup
     Model mdl;
-    mdl = SetupModelParamsFromProgramOptions(vm);
 
     //Timing Object setup
     Timing timing;
@@ -63,6 +62,7 @@ int main(int argc, char *argv[])
 
     if(vm.count("input"))
         Open(mdl, border, tree, gd, vm["input"].as<string>());
+    SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
 
     //Triangle mesh object setup
     Triangle tria;
