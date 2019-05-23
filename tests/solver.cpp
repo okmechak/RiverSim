@@ -151,6 +151,6 @@ BOOST_AUTO_TEST_CASE( integration_test,
 BOOST_AUTO_TEST_CASE( memory_leak, 
     *utf::tolerance(1e-1))
 {
-    for(unsigned long int i = 0; i < 1e6; ++i)
+    for(unsigned long int i = 0; i < 1e4; ++i)
         River::Solver sim;
 }
