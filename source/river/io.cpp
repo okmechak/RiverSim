@@ -55,6 +55,7 @@ namespace River
         if (vm.count("mesh-min-angle")) mdl.mesh.min_angle = vm["mesh-min-angle"].as<double>();
         if (vm.count("refinment-radius")) mdl.mesh.refinment_radius = vm["refinment-radius"].as<double>();
         if (vm.count("mesh-sigma")) mdl.mesh.sigma = vm["mesh-sigma"].as<double>();
+        if (vm.count("static-refinment-steps")) mdl.mesh.static_refinment_steps = vm["static-refinment-steps"].as<unsigned>();
 
         //integration options
         if (vm.count("integration-radius")) mdl.integr.integration_radius = vm["integration-radius"].as<double>();
@@ -64,7 +65,7 @@ namespace River
         //solver options
         if (vm.count("quadrature-degree")) mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<int>();
         if (vm.count("refinment-fraction")) mdl.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
-        if (vm.count("refinment-steps")) mdl.solver_params.refinment_steps = vm["refinment-steps"].as<int>();
+        if (vm.count("adaptive-refinment-steps")) mdl.solver_params.adaptive_refinment_steps = vm["adaptive-refinment-steps"].as<unsigned>();
 
         return mdl;
     }
@@ -93,7 +94,7 @@ namespace River
             branches.push_back({
                 {"sourcePoint", {branch->SourcePoint().x , branch->SourcePoint().y}},
                 {"sourceAngle", branch->SourceAngle()},
-                {"Desciption", "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents direction of branch growing when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique to each branch and ir referenced in Trees->Relations structure."},
+                {"Desciption", "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId"},
                 {"coords", coords},
                 {"id", branch_id}});
         }
@@ -122,7 +123,7 @@ namespace River
 
         //implementation with json
         json j = {
-            {"Description", "RiverSim simulation data and state of program"},
+            {"Description", "RiverSim simulation data and state of program. All coordinates are in normal cartesian coordinate system and by default are x > 0 and y > 0. Default values of simulation assumes that coordinates values will be of order 0 - 200. Greater values demands a lot of time to run, small are not tested(Problem of scalling isn't resolved yet TODO)."},
             {"Version", version_string()},
 
             {"RuntimeInfo", {
@@ -166,12 +167,13 @@ namespace River
                     {"minArea", mdl.mesh.min_area},
                     {"maxArea", mdl.mesh.max_area},
                     {"minAngle", mdl.mesh.min_angle},
-                    {"sigma", mdl.mesh.sigma}}},
+                    {"sigma", mdl.mesh.sigma},
+                    {"staticRefinmentSteps", mdl.mesh.static_refinment_steps}}},
                     
                 {"Solver", {
                     {"quadratureDegree", mdl.solver_params.quadrature_degree},
                     {"refinmentFraction", mdl.solver_params.refinment_fraction},
-                    {"refinmentSteps", mdl.solver_params.refinment_steps}}}}
+                    {"adaptiveRefinmentSteps", mdl.solver_params.adaptive_refinment_steps}}}}
             },
             
             {"Border", jborder},
@@ -183,7 +185,7 @@ namespace River
                 {"Branches", branches}}},
                 
             {"GeometryDifference", {
-                {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements"},
+                {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in biffurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached biffurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."},
                 {"AlongBranches", gd.branches_series_params_and_geom_diff},
                 {"BiffuractionPoints", gd.branches_biffuraction_info}}}
         };
@@ -234,6 +236,7 @@ namespace River
                 if (jmesh.count("minArea")) jmesh.at("minArea").get_to(mdl.mesh.min_area);
                 if (jmesh.count("minAngle")) jmesh.at("minAngle").get_to(mdl.mesh.min_angle);
                 if (jmesh.count("refinmentRadius")) jmesh.at("refinmentRadius").get_to(mdl.mesh.refinment_radius);
+                if (jmesh.count("staticRefinmentSteps")) jmesh.at("staticRefinmentSteps").get_to(mdl.mesh.static_refinment_steps);
             }
             if(jmdl.count("Integration"))
             {
@@ -249,7 +252,7 @@ namespace River
                 
                 if (jsolver.count("quadratureDegree")) jsolver.at("quadratureDegree").get_to(mdl.solver_params.quadrature_degree);
                 if (jsolver.count("refinmentFraction")) jsolver.at("refinmentFraction").get_to(mdl.solver_params.refinment_fraction);
-                if (jsolver.count("refinmentSteps")) jsolver.at("refinmentSteps").get_to(mdl.solver_params.refinment_steps);
+                if (jsolver.count("adaptiveRefinmentSteps")) jsolver.at("adaptiveRefinmentSteps").get_to(mdl.solver_params.adaptive_refinment_steps);
             }
         }
 
@@ -277,19 +280,14 @@ namespace River
 
             border = Border{points, lines, sources};
         }
-        else
-            //if no border provided in input data
-            border.MakeRectangular(
-                {mdl.width, mdl.height}, 
-                mdl.boundary_ids,
-                {mdl.dx},
-                {1});
         
 
         if(j.count("Trees"))
         {
             if(!j.count("Border"))
                 throw invalid_argument("Input json file contains Trees and do not contain Border. Make sure that you created corresponding Border object(Trees and Border should contain same source/branches ids - its values and number)");
+            
+            tree.Clear();
 
             auto jtrees = j["Trees"];
             jtrees.at("SourceIds").get_to(tree.source_branches_id);
@@ -310,6 +308,8 @@ namespace River
                 
                 BranchNew branch(River::Point{s_point.at(0), s_point.at(1)}, source_angle);
                 branch.points.resize(coords.size());
+
+                
                 for(unsigned i = 0; i < coords.size(); ++i)
                 {
                     branch.points[i] = River::Point{coords.at(i).first, coords.at(i).second};
@@ -318,15 +318,15 @@ namespace River
                 {
                     tree.AddBranch(branch, id);
                 }
-                catch (...)
-                {
-                    cout << "ivalid inser" << endl;
+                catch (invalid_argument& e)
+                {   
+                    cout << e.what() << endl;
+                    cout << "tree io..ivalid inser" << endl;
                 }
             }
-            
         }
-        else
-            //If no tree provided in input data
+        else if(j.count("Border"))
+            //If no tree provided but border is, than we reinitialize tree.. to current border.
             tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
 
         if(j.count("GeometryDifference"))
@@ -336,7 +336,5 @@ namespace River
             jgd.at("AlongBranches").get_to(gd.branches_series_params_and_geom_diff);
             jgd.at("BiffuractionPoints").get_to(gd.branches_biffuraction_info);
         }
-        
     }
-
 }//namespace River

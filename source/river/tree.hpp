@@ -243,7 +243,7 @@ namespace River
             ///Used in Shrink function call
             ///If after shrink lenght of between adjacent to tip point
             ///is less then eps then we delete it.
-            double eps = 1e-5;
+            double eps = 5e-6;
 
     };
 

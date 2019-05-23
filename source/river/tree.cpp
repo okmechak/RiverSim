@@ -24,33 +24,30 @@ namespace River
     */
     BranchNew& BranchNew::Shrink(double lenght)
     {
-        if(Size() <= 1)//case of zero branch
-            lenght = 0;
-
-        while(lenght > 0 && Size() > 1)
+        while(lenght > 0 && Lenght() > 0)
         {
             try{
                 
-                auto dl = TipVector().norm();
-                if(lenght >= dl + eps)
+                auto tip_lenght = TipVector().norm();
+                if(lenght < tip_lenght - eps)
                 {
-                    RemoveTipPoint();
-                    lenght -= dl;
-                }
-                else if(lenght > dl - eps && lenght < dl + eps)
-                {
-                    RemoveTipPoint();
-                    lenght = 0;
-                }
-                else if(lenght <= dl - eps)
-                {
-                    auto k = lenght/dl;
+                    auto k = 1 - lenght/tip_lenght;
                     auto new_tip = TipVector()*k;
                     RemoveTipPoint();
                     AddPoint(new_tip);
                     lenght = 0;
                 }
-                else
+                else if((lenght >= tip_lenght - eps) && (lenght <= tip_lenght + eps))
+                {
+                    RemoveTipPoint();
+                    lenght = 0;
+                }
+                else if(lenght >= tip_lenght + eps)
+                {
+                    RemoveTipPoint();
+                    lenght -= tip_lenght;
+                }
+                else 
                     throw invalid_argument("Unhandled case in Shrink method.");
             }
             catch(const invalid_argument& e)

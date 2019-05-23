@@ -40,15 +40,15 @@ namespace River
 
    ///One step of forward river evolution.
    void ForwardRiverEvolution(
-       const Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, const Border& border, const string file_name);
+       Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, const string file_name);
 
    ///One step of backward river evolution and its data.
-   bool BackwardRiverEvolution(
-       const Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, const Border& border, 
+   void BackwardRiverEvolution(
+       Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
        GeometryDifference& gd, const string file_name);
 
    ///Evaluate series parameters near tip in predefined geometry. Used fot testing purposes
-   bool EvaluateSeriesParams(
-       const Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, const Border& border, 
+   void EvaluateSeriesParams(
+       Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
        GeometryDifference& gd, const string file_name);
 }

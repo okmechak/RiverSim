@@ -59,10 +59,7 @@ namespace River
         return xmax > rxmax - dl || ymax > rymax - dl || xmin < rxmin + dl;
     }
 
-
-
-
-    void ForwardRiverEvolution(const Model& mdl, Triangle& tria, River::Solver& sim, 
+    void TriangulateConvertRefineAndSolve(Model& mdl, Triangle& tria, Solver& sim,
         Tree& tree, const Border& border, const string file_name)
     {
         //initial boundaries of mesh
@@ -79,9 +76,18 @@ namespace River
         sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
         sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
         sim.OpenMesh(file_name + ".msh");
+        sim.static_refine_grid(mdl, tree.TipPoints());
         sim.run();
         sim.output_results(file_name);
+    }
 
+
+    void ForwardRiverEvolution(Model& mdl, Triangle& tria, Solver& sim,
+        Tree& tree, const Border& border, const string file_name)
+    {
+        TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
+
+        //Iterate over each tip and handle branch growth and its biffurcations
         for(auto id: tree.TipBranchesId())
         {
             auto tip_point = tree.GetBranch(id)->TipPoint();
@@ -108,25 +114,10 @@ namespace River
 
 
 
-    bool BackwardRiverEvolution(const Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, 
+    void BackwardRiverEvolution(Model& mdl, Triangle& tria, Solver& sim, Tree& tree, 
         const Border& border, GeometryDifference& gd, const string file_name)
     {   
-        bool stop_flag = false;
-        auto mesh = BoundaryGenerator(mdl, tree, border);
-        mesh.write(file_name + "_boundary.msh");
-
-        tria.ref->tip_points = tree.TipPoints();
-        tria.generate(mesh);
-        mesh.convert();
-        mesh.write(file_name + ".msh");
-
-        //Simulation
-        //Deal.II library
-        sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
-        sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
-        sim.OpenMesh(file_name + ".msh");
-        sim.run();
-        sim.output_results(file_name);
+        TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
         
         //tree_A is represent current river geometry,
         //tree_B will be representing simulated river geometry with new parameters.
@@ -151,8 +142,8 @@ namespace River
                 tree.GetBranch(id)->
                     Shrink(mdl.next_point(
                         series_params, 
-                        0 /*we are not constraining here speed growth near 
-                        biffuraction points*/).r);
+                        mdl.growth_min_distance + 1/*we are not constraining here speed growth near 
+                        biffuraction points, so we set some value greater than it limit*/).r);
 
         //collect branches which reached zero lenght(biffurcation point)
         vector<int> zero_size_branches_id;
@@ -195,33 +186,15 @@ namespace River
                     dalpha, ds,
                     ids_seriesparams_map.at(el.first));
             }
-
-        return stop_flag;
     }
 
 
 
 
-    bool EvaluateSeriesParams(const Model& mdl, Triangle& tria, River::Solver& sim, Tree& tree, 
+    void EvaluateSeriesParams(Model& mdl, Triangle& tria, Solver& sim, Tree& tree, 
         const Border& border, GeometryDifference& gd, const string file_name)
     {
-        //initial boundaries of mesh
-        auto mesh = BoundaryGenerator(mdl, tree, border);
-        mesh.write(file_name + "_boundary.msh");
-
-        tria.ref->tip_points = tree.TipPoints();
-        tria.generate(mesh);//triangulation
-        mesh.convert();//convertaion from triangles to quadrangles
-        mesh.write(file_name + ".msh");
-
-        //Simulation
-        //Deal.II library
-        sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
-        sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
-        sim.OpenMesh(file_name + ".msh");
-        sim.static_refine_grid(mdl, tree.TipPoints());
-        sim.run();
-        sim.output_results(file_name);
+        TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
 
         auto branch_id = tree.TipBranchesId().back();
         if(branch_id != 1)
@@ -231,13 +204,10 @@ namespace River
         auto tip_angle = tree.GetBranch(branch_id)->TipAngle();
         auto series_params = sim.integrate(mdl, tip_point, tip_angle);
         auto circle_integr = sim.integration_test(tip_point, 0.1/*dr same as in FreeFEM++*/);
-        auto whole_integr = sim.integration_test(tip_point, 10/*large enough to cover whole region*/);
+        auto whole_integr = sim.integration_test(tip_point, 10000/*large enough to cover whole region*/);
+        sim.clear();
 
         gd.RecordBranchSeriesParamsAndGeomDiff(branch_id, 
             whole_integr/*whole region*/, circle_integr/*circle_integr*/, series_params);
-        
-        sim.clear();
-
-        return true;
     }
 }//namespace River

@@ -170,7 +170,7 @@ void Solver::assemble_system()
     const unsigned n_q_points = quadrature_formula.size();
     FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
     Vector<double> cell_rhs(dofs_per_cell);
-    std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
+    vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
     typename DoFHandler<dim>::active_cell_iterator
         cell = dof_handler.begin_active(),
         endc = dof_handler.end();
@@ -233,7 +233,7 @@ void Solver::refine_grid()
 void Solver::static_refine_grid(const Model& mdl, const vector<Point>& tips_points)
 {
     //iterating over refinment steps
-    for (int step = 1; step < mdl.solver_params.refinment_steps; ++step)
+    for (unsigned step = 1; step < num_of_static_refinments; ++step)
     {
         //iterating over each mesh cell
         for (auto cell: triangulation.active_cell_iterators())
@@ -269,7 +269,7 @@ vector<double> Solver::integrate(const Model& mdl, const Point& point, const dou
                             update_JxW_values);
     
     //Parameters definition
-    std::vector<double> 
+    vector<double> 
         values(quadrature_formula.size()),
         integral(3, 0),
         normalization_integral(3, 0),
@@ -337,7 +337,7 @@ double Solver::integration_test(const Point& point, const double dr)
 
     const unsigned int n_q_points = quadrature_formula.size();
     
-    std::vector<double> values(n_q_points);
+    vector<double> values(n_q_points);
     double integration_result = 0; 
 
 
@@ -381,7 +381,7 @@ double Solver::max_value()
 
     const unsigned int n_q_points    = quadrature_formula.size();
     
-    std::vector<double> values(n_q_points);
+    vector<double> values(n_q_points);
     double max_value = 0; 
 
     
@@ -406,11 +406,11 @@ void Solver::output_results(const string file_name) const
     data_out.attach_dof_handler(dof_handler);
     data_out.add_data_vector(solution, "solution");
     data_out.build_patches();
-    std::ofstream output(file_name + ".vtk");
+    ofstream output(file_name + ".vtk");
     output.precision(20);//Fix for paraview
     data_out.write_vtk(output);
 
-    //std::ofstream out("grid-"+std::to_string(cycle)+".eps");
+    //ofstream out("grid-"+to_string(cycle)+".eps");
     //GridOut       grid_out;
     //grid_out.write_eps(triangulation, out);
 
@@ -419,19 +419,19 @@ void Solver::output_results(const string file_name) const
 
 void Solver::run()
 {
-    for (unsigned int cycle = 0; cycle < num_of_refinments; ++cycle)
+    for (unsigned cycle = 0; cycle < num_of_adaptive_refinments; ++cycle)
     {
-        //std::cout << "Cycle " << cycle << ':' << std::endl;
+        //cout << "Cycle " << cycle << ':' << endl;
         if (cycle > 0)
             refine_grid();
 
-        std::cout << "   Number of active cells:       "
-                  << triangulation.n_active_cells()
-                  << std::endl;
+        cout << "   Number of active cells:       "
+            << triangulation.n_active_cells()
+            << endl;
         setup_system();
-        std::cout << "   Number of degrees of freedom: "
-                  << dof_handler.n_dofs()
-                  << std::endl;
+        cout << "   Number of degrees of freedom: "
+            << dof_handler.n_dofs()
+            << endl;
         assemble_system();
         solve();    
 

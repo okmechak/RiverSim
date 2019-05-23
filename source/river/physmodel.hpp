@@ -68,6 +68,9 @@ namespace River
             ///Sigma used in exponence(same as in Gauss formula)
             double sigma = 2.;
 
+            //Number of mesh refinment steps used by Deal.II mesh functionality.
+            unsigned static_refinment_steps = 1;
+
             inline double operator()(double x, double y) const
             {
                 double result_area = 10000000/*some large area value*/;
@@ -125,7 +128,7 @@ namespace River
             double refinment_fraction = 0.01;
 
             ///Number of refinment steps.
-            int refinment_steps = 3;
+            unsigned adaptive_refinment_steps = 1;
     };
 
     /**
@@ -166,7 +169,7 @@ namespace River
 
             ///Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 
             ///1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.
-            int biffurcation_type = 1;
+            int biffurcation_type = 0;
             
             ///Biffurcation threshold. first for 0 biffurcation type, second for 1.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
@@ -182,7 +185,7 @@ namespace River
             int growth_type = 0;
 
             ///Growth of branch will be done only if a1 > growth-threshold.
-            int growth_threshold = 0;
+            double growth_threshold = 0;
 
             ///Distance of constant tip growing after biffurcation point. Reduces numerical noise.
             double growth_min_distance = 0.01;

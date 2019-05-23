@@ -67,6 +67,12 @@ namespace River
                 Border::sources = sources;
                 Border::holes = holes;
             }
+
+            /**
+             * Assignment constructor
+             */
+            Border& operator=(const Border& b) = default;
+            
             
                 
 

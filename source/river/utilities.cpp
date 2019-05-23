@@ -94,7 +94,7 @@ namespace River
 
         //Simulation parameters
         options.add_options("Simulation parameters")
-        ("n,number-of-steps", "Number of steps to simulate(-1 - infinity).", value<int>()->default_value("10"))
+        ("n,number-of-steps", "Number of steps to simulate.", value<int>()->default_value("10"))
         ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<int>()->default_value("0"));
         
         //Geometry parameters
@@ -139,15 +139,17 @@ namespace River
         ("q,mesh-min-angle", "Constraints minimal angle of triangle element.", 
             value<double>()->default_value(to_string(mdl.mesh.min_angle)))
         ("e,eps", "Width of branch. Every branch is divided and joined into one big edge which covers all geometry. Width of divided branch corresponds to eps. Such solution is constrain of Deal.II library.", 
-            value<double>()->default_value(to_string(mdl.mesh.eps)));
+            value<double>()->default_value(to_string(mdl.mesh.eps)))
+        ("static-refinment-steps", "Number of mesh refinment steps used by Deal.II mesh functionality.", 
+            value<unsigned>()->default_value(to_string(mdl.mesh.static_refinment_steps)));
 
         options.add_options("Solver Parameters")
         ("quadrature-degree", "Quadrature polynomials degree used in numerical integration of Deal.II solver.", 
             value<int>()->default_value(to_string(mdl.solver_params.quadrature_degree)))
         ("refinment-fraction", "Fraction(percent from total, 0.01 corresponds to 1%) of refined mesh elements using Deal.II adaptive mesh capabilities.", 
             value<double>()->default_value(to_string(mdl.solver_params.refinment_fraction)))
-        ("refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
-            value<int>()->default_value(to_string(mdl.solver_params.refinment_steps)));
+        ("adaptive-refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
+            value<unsigned>()->default_value(to_string(mdl.solver_params.adaptive_refinment_steps)));
 
 
         options.parse_positional({"input"});
