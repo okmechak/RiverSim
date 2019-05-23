@@ -433,3 +433,48 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
     TEST_POINT(tr.GetBranch(2)->TipPoint(), Point(0.6, 0.4));
     TEST_POINT(tr.GetBranch(3)->TipPoint(), Point(0.7, 0.4));
 }
+
+
+BOOST_AUTO_TEST_CASE(shrink_test, *utf::tolerance(eps))
+{
+    BranchNew br{Point{0, 0}, 0};
+    br.AddPoint(Polar{1, 0});
+    br.AddPoint(Polar{1, 0});
+    br.AddPoint(Polar{1, 0});
+    br.AddPoint(Polar{1, 0});
+
+    BOOST_TEST(br.Lenght() == 4.);
+    BOOST_TEST(br.Size() == 5);
+
+    br.Shrink(0.001);
+    BOOST_TEST(br.Lenght() == 3.999);
+    BOOST_TEST(br.Size() == 5);
+
+    br.Shrink(0.009);
+    BOOST_TEST(br.Lenght() == 3.990);
+    BOOST_TEST(br.Size() == 5);
+
+    br.Shrink(0.09);
+    BOOST_TEST(br.Lenght() == 3.9);
+    BOOST_TEST(br.Size() == 5);
+
+    br.Shrink(0.9);
+    BOOST_TEST(br.Lenght() == 3.);
+    BOOST_TEST(br.Size() == 4);
+
+    br.Shrink(1);
+    BOOST_TEST(br.Lenght() == 2.);
+    BOOST_TEST(br.Size() == 3);
+
+    br.Shrink(1);
+    BOOST_TEST(br.Lenght() == 1.);
+    BOOST_TEST(br.Size() == 2);
+
+    br.Shrink(0.999);
+    BOOST_TEST(br.Lenght() == 0.001);
+    BOOST_TEST(br.Size() == 2);
+
+    br.Shrink(0.001);
+    BOOST_TEST(br.Lenght() == 0.);
+    BOOST_TEST(br.Size() == 1);
+}
