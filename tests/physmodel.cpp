@@ -36,10 +36,9 @@ BOOST_AUTO_TEST_CASE( next_point_method,
     *utf::tolerance(eps))
 {
     Model mdl;
+    mdl.ds = 0.003;
     auto p = mdl.next_point({0.0233587, 0.0117224, 0.621602}, 0);
-    BOOST_TEST(p.r == mdl.ds);
-    BOOST_TEST(p.phi == -0.1000335889387177);
-    BOOST_TEST(atan(1) == M_PI/4);
-    BOOST_TEST(atan(sqrt(3)) == M_PI/3);
+    BOOST_TEST(p.r == pow(mdl.ds, mdl.eta));
+    BOOST_TEST(p.phi ==-0.054918865933649114);
 
 }
