@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
     auto mesh = BoundaryGenerator(mdl, tree, border);
 
     //Triangle mesh object setup
-    for(unsigned long int i = 0; i < 1e6; i ++)
+    for(unsigned long int i = 0; i < 1e4; i ++)
     {
         auto newmesh = mesh;
         Triangle tria;
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
     
     //Triangle mesh object setup
     Triangle tria;
-    for(unsigned long int i = 0; i < 1e6; i ++)
+    for(unsigned long int i = 0; i < 1e4; i ++)
     {
         auto newmesh = mesh;
         tria.Quite =  true;
