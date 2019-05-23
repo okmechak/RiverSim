@@ -42,29 +42,30 @@ int main(int argc, char *argv[])
 
     //Border object setup.. Rectangular boundaries
     Border border;
-    if(!vm.count("input"))
-        border.MakeRectangular(
-            {mdl.width, mdl.height}, 
-            mdl.boundary_ids,
-            {mdl.dx},
-            {1});
-    
+    border.MakeRectangular(
+        {mdl.width, mdl.height}, 
+        mdl.boundary_ids,
+        {mdl.dx},
+        {1});
+
     //Tree object setup
     Tree tree;
-    if(!vm.count("input"))
-        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+    tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
 
     //Geometry difference
     GeometryDifference gd;
 
-    if(border.GetSourcesId() != tree.SourceBranchesID())
-        throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
-
+    //Reading data from json file if it is specified so
     if(vm.count("input"))
         Open(mdl, border, tree, gd, vm["input"].as<string>());
     SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
+    mdl.CheckParametersConsistency();
 
-    //Triangle mesh object setup
+    //check of consistency between Border and Tree
+    if(border.GetSourcesId() != tree.SourceBranchesID())
+        throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
+
+        //Triangle mesh object setup
     Triangle tria;
     tria.AreaConstrain = true;
     tria.CustomConstraint = true;
@@ -77,15 +78,15 @@ int main(int argc, char *argv[])
     //Simulation object setup
     River::Solver sim(mdl.solver_params.quadrature_degree);
     sim.field_value = mdl.field_value;
-    //TEMPORAL
-    //sim.num_of_refinments = mdl.solver_params.refinment_steps;
+    sim.num_of_static_refinments = mdl.mesh.static_refinment_steps;
+    sim.num_of_adaptive_refinments = mdl.solver_params.adaptive_refinment_steps;
     sim.refinment_fraction = mdl.solver_params.refinment_fraction;
 
 
     //MAIN LOOP
     int i = 0;
+    //forward simulation case
     if(vm["simulation-type"].as<int>() == 0)
-        //forward simulation case
         //FIXME stop condition doesn't handle all conditions.
         while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<int>())
         {
@@ -103,11 +104,10 @@ int main(int argc, char *argv[])
             Save(mdl, timing, border, tree, gd, str, input_file);
             ++i;
         }
+    //Backward simulation
     else if(vm["simulation-type"].as<int>() == 1)
     {
-        //backward simmulation
-        bool stop_flag = false;
-        while(stop_flag == false && tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<int>())    
+        while(tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<int>())    
         {
             cout << "-------" << endl;
             cout << "  "<<i<< endl;
@@ -117,13 +117,14 @@ int main(int argc, char *argv[])
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);
             
-            stop_flag = BackwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
+            BackwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
 
             timing.Record();//Timing
             Save(mdl, timing, border, tree, gd, str, input_file);
             ++i;
         }
     }
+    //test simulation
     else if(vm["simulation-type"].as<int>() == 2)
     {   
         cout << "-------------------------" << endl;
@@ -148,6 +149,7 @@ int main(int argc, char *argv[])
         Save(mdl, timing, border, tree, gd, output_file_name);
 
     }
+    //unhandled case
     else 
         throw invalid_argument("Invalid simulation type value");
 
