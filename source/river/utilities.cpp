@@ -134,6 +134,14 @@ namespace River
             value<double>()->default_value(to_string(mdl.mesh.max_area)))
         ("mesh-min-area", "Constraints minimal area of triangle element.", 
             value<double>()->default_value(to_string(mdl.mesh.min_area)))
+
+        ("mesh-max-edge", "Constraints maximal edge lenght of triangle element.", 
+            value<double>()->default_value(to_string(mdl.mesh.max_edge)))
+        ("mesh-min-edge", "Constraints minimal edge lenght of triangle element. It can has higher priority then adaptive function and other mesh constraints.", 
+            value<double>()->default_value(to_string(mdl.mesh.min_edge)))
+        ("mesh-ratio", "Constraints ratio of triangle element. Relation of longest edge to shortes edge of triangle. Has similar effect and limitation as mesh-min-angle option. Value 2 correspond to minimal nagle 30. So be carefull with setting values less than 2.", 
+            value<double>()->default_value(to_string(mdl.mesh.ratio)))
+
         ("refinment-radius", "r0 - refinment radius from this formula. Corresponds to position of maximal slope.", 
             value<double>()->default_value(to_string(mdl.mesh.refinment_radius)))
         ("q,mesh-min-angle", "Constraints minimal angle of triangle element.", 

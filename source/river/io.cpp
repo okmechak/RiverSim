@@ -57,6 +57,10 @@ namespace River
         if (vm.count("mesh-sigma")) mdl.mesh.sigma = vm["mesh-sigma"].as<double>();
         if (vm.count("static-refinment-steps")) mdl.mesh.static_refinment_steps = vm["static-refinment-steps"].as<unsigned>();
 
+        if (vm.count("mesh-max-edge")) mdl.mesh.max_edge = vm["mesh-max-edge"].as<double>();
+        if (vm.count("mesh-min-edge")) mdl.mesh.min_edge = vm["mesh-min-edge"].as<double>();
+        if (vm.count("mesh-ratio")) mdl.mesh.ratio = vm["mesh-ratio"].as<double>();
+
         //integration options
         if (vm.count("integration-radius")) mdl.integr.integration_radius = vm["integration-radius"].as<double>();
         if (vm.count("weight-radius")) mdl.integr.weigth_func_radius = vm["weight-radius"].as<double>();
@@ -167,6 +171,9 @@ namespace River
                     {"minArea", mdl.mesh.min_area},
                     {"maxArea", mdl.mesh.max_area},
                     {"minAngle", mdl.mesh.min_angle},
+                    {"maxEdge", mdl.mesh.max_edge},
+                    {"minEdge", mdl.mesh.min_edge},
+                    {"ratio", mdl.mesh.ratio},
                     {"sigma", mdl.mesh.sigma},
                     {"staticRefinmentSteps", mdl.mesh.static_refinment_steps}}},
                     
@@ -237,6 +244,14 @@ namespace River
                 if (jmesh.count("minAngle")) jmesh.at("minAngle").get_to(mdl.mesh.min_angle);
                 if (jmesh.count("refinmentRadius")) jmesh.at("refinmentRadius").get_to(mdl.mesh.refinment_radius);
                 if (jmesh.count("staticRefinmentSteps")) jmesh.at("staticRefinmentSteps").get_to(mdl.mesh.static_refinment_steps);
+
+                
+                if (jmesh.count("maxEdge"))  jmesh.at("maxEdge").get_to(mdl.mesh.max_edge);
+                if (jmesh.count("minEdge"))  jmesh.at("minEdge").get_to(mdl.mesh.min_edge);
+                if (jmesh.count("ratio"))    jmesh.at("ratio").get_to(mdl.mesh.ratio);
+
+
+                
             }
             if(jmdl.count("Integration"))
             {

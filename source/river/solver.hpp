@@ -78,8 +78,8 @@ namespace River
           Solver(int quadrature_degree = 2): fe(2), dof_handler(triangulation),quadrature_formula(quadrature_degree){};
           ~Solver(){clear();}
 
-          unsigned num_of_adaptive_refinments = 1;
-          unsigned num_of_static_refinments = 1;
+          unsigned num_of_adaptive_refinments = 0;
+          unsigned num_of_static_refinments = 0;
           void SetBoundaryRegionValue(const vector<int>& regionTags, const double value);
           void SetMesh(const tethex::Mesh &meshio);
           void OpenMesh(const string fileName = "river.msh");

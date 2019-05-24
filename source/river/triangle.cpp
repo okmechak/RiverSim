@@ -1383,6 +1383,40 @@ int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
     q_refine = (area > vert_val_1 || area > vert_val_2 || area > vert_val_3);
   }
 
+  //quality limitation
+  auto 
+    dl1 = sqrt(pow(triorg[0] - tridest[0], 2) + pow(triorg[1] - tridest[1], 2)),
+    dl2 = sqrt(pow(tridest[0] - triapex[0], 2) + pow(tridest[1] - triapex[1], 2)),
+    dl3 = sqrt(pow(triapex[0] - triorg[0], 2) + pow(triapex[1] - triorg[1], 2));
+  
+  //evaluation of maximal side size
+  auto 
+    max_dl = dl3,
+    min_dl = dl3;
+
+  if(dl1 > dl2 && dl1 > dl3)
+    max_dl = dl1;
+  else if(dl2 > dl1 && dl2 > dl3)
+    max_dl = dl2;
+  //else it will be dl3, but it already equals to it
+  
+  if(dl1 < dl2 && dl1 < dl3)
+    min_dl = dl1;
+  else if(dl2 < dl1 && dl2 < dl3)
+    min_dl = dl2;
+  //else it will be dl3, but it already equals to it
+
+  //max edge size constrain
+  if(max_dl > ac_global->max_edge)
+    q_refine = true;
+    
+  //triangle qualitu constrain
+  if(max_dl/min_dl > ac_global->ratio)
+    q_refine = true;
+
+  if(min_dl < ac_global->min_edge)
+    q_refine = false;
+
   return (int)q_refine;
 }
 

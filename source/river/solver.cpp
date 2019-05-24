@@ -298,7 +298,7 @@ vector<double> Solver::integrate(const Model& mdl, const Point& point, const dou
             for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
             {
                 //preevaluate basevector value
-                auto base_vector_value = mdl.integr.BaseVector(param_index + 1, exp(-complex<double>(0.0, 1.0)*angle)*(dx + complex<double>(0.0, 1.0)*dy));
+                auto base_vector_value = mdl.integr.BaseVectorFinal(param_index + 1, angle, dx, dy);
 
                 //sum over all quadrature points overIntegrationRadius single mesh element
                 for (unsigned q_point = 0; q_point < quadrature_formula.size(); ++q_point)
@@ -419,7 +419,7 @@ void Solver::output_results(const string file_name) const
 
 void Solver::run()
 {
-    for (unsigned cycle = 0; cycle < num_of_adaptive_refinments; ++cycle)
+    for (unsigned cycle = 0; cycle <= num_of_adaptive_refinments; ++cycle)
     {
         //cout << "Cycle " << cycle << ':' << endl;
         if (cycle > 0)

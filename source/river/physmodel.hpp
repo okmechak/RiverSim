@@ -32,7 +32,7 @@
 
 using namespace std;
 
-#define Radius 1e-2
+#define Radius 0.01
 
 namespace River
 {
@@ -51,16 +51,28 @@ namespace River
             double refinment_radius = 2*Radius;
 
             ///Power.
-            double exponant = 100.;
+            double exponant = 4.;
 
             ///Minimal area of mesh.
-            double min_area = 1e-8;
+            double min_area = 1e-10;
 
             ///Maximal area of mesh element.
             double max_area = 1e5;
 
             ///Minimal angle of mesh element.
             double min_angle = 30.;
+
+            ///Maximal edge size TODO implement checks for this values
+            double max_edge = 0.1;
+
+            ///Minimal edge size
+            double min_edge = 0;
+
+            ///Ratio of the triangles: 
+            ///Aspect ratio of a triangle is the ratio of the longest edge to shortest edge. 
+            ///AR = abc/(8(s-a)(s-b)(s-c)) 
+            ///Value 2 correspond to 30 degree. How about 35? Resolve it TODO.
+            double ratio = 2.3;//TODO
 
             ///Width of branch.
             double eps = 1e-6;
@@ -69,7 +81,7 @@ namespace River
             double sigma = 2.;
 
             //Number of mesh refinment steps used by Deal.II mesh functionality.
-            unsigned static_refinment_steps = 1;
+            unsigned static_refinment_steps = 0;
 
             inline double operator()(double x, double y) const
             {
@@ -100,19 +112,26 @@ namespace River
             double exponant = 2.;
             
             ///Weight function used in computation of series parameters.
-            inline double WeightFunction(double r) const
+            inline double WeightFunction(const double r) const
             {
                 return exp(-pow(r / weigth_func_radius, exponant));
             }
             
             ///Base Vector function used in computation of series parameters.
-            inline double BaseVector(int nf, complex<double> zf) const
+            inline double BaseVector(const int nf, const complex<double> zf) const
             {
                 if( (nf % 2) == 0)
                     return -imag(pow(zf, nf/2.));
                 else
                     return real(pow(zf, nf/2.));
                 
+            }
+
+            inline double BaseVectorFinal(const int nf, const double angle, const double dx, const double dy ) const
+            {
+                return BaseVector(nf, 
+                    exp(-complex<double>(0.0, 1.0)*angle)
+                    *(dx + complex<double>(0.0, 1.0)*dy));
             }
     };
     /**
@@ -125,10 +144,10 @@ namespace River
             int quadrature_degree = 2;
             
             ///Fraction of refined mesh elements.
-            double refinment_fraction = 0.01;
+            double refinment_fraction = 0.02;
 
             ///Number of refinment steps.
-            unsigned adaptive_refinment_steps = 1;
+            unsigned adaptive_refinment_steps = 0;
     };
 
     /**

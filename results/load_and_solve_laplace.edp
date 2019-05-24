@@ -37,6 +37,11 @@ func real tipfield( real[int] X, real[int] Y,real sigma,int nTips)
 mesh Th = readmesh("Mesh.msh");
 cout<<" Mesh reading done"<<endl;
 //plot(Th, fill = 1, wait = 1);
+//nbvx - Maximum number of vertices
+//hmax - Maximum edge size
+//nbsmooth - Number of smoothing iterations
+//iso - Isotropic adaptation
+//ratio - Ratio of the triangles: Aspect ratio of a triangle is the ratio of the longest edge to shortest edge. AR = abc/(8(s-a)(s-b)(s-c)) 
 Th = adaptmesh(Th , 1, nbvx = 500000, hmax = 0.1, nbsmooth = 100, iso = true, ratio = 1.8);
 //plot(Th, fill = 1, wait = 1);
 /////////////////////////////////////////
