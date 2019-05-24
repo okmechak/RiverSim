@@ -81,7 +81,7 @@ namespace River
             double sigma = 2.;
 
             //Number of mesh refinment steps used by Deal.II mesh functionality.
-            unsigned static_refinment_steps = 0;
+            unsigned static_refinment_steps = 3;
 
             inline double operator()(double x, double y) const
             {
