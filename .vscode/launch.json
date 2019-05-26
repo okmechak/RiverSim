@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/build/source/riversim",
             "args": ["-o", "otest", "--save-each-step", "--height", "50", "test.json"],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/../build/debug",
+            "cwd": "${workspaceFolder}/build/debug",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
