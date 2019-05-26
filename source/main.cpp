@@ -42,24 +42,29 @@ int main(int argc, char *argv[])
 
     //Border object setup.. Rectangular boundaries
     Border border;
-    border.MakeRectangular(
-        {mdl.width, mdl.height}, 
-        mdl.boundary_ids,
-        {mdl.dx},
-        {1});
-
+    
     //Tree object setup
     Tree tree;
-    tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-
+    
     //Geometry difference
     GeometryDifference gd;
 
     //Reading data from json file if it is specified so
     if(vm.count("input"))
         Open(mdl, border, tree, gd, vm["input"].as<string>());
+        
     SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
     mdl.CheckParametersConsistency();
+    if(!vm.count("input"))
+    {
+        border.MakeRectangular(
+        {mdl.width, mdl.height}, 
+        mdl.boundary_ids,
+        {mdl.dx},
+        {1});
+
+        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+    }
 
     //check of consistency between Border and Tree
     if(border.GetSourcesId() != tree.SourceBranchesID())
