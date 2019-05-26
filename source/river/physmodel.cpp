@@ -103,6 +103,21 @@ namespace River
         if(mesh.static_refinment_steps >= 5)
             cout << "mesh static_refinment_steps parameter is very large, and simulation can take a long time: " << mesh.static_refinment_steps << endl;
 
+        if(mesh.ratio < 1.9)
+            throw invalid_argument("mesh ratio parameter can't be smaller than 1.9: " + to_string(mesh.ratio));
+        
+        if(mesh.max_edge < 0)
+            throw invalid_argument("mesh max_edge parameter can't be negative " + to_string(mesh.max_edge));
+        
+        if(mesh.min_edge < 0)
+            throw invalid_argument("mesh min_edge parameter can't be negative " + to_string(mesh.min_edge));
+
+        if(mesh.max_edge < 0.001)
+            cout << "mesh max_edge parameter is to small " + to_string(mesh.max_edge) << endl;
+
+        if(mesh.max_edge < mesh.min_edge)
+            throw invalid_argument("mesh min_edge is bigger than max_edge :" + to_string(mesh.min_edge) + ">" + to_string(mesh.max_edge));
+
 
         //Integration
         if(integr.weigth_func_radius < 0)
