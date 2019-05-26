@@ -85,7 +85,7 @@ namespace River
         ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value("simdata"))
         ("save-each-step", "Save each step of simulation in separate file: simdata_1.json, simdata_2.json.. ")
         ("input",
-            "input simaultion data, boundary, tree, model parameters. It has very similar structure as output of program.", cxxopts::value<string>());
+            "input simaultion data, boundary, tree, model parameters. It has very similar structure as output json of program.", cxxopts::value<string>());
 
         //prints and logs
         options.add_options("Logs")
@@ -100,9 +100,8 @@ namespace River
         //Geometry parameters
         options.add_options("Border geometry parameters")
         ("width", "Width of river rectangular region.", value<double>()->default_value(to_string(mdl.width)))
-        ("height", "Height of river rectangular region.", value<double>()->default_value(to_string(mdl.width)))
+        ("height", "Height of river rectangular region.", value<double>()->default_value(to_string(mdl.height)))
         ("dx", "dx - shift of initial river position from beginning of coordinates in X dirrections.", value<double>()->default_value(to_string(mdl.dx)));
-
         //Model parameters
         options.add_options("Model parameters")
         ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", value<int>()->default_value(to_string(mdl.boundary_condition)))
