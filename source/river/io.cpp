@@ -202,7 +202,7 @@ namespace River
     }
 
 
-    void Open(Model& mdl, Border& border, Tree& tree, GeometryDifference &gd, string file_name)
+    void Open(Model& mdl, Border& border, Tree& tree, GeometryDifference &gd, string file_name, bool& q_update_border)
     {
         ifstream in(file_name);
         if(!in) throw invalid_argument("Open. Can't create file for read.");
@@ -274,6 +274,7 @@ namespace River
 
         if(j.count("Border"))
         {
+            q_update_border = true;
             auto jborder = j["Border"];
             vector<pair<double, double>> coords;
             vector<Point> points;

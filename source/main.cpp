@@ -50,12 +50,13 @@ int main(int argc, char *argv[])
     GeometryDifference gd;
 
     //Reading data from json file if it is specified so
+    bool q_update_border = false;
     if(vm.count("input"))
-        Open(mdl, border, tree, gd, vm["input"].as<string>());
+        Open(mdl, border, tree, gd, vm["input"].as<string>(), q_update_border);
         
     SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
     mdl.CheckParametersConsistency();
-    if(!vm.count("input"))
+    if(!q_update_border)
     {
         border.MakeRectangular(
         {mdl.width, mdl.height}, 

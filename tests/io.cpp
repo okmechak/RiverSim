@@ -78,8 +78,10 @@ BOOST_AUTO_TEST_CASE( io_methods,
     border = Border();
     gd = GeometryDifference();
     BOOST_TEST_CHECKPOINT("6");
-    Open(mdl, border, tree_b, gd, "iotest.json");
+    bool la = false;
+    Open(mdl, border, tree_b, gd, "iotest.json", la);
 
+    BOOST_TEST(la == true);
     //Model TEST
     BOOST_TEST(mdl.mesh.eps == 0.1);
     BOOST_TEST(mdl.ds == 2);

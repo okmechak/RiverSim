@@ -30,6 +30,6 @@ namespace River
 {
     Model& SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl);
     void Save(const Model& mdl, const Timing& time, const Border& border, const Tree& tr, const GeometryDifference &gd, const string file_name, const string input_file = "");
-    void Open(Model& mdl, Border& border, Tree& tr, GeometryDifference &gd, string file_name);
+    void Open(Model& mdl, Border& border, Tree& tr, GeometryDifference &gd, string file_name, bool& q_update_border);
 
 }//namespace River
