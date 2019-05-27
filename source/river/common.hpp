@@ -47,6 +47,10 @@ struct hash<pair<int, int>>
 
 namespace River
 {
+  ///Prints logs depending of log configuration(quiet or verbose)
+  void print(bool flag, string str);
+
+
   /**
    * Vector represented in polar coordinates.
    */

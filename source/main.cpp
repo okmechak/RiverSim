@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     if (vm.count("help") || vm.count("version"))
         return 0;
 
-    if (!vm.count("supprchess-signature"))
+    if (!vm.count("suppress-signature"))
         print_ascii_signature();
 
     string output_file_name = vm["output"].as<string>();
@@ -50,23 +50,29 @@ int main(int argc, char *argv[])
     GeometryDifference gd;
 
     //Reading data from json file if it is specified so
-    bool q_update_border = false;
-    if(vm.count("input"))
-        Open(mdl, border, tree, gd, vm["input"].as<string>(), q_update_border);
-        
-    SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
-    mdl.CheckParametersConsistency();
-    if(!q_update_border)
     {
-        border.MakeRectangular(
-        {mdl.width, mdl.height}, 
-        mdl.boundary_ids,
-        {mdl.dx},
-        {1});
+        bool q_update_border = false;
+        if(vm.count("input"))
+            Open(mdl, border, tree, gd, vm["input"].as<string>(), q_update_border);
 
-        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+        SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
+
+        mdl.CheckParametersConsistency();
+
+        if(mdl.prog_opt.verbose)
+            mdl.print();
+
+        if(!q_update_border)
+        {
+            border.MakeRectangular(
+            {mdl.width, mdl.height}, 
+            mdl.boundary_ids,
+            {mdl.dx},
+            {1});
+
+            tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+        }
     }
-
     //check of consistency between Border and Tree
     if(border.GetSourcesId() != tree.SourceBranchesID())
         throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
@@ -77,8 +83,8 @@ int main(int argc, char *argv[])
     tria.CustomConstraint = true;
     tria.MaxTriaArea = mdl.mesh.max_area;
     tria.MinAngle = mdl.mesh.min_angle;
-    tria.Verbose = vm["verbose"].as<bool>();
-    tria.Quite =  vm["quiet"].as<bool>();
+    tria.Verbose = false;
+    tria.Quite =  true;
     tria.ref = &mdl.mesh;
 
     //Simulation object setup
@@ -87,18 +93,21 @@ int main(int argc, char *argv[])
     sim.num_of_static_refinments = mdl.mesh.static_refinment_steps;
     sim.num_of_adaptive_refinments = mdl.solver_params.adaptive_refinment_steps;
     sim.refinment_fraction = mdl.solver_params.refinment_fraction;
+    sim.verbose = mdl.prog_opt.verbose;
 
 
     //MAIN LOOP
     int i = 0;
+    print(mdl.prog_opt.verbose, "Start of main loop...");
     //forward simulation case
     if(vm["simulation-type"].as<int>() == 0)
+    {
+        print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
         //FIXME stop condition doesn't handle all conditions.
         while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<int>())
         {
             cout << "-------" << endl;
             cout << "  "<<i<< endl;
-            cout << "-------" << endl;
 
             string str = output_file_name;
             if(vm.count("save-each-step"))
@@ -110,14 +119,15 @@ int main(int argc, char *argv[])
             Save(mdl, timing, border, tree, gd, str, input_file);
             ++i;
         }
+    }
     //Backward simulation
     else if(vm["simulation-type"].as<int>() == 1)
     {
+        print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
         while(tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<int>())    
         {
             cout << "-------" << endl;
             cout << "  "<<i<< endl;
-            cout << "-------" << endl;
             
             string str = output_file_name;
             if(vm.count("save-each-step"))
@@ -133,9 +143,7 @@ int main(int argc, char *argv[])
     //test simulation
     else if(vm["simulation-type"].as<int>() == 2)
     {   
-        cout << "-------------------------" << endl;
-        cout << "Series parameters testing" << endl;
-        cout << "-------------------------" << endl;
+        print(mdl.prog_opt.verbose, "Test river simulation type selected.");
 
         //reinitialize geometry
         auto b_id = mdl.river_boundary_id;
@@ -157,7 +165,9 @@ int main(int argc, char *argv[])
     }
     //unhandled case
     else 
-        throw invalid_argument("Invalid simulation type value");
+        throw invalid_argument("Invalid simulation type selected: " + to_string(vm["simulation-type"].as<int>()));
+
+    print(mdl.prog_opt.verbose, "End of main loop...");
 
     return 0;
 }

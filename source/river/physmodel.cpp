@@ -21,7 +21,7 @@ namespace River
 {
     void Model::CheckParametersConsistency() const
     {
-        cout << "Input parameters check.." << endl;
+        River::print(prog_opt.verbose, "Input parameters check..");
         //Model
         if(dx < 0 || dx > width)
             throw invalid_argument("Invalid value of dx = " + to_string(dx) + ", it should be in range(0, width).");
@@ -140,7 +140,57 @@ namespace River
         if(solver_params.adaptive_refinment_steps >= 5)
             cout << "solver adaptive_refinment_steps parameter is very large, and simulation can take a long time: " << solver_params.adaptive_refinment_steps << endl;
 
+        River::print(prog_opt.verbose, "Done.");
+    }
 
-        cout << "Done" << endl;
+    void Model::print() const
+    {
+        cout << "Model Parameters:" << endl;
+        cout << "\t dx = " << dx << endl;
+        cout << "\t width = " << width << endl;
+        cout << "\t height = " << height << endl;
+        cout << "\t river_boundary_id = " << river_boundary_id << endl;
+
+        cout << "\t boundary_condition = " << boundary_condition << endl;
+        cout << "\t field_value = " << field_value << endl;
+        cout << "\t eta = " << eta << endl;
+        cout << "\t biffurcation_type = " << biffurcation_type << endl;
+        cout << "\t biffurcation_threshold = " << biffurcation_threshold << endl;
+        cout << "\t biffurcation_threshold_2 = " << biffurcation_threshold_2 << endl;
+        cout << "\t biffurcation_min_dist = " << biffurcation_min_dist << endl;
+        cout << "\t biffurcation_angle = " << biffurcation_angle << endl;
+
+        cout << "\t growth_type = " << growth_type << endl;
+        cout << "\t growth_threshold = " << growth_threshold << endl;
+        cout << "\t growth_min_distance = " << growth_min_distance << endl;
+
+        cout << "\t ds = " << ds << endl;
+
+
+        cout << "Mesh Parameters:" << endl;
+        cout << "\t refinment_radius = " << mesh.refinment_radius << endl;
+        cout << "\t exponant = " << mesh.exponant << endl;
+        cout << "\t min_area = " << mesh.min_area << endl;
+        cout << "\t max_area = " << mesh.max_area << endl;
+        cout << "\t min_angle = " << mesh.min_angle << endl;
+        cout << "\t max_edge = " << mesh.max_edge << endl;
+        cout << "\t min_edge = " << mesh.min_edge << endl;
+        cout << "\t ratio = " << mesh.ratio << endl;
+        cout << "\t eps = " << mesh.eps << endl;
+        cout << "\t sigma = " << mesh.sigma << endl;
+        cout << "\t static_refinment_steps = " << mesh.static_refinment_steps << endl;
+
+        cout << "Integration Parameters:" << endl;
+        cout << "\t weigth_func_radius = " << integr.weigth_func_radius << endl;
+        cout << "\t integration_radius = " << integr.integration_radius << endl;
+        cout << "\t exponant = " << integr.exponant << endl;
+
+        cout << "Solver parameters:" << endl;
+        cout << "\t quadrature_degree = " << solver_params.quadrature_degree << endl;
+        cout << "\t refinment_fraction = " << solver_params.refinment_fraction << endl;
+        cout << "\t adaptive_refinment_steps = " << solver_params.adaptive_refinment_steps << endl;
+
+        cout << "Program optiosn:" << endl;
+        cout << "\t verbose = " << prog_opt.verbose << endl;
     }
 }

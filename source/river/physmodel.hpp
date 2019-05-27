@@ -36,7 +36,15 @@ using namespace std;
 
 namespace River
 {
-    
+    /** 
+     * Some global program options. 
+     */
+    class ProgramOptions
+    {
+        public:
+            bool verbose = false;
+    };
+
     /**
      * Adaptive mesh area constraint function.
      */
@@ -89,8 +97,8 @@ namespace River
                 for(auto& tip: tip_points)
                 {
                     auto r = (Point{x, y} - tip).norm();
-                    auto exp_val = exp( -pow(r/refinment_radius, exponant)/2/sigma/sigma);
-                    auto cur_area = min_area + (max_area - min_area)*(1 - exp_val)/(1 + exp_val);
+                    auto exp_val = exp( -pow(r/refinment_radius, exponant)/2./sigma/sigma);
+                    auto cur_area = min_area + (max_area - min_area)*(1. - exp_val)/(1. + exp_val);
                     if(result_area > cur_area)
                         result_area = cur_area;   
                 }
@@ -222,6 +230,9 @@ namespace River
             ///Solver parameters used by Deal.II
             SolverParams solver_params;
 
+            ///Some global program options
+            ProgramOptions prog_opt;
+
             ///Checks by evaluating series params for biffuraction condition.
             bool q_biffurcate(vector<double> a, double branch_lenght) const
             {
@@ -229,18 +240,21 @@ namespace River
 
                 if(biffurcation_type == 0)
                 {
-                    cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
+                    if(prog_opt.verbose)
+                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
                     return a.at(2)/a.at(0) < biffurcation_threshold && dist_flag;
                 }
                 else if(biffurcation_type == 1)
                 {
-                    cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
+                    if(prog_opt.verbose)
+                        cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
                     return a.at(0) > biffurcation_threshold_2 && dist_flag;
                 }
                 else if(biffurcation_type == 2)
                 {
-                    cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold
-                        << " a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
+                    if(prog_opt.verbose)
+                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold
+                             << " a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
                     return a.at(2)/a.at(0) < biffurcation_threshold && a.at(0) > biffurcation_threshold_2 && dist_flag;
                 }
                 else if(biffurcation_type == 3)
@@ -301,8 +315,11 @@ namespace River
                     throw invalid_argument("Invalid value of boundary_condition");   
             }
 
-            //TODO implement in this class parameter checking
+            //Checks values of parameters
             void CheckParametersConsistency() const;
+
+            //Prints model structure and its subclasses
+            void print() const;
     };
 
 

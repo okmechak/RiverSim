@@ -89,8 +89,7 @@ namespace River
 
         //prints and logs
         options.add_options("Logs")
-        ("V,verbose", "print detailed log to terminal. Not implemented, TODO", value<bool>()->default_value("False"))
-        ("Q,quiet", "print detailed log to terminal. Not implemented, TODO", value<bool>()->default_value("True"));
+        ("V,verbose", "print detailed log to terminal.", value<bool>()->default_value("False"));
 
         //Simulation parameters
         options.add_options("Simulation parameters")

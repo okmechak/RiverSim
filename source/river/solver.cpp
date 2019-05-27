@@ -424,18 +424,13 @@ void Solver::run()
         //cout << "Cycle " << cycle << ':' << endl;
         if (cycle > 0)
             refine_grid();
-
-        cout << "   Number of active cells:       "
-            << triangulation.n_active_cells()
-            << endl;
+        print(verbose, "   Number of active cells:");
+        print(verbose, "\t" + to_string(triangulation.n_active_cells()));
         setup_system();
-        cout << "   Number of degrees of freedom: "
-            << dof_handler.n_dofs()
-            << endl;
+        print(verbose, "   Number of degrees of freedom:");
+        print(verbose, "\t" + to_string(dof_handler.n_dofs()));
         assemble_system();
-        solve();    
-
-        output_results("refinment_test_" + to_string(cycle));    
+        solve();
     }
 }
 

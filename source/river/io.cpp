@@ -27,6 +27,8 @@ namespace River
 {
     Model& SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl)
     {
+        //program options
+        if (vm.count("verbose")) mdl.prog_opt.verbose = vm["verbose"].as<bool>();
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();

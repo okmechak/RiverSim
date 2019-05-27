@@ -19,6 +19,12 @@
 
 namespace River
 {
+    void print(bool flag, string str)
+    {
+        if(flag)
+            cout << str << endl;
+    }
+
 
     Point::Point(double xval, double yval)
     {

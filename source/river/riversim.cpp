@@ -62,17 +62,21 @@ namespace River
     void TriangulateConvertRefineAndSolve(Model& mdl, Triangle& tria, Solver& sim,
         Tree& tree, const Border& border, const string file_name)
     {
+        print(mdl.prog_opt.verbose, "Boundary generation...");
         //initial boundaries of mesh
         auto mesh = BoundaryGenerator(mdl, tree, border);
         mesh.write(file_name + "_boundary.msh");
         
+        print(mdl.prog_opt.verbose, "Mesh generation...");
         tria.ref->tip_points = tree.TipPoints();
         tria.generate(mesh);//triangulation
+        print(mdl.prog_opt.verbose, "Convertation generation...");
         mesh.convert();//convertaion from triangles to quadrangles
         mesh.write(file_name + ".msh");
 
         //Simulation
         //Deal.II library
+        print(mdl.prog_opt.verbose, "Solving...");
         sim.SetBoundaryRegionValue(mdl.GetZeroIndices(), 0.);
         sim.SetBoundaryRegionValue(mdl.GetNonZeroIndices(), 1.);
         sim.OpenMesh(file_name + ".msh");
@@ -88,6 +92,7 @@ namespace River
         TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
 
         //Iterate over each tip and handle branch growth and its biffurcations
+        print(mdl.prog_opt.verbose, "Iteration over each tip point...");
         for(auto id: tree.TipBranchesId())
         {
             auto tip_point = tree.GetBranch(id)->TipPoint();
@@ -202,6 +207,7 @@ namespace River
                 
         auto tip_point = tree.GetBranch(branch_id)->TipPoint();
         auto tip_angle = tree.GetBranch(branch_id)->TipAngle();
+        print(mdl.prog_opt.verbose, "Integration..");
         auto series_params = sim.integrate(mdl, tip_point, tip_angle);
         auto circle_integr = sim.integration_test(tip_point, 0.1/*dr same as in FreeFEM++*/);
         auto whole_integr = sim.integration_test(tip_point, 10000/*large enough to cover whole region*/);
