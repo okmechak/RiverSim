@@ -93,8 +93,8 @@ namespace River
 
         //Simulation parameters
         options.add_options("Simulation parameters")
-        ("n,number-of-steps", "Number of steps to simulate.", value<int>()->default_value("10"))
-        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<int>()->default_value("0"));
+        ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value("10"))
+        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value("0"));
         
         //Geometry parameters
         options.add_options("Border geometry parameters")
@@ -103,15 +103,15 @@ namespace River
         ("dx", "dx - shift of initial river position from beginning of coordinates in X dirrections.", value<double>()->default_value(to_string(mdl.dx)));
         //Model parameters
         options.add_options("Model parameters")
-        ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", value<int>()->default_value(to_string(mdl.boundary_condition)))
+        ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", value<unsigned>()->default_value(to_string(mdl.boundary_condition)))
         ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", value<double>()->default_value(to_string(mdl.field_value)))
         ("eta", "Power of a1^eta used in growth of river.", value<double>()->default_value(to_string(mdl.eta)))
-        ("biffurcation-type", "Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.", value<int>()->default_value(to_string(mdl.biffurcation_type)))
+        ("biffurcation-type", "Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.", value<unsigned>()->default_value(to_string(mdl.biffurcation_type)))
         ("b,biffurcation-threshold", "Biffuraction threshold for first biffurcation type: a(3)/a(1) > kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold)))
         ("biffurcation-threshold-2", "Biffuraction threshold for second biffurcation type: a(1) > kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold_2)))
         ("biffurcation-min-distance", "Minimal distance between adjacent biffurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", value<double>()->default_value(to_string(mdl.biffurcation_min_dist)))
         ("biffurcation-angle", "Angle between branches in biffurcation point. Default is Pi/5 which is theoretical value.", value<double>()->default_value(to_string(mdl.biffurcation_angle)))
-        ("growth-type", "Specifies growth type used for evaluation of next point(its dirrection and lenght): 0 - using arctan(a2/a1) method, 1 - by preavuating {dx, dy}. For more details please Piotr Morawiecki", value<int>()->default_value(to_string(mdl.growth_type)))
+        ("growth-type", "Specifies growth type used for evaluation of next point(its dirrection and lenght): 0 - using arctan(a2/a1) method, 1 - by preavuating {dx, dy}. For more details please Piotr Morawiecki", value<unsigned>()->default_value(to_string(mdl.growth_type)))
         ("growth-threshold", "Growth of branch stops if a(1) < growth-threshold.", value<double>()->default_value(to_string(mdl.growth_threshold)))
         ("growth-min-distance", "Growth of branch will be with constant speed(ds by each step) if its lenght is less then this value. uUsed for reducing numerical noise", value<double>()->default_value(to_string(mdl.growth_min_distance)))
         ("ds", "ds - value of growth proportionality: dl = ds*a(1)^eta", value<double>()->default_value(to_string(mdl.ds)));
@@ -151,7 +151,11 @@ namespace River
 
         options.add_options("Solver Parameters")
         ("quadrature-degree", "Quadrature polynomials degree used in numerical integration of Deal.II solver.", 
-            value<int>()->default_value(to_string(mdl.solver_params.quadrature_degree)))
+            value<unsigned>()->default_value(to_string(mdl.solver_params.quadrature_degree)))
+        ("iteration-steps", "Number of iterations used by Deal.II solver.", 
+            value<unsigned>()->default_value(to_string(mdl.solver_params.num_of_iterrations)))
+        ("tol", "Tollerance used by Deal.II solver.", 
+            value<double>()->default_value(to_string(mdl.solver_params.tollerance)))
         ("refinment-fraction", "Fraction(percent from total, 0.01 corresponds to 1%) of refined mesh elements using Deal.II adaptive mesh capabilities.", 
             value<double>()->default_value(to_string(mdl.solver_params.refinment_fraction)))
         ("adaptive-refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
@@ -163,6 +167,8 @@ namespace River
         auto result = options.parse(argc, argv);
 
         if (result.count("help"))
+        {
+            cout.precision(17);
             cout << options.help({
                 "Basic", 
                 "File interface", 
@@ -174,6 +180,7 @@ namespace River
                 "Mesh refinment parameters. Funciton of area constaint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).",
                 "Solver Parameters"}) 
                 << endl;
+        }
 
         if (result.count("version"))
             print_version();

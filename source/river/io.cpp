@@ -36,15 +36,15 @@ namespace River
         if (vm.count("dx")) mdl.dx = vm["dx"].as<double>();
 
         //model parameters
-        if (vm.count("boundary-condition")) mdl.boundary_condition = vm["boundary-condition"].as<int>();
+        if (vm.count("boundary-condition")) mdl.boundary_condition = vm["boundary-condition"].as<unsigned>();
         if (vm.count("field-value")) mdl.field_value = vm["field-value"].as<double>();
         if (vm.count("eta")) mdl.eta = vm["eta"].as<double>();
-        if (vm.count("biffurcation-type")) mdl.biffurcation_type = vm["biffurcation-type"].as<int>();
+        if (vm.count("biffurcation-type")) mdl.biffurcation_type = vm["biffurcation-type"].as<unsigned>();
         if (vm.count("biffurcation-threshold")) mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
         if (vm.count("biffurcation-threshold-2")) mdl.biffurcation_threshold_2 = vm["biffurcation-threshold-2"].as<double>();
         if (vm.count("biffurcation-angle")) mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
         if (vm.count("biffurcation-min-distance")) mdl.biffurcation_min_dist = vm["biffurcation-min-distance"].as<double>();
-        if (vm.count("growth-type")) mdl.growth_type = vm["growth-type"].as<int>();
+        if (vm.count("growth-type")) mdl.growth_type = vm["growth-type"].as<unsigned>();
         if (vm.count("growth-threshold")) mdl.growth_threshold = vm["growth-threshold"].as<double>();
         if (vm.count("growth-min-distance")) mdl.growth_min_distance = vm["growth-min-distance"].as<double>();
         if (vm.count("ds")) mdl.ds = vm["ds"].as<double>();
@@ -69,9 +69,11 @@ namespace River
         if (vm.count("weight-exp")) mdl.integr.exponant = vm["weight-exp"].as<double>();
 
         //solver options
-        if (vm.count("quadrature-degree")) mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<int>();
+        if (vm.count("quadrature-degree")) mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<unsigned>();
         if (vm.count("refinment-fraction")) mdl.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
         if (vm.count("adaptive-refinment-steps")) mdl.solver_params.adaptive_refinment_steps = vm["adaptive-refinment-steps"].as<unsigned>();
+        if (vm.count("tol")) mdl.solver_params.tollerance = vm["tol"].as<double>();
+        if (vm.count("iteration-steps")) mdl.solver_params.num_of_iterrations = vm["iteration-steps"].as<unsigned>();
 
         return mdl;
     }
@@ -178,8 +180,10 @@ namespace River
                     {"ratio", mdl.mesh.ratio},
                     {"sigma", mdl.mesh.sigma},
                     {"staticRefinmentSteps", mdl.mesh.static_refinment_steps}}},
-                    
+        
                 {"Solver", {
+                    {"tol", mdl.solver_params.tollerance},
+                    {"iterationSteps", mdl.solver_params.num_of_iterrations},
                     {"quadratureDegree", mdl.solver_params.quadrature_degree},
                     {"refinmentFraction", mdl.solver_params.refinment_fraction},
                     {"adaptiveRefinmentSteps", mdl.solver_params.adaptive_refinment_steps}}}}
@@ -270,6 +274,8 @@ namespace River
                 if (jsolver.count("quadratureDegree")) jsolver.at("quadratureDegree").get_to(mdl.solver_params.quadrature_degree);
                 if (jsolver.count("refinmentFraction")) jsolver.at("refinmentFraction").get_to(mdl.solver_params.refinment_fraction);
                 if (jsolver.count("adaptiveRefinmentSteps")) jsolver.at("adaptiveRefinmentSteps").get_to(mdl.solver_params.adaptive_refinment_steps);
+                if (jsolver.count("tol")) jsolver.at("tol").get_to(mdl.solver_params.tollerance);
+                if (jsolver.count("iterationSteps")) jsolver.at("iterationSteps").get_to(mdl.solver_params.num_of_iterrations);
             }
         }
 

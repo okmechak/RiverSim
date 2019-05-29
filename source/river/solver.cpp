@@ -206,7 +206,7 @@ void Solver::assemble_system()
 
 void Solver::solve()
 {
-    SolverControl solver_control(4000, 1e-6);
+    SolverControl solver_control(number_of_iterations, tollerance);
     SolverCG<> solver(solver_control);
     PreconditionSSOR<> preconditioner;
     preconditioner.initialize(system_matrix, 1.2);

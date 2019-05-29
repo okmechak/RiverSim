@@ -56,13 +56,13 @@ namespace River
             vector<Point> tip_points;
 
             ///Radius of refinment.
-            double refinment_radius = 2*Radius;
+            double refinment_radius = 4*Radius;
 
             ///Power.
-            double exponant = 4.;
+            double exponant = 7.;
 
             ///Minimal area of mesh.
-            double min_area = 1e-10;
+            double min_area = 7e-8;
 
             ///Maximal area of mesh element.
             double max_area = 1e5;
@@ -71,10 +71,10 @@ namespace River
             double min_angle = 30.;
 
             ///Maximal edge size TODO implement checks for this values
-            double max_edge = 0.1;
+            double max_edge = 1;
 
             ///Minimal edge size
-            double min_edge = 0;
+            double min_edge = 8.e-8;
 
             ///Ratio of the triangles: 
             ///Aspect ratio of a triangle is the ratio of the longest edge to shortest edge. 
@@ -86,7 +86,7 @@ namespace River
             double eps = 1e-6;
 
             ///Sigma used in exponence(same as in Gauss formula)
-            double sigma = 2.;
+            double sigma = 1.9;
 
             //Number of mesh refinment steps used by Deal.II mesh functionality.
             unsigned static_refinment_steps = 3;
@@ -149,13 +149,19 @@ namespace River
     {
         public:
             ///Polynom degree of quadrature integration.
-            int quadrature_degree = 2;
+            unsigned quadrature_degree = 3;
             
             ///Fraction of refined mesh elements.
-            double refinment_fraction = 0.02;
+            double refinment_fraction = 0.1;
 
             ///Number of refinment steps.
             unsigned adaptive_refinment_steps = 0;
+
+            ///Tollerarnce used by dealii Solver.
+            double tollerance = 1.e-12;
+
+            ///Number of iteration steps
+            unsigned num_of_iterrations = 6000;
     };
 
     /**
@@ -186,7 +192,7 @@ namespace River
             //Model parameters
             ///Boundary conditions, 0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 
             ///1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)
-            int boundary_condition = 0;
+            unsigned boundary_condition = 0;
 
             ///Field value used for Poisson conditions.
             double field_value = 1.0;
@@ -196,7 +202,7 @@ namespace River
 
             ///Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 
             ///1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.
-            int biffurcation_type = 0;
+            unsigned biffurcation_type = 0;
             
             ///Biffurcation threshold. first for 0 biffurcation type, second for 1.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
@@ -209,7 +215,7 @@ namespace River
             double biffurcation_angle = M_PI/5;
 
             ///Growth type. 0 - arctan(a2/a1), 1 - {dx, dy}
-            int growth_type = 0;
+            unsigned growth_type = 0;
 
             ///Growth of branch will be done only if a1 > growth-threshold.
             double growth_threshold = 0;

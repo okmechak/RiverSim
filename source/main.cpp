@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     if (vm.count("help") || vm.count("version"))
         return 0;
 
-    if (!vm.count("suppress-signature"))
+    if (!vm.count("suppress-signature") && vm.count("verbose"))
         print_ascii_signature();
 
     string output_file_name = vm["output"].as<string>();
@@ -90,6 +90,8 @@ int main(int argc, char *argv[])
     //Simulation object setup
     River::Solver sim(mdl.solver_params.quadrature_degree);
     sim.field_value = mdl.field_value;
+    sim.tollerance = mdl.solver_params.tollerance;
+    sim.number_of_iterations = mdl.solver_params.num_of_iterrations;
     sim.num_of_static_refinments = mdl.mesh.static_refinment_steps;
     sim.num_of_adaptive_refinments = mdl.solver_params.adaptive_refinment_steps;
     sim.refinment_fraction = mdl.solver_params.refinment_fraction;
@@ -99,16 +101,16 @@ int main(int argc, char *argv[])
     //MAIN LOOP
     int i = 0;
     print(mdl.prog_opt.verbose, "Start of main loop...");
+    print(!mdl.prog_opt.verbose, "Running...");
     //forward simulation case
-    if(vm["simulation-type"].as<int>() == 0)
+    if(vm["simulation-type"].as<unsigned>() == 0)
     {
         print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
         //FIXME stop condition doesn't handle all conditions.
-        while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<int>())
+        while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<unsigned>())
         {
-            cout << "-------" << endl;
-            cout << "  "<<i<< endl;
-
+            
+            print(mdl.prog_opt.verbose, "-----#" + to_string(i));
             string str = output_file_name;
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);
@@ -121,13 +123,12 @@ int main(int argc, char *argv[])
         }
     }
     //Backward simulation
-    else if(vm["simulation-type"].as<int>() == 1)
+    else if(vm["simulation-type"].as<unsigned>() == 1)
     {
         print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
-        while(tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<int>())    
+        while(tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<unsigned>())    
         {
-            cout << "-------" << endl;
-            cout << "  "<<i<< endl;
+            print(mdl.prog_opt.verbose, "-----#" + to_string(i));
             
             string str = output_file_name;
             if(vm.count("save-each-step"))
@@ -141,7 +142,7 @@ int main(int argc, char *argv[])
         }
     }
     //test simulation
-    else if(vm["simulation-type"].as<int>() == 2)
+    else if(vm["simulation-type"].as<unsigned>() == 2)
     {   
         print(mdl.prog_opt.verbose, "Test river simulation type selected.");
 
@@ -165,9 +166,10 @@ int main(int argc, char *argv[])
     }
     //unhandled case
     else 
-        throw invalid_argument("Invalid simulation type selected: " + to_string(vm["simulation-type"].as<int>()));
+        throw invalid_argument("Invalid simulation type selected: " + to_string(vm["simulation-type"].as<unsigned>()));
 
     print(mdl.prog_opt.verbose, "End of main loop...");
+    print(true, "Done.");
 
     return 0;
 }

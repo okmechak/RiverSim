@@ -77,7 +77,8 @@ namespace River
         public:
           Solver(int quadrature_degree = 2): fe(2), dof_handler(triangulation),quadrature_formula(quadrature_degree){};
           ~Solver(){clear();}
-
+          double tollerance = 1e-12;
+          unsigned number_of_iterations = 6000;
           bool verbose = false;
           unsigned num_of_adaptive_refinments = 0;
           unsigned num_of_static_refinments = 0;

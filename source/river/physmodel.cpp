@@ -140,6 +140,17 @@ namespace River
         if(solver_params.adaptive_refinment_steps >= 5)
             cout << "solver adaptive_refinment_steps parameter is very large, and simulation can take a long time: " << solver_params.adaptive_refinment_steps << endl;
 
+        if(solver_params.tollerance < 0)
+            throw invalid_argument("Tollerance value of solver is negative: " + to_string(solver_params.tollerance));
+
+        if(solver_params.tollerance < 1e-13)
+            cout << "Tollerance value is very small: " << solver_params.tollerance << endl;
+        if(solver_params.tollerance > 1e-5)
+            cout << "Tollerance value is very big: " << solver_params.tollerance << endl;
+        
+        if(solver_params.num_of_iterrations < 2000)
+            cout << "num_of_iterrations value is very small: " << solver_params.num_of_iterrations << endl;
+
         River::print(prog_opt.verbose, "Done.");
     }
 
@@ -189,6 +200,8 @@ namespace River
         cout << "\t quadrature_degree = " << solver_params.quadrature_degree << endl;
         cout << "\t refinment_fraction = " << solver_params.refinment_fraction << endl;
         cout << "\t adaptive_refinment_steps = " << solver_params.adaptive_refinment_steps << endl;
+        cout << "\t tollerance = " << solver_params.tollerance << endl;
+        cout << "\t number of itteration = " << solver_params.num_of_iterrations << endl;
 
         cout << "Program optiosn:" << endl;
         cout << "\t verbose = " << prog_opt.verbose << endl;
