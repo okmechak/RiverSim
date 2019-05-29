@@ -233,7 +233,7 @@ void Solver::refine_grid()
 void Solver::static_refine_grid(const Model& mdl, const vector<Point>& tips_points)
 {
     //iterating over refinment steps
-    for (unsigned step = 1; step < num_of_static_refinments; ++step)
+    for (unsigned step = 0; step < num_of_static_refinments; ++step)
     {
         //iterating over each mesh cell
         for (auto cell: triangulation.active_cell_iterators())
