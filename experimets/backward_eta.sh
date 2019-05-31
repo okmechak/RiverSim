@@ -13,4 +13,4 @@
 ./source/riversim -t 1 -n 70 --eta=1.2 -o eta_12 test_tree.json
 ./source/riversim -t 1 -n 70 --eta=1.3 -o eta_13 test_tree.json
 ./source/riversim -t 1 -n 70 --eta=1.4 -o eta_14 test_tree.json
-./source/riversim -t 1 -n 70 --eta=1.5 -o eta_14 test_tree.json
+./source/riversim -t 1 -n 70 --eta=1.5 -o eta_15 test_tree.json
