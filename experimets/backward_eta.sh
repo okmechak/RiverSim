@@ -1,3 +1,5 @@
+echo pwd
+
 ./source/riversim -t 1 -n 70 --eta=0.1 -o eta_00 ./test_tree.json
 ./source/riversim -t 1 -n 70 --eta=0.1 -o eta_01 ./test_tree.json
 ./source/riversim -t 1 -n 70 --eta=0.2 -o eta_02 ./test_tree.json
