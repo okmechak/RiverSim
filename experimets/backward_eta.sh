@@ -1,0 +1,10 @@
+./source/riversim -t 1 -n 100 --eta=0.5 -o eta_05 simdata.json
+./source/riversim -t 1 -n 100 --eta=0.6 -o eta_06 simdata.json
+./source/riversim -t 1 -n 100 --eta=0.7 -o eta_07 simdata.json
+./source/riversim -t 1 -n 100 --eta=0.8 -o eta_08 simdata.json
+./source/riversim -t 1 -n 100 --eta=0.9 -o eta_09 simdata.json
+./source/riversim -t 1 -n 100 --eta=1.0 -o eta_10 simdata.json
+./source/riversim -t 1 -n 100 --eta=1.1 -o eta_11 simdata.json
+./source/riversim -t 1 -n 100 --eta=1.2 -o eta_12 simdata.json
+./source/riversim -t 1 -n 100 --eta=1.3 -o eta_13 simdata.json
+./source/riversim -t 1 -n 100 --eta=1.4 -o eta_14 simdata.json
