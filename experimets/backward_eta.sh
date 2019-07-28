@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ./source/riversim -t 1 -n 70 --eta=0.0 -o eta_00 /home/okmechak/dev/build/tree_test1.json
 ./source/riversim -t 1 -n 70 --eta=0.1 -o eta_01 /home/okmechak/dev/build/tree_test2.json
 ./source/riversim -t 1 -n 70 --eta=0.2 -o eta_02 /home/okmechak/dev/build/tree_test3.json
