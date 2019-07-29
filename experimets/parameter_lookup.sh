@@ -117,8 +117,7 @@ function add_next_task
 
 function do_task {
     echo -e "\tstarting task index: $2"
-    echo -e "\t\t eval $1"
-    sleep 2
+    eval $1
     echo -e "\tend of task index: $2"
 }
 
@@ -174,28 +173,28 @@ task_index=0
 #static-refinment-steps cycle
 for st_ref_step_val in $(seq 1 7) #static-refinment-steps cycle
 do
-    task_array[$task_index]="$PROGRAM_NAME -V --suppress-signature -t $simulation_type -o ${file_prefix}_st_ref_steps_${st_ref_step_val} --mesh-min-area=$mesh_min_area_value --static-refinment-steps $st_ref_step_val"
+    task_array[$task_index]="$PROGRAM_NAME --suppress-signature -t $simulation_type -o ${file_prefix}_st_ref_steps_${st_ref_step_val} --mesh-min-area=$mesh_min_area_value --static-refinment-steps $st_ref_step_val"
     task_index=$(($task_index+1))
 done
 
 #refinment-radius cycle
 for ref_rad_value in $(seq 0.02 0.02 0.8) #static-refinment-steps cycle
 do
-    task_array[$task_index]="$PROGRAM_NAME -V --suppress-signature -t $simulation_type -o ${file_prefix}_ref_rad_value_${ref_rad_value} --mesh-min-area=$mesh_min_area_value --refinment-radius=$ref_rad_value"
+    task_array[$task_index]="$PROGRAM_NAME --suppress-signature -t $simulation_type -o ${file_prefix}_ref_rad_value_${ref_rad_value} --mesh-min-area=$mesh_min_area_value --refinment-radius=$ref_rad_value"
     task_index=$(($task_index+1))
 done
 
 #mesh-min-area cycle
 for mesh_min_area_val in 1e-6 3e-7 1e-7 3e-8 1e-8 3e-9 1e-9 3e-10 1e-10  #static-refinment-steps cycle
 do
-    task_array[$task_index]="$PROGRAM_NAME -V --suppress-signature -t $simulation_type -o ${file_prefix}_mesh_min_area_val_${mesh_min_area_val} --mesh-min-area=$mesh_min_area_val"
+    task_array[$task_index]="$PROGRAM_NAME --suppress-signature -t $simulation_type -o ${file_prefix}_mesh_min_area_val_${mesh_min_area_val} --mesh-min-area=$mesh_min_area_val"
     task_index=$(($task_index+1))
 done
 
 #mesh-exp cycle
 for mesh_exp_val in $(seq 1 2 30)  #static-refinment-steps cycle
 do
-    task_array[$task_index]="$PROGRAM_NAME -V --suppress-signature -t $simulation_type -o ${file_prefix}_mesh_min_area_val_${mesh_min_area_val} --mesh-min-area=$mesh_min_area_val"
+    task_array[$task_index]="$PROGRAM_NAME --suppress-signature -t $simulation_type -o ${file_prefix}_mesh_min_area_val_${mesh_min_area_val} --mesh-min-area=$mesh_min_area_val"
     task_index=$(($task_index+1))
 done
 
