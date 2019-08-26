@@ -5,3 +5,5 @@ set(SOURCE_FILES
     tethex.hpp)
 
 add_library(tethex STATIC ${SOURCE_FILES})
+
+install(TARGETS tethex DESTINATION rivsim)

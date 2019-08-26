@@ -37,4 +37,6 @@ if(BUILD_PROGRAM)
     deal_ii_setup_target(riversim)
 
     target_link_libraries(riversim river)
+
+    install(TARGETS riversim DESTINATION rivsim)
 endif(BUILD_PROGRAM)

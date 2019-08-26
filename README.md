@@ -1,4 +1,7 @@
-# RiverSim
+# River Growth Simulation (RiverSim)
+
+[![Faculty of Physics. University of Warsaw](https://www.fuw.edu.pl/tl_files/downloads/logo_18/FUW_znak-poziomy-EN.png).](https://www.fuw.edu.pl/)  
+
 Simulation of river growth using model based on Laplace equation[1].
 Mathematicaly, in this program we solve PDE equation using Finite Element Method(FEM). And as result program produces VTK file, which contains solution and its details, which furthere can be viewed in [__ParaView__](https://www.paraview.org/)  
 
@@ -49,13 +52,18 @@ When you have configured and setuped all dependencies. Now you can build RiverSi
 It is very easy and fast(in comparsion to Deal.II compiling process), you just have to setup two variables in cmake: 
 * DEALII_DIR - path too Deal.II files, and
 
-  > cmake -DDEALII_DIR:STRING=/path/to/deal/ii  /path/to/riversim/project/folder
+  > cmake -DDEALII_DIR:STRING=/path/to/deal/ii -DCMAKE_INSTALL_PREFIX=/installation/path  /path/to/riversim/project/folder
 
 Makefile will be generated, which next is used for compiling of program:
 
   > make
   or for faster(multithread build) type
   > make -j5
+  
+##### Installation:
+  > make install   
+  
+Project will be installed to path specified by _CMAKE_INSTALL_PREFIX_ variable.
 
 #### Running Tests
 After compiling, simply type a command:

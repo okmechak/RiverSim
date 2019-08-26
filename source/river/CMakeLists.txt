@@ -38,3 +38,5 @@ deal_ii_setup_target(river)
 
 #FIXME
 target_link_libraries(river tethex) #triangle 
+
+install(TARGETS river DESTINATION rivsim)

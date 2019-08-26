@@ -24,3 +24,5 @@ add_subdirectory(source)
 add_subdirectory(doxy)
 enable_testing()
 add_subdirectory(tests)
+
+install(DIRECTORY experimets DESTINATION rivsim)
