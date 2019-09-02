@@ -5,11 +5,11 @@ set(BUILD_DOC OFF CACHE BOOL "Build Doxygen documentation")
 if(BUILD_DOC)
     find_package(Doxygen)
     if (DOXYGEN_FOUND)
-        message("Doxygen build started")
-        set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/doxy/Doxyfile.in)
-        set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-        message(${CMAKE_CURRENT_BINARY_DIR})
-  
+        message("========================================")
+        message("Doxygen setup")
+        set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+        set(DOXYGEN_OUT Doxyfile)
+
         configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
   
   
@@ -22,4 +22,6 @@ if(BUILD_DOC)
     else (DOXYGEN_FOUND)
         message("Doxygen need to be installed to generate the doxygen documentation")
     endif (DOXYGEN_FOUND)
+
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION rivsim)
 endif(BUILD_DOC)
