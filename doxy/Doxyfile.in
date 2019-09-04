@@ -5,8 +5,8 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "RiverSim"
-PROJECT_NUMBER         = 1.0.0
-PROJECT_BRIEF          = "Simulation of river network growth using Laplace equation"
+PROJECT_NUMBER         = 2.4.1
+PROJECT_BRIEF          = "River Simulation Program"
 PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/doxy/images/logo.png
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@
 CREATE_SUBDIRS         = NO
@@ -37,7 +37,7 @@ MULTILINE_CPP_IS_BRIEF = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 8
-ALIASES                = 
+ALIASES                += imageSize{3}="\htmlonly <style>div.image img[src=\"\1\"]{\2}</style>\endhtmlonly \image html \1 \"\3\""
 TCL_SUBST              = 
 OPTIMIZE_OUTPUT_FOR_C  = NO
 OPTIMIZE_OUTPUT_JAVA   = NO
@@ -112,59 +112,16 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @CMAKE_SOURCE_DIR@/README.md @CMAKE_SOURCE_DIR@/source @CMAKE_SOURCE_DIR@/doxy/articles
+INPUT                  += @CMAKE_SOURCE_DIR@/source
 INPUT_ENCODING         = UTF-8
-USE_MDFILE_AS_MAINPAGE = @CMAKE_SOURCE_DIR@/README.md
-FILE_PATTERNS          = *.c \
-                         *.cc \
-                         *.cxx \
-                         *.cpp \
-                         *.c++ \
-                         *.java \
-                         *.ii \
-                         *.ixx \
-                         *.ipp \
-                         *.i++ \
-                         *.inl \
-                         *.idl \
-                         *.ddl \
-                         *.odl \
-                         *.h \
-                         *.hh \
-                         *.hxx \
-                         *.hpp \
-                         *.h++ \
-                         *.cs \
-                         *.d \
-                         *.php \
-                         *.php4 \
-                         *.php5 \
-                         *.phtml \
-                         *.inc \
-                         *.m \
-                         *.markdown \
-                         *.md \
-                         *.mm \
-                         *.dox \
-                         *.py \
-                         *.pyw \
-                         *.f90 \
-                         *.f95 \
-                         *.f03 \
-                         *.f08 \
-                         *.f \
-                         *.for \
-                         *.tcl \
-                         *.vhd \
-                         *.vhdl \
-                         *.ucf \
-                         *.qsf
+USE_MDFILE_AS_MAINPAGE = 
+FILE_PATTERNS          = */source/*.cpp */source/*.hpp 
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = cxxopts.* *.md *.c json.*
+EXCLUDE_PATTERNS       = json.* triangle.cpp */source/*.md */cxxopts.hpp */json.hpp
 EXCLUDE_SYMBOLS        = 
-EXAMPLE_PATH           = 
+EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/source
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doxy/images
@@ -189,7 +146,7 @@ CLANG_OPTIONS          =
 #---------------------------------------------------------------------------
 # Configuration options related to the alphabetical class index
 #---------------------------------------------------------------------------
-ALPHABETICAL_INDEX     = YES
+ALPHABETICAL_INDEX     = NO
 COLS_IN_ALPHA_INDEX    = 5
 IGNORE_PREFIX          = 
 #---------------------------------------------------------------------------
@@ -243,7 +200,7 @@ MATHJAX_FORMAT         = HTML-CSS
 MATHJAX_RELPATH        = http://cdn.mathjax.org/mathjax/latest
 MATHJAX_EXTENSIONS     = 
 MATHJAX_CODEFILE       = 
-SEARCHENGINE           = YES
+SEARCHENGINE           = NO
 SERVER_BASED_SEARCH    = NO
 EXTERNAL_SEARCH        = NO
 SEARCHENGINE_URL       = 
@@ -292,7 +249,7 @@ MAN_LINKS              = NO
 #---------------------------------------------------------------------------
 # Configuration options related to the XML output
 #---------------------------------------------------------------------------
-GENERATE_XML           = YES
+GENERATE_XML           = NO
 XML_OUTPUT             = xml
 XML_PROGRAMLISTING     = YES
 #---------------------------------------------------------------------------
