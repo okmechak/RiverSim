@@ -25,3 +25,11 @@ if(BUILD_DOC)
 
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION rivsim)
 endif(BUILD_DOC)
+
+
+#Always install license and readme
+install(
+    FILES 
+        ${CMAKE_SOURCE_DIR}/README.md
+        ${CMAKE_SOURCE_DIR}/LICENSE 
+    DESTINATION rivsim)
