@@ -1,5 +1,22 @@
-/*! \file main.cpp
+/*
+    riversim - river growth simulation.
+    Copyright (c) 2019 Oleg Kmechak
+    Report issues: github.com/okmechak/RiverSim/issues
+   
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+*/
+
+/*!
+    \file main.cpp
     \brief Entry point of program and main loop handler.
+    @{
     
     Main incorporates user commands handling and managing of inner simulation objects.
     User commands are simple terminal commands(run ./riversim --help to check them all).
@@ -7,19 +24,38 @@
     simulation like: Geometry, Mesh, Triangle and Simualtion, which are all combined
     into the loop.
     Please review code for further details
+    @}
+
+
+    \mainpage Welcome
+    @{
+    ### Here you can find information about RiverSim program. From detailed description to general use cases.
+   
+    __RiverSim__ - is simulation of river network growth C++ program, using model based on Laplace equation.
+  
+    Mathematicaly, program solves Partial Differential Equation(PDE) using Finite Element Method(FEM). Solving of PDE involves setting up boundaries, mesh generation, building a linear system and finaly solution. 
+  
+    All these steps are done by using different open source C++ libraries: _Triangle_, _Tethex_ and  _Deal.II_, which are combined in one program - __RiverSim__.
+ 
+    ### Plot
+     - Introduction
+     - Detailed Description
+     - General Uses Cases
+    @}
 */
 
 #include "riversim.hpp"
 
 using namespace River;
 using namespace std;
-///Entry point of RiverSim program.
-/** It glues all together user inputs(commands) and inner objects to run simulation */
+
+/*! Entry point of RiverSim program.
+
+    It glues together all user inputs(commands) and inner objects to run simulation 
+*/
 int main(int argc, char *argv[])
 {
-    /**
-        Program options
-    */
+    //Program options
     auto vm = process_program_options(argc, argv);
 
     if (vm.count("help") || vm.count("version"))
@@ -77,7 +113,7 @@ int main(int argc, char *argv[])
     if(border.GetSourcesId() != tree.SourceBranchesID())
         throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
 
-        //Triangle mesh object setup
+    //Triangle mesh object setup
     Triangle tria;
     tria.AreaConstrain = true;
     tria.CustomConstraint = true;
@@ -107,8 +143,10 @@ int main(int argc, char *argv[])
     {
         print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
         //FIXME stop condition doesn't handle all conditions.
+        //! [StopConditionExample]
         while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<unsigned>())
         {
+        //! [StopConditionExample]
             
             print(mdl.prog_opt.verbose, "-----#" + to_string(i));
             string str = output_file_name;

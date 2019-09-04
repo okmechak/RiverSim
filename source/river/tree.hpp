@@ -1,27 +1,29 @@
 /*
- * riversim - river growth simulation.
- * Copyright (c) 2019 Oleg Kmechak
- * Report issues: github.com/okmechak/RiverSim/issues
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+    riversim - river growth simulation.
+    Copyright (c) 2019 Oleg Kmechak
+    Report issues: github.com/okmechak/RiverSim/issues
+    
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
  */
 
-/** @file tree.hpp
- *   Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry
- *   
- *   This file holds several classes like __BranchNew__, __Tree__, __GeometryNew__.
- *   BranchNew class represents single branch without any biffuracation points. 
- *   These branches are combined into Tree by means 
- *   of __Tree__ class. And finnaly __Tree__ class and __Border__ class are generated 
- *   into geometry that is used in simmulation by means of
- *   __GeometryNew__ class.
+/*! \file tree.hpp
+    @{
+    Holds all functionality that you need to work with tree of river, its separate branches and generation of final boundary geometry
+    
+    This file holds several classes like __BranchNew__, __Tree__, __GeometryNew__.
+    BranchNew class represents single branch without any biffuracation points. 
+    These branches are combined into Tree by means 
+    of __Tree__ class. And finnaly __Tree__ class and __Border__ class are generated 
+    into geometry that is used in simmulation by means of
+    __GeometryNew__ class.
+    @}
  */
 
 #pragma once
