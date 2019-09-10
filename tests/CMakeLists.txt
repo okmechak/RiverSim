@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 set(BUILD_TEST ON CACHE BOOL "Build Boost Unit Tests")
 
 if(BUILD_TEST)
+        enable_testing()
         include_directories(${PROJECT_SOURCE_DIR}/source/river)
         include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
 
@@ -21,7 +22,8 @@ if(BUILD_TEST)
         foreach(testSrc ${TEST_SRCS})
                 #Extract the filename without an extension (NAME_WE)
                 get_filename_component(testName ${testSrc} NAME_WE)
-        
+                set(testName ${testName}t)#name conflict resolving
+                
                 #Add compile target
                 add_executable(${testName} ${testSrc})
                 deal_ii_setup_target(${testName})
