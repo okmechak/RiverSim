@@ -1,9 +1,0 @@
-<map id="quality_statistics" name="quality_statistics">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#ac497210bc9192d88ed80659833ba5f55" title="traversalinit" alt="" coords="190,5,279,32"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#ac5f43264b4c12a0300c268142b0b3ee6" title="triangletraverse" alt="" coords="179,56,290,83"/>
-<area shape="rect" id="node5" href="$triangle_8cpp.html#adbb7ef8fc2a92efceb7c1c152fbd22f1" title="counterclockwise" alt="" coords="173,107,296,133"/>
-<area shape="rect" id="node4" href="$triangle_8cpp.html#a908560980328e10c897c5c34bb733e9d" title="traverse" alt="" coords="387,56,456,83"/>
-<area shape="rect" id="node6" href="$triangle_8cpp.html#abd5587da82afca7f6403c3ec3d17139a" title="counterclockwiseadapt" alt="" coords="344,107,499,133"/>
-<area shape="rect" id="node7" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="582,77,654,104"/>
-<area shape="rect" id="node8" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="547,129,689,170"/>
-</map>

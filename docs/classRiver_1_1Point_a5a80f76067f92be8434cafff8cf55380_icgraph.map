@@ -1,5 +1,0 @@
-<map id="River::Point::getPolar" name="River::Point::getPolar">
-<area shape="rect" id="node2" href="$classRiver_1_1Model.html#ad22bc4fecfe36e2cde033df2a5220c07" title="Evaluate next point of simualtion based on series parameters around tip. " alt="" coords="200,5,329,47"/>
-<area shape="rect" id="node3" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="377,13,571,39"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="619,13,669,39"/>
-</map>

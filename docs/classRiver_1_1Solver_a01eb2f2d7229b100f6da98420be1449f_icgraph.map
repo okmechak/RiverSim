@@ -1,5 +1,0 @@
-<map id="River::Solver::refine_grid" name="River::Solver::refine_grid">
-<area shape="rect" id="node2" href="$classRiver_1_1Solver.html#a4222fe744d607f870a5d7d22b11e8334" title="River::Solver::run" alt="" coords="220,5,344,32"/>
-<area shape="rect" id="node3" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="392,5,585,32"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="633,5,684,32"/>
-</map>

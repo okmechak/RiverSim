@@ -1,6 +1,0 @@
-<map id="mesh" name="mesh">
-<area shape="rect" id="node12" href="$structotri.html" title="{otri\n||}" alt="" coords="129,261,169,338"/>
-<area shape="rect" id="node3" href="$structmemorypool.html" title="{memorypool\n||}" alt="" coords="474,261,567,338"/>
-<area shape="rect" id="node8" href="$structbadtriang.html" title="{badtriang\n||}" alt="" coords="961,261,1035,338"/>
-<area shape="rect" id="node10" href="$structflipstacker.html" title="{flipstacker\n||}" alt="" coords="1153,261,1235,338"/>
-</map>

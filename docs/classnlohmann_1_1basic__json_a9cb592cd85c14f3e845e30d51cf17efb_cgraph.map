@@ -1,5 +1,0 @@
-<map id="nlohmann::basic_json::operator[]" name="nlohmann::basic_json::operator[]">
-<area shape="rect" id="node2" href="$classnlohmann_1_1basic__json.html#a9ad7ec0bc1082ed09d10900fbb20a21f" title="explicitly create an array from an initializer list " alt="" coords="203,5,351,47"/>
-<area shape="rect" id="node3" href="$classnlohmann_1_1detail_1_1type__error.html#aecc083aea4b698c33d042670ba50c10f" title="nlohmann::detail::type\l_error::create" alt="" coords="201,71,352,112"/>
-<area shape="rect" id="node4" href="$classnlohmann_1_1detail_1_1exception.html#abf41a7e9178356314082284e6cfea278" title="nlohmann::detail::exception\l::name" alt="" coords="400,71,581,112"/>
-</map>

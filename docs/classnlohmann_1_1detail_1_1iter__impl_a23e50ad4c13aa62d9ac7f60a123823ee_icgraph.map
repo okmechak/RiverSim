@@ -1,8 +1,0 @@
-<map id="nlohmann::detail::iter_impl::set_end" name="nlohmann::detail::iter_impl::set_end">
-<area shape="rect" id="node2" href="$classnlohmann_1_1basic__json.html#a13e032a02a7fd8a93fdddc2fcbc4763c" title="returns an iterator to one past the last element " alt="" coords="196,82,373,109"/>
-<area shape="rect" id="node6" href="$classnlohmann_1_1basic__json.html#a8dba7b7d2f38e6b0c614030aa43983f6" title="returns a const iterator to one past the last element " alt="" coords="211,136,359,177"/>
-<area shape="rect" id="node3" href="$classnlohmann_1_1basic__json.html#a81e0c41a4a9dff4df2f6973f7f8b2a83" title="applies a JSON patch " alt="" coords="421,5,569,47"/>
-<area shape="rect" id="node4" href="$classnlohmann_1_1basic__json.html#a4336103c941d9f60bd51320f4880e3dd" title="creates a diff as a JSON patch " alt="" coords="421,136,569,177"/>
-<area shape="rect" id="node5" href="$classnlohmann_1_1basic__json.html#a7c43ed2a3004c1fa9543913f37b9fca9" title="applies a JSON Merge Patch " alt="" coords="421,71,569,112"/>
-<area shape="rect" id="node7" href="$classnlohmann_1_1basic__json.html#a1cfa9ae5e7c2434cab4cfe69bffffe11" title="updates a JSON object from another object, overwriting existing keys " alt="" coords="421,201,569,243"/>
-</map>

@@ -1,6 +1,6 @@
-<map id="/home/oleg/Dev/riversim/source/river/tree.hpp" name="/home/oleg/Dev/riversim/source/river/tree.hpp">
-<area shape="rect" id="node7" href="$common_8hpp.html" title="Common geometric entities to whole program. " alt="" coords="481,169,578,196"/>
-<area shape="rect" id="node8" href="$tethex_8hpp.html" title="tethex &#45; tetrahedra to hexahedra conversion Copyright (c) 2013 Mikhail Artemyev Report issues: github..." alt="" coords="247,95,329,121"/>
-<area shape="rect" id="node11" href="$physmodel_8hpp.html" title="Physical model incapsulation. " alt="" coords="733,95,843,121"/>
-<area shape="rect" id="node15" href="$border_8hpp.html" title="Generate initial predefinide border geometry and its source positions. " alt="" coords="89,95,172,121"/>
+<map id="tree.hpp" name="tree.hpp">
+<area shape="rect" id="node2" href="$common_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program. " alt="" coords="149,155,256,181"/>
+<area shape="rect" id="node3" href="$tethex_8hpp.html" title="Classes for holding mesh and converting by splitting triangles to quadrangles. " alt="" coords="25,80,117,107"/>
+<area shape="rect" id="node4" href="$physmodel_8hpp.html" title="Contains all RiverSim program parameters. " alt="" coords="141,80,264,107"/>
+<area shape="rect" id="node5" href="$border_8hpp.html" title="Generate initial predefinide border geometry and its source positions. " alt="" coords="288,80,379,107"/>
 </map>

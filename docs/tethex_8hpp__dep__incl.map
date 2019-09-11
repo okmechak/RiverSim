@@ -1,14 +1,7 @@
-<map id="/home/oleg/Dev/riversim/source/river/tethex/tethex.hpp" name="/home/oleg/Dev/riversim/source/river/tethex/tethex.hpp">
-<area shape="rect" id="node2" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree of river, its separate branches and generatio..." alt="" coords="177,95,341,136"/>
-<area shape="rect" id="node9" href="$mesh_8hpp.html" title="Wrappers class of Triangle. " alt="" coords="417,95,581,136"/>
-<area shape="rect" id="node11" href="$solver_8hpp.html" title="PDE Solver and Integration tool. " alt="" coords="605,95,769,136"/>
-<area shape="rect" id="node13" href="$tethex_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/tethex/tethex.cpp" alt="" coords="793,95,992,136"/>
-<area shape="rect" id="node3" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data). " alt="" coords="5,184,169,225"/>
-<area shape="rect" id="node5" href="$riversim_8hpp.html" title="Rivers Simulation. " alt="" coords="277,273,447,315"/>
-<area shape="rect" id="node8" href="$tree_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/tree.cpp" alt="" coords="245,184,409,225"/>
-<area shape="rect" id="node4" href="$io_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/io.cpp" alt="" coords="5,273,169,315"/>
-<area shape="rect" id="node6" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="185,363,349,404"/>
-<area shape="rect" id="node7" href="$riversim_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/riversim.cpp" alt="" coords="373,363,543,404"/>
-<area shape="rect" id="node10" href="$mesh_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/mesh.cpp" alt="" coords="485,184,649,225"/>
-<area shape="rect" id="node12" href="$solver_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/solver.cpp" alt="" coords="725,184,889,225"/>
+<map id="tethex.hpp" name="tethex.hpp">
+<area shape="rect" id="node2" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="68,80,144,107"/>
+<area shape="rect" id="node5" href="$mesh_8hpp.html" title="Mesh generation functionality. " alt="" coords="144,155,231,181"/>
+<area shape="rect" id="node6" href="$solver_8hpp.html" title="PDE Solver and Integration tool. " alt="" coords="224,80,313,107"/>
+<area shape="rect" id="node3" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options..." alt="" coords="5,155,68,181"/>
+<area shape="rect" id="node4" href="$riversim_8hpp.html" title="Some general routines like backward, forward simulation etc. " alt="" coords="94,229,198,256"/>
 </map>

@@ -1,6 +1,0 @@
-<map id="River::Tree::GetSubBranches" name="River::Tree::GetSubBranches">
-<area shape="rect" id="node2" href="$namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a" title="Generates trees boundary. " alt="" coords="248,5,373,32"/>
-<area shape="rect" id="node3" href="$namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7" title="Finnal Boudary Geneartor Class. " alt="" coords="421,5,595,32"/>
-<area shape="rect" id="node4" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="643,5,836,32"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="884,5,935,32"/>
-</map>

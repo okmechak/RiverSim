@@ -1,4 +1,0 @@
-<map id="River::Solver::integrate" name="River::Solver::integrate">
-<area shape="rect" id="node2" href="$classRiver_1_1IntegrationParams.html#aa249fc71c13c39e0698b21d461eb7e09" title="Weight function used in computation of series parameters. " alt="" coords="209,5,376,47"/>
-<area shape="rect" id="node3" href="$classRiver_1_1IntegrationParams.html#aac7570ed475400eed41c4499d95fe072" title="Base Vector function used in computation of series parameters. " alt="" coords="209,71,376,112"/>
-</map>

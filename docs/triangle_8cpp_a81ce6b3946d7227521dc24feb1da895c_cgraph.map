@@ -1,6 +1,0 @@
-<map id="initializevertexpool" name="initializevertexpool">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#aea60f72bb0dc95698c995a1375b83743" title="poolinit" alt="" coords="183,31,245,57"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="299,5,370,32"/>
-<area shape="rect" id="node5" href="$triangle_8cpp.html#a2657afcbf1c107955b10ccf7dbf14c90" title="poolrestart" alt="" coords="293,56,376,83"/>
-<area shape="rect" id="node4" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="424,5,479,32"/>
-</map>

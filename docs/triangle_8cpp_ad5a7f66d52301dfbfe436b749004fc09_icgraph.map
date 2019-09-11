@@ -1,8 +1,0 @@
-<map id="dummyinit" name="dummyinit">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#aabcda1f9b42d64b70f96964649ce167e" title="initializetrisubpools" alt="" coords="136,31,268,57"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#ab67faa70960c7c39ee1150ab4d55f0a5" title="delaunay" alt="" coords="322,5,397,32"/>
-<area shape="rect" id="node7" href="$triangle_8cpp.html#a711adeeb3c28e4f2e3e173d729912c13" title="reconstruct" alt="" coords="316,56,403,83"/>
-<area shape="rect" id="node4" href="$triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. " alt="" coords="451,31,533,57"/>
-<area shape="rect" id="node5" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="Generate mesh. " alt="" coords="581,31,747,57"/>
-<area shape="rect" id="node6" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="795,31,988,57"/>
-</map>

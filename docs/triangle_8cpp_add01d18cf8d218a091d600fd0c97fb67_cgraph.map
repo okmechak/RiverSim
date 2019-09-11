@@ -1,8 +1,0 @@
-<map id="finddirection" name="finddirection">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#adbb7ef8fc2a92efceb7c1c152fbd22f1" title="counterclockwise" alt="" coords="145,35,268,61"/>
-<area shape="rect" id="node6" href="$triangle_8cpp.html#acc5f6f0f74028ace8827250ac3e0e05e" title="internalerror" alt="" coords="161,85,252,112"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#abd5587da82afca7f6403c3ec3d17139a" title="counterclockwiseadapt" alt="" coords="316,35,471,61"/>
-<area shape="rect" id="node4" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="554,5,626,32"/>
-<area shape="rect" id="node5" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="519,57,661,98"/>
-<area shape="rect" id="node7" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="366,85,421,112"/>
-</map>

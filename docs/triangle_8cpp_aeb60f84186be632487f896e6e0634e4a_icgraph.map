@@ -1,8 +1,0 @@
-<map id="findcircumcenter" name="findcircumcenter">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#a48fc63d369d988c08cbe8ab40f0b8af5" title="splittriangle" alt="" coords="172,5,260,32"/>
-<area shape="rect" id="node7" href="$triangle_8cpp.html#a63c072a0ec5fd1e7ab2f23ecc4dd576a" title="writevoronoi" alt="" coords="313,56,405,83"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#a5a654ff6b304f2166c64ffe9183b2995" title="enforcequality" alt="" coords="308,5,411,32"/>
-<area shape="rect" id="node4" href="$triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. " alt="" coords="459,31,541,57"/>
-<area shape="rect" id="node5" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="Generate mesh. " alt="" coords="589,31,755,57"/>
-<area shape="rect" id="node6" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="803,31,996,57"/>
-</map>

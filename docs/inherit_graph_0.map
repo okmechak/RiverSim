@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structbadsubseg.html" title="badsubseg" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node1" href="$classFunction.html" title="Function" alt="" coords="5,31,81,57"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Solver_1_1BoundaryValues.html" title="See Deal.II step&#45;6 for more details. " alt="" coords="129,5,348,32"/>
+<area shape="rect" id="node3" href="$classRiver_1_1Solver_1_1RightHandSide.html" title="See Deal.II step&#45;6 for more details. " alt="" coords="134,56,343,83"/>
 </map>

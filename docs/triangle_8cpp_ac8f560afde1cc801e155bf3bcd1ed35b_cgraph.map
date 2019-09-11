@@ -1,9 +1,0 @@
-<map id="nonregular" name="nonregular">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#abbd721e83ed16c99082c2152fa55e2ee" title="incircle" alt="" coords="139,39,201,65"/>
-<area shape="rect" id="node7" href="$triangle_8cpp.html#af2ba7764908abd3e47edf9d18b7a06d8" title="orient3d" alt="" coords="136,89,204,116"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#ade6dfff2bcdf2f287e419bc4e2a211dc" title="incircleadapt" alt="" coords="255,39,349,65"/>
-<area shape="rect" id="node4" href="$triangle_8cpp.html#abdcdaa8948d9a2937154d9d67f67da8d" title="scale_expansion_zeroelim" alt="" coords="400,5,575,32"/>
-<area shape="rect" id="node5" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="416,57,559,98"/>
-<area shape="rect" id="node6" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="451,123,523,149"/>
-<area shape="rect" id="node8" href="$triangle_8cpp.html#a49551af03108d1d44d1ff70af93dbdfd" title="orient3dadapt" alt="" coords="252,89,352,116"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="preciselocate" name="preciselocate">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#adbb7ef8fc2a92efceb7c1c152fbd22f1" title="counterclockwise" alt="" coords="152,35,275,61"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#abd5587da82afca7f6403c3ec3d17139a" title="counterclockwiseadapt" alt="" coords="323,35,477,61"/>
-<area shape="rect" id="node4" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="561,5,633,32"/>
-<area shape="rect" id="node5" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="525,57,668,98"/>
-</map>

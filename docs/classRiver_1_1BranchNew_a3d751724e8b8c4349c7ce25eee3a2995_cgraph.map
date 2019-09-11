@@ -1,6 +1,0 @@
-<map id="River::BranchNew::Shrink" name="River::BranchNew::Shrink">
-<area shape="rect" id="node2" href="$classRiver_1_1BranchNew.html#a2593a455f2a163a4f513c5614507737f" title="Returns vector of tip &#45; difference between two adjacent points. " alt="" coords="228,5,421,32"/>
-<area shape="rect" id="node3" href="$classRiver_1_1Point.html#a96d6c70f36acd051f5885163bc2de5b5" title="Returns norm of vector. " alt="" coords="261,56,389,83"/>
-<area shape="rect" id="node4" href="$classRiver_1_1BranchNew.html#ae2015dfdf6208b1a5df7e0fa48e7cd77" title="Remove tip point from branch(simply pops element from vector) " alt="" coords="231,107,418,149"/>
-<area shape="rect" id="node5" href="$classRiver_1_1BranchNew.html#a81a7a1477541ef4310d9e49197643146" title="Adds point p to branch in tip relative coord system. " alt="" coords="229,173,420,200"/>
-</map>

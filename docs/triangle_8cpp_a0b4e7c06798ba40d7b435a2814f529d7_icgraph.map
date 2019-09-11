@@ -1,7 +1,0 @@
-<map id="makevertexmap" name="makevertexmap">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#a77e7549672629c06d5926b7edcafc337" title="formskeleton" alt="" coords="168,5,265,32"/>
-<area shape="rect" id="node3" href="$triangle_8hpp.html#a4ca59bf5fe569672944651426b662ba6" title="Call Triangle. " alt="" coords="313,5,396,32"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Triangle.html#a0dae20b40d446e6009a88543e2c14daf" title="Generate mesh. " alt="" coords="444,5,609,32"/>
-<area shape="rect" id="node5" href="$namespaceRiver.html#af1a3f7c61809dd8032e4ff5920da83cc" title="One step of forward river evolution. " alt="" coords="657,5,851,32"/>
-<area shape="rect" id="node6" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="899,5,949,32"/>
-</map>

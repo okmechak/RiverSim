@@ -1,8 +1,0 @@
-<map id="testtriangle" name="testtriangle">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#a6b67091e1472b3c8d48c8540148dc1a8" title="enqueuebadtri" alt="" coords="140,31,243,57"/>
-<area shape="rect" id="node7" href="$triangle_8cpp.html#a435eb334f65dbd9268038e8881e24554" title="triunsuitable" alt="" coords="145,81,237,108"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#ab1760445583959132ffd9998372c9aac" title="poolalloc" alt="" coords="316,5,389,32"/>
-<area shape="rect" id="node6" href="$triangle_8cpp.html#a8b69474415bac9ddab3a5879974338b5" title="enqueuebadtriang" alt="" coords="291,56,415,83"/>
-<area shape="rect" id="node4" href="$triangle_8cpp.html#a5f51f1d3957615b2c84a91fd9f5f09bf" title="trimalloc" alt="" coords="463,5,533,32"/>
-<area shape="rect" id="node5" href="$triangle_8cpp.html#a648abfc70d158485620dbcb9aa990178" title="triexit" alt="" coords="581,5,636,32"/>
-</map>

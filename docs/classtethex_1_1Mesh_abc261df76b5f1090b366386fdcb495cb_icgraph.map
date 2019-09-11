@@ -1,5 +1,0 @@
-<map id="tethex::Mesh::find_face_from_two_edges" name="tethex::Mesh::find_face_from_two_edges">
-<area shape="rect" id="node2" href="$classtethex_1_1Mesh.html#ab739c5e4bbb1c3461a068c2104eab52e" title="Conversion from triangles to quadrangles. " alt="" coords="211,5,360,47"/>
-<area shape="rect" id="node3" href="$classtethex_1_1Mesh.html#adb803e48ce7101318531730a512ecbc8" title="Conversion of 2D meshes (triangles &#45;&gt; quadrangles) " alt="" coords="408,13,581,39"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Mesh.html#aaa882d21498571cbd84d4f7129fd6e32" title="Conversion from simplices to bricks. " alt="" coords="629,13,779,39"/>
-</map>

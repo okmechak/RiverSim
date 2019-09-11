@@ -1,5 +1,0 @@
-<map id="River::Border::GetSourcePoint" name="River::Border::GetSourcePoint">
-<area shape="rect" id="node2" href="$classRiver_1_1Border.html#a2f25dbd4abd2d3d684a4d01389e76a0d" title="Returns vector of sources points(both source point is merged into one). " alt="" coords="223,5,399,47"/>
-<area shape="rect" id="node4" href="$classRiver_1_1Border.html#ad884663725156885e8e5def07a2e49c1" title="Return normal line angle to boundary at point where is located source with source_id ..." alt="" coords="226,71,395,112"/>
-<area shape="rect" id="node3" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="Entry point of RiverSim program. " alt="" coords="447,13,497,39"/>
-</map>

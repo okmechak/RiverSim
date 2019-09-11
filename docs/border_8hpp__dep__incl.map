@@ -1,10 +1,5 @@
-<map id="/home/oleg/Dev/riversim/source/river/border.hpp" name="/home/oleg/Dev/riversim/source/river/border.hpp">
-<area shape="rect" id="node2" href="$border_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/border.cpp" alt="" coords="5,95,169,136"/>
-<area shape="rect" id="node3" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data). " alt="" coords="56,184,220,225"/>
-<area shape="rect" id="node5" href="$riversim_8hpp.html" title="Rivers Simulation. " alt="" coords="199,273,368,315"/>
-<area shape="rect" id="node8" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree of river, its separate branches and generatio..." alt="" coords="296,95,460,136"/>
-<area shape="rect" id="node4" href="$io_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/io.cpp" alt="" coords="11,273,175,315"/>
-<area shape="rect" id="node6" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="107,363,271,404"/>
-<area shape="rect" id="node7" href="$riversim_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/riversim.cpp" alt="" coords="295,363,464,404"/>
-<area shape="rect" id="node9" href="$tree_8cpp.html" title="/home/oleg/Dev/riversim\l/source/river/tree.cpp" alt="" coords="347,184,511,225"/>
+<map id="border.hpp" name="border.hpp">
+<area shape="rect" id="node2" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options..." alt="" coords="33,155,95,181"/>
+<area shape="rect" id="node3" href="$riversim_8hpp.html" title="Some general routines like backward, forward simulation etc. " alt="" coords="12,229,116,256"/>
+<area shape="rect" id="node4" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="89,80,165,107"/>
 </map>

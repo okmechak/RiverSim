@@ -1,8 +1,0 @@
-<map id="locate" name="locate">
-<area shape="rect" id="node2" href="$triangle_8cpp.html#abafde1fa8bfde5489dced6485939a19f" title="randomnation" alt="" coords="111,5,211,32"/>
-<area shape="rect" id="node3" href="$triangle_8cpp.html#adbb7ef8fc2a92efceb7c1c152fbd22f1" title="counterclockwise" alt="" coords="259,81,381,108"/>
-<area shape="rect" id="node7" href="$triangle_8cpp.html#a34a6e2c35be028da265a50ab3d9d6be6" title="preciselocate" alt="" coords="111,107,210,133"/>
-<area shape="rect" id="node4" href="$triangle_8cpp.html#abd5587da82afca7f6403c3ec3d17139a" title="counterclockwiseadapt" alt="" coords="429,81,584,108"/>
-<area shape="rect" id="node5" href="$triangle_8cpp.html#a3487d9f90ea72da543d5d38b3dab1fbc" title="estimate" alt="" coords="667,52,739,79"/>
-<area shape="rect" id="node6" href="$triangle_8cpp.html#a37646a7e0014e10c612e946bc95aeeea" title="fast_expansion_sum\l_zeroelim" alt="" coords="632,103,775,145"/>
-</map>
