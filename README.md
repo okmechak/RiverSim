@@ -7,6 +7,8 @@ Mathematicaly, in this program we solve PDE equation using Finite Element Method
 
 Program is written in C++ Language.  And contains few built-in  and external dependencies.  
 
+[Documentation](https://okmechak.github.io/RiverSim/)
+
 #### Built-in dependencies:
   * [__Triangle__](http://www.cs.cmu.edu/afs/cs/Web/People/quake/triangle.html) - robust and state of the art mesh generation tool.  
   * [__Tethex__](https://github.com/martemyev/tethex/wiki) - tool used for convertation from triangles to quadrangels.
@@ -89,14 +91,11 @@ And after that, typical backward simulation commnad:
 add more details about workflow with program(TODO)..
 
 
-## 4. Notes
-
-
-## 5. References
+## 4. References
 [1]: [Problem odwrotny do ewolucji sieci rzecznych](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf).
 [2]: Todo add other referneces.
 
-## 6. Links
+## 5. Links
 
 * [Github repo](https://github.com/okmechak/RiverSim).
 * [Website of project](https://okmechak.github.io/RiverSim/).
