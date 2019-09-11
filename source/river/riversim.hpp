@@ -47,9 +47,15 @@ namespace River
         \param[in] border Boundary geometry
         \param[in] tree River tree or network
         \return  Boolean value wich states is river tree close enough to border
+        \exception None
+        \pre No postcinditions
+        \post No postcinditions
+        \remark Some remark goes here
+        \note Just example of node tag
         \bug works only for rectangular region and do not consider bottom line
         \warning   Improper use can crash your application
         \todo generalize to any boundary shape.
+        \todo in qudrangular shape crossing of bottom line isn't handled.
    */
    bool StopConditionOfRiverGrowth(const Border& border, const Tree& tree);
 

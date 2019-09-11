@@ -14,9 +14,11 @@
  */
 
 #include "tethex.hpp"
+///\cond
 #include <algorithm>
 #include <fstream>
 #include <cmath>
+///\endcond
 
 namespace tethex {
 
@@ -570,7 +572,7 @@ Mesh::Mesh(
   , triangles(trianglesVal)
   , quadrangles(quaddranglesVal)
   , n_converted_quadrangles(0)
-  , physical_names()//TODO implement this if necessery
+  , physical_names()//implement this if necessery
 {}
 
           

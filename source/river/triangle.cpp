@@ -1368,7 +1368,6 @@ void set_tria_to_default(struct triangulateio *io)
   /*****************************************************************************/
 
 
-//FIXME: remove this hardcode with global variable!!!
 River::MeshParams* ac_global = NULL;
 int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
 {
@@ -11428,7 +11427,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
   REAL *holearray;   /* Array of holes. */
   REAL *regionarray; /* Array of regional attributes and area constraints. */
 
-  //FIXME: remove this global function
   ac_global = ac;
 
   triangleinit(&m);

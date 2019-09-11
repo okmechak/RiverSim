@@ -365,6 +365,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
         r(tr.GetBranch(1)->TipPoint(), tr.GetBranch(1)->TipAngle() - M_PI/4);
     
     auto[i1, i2] = tr.AddSubBranches(1, l, r);
+    cout << i2;
     BOOST_TEST(tree_vector.size() == 1);
     auto p = Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);

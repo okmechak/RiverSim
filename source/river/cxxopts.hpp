@@ -25,6 +25,7 @@ THE SOFTWARE.
 #ifndef CXXOPTS_HPP_INCLUDED
 #define CXXOPTS_HPP_INCLUDED
 
+///\cond
 #include <cstring>
 #include <cctype>
 #include <exception>
@@ -42,6 +43,7 @@ THE SOFTWARE.
 #include <optional>
 #define CXXOPTS_HAS_OPTIONAL
 #endif
+///\endcond
 
 #define CXXOPTS__VERSION_MAJOR 2
 #define CXXOPTS__VERSION_MINOR 2

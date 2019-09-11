@@ -13,14 +13,16 @@
  */
 
 /*! \file physmodel.hpp
-    @{
-    Physical model incapsulation.
-    
-    Holds all specific information about physical model of process.
-    @}
+    \brief Contains all RiverSim program parameters.
+    \details RiverSim - is big program with a lot of parameters.
+    Program handles geometry, boudary conditions, mesh generation, FEM solvers etc. And each this module has
+    a lot of parameters. 
+
+    These parameters can be specified by JSON file(\ref io.hpp) or through program options(\ref River::process_program_options).
  */
 #pragma once
 
+///\cond
 #include <iostream>
 #include <cmath>
 #include <complex>
@@ -28,38 +30,45 @@
 #include <math.h>
 #include <algorithm>
 #include <map>
+///\endcond
 
 #include "common.hpp"
 
 using namespace std;
 
+///Characteristic radius used by River::MeshParams object.
 #define Radius 0.01
 
 namespace River
 {
-    /*! 
-       global program options. 
+    /*! \brief Global program options. 
+        \details Program has some options that isn't part simulation itself but rather ease of use.
+        So this object is dedicated for such options.
      */
     class ProgramOptions
     {
         public:
+            ///If true - then program will print to standard output.
             bool verbose = false;
     };
 
-    /*!
-       Adaptive mesh area constraint function.
+    /*! \brief Adaptive mesh area constraint function.
+        \details
+        MeshParams holds all parameters used by mesh generation(see \ref triangle.hpp, \ref mesh.hpp)
      */
     class MeshParams
     {
         public:
-            //FIXME: implement this refinment function in better way
-            ///Vector of tip points.
+            /*! \brief Vector of tip points.
+                \details Tips - are points where mesh size should be small for better accuracy.
+                in this case it corresponds to river tip points.
+            */
             vector<Point> tip_points;
 
-            ///Radius of refinment.
+            ///Radius of mesh refinment.
             double refinment_radius = 4*Radius;
 
-            ///Power.
+            ///This value controlls transition slope between small mesh elements and big or course.
             double exponant = 7.;
 
             ///Minimal area of mesh.
@@ -71,29 +80,52 @@ namespace River
             ///Minimal angle of mesh element.
             double min_angle = 30.;
 
-            ///Maximal edge size TODO implement checks for this values
+            /*! \brief Maximal edge size.
+                \todo implement checks for this values.
+            */
             double max_edge = 1;
 
-            ///Minimal edge size
+            ///Minimal edge size.
             double min_edge = 8.e-8;
 
-            ///Ratio of the triangles: 
-            ///Aspect ratio of a triangle is the ratio of the longest edge to shortest edge. 
-            ///AR = abc/(8(s-a)(s-b)(s-c)) 
-            ///Value 2 correspond to 30 degree. How about 35? Resolve it TODO.
-            double ratio = 2.3;//TODO
+            /*! \brief Ratio of the triangles: 
+                
+                \details
+                Aspect ratio of a triangle is the ratio of the longest edge to shortest edge. 
+                AR = abc/(8(s-a)(s-b)(s-c)) 
+                Value 2 correspond to 30 degree.
 
-            ///Width of branch.
+                \todo check if it is implemented
+                \todo handle edge values of ration which will correspond to 35 degree.
+            */
+            double ratio = 2.3;
+
+            /*! \brief Width of branch.
+                \details
+                eps is width of splitting branch of tree into two lines, to make one border line.
+                This is when tree and border is converted into one boundary line.
+                \todo eps should depend on elementary step size __ds__.
+            */
             double eps = 1e-6;
 
-            ///Sigma used in exponence(same as in Gauss formula)
+            /*! \brief Sigma is used in exponence, also as \ref River::MeshParams::exponant controls slope. */
             double sigma = 1.9;
 
-            //Number of mesh refinment steps used by Deal.II mesh functionality.
+            /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
+                \details Refinment means splitting one rectangular element into four rectagular elements.
+            */ 
             unsigned static_refinment_steps = 3;
 
+            /*! \brief Evaluates mesh area constraint at {x, y} point.
+                \details
+
+                ### detailed implementation of function:  
+
+                \snippet physmodel.hpp MeshConstrain
+            */
             inline double operator()(double x, double y) const
             {
+                //! [MeshConstrain]
                 double result_area = 10000000/*some large area value*/;
                 for(auto& tip: tip_points)
                 {
@@ -105,25 +137,38 @@ namespace River
                 }
                 
                 return result_area;
+                //! [MeshConstrain]
             }
     };
 
+    /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
+    */
     class IntegrationParams
     {
         public:
-            ///Circle radius with centrum in tip point.
+            /*! \brief Circle radius with centrum in tip point.
+                \details Parameter is used in River::IntegrationParams::WeightFunction
+            */
             double weigth_func_radius = Radius;
 
-            ///Circle radius with centrum in tip point.
+            /*! \brief Circle radius with centrum in tip point.
+                \details Parameter is used in River::IntegrationParams::WeightFunction
+            */
             double integration_radius = 3 * Radius;
 
-            ///Parameter is used in evaluation of weight function.
+            /*! \brief Controls slope.
+                \details Parameter is used in River::IntegrationParams::WeightFunction
+            */
             double exponant = 2.;
             
-            ///Weight function used in computation of series parameters.
+            /*! Weight function used in computation of series parameters.
+                \snippet physmodel.hpp WeightFunc
+            */
             inline double WeightFunction(const double r) const
             {
+                //! [WeightFunc]
                 return exp(-pow(r / weigth_func_radius, exponant));
+                //! [WeightFunc]
             }
             
             ///Base Vector function used in computation of series parameters.
@@ -136,6 +181,7 @@ namespace River
                 
             }
 
+            ///Base Vector function used in computation of series parameters.
             inline double BaseVectorFinal(const int nf, const double angle, const double dx, const double dy ) const
             {
                 return BaseVector(nf, 
@@ -143,9 +189,9 @@ namespace River
                     *(dx + complex<double>(0.0, 1.0)*dy));
             }
     };
-    /**
-     * Holds All parameters used in solver.
-     */
+
+    /*! \brief Holds All parameters used in Deal.II solver.
+    */
     class SolverParams
     {
         public:
@@ -155,21 +201,20 @@ namespace River
             ///Fraction of refined mesh elements.
             double refinment_fraction = 0.1;
 
-            ///Number of refinment steps.
+            ///Number of adaptive refinment steps.
             unsigned adaptive_refinment_steps = 0;
 
             ///Tollerarnce used by dealii Solver.
             double tollerance = 1.e-12;
 
-            ///Number of iteration steps
+            ///Number of solver iteration steps
             unsigned num_of_iterrations = 6000;
     };
 
-    /**
-     * Physical model.
-     * 
-     * Holds parameters related to model. Region, numerical preocessing, parameters of growth etc.
-     */
+    /*! \brief Physical model parameters.
+        \details 
+        Holds parameters related to model. Region, numerical preocessing, parameters of growth etc.
+    */
     class Model
     {   
         public: 
@@ -191,22 +236,26 @@ namespace River
             vector<int> boundary_ids{1, 2, 3, river_boundary_id};
 
             //Model parameters
-            ///Boundary conditions, 0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 
-            ///1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)
+            /*! \brief Boundary conditions.
+                \details 0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 
+                1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)
+            */
             unsigned boundary_condition = 0;
 
             ///Field value used for Poisson conditions.
             double field_value = 1.0;
 
-            ///Eta. Power of a1^eta
+            ///Eta. Growth power of a1^eta
             double eta = 1.0;
 
-            ///Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 
+            ///Biffurcation method type. 
+            ///0 - a(3)/a(1) > biffurcation_threshold, 
             ///1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.
             unsigned biffurcation_type = 0;
             
-            ///Biffurcation threshold. first for 0 biffurcation type, second for 1.
+            ///Biffurcation threshold for "0" biffurcation type.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
+            ///Biffurcation threshold for "1" biffurcation type.
             double biffurcation_threshold_2 = 0.001;//Probably should be -0.1
 
             ///Minimal distance between adjacent biffurcation points. Reduces numerical noise.
@@ -241,6 +290,7 @@ namespace River
             ProgramOptions prog_opt;
 
             ///Checks by evaluating series params for biffuraction condition.
+            ///More details about that you can find at [PMaroweicki work](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf)
             bool q_biffurcate(vector<double> a, double branch_lenght) const
             {
                 bool dist_flag = branch_lenght > biffurcation_min_dist;
@@ -270,16 +320,19 @@ namespace River
                     throw invalid_argument("Wrong biffurcation_type value!");
             }
 
-            ///Checks by evaluating series param for growth condition.
+            ///Growth condition.
+            ///Checks series parameters around river tip and evaluates if it is enough to grow.
             inline bool q_growth(vector<double> a) const
             {
                 return a.at(0) > growth_threshold;
             }
 
-            ///Evaluate next point of simualtion based on series parameters around tip.
+            /*! \brief Evaluate next point of simualtion based on series parameters around tip.
+                \todo test different types of growth. Especially growth_type == 1.
+            */
             Polar next_point(vector<double> series_params, double branch_lenght) const
             {
-                //handle situation near biffurcation point, to reduce killing one branch by another
+                //handle situation near biffurcation point, to reduce "killing/shading" one branch by another
                 auto eta_local = eta;
                 if(branch_lenght < growth_min_distance)
                     eta_local = 0;//constant growth of both branches.
@@ -296,12 +349,13 @@ namespace River
                     auto dy = beta*beta/9*( pow(27/2*dl/beta/beta + 1, 2./3.) - 1),
                         dx = 2*sqrt( pow(dy, 3)/pow(beta,2) + pow(dy, 4) / pow(beta, 3));
 
-                    return Point{dx, dy}.getPolar();//TODO test this
+                    return Point{dx, dy}.getPolar();
                 }
                 else
                     throw invalid_argument("Invalid value of growth_type!");
             }
             
+            ///Return boundary line indices with zero value conditions.
             vector<int> GetZeroIndices() const
             {
                 if(boundary_condition == 0)
@@ -312,6 +366,7 @@ namespace River
                     throw invalid_argument("Invalid value of boundary_condition");   
             }
 
+            ///Return boundary line indices with non-zero value conditions.
             vector<int> GetNonZeroIndices() const
             {
                 if(boundary_condition == 0)
@@ -322,10 +377,10 @@ namespace River
                     throw invalid_argument("Invalid value of boundary_condition");   
             }
 
-            //Checks values of parameters
+            ///Checks if values of parameters are in normal ranges.
             void CheckParametersConsistency() const;
 
-            //Prints model structure and its subclasses
+            ///Prints model structure and its subclasses
             void print() const;
     };
 
@@ -342,7 +397,7 @@ namespace River
         ///series params info in biffurcation points
         map<int, vector<vector<double>>> branches_biffuraction_info;
 
-
+        ///Used for backward river simulation data gathering.
         void StartBiffurcationRecord(int br_id, double biffurcation_difference)
         {
             if(bif_difference.count(br_id))
@@ -353,6 +408,7 @@ namespace River
             }
         }
 
+        ///Used for backward river simulation data gathering.
         void EndBiffurcationRecord(int br_id, vector<double> series_params)
         {
             if(bif_difference.count(br_id))
@@ -362,7 +418,7 @@ namespace River
             }
         }
 
-
+        ///Record branch seriesc parameters and geometry difference.
         void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, const vector<double>& series_params)
         {
             if(!branches_series_params_and_geom_diff.count(branch_id))
@@ -389,8 +445,11 @@ namespace River
 
         private: 
 
+            ///holds difference between adjacent branches and id of source branch.
+            ///So called branch inconsistency at backward river simulation.
             map<int, double> bif_difference;
 
+            ///Record biffurcation point
             void RecordBiffurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
             {
                 if(!branches_biffuraction_info.count(branch_id))

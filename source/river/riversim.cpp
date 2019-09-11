@@ -15,12 +15,12 @@
 
 #include "riversim.hpp"
 
+///\cond
 #include <math.h>
+///\endcond
 
 namespace River
 {
-    //FIXME this will be walid only for quad region
-    //FIXME handle case ymin too!
     bool StopConditionOfRiverGrowth(const Border& border, const Tree& tree)
     {
         const auto tips = tree.TipPoints();
@@ -54,7 +54,6 @@ namespace River
             if(p.y > ymax)
                 ymax = p.y;
         }
-        //FIXME eps should depend on elementary step size.
         double dl = 0.007;
         return xmax > rxmax - dl || ymax > rymax - dl || xmin < rxmin + dl;
     }

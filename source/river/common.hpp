@@ -14,17 +14,20 @@
  */
 
 /*! \file common.hpp
-    @{
-    Common geometric entities to whole program.
+    \brief Common geometric entities like Vectors, Lines etc., to whole program.
+    \details
+    Program is higly depended on geometry which consist of Points, Vectors, Polar Vectors, Lines
+    and other which are implemented below.
+    Class River::Point is the most important and is basic class for rest geometrical classes like \ref River::BranchNew and \ref River::Border.
 
-    Like Point(or Vector), Polar - same vector but in Polar coordinates and simple
-    Line element.
-    @}
+    \see River::Point
  */
 #pragma once
 
+///\cond
 #include <vector>
 #include <iostream>
+///\endcond
 
 using namespace std;
 
@@ -34,128 +37,178 @@ using namespace std;
 */
 namespace std
 {
-template <>
-struct hash<pair<int, int>>
-{
-  size_t operator()(const pair<int, int> &x) const
-  {
-    int f = x.first, s = x.second;
-    return hash<int>()((f + s) * (f + s + 1) / 2 + s);
-  }
-};
+    template <>
+    struct hash<pair<int, int>>
+    {
+        size_t operator()(const pair<int, int> &x) const
+        {
+            int f = x.first, s = x.second;
+            return hash<int>()((f + s) * (f + s + 1) / 2 + s);
+        }
+    };
 } // namespace std
 
 
 
 namespace River
 {
-  ///Prints logs depending of log configuration(quiet or verbose)
-  void print(bool flag, string str);
+    ///Prints logs depending of log configuration(quiet or verbose)
+    void print(bool flag, string str);
 
 
-  /**
-   * Vector represented in polar coordinates.
-   */
-  class Polar
-  {
-    public:
+    /*! \class Polar
+        \brief Vector represented in polar coordinates.
+        
+        \details Contains only two public variables: __r__ and __phi__
+        \imageSize{PolarClass.jpg, height:40%;width:40%;, }
+    */
+    class Polar
+    {
+        public:
 
-      Polar() = default;
-      Polar(double dlval, double phival):
-        r{dlval}, phi{phival} {};
-      ///radius of points
-      double r = 0.;
-      ///angle of point
-      double phi = 0.;
+        ///Creates \"zero\"-polar vector(r = 0, phi = 0)
+        Polar() = default;
 
-      friend ostream& operator <<(ostream& write, const Polar & p)
-      {
-        cout << "Polar: " << p.r << " " << p.phi << endl;
-        return write;
-      }
+        ///Creates \"non-zero\"-polar vector(r = \p dlval, phi = \p phival)
+        Polar(double dlval, double phival):
+          r{dlval}, phi{phival} {};
+
+        ///Radius of points.
+        double r = 0.;
+
+        ///Angle of point.
+        double phi = 0.;
+
+        ///Converts Polar Object \p to string and redirects it to stream object \p write.
+        friend ostream& operator <<(ostream& write, const Polar & p)
+        {
+            write << "Polar: " << p.r << " " << p.phi << endl;
+            return write;
+        }
+    };
+
+    /*! \class Point
+        \brief Point object represented as vector.
+        
+        \details Mathematically - it is a vector, contains only two public variables, coordinates: __x__ and __y__.
+        Also it has a lot of operations which enables mathematical operations with two vectors:
+        vector and scalar, comparsion of two vectors, angle between vectors, rotations etc.
+        \imageSize{PointClass.jpg, height:40%;width:40%;, }
+    */
+     class Point
+    {
+        private:
+            ///Absolute precission parameter, used in Point comparsion \ref operator== function.
+            double eps = 1e-13;
+
+        public:
+            ///x coordinate.
+            double x = 0; 
+            ///y coordinate.
+            double y = 0;
+
+            ///Default constructor
+            Point() = default;
+
+            ///Default destructor
+            ~Point() = default;
+
+            ///Point constructor.
+            Point(double xval, double yval);
+
+            ///Copy constructor
+            Point(const Point &p) = default;
+
+            ///Converts Polar coordinates to Cartesian of Point.
+            Point(const Polar &p);
+
+            ///Returns lenght(norm) of vector.
+            double norm() const;
+
+            ///Evaluates norm of vector {\p x, \p y}.
+            static double norm(double x, double y);
+
+            /*! \brief Returns normalized vector of current Point.
+                \throw invalid_argument if vector lenght is zero
+                \return Normalized vector
+            */
+            Point getNormalized();
+
+            ///Rotates point on \p phi angle(counterclockwise)
+            Point& rotate(double phi);
+
+            ///Returns Polar representation of vector.
+            Polar getPolar() const;
+
+            /*! \brief Normalizes current Point.
+                \throw invalid_argument if vector lenght is zero
+            */
+            Point& normalize();
+
+            /*! \brief Returns angle of vector.
+                \throw invalid_argument if vector lenght is zero
+            */
+            double angle() const;
+
+            /*! \brief Returns angle of {\p x,\p y} vector.
+                \throw invalid_argument if vector lenght is zero
+            */
+            static double angle(double x, double y);
+
+            /*! \brief Returns angle relatively to \p p Point.
+                \throw invalid_argument if vector lenght one of poits is zero
+            */
+            double angle(const Point &p) const;
+
+            ///Prints point
+            void print() const;
+
+            /*! @name Math Operations 
+                @{
+            */
+            ///Assignment
+            Point& operator=(const Point& p) = default;
+            ///Sum
+            Point operator+(const Point& p) const;
+            Point& operator+=(const Point& p);
+            Point operator-(const Point& p) const;
+            Point& operator-=(const Point& p);
+            ///Scalar product
+            double operator*(const Point& p) const;
+            /*! \brief Comparison of points with \ref eps accuracy.
+            */
+            bool operator==(const Point& p) const;
+            /*! @} */
+            /*! @name Lenght gain operations
+                @{
+            */
+            Point operator*(const double gain) const;
+            Point& operator*=(const double gain);
+            Point operator/(const double gain) const;
+            Point& operator/=(const double gain);
+            /*! @} */
+            ///Retrives cordinate using array syntaxis.
+            double operator[](const int index) const;
+
+            ///Converts object to string and redirects it to stream.
+            friend ostream& operator <<(ostream& write, const Point & p);
   };
 
-  /**
-   * Point struct and feew functions to work with it.
-   */
-  class Point
-  {
-    private:
-      ///Absolute precission parameter, used in Point comparsion
-      double eps = 1e-13;
-
-    public:
-      ///Point coordinates;
-      double x = 0, y = 0;
-
-      Point() = default;
-      ~Point() = default;
-      Point(double xval, double yval);
-      Point(const Point &p) = default;
-      ///Converts Polar coordinates to Cartesian of Point.
-      Point(const Polar &p);
-
-      ///Returns norm of vector.
-      double norm() const;
-
-      ///Evaluates norm of vector {x, y}.
-      static double norm(double x, double y);
-
-      ///Returns normalized vector of current Point.
-      Point getNormalized();
-
-      ///Rotates point on __phi__ angle(counterclockwise)
-      Point& rotate(double phi);
-
-      ///Returns Polar representation of vector.
-      Polar getPolar() const;
-
-      ///Normalizes current Point.
-      Point& normalize();
-
-      ///Returns angle.
-      double angle() const;
-
-      ///Returns angle of {x, y} vector.
-      static double angle(double x, double y);
-
-      ///Returns angle relatively to __p__ Point
-      double angle(const Point &p) const;
-
-      ///Prints point
-      void print() const;
-
-      /**
-      * @name Math operations
-      * @{
-      */
-      Point& operator=(const Point& p) = default;
-      Point operator+(const Point& p) const;
-      Point& operator+=(const Point& p);
-      Point operator-(const Point& p) const;
-      Point& operator-=(const Point& p);
-      double operator*(const Point& p) const;
-      double operator[](const int index) const;
-      Point operator*(const double gain) const;
-      Point& operator*=(const double gain);
-      Point operator/(const double gain) const;
-      Point& operator/=(const double gain);
-      bool operator==(const Point& p) const;
-      /**
-       * @}
-       */
-
-      friend ostream& operator <<(ostream& write, const Point & p);
-  };
-
-  ///Line - holds indexes of __p1__ and __p2__ vertices.
-  class Line
-  {
-    public:
-      Line() = default;
-      Line(long unsigned p1v, long unsigned p2v, int idv):p1(p1v), p2(p2v), id(idv){};
-      long unsigned p1, p2;
-      int id;
-  };
+    /*! \brief 
+        Line - holds indexes of __p1__, __p2__ vertices and id.
+        Its structure is depended on Mesh data structure.
+    */
+    class Line
+    {
+        public:
+            ///Constructor.
+            Line(long unsigned p1v, long unsigned p2v, int idv):p1(p1v), p2(p2v), id(idv){};
+            ///Point index.
+            long unsigned p1;
+            ///Point index.
+            long unsigned p2;
+            ///Line Index.
+            int id;
+    };
 
 } // namespace River

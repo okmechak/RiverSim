@@ -15,7 +15,9 @@
 
 #include "common.hpp"
 
+///\cond
 #include <math.h>
+///\endcond
 
 namespace River
 {
@@ -117,7 +119,7 @@ namespace River
         throw std::invalid_argument("norm of one or another vector is 0");
 
       double phi = acos((x*p.x + y*p.y)/n/pn);
-      double sign = x*p.y - p.x*y > 0 ? 1 : -1;//FIXME: is this sign correct?
+      double sign = x*p.y - p.x*y > 0 ? 1 : -1;
       phi *= sign;
       return phi;
     }

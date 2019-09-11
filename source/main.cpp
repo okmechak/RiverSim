@@ -36,11 +36,84 @@
     Mathematicaly, program solves Partial Differential Equation(PDE) using Finite Element Method(FEM). Solving of PDE involves setting up boundaries, mesh generation, building a linear system and finaly solution. 
   
     All these steps are done by using different open source C++ libraries: _Triangle_, _Tethex_ and  _Deal.II_, which are combined in one program - __RiverSim__.
- 
-    ### Plot
-     - Introduction
-     - Detailed Description
-     - General Uses Cases
+    
+    ## Github Repository and Installation
+    
+    See [README](https://github.com/okmechak/RiverSim) on github repository for deatailed installation instruction.
+
+    ## Illustrations
+    
+    This illustration represents geometrical structure of program and how geometry relates to classes,
+    and how classes relates between each other.
+
+    Main geometry classes of program are next:
+
+    + River::Polar
+    + River::Point
+    + River::Border
+    + River::BranchNew
+    + River::Tree
+
+    \imageSize{GeometryClasses.jpg, height:70%;width:70%;, }
+
+    ## Program cycle workflow
+
+    Steps: 
+
+    + First step is to initialize program. This can be accomplished specifing program options
+        or input file(\ref io.hpp).
+    + 2,3 initialization on model geometry and model parameters.
+    + 4 - Triangulation process is started(see \ref mesh.hpp)
+        Mesh and boundary files are produced.
+    + 5 - PDE solver based on Deal.II library(see \ref solver.hpp)
+        VTK file is produced.
+    + 6 - Integration of series parameters near tip points(see River::Solver::integrate())
+    + 7 - Modification of tree: adding new points to tips. In other words - river growth process.
+        At this stage JSON file is produced with current river network state.
+    + Proces repeats from step 4, until River::StopConditionOfRiverGrowth is fired or sucessifull
+        number of steps is reached.
+
+    \imageSize{ProgramWorkflow.jpg, height:90%;width:90%;, }
+
+    ## Futher reading
+    
+    + Take a look into [File List](files.html). Some more important for understanding files:
+        + \ref common.hpp
+        + \ref border.hpp
+        + \ref tree.hpp
+        + \ref physmodel.hpp
+        + \ref io.hpp
+    + Next you can overview Classes from those files.
+    + For any suggestions or improvments create [issue](github.com/okmechak/RiverSim/issues) on github repo
+
+    ## Basic Program Usage
+
+    \todo add more usage examples.
+
+    As any Linux program, type in terminal from folder source(in your build folder) command:
+    > ./riversim
+
+    More details about parameters you can find in __help__ of program:
+    > ./riversim -h
+    or
+    > ./riversim --help
+    
+    Typical forward river simulation command:
+    > ./riversim -n 100 -o simdata
+
+    And after that, typical backward simulation commnad:
+    > ./riversim -n 130 -o revsim --simulation-type=1 simdata.json
+
+    ## References
+
+    [1]: [Problem odwrotny do ewolucji sieci rzecznych](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf).
+
+    ## Contacts
+
+    Oleg Kmechak, University of Warsaw
+    oleg.kmechak@gmail.com
+    2019
+
     @}
 */
 
@@ -135,14 +208,13 @@ int main(int argc, char *argv[])
 
 
     //MAIN LOOP
-    int i = 0;
+    unsigned i = 0;
     print(mdl.prog_opt.verbose, "Start of main loop...");
     print(!mdl.prog_opt.verbose, "Running...");
     //forward simulation case
     if(vm["simulation-type"].as<unsigned>() == 0)
     {
         print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
-        //FIXME stop condition doesn't handle all conditions.
         //! [StopConditionExample]
         while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<unsigned>())
         {

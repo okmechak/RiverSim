@@ -15,7 +15,9 @@
 
 #include "tree.hpp"
 
+///\cond
 #include <fstream>
+///\endcond
 
 namespace River
 {   
@@ -398,7 +400,6 @@ namespace River
     {
         vector<tethex::Point> tet_vertices;
         vector<tethex::MeshElement *> tet_lines, tet_triangles;
-        //TODO reserve size.
 
         auto m = br.SourceByVerticeIdMap();
         auto vertices = br.GetVertices();

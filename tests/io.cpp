@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE( io_methods,
     BOOST_TEST_CHECKPOINT("5");
     Save(mdl, time, border, tree, gd, "iotest");
     mdl = Model();
-    auto tree_b = Tree();//FIXME
+    auto tree_b = Tree();
     border = Border();
     gd = GeometryDifference();
     BOOST_TEST_CHECKPOINT("6");

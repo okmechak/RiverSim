@@ -14,6 +14,11 @@
  */
 
 #include "mesh.hpp"
+///\cond
+#include <iostream>
+#include <numeric>///< iota
+#include <iterator>///< ostream_iterator
+///\endcond
 
 namespace River{
 

@@ -7,7 +7,7 @@ add_library(tethex tethex.hpp tethex.cpp)
 add_library(common common.hpp common.cpp) 
 
 #utilities
-add_library(utilities utilities.hpp utilities.cpp version.hpp cxxopts.hpp) 
+add_library(utilities utilities.hpp utilities.cpp version.hpp)
 
 #physmodel
 add_library(physmodel physmodel.hpp physmodel.cpp) 
