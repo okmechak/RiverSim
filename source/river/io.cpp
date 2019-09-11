@@ -179,6 +179,9 @@ namespace River
         //program options
         if (vm.count("verbose")) mdl.prog_opt.verbose = vm["verbose"].as<bool>();
 
+        if (vm.count("number-of-steps")) 
+            mdl.prog_opt.number_of_steps = vm["number-of-steps"].as<unsigned>();
+
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
         if (vm.count("height")) mdl.height = vm["height"].as<double>();
@@ -289,7 +292,8 @@ namespace River
                 {"EndDate",  time.CurrentDate()},
                 {"TotalTime",  time.Total()},
                 {"EachCycleTime",  time.records},
-                {"InputFile", input_file}}},
+                {"InputFile", input_file},
+                {"NumberOfSteps", mdl.prog_opt.number_of_steps}}},
 
             {"Model", {
                 {"Description", "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) "},

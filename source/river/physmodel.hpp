@@ -50,6 +50,9 @@ namespace River
         public:
             ///If true - then program will print to standard output.
             bool verbose = false;
+
+            ///Number of simulation steps.
+            unsigned number_of_steps = 10;
     };
 
     /*! \brief Adaptive mesh area constraint function.

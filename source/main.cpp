@@ -216,7 +216,7 @@ int main(int argc, char *argv[])
     {
         print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
         //! [StopConditionExample]
-        while(!StopConditionOfRiverGrowth(border, tree) && i < vm["number-of-steps"].as<unsigned>())
+        while(!StopConditionOfRiverGrowth(border, tree) && i < mdl.prog_opt.number_of_steps)
         {
         //! [StopConditionExample]
             
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
     else if(vm["simulation-type"].as<unsigned>() == 1)
     {
         print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
-        while(tree.HasEmptySourceBranch() == false && i < vm["number-of-steps"].as<unsigned>())    
+        while(tree.HasEmptySourceBranch() == false && i < mdl.prog_opt.number_of_steps)    
         {
             print(mdl.prog_opt.verbose, "-----#" + to_string(i));
             

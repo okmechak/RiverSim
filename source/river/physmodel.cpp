@@ -207,5 +207,6 @@ namespace River
 
         cout << "Program optiosn:" << endl;
         cout << "\t verbose = " << prog_opt.verbose << endl;
+        cout << "\t number_of_steps = " << prog_opt.number_of_steps << endl;
     }
 }
