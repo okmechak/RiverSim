@@ -1,4 +1,5 @@
 <map id="triangle.hpp" name="triangle.hpp">
 <area shape="rect" id="node2" href="$mesh_8hpp.html" title="Mesh generation functionality. " alt="" coords="14,80,101,107"/>
 <area shape="rect" id="node3" href="$riversim_8hpp.html" title="Some general routines like backward, forward simulation etc. " alt="" coords="5,155,109,181"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="16,229,99,256"/>
 </map>

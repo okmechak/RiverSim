@@ -15,6 +15,8 @@
 
 /*!
     \file main.cpp
+    \todo add all practical cases of usage with print screens
+    \todo add shell scripts description
     \brief Entry point of program and main loop handler.
     @{
     
@@ -87,8 +89,6 @@
     + For any suggestions or improvments create [issue](github.com/okmechak/RiverSim/issues) on github repo
 
     ## Basic Program Usage
-
-    \todo add more usage examples.
 
     As any Linux program, type in terminal from folder source(in your build folder) command:
     > ./riversim

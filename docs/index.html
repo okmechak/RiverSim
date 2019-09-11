@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RiverSim: Main Page</title>
+<title>RiverSim: Welcome</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,7 +20,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
-   &#160;<span id="projectnumber">2.4.1</span>
+   &#160;<span id="projectnumber">2.4.2</span>
    </div>
    <div id="projectbrief">River Simulation Program</div>
   </td>
@@ -41,10 +41,76 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">RiverSim Documentation</div>  </div>
+<div class="title">Welcome </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><h3>Here you can find information about RiverSim program. From detailed description to general use cases.</h3>
+<p><b>RiverSim</b> - is simulation of river network growth C++ program, using model based on Laplace equation.</p>
+<p>Mathematicaly, program solves Partial Differential Equation(PDE) using Finite Element Method(FEM). Solving of PDE involves setting up boundaries, mesh generation, building a linear system and finaly solution.</p>
+<p>All these steps are done by using different open source C++ libraries: <em>Triangle</em>, <em>Tethex</em> and <em>Deal.II</em>, which are combined in one program - <b>RiverSim</b>.</p>
+<h2>Github Repository and Installation</h2>
+<p>See <a href="https://github.com/okmechak/RiverSim">README</a> on github repository for deatailed installation instruction.</p>
+<h2>Illustrations</h2>
+<p>This illustration represents geometrical structure of program and how geometry relates to classes, and how classes relates between each other.</p>
+<p>Main geometry classes of program are next:</p>
+<ul>
+<li><a class="el" href="classRiver_1_1Polar.html" title="Vector represented in polar coordinates. ">River::Polar</a></li>
+<li><a class="el" href="classRiver_1_1Point.html" title="Point object represented as vector. ">River::Point</a></li>
+<li><a class="el" href="classRiver_1_1Border.html" title="Handles initial boundary geometry without any geometry of river itself and contains info about source...">River::Border</a></li>
+<li><a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">River::BranchNew</a></li>
+<li><a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">River::Tree</a></li>
+</ul>
+<p> <style>div.image img[src="GeometryClasses.jpg"]{ height:70%;width:70%;}</style> </p><div class="image">
+<img src="GeometryClasses.jpg" alt="GeometryClasses.jpg"/>
+</div>
+ <h2>Program cycle workflow</h2>
+<p>Steps:</p>
+<ul>
+<li>First step is to initialize program. This can be accomplished specifing program options or input file(<a class="el" href="io_8hpp.html">io.hpp</a>).</li>
+<li>2,3 initialization on model geometry and model parameters.</li>
+<li>4 - Triangulation process is started(see <a class="el" href="mesh_8hpp.html">mesh.hpp</a>) Mesh and boundary files are produced.</li>
+<li>5 - PDE solver based on Deal.II library(see <a class="el" href="solver_8hpp.html">solver.hpp</a>) VTK file is produced.</li>
+<li>6 - Integration of series parameters near tip points(see River::Solver::integrate())</li>
+<li>7 - Modification of tree: adding new points to tips. In other words - river growth process. At this stage JSON file is produced with current river network state.</li>
+<li>Proces repeats from step 4, until <a class="el" href="namespaceRiver.html#a1fcca8a68f29561ee4ee16fe4f9ee800">River::StopConditionOfRiverGrowth</a> is fired or sucessifull number of steps is reached.</li>
+</ul>
+<p> <style>div.image img[src="ProgramWorkflow.jpg"]{ height:90%;width:90%;}</style> </p><div class="image">
+<img src="ProgramWorkflow.jpg" alt="ProgramWorkflow.jpg"/>
+</div>
+ <h2>Futher reading</h2>
+<ul>
+<li>Take a look into <a href="files.html">File List</a>. Some more important for understanding files:<ul>
+<li><a class="el" href="common_8hpp.html">common.hpp</a></li>
+<li><a class="el" href="border_8hpp.html">border.hpp</a></li>
+<li><a class="el" href="tree_8hpp.html">tree.hpp</a></li>
+<li><a class="el" href="physmodel_8hpp.html">physmodel.hpp</a></li>
+<li><a class="el" href="io_8hpp.html">io.hpp</a></li>
+</ul>
+</li>
+<li>Next you can overview Classes from those files.</li>
+<li>For any suggestions or improvments create <a href="github.com/okmechak/RiverSim/issues">issue</a> on github repo</li>
+</ul>
+<h2>Basic Program Usage</h2>
+<p>As any Linux program, type in terminal from folder source(in your build folder) command: </p><blockquote class="doxtable">
+<p>./riversim </p>
+</blockquote>
+<p>More details about parameters you can find in <b>help</b> of program: </p><blockquote class="doxtable">
+<p>./riversim -h </p>
+</blockquote>
+<p>or </p><blockquote class="doxtable">
+<p>./riversim &ndash;help </p>
+</blockquote>
+<p>Typical forward river simulation command: </p><blockquote class="doxtable">
+<p>./riversim -n 100 -o simdata </p>
+</blockquote>
+<p>And after that, typical backward simulation commnad: </p><blockquote class="doxtable">
+<p>./riversim -n 130 -o revsim &ndash;simulation-type=1 simdata.json </p>
+</blockquote>
+<h2>References</h2>
+<p>[1]: <a href="https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf">Problem odwrotny do ewolucji sieci rzecznych</a>.</p>
+<h2>Contacts</h2>
+<p>Oleg Kmechak, University of Warsaw <a href="#" onclick="location.href='mai'+'lto:'+'ole'+'g.'+'kme'+'ch'+'ak@'+'gm'+'ail'+'.c'+'om'; return false;">oleg.<span style="display: none;">.nosp@m.</span>kmec<span style="display: none;">.nosp@m.</span>hak@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> 2019 </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

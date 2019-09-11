@@ -1,8 +1,9 @@
 <map id="physmodel.hpp" name="physmodel.hpp">
 <area shape="rect" id="node2" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options..." alt="" coords="20,155,83,181"/>
 <area shape="rect" id="node3" href="$riversim_8hpp.html" title="Some general routines like backward, forward simulation etc. " alt="" coords="69,229,173,256"/>
-<area shape="rect" id="node4" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="62,80,138,107"/>
-<area shape="rect" id="node5" href="$triangle_8hpp.html" title="Piece of Art Mesh Generation Tool, Winner of the 2003 James Hardy Wilkinson Prize in Numerical Softwa..." alt="" coords="162,80,262,107"/>
-<area shape="rect" id="node6" href="$mesh_8hpp.html" title="Mesh generation functionality. " alt="" coords="168,155,255,181"/>
-<area shape="rect" id="node7" href="$solver_8hpp.html" title="PDE Solver and Integration tool. " alt="" coords="292,155,382,181"/>
+<area shape="rect" id="node5" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="62,80,138,107"/>
+<area shape="rect" id="node6" href="$triangle_8hpp.html" title="Piece of Art Mesh Generation Tool, Winner of the 2003 James Hardy Wilkinson Prize in Numerical Softwa..." alt="" coords="162,80,262,107"/>
+<area shape="rect" id="node7" href="$mesh_8hpp.html" title="Mesh generation functionality. " alt="" coords="168,155,255,181"/>
+<area shape="rect" id="node8" href="$solver_8hpp.html" title="PDE Solver and Integration tool. " alt="" coords="292,155,382,181"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="80,304,162,331"/>
 </map>
