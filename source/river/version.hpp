@@ -10,4 +10,4 @@
 ///Minor version number
 #define VERSION_MINOR 4
 ///PATCH number
-#define VERSION_PATCH 1
+#define VERSION_PATCH 2
