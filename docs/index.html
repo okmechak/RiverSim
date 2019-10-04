@@ -9,6 +9,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -44,13 +50,28 @@ $(function() {
 <div class="title">Welcome </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h3>Here you can find information about RiverSim program. From detailed description to general use cases.</h3>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#introduction">Introduction</a></li>
+<li class="level1"><a href="#githubrepo">Github Repository and Installation</a></li>
+<li class="level1"><a href="#illustrations">Illustrations</a></li>
+<li class="level1"><a href="#workflow">Program Cycle Workflow</a></li>
+<li class="level1"><a href="#futherreading">Futher Reading</a></li>
+<li class="level1"><a href="#basicusage">Basic Program Usage</a></li>
+<li class="level1"><a href="#references">References</a></li>
+<li class="level1"><a href="#contacts">Contacts</a></li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="introduction"></a>
+Introduction</h1>
+<p><b>Here you can find information about RiverSim program. From detailed description to general use cases</b>.</p>
 <p><b>RiverSim</b> - is simulation of river network growth C++ program, using model based on Laplace equation.</p>
 <p>Mathematicaly, program solves Partial Differential Equation(PDE) using Finite Element Method(FEM). Solving of PDE involves setting up boundaries, mesh generation, building a linear system and finaly solution.</p>
 <p>All these steps are done by using different open source C++ libraries: <em>Triangle</em>, <em>Tethex</em> and <em>Deal.II</em>, which are combined in one program - <b>RiverSim</b>.</p>
-<h2>Github Repository and Installation</h2>
+<h1><a class="anchor" id="githubrepo"></a>
+Github Repository and Installation</h1>
 <p>See <a href="https://github.com/okmechak/RiverSim">README</a> on github repository for deatailed installation instruction.</p>
-<h2>Illustrations</h2>
+<h1><a class="anchor" id="illustrations"></a>
+Illustrations</h1>
 <p>This illustration represents geometrical structure of program and how geometry relates to classes, and how classes relates between each other.</p>
 <p>Main geometry classes of program are next:</p>
 <ul>
@@ -63,7 +84,8 @@ $(function() {
 <p> <style>div.image img[src="GeometryClasses.jpg"]{ height:70%;width:70%;}</style> </p><div class="image">
 <img src="GeometryClasses.jpg" alt="GeometryClasses.jpg"/>
 </div>
- <h2>Program cycle workflow</h2>
+ <h1><a class="anchor" id="workflow"></a>
+Program Cycle Workflow</h1>
 <p>Steps:</p>
 <ul>
 <li>First step is to initialize program. This can be accomplished specifing program options or input file(<a class="el" href="io_8hpp.html">io.hpp</a>).</li>
@@ -77,9 +99,11 @@ $(function() {
 <p> <style>div.image img[src="ProgramWorkflow.jpg"]{ height:90%;width:90%;}</style> </p><div class="image">
 <img src="ProgramWorkflow.jpg" alt="ProgramWorkflow.jpg"/>
 </div>
- <h2>Futher reading</h2>
+ <h1><a class="anchor" id="futherreading"></a>
+Futher Reading</h1>
 <ul>
 <li>Take a look into <a href="files.html">File List</a>. Some more important for understanding files:<ul>
+<li><a class="el" href="experimets.html">Testing Program</a></li>
 <li><a class="el" href="common_8hpp.html">common.hpp</a></li>
 <li><a class="el" href="border_8hpp.html">border.hpp</a></li>
 <li><a class="el" href="tree_8hpp.html">tree.hpp</a></li>
@@ -90,7 +114,8 @@ $(function() {
 <li>Next you can overview Classes from those files.</li>
 <li>For any suggestions or improvments create <a href="github.com/okmechak/RiverSim/issues">issue</a> on github repo</li>
 </ul>
-<h2>Basic Program Usage</h2>
+<h1><a class="anchor" id="basicusage"></a>
+Basic Program Usage</h1>
 <p>As any Linux program, type in terminal from folder source(in your build folder) command: </p><blockquote class="doxtable">
 <p>./riversim </p>
 </blockquote>
@@ -106,9 +131,11 @@ $(function() {
 <p>And after that, typical backward simulation commnad: </p><blockquote class="doxtable">
 <p>./riversim -n 130 -o revsim &ndash;simulation-type=1 simdata.json </p>
 </blockquote>
-<h2>References</h2>
+<h1><a class="anchor" id="references"></a>
+References</h1>
 <p>[1]: <a href="https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf">Problem odwrotny do ewolucji sieci rzecznych</a>.</p>
-<h2>Contacts</h2>
+<h1><a class="anchor" id="contacts"></a>
+Contacts</h1>
 <p>Oleg Kmechak, University of Warsaw <a href="#" onclick="location.href='mai'+'lto:'+'ole'+'g.'+'kme'+'ch'+'ak@'+'gm'+'ail'+'.c'+'om'; return false;">oleg.<span style="display: none;">.nosp@m.</span>kmec<span style="display: none;">.nosp@m.</span>hak@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> 2019 </p>
 </div></div><!-- contents -->
 <!-- start footer part -->

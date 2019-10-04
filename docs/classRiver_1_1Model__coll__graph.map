@@ -1,6 +1,6 @@
 <map id="River::Model" name="River::Model">
-<area shape="rect" id="node2" href="$classRiver_1_1ProgramOptions.html" title="Global program options. " alt="" coords="5,349,175,426"/>
-<area shape="rect" id="node4" href="$classRiver_1_1SolverParams.html" title="Holds All parameters used in Deal.II solver. " alt="" coords="588,349,741,426"/>
-<area shape="rect" id="node8" href="$classRiver_1_1MeshParams.html" title="Adaptive mesh area constraint function. " alt="" coords="1247,349,1394,426"/>
-<area shape="rect" id="node11" href="$classRiver_1_1IntegrationParams.html" title="Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())..." alt="" coords="381,334,564,441"/>
+<area shape="rect" id="node2" href="$classRiver_1_1ProgramOptions.html" title="Global program options. " alt="" coords="45,349,214,426"/>
+<area shape="rect" id="node5" href="$classRiver_1_1SolverParams.html" title="Holds All parameters used in Deal.II solver. " alt="" coords="442,349,595,426"/>
+<area shape="rect" id="node8" href="$classRiver_1_1MeshParams.html" title="Adaptive mesh area constraint function. " alt="" coords="620,349,767,426"/>
+<area shape="rect" id="node11" href="$classRiver_1_1IntegrationParams.html" title="Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())..." alt="" coords="869,334,1051,441"/>
 </map>

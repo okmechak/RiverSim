@@ -9,6 +9,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -220,7 +226,7 @@ Here is the caller graph for this function:</div>
 <p>Evaluates if tip of tree is close enough to border. If it is, then it retuns <em>True</em>.  <style>div.image img[src="StopConditionOfRiverGrowth.jpg"]{ height:40%;width:40%;}</style> </p><div class="image">
 <img src="StopConditionOfRiverGrowth.jpg" alt="StopConditionOfRiverGrowth.jpg"/>
 </div>
-<p>Example of usage in <a class="el" href="main_8cpp.html" title="Entry point of program and main loop handler. ">main.cpp</a> function: </p><div class="fragment"><div class="line">        <span class="keywordflow">while</span>(!<a class="code" href="namespaceRiver.html#a1fcca8a68f29561ee4ee16fe4f9ee800">StopConditionOfRiverGrowth</a>(border, tree) &amp;&amp; i &lt; vm[<span class="stringliteral">&quot;number-of-steps&quot;</span>].as&lt;unsigned&gt;())</div><div class="line">        {</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+<p>Example of usage in <a class="el" href="main_8cpp.html" title="Entry point of program and main loop handler. ">main.cpp</a> function: </p><div class="fragment"><div class="line">        <span class="keywordflow">while</span>(!<a class="code" href="namespaceRiver.html#a1fcca8a68f29561ee4ee16fe4f9ee800">StopConditionOfRiverGrowth</a>(border, tree) &amp;&amp; i &lt; mdl.prog_opt.number_of_steps)</div><div class="line">        {</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">border</td><td>Boundary geometry </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">tree</td><td><a class="el" href="namespaceRiver.html" title="River namespace holds everything that is related to River simulation. ">River</a> tree or network </td></tr>

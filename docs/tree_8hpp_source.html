@@ -9,6 +9,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -88,7 +94,7 @@ $(function() {
 <div class="ttc" id="classRiver_1_1BranchNew_html_ae0c75ce3cb55cc12a7370af5cefafc5c"><div class="ttname"><a href="classRiver_1_1BranchNew.html#ae0c75ce3cb55cc12a7370af5cefafc5c">River::BranchNew::AddPoint</a></div><div class="ttdeci">BranchNew &amp; AddPoint(const Polar &amp;p)</div><div class="ttdoc">Adds polar p to branch in tip relative coord and angle system. </div><div class="ttdef"><b>Definition:</b> tree.hpp:95</div></div>
 <div class="ttc" id="classRiver_1_1BranchNew_html_afdbb1038f8cdda5e51873fa407095e8b"><div class="ttname"><a href="classRiver_1_1BranchNew.html#afdbb1038f8cdda5e51873fa407095e8b">River::BranchNew::SourcePoint</a></div><div class="ttdeci">Point SourcePoint() const</div><div class="ttdoc">Returns SourcePoint of branch(the first one). </div><div class="ttdef"><b>Definition:</b> tree.hpp:179</div></div>
 <div class="ttc" id="classRiver_1_1Tree_html_af8dea24d14674d06bc8183514a3e86d6"><div class="ttname"><a href="classRiver_1_1Tree.html#af8dea24d14674d06bc8183514a3e86d6">River::Tree::branches</a></div><div class="ttdeci">list&lt; BranchNew &gt; branches</div><div class="ttdoc">Holds all branches. </div><div class="ttdef"><b>Definition:</b> tree.hpp:529</div></div>
-<div class="ttc" id="classRiver_1_1Model_html"><div class="ttname"><a href="classRiver_1_1Model.html">River::Model</a></div><div class="ttdoc">Physical model parameters. </div><div class="ttdef"><b>Definition:</b> physmodel.hpp:218</div></div>
+<div class="ttc" id="classRiver_1_1Model_html"><div class="ttname"><a href="classRiver_1_1Model.html">River::Model</a></div><div class="ttdoc">Physical model parameters. </div><div class="ttdef"><b>Definition:</b> physmodel.hpp:221</div></div>
 <div class="ttc" id="classRiver_1_1Polar_html_a6a81706ba4e3eddaa21c5a6a415f276e"><div class="ttname"><a href="classRiver_1_1Polar.html#a6a81706ba4e3eddaa21c5a6a415f276e">River::Polar::phi</a></div><div class="ttdeci">double phi</div><div class="ttdoc">Angle of point. </div><div class="ttdef"><b>Definition:</b> common.hpp:80</div></div>
 <div class="ttc" id="namespaceRiver_html_ace7057edc24ee07f8265dad28b73a41a"><div class="ttname"><a href="namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a">River::TreeVector</a></div><div class="ttdeci">void TreeVector(vector&lt; Point &gt; &amp;tree_vector, int id, const Tree &amp;tree, double eps)</div><div class="ttdoc">Generates trees boundary. </div></div>
 <div class="ttc" id="classRiver_1_1Tree_html_a0365677b5c58bc04b380bc88dbd9fb83"><div class="ttname"><a href="classRiver_1_1Tree.html#a0365677b5c58bc04b380bc88dbd9fb83">River::Tree::source_branches_id</a></div><div class="ttdeci">vector&lt; int &gt; source_branches_id</div><div class="ttdoc">Holds all source branches. </div><div class="ttdef"><b>Definition:</b> tree.hpp:532</div></div>
