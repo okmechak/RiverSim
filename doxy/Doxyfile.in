@@ -112,12 +112,14 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  += @CMAKE_SOURCE_DIR@/source
+INPUT                  += @CMAKE_SOURCE_DIR@/source @CMAKE_SOURCE_DIR@/research/
 INPUT_ENCODING         = UTF-8
 USE_MDFILE_AS_MAINPAGE = 
-FILE_PATTERNS          = */source/*.hpp */main.cpp
+FILE_PATTERNS          = *.hpp */main.cpp
 RECURSIVE              = YES
-EXCLUDE                = 
+EXCLUDE                = @CMAKE_SOURCE_DIR@/research/mesh_gen_and_solvers_test
+EXCLUDE                += @CMAKE_SOURCE_DIR@/research/different
+EXCLUDE                += @CMAKE_SOURCE_DIR@/research/MatlabSolution
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = json.* triangle.cpp */source/*.md */cxxopts.hpp */json.hpp
 EXCLUDE_SYMBOLS        = std::*
@@ -159,7 +161,9 @@ HTML_HEADER            =
 HTML_FOOTER            = 
 HTML_STYLESHEET        = 
 HTML_EXTRA_STYLESHEET  = 
-HTML_EXTRA_FILES       = 
+HTML_EXTRA_FILES       = @CMAKE_SOURCE_DIR@/research/optimalparameters/parameter_lookup.sh
+HTML_EXTRA_FILES      += @CMAKE_SOURCE_DIR@/research/optimalparameters/RectangularRegionTest.nb
+HTML_EXTRA_FILES      += @CMAKE_SOURCE_DIR@/research/optimalparameters/test.edp
 HTML_COLORSTYLE_HUE    = 220
 HTML_COLORSTYLE_SAT    = 100
 HTML_COLORSTYLE_GAMMA  = 80
@@ -329,3 +333,4 @@ DOT_TRANSPARENT        = NO
 DOT_MULTI_TARGETS      = NO
 GENERATE_LEGEND        = YES
 DOT_CLEANUP            = YES
+USE_MATHJAX            = YES

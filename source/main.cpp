@@ -27,11 +27,15 @@
     into the loop.
     Please review code for further details
     @}
+*/
 
+/*! \mainpage Welcome
 
-    \mainpage Welcome
-    @{
-    ### Here you can find information about RiverSim program. From detailed description to general use cases.
+    \tableofcontents
+
+    \section introduction Introduction
+    
+    __Here you can find information about RiverSim program. From detailed description to general use cases__.
    
     __RiverSim__ - is simulation of river network growth C++ program, using model based on Laplace equation.
   
@@ -39,11 +43,11 @@
   
     All these steps are done by using different open source C++ libraries: _Triangle_, _Tethex_ and  _Deal.II_, which are combined in one program - __RiverSim__.
     
-    ## Github Repository and Installation
+    \section githubrepo Github Repository and Installation
     
     See [README](https://github.com/okmechak/RiverSim) on github repository for deatailed installation instruction.
 
-    ## Illustrations
+    \section illustrations Illustrations
     
     This illustration represents geometrical structure of program and how geometry relates to classes,
     and how classes relates between each other.
@@ -58,7 +62,7 @@
 
     \imageSize{GeometryClasses.jpg, height:70%;width:70%;, }
 
-    ## Program cycle workflow
+    \section workflow Program Cycle Workflow
 
     Steps: 
 
@@ -77,9 +81,10 @@
 
     \imageSize{ProgramWorkflow.jpg, height:90%;width:90%;, }
 
-    ## Futher reading
+    \section futherreading Futher Reading
     
     + Take a look into [File List](files.html). Some more important for understanding files:
+        + \ref experimets
         + \ref common.hpp
         + \ref border.hpp
         + \ref tree.hpp
@@ -88,7 +93,7 @@
     + Next you can overview Classes from those files.
     + For any suggestions or improvments create [issue](github.com/okmechak/RiverSim/issues) on github repo
 
-    ## Basic Program Usage
+    \section basicusage Basic Program Usage
 
     As any Linux program, type in terminal from folder source(in your build folder) command:
     > ./riversim
@@ -104,17 +109,15 @@
     And after that, typical backward simulation commnad:
     > ./riversim -n 130 -o revsim --simulation-type=1 simdata.json
 
-    ## References
+    \section references References
 
     [1]: [Problem odwrotny do ewolucji sieci rzecznych](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf).
 
-    ## Contacts
+    \section contacts Contacts
 
     Oleg Kmechak, University of Warsaw
     oleg.kmechak@gmail.com
     2019
-
-    @}
 */
 
 #include "riversim.hpp"
