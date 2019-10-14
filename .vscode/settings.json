@@ -65,6 +65,6 @@
         "**/.git/subtree-cache/**": true,
         "**/node_modules/**": true,
         "**/docs/**": true,
-        "**/build/doxy/**" : true
+        "**/build/docsrc/**" : true
     }
 }

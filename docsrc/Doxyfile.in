@@ -7,7 +7,7 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "RiverSim"
 PROJECT_NUMBER         = 2.4.2
 PROJECT_BRIEF          = "River Simulation Program"
-PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/doxy/images/logo.png
+PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docsrc/images/logo.png
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO
@@ -112,21 +112,19 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  += @CMAKE_SOURCE_DIR@/source @CMAKE_SOURCE_DIR@/research/
+INPUT                  += @CMAKE_SOURCE_DIR@/source @CMAKE_SOURCE_DIR@/research/ @CMAKE_SOURCE_DIR@/scripts/
 INPUT_ENCODING         = UTF-8
 USE_MDFILE_AS_MAINPAGE = 
 FILE_PATTERNS          = *.hpp */main.cpp
 RECURSIVE              = YES
-EXCLUDE                = @CMAKE_SOURCE_DIR@/research/mesh_gen_and_solvers_test
-EXCLUDE                += @CMAKE_SOURCE_DIR@/research/different
-EXCLUDE                += @CMAKE_SOURCE_DIR@/research/MatlabSolution
+EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = json.* triangle.cpp */source/*.md */cxxopts.hpp */json.hpp
 EXCLUDE_SYMBOLS        = std::*
 EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/source
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
-IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doxy/images
+IMAGE_PATH             = @CMAKE_SOURCE_DIR@/docsrc/images
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
