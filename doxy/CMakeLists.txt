@@ -23,7 +23,7 @@ if(BUILD_DOC)
         message("Doxygen need to be installed to generate the doxygen documentation")
     endif (DOXYGEN_FOUND)
 
-    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION rivsim)
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION riversim)
 endif(BUILD_DOC)
 
 
@@ -32,4 +32,4 @@ install(
     FILES 
         ${CMAKE_SOURCE_DIR}/README.md
         ${CMAKE_SOURCE_DIR}/LICENSE 
-    DESTINATION rivsim)
+    DESTINATION riversim)

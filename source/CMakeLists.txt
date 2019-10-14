@@ -38,5 +38,5 @@ if(BUILD_PROGRAM)
 
     target_link_libraries(riversim river)
 
-    install(TARGETS riversim DESTINATION rivsim)
+    install(TARGETS riversim DESTINATION riversim)
 endif(BUILD_PROGRAM)

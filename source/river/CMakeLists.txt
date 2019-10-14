@@ -43,4 +43,4 @@ add_library(river riversim.hpp riversim.cpp)
 deal_ii_setup_target(river)
 target_link_libraries(river tethex common physmodel border triangle io solver tree mesh) 
 
-install(TARGETS river DESTINATION rivsim)
+install(TARGETS river DESTINATION riversim)
