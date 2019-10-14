@@ -84,7 +84,7 @@
     \section futherreading Futher Reading
     
     + Take a look into [File List](files.html). Some more important for understanding files:
-        + \ref experimets
+        + \ref experiments
         + \ref common.hpp
         + \ref border.hpp
         + \ref tree.hpp

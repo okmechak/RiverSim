@@ -225,7 +225,7 @@
 
     \see River::Timing
 
-    ## [Example of JSON file output](https://github.com/okmechak/RiverSim/blob/master/experimets/test_tree.json)
+    ## [Example of JSON file output](https://github.com/okmechak/RiverSim/blob/master/experiments/test_tree.json)
 */
 
 #pragma once

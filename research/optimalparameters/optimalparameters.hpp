@@ -1,4 +1,4 @@
-/*! \page experimets Testing Program
+/*! \page experiments Testing Program
 
     \tableofcontents
 

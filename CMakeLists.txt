@@ -24,4 +24,4 @@ add_subdirectory(source)
 add_subdirectory(doxy)
 add_subdirectory(tests)
 
-install(DIRECTORY experimets DESTINATION riversim)
+install(DIRECTORY experiments DESTINATION riversim)

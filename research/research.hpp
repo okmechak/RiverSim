@@ -9,5 +9,5 @@
 
     \section introres Introduction
 
-    \subpage experimets
+    \subpage experiments
 */
