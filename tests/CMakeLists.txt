@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 2.8)
 set(BUILD_TEST ON CACHE BOOL "Build Boost Unit Tests")
 
 if(BUILD_TEST)
-        enable_testing()
         include_directories(${PROJECT_SOURCE_DIR}/source/river)
         include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
 

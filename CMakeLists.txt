@@ -22,6 +22,6 @@ endif()
 
 add_subdirectory(source)
 add_subdirectory(docsrc)
+add_subdirectory(scripts)
+enable_testing()
 add_subdirectory(tests)
-
-install(DIRECTORY experiments DESTINATION riversim)
