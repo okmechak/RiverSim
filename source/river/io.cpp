@@ -456,8 +456,26 @@ namespace River
                 lines.push_back(Line{(long unsigned)l.at(0), (long unsigned)l.at(1), l.at(2)});
 
             border = Border{points, lines, sources};
+
+            //Get size of bounding box of border and update width and height values of module
+            auto xmax = points.at(0).x,
+                xmin = points.at(0).x,
+                ymax = points.at(0).y,
+                ymin = points.at(0).y;
+            for(auto&p: points)
+            {
+                if(p.x > xmax)
+                    xmax = p.x;
+                if(p.x < xmin)
+                    xmin = p.x;
+                if(p.y > ymax)
+                    ymax = p.y;
+                if(p.y < ymin)
+                    ymin = p.y;
+            }
+            mdl.width = xmax - xmin;
+            mdl.height = ymax - ymin;
         }
-        
 
         if(j.count("Trees"))
         {
