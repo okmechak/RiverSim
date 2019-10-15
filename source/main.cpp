@@ -213,13 +213,12 @@ int main(int argc, char *argv[])
     //MAIN LOOP
     unsigned i = 0;
     print(mdl.prog_opt.verbose, "Start of main loop...");
-    print(!mdl.prog_opt.verbose, "Running...");
     //forward simulation case
     if(vm["simulation-type"].as<unsigned>() == 0)
     {
         print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
         //! [StopConditionExample]
-        while(!StopConditionOfRiverGrowth(border, tree) && i < mdl.prog_opt.number_of_steps)
+        while(!StopConditionOfRiverGrowth(mdl, border, tree) && i < mdl.prog_opt.number_of_steps)
         {
         //! [StopConditionExample]
             

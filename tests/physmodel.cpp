@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( next_point_method,
 {
     Model mdl;
     mdl.ds = 0.003;
-    auto p = mdl.next_point({0.0233587, 0.0117224, 0.621602}, 0);
+    auto p = mdl.next_point({0.0233587, 0.0117224, 0.621602}, 0, 1/*maximal a series param*/);
     BOOST_TEST(p.r == pow(mdl.ds, mdl.eta));
     BOOST_TEST(p.phi ==-0.054918865933649114);
 

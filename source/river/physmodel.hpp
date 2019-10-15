@@ -53,6 +53,9 @@ namespace River
 
             ///Number of simulation steps.
             unsigned number_of_steps = 10;
+
+            ///This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.
+            double maximal_river_height = 100;
     };
 
     /*! \brief Adaptive mesh area constraint function.
@@ -333,7 +336,7 @@ namespace River
             /*! \brief Evaluate next point of simualtion based on series parameters around tip.
                 \todo test different types of growth. Especially growth_type == 1.
             */
-            Polar next_point(vector<double> series_params, double branch_lenght) const
+            Polar next_point(vector<double> series_params, double branch_lenght, double max_a) const
             {
                 //handle situation near biffurcation point, to reduce "killing/shading" one branch by another
                 auto eta_local = eta;
@@ -341,7 +344,7 @@ namespace River
                     eta_local = 0;//constant growth of both branches.
 
                 auto beta = series_params.at(0)/series_params.at(1),
-                    dl = ds * pow(series_params.at(0), eta_local);
+                    dl = ds * pow(series_params.at(0)/max_a, eta_local);
                 if(growth_type == 0)
                 {
                     double phi = -atan(2 / beta * sqrt(dl));

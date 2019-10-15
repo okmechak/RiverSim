@@ -46,6 +46,7 @@ namespace River
         \snippet main.cpp StopConditionExample
         \param[in] border Boundary geometry
         \param[in] tree River tree or network
+        \param[in] mdl Holds maximal value of y-coord, which can be reached by river
         \return  Boolean value wich states is river tree close enough to border
         \exception None
         \pre No postcinditions
@@ -57,7 +58,7 @@ namespace River
         \todo generalize to any boundary shape.
         \todo in qudrangular shape crossing of bottom line isn't handled.
    */
-   bool StopConditionOfRiverGrowth(const Border& border, const Tree& tree);
+   bool StopConditionOfRiverGrowth(const Model& mdl, const Border& border, const Tree& tree);
 
    /*!One step of forward river evolution.*/
    void ForwardRiverEvolution(

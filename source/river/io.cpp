@@ -78,6 +78,7 @@ namespace River
         //Simulation parameters
         options.add_options("Simulation parameters")
         ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value("10"))
+        ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", value<double>()->default_value("100"))
         ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value("0"));
         
         //Geometry parameters
@@ -181,6 +182,8 @@ namespace River
 
         if (vm.count("number-of-steps")) 
             mdl.prog_opt.number_of_steps = vm["number-of-steps"].as<unsigned>();
+        if (vm.count("maximal-river-height"))
+            mdl.prog_opt.maximal_river_height = vm["maximal-river-height"].as<double>();
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
@@ -293,7 +296,8 @@ namespace River
                 {"TotalTime",  time.Total()},
                 {"EachCycleTime",  time.records},
                 {"InputFile", input_file},
-                {"NumberOfSteps", mdl.prog_opt.number_of_steps}}},
+                {"NumberOfSteps", mdl.prog_opt.number_of_steps},
+                {"MaximalRiverHeight", mdl.prog_opt.maximal_river_height}}},
 
             {"Model", {
                 {"Description", "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) "},
@@ -368,6 +372,13 @@ namespace River
 
         json j;
         in >> j;
+        if(j.count("RuntimeInfo"))
+        {
+            json jrun = j["RuntimeInfo"];
+
+            if(jrun.count("MaximalRiverHeight")) jrun.at("MaximalRiverHeight").get_to(mdl.prog_opt.maximal_river_height);
+            if(jrun.count("NumberOfSteps")) jrun.at("NumberOfSteps").get_to(mdl.prog_opt.number_of_steps);
+        }
         if(j.count("Model"))
         {
             json jmdl = j["Model"];

@@ -21,7 +21,7 @@
 
 namespace River
 {
-    bool StopConditionOfRiverGrowth(const Border& border, const Tree& tree)
+    bool StopConditionOfRiverGrowth(const Model& mdl, const Border& border, const Tree& tree)
     {
         const auto tips = tree.TipPoints();
 
@@ -55,6 +55,11 @@ namespace River
                 ymax = p.y;
         }
         double dl = 0.007;
+
+        for(auto &br: tree.branches)
+            if(br.TipPoint().y > mdl.prog_opt.maximal_river_height)
+                return true;
+
         return xmax > rxmax - dl || ymax > rymax - dl || xmin < rxmin + dl;
     }
 
@@ -92,16 +97,27 @@ namespace River
 
         //Iterate over each tip and handle branch growth and its biffurcations
         print(mdl.prog_opt.verbose, "Iteration over each tip point...");
+        map<int, vector<double>> id_series_params;
         for(auto id: tree.TipBranchesId())
         {
             auto tip_point = tree.GetBranch(id)->TipPoint();
             auto tip_angle = tree.GetBranch(id)->TipAngle();
-            auto series_params = sim.integrate(mdl, tip_point, tip_angle);
+            id_series_params[id] = sim.integrate(mdl, tip_point, tip_angle);
+        }
 
+        //Evaluate maximal a parameter to normalize growth of speed to all branches dr = ds*v / max(v_array).
+        double max_a = 0.;
+        for(auto&[id, series_params]: id_series_params)
+            if (max_a < series_params.at(0))
+                max_a = series_params.at(0);
+
+        for(auto&[id, series_params]: id_series_params)
             if(mdl.q_growth(series_params))
             {
                 if(mdl.q_biffurcate(series_params, tree.GetBranch(id)->Lenght()))
                 {
+                    auto tip_point = tree.GetBranch(id)->TipPoint();
+                    auto tip_angle = tree.GetBranch(id)->TipAngle();
                     auto br_left = BranchNew(tip_point, tip_angle + mdl.biffurcation_angle);
                     br_left.AddPoint(Polar{mdl.ds, 0});
                     auto br_right = BranchNew(tip_point, tip_angle - mdl.biffurcation_angle);
@@ -109,9 +125,8 @@ namespace River
                     tree.AddSubBranches(id, br_left, br_right);
                 }
                 else
-                    tree.GetBranch(id)->AddPoint(mdl.next_point(series_params, tree.GetBranch(id)->Lenght()));
+                    tree.GetBranch(id)->AddPoint(mdl.next_point(series_params, tree.GetBranch(id)->Lenght(), max_a));
             }
-        }
         sim.clear();
     }
 
@@ -139,6 +154,11 @@ namespace River
         }
         sim.clear();
 
+        double max_a = 0.;
+        for(auto&[id, series_params]: ids_seriesparams_map)
+            if(max_a < series_params.at(0))
+                max_a = series_params.at(0);
+
         
         //Processing backward growth by iterating over each tip id and its series_params
         for(auto[id, series_params]: ids_seriesparams_map)
@@ -147,7 +167,7 @@ namespace River
                     Shrink(mdl.next_point(
                         series_params, 
                         mdl.growth_min_distance + 1/*we are not constraining here speed growth near 
-                        biffuraction points, so we set some value greater than it limit*/).r);
+                        biffuraction points, so we set some value greater than it limit*/, max_a).r);
 
         //collect branches which reached zero lenght(biffurcation point)
         vector<int> zero_size_branches_id;
