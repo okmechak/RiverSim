@@ -8,6 +8,6 @@
 ///Major version number
 #define VERSION_MAJOR 2
 ///Minor version number
-#define VERSION_MINOR 4
+#define VERSION_MINOR 5
 ///PATCH number
-#define VERSION_PATCH 3
+#define VERSION_PATCH 0
