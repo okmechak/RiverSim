@@ -1,2 +1,2 @@
-# Experiments from Stasiek ¯ukowski
+# Experiments from Stasiek Å»ukowski
 Contact: stasqo@gmail.com
