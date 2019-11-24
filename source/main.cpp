@@ -281,7 +281,7 @@ int main(int argc, char *argv[])
         throw invalid_argument("Invalid simulation type selected: " + to_string(vm["simulation-type"].as<unsigned>()));
 
     print(mdl.prog_opt.verbose, "End of main loop...");
-    print(true, "Done.");
+    print(mdl.prog_opt.verbose, "Done.");
 
     return 0;
 }

@@ -56,8 +56,11 @@ namespace River
 
             ///This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.
             double maximal_river_height = 100;
-    };
 
+            ///Number of backward steps simulations used in backward simulation type.
+            unsigned number_of_backward_steps = 5;
+    };
+    
     /*! \brief Adaptive mesh area constraint function.
         \details
         MeshParams holds all parameters used by mesh generation(see \ref triangle.hpp, \ref mesh.hpp)

@@ -79,7 +79,8 @@ namespace River
         options.add_options("Simulation parameters")
         ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value("10"))
         ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", value<double>()->default_value("100"))
-        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value("0"));
+        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value("0"))
+        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value("3"));
         
         //Geometry parameters
         options.add_options("Border geometry parameters")
@@ -184,6 +185,8 @@ namespace River
             mdl.prog_opt.number_of_steps = vm["number-of-steps"].as<unsigned>();
         if (vm.count("maximal-river-height"))
             mdl.prog_opt.maximal_river_height = vm["maximal-river-height"].as<double>();
+        if (vm.count("number-of-backward-steps"))
+            mdl.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
@@ -306,6 +309,7 @@ namespace River
                 {"height", mdl.height},
                 {"riverBoundaryId", mdl.river_boundary_id},
                 {"boundaryIds", mdl.boundary_ids}, 
+                {"numberOfBackwardSteps", mdl.prog_opt.number_of_backward_steps},
 
                 {"boundaryCondition", mdl.boundary_condition},
                 {"fieldValue", mdl.field_value},
@@ -388,6 +392,7 @@ namespace River
             if (jmdl.count("dx")) jmdl.at("dx").get_to(mdl.dx);
             if (jmdl.count("riverBoundaryId")) jmdl.at("riverBoundaryId").get_to(mdl.river_boundary_id);
             if (jmdl.count("boundaryIds")) jmdl.at("boundaryIds").get_to(mdl.boundary_ids);
+            if (jmdl.count("numberOfBackwardSteps")) jmdl.at("numberOfBackwardSteps").get_to(mdl.prog_opt.number_of_backward_steps);
             
             if (jmdl.count("boundaryCondition")) jmdl.at("boundaryCondition").get_to(mdl.boundary_condition);
             if (jmdl.count("fieldValue")) jmdl.at("fieldValue").get_to(mdl.field_value);

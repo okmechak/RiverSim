@@ -28,7 +28,10 @@ namespace River
         if(prog_opt.maximal_river_height < 0)
             throw invalid_argument("Invalid value of maximal_river_height = " + to_string(prog_opt.maximal_river_height) + ", it should be in range greater then 0 up to height.");
         else if (prog_opt.maximal_river_height > height)
-            cout << "maximal_river_height is greater then height of region, so it does not have any effect.";
+            cout << "maximal_river_height is greater then height of region, so it does not have any effect." << endl;
+
+        if(prog_opt.number_of_backward_steps > 30)
+            cout << "number_of_backward_steps = " + to_string(prog_opt.number_of_backward_steps) + " parameter is very big, unpredictable behaviour may occur." << endl;
 
         //Model
         if(dx < 0 || dx > width)
@@ -169,6 +172,7 @@ namespace River
         cout << "\t width = " << width << endl;
         cout << "\t height = " << height << endl;
         cout << "\t river_boundary_id = " << river_boundary_id << endl;
+        cout << "\t number_of_backward_steps = " << prog_opt.number_of_backward_steps << endl;
 
         cout << "\t boundary_condition = " << boundary_condition << endl;
         cout << "\t field_value = " << field_value << endl;
