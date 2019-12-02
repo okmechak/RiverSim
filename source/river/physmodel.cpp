@@ -161,8 +161,6 @@ namespace River
         
         if(solver_params.num_of_iterrations < 2000)
             cout << "num_of_iterrations value is very small: " << solver_params.num_of_iterrations << endl;
-
-        River::print(prog_opt.verbose, "Done.");
     }
 
     void Model::print() const
