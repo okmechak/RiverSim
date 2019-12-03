@@ -37,40 +37,45 @@
 
 namespace River
 {
-   /*!  Stop condition of river growth simulation.
-       
-        Evaluates if tip of tree is close enough to border. If it is, then 
-        it retuns _True_.
-        \imageSize{StopConditionOfRiverGrowth.jpg, height:40%;width:40%;, }
-        Example of usage in main.cpp function: 
-        \snippet main.cpp StopConditionExample
-        \param[in] border Boundary geometry
-        \param[in] tree River tree or network
-        \param[in] mdl Holds maximal value of y-coord, which can be reached by river
-        \return  Boolean value wich states is river tree close enough to border
-        \exception None
-        \pre No postcinditions
-        \post No postcinditions
-        \remark Some remark goes here
-        \note Just example of node tag
-        \bug works only for rectangular region and do not consider bottom line
-        \warning   Improper use can crash your application
-        \todo generalize to any boundary shape.
-        \todo in qudrangular shape crossing of bottom line isn't handled.
-   */
-   bool StopConditionOfRiverGrowth(const Model& mdl, const Border& border, const Tree& tree);
+    /*!  Stop condition of river growth simulation.
 
-   /*!One step of forward river evolution.*/
-   void ForwardRiverEvolution(
-       Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, const string file_name);
+         Evaluates if tip of tree is close enough to border. If it is, then 
+         it retuns _True_.
+         \imageSize{StopConditionOfRiverGrowth.jpg, height:40%;width:40%;, }
+         Example of usage in main.cpp function: 
+         \snippet main.cpp StopConditionExample
+         \param[in] border Boundary geometry
+         \param[in] tree River tree or network
+         \param[in] mdl Holds maximal value of y-coord, which can be reached by river
+         \return  Boolean value wich states is river tree close enough to border
+         \exception None
+         \pre No postcinditions
+         \post No postcinditions
+         \remark Some remark goes here
+         \note Just example of node tag
+         \bug works only for rectangular region and do not consider bottom line
+         \warning   Improper use can crash your application
+         \todo generalize to any boundary shape.
+         \todo in qudrangular shape crossing of bottom line isn't handled.
+    */
+    bool StopConditionOfRiverGrowth(const Model& mdl, const Border& border, const Tree& tree);
 
-   ///One step of backward river evolution and its data.
-   void BackwardRiverEvolution(
-       Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
-       GeometryDifference& gd, const string file_name);
+    /*!One step of forward river evolution.*/
+    void ForwardRiverEvolution(
+        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, const string file_name);
+    
+    ///This function only makes evaluation of bacward river growth based on pde solution and geometry
+    ///but still it returns some data like difference betweem branches if they reached zero.
+    map<int, vector<double>> BackwardRiverEvolution(const Model& mdl, Solver& sim, Tree& tree, 
+        GeometryDifference& gd);
 
-   ///Evaluate series parameters near tip in predefined geometry. Used fot testing purposes
-   void EvaluateSeriesParams(
-       Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
-       GeometryDifference& gd, const string file_name);
+    ///One step of backward river evolution and its data.
+    void BackwardForwardRiverEvolution(
+        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
+        GeometryDifference& gd, const string file_name);
+
+    ///Evaluate series parameters near tip in predefined geometry. Used fot testing purposes
+    void EvaluateSeriesParams(
+        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
+        GeometryDifference& gd, const string file_name);
 }

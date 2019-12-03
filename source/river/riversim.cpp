@@ -74,8 +74,9 @@ namespace River
         print(mdl.prog_opt.verbose, "Mesh generation...");
         tria.ref->tip_points = tree.TipPoints();
         tria.generate(mesh);//triangulation
-        print(mdl.prog_opt.verbose, "Convertation generation...");
+        print(mdl.prog_opt.verbose, "Triangles to quadrangles trasformation...");
         mesh.convert();//convertaion from triangles to quadrangles
+        print(mdl.prog_opt.verbose, "Save intermediate output(*.msh)...");
         mesh.write(file_name + ".msh");
 
         //Simulation
@@ -96,7 +97,7 @@ namespace River
         TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
 
         //Iterate over each tip and handle branch growth and its biffurcations
-        print(mdl.prog_opt.verbose, "Iteration over each tip point...");
+        print(mdl.prog_opt.verbose, "Series parameters integration over each tip point...");
         map<int, vector<double>> id_series_params;
         for(auto id: tree.TipBranchesId())
         {
@@ -111,6 +112,7 @@ namespace River
             if (max_a < series_params.at(0))
                 max_a = series_params.at(0);
 
+        print(mdl.prog_opt.verbose, "Growth(or biffurcation) of tree...");
         for(auto&[id, series_params]: id_series_params)
             if(mdl.q_growth(series_params))
             {
@@ -130,19 +132,13 @@ namespace River
         sim.clear();
     }
 
-
-
-
-    void BackwardRiverEvolution(Model& mdl, Triangle& tria, Solver& sim, Tree& tree, 
-        const Border& border, GeometryDifference& gd, const string file_name)
-    {   
-        TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
-        
-        //tree_A is represent current river geometry,
-        //tree_B will be representing simulated river geometry with new parameters.
-        Tree tree_A = tree;
-
+    //This function only makes evaluation of bacward river growth based on pde solution and geometry
+    //it returns data like difference betweem branches if they reached zero
+    map<int, vector<double>> BackwardRiverEvolution(const Model& mdl, Solver& sim, Tree& tree, 
+        GeometryDifference& gd)
+    {
         //preevaluation series params to each tip point.
+        print(mdl.prog_opt.verbose, "Series parameters integration over each tip point...");
         map<int, vector<double>> ids_seriesparams_map;
         for(auto id: tree.TipBranchesId())
         {
@@ -152,8 +148,8 @@ namespace River
             ids_seriesparams_map[id] = series_params;
             gd.EndBiffurcationRecord(id, series_params);
         }
-        sim.clear();
 
+        //lookup for maximal a(or first) series parameter through all tips
         double max_a = 0.;
         for(auto&[id, series_params]: ids_seriesparams_map)
             if(max_a < series_params.at(0))
@@ -161,6 +157,7 @@ namespace River
 
         
         //Processing backward growth by iterating over each tip id and its series_params
+        print(mdl.prog_opt.verbose, "Shrinking each branch...");
         for(auto[id, series_params]: ids_seriesparams_map)
             if(mdl.q_growth(series_params))
                 tree.GetBranch(id)->
@@ -170,12 +167,14 @@ namespace River
                         biffuraction points, so we set some value greater than it limit*/, max_a).r);
 
         //collect branches which reached zero lenght(biffurcation point)
+        print(mdl.prog_opt.verbose, "Collecting branches with zero lenght(if they are)...");
         vector<int> zero_size_branches_id;
         for(auto tip_id: tree.TipBranchesId())
-            if(tree.HasParentBranch(tip_id) && tree.GetBranch(tip_id)->Lenght() == 0)
+            if(tree.HasParentBranch(tip_id) && tree.GetBranch(tip_id)->Lenght() < 0.05*mdl.ds/*if lenght is less then 5% of ds*/)
                 zero_size_branches_id.push_back(tree.GetParentBranchId(tip_id));
         
-        //collect difference between branches lenght and delete them
+        //collect difference between adjacent branches lenght(if they are) and delete them
+        print(mdl.prog_opt.verbose, "Collecting lenght difference between branches...");
         for(int parent_id: zero_size_branches_id)
             //for each pair of subbranches we can delete them only once
             if(tree.HasSubBranches(parent_id))
@@ -186,29 +185,53 @@ namespace River
                 tree.DeleteSubBranches(parent_id);
             }
 
+        return ids_seriesparams_map;
+    }
+
+    //This function combines backward evolution, backwardforward evolution, and collects data
+    void BackwardForwardRiverEvolution(Model& mdl, Triangle& tria, Solver& sim, Tree& tree, 
+        const Border& border, GeometryDifference& gd, const string file_name)
+    {   
+        //tree_A represent current river geometry,
+        //tree_B will be representing simulated river geometry with new parameters.
+        print(mdl.prog_opt.verbose, "Backward steps:");
+        Tree tree_initial = tree;
+        map<int, vector<double>> ids_seriesparams_map;
+        for(unsigned i = 0; i < mdl.prog_opt.number_of_backward_steps; ++i)
+        {
+            print(mdl.prog_opt.verbose, "\t" + to_string(i));
+            TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name + + "_backward_" + to_string(i));
+            if( ids_seriesparams_map.empty() )
+                ids_seriesparams_map = BackwardRiverEvolution(mdl, sim, tree, gd);
+            sim.clear();
+        }
         
         //One step forward growth
-        Tree tree_B = tree;
-        Model mdl_B = mdl;
-        mdl_B.biffurcation_type = 3;//3 - means no biffuraction at all.
-        cout << "-><- One Step Forward" << endl;
-        ForwardRiverEvolution(mdl, tria, sim, tree_B, border, file_name + "_backward_forward");
+        Tree tree_backforward = tree;
+        Model mdl_backforward = mdl;
+        mdl_backforward.biffurcation_type = 3;//3 - means no biffuraction at all.
+        print(mdl.prog_opt.verbose, "Forward steps:");
+        for(unsigned i = 0; i < mdl.prog_opt.number_of_backward_steps; ++i)
+        {
+            print(mdl.prog_opt.verbose, "\t" + to_string(i));
+            ForwardRiverEvolution(mdl, tria, sim, tree_backforward, border, file_name + "_backward_forward_" + to_string(i));
+        }
              
-        //comparsion of tip points with the same ids.
-        auto original_points = tree_A.TipIdsAndPoints(),
-            simulated_points = tree_B.TipIdsAndPoints();
-             
-        for(auto& el: original_points)
-            if(simulated_points.count(el.first))
+        //comparison of tip points with the same ids.
+        print(mdl.prog_opt.verbose, "process geometry differnce and collect data...");
+        auto original_points = tree_initial.TipIdsAndPoints(),
+            simulated_points = tree_backforward.TipIdsAndPoints();
+        
+        for(auto[tip_original_id, tip_original_point]: original_points)
+            if(simulated_points.count(tip_original_id))
             {
-                auto orig_point = el.second,
-                    sim_point = simulated_points.at(el.first);
-                auto dalpha = orig_point.angle(sim_point),
-                    ds = (orig_point - sim_point).norm();
+                auto sim_point = simulated_points.at(tip_original_id);
+                auto dalpha = tip_original_point.angle(sim_point),
+                    ds = (tip_original_point - sim_point).norm();
                 gd.RecordBranchSeriesParamsAndGeomDiff(
-                    el.first, 
+                    tip_original_id, 
                     dalpha, ds,
-                    ids_seriesparams_map.at(el.first));
+                    ids_seriesparams_map.at(tip_original_id));
             }
     }
 

@@ -246,7 +246,7 @@ int main(int argc, char *argv[])
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);
             
-            BackwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
+            BackwardForwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
 
             timing.Record();//Timing
             Save(mdl, timing, border, tree, gd, str, input_file);
