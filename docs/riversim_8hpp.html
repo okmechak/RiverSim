@@ -26,7 +26,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
-   &#160;<span id="projectnumber">2.4.2</span>
+   &#160;<span id="projectnumber">2.4.3</span>
    </div>
    <div id="projectbrief">River Simulation Program</div>
   </td>
@@ -88,14 +88,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1fcca8a68f29561ee4ee16fe4f9ee800"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a1fcca8a68f29561ee4ee16fe4f9ee800">River::StopConditionOfRiverGrowth</a> (const Border &amp;border, const Tree &amp;tree)</td></tr>
-<tr class="separator:a1fcca8a68f29561ee4ee16fe4f9ee800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bf171a0fdf0f067f322d323d8bf0689"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a9bf171a0fdf0f067f322d323d8bf0689">River::StopConditionOfRiverGrowth</a> (const Model &amp;mdl, const Border &amp;border, const Tree &amp;tree)</td></tr>
+<tr class="separator:a9bf171a0fdf0f067f322d323d8bf0689"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a628abeeaf9de09e675031bd19c00a9a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a628abeeaf9de09e675031bd19c00a9a8">River::ForwardRiverEvolution</a> (Model &amp;mdl, Triangle &amp;tria, Solver &amp;sim, Tree &amp;tree, const Border &amp;border, const string file_name)</td></tr>
 <tr class="separator:a628abeeaf9de09e675031bd19c00a9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63fe11502bc46f6a4dae0ea79be90eec"><td class="memItemLeft" align="right" valign="top"><a id="a63fe11502bc46f6a4dae0ea79be90eec"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a63fe11502bc46f6a4dae0ea79be90eec">River::BackwardRiverEvolution</a> (Model &amp;mdl, Triangle &amp;tria, Solver &amp;sim, Tree &amp;tree, const Border &amp;border, GeometryDifference &amp;gd, const string file_name)</td></tr>
-<tr class="memdesc:a63fe11502bc46f6a4dae0ea79be90eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step of backward river evolution and its data. <br /></td></tr>
-<tr class="separator:a63fe11502bc46f6a4dae0ea79be90eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a114bf5a324503d712322221ceba9cece"><td class="memItemLeft" align="right" valign="top">map&lt; int, vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a114bf5a324503d712322221ceba9cece">River::BackwardRiverEvolution</a> (const Model &amp;mdl, Solver &amp;sim, Tree &amp;tree, GeometryDifference &amp;gd)</td></tr>
+<tr class="memdesc:a114bf5a324503d712322221ceba9cece"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function only makes evaluation of bacward river growth based on pde solution and geometry but still it returns some data like difference betweem branches if they reached zero.  <a href="namespaceRiver.html#a114bf5a324503d712322221ceba9cece">More...</a><br /></td></tr>
+<tr class="separator:a114bf5a324503d712322221ceba9cece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c6d73dce07d3b452acb0987a0e68dc6"><td class="memItemLeft" align="right" valign="top"><a id="a7c6d73dce07d3b452acb0987a0e68dc6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a7c6d73dce07d3b452acb0987a0e68dc6">River::BackwardForwardRiverEvolution</a> (Model &amp;mdl, Triangle &amp;tria, Solver &amp;sim, Tree &amp;tree, const Border &amp;border, GeometryDifference &amp;gd, const string file_name)</td></tr>
+<tr class="memdesc:a7c6d73dce07d3b452acb0987a0e68dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step of backward river evolution and its data. <br /></td></tr>
+<tr class="separator:a7c6d73dce07d3b452acb0987a0e68dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e1c04daa35decf9aafdada0fc881449"><td class="memItemLeft" align="right" valign="top"><a id="a1e1c04daa35decf9aafdada0fc881449"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a1e1c04daa35decf9aafdada0fc881449">River::EvaluateSeriesParams</a> (Model &amp;mdl, Triangle &amp;tria, Solver &amp;sim, Tree &amp;tree, const Border &amp;border, GeometryDifference &amp;gd, const string file_name)</td></tr>
 <tr class="memdesc:a1e1c04daa35decf9aafdada0fc881449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate series parameters near tip in predefined geometry. Used fot testing purposes. <br /></td></tr>

@@ -26,7 +26,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
-   &#160;<span id="projectnumber">2.4.2</span>
+   &#160;<span id="projectnumber">2.4.3</span>
    </div>
    <div id="projectbrief">River Simulation Program</div>
   </td>
@@ -66,7 +66,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for River::Model:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Model__coll__graph.svg" width="1435" height="731"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Model__coll__graph.svg" width="1596" height="731"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -77,9 +77,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6bf59881c07811fc8a78acc37bb39ab6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Model.html#a6bf59881c07811fc8a78acc37bb39ab6">q_growth</a> (vector&lt; double &gt; a) const</td></tr>
 <tr class="memdesc:a6bf59881c07811fc8a78acc37bb39ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Growth condition.  <a href="#a6bf59881c07811fc8a78acc37bb39ab6">More...</a><br /></td></tr>
 <tr class="separator:a6bf59881c07811fc8a78acc37bb39ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aededd7eb4cb0d4766d26befb320530dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Polar.html">Polar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Model.html#aededd7eb4cb0d4766d26befb320530dd">next_point</a> (vector&lt; double &gt; series_params, double branch_lenght) const</td></tr>
-<tr class="memdesc:aededd7eb4cb0d4766d26befb320530dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate next point of simualtion based on series parameters around tip.  <a href="#aededd7eb4cb0d4766d26befb320530dd">More...</a><br /></td></tr>
-<tr class="separator:aededd7eb4cb0d4766d26befb320530dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad925ffd2545811b0e88605b832a218"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Polar.html">Polar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Model.html#acad925ffd2545811b0e88605b832a218">next_point</a> (vector&lt; double &gt; series_params, double branch_lenght, double max_a) const</td></tr>
+<tr class="memdesc:acad925ffd2545811b0e88605b832a218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate next point of simualtion based on series parameters around tip.  <a href="#acad925ffd2545811b0e88605b832a218">More...</a><br /></td></tr>
+<tr class="separator:acad925ffd2545811b0e88605b832a218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebe2c3508f923afbd517a36fb96de495"><td class="memItemLeft" align="right" valign="top"><a id="aebe2c3508f923afbd517a36fb96de495"></a>
 vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Model.html#aebe2c3508f923afbd517a36fb96de495">GetZeroIndices</a> () const</td></tr>
 <tr class="memdesc:aebe2c3508f923afbd517a36fb96de495"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return boundary line indices with zero value conditions. <br /></td></tr>
@@ -248,8 +248,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 
 </div>
 </div>
-<a id="aededd7eb4cb0d4766d26befb320530dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aededd7eb4cb0d4766d26befb320530dd">&#9670;&nbsp;</a></span>next_point()</h2>
+<a id="acad925ffd2545811b0e88605b832a218"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acad925ffd2545811b0e88605b832a218">&#9670;&nbsp;</a></span>next_point()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,7 +267,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>branch_lenght</em>&#160;</td>
+          <td class="paramname"><em>branch_lenght</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>max_a</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -285,7 +291,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Model_aededd7eb4cb0d4766d26befb320530dd_cgraph.svg" width="358" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classRiver_1_1Model_acad925ffd2545811b0e88605b832a218_cgraph.svg" width="358" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

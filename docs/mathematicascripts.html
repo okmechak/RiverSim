@@ -26,7 +26,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RiverSim
-   &#160;<span id="projectnumber">2.4.2</span>
+   &#160;<span id="projectnumber">2.4.3</span>
    </div>
    <div id="projectbrief">River Simulation Program</div>
   </td>
@@ -51,14 +51,21 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#intromats">Introduction</a></li>
+<ul><li class="level1"><a href="#intromats">List of Mathematica functions to work with RiverSIM</a><ul><li class="level2"><a href="#iomath">I/O</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><p>Some usefuls scripts, functions for ease work with riversim program.</p>
 <h1><a class="anchor" id="intromats"></a>
-Introduction</h1>
-<p>RiverSim program of cource can be run from bash.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>describe fucntions from ExperimentRunner.nb</dd></dl>
+List of Mathematica functions to work with RiverSIM</h1>
+<h2><a class="anchor" id="iomath"></a>
+I/O</h2>
+<p>Interactive dialog to open RiverSim output files in format of json</p>
+<div class="fragment"><div class="line">OpenJSONDialog[] := </div><div class="line">    SystemDialogInput[</div><div class="line">        &quot;FileOpen&quot;, {&quot;simdata.json&quot;, {&quot;RiverSim files&quot; -&gt; {&quot;*.json&quot;}}}</div><div class="line">    ]</div></div><!-- fragment --><p>Model configuration parameters. Can be used as input to riversim:</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>Fix this implementation, cos now program uses default value for parameter if this parameter isn't specified in input</dd></dl>
+<div class="fragment"><div class="line">RadiusRiversim = 0.01</div><div class="line">Options[ModelJSONStructure] = {</div><div class="line">   &quot;dx&quot; -&gt; 0.2,</div><div class="line">   &quot;width&quot; -&gt; 1,</div><div class="line">   &quot;height&quot; -&gt; 1,</div><div class="line">   &quot;riverBoundaryId&quot; -&gt; 4,</div><div class="line">   &quot;boundaryIds&quot; -&gt; {1, 2, 3, 4},</div><div class="line">   &quot;boundaryCondition&quot; -&gt; 0,</div><div class="line">   &quot;fieldValue&quot; -&gt; 1,</div><div class="line">    ....</div></div><!-- fragment --><p>RiverSim program of cource can be run from bash.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>describe fucntions from ExperimentRunner.nb</dd></dl>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
