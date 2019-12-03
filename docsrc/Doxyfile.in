@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "RiverSim"
-PROJECT_NUMBER         = 2.4.3
+PROJECT_NUMBER         = 2.6.0
 PROJECT_BRIEF          = "River Simulation Program"
 PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docsrc/images/logo.png
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@
