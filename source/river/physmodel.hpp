@@ -58,7 +58,7 @@ namespace River
             double maximal_river_height = 100;
 
             ///Number of backward steps simulations used in backward simulation type.
-            unsigned number_of_backward_steps = 5;
+            unsigned number_of_backward_steps = 1;
     };
     
     /*! \brief Adaptive mesh area constraint function.

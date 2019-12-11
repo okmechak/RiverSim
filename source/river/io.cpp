@@ -80,7 +80,7 @@ namespace River
         ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value("10"))
         ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", value<double>()->default_value("100"))
         ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value("0"))
-        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value("3"));
+        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value("1"));
         
         //Geometry parameters
         options.add_options("Border geometry parameters")
