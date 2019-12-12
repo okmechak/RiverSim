@@ -37,7 +37,7 @@ namespace River
         const Model mdl;
 
         Options options(
-            "r./iversim", ProgramTitle() +" v" + version_string() + " is used to simulate river growth and some other calculations according to \n"
+            "./riversim", ProgramTitle() +" v" + version_string() + " is used to simulate river growth and some other calculations according to \n"
             "Laplace model(for more details pls see references e.g Piotr Morawiecki work.)\n" + 
             "Some documentation is placed also here https://okmechak.github.io/RiverSim/\n\n" + 
             "Standard ways of using program:\n"
