@@ -92,8 +92,11 @@ add more details about workflow with program(TODO)..
 
 
 ## 4. References
-[1]: [Problem odwrotny do ewolucji sieci rzecznych](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf).
-[2]: Todo add other referneces.
+[1]: [Problem odwrotny do ewolucji sieci rzecznych]().
+[2]: Bifurcation dynamics of natural drainage networks Alexander P.Petroff†, Olivier Devauchelle‡, Hansjörg Seybold and Daniel H.Rothman.
+[3]: Path selection in the growth of rivers Yossi Cohen, Olivier Devauchelle, Hansjörg F. Seybold, Robert S. Yia, Piotr Szymczak, and Daniel H. Rothmana.
+[4]: Ramiﬁcation of stream networks Olivier Devauchelle, Alexander P. Petroff, Hansjörg F. Seybold, and Daniel H. Rothman.
+[5]: Shape and dynamics of seepage erosion in a horizontal granular bed Michael Berhanu, Alexander Petroﬀ, Olivier Devauchelle, Arshad Kudrolli, and Daniel H. Rothman.
 
 ## 5. Links
 

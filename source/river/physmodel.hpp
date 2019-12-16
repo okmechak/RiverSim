@@ -299,7 +299,7 @@ namespace River
             ProgramOptions prog_opt;
 
             ///Checks by evaluating series params for biffuraction condition.
-            ///More details about that you can find at [PMaroweicki work](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf)
+            ///More details about that you can find at [PMorawiecki work]()
             bool q_biffurcate(vector<double> a, double branch_lenght) const
             {
                 bool dist_flag = branch_lenght > biffurcation_min_dist;
