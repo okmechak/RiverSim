@@ -7,7 +7,7 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "RiverSim"
 PROJECT_NUMBER         = 2.6.0
 PROJECT_BRIEF          = "River Simulation Program"
-PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docsrc/images/logo.png
+PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docsrc/images/riversim_logo.jpg
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO
@@ -113,6 +113,8 @@ WARN_LOGFILE           =
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  += @CMAKE_SOURCE_DIR@/source @CMAKE_SOURCE_DIR@/research/ @CMAKE_SOURCE_DIR@/scripts/
+INPUT                  += @CMAKE_SOURCE_DIR@/VersionsHistory.hpp
+INPUT                  += @CMAKE_SOURCE_DIR@/Glossary.hpp
 INPUT_ENCODING         = UTF-8
 USE_MDFILE_AS_MAINPAGE = 
 FILE_PATTERNS          = *.hpp */main.cpp
