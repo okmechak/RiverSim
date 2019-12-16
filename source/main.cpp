@@ -42,6 +42,22 @@
     Mathematicaly, program solves Partial Differential Equation(PDE) using Finite Element Method(FEM). Solving of PDE involves setting up boundaries, mesh generation, building a linear system and finaly solution. 
   
     All these steps are done by using different open source C++ libraries: _Triangle_, _Tethex_ and  _Deal.II_, which are combined in one program - __RiverSim__.
+
+    Here is video demonstration of simulation
+
+
+    \htmlonly
+
+    <iframe 
+        width="560" 
+        height="315" 
+        src="https://www.youtube.com/embed/Y3x70JUdge8?controls=0" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+
+    \endhtmlonly
     
     \section githubrepo Github Repository and Installation
     
