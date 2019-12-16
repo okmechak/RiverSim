@@ -43,7 +43,7 @@
   
     All these steps are done by using different open source C++ libraries: _Triangle_, _Tethex_ and  _Deal.II_, which are combined in one program - __RiverSim__.
 
-    Here is video demonstration of simulation
+    __Here is video demonstration of simulation:__
 
 
     \htmlonly
