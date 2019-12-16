@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
         print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
         while(tree.HasEmptySourceBranch() == false && i < mdl.prog_opt.number_of_steps)    
         {
-            print(mdl.prog_opt.verbose, "-----#" + to_string(i));
+            print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             
             string str = output_file_name;
             if(vm.count("save-each-step"))

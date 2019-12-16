@@ -218,7 +218,7 @@ namespace River
         }
              
         //comparison of tip points with the same ids.
-        print(mdl.prog_opt.verbose, "process geometry differnce and collect data...");
+        print(mdl.prog_opt.verbose, "process geometry difference and collect data...");
         auto original_points = tree_initial.TipIdsAndPoints(),
             simulated_points = tree_backforward.TipIdsAndPoints();
         
