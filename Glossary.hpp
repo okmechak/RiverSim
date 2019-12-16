@@ -3,8 +3,8 @@
     
     \tableofcontents
 
-    \section glosList
-    + tip - point of river source.
+    \section glos List
+    + __tip__ - point of river source.
 
     \todo Improve glossary
 */
