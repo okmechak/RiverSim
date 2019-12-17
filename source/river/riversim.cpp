@@ -76,6 +76,7 @@ namespace River
         tria.generate(mesh);//triangulation
         print(mdl.prog_opt.verbose, "Triangles to quadrangles trasformation...");
         mesh.convert();//convertaion from triangles to quadrangles
+        mdl.mesh.number_of_quadrangles = mesh.get_n_quadrangles(); // just saving number of quadrangles
         print(mdl.prog_opt.verbose, "Save intermediate output(*.msh)...");
         mesh.write(file_name + ".msh");
 
@@ -87,7 +88,9 @@ namespace River
         sim.OpenMesh(file_name + ".msh");
         sim.static_refine_grid(mdl, tree.TipPoints());
         sim.run();
-        sim.output_results(file_name);
+        mdl.mesh.number_of_refined_quadrangles = sim.NumberOfRefinedCells();
+        if (mdl.prog_opt.save_vtk)
+            sim.output_results(file_name);
     }
 
 

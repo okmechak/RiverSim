@@ -68,6 +68,7 @@ namespace River
         options.add_options("File interface")
         ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value("simdata"))
         ("save-each-step", "Save each step of simulation in separate file: simdata_1.json, simdata_2.json.. ")
+        ("vtk", "Outputs VTK file of Deal.II solution")
         ("input",
             "input simaultion data, boundary, tree, model parameters. It has very similar structure as output json of program.", cxxopts::value<string>());
 
@@ -187,6 +188,7 @@ namespace River
             mdl.prog_opt.maximal_river_height = vm["maximal-river-height"].as<double>();
         if (vm.count("number-of-backward-steps"))
             mdl.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
+        if (vm.count("vtk")) mdl.prog_opt.save_vtk = true;
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
@@ -340,7 +342,9 @@ namespace River
                     {"minEdge", mdl.mesh.min_edge},
                     {"ratio", mdl.mesh.ratio},
                     {"sigma", mdl.mesh.sigma},
-                    {"staticRefinmentSteps", mdl.mesh.static_refinment_steps}}},
+                    {"staticRefinmentSteps", mdl.mesh.static_refinment_steps},
+                    {"numberOfQuadrangles", mdl.mesh.number_of_quadrangles},
+                    {"numberOfRefinedQuadrangles", mdl.mesh.number_of_refined_quadrangles}}},
         
                 {"Solver", {
                     {"tol", mdl.solver_params.tollerance},

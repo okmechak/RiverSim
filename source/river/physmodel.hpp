@@ -59,6 +59,9 @@ namespace River
 
             ///Number of backward steps simulations used in backward simulation type.
             unsigned number_of_backward_steps = 1;
+
+            ///Outputs VTK file of Deal.II solution
+            bool save_vtk = false;
     };
     
     /*! \brief Adaptive mesh area constraint function.
@@ -73,6 +76,12 @@ namespace River
                 in this case it corresponds to river tip points.
             */
             vector<Point> tip_points;
+
+            ///Number of quadrangle elements.
+            unsigned long number_of_quadrangles = 0;
+
+            ///Number of refined quadrangle elements.
+            unsigned long number_of_refined_quadrangles = 0;
 
             ///Radius of mesh refinment.
             double refinment_radius = 4*Radius;
