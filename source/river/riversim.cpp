@@ -95,7 +95,7 @@ namespace River
 
 
     void ForwardRiverEvolution(Model& mdl, Triangle& tria, Solver& sim,
-        Tree& tree, const Border& border, const string file_name)
+        Tree& tree, const Border& border, const string file_name, double max_a_backward)
     {
         TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
 
@@ -111,9 +111,12 @@ namespace River
 
         //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
         double max_a = 0.;
-        for(auto&[id, series_params]: id_series_params)
-            if (max_a < series_params.at(0))
-                max_a = series_params.at(0);
+        if(max_a_backward > 0)
+            max_a = max_a_backward;
+        else 
+            for(auto&[id, series_params]: id_series_params)
+                if (max_a < series_params.at(0))
+                    max_a = series_params.at(0);
 
         print(mdl.prog_opt.verbose, "Growth(or biffurcation) of tree...");
         for(auto&[id, series_params]: id_series_params)
@@ -133,6 +136,16 @@ namespace River
                     tree.GetBranch(id)->AddPoint(mdl.next_point(series_params, tree.GetBranch(id)->Lenght(), max_a));
             }
         sim.clear();
+    }
+
+    double MaximalA1Value(map<int, vector<double>> ids_seriesparams_map)
+    {
+        double max_a = 0.;
+        for(auto&[id, series_params]: ids_seriesparams_map)
+            if(max_a < series_params.at(0))
+                max_a = series_params.at(0);
+
+        return max_a;
     }
 
     //This function only makes evaluation of bacward river growth based on pde solution and geometry
@@ -199,17 +212,23 @@ namespace River
         //tree_B will be representing simulated river geometry with new parameters.
         print(mdl.prog_opt.verbose, "Backward steps:");
         Tree tree_initial = tree;
-        map<int, vector<double>> ids_seriesparams_map;
+        map<int, vector<double>> ids_seriesparams_map, ids_seriesparams_map_local;
+        vector<double> maximal_a1_params; //this vectors stores maximal a1 params which are used further in forward simulation
         for(unsigned i = 0; i < mdl.prog_opt.number_of_backward_steps; ++i)
         {
             print(mdl.prog_opt.verbose, "\t" + to_string(i));
             TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name + + "_backward_" + to_string(i));
-            if( ids_seriesparams_map.empty() )
+            if( ids_seriesparams_map.empty())
+            {
                 ids_seriesparams_map = BackwardRiverEvolution(mdl, sim, tree, gd);
+                maximal_a1_params.push_back(MaximalA1Value(ids_seriesparams_map));
+            }
+            else
+                maximal_a1_params.push_back(MaximalA1Value(BackwardRiverEvolution(mdl, sim, tree, gd)));
             sim.clear();
         }
         
-        //One step forward growth
+        //Several steps of forward growth
         Tree tree_backforward = tree;
         Model mdl_backforward = mdl;
         mdl_backforward.biffurcation_type = 3;//3 - means no biffuraction at all.
@@ -217,7 +236,7 @@ namespace River
         for(unsigned i = 0; i < mdl.prog_opt.number_of_backward_steps; ++i)
         {
             print(mdl.prog_opt.verbose, "\t" + to_string(i));
-            ForwardRiverEvolution(mdl, tria, sim, tree_backforward, border, file_name + "_backward_forward_" + to_string(i));
+            ForwardRiverEvolution(mdl, tria, sim, tree_backforward, border, file_name + "_backward_forward_" + to_string(i), maximal_a1_params.at(i));
         }
              
         //comparison of tip points with the same ids.
