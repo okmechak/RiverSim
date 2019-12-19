@@ -292,7 +292,7 @@ namespace River
             double growth_min_distance = 0.01;
             
             //Numeriacal parameters
-            ///Proportionality value to one step growth.
+            ///Maximal length of one step of growth.
             double ds = 0.003;
             
             ///Mesh and mesh refinment parameters

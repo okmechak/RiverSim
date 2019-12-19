@@ -109,7 +109,7 @@ namespace River
             id_series_params[id] = sim.integrate(mdl, tip_point, tip_angle);
         }
 
-        //Evaluate maximal a parameter to normalize growth of speed to all branches dr = ds*v / max(v_array).
+        //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
         double max_a = 0.;
         for(auto&[id, series_params]: id_series_params)
             if (max_a < series_params.at(0))
