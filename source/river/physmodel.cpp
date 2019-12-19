@@ -23,7 +23,7 @@ namespace River
 {
     void Model::CheckParametersConsistency() const
     {
-        River::print(prog_opt.verbose, "Input parameters check..");
+        River::print(prog_opt.verbose, "Input parameters check...");
         //program run parameters
         if(prog_opt.maximal_river_height < 0)
             throw invalid_argument("Invalid value of maximal_river_height = " + to_string(prog_opt.maximal_river_height) + ", it should be in range greater then 0 up to height.");
@@ -213,7 +213,7 @@ namespace River
         cout << "\t tollerance = " << solver_params.tollerance << endl;
         cout << "\t number of itteration = " << solver_params.num_of_iterrations << endl;
 
-        cout << "Program optiosn:" << endl;
+        cout << "Program options:" << endl;
         cout << "\t verbose = " << prog_opt.verbose << endl;
         cout << "\t number_of_steps = " << prog_opt.number_of_steps << endl;
         cout << "\t maximal_river_height = " << prog_opt.maximal_river_height << endl;

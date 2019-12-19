@@ -58,7 +58,10 @@ namespace River
             double maximal_river_height = 100;
 
             ///Number of backward steps simulations used in backward simulation type.
-            unsigned number_of_backward_steps = 5;
+            unsigned number_of_backward_steps = 1;
+
+            ///Outputs VTK file of Deal.II solution
+            bool save_vtk = false;
     };
     
     /*! \brief Adaptive mesh area constraint function.
@@ -73,6 +76,12 @@ namespace River
                 in this case it corresponds to river tip points.
             */
             vector<Point> tip_points;
+
+            ///Number of quadrangle elements.
+            unsigned long number_of_quadrangles = 0;
+
+            ///Number of refined quadrangle elements.
+            unsigned long number_of_refined_quadrangles = 0;
 
             ///Radius of mesh refinment.
             double refinment_radius = 4*Radius;
@@ -283,7 +292,7 @@ namespace River
             double growth_min_distance = 0.01;
             
             //Numeriacal parameters
-            ///Proportionality value to one step growth.
+            ///Maximal length of one step of growth.
             double ds = 0.003;
             
             ///Mesh and mesh refinment parameters
@@ -299,7 +308,7 @@ namespace River
             ProgramOptions prog_opt;
 
             ///Checks by evaluating series params for biffuraction condition.
-            ///More details about that you can find at [PMaroweicki work](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf)
+            ///More details about that you can find at [PMorawiecki work]()
             bool q_biffurcate(vector<double> a, double branch_lenght) const
             {
                 bool dist_flag = branch_lenght > biffurcation_min_dist;

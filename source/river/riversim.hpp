@@ -62,7 +62,8 @@ namespace River
 
     /*!One step of forward river evolution.*/
     void ForwardRiverEvolution(
-        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, const string file_name);
+        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
+        const string file_name, double max_a_backward = -1);
     
     ///This function only makes evaluation of bacward river growth based on pde solution and geometry
     ///but still it returns some data like difference betweem branches if they reached zero.

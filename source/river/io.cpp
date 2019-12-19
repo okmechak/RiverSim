@@ -37,7 +37,7 @@ namespace River
         const Model mdl;
 
         Options options(
-            "r./iversim", ProgramTitle() +" v" + version_string() + " is used to simulate river growth and some other calculations according to \n"
+            "./riversim", ProgramTitle() +" v" + version_string() + " is used to simulate river growth and some other calculations according to \n"
             "Laplace model(for more details pls see references e.g Piotr Morawiecki work.)\n" + 
             "Some documentation is placed also here https://okmechak.github.io/RiverSim/\n\n" + 
             "Standard ways of using program:\n"
@@ -68,6 +68,7 @@ namespace River
         options.add_options("File interface")
         ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value("simdata"))
         ("save-each-step", "Save each step of simulation in separate file: simdata_1.json, simdata_2.json.. ")
+        ("vtk", "Outputs VTK file of Deal.II solution")
         ("input",
             "input simaultion data, boundary, tree, model parameters. It has very similar structure as output json of program.", cxxopts::value<string>());
 
@@ -80,7 +81,7 @@ namespace River
         ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value("10"))
         ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", value<double>()->default_value("100"))
         ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value("0"))
-        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value("3"));
+        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value("1"));
         
         //Geometry parameters
         options.add_options("Border geometry parameters")
@@ -187,6 +188,7 @@ namespace River
             mdl.prog_opt.maximal_river_height = vm["maximal-river-height"].as<double>();
         if (vm.count("number-of-backward-steps"))
             mdl.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
+        if (vm.count("vtk")) mdl.prog_opt.save_vtk = true;
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
@@ -340,7 +342,9 @@ namespace River
                     {"minEdge", mdl.mesh.min_edge},
                     {"ratio", mdl.mesh.ratio},
                     {"sigma", mdl.mesh.sigma},
-                    {"staticRefinmentSteps", mdl.mesh.static_refinment_steps}}},
+                    {"staticRefinmentSteps", mdl.mesh.static_refinment_steps},
+                    {"numberOfQuadrangles", mdl.mesh.number_of_quadrangles},
+                    {"numberOfRefinedQuadrangles", mdl.mesh.number_of_refined_quadrangles}}},
         
                 {"Solver", {
                     {"tol", mdl.solver_params.tollerance},

@@ -110,6 +110,12 @@ namespace River
             ///Static adaptive mesh refinment.
             void static_refine_grid(const Model& mdl, const vector<Point>& tips_points);
 
+            ///
+            unsigned long NumberOfRefinedCells()
+            {
+                return triangulation.n_active_cells();
+            }
+
             ///Run fem solution.
             void run();
 

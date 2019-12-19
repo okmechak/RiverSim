@@ -42,6 +42,22 @@
     Mathematicaly, program solves Partial Differential Equation(PDE) using Finite Element Method(FEM). Solving of PDE involves setting up boundaries, mesh generation, building a linear system and finaly solution. 
   
     All these steps are done by using different open source C++ libraries: _Triangle_, _Tethex_ and  _Deal.II_, which are combined in one program - __RiverSim__.
+
+    __Here is video demonstration of simulation:__
+
+
+    \htmlonly
+
+    <iframe 
+        width="560" 
+        height="315" 
+        src="https://www.youtube.com/embed/Y3x70JUdge8?controls=0" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+
+    \endhtmlonly
     
     \section githubrepo Github Repository and Installation
     
@@ -111,7 +127,12 @@
 
     \section references References
 
-    [1]: [Problem odwrotny do ewolucji sieci rzecznych](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf).
+    [1]: [Problem odwrotny do ewolucji sieci rzecznych]().
+    [2]: RiverSim repository - https://github.com/okmechak/RiverSim/
+    [3]: Bifurcation dynamics of natural drainage networks Alexander P.Petroff†, Olivier Devauchelle‡, Hansjörg Seybold and Daniel H.Rothman.
+    [4]: Path selection in the growth of rivers Yossi Cohen, Olivier Devauchelle, Hansjörg F. Seybold, Robert S. Yia, Piotr Szymczak, and Daniel H. Rothmana.
+    [5]: Ramiﬁcation of stream networks Olivier Devauchelle, Alexander P. Petroff, Hansjörg F. Seybold, and Daniel H. Rothman.
+    [6]: Shape and dynamics of seepage erosion in a horizontal granular bed Michael Berhanu, Alexander Petroﬀ, Olivier Devauchelle, Arshad Kudrolli, and Daniel H. Rothman.
 
     \section contacts Contacts
 
@@ -240,7 +261,7 @@ int main(int argc, char *argv[])
         print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
         while(tree.HasEmptySourceBranch() == false && i < mdl.prog_opt.number_of_steps)    
         {
-            print(mdl.prog_opt.verbose, "-----#" + to_string(i));
+            print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             
             string str = output_file_name;
             if(vm.count("save-each-step"))

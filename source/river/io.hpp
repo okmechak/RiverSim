@@ -207,11 +207,8 @@
     ```
     
     ## GeometryDifference
-
-    Contains inforamtion about __back growth simulation__. More details about this type of simulation you
-    can find at [PMarowiecki work](https://www.fuw.edu.pl/~piotrek/theses/PMorawiecki.pdf). 
-
-    Obcjesct: 
+    
+    Obcjects: 
 
     + "AlongBranches" - contains information about difference allong branches.
     + "BiffuractionPoints" - contains geometry difference at biffuratcion points.
