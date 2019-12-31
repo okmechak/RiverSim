@@ -155,7 +155,7 @@
 <title>Node5</title>
 <g id="a_node6"><a xlink:href="common_8hpp.html" target="_top" xlink:title="Common geometric entities like Vectors, Lines etc., to whole program. ">
 <polygon fill="#ffffff" stroke="#000000" points="314.9131,-.5 314.9131,-19.5 394.9131,-19.5 394.9131,-.5 314.9131,-.5"/>
-<text text-anchor="middle" x="354.9131" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">common.hpp</text>
+<text text-anchor="middle" x="354.9131" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">GeometryPrimitives.hpp</text>
 </a>
 </g>
 </g>

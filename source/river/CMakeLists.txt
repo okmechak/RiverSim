@@ -4,18 +4,18 @@ cmake_minimum_required(VERSION 2.8)
 add_library(tethex tethex.hpp tethex.cpp) 
 
 #common
-add_library(common common.hpp common.cpp) 
+add_library(GeometryPrimitives GeometryPrimitives.hpp GeometryPrimitives.cpp) 
 
 #utilities
 add_library(utilities utilities.hpp utilities.cpp version.hpp)
 
 #physmodel
 add_library(physmodel physmodel.hpp physmodel.cpp) 
-target_link_libraries(physmodel common)
+target_link_libraries(physmodel GeometryPrimitives)
 
 #border
 add_library(border border.hpp border.cpp) 
-target_link_libraries(border common)
+target_link_libraries(border GeometryPrimitives)
 
 #triangle
 add_library(triangle triangle.hpp triangle.cpp) 
@@ -41,4 +41,4 @@ target_link_libraries(solver tethex physmodel)
 #river
 add_library(river riversim.hpp riversim.cpp)
 deal_ii_setup_target(river)
-target_link_libraries(river tethex common physmodel border triangle io solver tree mesh)
+target_link_libraries(river tethex GeometryPrimitives physmodel border triangle io solver tree mesh)

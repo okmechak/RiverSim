@@ -32,7 +32,7 @@
 #include <map>
 ///\endcond
 
-#include "common.hpp"
+#include "GeometryPrimitives.hpp"
 
 using namespace std;
 
@@ -367,7 +367,7 @@ namespace River
                     auto dy = beta*beta/9*( pow(27/2*dl/beta/beta + 1, 2./3.) - 1),
                         dx = 2*sqrt( pow(dy, 3)/pow(beta,2) + pow(dy, 4) / pow(beta, 3));
 
-                    return Point{dx, dy}.getPolar();
+                    return ToPolar(Point{dx, dy});
                 }
                 else
                     throw invalid_argument("Invalid value of growth_type!");

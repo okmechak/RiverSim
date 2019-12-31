@@ -101,7 +101,7 @@
     
     + Take a look into [File List](files.html). Some more important for understanding files:
         + \ref experiments
-        + \ref common.hpp
+        + \ref GeometryPrimitives.hpp
         + \ref border.hpp
         + \ref tree.hpp
         + \ref physmodel.hpp

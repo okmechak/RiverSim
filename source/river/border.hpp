@@ -29,7 +29,7 @@
 #include <string>
 #include <map>
 ///\endcond
-#include "common.hpp"
+#include "GeometryPrimitives.hpp"
 
 using namespace std;
 

@@ -60,7 +60,7 @@
 #include <utility>
 ///\endcond
 
-#include "common.hpp"
+#include "GeometryPrimitives.hpp"
 #include "tethex.hpp"
 #include "physmodel.hpp"
 

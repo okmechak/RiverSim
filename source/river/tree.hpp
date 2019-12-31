@@ -38,7 +38,7 @@
 #include <algorithm>
 #include <string>
 ///\endcond
-#include "common.hpp"
+#include "GeometryPrimitives.hpp"
 #include "tethex.hpp"
 #include "physmodel.hpp"
 #include "border.hpp"
