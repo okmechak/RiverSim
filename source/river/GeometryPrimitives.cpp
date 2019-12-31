@@ -122,10 +122,6 @@ double Point::angle(const Point &p) const
 	phi *= sign;
 	return phi;
 }
-void Point::print() const
-{
-	cout << *this << endl;
-}
 
 bool Point::operator==(const Point &p) const
 {

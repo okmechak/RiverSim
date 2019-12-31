@@ -62,6 +62,9 @@ namespace River
 
             ///Outputs VTK file of Deal.II solution
             bool save_vtk = false;
+            
+            ///Prints program options structure to output stream.
+            friend ostream& operator <<(ostream& write, const ProgramOptions & po);
     };
     
     /*! \brief Adaptive mesh area constraint function.
@@ -157,6 +160,9 @@ namespace River
                 return result_area;
                 //! [MeshConstrain]
             }
+
+            ///Prints program options structure to output stream.
+            friend ostream& operator <<(ostream& write, const MeshParams & mp);
     };
 
     /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
@@ -206,6 +212,9 @@ namespace River
                     exp(-complex<double>(0.0, 1.0)*angle)
                     *(dx + complex<double>(0.0, 1.0)*dy));
             }
+
+            ///Prints options structure to output stream.
+            friend ostream& operator <<(ostream& write, const IntegrationParams & ip);
     };
 
     /*! \brief Holds All parameters used in Deal.II solver.
@@ -227,6 +236,9 @@ namespace River
 
             ///Number of solver iteration steps
             unsigned num_of_iterrations = 6000;
+
+            ///Prints program options structure to output stream.
+            friend ostream& operator <<(ostream& write, const SolverParams & mp);
     };
 
     /*! \brief Physical model parameters.
@@ -399,7 +411,7 @@ namespace River
             void CheckParametersConsistency() const;
 
             ///Prints model structure and its subclasses
-            void print() const;
+            friend ostream& operator <<(ostream& write, const Model & mdl);
     };
 
 

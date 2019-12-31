@@ -145,9 +145,6 @@ namespace River
             */
             double angle(const Point &p) const;
 
-            ///Prints point
-            void print() const;
-
             /*! @name Math Operations 
                 @{
             */

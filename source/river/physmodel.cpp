@@ -21,6 +21,52 @@
 
 namespace River
 {
+
+    ostream& operator<<(ostream& write, const ProgramOptions & po)
+    {
+        cout << "\t verbose = " << po.verbose << endl;
+        cout << "\t save_vtk = " << po.save_vtk << endl;
+        cout << "\t maximal_river_height = " << po.maximal_river_height << endl;
+        cout << "\t number_of_steps = " << po.number_of_steps << endl;
+        cout << "\t number_of_backward_steps = " << po.number_of_backward_steps << endl;
+        return write;
+    }
+
+    ///Prints program options structure to output stream.
+    ostream& operator <<(ostream& write, const MeshParams & mp)
+    {
+        cout << "\t refinment_radius = " << mp.refinment_radius << endl;
+        cout << "\t exponant = " << mp.exponant << endl;
+        cout << "\t min_area = " << mp.min_area << endl;
+        cout << "\t max_area = " << mp.max_area << endl;
+        cout << "\t min_angle = " << mp.min_angle << endl;
+        cout << "\t max_edge = " << mp.max_edge << endl;
+        cout << "\t min_edge = " << mp.min_edge << endl;
+        cout << "\t ratio = " << mp.ratio << endl;
+        cout << "\t eps = " << mp.eps << endl;
+        cout << "\t sigma = " << mp.sigma << endl;
+        cout << "\t static_refinment_steps = " << mp.static_refinment_steps << endl;
+        return write;
+    }
+
+    ostream& operator <<(ostream& write, const IntegrationParams & ip)
+    {
+        cout << "\t weigth_func_radius = " << ip.weigth_func_radius << endl;
+        cout << "\t integration_radius = " << ip.integration_radius << endl;
+        cout << "\t exponant = " << ip.exponant << endl;
+        return write;
+    }
+
+    ostream& operator <<(ostream& write, const SolverParams & sp)
+    {
+        cout << "\t quadrature_degree = " << sp.quadrature_degree << endl;
+        cout << "\t refinment_fraction = " << sp.refinment_fraction << endl;
+        cout << "\t adaptive_refinment_steps = " << sp.adaptive_refinment_steps << endl;
+        cout << "\t tollerance = " << sp.tollerance << endl;
+        cout << "\t number of itteration = " << sp.num_of_iterrations << endl;
+        return write;
+    }
+
     void Model::CheckParametersConsistency() const
     {
         River::print(prog_opt.verbose, "Input parameters check...");
@@ -163,59 +209,39 @@ namespace River
             cout << "num_of_iterrations value is very small: " << solver_params.num_of_iterrations << endl;
     }
 
-    void Model::print() const
+    ostream& operator <<(ostream& write, const Model & mdl)
     {
         cout << "Model Parameters:" << endl;
-        cout << "\t dx = " << dx << endl;
-        cout << "\t width = " << width << endl;
-        cout << "\t height = " << height << endl;
-        cout << "\t river_boundary_id = " << river_boundary_id << endl;
-        cout << "\t number_of_backward_steps = " << prog_opt.number_of_backward_steps << endl;
+        cout << "\t dx = " << mdl.dx << endl;
+        cout << "\t width = " << mdl.width << endl;
+        cout << "\t height = " << mdl.height << endl;
+        cout << "\t river_boundary_id = " << mdl.river_boundary_id << endl;
 
-        cout << "\t boundary_condition = " << boundary_condition << endl;
-        cout << "\t field_value = " << field_value << endl;
-        cout << "\t eta = " << eta << endl;
-        cout << "\t biffurcation_type = " << biffurcation_type << endl;
-        cout << "\t biffurcation_threshold = " << biffurcation_threshold << endl;
-        cout << "\t biffurcation_threshold_2 = " << biffurcation_threshold_2 << endl;
-        cout << "\t biffurcation_min_dist = " << biffurcation_min_dist << endl;
-        cout << "\t biffurcation_angle = " << biffurcation_angle << endl;
+        cout << "\t boundary_condition = " << mdl.boundary_condition << endl;
+        cout << "\t field_value = " << mdl.field_value << endl;
+        cout << "\t eta = " << mdl.eta << endl;
+        cout << "\t biffurcation_type = " << mdl.biffurcation_type << endl;
+        cout << "\t biffurcation_threshold = " << mdl.biffurcation_threshold << endl;
+        cout << "\t biffurcation_threshold_2 = " << mdl.biffurcation_threshold_2 << endl;
+        cout << "\t biffurcation_min_dist = " << mdl.biffurcation_min_dist << endl;
+        cout << "\t biffurcation_angle = " << mdl.biffurcation_angle << endl;
 
-        cout << "\t growth_type = " << growth_type << endl;
-        cout << "\t growth_threshold = " << growth_threshold << endl;
-        cout << "\t growth_min_distance = " << growth_min_distance << endl;
+        cout << "\t growth_type = " << mdl.growth_type << endl;
+        cout << "\t growth_threshold = " << mdl.growth_threshold << endl;
+        cout << "\t growth_min_distance = " << mdl.growth_min_distance << endl;
 
-        cout << "\t ds = " << ds << endl;
-
-
+        cout << "\t ds = " << mdl.ds << endl;
+    
         cout << "Mesh Parameters:" << endl;
-        cout << "\t refinment_radius = " << mesh.refinment_radius << endl;
-        cout << "\t exponant = " << mesh.exponant << endl;
-        cout << "\t min_area = " << mesh.min_area << endl;
-        cout << "\t max_area = " << mesh.max_area << endl;
-        cout << "\t min_angle = " << mesh.min_angle << endl;
-        cout << "\t max_edge = " << mesh.max_edge << endl;
-        cout << "\t min_edge = " << mesh.min_edge << endl;
-        cout << "\t ratio = " << mesh.ratio << endl;
-        cout << "\t eps = " << mesh.eps << endl;
-        cout << "\t sigma = " << mesh.sigma << endl;
-        cout << "\t static_refinment_steps = " << mesh.static_refinment_steps << endl;
+        cout << mdl.mesh;
 
         cout << "Integration Parameters:" << endl;
-        cout << "\t weigth_func_radius = " << integr.weigth_func_radius << endl;
-        cout << "\t integration_radius = " << integr.integration_radius << endl;
-        cout << "\t exponant = " << integr.exponant << endl;
+        cout << mdl.integr;
 
         cout << "Solver parameters:" << endl;
-        cout << "\t quadrature_degree = " << solver_params.quadrature_degree << endl;
-        cout << "\t refinment_fraction = " << solver_params.refinment_fraction << endl;
-        cout << "\t adaptive_refinment_steps = " << solver_params.adaptive_refinment_steps << endl;
-        cout << "\t tollerance = " << solver_params.tollerance << endl;
-        cout << "\t number of itteration = " << solver_params.num_of_iterrations << endl;
-
+        cout << mdl.solver_params;
+        
         cout << "Program options:" << endl;
-        cout << "\t verbose = " << prog_opt.verbose << endl;
-        cout << "\t number_of_steps = " << prog_opt.number_of_steps << endl;
-        cout << "\t maximal_river_height = " << prog_opt.maximal_river_height << endl;
+        cout << mdl.prog_opt;
     }
 }

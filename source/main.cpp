@@ -141,6 +141,10 @@
     2019
 */
 
+///\cond
+#include <iostream>
+///\endcond
+
 #include "riversim.hpp"
 
 using namespace River;
@@ -193,7 +197,7 @@ int main(int argc, char *argv[])
         mdl.CheckParametersConsistency();
 
         if(mdl.prog_opt.verbose)
-            mdl.print();
+            cout << mdl << endl;
 
         if(!q_update_border)
         {
