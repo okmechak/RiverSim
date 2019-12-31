@@ -15,8 +15,15 @@
 
     \section versionHistoryFutureVersion Upcoming Versions
 
-    \subsection v270 2.7.0
+    \subsection v20 2.6.5
 
     + fix of backward simulation
+
+    \subsection v21 2.6.6
+
+    + refactoring
+
+    \subsection v23 3.0.0
+
     + multithreading and performance improve
 */
