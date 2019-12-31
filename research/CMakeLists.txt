@@ -1,5 +1,5 @@
 install(
     FILES 
-        test_tree.json
+        *.json
     DESTINATION 
         riversim)
