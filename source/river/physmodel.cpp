@@ -63,7 +63,7 @@ namespace River
         cout << "\t refinment_fraction = " << sp.refinment_fraction << endl;
         cout << "\t adaptive_refinment_steps = " << sp.adaptive_refinment_steps << endl;
         cout << "\t tollerance = " << sp.tollerance << endl;
-        cout << "\t number of itteration = " << sp.num_of_iterrations << endl;
+        cout << "\t number of iteration = " << sp.num_of_iterrations << endl;
         return write;
     }
 
