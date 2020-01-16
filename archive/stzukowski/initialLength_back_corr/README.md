@@ -1,0 +1,1 @@
+# Back evolution of _initialLength1_ experiments after corrections. The issue in _initialLength-back_ was that we moved our with normalised step ds back, and then moved it forward the same distance. Appropriate algorith keeps constant dt in back and forward step. NOW FIXED.
