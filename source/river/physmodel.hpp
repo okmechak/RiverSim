@@ -273,7 +273,7 @@ namespace River
             unsigned boundary_condition = 0;
 
             ///Field value used for Poisson conditions.
-            double field_value = 1.0;
+            double field_value = 0.0;
 
             ///Eta. Growth power of a1^eta
             double eta = 1.0;
