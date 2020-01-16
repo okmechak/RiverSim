@@ -94,14 +94,14 @@ namespace River
             throw invalid_argument("boundary_ids size isn't 4, which corresponds to rectangular region: " + to_string(boundary_ids.size()));
         if(boundary_condition != 0 && boundary_condition!= 1)
             throw invalid_argument("Wrong value of boundary condition: " + to_string(boundary_condition) + ". It should be 0 or 1");
-        if(biffurcation_threshold > 100 || biffurcation_threshold < -100)
-            cout << "abs(biffurcation_threshold) value is very big: " << abs(biffurcation_threshold) << endl;
+        if(bifurcation_threshold > 100 || bifurcation_threshold < -100)
+            cout << "abs(bifurcation_threshold) value is very big: " << abs(bifurcation_threshold) << endl;
 
-        if(biffurcation_threshold_2 > 100 || biffurcation_threshold_2 < -100)
-            cout << "abs(biffurcation_threshold_2) value is very big: " << abs(biffurcation_threshold_2) << endl;
+        if(bifurcation_threshold_2 > 100 || bifurcation_threshold_2 < -100)
+            cout << "abs(bifurcation_threshold_2) value is very big: " << abs(bifurcation_threshold_2) << endl;
 
-        if(biffurcation_min_dist < 0)
-            throw invalid_argument("biffurcation_min_dist parameter can't be negative: " + to_string(biffurcation_min_dist));
+        if(bifurcation_min_dist < 0)
+            throw invalid_argument("bifurcation_min_dist parameter can't be negative: " + to_string(bifurcation_min_dist));
 
         if(growth_type != 0 && growth_type!= 1)
             throw invalid_argument("Wrong value of growth_type: " + to_string(growth_type) + ". It should be 0 or 1");
@@ -220,11 +220,11 @@ namespace River
         cout << "\t boundary_condition = " << mdl.boundary_condition << endl;
         cout << "\t field_value = " << mdl.field_value << endl;
         cout << "\t eta = " << mdl.eta << endl;
-        cout << "\t biffurcation_type = " << mdl.biffurcation_type << endl;
-        cout << "\t biffurcation_threshold = " << mdl.biffurcation_threshold << endl;
-        cout << "\t biffurcation_threshold_2 = " << mdl.biffurcation_threshold_2 << endl;
-        cout << "\t biffurcation_min_dist = " << mdl.biffurcation_min_dist << endl;
-        cout << "\t biffurcation_angle = " << mdl.biffurcation_angle << endl;
+        cout << "\t bifurcation_type = " << mdl.bifurcation_type << endl;
+        cout << "\t bifurcation_threshold = " << mdl.bifurcation_threshold << endl;
+        cout << "\t bifurcation_threshold_2 = " << mdl.bifurcation_threshold_2 << endl;
+        cout << "\t bifurcation_min_dist = " << mdl.bifurcation_min_dist << endl;
+        cout << "\t bifurcation_angle = " << mdl.bifurcation_angle << endl;
 
         cout << "\t growth_type = " << mdl.growth_type << endl;
         cout << "\t growth_threshold = " << mdl.growth_threshold << endl;

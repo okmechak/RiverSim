@@ -246,8 +246,7 @@ int main(int argc, char *argv[])
         while(!StopConditionOfRiverGrowth(mdl, border, tree) && i < mdl.prog_opt.number_of_steps)
         {
         //! [StopConditionExample]
-            
-            print(mdl.prog_opt.verbose, "-----#" + to_string(i));
+            print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             string str = output_file_name;
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);

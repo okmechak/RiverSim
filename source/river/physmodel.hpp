@@ -62,6 +62,9 @@ namespace River
 
             ///Outputs VTK file of Deal.II solution
             bool save_vtk = false;
+
+            ///Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes
+            unsigned simulation_type = 0;
             
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const ProgramOptions & po);
@@ -278,21 +281,21 @@ namespace River
             ///Eta. Growth power of a1^eta
             double eta = 1.0;
 
-            ///Biffurcation method type. 
-            ///0 - a(3)/a(1) > biffurcation_threshold, 
-            ///1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.
-            unsigned biffurcation_type = 0;
+            ///Bifurcation method type. 
+            ///0 - a(3)/a(1) > bifurcation_threshold, 
+            ///1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.
+            unsigned bifurcation_type = 0;
             
-            ///Biffurcation threshold for "0" bifurcation type.
-            double biffurcation_threshold = -0.1;//Probably should be -0.1
-            ///Biffurcation threshold for "1" bifurcation type.
-            double biffurcation_threshold_2 = 0.001;//Probably should be -0.1
+            ///Bifurcation threshold for "0" bifurcation type.
+            double bifurcation_threshold = -0.1;//Probably should be -0.1
+            ///Bifurcation threshold for "1" bifurcation type.
+            double bifurcation_threshold_2 = 0.001;//Probably should be -0.1
 
             ///Minimal distance between adjacent bifurcation points. Reduces numerical noise.
-            double biffurcation_min_dist = 0.05;
+            double bifurcation_min_dist = 0.05;
 
-            ///Biffurcation angle.
-            double biffurcation_angle = M_PI/5;
+            ///Bifurcation angle.
+            double bifurcation_angle = M_PI/5;
 
             ///Growth type. 0 - arctan(a2/a1), 1 - {dx, dy}
             unsigned growth_type = 0;
@@ -319,35 +322,35 @@ namespace River
             ///Some global program options
             ProgramOptions prog_opt;
 
-            ///Checks by evaluating series params for biffuraction condition.
+            ///Checks by evaluating series params for bifuraction condition.
             ///More details about that you can find at [PMorawiecki work]()
-            bool q_biffurcate(vector<double> a, double branch_lenght) const
+            bool q_bifurcate(vector<double> a, double branch_lenght) const
             {
-                bool dist_flag = branch_lenght > biffurcation_min_dist;
+                bool dist_flag = branch_lenght > bifurcation_min_dist;
 
-                if(biffurcation_type == 0)
+                if(bifurcation_type == 0)
                 {
                     if(prog_opt.verbose)
-                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold << endl;
-                    return a.at(2)/a.at(0) < biffurcation_threshold && dist_flag;
+                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
+                    return a.at(2)/a.at(0) < bifurcation_threshold && dist_flag;
                 }
-                else if(biffurcation_type == 1)
+                else if(bifurcation_type == 1)
                 {
                     if(prog_opt.verbose)
-                        cout << "a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
-                    return a.at(0) > biffurcation_threshold_2 && dist_flag;
+                        cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
+                    return a.at(0) > bifurcation_threshold_2 && dist_flag;
                 }
-                else if(biffurcation_type == 2)
+                else if(bifurcation_type == 2)
                 {
                     if(prog_opt.verbose)
-                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << biffurcation_threshold
-                             << " a1 = " <<  a.at(0) << ", bif thr = " << biffurcation_threshold_2 << endl;
-                    return a.at(2)/a.at(0) < biffurcation_threshold && a.at(0) > biffurcation_threshold_2 && dist_flag;
+                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
+                             << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
+                    return a.at(2)/a.at(0) < bifurcation_threshold && a.at(0) > bifurcation_threshold_2 && dist_flag;
                 }
-                else if(biffurcation_type == 3)
+                else if(bifurcation_type == 3)
                     return false;
                 else 
-                    throw invalid_argument("Wrong biffurcation_type value!");
+                    throw invalid_argument("Wrong bifurcation_type value!");
             }
 
             ///Growth condition.
@@ -425,25 +428,25 @@ namespace River
         ///holds for each branch id all its series parameters: a1, a2, a3
         map<int, vector<vector<double>>> branches_series_params_and_geom_diff;
         ///series params info in bifurcation points
-        map<int, vector<vector<double>>> branches_biffuraction_info;
+        map<int, vector<vector<double>>> branches_bifuraction_info;
 
         ///Used for backward river simulation data gathering.
-        void StartBiffurcationRecord(int br_id, double biffurcation_difference)
+        void StartBifurcationRecord(int br_id, double bifurcation_difference)
         {
             if(bif_difference.count(br_id))
-                throw invalid_argument("StartBiffurcationRecord. Such branch already recorded, id: " + to_string(br_id));
+                throw invalid_argument("StartBifurcationRecord. Such branch already recorded, id: " + to_string(br_id));
             else
             {
-                bif_difference[br_id] = biffurcation_difference;
+                bif_difference[br_id] = bifurcation_difference;
             }
         }
 
         ///Used for backward river simulation data gathering.
-        void EndBiffurcationRecord(int br_id, vector<double> series_params)
+        void EndBifurcationRecord(int br_id, vector<double> series_params)
         {
             if(bif_difference.count(br_id))
             {
-                RecordBiffurcationPoint(br_id, bif_difference[br_id], series_params);
+                RecordBifurcationPoint(br_id, bif_difference[br_id], series_params);
                 bif_difference.erase(br_id);
             }
         }
@@ -455,8 +458,8 @@ namespace River
             {
                 branches_series_params_and_geom_diff[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}, {0}};
 
-                branches_series_params_and_geom_diff[branch_id].at(0/*biff difference index*/).at(0) = dalpha;
-                branches_series_params_and_geom_diff[branch_id].at(1/*biff difference index*/).at(0) = ds;
+                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).at(0) = dalpha;
+                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).at(0) = ds;
 
                 branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).at(0) = series_params.at(0);
                 branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).at(0) = series_params.at(1);
@@ -464,8 +467,8 @@ namespace River
             }
             else
             {
-                branches_series_params_and_geom_diff[branch_id].at(0/*biff difference index*/).push_back( dalpha);
-                branches_series_params_and_geom_diff[branch_id].at(1/*biff difference index*/).push_back( ds);
+                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).push_back( dalpha);
+                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).push_back( ds);
 
                 branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).push_back(series_params.at(0));
                 branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).push_back(series_params.at(1));
@@ -480,24 +483,24 @@ namespace River
             map<int, double> bif_difference;
 
             ///Record bifurcation point
-            void RecordBiffurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
+            void RecordBifurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
             {
-                if(!branches_biffuraction_info.count(branch_id))
+                if(!branches_bifuraction_info.count(branch_id))
                 {
-                    branches_biffuraction_info[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}};
-                    branches_biffuraction_info[branch_id].at(0/*biff difference index*/).at(0) = bif_difference;
+                    branches_bifuraction_info[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}};
+                    branches_bifuraction_info[branch_id].at(0/*biff difference index*/).at(0) = bif_difference;
 
-                    branches_biffuraction_info[branch_id].at(1/*a1 index*/).at(0) = bif_series_params.at(0);
-                    branches_biffuraction_info[branch_id].at(2/*a2 index*/).at(0) = bif_series_params.at(1);
-                    branches_biffuraction_info[branch_id].at(3/*a3 index*/).at(0) = bif_series_params.at(2);
+                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).at(0) = bif_series_params.at(0);
+                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).at(0) = bif_series_params.at(1);
+                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).at(0) = bif_series_params.at(2);
                 }
                 else
                 {
-                    branches_biffuraction_info[branch_id][0/*biff difference index*/].push_back(bif_difference);
+                    branches_bifuraction_info[branch_id][0/*biff difference index*/].push_back(bif_difference);
 
-                    branches_biffuraction_info[branch_id].at(1/*a1 index*/).push_back(bif_series_params.at(0));
-                    branches_biffuraction_info[branch_id].at(2/*a2 index*/).push_back(bif_series_params.at(1));
-                    branches_biffuraction_info[branch_id].at(3/*a3 index*/).push_back(bif_series_params.at(2));
+                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).push_back(bif_series_params.at(0));
+                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).push_back(bif_series_params.at(1));
+                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).push_back(bif_series_params.at(2));
                 }
             }
     };

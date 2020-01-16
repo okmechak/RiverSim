@@ -78,10 +78,10 @@ namespace River
 
         //Simulation parameters
         options.add_options("Simulation parameters")
-        ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value("10"))
-        ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", value<double>()->default_value("100"))
-        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value("0"))
-        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value("1"));
+        ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value(to_string(mdl.prog_opt.number_of_steps)))
+        ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", value<double>()->default_value(to_string(mdl.prog_opt.maximal_river_height)))
+        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value(to_string(mdl.prog_opt.simulation_type)))
+        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value(to_string(mdl.prog_opt.number_of_backward_steps)));
         
         //Geometry parameters
         options.add_options("Border geometry parameters")
@@ -93,11 +93,11 @@ namespace River
         ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplace(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", value<unsigned>()->default_value(to_string(mdl.boundary_condition)))
         ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", value<double>()->default_value(to_string(mdl.field_value)))
         ("eta", "Power of a1^eta used in growth of river.", value<double>()->default_value(to_string(mdl.eta)))
-        ("bifurcation-type", "Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", value<unsigned>()->default_value(to_string(mdl.biffurcation_type)))
-        ("b,bifurcation-threshold", "Biffuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold)))
-        ("bifurcation-threshold-2", "Biffuraction threshold for second bifurcation type: a(1) > kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold_2)))
-        ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", value<double>()->default_value(to_string(mdl.biffurcation_min_dist)))
-        ("bifurcation-angle", "Angle between branches in bifurcation point. Default is Pi/5 which is theoretical value.", value<double>()->default_value(to_string(mdl.biffurcation_angle)))
+        ("bifurcation-type", "Bifurcation method type. 0 - a(3)/a(1) > bifurcation_threshold, 1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", value<unsigned>()->default_value(to_string(mdl.bifurcation_type)))
+        ("b,bifurcation-threshold", "Bifuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", value<double>()->default_value(to_string(mdl.bifurcation_threshold)))
+        ("bifurcation-threshold-2", "Biffuraction threshold for second bifurcation type: a(1) > kcrit", value<double>()->default_value(to_string(mdl.bifurcation_threshold_2)))
+        ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", value<double>()->default_value(to_string(mdl.bifurcation_min_dist)))
+        ("bifurcation-angle", "Angle between branches in bifurcation point. Default is Pi/5 which is theoretical value.", value<double>()->default_value(to_string(mdl.bifurcation_angle)))
         ("growth-type", "Specifies growth type used for evaluation of next point(its dirrection and lenght): 0 - using arctan(a2/a1) method, 1 - by preavuating {dx, dy}. For more details please Piotr Morawiecki", value<unsigned>()->default_value(to_string(mdl.growth_type)))
         ("growth-threshold", "Growth of branch stops if a(1) < growth-threshold.", value<double>()->default_value(to_string(mdl.growth_threshold)))
         ("growth-min-distance", "Growth of branch will be with constant speed(ds by each step) if its lenght is less then this value. uUsed for reducing numerical noise", value<double>()->default_value(to_string(mdl.growth_min_distance)))
@@ -189,6 +189,8 @@ namespace River
         if (vm.count("number-of-backward-steps"))
             mdl.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
         if (vm.count("vtk")) mdl.prog_opt.save_vtk = true;
+        if (vm.count("simulation-type"))
+            mdl.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
@@ -199,11 +201,11 @@ namespace River
         if (vm.count("boundary-condition")) mdl.boundary_condition = vm["boundary-condition"].as<unsigned>();
         if (vm.count("field-value")) mdl.field_value = vm["field-value"].as<double>();
         if (vm.count("eta")) mdl.eta = vm["eta"].as<double>();
-        if (vm.count("bifurcation-type")) mdl.biffurcation_type = vm["bifurcation-type"].as<unsigned>();
-        if (vm.count("bifurcation-threshold")) mdl.biffurcation_threshold = vm["bifurcation-threshold"].as<double>();
-        if (vm.count("bifurcation-threshold-2")) mdl.biffurcation_threshold_2 = vm["bifurcation-threshold-2"].as<double>();
-        if (vm.count("bifurcation-angle")) mdl.biffurcation_angle = vm["bifurcation-angle"].as<double>();
-        if (vm.count("bifurcation-min-distance")) mdl.biffurcation_min_dist = vm["bifurcation-min-distance"].as<double>();
+        if (vm.count("bifurcation-type")) mdl.bifurcation_type = vm["bifurcation-type"].as<unsigned>();
+        if (vm.count("bifurcation-threshold")) mdl.bifurcation_threshold = vm["bifurcation-threshold"].as<double>();
+        if (vm.count("bifurcation-threshold-2")) mdl.bifurcation_threshold_2 = vm["bifurcation-threshold-2"].as<double>();
+        if (vm.count("bifurcation-angle")) mdl.bifurcation_angle = vm["bifurcation-angle"].as<double>();
+        if (vm.count("bifurcation-min-distance")) mdl.bifurcation_min_dist = vm["bifurcation-min-distance"].as<double>();
         if (vm.count("growth-type")) mdl.growth_type = vm["growth-type"].as<unsigned>();
         if (vm.count("growth-threshold")) mdl.growth_threshold = vm["growth-threshold"].as<double>();
         if (vm.count("growth-min-distance")) mdl.growth_min_distance = vm["growth-min-distance"].as<double>();
@@ -300,9 +302,7 @@ namespace River
                 {"EndDate",  time.CurrentDate()},
                 {"TotalTime",  time.Total()},
                 {"EachCycleTime",  time.records},
-                {"InputFile", input_file},
-                {"NumberOfSteps", mdl.prog_opt.number_of_steps},
-                {"MaximalRiverHeight", mdl.prog_opt.maximal_river_height}}},
+                {"InputFile", input_file}}},
 
             {"Model", {
                 {"Description", "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) "},
@@ -316,15 +316,23 @@ namespace River
                 {"boundaryCondition", mdl.boundary_condition},
                 {"fieldValue", mdl.field_value},
                 {"eta", mdl.eta},
-                {"biffurcationType", mdl.biffurcation_type},
-                {"biffurcationThreshold", mdl.biffurcation_threshold},
-                {"biffurcationThreshold2", mdl.biffurcation_threshold_2},
-                {"biffurcationMinDistance", mdl.biffurcation_min_dist},
-                {"biffurcationAngle", mdl.biffurcation_angle},
+                {"bifurcationType", mdl.bifurcation_type},
+                {"bifurcationThreshold", mdl.bifurcation_threshold},
+                {"bifurcationThreshold2", mdl.bifurcation_threshold_2},
+                {"bifurcationMinDistance", mdl.bifurcation_min_dist},
+                {"bifurcationAngle", mdl.bifurcation_angle},
                 {"growthType", mdl.growth_type},
                 {"growthThreshold", mdl.growth_threshold},
                 {"growthMinDistance", mdl.growth_min_distance},
                 {"ds", mdl.ds},
+
+                {"ProgramOptions", {
+                    {"SimulationType", mdl.prog_opt.simulation_type},
+                    {"NumberOfSteps", mdl.prog_opt.number_of_steps},
+                    {"NumberOfBackwardSteps", mdl.prog_opt.number_of_backward_steps},
+                    {"MaximalRiverHeight", mdl.prog_opt.maximal_river_height},
+                    {"Verbose", mdl.prog_opt.verbose},
+                    {"SaveVTK", mdl.prog_opt.save_vtk}}},
 
                 {"Integration",{
                     {"radius", mdl.integr.integration_radius},
@@ -365,7 +373,7 @@ namespace River
             {"GeometryDifference", {
                 {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in bifurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached bifurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."},
                 {"AlongBranches", gd.branches_series_params_and_geom_diff},
-                {"BiffuractionPoints", gd.branches_biffuraction_info}}}
+                {"BifuractionPoints", gd.branches_bifuraction_info}}}
         };
 
         out << setw(4) << j;
@@ -380,13 +388,7 @@ namespace River
 
         json j;
         in >> j;
-        if(j.count("RuntimeInfo"))
-        {
-            json jrun = j["RuntimeInfo"];
 
-            if(jrun.count("MaximalRiverHeight")) jrun.at("MaximalRiverHeight").get_to(mdl.prog_opt.maximal_river_height);
-            if(jrun.count("NumberOfSteps")) jrun.at("NumberOfSteps").get_to(mdl.prog_opt.number_of_steps);
-        }
         if(j.count("Model"))
         {
             json jmdl = j["Model"];
@@ -401,17 +403,29 @@ namespace River
             if (jmdl.count("boundaryCondition")) jmdl.at("boundaryCondition").get_to(mdl.boundary_condition);
             if (jmdl.count("fieldValue")) jmdl.at("fieldValue").get_to(mdl.field_value);
             if (jmdl.count("eta")) jmdl.at("eta").get_to(mdl.eta);
-            if (jmdl.count("biffurcationType")) jmdl.at("biffurcationType").get_to(mdl.biffurcation_type);
-            if (jmdl.count("biffurcationThreshold")) jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
-            if (jmdl.count("biffurcationThreshold2")) jmdl.at("biffurcationThreshold2").get_to(mdl.biffurcation_threshold_2);
-            if (jmdl.count("biffurcationMinDistance")) jmdl.at("biffurcationMinDistance").get_to(mdl.biffurcation_min_dist);
-            if (jmdl.count("biffurcationAngle")) jmdl.at("biffurcationAngle").get_to(mdl.biffurcation_angle);
-            if (jmdl.count("biffurcationThreshold")) jmdl.at("biffurcationThreshold").get_to(mdl.biffurcation_threshold);
+            if (jmdl.count("bifurcationType")) jmdl.at("bifurcationType").get_to(mdl.bifurcation_type);
+            if (jmdl.count("bifurcationThreshold")) jmdl.at("bifurcationThreshold").get_to(mdl.bifurcation_threshold);
+            if (jmdl.count("bifurcationThreshold2")) jmdl.at("bifurcationThreshold2").get_to(mdl.bifurcation_threshold_2);
+            if (jmdl.count("bifurcationMinDistance")) jmdl.at("bifurcationMinDistance").get_to(mdl.bifurcation_min_dist);
+            if (jmdl.count("bifurcationAngle")) jmdl.at("bifurcationAngle").get_to(mdl.bifurcation_angle);
+            if (jmdl.count("bifurcationThreshold")) jmdl.at("bifurcationThreshold").get_to(mdl.bifurcation_threshold);
             if (jmdl.count("growthType")) jmdl.at("growthType").get_to(mdl.growth_type);
             if (jmdl.count("growthThreshold")) jmdl.at("growthThreshold").get_to(mdl.growth_threshold);
             if (jmdl.count("growthMinDistance")) jmdl.at("growthMinDistance").get_to(mdl.growth_min_distance);
             if (jmdl.count("ds")) jmdl.at("ds").get_to(mdl.ds);
             
+            if(jmdl.count("ProgramOptions"))
+            {
+                auto jprogopt = jmdl["ProgramOptions"];
+
+                if (jprogopt.count("SimulationType")) jprogopt.at("SimulationType").get_to(mdl.prog_opt.simulation_type);
+                if (jprogopt.count("NumberOfSteps")) jprogopt.at("NumberOfSteps").get_to(mdl.prog_opt.number_of_steps);
+                if (jprogopt.count("NumberOfBackwardSteps")) jprogopt.at("NumberOfBackwardSteps").get_to(mdl.prog_opt.number_of_backward_steps);
+                if (jprogopt.count("MaximalRiverHeight")) jprogopt.at("MaximalRiverHeight").get_to(mdl.prog_opt.maximal_river_height);
+                if (jprogopt.count("Verbose")) jprogopt.at("Verbose").get_to(mdl.prog_opt.verbose);
+                if (jprogopt.count("SaveVTK")) jprogopt.at("SaveVTK").get_to(mdl.prog_opt.save_vtk);
+            }
+
             if(jmdl.count("Mesh"))
             {
                 auto jmesh = jmdl["Mesh"];
@@ -423,15 +437,12 @@ namespace River
                 if (jmesh.count("minAngle")) jmesh.at("minAngle").get_to(mdl.mesh.min_angle);
                 if (jmesh.count("refinmentRadius")) jmesh.at("refinmentRadius").get_to(mdl.mesh.refinment_radius);
                 if (jmesh.count("staticRefinmentSteps")) jmesh.at("staticRefinmentSteps").get_to(mdl.mesh.static_refinment_steps);
-
-                
+                if (jmesh.count("sigma")) jmesh.at("sigma").get_to(mdl.mesh.sigma);
                 if (jmesh.count("maxEdge"))  jmesh.at("maxEdge").get_to(mdl.mesh.max_edge);
                 if (jmesh.count("minEdge"))  jmesh.at("minEdge").get_to(mdl.mesh.min_edge);
-                if (jmesh.count("ratio"))    jmesh.at("ratio").get_to(mdl.mesh.ratio);
-
-
-                
+                if (jmesh.count("ratio"))    jmesh.at("ratio").get_to(mdl.mesh.ratio);   
             }
+
             if(jmdl.count("Integration"))
             {
                 auto jinteg = jmdl["Integration"];
@@ -440,6 +451,7 @@ namespace River
                 if (jinteg.count("exponant")) jinteg.at("exponant").get_to(mdl.integr.exponant);
                 if (jinteg.count("weightRadius")) jinteg.at("weightRadius").get_to(mdl.integr.weigth_func_radius);
             }
+
             if(jmdl.count("Solver"))
             {
                 auto jsolver = jmdl["Solver"];
@@ -451,7 +463,6 @@ namespace River
                 if (jsolver.count("iterationSteps")) jsolver.at("iterationSteps").get_to(mdl.solver_params.num_of_iterrations);
             }
         }
-
 
         if(j.count("Border"))
         {
@@ -549,7 +560,7 @@ namespace River
             json jgd = j["GeometryDifference"];
 
             jgd.at("AlongBranches").get_to(gd.branches_series_params_and_geom_diff);
-            jgd.at("BiffuractionPoints").get_to(gd.branches_biffuraction_info);
+            jgd.at("BifuractionPoints").get_to(gd.branches_bifuraction_info);
         }
     }
 }//namespace River
