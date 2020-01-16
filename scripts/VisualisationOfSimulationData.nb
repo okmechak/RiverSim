@@ -727,8 +727,8 @@ a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of \
 --simulation-type=2, first item - integral value over whole region, second - \
 disk integral over tip with r = 0.1, and rest are series params. \
 BiffuractionPoints - is similar to previous object. It has same parameters \
-but in biffurcation point. {source_branch_id: {lenght of non zero branch, \
-which doesnt reached biffurcation point as its adjacent \
+but in bifurcation point. {source_branch_id: {lenght of non zero branch, \
+which doesnt reached bifurcation point as its adjacent \
 branch},{a(1)},{a(2)},{a(3)}}.\"\>"}]}], "\[RightAssociation]"}]}], ",", 
    RowBox[{"\<\"Model\"\>", "\[Rule]", 
     RowBox[{"\[LeftAssociation]", 

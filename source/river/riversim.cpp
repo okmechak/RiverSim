@@ -118,7 +118,7 @@ namespace River
                 if (max_a < series_params.at(0))
                     max_a = series_params.at(0);
 
-        print(mdl.prog_opt.verbose, "Growth(or biffurcation) of tree...");
+        print(mdl.prog_opt.verbose, "Growth(or bifurcation) of tree...");
         for(auto&[id, series_params]: id_series_params)
             if(mdl.q_growth(series_params))
             {
@@ -182,7 +182,7 @@ namespace River
                         mdl.growth_min_distance + 1/*we are not constraining here speed growth near 
                         biffuraction points, so we set some value greater than it limit*/, max_a).r);
 
-        //collect branches which reached zero lenght(biffurcation point)
+        //collect branches which reached zero lenght(bifurcation point)
         print(mdl.prog_opt.verbose, "Collecting branches with zero lenght(if they are)...");
         vector<int> zero_size_branches_id;
         for(auto tip_id: tree.TipBranchesId())

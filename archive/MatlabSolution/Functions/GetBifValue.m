@@ -8,7 +8,7 @@ function bif_val = GetBifValue( bif_type, a1, a3)
             bif_val = -a1/(9*a3);
         otherwise
             ME = MException('MyComponent:noSuchVariable', ...
-                'Unvalid type of biffurcation: %s ', string(bif_type));
+                'Unvalid type of bifurcation: %s ', string(bif_type));
             throw(ME);
     end
 end

@@ -3,7 +3,7 @@ classdef plgs < handle
     properties (Access = public)
       P = [];  % points
       C = [];  % constraints between point i and point j
-      B = [];  % is biffurcation point
+      B = [];  % is bifurcation point
       Names = []; %give names to points. This should help with navigation.
       BC;    % boundarycondition on constraint k
       
@@ -50,7 +50,7 @@ classdef plgs < handle
                 throw(ME);
             end 
             bif_index = obj.get_index_by_coord(seg_left.Start);
-            %now start point is a biffurcation point
+            %now start point is a bifurcation point
             obj.B(bif_index) = 1;
             obj.add_segment(seg_left);
             obj.add_segment(seg_right);
@@ -272,13 +272,13 @@ classdef plgs < handle
                     obj.shrink_tip(constr, alpha);
                     len = 0;
                 
-                %if reached biffurcation point then we just
+                %if reached bifurcation point then we just
                 %remove rest of brunch and stop    
                 elseif obj.B(constr(1))
                     
                     obj.remove_constraint_by_index(constr(2))
                     len = 0;
-                    %this point is no more biffurcation point
+                    %this point is no more bifurcation point
                     obj.B(constr(1)) = 0;
                     is_end_of_branch = 1;
                 

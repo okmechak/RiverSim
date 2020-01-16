@@ -43,7 +43,7 @@ namespace River
             "Standard ways of using program:\n"
             "\t\t./riversim [options(optionally)] [input_file(optionally)]\n" + 
             "\tForward river growth: \n" + 
-            "\t\t./riversim -n 100 --eta=0.75 --save-each-step --biffurcation-threshold=-0.4 -o test\n"
+            "\t\t./riversim -n 100 --eta=0.75 --save-each-step --bifurcation-threshold=-0.4 -o test\n"
             "\tYou can contiue simmulation later from last point(or any other) by typing:\n" + 
             "\t\t./riversim -n 100 -o test_continuation test_99.json\n" +
             "\tNow we can also run bacward simmulation using previous results, by using option \"-t\":\n" + 
@@ -90,14 +90,14 @@ namespace River
         ("dx", "dx - shift of initial river position from beginning of coordinates in X dirrections.", value<double>()->default_value(to_string(mdl.dx)));
         //Model parameters
         options.add_options("Model parameters")
-        ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", value<unsigned>()->default_value(to_string(mdl.boundary_condition)))
+        ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplace(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", value<unsigned>()->default_value(to_string(mdl.boundary_condition)))
         ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", value<double>()->default_value(to_string(mdl.field_value)))
         ("eta", "Power of a1^eta used in growth of river.", value<double>()->default_value(to_string(mdl.eta)))
-        ("biffurcation-type", "Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.", value<unsigned>()->default_value(to_string(mdl.biffurcation_type)))
-        ("b,biffurcation-threshold", "Biffuraction threshold for first biffurcation type: a(3)/a(1) > kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold)))
-        ("biffurcation-threshold-2", "Biffuraction threshold for second biffurcation type: a(1) > kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold_2)))
-        ("biffurcation-min-distance", "Minimal distance between adjacent biffurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", value<double>()->default_value(to_string(mdl.biffurcation_min_dist)))
-        ("biffurcation-angle", "Angle between branches in biffurcation point. Default is Pi/5 which is theoretical value.", value<double>()->default_value(to_string(mdl.biffurcation_angle)))
+        ("bifurcation-type", "Biffurcation method type. 0 - a(3)/a(1) > biffurcation_threshold, 1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", value<unsigned>()->default_value(to_string(mdl.biffurcation_type)))
+        ("b,bifurcation-threshold", "Biffuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold)))
+        ("bifurcation-threshold-2", "Biffuraction threshold for second bifurcation type: a(1) > kcrit", value<double>()->default_value(to_string(mdl.biffurcation_threshold_2)))
+        ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", value<double>()->default_value(to_string(mdl.biffurcation_min_dist)))
+        ("bifurcation-angle", "Angle between branches in bifurcation point. Default is Pi/5 which is theoretical value.", value<double>()->default_value(to_string(mdl.biffurcation_angle)))
         ("growth-type", "Specifies growth type used for evaluation of next point(its dirrection and lenght): 0 - using arctan(a2/a1) method, 1 - by preavuating {dx, dy}. For more details please Piotr Morawiecki", value<unsigned>()->default_value(to_string(mdl.growth_type)))
         ("growth-threshold", "Growth of branch stops if a(1) < growth-threshold.", value<double>()->default_value(to_string(mdl.growth_threshold)))
         ("growth-min-distance", "Growth of branch will be with constant speed(ds by each step) if its lenght is less then this value. uUsed for reducing numerical noise", value<double>()->default_value(to_string(mdl.growth_min_distance)))
@@ -199,11 +199,11 @@ namespace River
         if (vm.count("boundary-condition")) mdl.boundary_condition = vm["boundary-condition"].as<unsigned>();
         if (vm.count("field-value")) mdl.field_value = vm["field-value"].as<double>();
         if (vm.count("eta")) mdl.eta = vm["eta"].as<double>();
-        if (vm.count("biffurcation-type")) mdl.biffurcation_type = vm["biffurcation-type"].as<unsigned>();
-        if (vm.count("biffurcation-threshold")) mdl.biffurcation_threshold = vm["biffurcation-threshold"].as<double>();
-        if (vm.count("biffurcation-threshold-2")) mdl.biffurcation_threshold_2 = vm["biffurcation-threshold-2"].as<double>();
-        if (vm.count("biffurcation-angle")) mdl.biffurcation_angle = vm["biffurcation-angle"].as<double>();
-        if (vm.count("biffurcation-min-distance")) mdl.biffurcation_min_dist = vm["biffurcation-min-distance"].as<double>();
+        if (vm.count("bifurcation-type")) mdl.biffurcation_type = vm["bifurcation-type"].as<unsigned>();
+        if (vm.count("bifurcation-threshold")) mdl.biffurcation_threshold = vm["bifurcation-threshold"].as<double>();
+        if (vm.count("bifurcation-threshold-2")) mdl.biffurcation_threshold_2 = vm["bifurcation-threshold-2"].as<double>();
+        if (vm.count("bifurcation-angle")) mdl.biffurcation_angle = vm["bifurcation-angle"].as<double>();
+        if (vm.count("bifurcation-min-distance")) mdl.biffurcation_min_dist = vm["bifurcation-min-distance"].as<double>();
         if (vm.count("growth-type")) mdl.growth_type = vm["growth-type"].as<unsigned>();
         if (vm.count("growth-threshold")) mdl.growth_threshold = vm["growth-threshold"].as<double>();
         if (vm.count("growth-min-distance")) mdl.growth_min_distance = vm["growth-min-distance"].as<double>();
@@ -363,7 +363,7 @@ namespace River
                 {"Branches", branches}}},
                 
             {"GeometryDifference", {
-                {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in biffurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached biffurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."},
+                {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in bifurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached bifurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."},
                 {"AlongBranches", gd.branches_series_params_and_geom_diff},
                 {"BiffuractionPoints", gd.branches_biffuraction_info}}}
         };

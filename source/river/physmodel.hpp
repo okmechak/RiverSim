@@ -280,15 +280,15 @@ namespace River
 
             ///Biffurcation method type. 
             ///0 - a(3)/a(1) > biffurcation_threshold, 
-            ///1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no biffurcation at all.
+            ///1 - a1 > biffurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.
             unsigned biffurcation_type = 0;
             
-            ///Biffurcation threshold for "0" biffurcation type.
+            ///Biffurcation threshold for "0" bifurcation type.
             double biffurcation_threshold = -0.1;//Probably should be -0.1
-            ///Biffurcation threshold for "1" biffurcation type.
+            ///Biffurcation threshold for "1" bifurcation type.
             double biffurcation_threshold_2 = 0.001;//Probably should be -0.1
 
-            ///Minimal distance between adjacent biffurcation points. Reduces numerical noise.
+            ///Minimal distance between adjacent bifurcation points. Reduces numerical noise.
             double biffurcation_min_dist = 0.05;
 
             ///Biffurcation angle.
@@ -300,7 +300,7 @@ namespace River
             ///Growth of branch will be done only if a1 > growth-threshold.
             double growth_threshold = 0;
 
-            ///Distance of constant tip growing after biffurcation point. Reduces numerical noise.
+            ///Distance of constant tip growing after bifurcation point. Reduces numerical noise.
             double growth_min_distance = 0.01;
             
             //Numeriacal parameters
@@ -362,7 +362,7 @@ namespace River
             */
             Polar next_point(vector<double> series_params, double branch_lenght, double max_a) const
             {
-                //handle situation near biffurcation point, to reduce "killing/shading" one branch by another
+                //handle situation near bifurcation point, to reduce "killing/shading" one branch by another
                 auto eta_local = eta;
                 if(branch_lenght < growth_min_distance)
                     eta_local = 0;//constant growth of both branches.
@@ -424,7 +424,7 @@ namespace River
     {
         ///holds for each branch id all its series parameters: a1, a2, a3
         map<int, vector<vector<double>>> branches_series_params_and_geom_diff;
-        ///series params info in biffurcation points
+        ///series params info in bifurcation points
         map<int, vector<vector<double>>> branches_biffuraction_info;
 
         ///Used for backward river simulation data gathering.
@@ -479,7 +479,7 @@ namespace River
             ///So called branch inconsistency at backward river simulation.
             map<int, double> bif_difference;
 
-            ///Record biffurcation point
+            ///Record bifurcation point
             void RecordBiffurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
             {
                 if(!branches_biffuraction_info.count(branch_id))
