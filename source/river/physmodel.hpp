@@ -380,9 +380,9 @@ namespace River
                 else if(growth_type == 1)
                 {
                     auto dy = beta*beta/9*( pow(27/2*dl/beta/beta + 1, 2./3.) - 1),
-                        dx = 2*sqrt( pow(dy, 3)/pow(beta,2) + pow(dy, 4) / pow(beta, 3));
-
-                    return ToPolar(Point{dx, dy});
+                        dx = 2*sqrt( pow(dy, 3)/pow(beta, 2) + pow(dy, 4) / pow(beta, 3));
+                        
+                    return ToPolar(Point{dx, dy}.rotate(-M_PI/2));
                 }
                 else
                     throw invalid_argument("Invalid value of growth_type!");
