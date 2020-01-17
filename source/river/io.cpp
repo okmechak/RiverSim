@@ -164,7 +164,7 @@ namespace River
                 "Border geometry parameters",
                 "Model parameters",
                 "Series parameters integral",
-                "Mesh refinment parameters. Funciton of area constaint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).",
+                "Mesh refinment parameters. Function of area constraint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).",
                 "Solver Parameters"}) 
                 << endl;
         }
