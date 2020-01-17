@@ -51,9 +51,13 @@
     <iframe 
         width="560" 
         height="315" 
-        src="https://www.youtube.com/embed/Y3x70JUdge8?controls=0" 
+        src="https://www.youtube.com/embed/nMHbZbgenwo" 
         frameborder="0" 
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+        allow="accelerometer; 
+        autoplay; 
+        encrypted-media; 
+        gyroscope; 
+        picture-in-picture" 
         allowfullscreen>
     </iframe>
 
@@ -125,13 +129,25 @@
     And after that, typical backward simulation commnad:
     > ./riversim -n 130 -o revsim --simulation-type=1 simdata.json
 
+    \section team Team
+
+    + prof. dr hab Piotr Szymczak
+    + student Stasiek Żukowski
+    + student Oleg Kmechak
+
+
     \section references References
 
     [1]: [Problem odwrotny do ewolucji sieci rzecznych]().
+
     [2]: RiverSim repository - https://github.com/okmechak/RiverSim/
+
     [3]: Bifurcation dynamics of natural drainage networks Alexander P.Petroff†, Olivier Devauchelle‡, Hansjörg Seybold and Daniel H.Rothman.
+
     [4]: Path selection in the growth of rivers Yossi Cohen, Olivier Devauchelle, Hansjörg F. Seybold, Robert S. Yia, Piotr Szymczak, and Daniel H. Rothmana.
+
     [5]: Ramiﬁcation of stream networks Olivier Devauchelle, Alexander P. Petroff, Hansjörg F. Seybold, and Daniel H. Rothman.
+
     [6]: Shape and dynamics of seepage erosion in a horizontal granular bed Michael Berhanu, Alexander Petroﬀ, Olivier Devauchelle, Arshad Kudrolli, and Daniel H. Rothman.
 
     \section contacts Contacts
