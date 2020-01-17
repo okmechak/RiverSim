@@ -1,5 +1,5 @@
 <map id="tree.hpp" name="tree.hpp">
-<area shape="rect" id="node2" href="$common_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program. " alt="" coords="149,155,256,181"/>
+<area shape="rect" id="node2" href="$GeometryPrimitives_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program. " alt="" coords="112,155,293,181"/>
 <area shape="rect" id="node3" href="$tethex_8hpp.html" title="Classes for holding mesh and converting by splitting triangles to quadrangles. " alt="" coords="25,80,117,107"/>
 <area shape="rect" id="node4" href="$physmodel_8hpp.html" title="Contains all RiverSim program parameters. " alt="" coords="141,80,264,107"/>
 <area shape="rect" id="node5" href="$border_8hpp.html" title="Generate initial predefinide border geometry and its source positions. " alt="" coords="288,80,379,107"/>

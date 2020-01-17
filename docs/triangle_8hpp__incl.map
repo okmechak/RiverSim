@@ -1,4 +1,4 @@
 <map id="triangle.hpp" name="triangle.hpp">
-<area shape="rect" id="node2" href="$physmodel_8hpp.html" title="Contains all RiverSim program parameters. " alt="" coords="5,80,128,107"/>
-<area shape="rect" id="node3" href="$common_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program. " alt="" coords="13,155,120,181"/>
+<area shape="rect" id="node2" href="$physmodel_8hpp.html" title="Contains all RiverSim program parameters. " alt="" coords="35,80,157,107"/>
+<area shape="rect" id="node3" href="$GeometryPrimitives_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program. " alt="" coords="5,155,187,181"/>
 </map>

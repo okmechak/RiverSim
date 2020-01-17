@@ -1,4 +1,4 @@
-<map id="GeometryPrimitives.hpp" name="GeometryPrimitives.hpp">
+<map id="common.hpp" name="common.hpp">
 <area shape="rect" id="node2" href="$border_8hpp.html" title="Generate initial predefinide border geometry and its source positions. " alt="" coords="5,80,96,107"/>
 <area shape="rect" id="node6" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="83,155,159,181"/>
 <area shape="rect" id="node7" href="$physmodel_8hpp.html" title="Contains all RiverSim program parameters. " alt="" coords="187,80,309,107"/>
