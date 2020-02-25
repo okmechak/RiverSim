@@ -81,7 +81,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Physical model parameters.  <a href="classRiver_1_1Model.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Point.html">Point</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classRiver_1_1Point.html" title="Point object represented as vector. ">Point</a> object represented as vector.  <a href="classRiver_1_1Point.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classRiver_1_1Point.html" title="Point object represented as radius vector. ">Point</a> object represented as radius vector.  <a href="classRiver_1_1Point.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Polar.html">Polar</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector represented in polar coordinates.  <a href="classRiver_1_1Polar.html#details">More...</a><br /></td></tr>
@@ -111,6 +111,13 @@ Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#ae8ae64b84b5c3a881b66a7c3249c443e">print</a> (bool flag, string str)</td></tr>
 <tr class="memdesc:ae8ae64b84b5c3a881b66a7c3249c443e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints logs depending of log configuration(quiet or verbose) <br /></td></tr>
 <tr class="separator:ae8ae64b84b5c3a881b66a7c3249c443e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61157a37297b24f8c8ad96d303c20c01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a61157a37297b24f8c8ad96d303c20c01">GetNormalizedPoint</a> (<a class="el" href="classRiver_1_1Point.html">Point</a> p)</td></tr>
+<tr class="memdesc:a61157a37297b24f8c8ad96d303c20c01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns normalized vector of current <a class="el" href="classRiver_1_1Point.html" title="Point object represented as radius vector. ">Point</a>.  <a href="#a61157a37297b24f8c8ad96d303c20c01">More...</a><br /></td></tr>
+<tr class="separator:a61157a37297b24f8c8ad96d303c20c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcdc83c23d37484c22c3d7aca5193579"><td class="memItemLeft" align="right" valign="top"><a id="afcdc83c23d37484c22c3d7aca5193579"></a>
+<a class="el" href="classRiver_1_1Polar.html">Polar</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#afcdc83c23d37484c22c3d7aca5193579">ToPolar</a> (<a class="el" href="classRiver_1_1Point.html">Point</a> p)</td></tr>
+<tr class="memdesc:afcdc83c23d37484c22c3d7aca5193579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="classRiver_1_1Polar.html" title="Vector represented in polar coordinates. ">Polar</a> representation of vector. <br /></td></tr>
+<tr class="separator:afcdc83c23d37484c22c3d7aca5193579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affa8f88114842f27d0a7b829d69120cf"><td class="memItemLeft" align="right" valign="top">cxxopts::ParseResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#affa8f88114842f27d0a7b829d69120cf">process_program_options</a> (int argc, char *argv[])</td></tr>
 <tr class="memdesc:affa8f88114842f27d0a7b829d69120cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processing of program options.  <a href="#affa8f88114842f27d0a7b829d69120cf">More...</a><br /></td></tr>
 <tr class="separator:affa8f88114842f27d0a7b829d69120cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,8 +135,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="separator:adc14507125d8c05e31b884f0ed16408a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bf171a0fdf0f067f322d323d8bf0689"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a9bf171a0fdf0f067f322d323d8bf0689">StopConditionOfRiverGrowth</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree)</td></tr>
 <tr class="separator:a9bf171a0fdf0f067f322d323d8bf0689"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a628abeeaf9de09e675031bd19c00a9a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a628abeeaf9de09e675031bd19c00a9a8">ForwardRiverEvolution</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const string file_name)</td></tr>
-<tr class="separator:a628abeeaf9de09e675031bd19c00a9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8226306180d0a1ef887903a5256ff62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#ad8226306180d0a1ef887903a5256ff62">ForwardRiverEvolution</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const string file_name, double max_a_backward=-1)</td></tr>
+<tr class="separator:ad8226306180d0a1ef887903a5256ff62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a114bf5a324503d712322221ceba9cece"><td class="memItemLeft" align="right" valign="top">map&lt; int, vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a114bf5a324503d712322221ceba9cece">BackwardRiverEvolution</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd)</td></tr>
 <tr class="memdesc:a114bf5a324503d712322221ceba9cece"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function only makes evaluation of bacward river growth based on pde solution and geometry but still it returns some data like difference betweem branches if they reached zero.  <a href="#a114bf5a324503d712322221ceba9cece">More...</a><br /></td></tr>
 <tr class="separator:a114bf5a324503d712322221ceba9cece"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,6 +173,31 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="separator:ab5576a99dc50334ad837bfa492dfc4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a61157a37297b24f8c8ad96d303c20c01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61157a37297b24f8c8ad96d303c20c01">&#9670;&nbsp;</a></span>GetNormalizedPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRiver_1_1Point.html">Point</a> River::GetNormalizedPoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRiver_1_1Point.html">Point</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">invalid_argument</td><td>if vector lenght is zero </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Normalized vector </dd></dl>
+
+</div>
+</div>
 <a id="affa8f88114842f27d0a7b829d69120cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#affa8f88114842f27d0a7b829d69120cf">&#9670;&nbsp;</a></span>process_program_options()</h2>
 
@@ -267,8 +299,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a628abeeaf9de09e675031bd19c00a9a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a628abeeaf9de09e675031bd19c00a9a8">&#9670;&nbsp;</a></span>ForwardRiverEvolution()</h2>
+<a id="ad8226306180d0a1ef887903a5256ff62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8226306180d0a1ef887903a5256ff62">&#9670;&nbsp;</a></span>ForwardRiverEvolution()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -307,7 +339,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const string&#160;</td>
-          <td class="paramname"><em>file_name</em>&#160;</td>
+          <td class="paramname"><em>file_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>max_a_backward</em> = <code>-1</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -320,7 +358,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceRiver_a628abeeaf9de09e675031bd19c00a9a8_icgraph.svg" width="324" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceRiver_ad8226306180d0a1ef887903a5256ff62_icgraph.svg" width="324" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

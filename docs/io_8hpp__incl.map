@@ -3,7 +3,7 @@
 <area shape="rect" id="node4" href="$physmodel_8hpp.html" title="Contains all RiverSim program parameters. " alt="" coords="288,155,411,181"/>
 <area shape="rect" id="node5" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="169,80,245,107"/>
 <area shape="rect" id="node8" href="$utilities_8hpp.html" title="Console printouts, version, title and timing of program execution. " alt="" coords="445,80,544,107"/>
-<area shape="rect" id="node3" href="$common_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program. " alt="" coords="80,229,187,256"/>
+<area shape="rect" id="node3" href="$GeometryPrimitives_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program. " alt="" coords="43,229,224,256"/>
 <area shape="rect" id="node6" href="$tethex_8hpp.html" title="Classes for holding mesh and converting by splitting triangles to quadrangles. " alt="" coords="171,155,263,181"/>
 <area shape="rect" id="node9" href="$version_8hpp.html" title="Holds macros values of current version(MAJOR.MINOR.PATCH). " alt="" coords="445,155,544,181"/>
 </map>

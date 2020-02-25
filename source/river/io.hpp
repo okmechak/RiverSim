@@ -84,11 +84,11 @@
             "refinmentFraction": 0.1,
             "tol": 1e-12
         },
-        "biffurcationAngle": 0.6283185307179586,
-        "biffurcationMinDistance": 0.05,
-        "biffurcationThreshold": -0.1,
-        "biffurcationThreshold2": 0.001,
-        "biffurcationType": 0,
+        "bifurcationAngle": 0.6283185307179586,
+        "bifurcationMinDistance": 0.05,
+        "bifurcationThreshold": -0.1,
+        "bifurcationThreshold2": 0.001,
+        "bifurcationType": 0,
         "boundaryCondition": 0,
         "boundaryIds": [
             1,

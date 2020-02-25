@@ -13,7 +13,7 @@
     GNU General Public License for more details.
  */
 
-/*! \file common.hpp
+/*! \file GeometryPrimitives.hpp
     \brief Common geometric entities like Vectors, Lines etc., to whole program.
     \details
     Program is higly depended on geometry which consist of Points, Vectors, Polar Vectors, Lines
@@ -31,29 +31,23 @@
 
 using namespace std;
 
-
-/*!
-    Hash pairing function used for unordered map in Solver::TryInsertCellBoundary()
-*/
-namespace std
-{
-    template <>
-    struct hash<pair<int, int>>
-    {
-        size_t operator()(const pair<int, int> &x) const
-        {
-            int f = x.first, s = x.second;
-            return hash<int>()((f + s) * (f + s + 1) / 2 + s);
-        }
-    };
-} // namespace std
-
-
-
 namespace River
 {
     ///Prints logs depending of log configuration(quiet or verbose)
     void print(bool flag, string str);
+    
+    class Point;
+
+    class Polar;
+
+    /*! \brief Returns normalized vector of current Point.
+        \throw invalid_argument if vector lenght is zero
+        \return Normalized vector
+    */
+    Point GetNormalizedPoint(Point p);
+
+    ///Returns Polar representation of vector.
+    Polar ToPolar(Point p);
 
 
     /*! \class Polar
@@ -66,29 +60,29 @@ namespace River
     {
         public:
 
-        ///Creates \"zero\"-polar vector(r = 0, phi = 0)
-        Polar() = default;
-
-        ///Creates \"non-zero\"-polar vector(r = \p dlval, phi = \p phival)
-        Polar(double dlval, double phival):
-          r{dlval}, phi{phival} {};
-
-        ///Radius of points.
-        double r = 0.;
-
-        ///Angle of point.
-        double phi = 0.;
-
-        ///Converts Polar Object \p to string and redirects it to stream object \p write.
-        friend ostream& operator <<(ostream& write, const Polar & p)
-        {
-            write << "Polar: " << p.r << " " << p.phi << endl;
-            return write;
-        }
+            ///Creates \"zero\"-polar vector(r = 0, phi = 0)
+            Polar() = default;
+    
+            ///Creates \"non-zero\"-polar vector(r = \p dlval, phi = \p phival)
+            Polar(double dlval, double phival):
+              r{dlval}, phi{phival} {};
+    
+            ///Radius of points.
+            double r = 0.;
+    
+            ///Angle of point.
+            double phi = 0.;
+    
+            ///Converts Polar Object \p to string and redirects it to stream object \p write.
+            friend ostream& operator <<(ostream& write, const Polar & p)
+            {
+                write << "Polar: " << p.r << " " << p.phi << endl;
+                return write;
+            }
     };
 
     /*! \class Point
-        \brief Point object represented as vector.
+        \brief Point object represented as radius vector.
         
         \details Mathematically - it is a vector, contains only two public variables, coordinates: __x__ and __y__.
         Also it has a lot of operations which enables mathematical operations with two vectors:
@@ -128,17 +122,8 @@ namespace River
             ///Evaluates norm of vector {\p x, \p y}.
             static double norm(double x, double y);
 
-            /*! \brief Returns normalized vector of current Point.
-                \throw invalid_argument if vector lenght is zero
-                \return Normalized vector
-            */
-            Point getNormalized();
-
             ///Rotates point on \p phi angle(counterclockwise)
             Point& rotate(double phi);
-
-            ///Returns Polar representation of vector.
-            Polar getPolar() const;
 
             /*! \brief Normalizes current Point.
                 \throw invalid_argument if vector lenght is zero
@@ -159,9 +144,6 @@ namespace River
                 \throw invalid_argument if vector lenght one of poits is zero
             */
             double angle(const Point &p) const;
-
-            ///Prints point
-            void print() const;
 
             /*! @name Math Operations 
                 @{

@@ -57,6 +57,7 @@ $(function() {
 <li class="level1"><a href="#workflow">Program Cycle Workflow</a></li>
 <li class="level1"><a href="#futherreading">Futher Reading</a></li>
 <li class="level1"><a href="#basicusage">Basic Program Usage</a></li>
+<li class="level1"><a href="#team">Team</a></li>
 <li class="level1"><a href="#references">References</a></li>
 <li class="level1"><a href="#contacts">Contacts</a></li>
 </ul>
@@ -73,9 +74,13 @@ Introduction</h1>
 <iframe 
     width="560" 
     height="315" 
-    src="https://www.youtube.com/embed/Y3x70JUdge8?controls=0" 
+    src="https://www.youtube.com/embed/nMHbZbgenwo" 
     frameborder="0" 
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+    allow="accelerometer; 
+    autoplay; 
+    encrypted-media; 
+    gyroscope; 
+    picture-in-picture" 
     allowfullscreen>
 </iframe>
 
@@ -89,7 +94,7 @@ Illustrations</h1>
 <p>Main geometry classes of program are next:</p>
 <ul>
 <li><a class="el" href="classRiver_1_1Polar.html" title="Vector represented in polar coordinates. ">River::Polar</a></li>
-<li><a class="el" href="classRiver_1_1Point.html" title="Point object represented as vector. ">River::Point</a></li>
+<li><a class="el" href="classRiver_1_1Point.html" title="Point object represented as radius vector. ">River::Point</a></li>
 <li><a class="el" href="classRiver_1_1Border.html" title="Handles initial boundary geometry without any geometry of river itself and contains info about source...">River::Border</a></li>
 <li><a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">River::BranchNew</a></li>
 <li><a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">River::Tree</a></li>
@@ -117,7 +122,7 @@ Futher Reading</h1>
 <ul>
 <li>Take a look into <a href="files.html">File List</a>. Some more important for understanding files:<ul>
 <li><a class="el" href="experiments.html">Testing Program</a></li>
-<li><a class="el" href="common_8hpp.html">common.hpp</a></li>
+<li><a class="el" href="GeometryPrimitives_8hpp.html">GeometryPrimitives.hpp</a></li>
 <li><a class="el" href="border_8hpp.html">border.hpp</a></li>
 <li><a class="el" href="tree_8hpp.html">tree.hpp</a></li>
 <li><a class="el" href="physmodel_8hpp.html">physmodel.hpp</a></li>
@@ -144,9 +149,21 @@ Basic Program Usage</h1>
 <p>And after that, typical backward simulation commnad: </p><blockquote class="doxtable">
 <p>./riversim -n 130 -o revsim &ndash;simulation-type=1 simdata.json </p>
 </blockquote>
+<h1><a class="anchor" id="team"></a>
+Team</h1>
+<ul>
+<li>prof. dr hab Piotr Szymczak</li>
+<li>student Stasiek Żukowski</li>
+<li>student Oleg Kmechak</li>
+</ul>
 <h1><a class="anchor" id="references"></a>
 References</h1>
-<p>[1]: [Problem odwrotny do ewolucji sieci rzecznych](). [2]: RiverSim repository - <a href="https://github.com/okmechak/RiverSim/">https://github.com/okmechak/RiverSim/</a> [3]: Bifurcation dynamics of natural drainage networks Alexander P.Petroff†, Olivier Devauchelle‡, Hansjörg Seybold and Daniel H.Rothman. [4]: Path selection in the growth of rivers Yossi Cohen, Olivier Devauchelle, Hansjörg F. Seybold, Robert S. Yia, Piotr Szymczak, and Daniel H. Rothmana. [5]: Ramiﬁcation of stream networks Olivier Devauchelle, Alexander P. Petroff, Hansjörg F. Seybold, and Daniel H. Rothman. [6]: Shape and dynamics of seepage erosion in a horizontal granular bed Michael Berhanu, Alexander Petroﬀ, Olivier Devauchelle, Arshad Kudrolli, and Daniel H. Rothman.</p>
+<p>[1]: [Problem odwrotny do ewolucji sieci rzecznych]().</p>
+<p>[2]: RiverSim repository - <a href="https://github.com/okmechak/RiverSim/">https://github.com/okmechak/RiverSim/</a></p>
+<p>[3]: Bifurcation dynamics of natural drainage networks Alexander P.Petroff†, Olivier Devauchelle‡, Hansjörg Seybold and Daniel H.Rothman.</p>
+<p>[4]: Path selection in the growth of rivers Yossi Cohen, Olivier Devauchelle, Hansjörg F. Seybold, Robert S. Yia, Piotr Szymczak, and Daniel H. Rothmana.</p>
+<p>[5]: Ramiﬁcation of stream networks Olivier Devauchelle, Alexander P. Petroff, Hansjörg F. Seybold, and Daniel H. Rothman.</p>
+<p>[6]: Shape and dynamics of seepage erosion in a horizontal granular bed Michael Berhanu, Alexander Petroﬀ, Olivier Devauchelle, Arshad Kudrolli, and Daniel H. Rothman.</p>
 <h1><a class="anchor" id="contacts"></a>
 Contacts</h1>
 <p>Oleg Kmechak, University of Warsaw <a href="#" onclick="location.href='mai'+'lto:'+'ole'+'g.'+'kme'+'ch'+'ak@'+'gm'+'ail'+'.c'+'om'; return false;">oleg.<span style="display: none;">.nosp@m.</span>kmec<span style="display: none;">.nosp@m.</span>hak@g<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a> 2019 </p>

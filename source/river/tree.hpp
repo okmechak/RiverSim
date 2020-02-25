@@ -22,7 +22,7 @@
     File holds two classes: __River::BranchNew__ and __River::Tree__.
     As you can see from picture - River::BranchNew is simple array joined points - piecewice line, 
     aproximation of real river branch. River::Tree on other hand consist from combination of Branches.
-    __Biffurcation point__ - where two rivers unions into one river. So each branch has its subbranches.
+    __Bifurcation point__ - where two rivers unions into one river. So each branch has its subbranches.
     Structure of branches and sub branches is represented here in class River::Tree.
 
     \sa River::Tree, River::BranchNew
@@ -38,7 +38,7 @@
 #include <algorithm>
 #include <string>
 ///\endcond
-#include "common.hpp"
+#include "GeometryPrimitives.hpp"
 #include "tethex.hpp"
 #include "physmodel.hpp"
 #include "border.hpp"

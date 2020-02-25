@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <math.h>
-#include "common.hpp"
+#include "GeometryPrimitives.hpp"
 
 const double eps = 1e-13;
 
@@ -97,11 +97,11 @@ BOOST_AUTO_TEST_CASE(methods,
   Point a(0, 0);
   BOOST_CHECK_THROW(a.angle(), std::invalid_argument);
   BOOST_CHECK_THROW(a.normalize(), std::invalid_argument);
-  BOOST_CHECK_THROW(a.getNormalized(), std::invalid_argument);
+  BOOST_CHECK_THROW(GetNormalizedPoint(a), std::invalid_argument);
   BOOST_CHECK_THROW(obj.angle(a), std::invalid_argument);
 
   //getNormalized
-  Point obj2 = obj.getNormalized();
+  Point obj2 = GetNormalizedPoint(obj);
   BOOST_TEST((obj2.x == 1./sqrt(5.) && obj2.y == 2./sqrt(5.)));
 
   //normalize

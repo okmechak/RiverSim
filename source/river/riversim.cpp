@@ -99,7 +99,7 @@ namespace River
     {
         TriangulateConvertRefineAndSolve(mdl, tria, sim, tree, border, file_name);
 
-        //Iterate over each tip and handle branch growth and its biffurcations
+        //Iterate over each tip and handle branch growth and its bifurcations
         print(mdl.prog_opt.verbose, "Series parameters integration over each tip point...");
         map<int, vector<double>> id_series_params;
         for(auto id: tree.TipBranchesId())
@@ -118,17 +118,17 @@ namespace River
                 if (max_a < series_params.at(0))
                     max_a = series_params.at(0);
 
-        print(mdl.prog_opt.verbose, "Growth(or biffurcation) of tree...");
+        print(mdl.prog_opt.verbose, "Growth(or bifurcation) of tree...");
         for(auto&[id, series_params]: id_series_params)
             if(mdl.q_growth(series_params))
             {
-                if(mdl.q_biffurcate(series_params, tree.GetBranch(id)->Lenght()))
+                if(mdl.q_bifurcate(series_params, tree.GetBranch(id)->Lenght()))
                 {
                     auto tip_point = tree.GetBranch(id)->TipPoint();
                     auto tip_angle = tree.GetBranch(id)->TipAngle();
-                    auto br_left = BranchNew(tip_point, tip_angle + mdl.biffurcation_angle);
+                    auto br_left = BranchNew(tip_point, tip_angle + mdl.bifurcation_angle);
                     br_left.AddPoint(Polar{mdl.ds, 0});
-                    auto br_right = BranchNew(tip_point, tip_angle - mdl.biffurcation_angle);
+                    auto br_right = BranchNew(tip_point, tip_angle - mdl.bifurcation_angle);
                     br_right.AddPoint(Polar{mdl.ds, 0});
                     tree.AddSubBranches(id, br_left, br_right);
                 }
@@ -162,7 +162,7 @@ namespace River
             auto tip_angle = tree.GetBranch(id)->TipAngle();
             auto series_params = sim.integrate(mdl, tip_point, tip_angle);
             ids_seriesparams_map[id] = series_params;
-            gd.EndBiffurcationRecord(id, series_params);
+            gd.EndBifurcationRecord(id, series_params);
         }
 
         //lookup for maximal a(or first) series parameter through all tips
@@ -182,7 +182,7 @@ namespace River
                         mdl.growth_min_distance + 1/*we are not constraining here speed growth near 
                         biffuraction points, so we set some value greater than it limit*/, max_a).r);
 
-        //collect branches which reached zero lenght(biffurcation point)
+        //collect branches which reached zero lenght(bifurcation point)
         print(mdl.prog_opt.verbose, "Collecting branches with zero lenght(if they are)...");
         vector<int> zero_size_branches_id;
         for(auto tip_id: tree.TipBranchesId())
@@ -197,7 +197,7 @@ namespace River
             {
                 auto[branch_left, branch_right] = tree.GetSubBranches(parent_id);
                 auto biff_diff = abs(branch_left->Lenght() - branch_right->Lenght());
-                gd.StartBiffurcationRecord(parent_id, biff_diff);
+                gd.StartBifurcationRecord(parent_id, biff_diff);
                 tree.DeleteSubBranches(parent_id);
             }
 
@@ -231,7 +231,7 @@ namespace River
         //Several steps of forward growth
         Tree tree_backforward = tree;
         Model mdl_backforward = mdl;
-        mdl_backforward.biffurcation_type = 3;//3 - means no biffuraction at all.
+        mdl_backforward.bifurcation_type = 3;//3 - means no biffuraction at all.
         print(mdl.prog_opt.verbose, "Forward steps:");
         for(unsigned i = 0; i < mdl.prog_opt.number_of_backward_steps; ++i)
         {

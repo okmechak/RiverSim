@@ -60,7 +60,7 @@
 #include <utility>
 ///\endcond
 
-#include "common.hpp"
+#include "GeometryPrimitives.hpp"
 #include "tethex.hpp"
 #include "physmodel.hpp"
 
@@ -110,7 +110,7 @@ namespace River
             ///Static adaptive mesh refinment.
             void static_refine_grid(const Model& mdl, const vector<Point>& tips_points);
 
-            ///
+            ///Number of refined by Deal.II mesh cells.
             unsigned long NumberOfRefinedCells()
             {
                 return triangulation.n_active_cells();
@@ -141,7 +141,7 @@ namespace River
             }
             
             ///Outer field value. See Puasson, Laplace equations.
-            double field_value = 1.;
+            double field_value = 0.;
 
             ///Refinment fraction. Used static mesh elements refinment.
             double refinment_fraction = 0.01;
@@ -196,7 +196,7 @@ namespace River
             {
               public:
                 ///Value of field in Puasson equation.
-                double fieldValue = 1.;
+                double fieldValue = 0.;
                 ///See Deal.II step-6 for more details.
                 RightHandSide() : Function<dim>() {}
                 ///See Deal.II step-6 for more details.

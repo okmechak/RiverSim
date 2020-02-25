@@ -10,7 +10,18 @@
     \imageSize{test_tree.png,     height:30%;width:30%;, }
 
     [source file](test_tree.json)
+    
+    \subsection poisson_simdata_255 Poisson Simdata:
 
-    \todo add more files
+    \imageSize{poisson_simdata_255.png,     height:30%;width:30%;, }
 
+    [source file](poisson_simdata_255.json)
+
+    \section lt Laplacea Trees
+
+    \subsection laplacea_simdata_river_306 Laplacea Simdata River
+
+    \imageSize{laplacea_simdata_river_306.png,     height:30%;width:30%;, }
+
+    [source file](laplacea_simdata_river_306.json)
 */
