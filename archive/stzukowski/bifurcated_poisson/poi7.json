@@ -1,0 +1,493 @@
+{
+    "Border": {
+        "SomeDetails": "Points and lines should be in counterclockwise order. SourcesIDs is array of pairs - where first number - is related branch id(source branche), and second is index of related point in coords array(after initialization it will be source point of related branch). Lines consist of three numbers: first and second - point index in coords array, third - configures boundary condition(See --boundary-condition option in program: ./riversim -h).",
+        "SourceIds": [
+            [
+                1,
+                4
+            ]
+        ],
+        "coords": [
+            [
+                1.0,
+                0.0
+            ],
+            [
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                1.0
+            ],
+            [
+                0.0,
+                0.0
+            ],
+            [
+                0.5,
+                0.0
+            ]
+        ],
+        "lines": [
+            [
+                0,
+                1,
+                1
+            ],
+            [
+                1,
+                2,
+                2
+            ],
+            [
+                2,
+                3,
+                3
+            ],
+            [
+                3,
+                4,
+                4
+            ],
+            [
+                4,
+                0,
+                4
+            ]
+        ]
+    },
+    "Description": "RiverSim simulation data and state of program. All coordinates are in normal cartesian coordinate system and by default are x > 0 and y > 0. Default values of simulation assumes that coordinates values will be of order 0 - 200. Greater values demands a lot of time to run, small are not tested(Problem of scalling isn't resolved yet TODO).",
+    "GeometryDifference": {
+        "AlongBranches": [],
+        "BiffuractionPoints": [],
+        "Description": "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in biffurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached biffurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."
+    },
+    "Model": {
+        "Description": "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) ",
+        "Integration": {
+            "exponant": 2.0,
+            "radius": 0.03,
+            "weightRadius": 0.01
+        },
+        "Mesh": {
+            "eps": 1e-06,
+            "exponant": 7.0,
+            "maxArea": 100000.0,
+            "maxEdge": 1.0,
+            "minAngle": 30.0,
+            "minArea": 7e-08,
+            "minEdge": 8e-08,
+            "numberOfQuadrangles": 4350,
+            "numberOfRefinedQuadrangles": 37740,
+            "ratio": 2.3,
+            "refinmentRadius": 0.04,
+            "sigma": 1.9,
+            "staticRefinmentSteps": 2
+        },
+        "Solver": {
+            "adaptiveRefinmentSteps": 0,
+            "iterationSteps": 3000,
+            "quadratureDegree": 3,
+            "refinmentFraction": 0.1,
+            "tol": 1e-12
+        },
+        "biffurcationAngle": 0.6283185307179586,
+        "biffurcationMinDistance": 0.05,
+        "biffurcationThreshold": -0.005,
+        "biffurcationThreshold2": 0.5,
+        "biffurcationType": 1,
+        "boundaryCondition": 0,
+        "boundaryIds": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "ds": 0.03,
+        "dx": 0.5,
+        "eta": 1.0,
+        "fieldValue": 1.0,
+        "growthMinDistance": 0.01,
+        "growthThreshold": 0.0,
+        "growthType": 0,
+        "height": 1.0,
+        "numberOfBackwardSteps": 1,
+        "riverBoundaryId": 4,
+        "width": 1.0
+    },
+    "RuntimeInfo": {
+        "Description": "Units are in seconds.",
+        "EachCycleTime": [
+            6.6,
+            9.82,
+            9.82,
+            9.27,
+            9.54,
+            10.7,
+            9.87,
+            25.54,
+            28.33,
+            28.55,
+            34.25,
+            30.48,
+            27.12,
+            28.02,
+            32.39,
+            29.72,
+            23.02,
+            21.08,
+            22.57,
+            26.89,
+            25.76,
+            26.52,
+            26.08,
+            23.79,
+            24.63,
+            21.58,
+            29.79,
+            28.05,
+            30.59,
+            30.54,
+            31.37,
+            26.59,
+            28.98,
+            29.09,
+            29.22,
+            31.61
+        ],
+        "EndDate": "Fri Feb 14 17:50:12 2020\n",
+        "InputFile": "original.json",
+        "MaximalRiverHeight": 100.0,
+        "NumberOfSteps": 1500,
+        "StartDate": "Fri Feb 14 17:47:02 2020\n",
+        "TotalTime": 867.77
+    },
+    "Trees": {
+        "Branches": [
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.5,
+                        0.0
+                    ],
+                    [
+                        0.49998283968078716,
+                        0.029999995092057006
+                    ],
+                    [
+                        0.4999735174478844,
+                        0.05999999364365653
+                    ],
+                    [
+                        0.49999549617800687,
+                        0.08999998559257916
+                    ],
+                    [
+                        0.49999949466862625,
+                        0.1199999853261137
+                    ],
+                    [
+                        0.5000025716874688,
+                        0.14999998516831295
+                    ],
+                    [
+                        0.4999934917472708,
+                        0.17999998379422436
+                    ]
+                ],
+                "id": 1,
+                "sourceAngle": 1.5707963267948966,
+                "sourcePoint": [
+                    0.5,
+                    0.0
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.4999934917472708,
+                        0.17999998379422436
+                    ],
+                    [
+                        0.4823525891602376,
+                        0.2042651554588717
+                    ],
+                    [
+                        0.4664848875163309,
+                        0.22971934433986044
+                    ],
+                    [
+                        0.4514535902836558,
+                        0.25566362869745396
+                    ],
+                    [
+                        0.43708350235234383,
+                        0.28197895952665
+                    ],
+                    [
+                        0.42318782708405756,
+                        0.30854755257611627
+                    ],
+                    [
+                        0.40964539545096085,
+                        0.3353000641137001
+                    ],
+                    [
+                        0.39640161833652077,
+                        0.36219720199355343
+                    ],
+                    [
+                        0.38340757050206536,
+                        0.38921679068717596
+                    ],
+                    [
+                        0.37058302985281805,
+                        0.41632092113531355
+                    ],
+                    [
+                        0.3578995396606584,
+                        0.4434935627233775
+                    ],
+                    [
+                        0.34533624019569825,
+                        0.470723546488545
+                    ],
+                    [
+                        0.3329307786076267,
+                        0.49803068403792355
+                    ],
+                    [
+                        0.32059854378400576,
+                        0.5253774452218388
+                    ],
+                    [
+                        0.30835394689523044,
+                        0.5527648482938972
+                    ],
+                    [
+                        0.2962432975632445,
+                        0.580211745618689
+                    ],
+                    [
+                        0.28424749870581284,
+                        0.6077090329352961
+                    ],
+                    [
+                        0.27237340841583,
+                        0.6352590960892226
+                    ],
+                    [
+                        0.260656447578386,
+                        0.6628763520849548
+                    ],
+                    [
+                        0.24913148551632414,
+                        0.6905742806982651
+                    ],
+                    [
+                        0.23783327656148665,
+                        0.7183654748865836
+                    ],
+                    [
+                        0.22669631893010023,
+                        0.7462216802045502
+                    ],
+                    [
+                        0.21579264968624381,
+                        0.7741700253616535
+                    ],
+                    [
+                        0.2051547618326464,
+                        0.8022206107746941
+                    ],
+                    [
+                        0.19485986739638042,
+                        0.8303988851815157
+                    ],
+                    [
+                        0.1849365729972053,
+                        0.858710159053726
+                    ],
+                    [
+                        0.1754058819176463,
+                        0.8871560010617597
+                    ],
+                    [
+                        0.16637265112523641,
+                        0.9157637052942048
+                    ],
+                    [
+                        0.15770475417764612,
+                        0.9444842129935118
+                    ],
+                    [
+                        0.1488692796730614,
+                        0.9731536111434352
+                    ],
+                    [
+                        0.13646976779864617,
+                        1.0004712264360671
+                    ]
+                ],
+                "id": 2,
+                "sourceAngle": 2.199417522190741,
+                "sourcePoint": [
+                    0.4999934917472708,
+                    0.17999998379422436
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.4999934917472708,
+                        0.17999998379422436
+                    ],
+                    [
+                        0.517619702682448,
+                        0.2042758295687518
+                    ],
+                    [
+                        0.533428662203858,
+                        0.22977243324160238
+                    ],
+                    [
+                        0.5484398059121196,
+                        0.2557467583448638
+                    ],
+                    [
+                        0.562828845857259,
+                        0.28207080684537345
+                    ],
+                    [
+                        0.5767080929798535,
+                        0.30866716936564964
+                    ],
+                    [
+                        0.5901962143484542,
+                        0.33546400839464513
+                    ],
+                    [
+                        0.6034738851427738,
+                        0.362365745481266
+                    ],
+                    [
+                        0.6165497405753985,
+                        0.38936615297272986
+                    ],
+                    [
+                        0.6294468840280348,
+                        0.4164523799296561
+                    ],
+                    [
+                        0.6422181588018916,
+                        0.44359818145863383
+                    ],
+                    [
+                        0.6548352080980666,
+                        0.47081600773219745
+                    ],
+                    [
+                        0.667348491933245,
+                        0.4980816954671559
+                    ],
+                    [
+                        0.6797055425707884,
+                        0.5254185442164391
+                    ],
+                    [
+                        0.6919000477125596,
+                        0.5528269671987325
+                    ],
+                    [
+                        0.7040154250552254,
+                        0.5802695060403384
+                    ],
+                    [
+                        0.7160228472950352,
+                        0.6077581012577269
+                    ],
+                    [
+                        0.7279201858908757,
+                        0.6352913590649539
+                    ],
+                    [
+                        0.7396625602109925,
+                        0.6628905207753468
+                    ],
+                    [
+                        0.7512612105830927,
+                        0.6905451137810004
+                    ],
+                    [
+                        0.7626379490688441,
+                        0.7182919412423773
+                    ],
+                    [
+                        0.7737446098272189,
+                        0.7461429231641178
+                    ],
+                    [
+                        0.7846285653142833,
+                        0.7740813625955125
+                    ],
+                    [
+                        0.7952189860064188,
+                        0.8021298733782789
+                    ],
+                    [
+                        0.8055185355950574,
+                        0.8302898265596045
+                    ],
+                    [
+                        0.8154064318117432,
+                        0.858597002536528
+                    ],
+                    [
+                        0.8248200841618959,
+                        0.8870665990621746
+                    ],
+                    [
+                        0.8337596087106013,
+                        0.9156923316092149
+                    ],
+                    [
+                        0.8422944119521286,
+                        0.944447729484634
+                    ],
+                    [
+                        0.850922695328258,
+                        0.97317751254133
+                    ],
+                    [
+                        0.862938573975243,
+                        1.0006471859088115
+                    ]
+                ],
+                "id": 3,
+                "sourceAngle": 0.9427804607548238,
+                "sourcePoint": [
+                    0.4999934917472708,
+                    0.17999998379422436
+                ]
+            }
+        ],
+        "Description": "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important.",
+        "Relations": [
+            [
+                1,
+                [
+                    2,
+                    3
+                ]
+            ]
+        ],
+        "SourceIds": [
+            1
+        ]
+    },
+    "Version": "2.6.5"
+}

@@ -1,0 +1,2225 @@
+{
+    "Border": {
+        "SomeDetails": "Points and lines should be in counterclockwise order. SourcesIDs is array of pairs - where first number - is related branch id(source branche), and second is index of related point in coords array(after initialization it will be source point of related branch). Lines consist of three numbers: first and second - point index in coords array, third - configures boundary condition(See --boundary-condition option in program: ./riversim -h).",
+        "SourceIds": [
+            [
+                1,
+                4
+            ]
+        ],
+        "coords": [
+            [
+                1.0,
+                0.0
+            ],
+            [
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                1.0
+            ],
+            [
+                0.0,
+                0.0
+            ],
+            [
+                0.5,
+                0.0
+            ]
+        ],
+        "lines": [
+            [
+                0,
+                1,
+                1
+            ],
+            [
+                1,
+                2,
+                2
+            ],
+            [
+                2,
+                3,
+                3
+            ],
+            [
+                3,
+                4,
+                4
+            ],
+            [
+                4,
+                0,
+                4
+            ]
+        ]
+    },
+    "Description": "RiverSim simulation data and state of program. All coordinates are in normal cartesian coordinate system and by default are x > 0 and y > 0. Default values of simulation assumes that coordinates values will be of order 0 - 200. Greater values demands a lot of time to run, small are not tested(Problem of scalling isn't resolved yet TODO).",
+    "GeometryDifference": {
+        "AlongBranches": [],
+        "BiffuractionPoints": [],
+        "Description": "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in biffurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached biffurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."
+    },
+    "Model": {
+        "Description": "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) ",
+        "Integration": {
+            "exponant": 2.0,
+            "radius": 0.03,
+            "weightRadius": 0.01
+        },
+        "Mesh": {
+            "eps": 1e-06,
+            "exponant": 7.0,
+            "maxArea": 100000.0,
+            "maxEdge": 1.0,
+            "minAngle": 30.0,
+            "minArea": 7e-08,
+            "minEdge": 8e-08,
+            "numberOfQuadrangles": 30837,
+            "numberOfRefinedQuadrangles": 432513,
+            "ratio": 2.3,
+            "refinmentRadius": 0.04,
+            "sigma": 1.9,
+            "staticRefinmentSteps": 2
+        },
+        "Solver": {
+            "adaptiveRefinmentSteps": 0,
+            "iterationSteps": 3000,
+            "quadratureDegree": 3,
+            "refinmentFraction": 0.1,
+            "tol": 1e-12
+        },
+        "biffurcationAngle": 0.6283185307179586,
+        "biffurcationMinDistance": 0.05,
+        "biffurcationThreshold": -0.05,
+        "biffurcationThreshold2": 0.001,
+        "biffurcationType": 0,
+        "boundaryCondition": 0,
+        "boundaryIds": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "ds": 0.03,
+        "dx": 0.5,
+        "eta": 1.0,
+        "fieldValue": 1.0,
+        "growthMinDistance": 0.01,
+        "growthThreshold": 0.0,
+        "growthType": 0,
+        "height": 1.0,
+        "numberOfBackwardSteps": 1,
+        "riverBoundaryId": 4,
+        "width": 1.0
+    },
+    "RuntimeInfo": {
+        "Description": "Units are in seconds.",
+        "EachCycleTime": [
+            6.93,
+            9.58,
+            10.16,
+            10.06,
+            10.05,
+            10.52,
+            9.49,
+            10.92,
+            9.61,
+            9.44,
+            10.86,
+            9.89,
+            10.82,
+            9.45,
+            9.8,
+            9.93,
+            28.32,
+            37.09,
+            30.65,
+            29.42,
+            32.18,
+            28.52,
+            35.98,
+            34.01,
+            100.76,
+            100.29,
+            84.44,
+            90.37,
+            105.55,
+            136.93,
+            197.2,
+            184.74,
+            189.46,
+            246.7,
+            354.84,
+            468.22,
+            491.7,
+            607.85,
+            647.01,
+            699.03
+        ],
+        "EndDate": "Fri Feb 14 17:27:58 2020\n",
+        "InputFile": "original.json",
+        "MaximalRiverHeight": 100.0,
+        "NumberOfSteps": 1500,
+        "StartDate": "Fri Feb 14 17:08:35 2020\n",
+        "TotalTime": 5118.7699999999995
+    },
+    "Trees": {
+        "Branches": [
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.5,
+                        0.0
+                    ],
+                    [
+                        0.49998283968078716,
+                        0.029999995092057006
+                    ],
+                    [
+                        0.4999735174478844,
+                        0.05999999364365653
+                    ],
+                    [
+                        0.49999549617800687,
+                        0.08999998559257916
+                    ],
+                    [
+                        0.49999949466862625,
+                        0.1199999853261137
+                    ],
+                    [
+                        0.5000025716874688,
+                        0.14999998516831295
+                    ],
+                    [
+                        0.4999934917472708,
+                        0.17999998379422436
+                    ],
+                    [
+                        0.5000085790189328,
+                        0.20999998000046133
+                    ],
+                    [
+                        0.49999608136425266,
+                        0.23999997739727166
+                    ],
+                    [
+                        0.4999921809462532,
+                        0.2699999771437173
+                    ],
+                    [
+                        0.49991449057368637,
+                        0.2999998765469822
+                    ],
+                    [
+                        0.49986205155128316,
+                        0.329999830716096
+                    ],
+                    [
+                        0.4998580302354487,
+                        0.3599998304465797
+                    ],
+                    [
+                        0.49980927279858606,
+                        0.3899997908250927
+                    ],
+                    [
+                        0.4997706923302482,
+                        0.41999976601754013
+                    ],
+                    [
+                        0.49972241082753655,
+                        0.4499997271657899
+                    ]
+                ],
+                "id": 1,
+                "sourceAngle": 1.5707963267948966,
+                "sourcePoint": [
+                    0.5,
+                    0.0
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.49972241082753655,
+                        0.4499997271657899
+                    ],
+                    [
+                        0.48204981553904047,
+                        0.4742418264100597
+                    ],
+                    [
+                        0.46437341015852135,
+                        0.4984628280173854
+                    ],
+                    [
+                        0.44669142980456483,
+                        0.5226735262396893
+                    ],
+                    [
+                        0.4289552721392803,
+                        0.5468434326446302
+                    ],
+                    [
+                        0.4111588983975917,
+                        0.5709650708814191
+                    ],
+                    [
+                        0.3933217242617553,
+                        0.5950474548804738
+                    ],
+                    [
+                        0.37535455886968616,
+                        0.6190351340460366
+                    ],
+                    [
+                        0.3571966102720468,
+                        0.642879407953256
+                    ]
+                ],
+                "id": 2,
+                "sourceAngle": 2.2007242416313253,
+                "sourcePoint": [
+                    0.49972241082753655,
+                    0.4499997271657899
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.49972241082753655,
+                        0.4499997271657899
+                    ],
+                    [
+                        0.5173168850036173,
+                        0.4742985847205645
+                    ],
+                    [
+                        0.5349439227927639,
+                        0.4985738301112912
+                    ],
+                    [
+                        0.5526057168987444,
+                        0.5228237997805084
+                    ],
+                    [
+                        0.570273569558884,
+                        0.5470693557110207
+                    ],
+                    [
+                        0.5880117525151437,
+                        0.5712635051155824
+                    ],
+                    [
+                        0.6058780866474296,
+                        0.5953631753347683
+                    ],
+                    [
+                        0.6239020705865043,
+                        0.619345168641497
+                    ],
+                    [
+                        0.6421083522209027,
+                        0.6431890632279308
+                    ]
+                ],
+                "id": 3,
+                "sourceAngle": 0.944087180195408,
+                "sourcePoint": [
+                    0.49972241082753655,
+                    0.4499997271657899
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.3571966102720468,
+                        0.642879407953256
+                    ],
+                    [
+                        0.32846342778803134,
+                        0.6515051962847808
+                    ],
+                    [
+                        0.29956392134056437,
+                        0.6594703217383865
+                    ],
+                    [
+                        0.2705326345643415,
+                        0.6669410040240265
+                    ],
+                    [
+                        0.24136365276684846,
+                        0.6738282687903686
+                    ],
+                    [
+                        0.21206109718194419,
+                        0.6801006135826134
+                    ]
+                ],
+                "id": 4,
+                "sourceAngle": 2.8499496070337007,
+                "sourcePoint": [
+                    0.3571966102720468,
+                    0.642879407953256
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.3571966102720468,
+                        0.642879407953256
+                    ],
+                    [
+                        0.3565211807828887,
+                        0.672871803572899
+                    ],
+                    [
+                        0.3552693345812128,
+                        0.7020948409109166
+                    ],
+                    [
+                        0.35349788691387185,
+                        0.7304877572881767
+                    ],
+                    [
+                        0.35125139905491115,
+                        0.7580047567426168
+                    ],
+                    [
+                        0.34852016152460497,
+                        0.784670326985109
+                    ],
+                    [
+                        0.34530805143301085,
+                        0.81056503884732
+                    ]
+                ],
+                "id": 5,
+                "sourceAngle": 1.5933125455977835,
+                "sourcePoint": [
+                    0.3571966102720468,
+                    0.642879407953256
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6421083522209027,
+                        0.6431890632279308
+                    ],
+                    [
+                        0.6428224538723853,
+                        0.6731805630042232
+                    ],
+                    [
+                        0.6441014474275856,
+                        0.7024385511205314
+                    ],
+                    [
+                        0.6458526081664702,
+                        0.7308687591276191
+                    ],
+                    [
+                        0.6481061855432494,
+                        0.7584207569472221
+                    ],
+                    [
+                        0.650851980397153,
+                        0.7851132319277929
+                    ],
+                    [
+                        0.6540902339846031,
+                        0.8110283491337925
+                    ]
+                ],
+                "id": 6,
+                "sourceAngle": 1.5469906900003525,
+                "sourcePoint": [
+                    0.6421083522209027,
+                    0.6431890632279308
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6421083522209027,
+                        0.6431890632279308
+                    ],
+                    [
+                        0.6708526330626297,
+                        0.6517777953166578
+                    ],
+                    [
+                        0.6997866306855531,
+                        0.6597039407579589
+                    ],
+                    [
+                        0.7288483396512754,
+                        0.6671482051266968
+                    ],
+                    [
+                        0.7580458536959864,
+                        0.6740406048255607
+                    ],
+                    [
+                        0.7873997138254256,
+                        0.6802334148098343
+                    ]
+                ],
+                "id": 7,
+                "sourceAngle": 0.29035362856443536,
+                "sourcePoint": [
+                    0.6421083522209027,
+                    0.6431890632279308
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.21206109718194419,
+                        0.6801006135826134
+                    ],
+                    [
+                        0.18463727868104762,
+                        0.6679377940562913
+                    ],
+                    [
+                        0.15815573857166046,
+                        0.6543203882221266
+                    ],
+                    [
+                        0.13246599291719033,
+                        0.6389232829645409
+                    ],
+                    [
+                        0.10829691587565264,
+                        0.6212603295014064
+                    ]
+                ],
+                "id": 8,
+                "sourceAngle": 3.559038895345673,
+                "sourcePoint": [
+                    0.21206109718194419,
+                    0.6801006135826134
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.21206109718194419,
+                        0.6801006135826134
+                    ],
+                    [
+                        0.19201914244748244,
+                        0.7024236969364377
+                    ],
+                    [
+                        0.1725042452499509,
+                        0.7233892562771788
+                    ],
+                    [
+                        0.1536156377471138,
+                        0.7430990775658105
+                    ],
+                    [
+                        0.13557306513024678,
+                        0.7619842187819803
+                    ],
+                    [
+                        0.11855436769473232,
+                        0.7804230631998793
+                    ],
+                    [
+                        0.1017466420998907,
+                        0.80054814670981
+                    ]
+                ],
+                "id": 9,
+                "sourceAngle": 2.3024018339097556,
+                "sourcePoint": [
+                    0.21206109718194419,
+                    0.6801006135826134
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.7873997138254256,
+                        0.6802334148098343
+                    ],
+                    [
+                        0.8075074431416415,
+                        0.702497269411987
+                    ],
+                    [
+                        0.8271028692575172,
+                        0.7234631707085742
+                    ],
+                    [
+                        0.8461022622189508,
+                        0.7431442976669002
+                    ],
+                    [
+                        0.864271343812794,
+                        0.7619886160929142
+                    ],
+                    [
+                        0.8814109431252761,
+                        0.7803878604760898
+                    ],
+                    [
+                        0.8982841030106486,
+                        0.8005243198052538
+                    ]
+                ],
+                "id": 10,
+                "sourceAngle": 0.836240424920657,
+                "sourcePoint": [
+                    0.7873997138254256,
+                    0.6802334148098343
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.7873997138254256,
+                        0.6802334148098343
+                    ],
+                    [
+                        0.8147875278996528,
+                        0.6679897372481062
+                    ],
+                    [
+                        0.8412692565252169,
+                        0.6542863085558963
+                    ],
+                    [
+                        0.8669365337292889,
+                        0.6387559872157139
+                    ],
+                    [
+                        0.891097021748546,
+                        0.620971982642184
+                    ]
+                ],
+                "id": 11,
+                "sourceAngle": -0.4203966365152603,
+                "sourcePoint": [
+                    0.7873997138254256,
+                    0.6802334148098343
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.34530805143301085,
+                        0.81056503884732
+                    ],
+                    [
+                        0.32482087603698173,
+                        0.8324802309361962
+                    ],
+                    [
+                        0.3087881059993951,
+                        0.8493529350168463
+                    ],
+                    [
+                        0.2934298876707779,
+                        0.8655567274778005
+                    ],
+                    [
+                        0.2785358386347048,
+                        0.881222791577361
+                    ],
+                    [
+                        0.2624040470908625,
+                        0.8978288644762586
+                    ],
+                    [
+                        0.24840711184391673,
+                        0.9108415459078917
+                    ]
+                ],
+                "id": 12,
+                "sourceAngle": 2.3225294553560536,
+                "sourcePoint": [
+                    0.34530805143301085,
+                    0.81056503884732
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.34530805143301085,
+                        0.81056503884732
+                    ],
+                    [
+                        0.3598197523108832,
+                        0.8368216672986494
+                    ],
+                    [
+                        0.3705097919297465,
+                        0.8566317135851631
+                    ],
+                    [
+                        0.380621933991782,
+                        0.8750658856848248
+                    ],
+                    [
+                        0.39032952337035604,
+                        0.8922720620763909
+                    ]
+                ],
+                "id": 13,
+                "sourceAngle": 1.0658923939201366,
+                "sourcePoint": [
+                    0.34530805143301085,
+                    0.81056503884732
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6540902339846031,
+                        0.8110283491337925
+                    ],
+                    [
+                        0.6396020972592538,
+                        0.8372979873922
+                    ],
+                    [
+                        0.6288646414536835,
+                        0.8570928892189905
+                    ],
+                    [
+                        0.6187540258431484,
+                        0.8755281094683371
+                    ],
+                    [
+                        0.6090267233736584,
+                        0.892713834196472
+                    ]
+                ],
+                "id": 14,
+                "sourceAngle": 2.074803026631093,
+                "sourcePoint": [
+                    0.6540902339846031,
+                    0.8110283491337925
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6540902339846031,
+                        0.8110283491337925
+                    ],
+                    [
+                        0.6745970641660172,
+                        0.8329251506333413
+                    ],
+                    [
+                        0.6906646953018509,
+                        0.8497777035810042
+                    ],
+                    [
+                        0.7060426579378234,
+                        0.8659698880353339
+                    ],
+                    [
+                        0.720963516615857,
+                        0.8816085328277465
+                    ],
+                    [
+                        0.7371408820319466,
+                        0.8981654832123195
+                    ],
+                    [
+                        0.751187454679274,
+                        0.9111199658985278
+                    ]
+                ],
+                "id": 15,
+                "sourceAngle": 0.818165965195176,
+                "sourcePoint": [
+                    0.6540902339846031,
+                    0.8110283491337925
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.10829691587565264,
+                        0.6212603295014064
+                    ],
+                    [
+                        0.099105933840693,
+                        0.5927029162916451
+                    ],
+                    [
+                        0.09517378013340526,
+                        0.5630288434481219
+                    ],
+                    [
+                        0.09376502739227945,
+                        0.5331117166306325
+                    ],
+                    [
+                        0.09526046017483757,
+                        0.5031819765854298
+                    ],
+                    [
+                        0.09818606890285343,
+                        0.47334616081644937
+                    ],
+                    [
+                        0.10217253587331408,
+                        0.44362838390839565
+                    ]
+                ],
+                "id": 16,
+                "sourceAngle": -1.882169500492668,
+                "sourcePoint": [
+                    0.10829691587565264,
+                    0.6212603295014064
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.10829691587565264,
+                        0.6212603295014064
+                    ],
+                    [
+                        0.0782970323101785,
+                        0.6211767468597026
+                    ],
+                    [
+                        0.05565562182367056,
+                        0.61822446498878
+                    ]
+                ],
+                "id": 17,
+                "sourceAngle": -3.138806561928585,
+                "sourcePoint": [
+                    0.10829691587565264,
+                    0.6212603295014064
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.891097021748546,
+                        0.620971982642184
+                    ],
+                    [
+                        0.9210964427635401,
+                        0.6207855992600648
+                    ],
+                    [
+                        0.9438396297830076,
+                        0.6177143576645815
+                    ]
+                ],
+                "id": 18,
+                "sourceAngle": -0.006212819372127476,
+                "sourcePoint": [
+                    0.891097021748546,
+                    0.620971982642184
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.891097021748546,
+                        0.620971982642184
+                    ],
+                    [
+                        0.9001900915334945,
+                        0.5923832421682482
+                    ],
+                    [
+                        0.9040988480850063,
+                        0.562638971758285
+                    ],
+                    [
+                        0.9054750889258161,
+                        0.532670555698238
+                    ],
+                    [
+                        0.9039921540305558,
+                        0.5027072297130203
+                    ],
+                    [
+                        0.9010887522722264,
+                        0.4728480559429755
+                    ],
+                    [
+                        0.8971250840488205,
+                        0.44311105316504307
+                    ]
+                ],
+                "id": 19,
+                "sourceAngle": -1.2628498808080448,
+                "sourcePoint": [
+                    0.891097021748546,
+                    0.620971982642184
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.39032952337035604,
+                        0.8922720620763909
+                    ],
+                    [
+                        0.3868977150931448,
+                        0.9220751272199036
+                    ],
+                    [
+                        0.3850853913098202,
+                        0.9344701316361593
+                    ],
+                    [
+                        0.38344717990510657,
+                        0.944844284420229
+                    ]
+                ],
+                "id": 20,
+                "sourceAngle": 1.685440907259056,
+                "sourcePoint": [
+                    0.39032952337035604,
+                    0.8922720620763909
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.39032952337035604,
+                        0.8922720620763909
+                    ],
+                    [
+                        0.4176134356015679,
+                        0.9047455593149173
+                    ],
+                    [
+                        0.4297475463917345,
+                        0.9092216471897657
+                    ],
+                    [
+                        0.44070124932379073,
+                        0.9125293601827207
+                    ]
+                ],
+                "id": 21,
+                "sourceAngle": 0.4288038458231387,
+                "sourcePoint": [
+                    0.39032952337035604,
+                    0.8922720620763909
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6090267233736584,
+                        0.892713834196472
+                    ],
+                    [
+                        0.5817256445951202,
+                        0.9051497136397624
+                    ],
+                    [
+                        0.5695943425527001,
+                        0.9095971011613628
+                    ],
+                    [
+                        0.5586385120921602,
+                        0.9128662842191068
+                    ]
+                ],
+                "id": 22,
+                "sourceAngle": 2.714167127652206,
+                "sourcePoint": [
+                    0.6090267233736584,
+                    0.892713834196472
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6090267233736584,
+                        0.892713834196472
+                    ],
+                    [
+                        0.6124174502467231,
+                        0.9225216011586629
+                    ],
+                    [
+                        0.6141986238970246,
+                        0.9348897786210127
+                    ],
+                    [
+                        0.6158167458487008,
+                        0.9452331900159942
+                    ]
+                ],
+                "id": 23,
+                "sourceAngle": 1.4575300662162887,
+                "sourcePoint": [
+                    0.6090267233736584,
+                    0.892713834196472
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.1017466420998907,
+                        0.80054814670981
+                    ],
+                    [
+                        0.07265464668592478,
+                        0.8078731588486249
+                    ],
+                    [
+                        0.05918236716489569,
+                        0.812399134094377
+                    ],
+                    [
+                        0.04833403058453607,
+                        0.8164133077012818
+                    ]
+                ],
+                "id": 24,
+                "sourceAngle": 2.8949319797143347,
+                "sourcePoint": [
+                    0.1017466420998907,
+                    0.80054814670981
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.1017466420998907,
+                        0.80054814670981
+                    ],
+                    [
+                        0.09972322164325823,
+                        0.8304798317551876
+                    ],
+                    [
+                        0.09931218117691311,
+                        0.8468826628406513
+                    ],
+                    [
+                        0.09866197365885458,
+                        0.8606969974247982
+                    ],
+                    [
+                        0.09770681381279567,
+                        0.8733712190990947
+                    ],
+                    [
+                        0.0971532333492563,
+                        0.8842381134663606
+                    ],
+                    [
+                        0.09625129099507543,
+                        0.8967848560028894
+                    ]
+                ],
+                "id": 25,
+                "sourceAngle": 1.6382949182784174,
+                "sourcePoint": [
+                    0.1017466420998907,
+                    0.80054814670981
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.8982841030106486,
+                        0.8005243198052538
+                    ],
+                    [
+                        0.9003564330849695,
+                        0.830452658350236
+                    ],
+                    [
+                        0.9007805942366748,
+                        0.84687838541053
+                    ],
+                    [
+                        0.9014597859771425,
+                        0.86071696043206
+                    ],
+                    [
+                        0.9024342152896939,
+                        0.8734171618727682
+                    ],
+                    [
+                        0.9029865997977033,
+                        0.8843091215344863
+                    ],
+                    [
+                        0.9038776798506105,
+                        0.8968873853054421
+                    ]
+                ],
+                "id": 26,
+                "sourceAngle": 1.5016636027510846,
+                "sourcePoint": [
+                    0.8982841030106486,
+                    0.8005243198052538
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.8982841030106486,
+                        0.8005243198052538
+                    ],
+                    [
+                        0.9273880296166608,
+                        0.8078017820079628
+                    ],
+                    [
+                        0.9408781774106951,
+                        0.8123091316379363
+                    ],
+                    [
+                        0.9517320146081106,
+                        0.8163223323364269
+                    ]
+                ],
+                "id": 27,
+                "sourceAngle": 0.24502654131516732,
+                "sourcePoint": [
+                    0.8982841030106486,
+                    0.8005243198052538
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.05565562182367056,
+                        0.61822446498878
+                    ],
+                    [
+                        0.03386883731293619,
+                        0.597600788772285
+                    ],
+                    [
+                        0.028038827358994427,
+                        0.5883874032252698
+                    ],
+                    [
+                        0.024434456660040245,
+                        0.5805068759987043
+                    ],
+                    [
+                        0.0221549850149841,
+                        0.5736817737806199
+                    ],
+                    [
+                        0.020719015601605505,
+                        0.5675581957779458
+                    ],
+                    [
+                        0.01976900441234752,
+                        0.5610897714518687
+                    ]
+                ],
+                "id": 28,
+                "sourceAngle": -2.383612650759219,
+                "sourcePoint": [
+                    0.05565562182367056,
+                    0.61822446498878
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.05565562182367056,
+                        0.61822446498878
+                    ],
+                    [
+                        0.029308853501409732,
+                        0.6325718619294489
+                    ],
+                    [
+                        0.023347749346228675,
+                        0.6367373584196726
+                    ],
+                    [
+                        0.019519758219900693,
+                        0.6406993405307513
+                    ],
+                    [
+                        0.01696622652263262,
+                        0.6448439745908601
+                    ],
+                    [
+                        0.015484929265126603,
+                        0.6490167542447141
+                    ],
+                    [
+                        0.014869654594389636,
+                        0.6543994999677721
+                    ]
+                ],
+                "id": 29,
+                "sourceAngle": -3.640249712195136,
+                "sourcePoint": [
+                    0.05565562182367056,
+                    0.61822446498878
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.9438396297830076,
+                        0.6177143576645815
+                    ],
+                    [
+                        0.9702516421226024,
+                        0.6319412900174498
+                    ],
+                    [
+                        0.9763304026305256,
+                        0.6360941365363152
+                    ],
+                    [
+                        0.9802495461917058,
+                        0.640035646431819
+                    ],
+                    [
+                        0.982884356323312,
+                        0.644158766303608
+                    ],
+                    [
+                        0.9844414964066142,
+                        0.6483192573390879
+                    ],
+                    [
+                        0.9851392927320036,
+                        0.6537021015079966
+                    ]
+                ],
+                "id": 30,
+                "sourceAngle": 0.4940904489550575,
+                "sourcePoint": [
+                    0.9438396297830076,
+                    0.6177143576645815
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.9438396297830076,
+                        0.6177143576645815
+                    ],
+                    [
+                        0.965532007172669,
+                        0.5969914050954009
+                    ],
+                    [
+                        0.9714330273941203,
+                        0.5876650394731665
+                    ],
+                    [
+                        0.9751137452764814,
+                        0.5796816918310735
+                    ],
+                    [
+                        0.9774652032775468,
+                        0.5727615028008799
+                    ],
+                    [
+                        0.9789697603486895,
+                        0.5665506073663128
+                    ],
+                    [
+                        0.9799892167075208,
+                        0.559988932330323
+                    ]
+                ],
+                "id": 31,
+                "sourceAngle": -0.7625466124808598,
+                "sourcePoint": [
+                    0.9438396297830076,
+                    0.6177143576645815
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.24840711184391673,
+                        0.9108415459078917
+                    ],
+                    [
+                        0.21862521108496744,
+                        0.9144524166040112
+                    ],
+                    [
+                        0.20712389571271608,
+                        0.9156609594354126
+                    ],
+                    [
+                        0.1967400636377128,
+                        0.916796859714275
+                    ],
+                    [
+                        0.18742470497936675,
+                        0.91798022304368
+                    ]
+                ],
+                "id": 32,
+                "sourceAngle": 3.0209377691114567,
+                "sourcePoint": [
+                    0.24840711184391673,
+                    0.9108415459078917
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.24840711184391673,
+                        0.9108415459078917
+                    ],
+                    [
+                        0.24263814048965696,
+                        0.9402816371019375
+                    ],
+                    [
+                        0.2401624259315137,
+                        0.950389253926315
+                    ],
+                    [
+                        0.2375938891956688,
+                        0.9585310242062846
+                    ],
+                    [
+                        0.23507161762669937,
+                        0.965501005129536
+                    ]
+                ],
+                "id": 33,
+                "sourceAngle": 1.7643007076755395,
+                "sourcePoint": [
+                    0.24840711184391673,
+                    0.9108415459078917
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.751187454679274,
+                        0.9111199658985278
+                    ],
+                    [
+                        0.7570741226832436,
+                        0.9405367492000896
+                    ],
+                    [
+                        0.7595885052164467,
+                        0.9506271546653556
+                    ],
+                    [
+                        0.7621920691312837,
+                        0.9587559125424222
+                    ],
+                    [
+                        0.7647443555280647,
+                        0.9657104381868948
+                    ]
+                ],
+                "id": 34,
+                "sourceAngle": 1.3732925322914402,
+                "sourcePoint": [
+                    0.751187454679274,
+                    0.9111199658985278
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.751187454679274,
+                        0.9111199658985278
+                    ],
+                    [
+                        0.7809835585801366,
+                        0.914611697894114
+                    ],
+                    [
+                        0.7924943848087987,
+                        0.9157793622198996
+                    ],
+                    [
+                        0.8028921101010091,
+                        0.9168695414055338
+                    ],
+                    [
+                        0.812225802674768,
+                        0.9179992313902621
+                    ]
+                ],
+                "id": 35,
+                "sourceAngle": 0.11665547085552297,
+                "sourcePoint": [
+                    0.751187454679274,
+                    0.9111199658985278
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.38344717990510657,
+                        0.944844284420229
+                    ],
+                    [
+                        0.36224373980539815,
+                        0.9660672467002237
+                    ],
+                    [
+                        0.3584911581776486,
+                        0.9689413828792026
+                    ],
+                    [
+                        0.35475896169390964,
+                        0.9712933369700397
+                    ],
+                    [
+                        0.3502267637530018,
+                        0.9736305432062454
+                    ]
+                ],
+                "id": 36,
+                "sourceAngle": 2.3557343479739767,
+                "sourcePoint": [
+                    0.38344717990510657,
+                    0.944844284420229
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.38344717990510657,
+                        0.944844284420229
+                    ],
+                    [
+                        0.3970791931465606,
+                        0.9715682103104276
+                    ],
+                    [
+                        0.39897759195949106,
+                        0.9748580597759187
+                    ],
+                    [
+                        0.40084680621225355,
+                        0.9777013333020022
+                    ],
+                    [
+                        0.40314565707225347,
+                        0.9806950297603797
+                    ]
+                ],
+                "id": 37,
+                "sourceAngle": 1.0990972865380595,
+                "sourcePoint": [
+                    0.38344717990510657,
+                    0.944844284420229
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.44070124932379073,
+                        0.9125293601827207
+                    ],
+                    [
+                        0.458838032990837,
+                        0.9364261607680452
+                    ],
+                    [
+                        0.46163256973338906,
+                        0.9401851841624566
+                    ],
+                    [
+                        0.46411386605376076,
+                        0.943711024238902
+                    ],
+                    [
+                        0.4667908534056485,
+                        0.9478247883105893
+                    ]
+                ],
+                "id": 38,
+                "sourceAngle": 0.9215836341995244,
+                "sourcePoint": [
+                    0.44070124932379073,
+                    0.9125293601827207
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.44070124932379073,
+                        0.9125293601827207
+                    ],
+                    [
+                        0.4690330316154887,
+                        0.9026647713835952
+                    ],
+                    [
+                        0.4741347427864645,
+                        0.8994670002420593
+                    ],
+                    [
+                        0.4784220192114532,
+                        0.8955339455243779
+                    ],
+                    [
+                        0.4824330280671858,
+                        0.8899284011350178
+                    ]
+                ],
+                "id": 39,
+                "sourceAngle": -0.33505342723639286,
+                "sourcePoint": [
+                    0.44070124932379073,
+                    0.9125293601827207
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.5586385120921602,
+                        0.9128662842191068
+                    ],
+                    [
+                        0.5303392372472107,
+                        0.9029088225320098
+                    ],
+                    [
+                        0.5252533662057244,
+                        0.8997012817376315
+                    ],
+                    [
+                        0.520986429325576,
+                        0.8957626482248288
+                    ],
+                    [
+                        0.5169988332130085,
+                        0.8901639907472508
+                    ]
+                ],
+                "id": 40,
+                "sourceAngle": 3.4799260056380326,
+                "sourcePoint": [
+                    0.5586385120921602,
+                    0.9128662842191068
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.5586385120921602,
+                        0.9128662842191068
+                    ],
+                    [
+                        0.5404234464133104,
+                        0.9367034690846732
+                    ],
+                    [
+                        0.5376157625593766,
+                        0.9404498973878082
+                    ],
+                    [
+                        0.53512017581014,
+                        0.9439645972511969
+                    ],
+                    [
+                        0.5324252162309759,
+                        0.9480661499307187
+                    ]
+                ],
+                "id": 41,
+                "sourceAngle": 2.2232889442021153,
+                "sourcePoint": [
+                    0.5586385120921602,
+                    0.9128662842191068
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6158167458487008,
+                        0.9452331900159942
+                    ],
+                    [
+                        0.6021463335381686,
+                        0.9719374935504443
+                    ],
+                    [
+                        0.6002521575740314,
+                        0.975192218147877
+                    ],
+                    [
+                        0.5983844084308412,
+                        0.9780006916175186
+                    ],
+                    [
+                        0.5960848422682425,
+                        0.9809521310265126
+                    ]
+                ],
+                "id": 42,
+                "sourceAngle": 2.043932774313034,
+                "sourcePoint": [
+                    0.6158167458487008,
+                    0.9452331900159942
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.6158167458487008,
+                        0.9452331900159942
+                    ],
+                    [
+                        0.6369896580141965,
+                        0.9664866083394594
+                    ],
+                    [
+                        0.6407256065820367,
+                        0.9693412063821862
+                    ],
+                    [
+                        0.6444463736409932,
+                        0.9716728734025885
+                    ],
+                    [
+                        0.6489723091569842,
+                        0.9739808580380682
+                    ]
+                ],
+                "id": 43,
+                "sourceAngle": 0.7872957128771167,
+                "sourcePoint": [
+                    0.6158167458487008,
+                    0.9452331900159942
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.04833403058453607,
+                        0.8164133077012818
+                    ],
+                    [
+                        0.019452454209732167,
+                        0.8082982263026532
+                    ],
+                    [
+                        0.015231564083231862,
+                        0.8065146333878561
+                    ],
+                    [
+                        0.011383786935362865,
+                        0.8037102358572034
+                    ]
+                ],
+                "id": 44,
+                "sourceAngle": 3.4155078273704267,
+                "sourcePoint": [
+                    0.04833403058453607,
+                    0.8164133077012818
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.04833403058453607,
+                        0.8164133077012818
+                    ],
+                    [
+                        0.03169123161595231,
+                        0.841373621050503
+                    ],
+                    [
+                        0.02879319298355098,
+                        0.8482491295390642
+                    ],
+                    [
+                        0.026328475700151784,
+                        0.8564818348191715
+                    ]
+                ],
+                "id": 45,
+                "sourceAngle": 2.1588707659345094,
+                "sourcePoint": [
+                    0.04833403058453607,
+                    0.8164133077012818
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.9517320146081106,
+                        0.8163223323364269
+                    ],
+                    [
+                        0.9683808985619052,
+                        0.8412785873257694
+                    ],
+                    [
+                        0.9712767974309827,
+                        0.8481459824884029
+                    ],
+                    [
+                        0.9737396565321194,
+                        0.8563652174283508
+                    ]
+                ],
+                "id": 46,
+                "sourceAngle": 0.9824780814248792,
+                "sourcePoint": [
+                    0.9517320146081106,
+                    0.8163223323364269
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.9517320146081106,
+                        0.8163223323364269
+                    ],
+                    [
+                        0.9806116116171472,
+                        0.8082002096707902
+                    ],
+                    [
+                        0.9848288387287287,
+                        0.8064119378761527
+                    ],
+                    [
+                        0.9886670569762364,
+                        0.8035934645308384
+                    ]
+                ],
+                "id": 47,
+                "sourceAngle": -0.274158980011038,
+                "sourcePoint": [
+                    0.9517320146081106,
+                    0.8163223323364269
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.10217253587331408,
+                        0.44362838390839565
+                    ],
+                    [
+                        0.12287639230781508,
+                        0.42191777984633483
+                    ],
+                    [
+                        0.14424556038170153,
+                        0.4008616962639116
+                    ]
+                ],
+                "id": 48,
+                "sourceAngle": -0.809129660014019,
+                "sourcePoint": [
+                    0.10217253587331408,
+                    0.44362838390839565
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.10217253587331408,
+                        0.44362838390839565
+                    ],
+                    [
+                        0.08792236789474703,
+                        0.4172289007206016
+                    ],
+                    [
+                        0.07621455401103984,
+                        0.3915069384681178
+                    ]
+                ],
+                "id": 49,
+                "sourceAngle": -2.0657667214499362,
+                "sourcePoint": [
+                    0.10217253587331408,
+                    0.44362838390839565
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.8971250840488205,
+                        0.44311105316504307
+                    ],
+                    [
+                        0.9113973807762702,
+                        0.4167235268292224
+                    ],
+                    [
+                        0.9231555240832187,
+                        0.3910001019168241
+                    ]
+                ],
+                "id": 50,
+                "sourceAngle": -1.0749875157269528,
+                "sourcePoint": [
+                    0.8971250840488205,
+                    0.44311105316504307
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.8971250840488205,
+                        0.44311105316504307
+                    ],
+                    [
+                        0.8764394374157722,
+                        0.421383098282619
+                    ],
+                    [
+                        0.8550804719099641,
+                        0.4003186807899534
+                    ]
+                ],
+                "id": 51,
+                "sourceAngle": -2.33162457716287,
+                "sourcePoint": [
+                    0.8971250840488205,
+                    0.44311105316504307
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.18742470497936675,
+                        0.91798022304368
+                    ],
+                    [
+                        0.16112549414001023,
+                        0.9035458366962431
+                    ]
+                ],
+                "id": 52,
+                "sourceAngle": 3.643554402467248,
+                "sourcePoint": [
+                    0.18742470497936675,
+                    0.91798022304368
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.18742470497936675,
+                        0.91798022304368
+                    ],
+                    [
+                        0.1655698846969041,
+                        0.9385317882011384
+                    ]
+                ],
+                "id": 53,
+                "sourceAngle": 2.3869173410313307,
+                "sourcePoint": [
+                    0.18742470497936675,
+                    0.91798022304368
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.23507161762669937,
+                        0.965501005129536
+                    ],
+                    [
+                        0.210231570716388,
+                        0.9823227788021762
+                    ]
+                ],
+                "id": 54,
+                "sourceAngle": 2.5463305582725484,
+                "sourcePoint": [
+                    0.23507161762669937,
+                    0.965501005129536
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.23507161762669937,
+                        0.965501005129536
+                    ],
+                    [
+                        0.24339407845734898,
+                        0.9943235075490398
+                    ]
+                ],
+                "id": 55,
+                "sourceAngle": 1.2896934968366314,
+                "sourcePoint": [
+                    0.23507161762669937,
+                    0.965501005129536
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.7647443555280647,
+                        0.9657104381868948
+                    ],
+                    [
+                        0.7565522507630711,
+                        0.9945702618093525
+                    ]
+                ],
+                "id": 56,
+                "sourceAngle": 1.8473793721783651,
+                "sourcePoint": [
+                    0.7647443555280647,
+                    0.9657104381868948
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.7647443555280647,
+                        0.9657104381868948
+                    ],
+                    [
+                        0.7896601792512489,
+                        0.9824197687598176
+                    ]
+                ],
+                "id": 57,
+                "sourceAngle": 0.5907423107424479,
+                "sourcePoint": [
+                    0.7647443555280647,
+                    0.9657104381868948
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.812225802674768,
+                        0.9179992313902621
+                    ],
+                    [
+                        0.8342016819187291,
+                        0.9384212962088557
+                    ]
+                ],
+                "id": 58,
+                "sourceAngle": 0.7487662139839308,
+                "sourcePoint": [
+                    0.812225802674768,
+                    0.9179992313902621
+                ]
+            },
+            {
+                "Desciption": "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId",
+                "coords": [
+                    [
+                        0.812225802674768,
+                        0.9179992313902621
+                    ],
+                    [
+                        0.8384392606494091,
+                        0.9034096933231496
+                    ]
+                ],
+                "id": 59,
+                "sourceAngle": -0.5078708474519864,
+                "sourcePoint": [
+                    0.812225802674768,
+                    0.9179992313902621
+                ]
+            }
+        ],
+        "Description": "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important.",
+        "Relations": [
+            [
+                1,
+                [
+                    2,
+                    3
+                ]
+            ],
+            [
+                2,
+                [
+                    4,
+                    5
+                ]
+            ],
+            [
+                3,
+                [
+                    6,
+                    7
+                ]
+            ],
+            [
+                4,
+                [
+                    8,
+                    9
+                ]
+            ],
+            [
+                5,
+                [
+                    12,
+                    13
+                ]
+            ],
+            [
+                6,
+                [
+                    14,
+                    15
+                ]
+            ],
+            [
+                7,
+                [
+                    10,
+                    11
+                ]
+            ],
+            [
+                8,
+                [
+                    16,
+                    17
+                ]
+            ],
+            [
+                9,
+                [
+                    24,
+                    25
+                ]
+            ],
+            [
+                10,
+                [
+                    26,
+                    27
+                ]
+            ],
+            [
+                11,
+                [
+                    18,
+                    19
+                ]
+            ],
+            [
+                12,
+                [
+                    32,
+                    33
+                ]
+            ],
+            [
+                13,
+                [
+                    20,
+                    21
+                ]
+            ],
+            [
+                14,
+                [
+                    22,
+                    23
+                ]
+            ],
+            [
+                15,
+                [
+                    34,
+                    35
+                ]
+            ],
+            [
+                16,
+                [
+                    48,
+                    49
+                ]
+            ],
+            [
+                17,
+                [
+                    28,
+                    29
+                ]
+            ],
+            [
+                18,
+                [
+                    30,
+                    31
+                ]
+            ],
+            [
+                19,
+                [
+                    50,
+                    51
+                ]
+            ],
+            [
+                20,
+                [
+                    36,
+                    37
+                ]
+            ],
+            [
+                21,
+                [
+                    38,
+                    39
+                ]
+            ],
+            [
+                22,
+                [
+                    40,
+                    41
+                ]
+            ],
+            [
+                23,
+                [
+                    42,
+                    43
+                ]
+            ],
+            [
+                24,
+                [
+                    44,
+                    45
+                ]
+            ],
+            [
+                27,
+                [
+                    46,
+                    47
+                ]
+            ],
+            [
+                32,
+                [
+                    52,
+                    53
+                ]
+            ],
+            [
+                33,
+                [
+                    54,
+                    55
+                ]
+            ],
+            [
+                34,
+                [
+                    56,
+                    57
+                ]
+            ],
+            [
+                35,
+                [
+                    58,
+                    59
+                ]
+            ]
+        ],
+        "SourceIds": [
+            1
+        ]
+    },
+    "Version": "2.6.5"
+}
