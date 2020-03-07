@@ -163,14 +163,24 @@ double coefficient(const dealii::Point<2> &/*p*/)
 
 void Solver::assemble_system()
 {
-    FEValues<dim> fe_values(fe, quadrature_formula,
-                            update_values | update_gradients |
-                                update_quadrature_points | update_JxW_values);
+    FEValues<dim> fe_values(
+        fe, 
+        quadrature_formula,
+        update_values | update_gradients | update_quadrature_points | update_JxW_values);
+
+    const QGauss< dim - 1> face_quadrature_formula(fe.degree + 1);
+    FEFaceValues<dim> fe_face_values(fe,
+        face_quadrature_formula,
+        update_values | update_quadrature_points | update_normal_vectors | update_JxW_values);
+    
     const unsigned dofs_per_cell = fe.dofs_per_cell;
     const unsigned n_q_points = quadrature_formula.size();
+    const unsigned n_face_q_points = face_quadrature_formula.size();
+
     FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
     Vector<double> cell_rhs(dofs_per_cell);
     vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
+
     typename DoFHandler<dim>::active_cell_iterator
         cell = dof_handler.begin_active(),
         endc = dof_handler.end();
@@ -194,6 +204,24 @@ void Solver::assemble_system()
                                 fe_values.JxW(q_index));
             }
         }
+
+        for(unsigned face_number = 0; face_number < GeometryInfo<dim>::faces_per_cell; ++face_number)
+        {
+            if(cell->face(face_number)->at_boundary() && cell->face(face_number)->boundary_id() == 5)
+            {
+                fe_face_values.reinit(cell, face_number);
+                for(unsigned q_point = 0; q_point < n_face_q_points; ++q_point)
+                {
+                    const double neuman_value = 1;
+                    for(unsigned i = 0; i < dofs_per_cell; ++i)
+                        cell_rhs(i) += 
+                            neuman_value * 
+                            fe_face_values.shape_value(i, q_point)*
+                            fe_face_values.JxW(q_point);
+                }
+            }
+        }
+
         cell->get_dof_indices(local_dof_indices);
         constraints.distribute_local_to_global(cell_matrix,
                                                cell_rhs,
