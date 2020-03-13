@@ -131,9 +131,9 @@
 
     \section team Team
 
-    + prof. dr hab Piotr Szymczak
-    + student Stasiek Żukowski
     + student Oleg Kmechak
+    + student Stasiek Żukowski
+    + prof. dr hab Piotr Szymczak
 
 
     \section references References
