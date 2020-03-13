@@ -121,7 +121,7 @@ double Solver::BoundaryValues::value(const dealii::Point<dim> & p,
                                          const unsigned int component) const
 {
     if (component == 0)
-      return (p[0] < 0 ? -1 : (p[0] > 0 ? 1 : 0));
+        return (p[0] < 0 ? -1 : (p[0] > 0 ? 1 : 0));
     return 0;
 }
 
@@ -357,7 +357,6 @@ vector<double> Solver::integrate(const Model& mdl, const Point& point, const dou
 
 double Solver::integration_test(const Point& point, const double dr)
 {
-
     FEValues<dim> fe_values(fe, quadrature_formula,
                             update_values            |
                             update_quadrature_points |
