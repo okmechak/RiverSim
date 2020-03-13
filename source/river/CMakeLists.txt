@@ -38,7 +38,12 @@ add_library(solver solver.hpp solver.cpp)
 deal_ii_setup_target(solver)
 target_link_libraries(solver tethex physmodel)
 
-#river
+#riversim
 add_library(river riversim.hpp riversim.cpp)
 deal_ii_setup_target(river)
+target_link_libraries(river tethex GeometryPrimitives physmodel border triangle io solver tree mesh)
+
+#river
+add_library(riv river.hpp river.cpp)
+deal_ii_setup_target(riv)
 target_link_libraries(river tethex GeometryPrimitives physmodel border triangle io solver tree mesh)

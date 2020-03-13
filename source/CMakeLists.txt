@@ -8,13 +8,14 @@ if(BUILD_PROGRAM)
     message("========================================")
     message("Deal II setup")
 
-    set(DEALII_REL_DIR "/usr/local/dealii_release" CACHE STRING "Deal.II release SDK directory location.") 
-    set(DEALII_DEB_DIR "/usr/local/dealii_debug" CACHE STRING "Deal.II debug SDK directory location.") 
+    set(DEALII_REL_DIR "/mnt/c/users/ofcra/Lib/dealii" CACHE STRING "Deal.II release SDK directory location.") 
+    set(DEALII_DEB_DIR "/mnt/c/users/ofcra/Lib/dealii_d" CACHE STRING "Deal.II debug SDK directory location.") 
 
     if(CMAKE_BUILD_TYPE MATCHES Release)
         set(DEALII_DIR ${DEALII_REL_DIR})
     elseif(CMAKE_BUILD_TYPE MATCHES Debug)
         set(DEALII_DIR ${DEALII_DEB_DIR})
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
     endif() 
 
     find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
@@ -38,5 +39,9 @@ if(BUILD_PROGRAM)
 
     target_link_libraries(riversim river)
 
+    add_executable(riversim_perfomance perfomance.cpp)
+    deal_ii_setup_target(riversim_perfomance)
+
     install(TARGETS riversim DESTINATION riversim)
+    install(TARGETS riversim_perfomance DESTINATION riversim)
 endif(BUILD_PROGRAM)
