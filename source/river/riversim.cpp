@@ -72,7 +72,7 @@ namespace River
         mesh.write(file_name + "_boundary.msh");
         
         print(mdl.prog_opt.verbose, "Mesh generation...");
-        tria.ref->tip_points = tree.TipPoints();
+        tria.mesh_params->tip_points = tree.TipPoints();
         tria.generate(mesh);//triangulation
         print(mdl.prog_opt.verbose, "Triangles to quadrangles trasformation...");
         mesh.convert();//convertaion from triangles to quadrangles

@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         tria.MinAngle = mdl.mesh.min_angle;
         tria.Verbose = false;
         tria.Quite =  true;
-        tria.ref = &mdl.mesh;
+        tria.mesh_params = &mdl.mesh;
 
         //згенерувати геометрію всередині 
         //РіверСолвер і зробити цілу еволюцію там
