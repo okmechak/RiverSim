@@ -16,6 +16,8 @@
 #include "tree.hpp"
 
 ///\cond
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <fstream>
 ///\endcond
 
@@ -395,48 +397,4 @@ namespace River
                 right_vector.rbegin() + 1, right_vector.rend());
         }
     }
-
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br)
-    {
-        vector<tethex::Point> tet_vertices;
-        vector<tethex::MeshElement *> tet_lines, tet_triangles;
-
-        auto m = br.SourceByVerticeIdMap();
-        auto vertices = br.GetVertices();
-        auto lines = br.GetLines();
-        
-        for(long unsigned i = 0; i < vertices.size(); ++i)
-        {
-            if(!m.count(i))
-            {
-                tet_vertices.push_back({vertices.at(i).x, vertices.at(i).y});
-                tet_lines.push_back(new tethex::Line(lines.at(i).p1, lines.at(i).p2, lines.at(i).id));
-            }
-            else
-            {
-                vector<Point> tree_vector;
-                TreeVector(tree_vector, m.at(i)/*source id*/, tree, mdl.mesh.eps);
-                long unsigned shift = tet_vertices.size(); 
-                for(long unsigned i = 0; i < tree_vector.size(); ++i)
-                {
-                    tet_vertices.push_back({tree_vector.at(i).x, tree_vector.at(i).y});
-                    tet_lines.push_back(
-                        new tethex::Line(
-                            shift + i, 
-                            shift + i + 1, 
-                            mdl.river_boundary_id));
-                }
-                for(auto& line: lines)
-                    if(line.p2 > i)
-                    {
-                        line.p1 += tree_vector.size();
-                        line.p2 += tree_vector.size();
-                    }
-            }
-        }
-        //close line loop
-        tet_lines.back()->set_vertex(1, 0);
-
-        return tethex::Mesh{tet_vertices, tet_lines, tet_triangles};
-    }
-}
+}//namespace River

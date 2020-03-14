@@ -186,27 +186,15 @@ int main(int argc, char *argv[])
     //Model object setup
     Model mdl;
 
-    //Timing Object setup
-    Timing timing;
-
     string input_file;
     if(vm.count("input"))
         input_file = vm["input"].as<string>();
-
-    //Border object setup.. Rectangular boundaries
-    Border border;
-    
-    //Tree object setup
-    Tree tree;
-    
-    //Geometry difference
-    GeometryDifference gd;
 
     //Reading data from json file if it is specified so
     {
         bool q_update_border = false;
         if(vm.count("input"))
-            Open(mdl, border, tree, gd, vm["input"].as<string>(), q_update_border);
+            Open(mdl, vm["input"].as<string>(), q_update_border);
 
         SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
 
@@ -217,17 +205,17 @@ int main(int argc, char *argv[])
 
         if(!q_update_border)
         {
-            border.MakeRectangular(
+            mdl.border.MakeRectangular(
             {mdl.width, mdl.height}, 
             mdl.boundary_ids,
             {mdl.dx},
             {1});
 
-            tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+            mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
         }
     }
     //check of consistency between Border and Tree
-    if(border.GetSourcesId() != tree.SourceBranchesID())
+    if(mdl.border.GetSourcesId() != mdl.tree.SourceBranchesID())
         throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
 
     //Triangle mesh object setup
@@ -259,7 +247,7 @@ int main(int argc, char *argv[])
     {
         print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
         //! [StopConditionExample]
-        while(!StopConditionOfRiverGrowth(mdl, border, tree) && i < mdl.prog_opt.number_of_steps)
+        while(!StopConditionOfRiverGrowth(mdl, mdl.border, mdl.tree) && i < mdl.prog_opt.number_of_steps)
         {
         //! [StopConditionExample]
             print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
@@ -267,10 +255,10 @@ int main(int argc, char *argv[])
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);
 
-            ForwardRiverEvolution(mdl, tria, sim, tree, border, str);
+            ForwardRiverEvolution(mdl, tria, sim, mdl.tree, mdl.border, str);
             
-            timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str, input_file);
+            mdl.timing.Record();//Timing
+            Save(mdl, str, input_file);
             ++i;
         }
     }
@@ -278,7 +266,7 @@ int main(int argc, char *argv[])
     else if(vm["simulation-type"].as<unsigned>() == 1)
     {
         print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
-        while(tree.HasEmptySourceBranch() == false && i < mdl.prog_opt.number_of_steps)    
+        while(mdl.tree.HasEmptySourceBranch() == false && i < mdl.prog_opt.number_of_steps)    
         {
             print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             
@@ -286,10 +274,10 @@ int main(int argc, char *argv[])
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);
             
-            BackwardForwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
+            BackwardForwardRiverEvolution(mdl, tria, sim, mdl.tree, mdl.border, mdl.geometry_difference, str);
 
-            timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str, input_file);
+            mdl.timing.Record();//Timing
+            Save(mdl, str, input_file);
             ++i;
         }
     }
@@ -300,20 +288,20 @@ int main(int argc, char *argv[])
 
         //reinitialize geometry
         auto b_id = mdl.river_boundary_id;
-        border.MakeRectangular(
+        mdl.border.MakeRectangular(
             {mdl.width, mdl.height}, 
             {b_id, b_id, b_id, b_id},
             {mdl.dx},
             {1});
 
-        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+        mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
 
-        auto source_branch_id = border.GetSourcesId().back();
-        tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
+        auto source_branch_id = mdl.border.GetSourcesId().back();
+        mdl.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
 
-        EvaluateSeriesParams(mdl, tria, sim, tree, border, gd, output_file_name);
-        timing.Record();//Timing
-        Save(mdl, timing, border, tree, gd, output_file_name);
+        EvaluateSeriesParams(mdl, tria, sim, mdl.tree, mdl.border, mdl.geometry_difference, output_file_name);
+        mdl.timing.Record();//Timing
+        Save(mdl, output_file_name);
 
     }
     //unhandled case

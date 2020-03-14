@@ -21,10 +21,6 @@ BOOST_AUTO_TEST_CASE( io_methods,
     *utf::tolerance(eps))
 {
     Model mdl_out, mdl_in;
-    Border border_out, border_in;
-    Tree tree_out, tree_in;
-    GeometryDifference gd_out, gd_in;
-    Timing time_out, time_in;
 
     mdl_out.dx = 1;
     mdl_out.width = 2;
@@ -80,33 +76,33 @@ BOOST_AUTO_TEST_CASE( io_methods,
     auto sources_id = vector<int>{1};
     
     
-    border_out.MakeRectangular(
+    mdl_out.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
     //Tree object setup
 
-    tree_out.Initialize(
-        border_out.GetSourcesPoint(), 
-        border_out.GetSourcesNormalAngle(), 
-        border_out.GetSourcesId());
+    mdl_out.tree.Initialize(
+        mdl_out.border.GetSourcesPoint(), 
+        mdl_out.border.GetSourcesNormalAngle(), 
+        mdl_out.border.GetSourcesId());
     
-    gd_out.branches_bifuraction_info[1] = {{2, 3}, {3, 4}, {4, 5}, {5, 6}};
-    gd_out.branches_series_params_and_geom_diff[1] = {{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
+    mdl_out.geometry_difference.branches_bifuraction_info[1] = {{2, 3}, {3, 4}, {4, 5}, {5, 6}};
+    mdl_out.geometry_difference.branches_series_params_and_geom_diff[1] = {{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
 
     BranchNew br1left({0, 1}, 2), br1right({3, 4}, 5), br2left({6, 7}, 8), br2right({9, 10}, 11);
     br1left.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
     br1right.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
     br2left.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
     br2right.AddAbsolutePoint(Polar{1, 0}).AddAbsolutePoint(Polar{1, 0});
-    tree_out.AddSubBranches(1, br1left, br1right);
-    tree_out.AddSubBranches(3, br2left, br2right);
+    mdl_out.tree.AddSubBranches(1, br1left, br1right);
+    mdl_out.tree.AddSubBranches(3, br2left, br2right);
 
-    Save(mdl_out, time_out, border_out, tree_out, gd_out, "iotest");
+    Save(mdl_out, "iotest");
     
     bool q = false;
-    Open(mdl_in, border_in, tree_in, gd_in, "iotest.json", q);
+    Open(mdl_in, "iotest.json", q);
 
     BOOST_TEST(q == true);
     //Model TEST
@@ -155,21 +151,21 @@ BOOST_AUTO_TEST_CASE( io_methods,
 
 
     //Tree Test
-    BOOST_TEST(tree_in.source_branches_id == sources_id);
+    BOOST_TEST(mdl_in.tree.source_branches_id == sources_id);
     map<int, pair<int, int>> t = {{1, {2, 3}}, {3, {4, 5}}};
-    BOOST_TEST(tree_in.branches_relation == t);
-    BOOST_TEST(tree_in.GetBranch(5)->TipPoint().x == 11);
-    BOOST_TEST(tree_in.GetBranch(5)->TipPoint().y == 10);
+    BOOST_TEST(mdl_in.tree.branches_relation == t);
+    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().x == 11);
+    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().y == 10);
     //TODO
 
     //Border Test
-    BOOST_TEST((border_in.vertices.front() == Point{2, 0}));
-    BOOST_TEST((border_in.vertices.back() == Point{0.3, 0}));
+    BOOST_TEST((mdl_in.border.vertices.front() == Point{2, 0}));
+    BOOST_TEST((mdl_in.border.vertices.back() == Point{0.3, 0}));
 
     //GeometryDifference
     auto a1 = vector<vector<double>>{{2, 3}, {3, 4}, {4, 5}, {5, 6}},
         a2 = vector<vector<double>>{{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
 
-    BOOST_TEST(gd_in.branches_bifuraction_info[1] == a1);
-    BOOST_TEST(gd_in.branches_series_params_and_geom_diff[1] == a2);
+    BOOST_TEST(mdl_in.geometry_difference.branches_bifuraction_info[1] == a1);
+    BOOST_TEST(mdl_in.geometry_difference.branches_series_params_and_geom_diff[1] == a2);
 }

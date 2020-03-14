@@ -26,16 +26,12 @@ int main(int argc, char *argv[])
             
 
         River::Model mdl;
-        River::Border border;
-        River::Tree tree;
-        River::GeometryDifference gd;
-        River::Timing timing;
 
         //Reading data from json file if it is specified so
         {
             bool q_update_border = false;
             if(vm.count("input"))
-                Open(mdl, border, tree, gd, vm["input"].as<string>(), q_update_border);
+                Open(mdl, vm["input"].as<string>(), q_update_border);
 
             SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
 
@@ -46,13 +42,13 @@ int main(int argc, char *argv[])
 
             if(!q_update_border)
             {
-                border.MakeRectangular(
+                mdl.border.MakeRectangular(
                 {mdl.width, mdl.height}, 
                 mdl.boundary_ids,
                 {mdl.dx},
                 {1});
 
-                tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+                mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
             }
         }
 

@@ -244,9 +244,9 @@ namespace River
     Model& SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl);
 
     ///Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) and backward simulation data(GeometryDifference).
-    void Save(const Model& mdl, const Timing& time, const Border& border, const Tree& tr, const GeometryDifference &gd, const string file_name, const string input_file = "");
+    void Save(const Model& mdl, const string file_name, const string input_file = "");
     
     ///Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model).
-    void Open(Model& mdl, Border& border, Tree& tr, GeometryDifference &gd, string file_name, bool& q_update_border);
+    void Open(Model& mdl, string file_name, bool& q_update_border);
 
 }//namespace River

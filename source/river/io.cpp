@@ -240,7 +240,7 @@ namespace River
         return mdl;
     }
 
-    void Save(const Model& mdl, const Timing& time, const Border& border, const Tree& tr, const GeometryDifference &gd, const string file_name, string const input_file)
+    void Save(const Model& mdl, const string file_name, string const input_file)
     {
         if(file_name.length() == 0)
             throw invalid_argument("Save: File name is not set.");
@@ -252,10 +252,10 @@ namespace River
 
         //Branches
         json branches;
-        for(auto id: tr.branches_index)
+        for(auto id: mdl.tree.branches_index)
         {
             auto branch_id = id.first;
-            auto branch = tr.GetBranch(branch_id);
+            auto branch = mdl.tree.GetBranch(branch_id);
             vector<pair<double, double>> coords(branch->Size());
             for(unsigned i = 0; i < branch->Size(); ++i)
                 coords[i] = {branch->GetPoint(i).x, branch->GetPoint(i).y};
@@ -274,17 +274,17 @@ namespace River
         {
             vector<pair<double, double>> coords;
             vector<vector<int>> lines;
-            coords.reserve(border.GetVertices().size());
-            coords.reserve(border.GetLines().size());
+            coords.reserve(mdl.border.GetVertices().size());
+            coords.reserve(mdl.border.GetLines().size());
 
-            for(auto& p: border.GetVertices())
+            for(auto& p: mdl.border.GetVertices())
                 coords.push_back({p.x, p.y});
 
-            for(auto& l: border.GetLines())
+            for(auto& l: mdl.border.GetLines())
                 lines.push_back({(int)l.p1, (int)l.p2, l.id});
 
             jborder = {
-                {"SourceIds", border.GetSourceMap()}, 
+                {"SourceIds", mdl.border.GetSourceMap()}, 
                 {"SomeDetails", "Points and lines should be in counterclockwise order. SourcesIDs is array of pairs - where first number - is related branch id(source branche), and second is index of related point in coords array(after initialization it will be source point of related branch). Lines consist of three numbers: first and second - point index in coords array, third - configures boundary condition(See --boundary-condition option in program: ./riversim -h)."},
                 {"coords", coords},
                 {"lines", lines}};
@@ -298,10 +298,10 @@ namespace River
 
             {"RuntimeInfo", {
                 {"Description", "Units are in seconds."},
-                {"StartDate",  time.CreationtDate()},
-                {"EndDate",  time.CurrentDate()},
-                {"TotalTime",  time.Total()},
-                {"EachCycleTime",  time.records},
+                {"StartDate",  mdl.timing.CreationtDate()},
+                {"EndDate",  mdl.timing.CurrentDate()},
+                {"TotalTime",  mdl.timing.Total()},
+                {"EachCycleTime",  mdl.timing.records},
                 {"InputFile", input_file}}},
 
             {"Model", {
@@ -366,14 +366,14 @@ namespace River
 
             {"Trees", {
                 {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
-                {"SourceIds", tr.source_branches_id},
-                {"Relations", tr.branches_relation},
+                {"SourceIds", mdl.tree.source_branches_id},
+                {"Relations", mdl.tree.branches_relation},
                 {"Branches", branches}}},
                 
             {"GeometryDifference", {
                 {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in bifurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached bifurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."},
-                {"AlongBranches", gd.branches_series_params_and_geom_diff},
-                {"BifuractionPoints", gd.branches_bifuraction_info}}}
+                {"AlongBranches", mdl.geometry_difference.branches_series_params_and_geom_diff},
+                {"BifuractionPoints", mdl.geometry_difference.branches_bifuraction_info}}}
         };
 
         out << setw(4) << j;
@@ -381,7 +381,7 @@ namespace River
     }
 
 
-    void Open(Model& mdl, Border& border, Tree& tree, GeometryDifference &gd, string file_name, bool& q_update_border)
+    void Open(Model& mdl, string file_name, bool& q_update_border)
     {
         ifstream in(file_name);
         if(!in) throw invalid_argument("Open. Can't create file for read.");
@@ -486,7 +486,7 @@ namespace River
             for(auto& l : lines_raw)
                 lines.push_back(Line{(long unsigned)l.at(0), (long unsigned)l.at(1), l.at(2)});
 
-            border = Border{points, lines, sources};
+            mdl.border = Border{points, lines, sources};
 
             //Get size of bounding box of border and update width and height values of module
             auto xmax = points.at(0).x,
@@ -513,11 +513,11 @@ namespace River
             if(!j.count("Border"))
                 throw invalid_argument("Input json file contains Trees and do not contain Border. Make sure that you created corresponding Border object(Trees and Border should contain same source/branches ids - its values and number)");
             
-            tree.Clear();
+            mdl.tree.Clear();
 
             auto jtrees = j["Trees"];
-            jtrees.at("SourceIds").get_to(tree.source_branches_id);
-            jtrees.at("Relations").get_to(tree.branches_relation);
+            jtrees.at("SourceIds").get_to(mdl.tree.source_branches_id);
+            jtrees.at("Relations").get_to(mdl.tree.branches_relation);
 
             
             for(auto& [key, value] : jtrees["Branches"].items()) 
@@ -542,7 +542,7 @@ namespace River
                 }
                 try
                 {
-                    tree.AddBranch(branch, id);
+                    mdl.tree.AddBranch(branch, id);
                 }
                 catch (invalid_argument& e)
                 {   
@@ -553,14 +553,14 @@ namespace River
         }
         else if(j.count("Border"))
             //If no tree provided but border is, than we reinitialize tree.. to current border.
-            tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+            mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
 
         if(j.count("GeometryDifference"))
         { 
             json jgd = j["GeometryDifference"];
 
-            jgd.at("AlongBranches").get_to(gd.branches_series_params_and_geom_diff);
-            jgd.at("BifuractionPoints").get_to(gd.branches_bifuraction_info);
+            jgd.at("AlongBranches").get_to(mdl.geometry_difference.branches_series_params_and_geom_diff);
+            jgd.at("BifuractionPoints").get_to(mdl.geometry_difference.branches_bifuraction_info);
         }
     }
 }//namespace River
