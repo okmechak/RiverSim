@@ -1,5 +1,5 @@
 #include "river.hpp"
-#include "riversim.hpp"
+#include "io.hpp"
 
 #include <iostream>
 #include <string>
@@ -14,26 +14,28 @@ int main(int argc, char *argv[])
         //Program options
         auto vm = River::process_program_options(argc, argv);
 
+        //Handle help option
         if (vm.count("help") || vm.count("version"))
             return 0;
 
+        //riversim signature print
         if (!vm.count("suppress-signature") && vm.count("verbose"))
             River::print_ascii_signature();
 
+        //autput and input files names initialization
         string output_file_name = vm["output"].as<string>(),
             input_file = 
                 vm.count("input") ? input_file = vm["input"].as<string>() : "";
             
-
         River::Model mdl;
 
-        //Reading data from json file if it is specified so
+        //initialization mdl object
         {
             bool q_update_border = false;
             if(vm.count("input"))
-                Open(mdl, vm["input"].as<string>(), q_update_border);
+                River::Open(mdl, vm["input"].as<string>(), q_update_border);
 
-            SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
+            River::SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
 
             mdl.CheckParametersConsistency();
 
@@ -43,12 +45,15 @@ int main(int argc, char *argv[])
             if(!q_update_border)
             {
                 mdl.border.MakeRectangular(
-                {mdl.width, mdl.height}, 
-                mdl.boundary_ids,
-                {mdl.dx},
-                {1});
+                    {mdl.width, mdl.height}, 
+                    mdl.boundary_ids,
+                    {mdl.dx},
+                    {1});
 
-                mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+                mdl.tree.Initialize(
+                    mdl.border.GetSourcesPoint(), 
+                    mdl.border.GetSourcesNormalAngle(), 
+                    mdl.border.GetSourcesId());
             }
         }
 
@@ -68,6 +73,7 @@ int main(int argc, char *argv[])
         const int dim = 2;
         FE_Q<dim> fe(2);
         River::RiverSolver r(fe);
+        r.run();
 
     }
     catch(const River::Exception& caught)

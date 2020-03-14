@@ -1,6 +1,7 @@
 #pragma once
 
 #include "physmodel.hpp"
+#include "mesh.hpp"
 
 //Deal.II headers
 #include <deal.II/base/quadrature_lib.h>
