@@ -169,7 +169,7 @@ namespace River
             bool Verbose = false;
         
             ///Mesh refinment object
-            MeshParams* ref;
+            MeshParams* mesh_params;
         
             Triangle();
             ~Triangle();
