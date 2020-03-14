@@ -101,10 +101,8 @@ BOOST_AUTO_TEST_CASE( io_methods,
 
     Save(mdl_out, "iotest");
     
-    bool q = false;
-    Open(mdl_in, "iotest.json", q);
+    Open(mdl_in, "iotest.json");
 
-    BOOST_TEST(q == true);
     //Model TEST
 
     BOOST_TEST(mdl_in.dx == 1);

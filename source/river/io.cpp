@@ -332,7 +332,8 @@ namespace River
                     {"NumberOfBackwardSteps", mdl.prog_opt.number_of_backward_steps},
                     {"MaximalRiverHeight", mdl.prog_opt.maximal_river_height},
                     {"Verbose", mdl.prog_opt.verbose},
-                    {"SaveVTK", mdl.prog_opt.save_vtk}}},
+                    {"SaveVTK", mdl.prog_opt.save_vtk},
+                    {"InputFileName", mdl.prog_opt.input_file}}},
 
                 {"Integration",{
                     {"radius", mdl.integr.integration_radius},
@@ -380,14 +381,15 @@ namespace River
         out.close();
     }
 
-
-    void Open(Model& mdl, string file_name, bool& q_update_border)
+    void Open(Model& mdl, const string file_name)
     {
         ifstream in(file_name);
         if(!in) throw invalid_argument("Open. Can't create file for read.");
 
         json j;
         in >> j;
+
+        mdl.prog_opt.input_file = file_name;
 
         if(j.count("Model"))
         {
@@ -466,7 +468,6 @@ namespace River
 
         if(j.count("Border"))
         {
-            q_update_border = true;
             auto jborder = j["Border"];
             vector<pair<double, double>> coords;
             vector<Point> points;

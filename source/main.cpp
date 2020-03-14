@@ -192,9 +192,8 @@ int main(int argc, char *argv[])
 
     //Reading data from json file if it is specified so
     {
-        bool q_update_border = false;
         if(vm.count("input"))
-            Open(mdl, vm["input"].as<string>(), q_update_border);
+            Open(mdl, vm["input"].as<string>());
 
         SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
 
@@ -203,7 +202,7 @@ int main(int argc, char *argv[])
         if(mdl.prog_opt.verbose)
             cout << mdl << endl;
 
-        if(!q_update_border)
+        if(mdl.border.vertices.empty())
         {
             mdl.border.MakeRectangular(
             {mdl.width, mdl.height}, 

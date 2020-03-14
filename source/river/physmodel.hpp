@@ -153,6 +153,9 @@ namespace River
 
             ///Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes
             unsigned simulation_type = 0;
+
+            ///inpute file name
+            string input_file = "";
             
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const ProgramOptions & po);

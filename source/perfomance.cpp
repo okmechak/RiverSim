@@ -31,18 +31,14 @@ int main(int argc, char *argv[])
 
         //initialization mdl object
         {
-            bool q_update_border = false;
             if(vm.count("input"))
-                River::Open(mdl, vm["input"].as<string>(), q_update_border);
+                River::Open(mdl, vm["input"].as<string>());
 
             River::SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
 
             mdl.CheckParametersConsistency();
 
-            if(mdl.prog_opt.verbose)
-                cout << mdl << endl;
-
-            if(!q_update_border)
+            if(mdl.border.vertices.empty())
             {
                 mdl.border.MakeRectangular(
                     {mdl.width, mdl.height}, 
