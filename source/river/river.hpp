@@ -97,9 +97,10 @@ namespace River
     class RiverSolver
     {
         public:
-            RiverSolver(const FE_Q< dim, spacedim> &fe):
+            RiverSolver(const FE_Q< dim, spacedim> &fe, Model *model):
             dof_handler(triangulation),
-            fe(&fe)
+            fe(&fe),
+            model(model)
             {
                 deallog.depth_console(3);
             }
@@ -118,7 +119,21 @@ namespace River
 
             }
 
-            void generate_triangulation()
+            void generate_triangulation_file()
+            {
+                auto mesh = BoundaryGenerator(*model, model->tree, model->border);
+                
+                triangle.mesh_params->tip_points = model->tree.TipPoints();
+                triangle.generate(mesh);//triangulation
+            
+                mesh.convert();//convertaion from triangles to quadrangles
+                model->mesh.number_of_quadrangles = mesh.get_n_quadrangles(); // just saving number of quadrangles
+
+                mesh.write(model->prog_opt.output_file_name + ".msh");
+
+            }
+
+            void initialize_solver_triangulation_from_file()
             {
 
             }
@@ -365,6 +380,10 @@ namespace River
             Vector<double> system_rhs;
 
             ConvergenceTable convergence_table;
+
+            Model *model;
+
+            Triangle triangle;
     };
 
 } //namespace River

@@ -193,7 +193,10 @@ int main(int argc, char *argv[])
     //Reading data from json file if it is specified so
     {
         if(vm.count("input"))
-            Open(mdl, vm["input"].as<string>());
+        {
+            mdl.prog_opt.input_file_name = vm["input"].as<string>();
+            Open(mdl);
+        }
 
         SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
 
@@ -237,8 +240,8 @@ int main(int argc, char *argv[])
     sim.refinment_fraction = mdl.solver_params.refinment_fraction;
     sim.verbose = mdl.prog_opt.verbose;
 
-
     //MAIN LOOP
+    //save-each-step option don't work here anymore
     unsigned i = 0;
     print(mdl.prog_opt.verbose, "Start of main loop...");
     //forward simulation case
@@ -250,14 +253,11 @@ int main(int argc, char *argv[])
         {
         //! [StopConditionExample]
             print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-            string str = output_file_name;
-            if(vm.count("save-each-step"))
-                str += "_" + to_string(i);
 
-            ForwardRiverEvolution(mdl, tria, sim, mdl.tree, mdl.border, str);
+            ForwardRiverEvolution(mdl, tria, sim, mdl.tree, mdl.border, mdl.prog_opt.output_file_name);
             
             mdl.timing.Record();//Timing
-            Save(mdl, str, input_file);
+            Save(mdl);
             ++i;
         }
     }
@@ -269,14 +269,10 @@ int main(int argc, char *argv[])
         {
             print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             
-            string str = output_file_name;
-            if(vm.count("save-each-step"))
-                str += "_" + to_string(i);
-            
-            BackwardForwardRiverEvolution(mdl, tria, sim, mdl.tree, mdl.border, mdl.geometry_difference, str);
+            BackwardForwardRiverEvolution(mdl, tria, sim, mdl.tree, mdl.border, mdl.geometry_difference, mdl.prog_opt.output_file_name);
 
             mdl.timing.Record();//Timing
-            Save(mdl, str, input_file);
+            Save(mdl);
             ++i;
         }
     }
@@ -300,8 +296,7 @@ int main(int argc, char *argv[])
 
         EvaluateSeriesParams(mdl, tria, sim, mdl.tree, mdl.border, mdl.geometry_difference, output_file_name);
         mdl.timing.Record();//Timing
-        Save(mdl, output_file_name);
-
+        Save(mdl);
     }
     //unhandled case
     else 

@@ -189,8 +189,15 @@ namespace River
         if (vm.count("number-of-backward-steps"))
             mdl.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
         if (vm.count("vtk")) mdl.prog_opt.save_vtk = true;
+        if (vm.count("save-each-step")) mdl.prog_opt.save_each_step = true;
         if (vm.count("simulation-type"))
             mdl.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
+        if (vm.count("simulation-type"))
+            mdl.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
+        if (vm.count("input"))
+            mdl.prog_opt.input_file_name = vm["input"].as<string>();
+        if (vm.count("output"))
+            mdl.prog_opt.output_file_name = vm["output"].as<string>();
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
@@ -240,12 +247,12 @@ namespace River
         return mdl;
     }
 
-    void Save(const Model& mdl, const string file_name, string const input_file)
+    void Save(const Model& mdl)
     {
-        if(file_name.length() == 0)
+        if(mdl.prog_opt.output_file_name.length() == 0)
             throw invalid_argument("Save: File name is not set.");
 
-        ofstream out(file_name + ".json");
+        ofstream out(mdl.prog_opt.output_file_name + ".json");
         if(!out) throw invalid_argument("Save: Can't create file for write");
 
         out.precision(16);
@@ -302,7 +309,7 @@ namespace River
                 {"EndDate",  mdl.timing.CurrentDate()},
                 {"TotalTime",  mdl.timing.Total()},
                 {"EachCycleTime",  mdl.timing.records},
-                {"InputFile", input_file}}},
+                {"InputFile", mdl.prog_opt.input_file_name}}},
 
             {"Model", {
                 {"Description", "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) "},
@@ -333,7 +340,9 @@ namespace River
                     {"MaximalRiverHeight", mdl.prog_opt.maximal_river_height},
                     {"Verbose", mdl.prog_opt.verbose},
                     {"SaveVTK", mdl.prog_opt.save_vtk},
-                    {"InputFileName", mdl.prog_opt.input_file}}},
+                    {"InputFileName", mdl.prog_opt.input_file_name},
+                    {"OutputFileName", mdl.prog_opt.output_file_name},
+                    {"SaveEachStep", mdl.prog_opt.save_each_step}}},
 
                 {"Integration",{
                     {"radius", mdl.integr.integration_radius},
@@ -381,15 +390,13 @@ namespace River
         out.close();
     }
 
-    void Open(Model& mdl, const string file_name)
+    void Open(Model& mdl)
     {
-        ifstream in(file_name);
+        ifstream in(mdl.prog_opt.input_file_name + ".json");
         if(!in) throw invalid_argument("Open. Can't create file for read.");
 
         json j;
         in >> j;
-
-        mdl.prog_opt.input_file = file_name;
 
         if(j.count("Model"))
         {
@@ -426,6 +433,9 @@ namespace River
                 if (jprogopt.count("MaximalRiverHeight")) jprogopt.at("MaximalRiverHeight").get_to(mdl.prog_opt.maximal_river_height);
                 if (jprogopt.count("Verbose")) jprogopt.at("Verbose").get_to(mdl.prog_opt.verbose);
                 if (jprogopt.count("SaveVTK")) jprogopt.at("SaveVTK").get_to(mdl.prog_opt.save_vtk);
+                if (jprogopt.count("SaveEachStep")) jprogopt.at("SaveEachStep").get_to(mdl.prog_opt.save_each_step);
+                if (jprogopt.count("InputFileName")) jprogopt.at("InputFileName").get_to(mdl.prog_opt.input_file_name);
+                if (jprogopt.count("OutputFileName")) jprogopt.at("OutputFileName").get_to(mdl.prog_opt.output_file_name);
             }
 
             if(jmdl.count("Mesh"))

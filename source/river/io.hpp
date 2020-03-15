@@ -247,12 +247,12 @@ namespace River
 
       \todo pass not a file name but stream out object.
     */
-    void Save(const Model& mdl, const string file_name, const string input_file = "");
+    void Save(const Model& mdl);
     
     /*! Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model).
 
         \todo pass not a file name but stream in object.
     */
-    void Open(Model& mdl, string file_name);
+    void Open(Model& mdl);
 
 }//namespace River

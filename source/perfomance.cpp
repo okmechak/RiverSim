@@ -21,46 +21,34 @@ int main(int argc, char *argv[])
         //riversim signature print
         if (!vm.count("suppress-signature") && vm.count("verbose"))
             River::print_ascii_signature();
-
-        //autput and input files names initialization
-        string output_file_name = vm["output"].as<string>(),
-            input_file = 
-                vm.count("input") ? input_file = vm["input"].as<string>() : "";
             
-        River::Model mdl;
+        River::Model model;
 
         //initialization mdl object
+        
+        if(vm.count("input"))
         {
-            if(vm.count("input"))
-                River::Open(mdl, vm["input"].as<string>());
-
-            River::SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
-
-            mdl.CheckParametersConsistency();
-
-            if(mdl.border.vertices.empty())
-            {
-                mdl.border.MakeRectangular(
-                    {mdl.width, mdl.height}, 
-                    mdl.boundary_ids,
-                    {mdl.dx},
-                    {1});
-
-                mdl.tree.Initialize(
-                    mdl.border.GetSourcesPoint(), 
-                    mdl.border.GetSourcesNormalAngle(), 
-                    mdl.border.GetSourcesId());
-            }
+            model.prog_opt.input_file_name = vm["input"].as<string>();
+            River::Open(model);
         }
 
-        River::Triangle tria;
-        tria.AreaConstrain = true;
-        tria.CustomConstraint = true;
-        tria.MaxTriaArea = mdl.mesh.max_area;
-        tria.MinAngle = mdl.mesh.min_angle;
-        tria.Verbose = false;
-        tria.Quite =  true;
-        tria.mesh_params = &mdl.mesh;
+        River::SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
+
+        model.CheckParametersConsistency();
+
+        if(model.border.vertices.empty())
+        {
+            model.border.MakeRectangular(
+                {model.width, model.height}, 
+                model.boundary_ids,
+                {model.dx},
+                {1});
+
+            model.tree.Initialize(
+                model.border.GetSourcesPoint(), 
+                model.border.GetSourcesNormalAngle(), 
+                model.border.GetSourcesId());
+        }
 
         //згенерувати геометрію всередині 
         //РіверСолвер і зробити цілу еволюцію там
@@ -68,7 +56,7 @@ int main(int argc, char *argv[])
         //
         const int dim = 2;
         FE_Q<dim> fe(2);
-        River::RiverSolver r(fe);
+        River::RiverSolver r(fe, &model);
         r.run();
 
     }
@@ -78,7 +66,7 @@ int main(int argc, char *argv[])
     }
     catch(...) 
     {
-        cout << "got undefined error" << endl;
+        cout << "GOT UNDEFINED ERROR" << endl;
         throw;
     }
     

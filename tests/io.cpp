@@ -99,9 +99,11 @@ BOOST_AUTO_TEST_CASE( io_methods,
     mdl_out.tree.AddSubBranches(1, br1left, br1right);
     mdl_out.tree.AddSubBranches(3, br2left, br2right);
 
-    Save(mdl_out, "iotest");
+    Save(mdl_out);
+
+    mdl_in.prog_opt.input_file_name = mdl_out.prog_opt.output_file_name;
     
-    Open(mdl_in, "iotest.json");
+    Open(mdl_in);
 
     //Model TEST
 
