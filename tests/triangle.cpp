@@ -33,16 +33,14 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
     auto sources_x_coord = vector<double>{mdl.dx};
     auto sources_id = vector<int>{1};
     
-    Border border;
-    border.MakeRectangular(
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
     
     //Tree object setup
-    Tree tree;
-    tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
 
     
     auto mesh = BoundaryGenerator(mdl);
@@ -66,5 +64,4 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
         tria.generate(newmesh);
         newmesh.convert();
     }
-    
 }

@@ -37,16 +37,14 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    Border border;
-    border.MakeRectangular(
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
 
-    Tree tr;
-    tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
     auto mesh = BoundaryGenerator(mdl);
 
@@ -67,9 +65,9 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     sim.OpenMesh("test.msh");
     sim.run();
     
-    auto tip_ids = tr.TipBranchesId();
-    auto point = tr.GetBranch(tip_ids.at(0))->TipPoint();
-    auto angle = tr.GetBranch(tip_ids.at(0))->TipAngle();
+    auto tip_ids = mdl.tree.TipBranchesId();
+    auto point = mdl.tree.GetBranch(tip_ids.at(0))->TipPoint();
+    auto angle = mdl.tree.GetBranch(tip_ids.at(0))->TipAngle();
     auto series_params = sim.integrate(mdl, point, angle);
 
     BOOST_TEST(angle == M_PI/2);
@@ -101,16 +99,15 @@ BOOST_AUTO_TEST_CASE( integration_test,
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    Border border;
-    border.MakeRectangular(
+   
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
 
-    Tree tr;
-    tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
     auto mesh = BoundaryGenerator(mdl);
 
@@ -131,8 +128,8 @@ BOOST_AUTO_TEST_CASE( integration_test,
     sim.run();
     sim.field_value = 1;
     
-    auto tip_ids = tr.TipBranchesId();
-    auto point = tr.GetBranch(tip_ids.at(0))->TipPoint();
+    auto tip_ids = mdl.tree.TipBranchesId();
+    auto point = mdl.tree.GetBranch(tip_ids.at(0))->TipPoint();
     auto dr = 0.01;
     auto integration = sim.integration_test(point, dr);
     auto integration_of_whole_region = sim.integration_test(point, 10);
