@@ -6,10 +6,29 @@
     "configurations": [
         
         {
-            "name": "Riversim Perfomance debug",
+            "name": "Riversim Perfomance Debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "/mnt/c/users/ofcra/builds/riversim/source/riversim_perfomance",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "/mnt/c/users/ofcra/builds/riversim/source",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "Riversim Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/mnt/c/users/ofcra/builds/riversim/source/riversim",
             "args": [],
             "stopAtEntry": true,
             "cwd": "/mnt/c/users/ofcra/builds/riversim/source",
