@@ -6,13 +6,13 @@
     "configurations": [
         
         {
-            "name": "(gdb) Launch",
+            "name": "Riversim Perfomance debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/source/riversim",
-            "args": ["-o", "otest", "--save-each-step", "--height", "50", "test.json"],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/debug",
+            "program": "/mnt/c/users/ofcra/builds/riversim/source/riversim_perfomance",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "/mnt/c/users/ofcra/builds/riversim/source",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
