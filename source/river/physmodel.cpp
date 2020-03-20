@@ -206,53 +206,58 @@ namespace River
         
         if(solver_params.num_of_iterrations < 2000)
             cout << "num_of_iterrations value is very small: " << solver_params.num_of_iterrations << endl;
+
+        if(solver_params.renumbering_type > 7)
+            throw invalid_argument("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
     }
 
     ostream& operator <<(ostream& write, const Model & mdl)
     {
-        cout << "Model Parameters:" << endl;
-        cout << "\t dx = " << mdl.dx << endl;
-        cout << "\t width = " << mdl.width << endl;
-        cout << "\t height = " << mdl.height << endl;
-        cout << "\t river_boundary_id = " << mdl.river_boundary_id << endl;
+        write << "Model Parameters:" << endl;
+        write << "\t dx = " << mdl.dx << endl;
+        write << "\t width = " << mdl.width << endl;
+        write << "\t height = " << mdl.height << endl;
+        write << "\t river_boundary_id = " << mdl.river_boundary_id << endl;
 
-        cout << "\t boundary_condition = " << mdl.boundary_condition << endl;
-        cout << "\t field_value = " << mdl.field_value << endl;
-        cout << "\t eta = " << mdl.eta << endl;
-        cout << "\t bifurcation_type = " << mdl.bifurcation_type << endl;
-        cout << "\t bifurcation_threshold = " << mdl.bifurcation_threshold << endl;
-        cout << "\t bifurcation_threshold_2 = " << mdl.bifurcation_threshold_2 << endl;
-        cout << "\t bifurcation_min_dist = " << mdl.bifurcation_min_dist << endl;
-        cout << "\t bifurcation_angle = " << mdl.bifurcation_angle << endl;
+        write << "\t boundary_condition = " << mdl.boundary_condition << endl;
+        write << "\t field_value = " << mdl.field_value << endl;
+        write << "\t eta = " << mdl.eta << endl;
+        write << "\t bifurcation_type = " << mdl.bifurcation_type << endl;
+        write << "\t bifurcation_threshold = " << mdl.bifurcation_threshold << endl;
+        write << "\t bifurcation_threshold_2 = " << mdl.bifurcation_threshold_2 << endl;
+        write << "\t bifurcation_min_dist = " << mdl.bifurcation_min_dist << endl;
+        write << "\t bifurcation_angle = " << mdl.bifurcation_angle << endl;
 
-        cout << "\t growth_type = " << mdl.growth_type << endl;
-        cout << "\t growth_threshold = " << mdl.growth_threshold << endl;
-        cout << "\t growth_min_distance = " << mdl.growth_min_distance << endl;
+        write << "\t growth_type = " << mdl.growth_type << endl;
+        write << "\t growth_threshold = " << mdl.growth_threshold << endl;
+        write << "\t growth_min_distance = " << mdl.growth_min_distance << endl;
 
-        cout << "\t ds = " << mdl.ds << endl;
+        write << "\t ds = " << mdl.ds << endl;
     
-        cout << "Mesh Parameters:" << endl;
-        cout << mdl.mesh;
+        write << "Mesh Parameters:" << endl;
+        write << mdl.mesh;
 
-        cout << "Integration Parameters:" << endl;
-        cout << mdl.integr;
+        write << "Integration Parameters:" << endl;
+        write << mdl.integr;
 
-        cout << "Solver parameters:" << endl;
-        cout << mdl.solver_params;
+        write << "Solver parameters:" << endl;
+        write << mdl.solver_params;
         
-        cout << "Program options:" << endl;
-        cout << mdl.prog_opt;
+        write << "Program options:" << endl;
+        write << mdl.prog_opt;
+
+        return write;
     }
 
 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br)
+    tethex::Mesh BoundaryGenerator(const Model& model)
     {
         vector<tethex::Point> tet_vertices;
         vector<tethex::MeshElement *> tet_lines, tet_triangles;
 
-        auto m = br.SourceByVerticeIdMap();
-        auto vertices = br.GetVertices();
-        auto lines = br.GetLines();
+        auto m = model.border.SourceByVerticeIdMap();
+        auto vertices = model.border.GetVertices();
+        auto lines = model.border.GetLines();
         
         for(long unsigned i = 0; i < vertices.size(); ++i)
         {
@@ -264,7 +269,7 @@ namespace River
             else
             {
                 vector<Point> tree_vector;
-                TreeVector(tree_vector, m.at(i)/*source id*/, tree, mdl.mesh.eps);
+                TreeVector(tree_vector, m.at(i)/*source id*/, model.tree, model.mesh.eps);
                 long unsigned shift = tet_vertices.size(); 
                 for(long unsigned i = 0; i < tree_vector.size(); ++i)
                 {
@@ -273,7 +278,7 @@ namespace River
                         new tethex::Line(
                             shift + i, 
                             shift + i + 1, 
-                            mdl.river_boundary_id));
+                            model.river_boundary_id));
                 }
                 for(auto& line: lines)
                     if(line.p2 > i)

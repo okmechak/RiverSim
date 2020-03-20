@@ -147,6 +147,8 @@ namespace River
             value<double>()->default_value(to_string(mdl.solver_params.refinment_fraction)))
         ("adaptive-refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
             value<unsigned>()->default_value(to_string(mdl.solver_params.adaptive_refinment_steps)));
+        ("renumbering-type", "Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.", 
+            value<unsigned>()->default_value(to_string(mdl.solver_params.renumbering_type)));
 
 
         options.parse_positional({"input"});
@@ -243,6 +245,7 @@ namespace River
         if (vm.count("adaptive-refinment-steps")) mdl.solver_params.adaptive_refinment_steps = vm["adaptive-refinment-steps"].as<unsigned>();
         if (vm.count("tol")) mdl.solver_params.tollerance = vm["tol"].as<double>();
         if (vm.count("iteration-steps")) mdl.solver_params.num_of_iterrations = vm["iteration-steps"].as<unsigned>();
+        if (vm.count("renumbering-type")) mdl.solver_params.renumbering_type = vm["renumbering-type"].as<unsigned>();
 
         return mdl;
     }
@@ -369,7 +372,8 @@ namespace River
                     {"iterationSteps", mdl.solver_params.num_of_iterrations},
                     {"quadratureDegree", mdl.solver_params.quadrature_degree},
                     {"refinmentFraction", mdl.solver_params.refinment_fraction},
-                    {"adaptiveRefinmentSteps", mdl.solver_params.adaptive_refinment_steps}}}}
+                    {"adaptiveRefinmentSteps", mdl.solver_params.adaptive_refinment_steps},
+                    {"renumberingType", mdl.solver_params.renumbering_type}}}}
             },
             
             {"Border", jborder},
@@ -473,6 +477,7 @@ namespace River
                 if (jsolver.count("adaptiveRefinmentSteps")) jsolver.at("adaptiveRefinmentSteps").get_to(mdl.solver_params.adaptive_refinment_steps);
                 if (jsolver.count("tol")) jsolver.at("tol").get_to(mdl.solver_params.tollerance);
                 if (jsolver.count("iterationSteps")) jsolver.at("iterationSteps").get_to(mdl.solver_params.num_of_iterrations);
+                if (jsolver.count("renumberingType")) jsolver.at("renumberingType").get_to(mdl.solver_params.renumbering_type);
             }
         }
 

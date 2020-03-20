@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
     tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, tr, border);
+    auto mesh = BoundaryGenerator(mdl);
 
     Triangle tria;
     tria.ConstrainAngle = tria.CustomConstraint = true;
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
     tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, tr, border);
+    auto mesh = BoundaryGenerator(mdl);
 
     Triangle tria;
     tria.AreaConstrain = tria.ConstrainAngle = tria.CustomConstraint = true;

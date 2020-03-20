@@ -68,7 +68,7 @@ namespace River
     {
         print(mdl.prog_opt.verbose, "Boundary generation...");
         //initial boundaries of mesh
-        auto mesh = BoundaryGenerator(mdl, tree, border);
+        auto mesh = BoundaryGenerator(mdl);
         mesh.write(file_name + "_boundary.msh");
         
         print(mdl.prog_opt.verbose, "Mesh generation...");

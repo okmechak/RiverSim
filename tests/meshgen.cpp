@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
 
     BOOST_TEST(border.GetSourcesId() == tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl, tree, border);
+    auto mesh = BoundaryGenerator(mdl);
 
 
     BOOST_TEST(mesh.get_n_vertices() == 8);
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
 
     BOOST_TEST(border.GetSourcesId() == tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl, tree, border);
+    auto mesh = BoundaryGenerator(mdl);
 
 
     BOOST_TEST(mesh.get_n_vertices() == 16);
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
 
     BOOST_TEST(border.GetSourcesId() == tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl, tree, border);
+    auto mesh = BoundaryGenerator(mdl);
 
     BOOST_TEST(mesh.get_n_lines() == 14);
     BOOST_TEST(mesh.get_n_vertices() == 14);

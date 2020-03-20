@@ -337,6 +337,9 @@ namespace River
             ///Number of solver iteration steps
             unsigned num_of_iterrations = 6000;
 
+            ///Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
+            unsigned renumbering_type = 0;
+
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const SolverParams & mp);
     };
@@ -526,5 +529,5 @@ namespace River
 
         \todo reserve size of tet_lines.
      */ 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br);
+    tethex::Mesh BoundaryGenerator(const Model& mdl);
 }//namespace River
