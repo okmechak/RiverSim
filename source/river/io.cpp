@@ -146,7 +146,7 @@ namespace River
         ("refinment-fraction", "Fraction(percent from total, 0.01 corresponds to 1%) of refined mesh elements using Deal.II adaptive mesh capabilities.", 
             value<double>()->default_value(to_string(mdl.solver_params.refinment_fraction)))
         ("adaptive-refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
-            value<unsigned>()->default_value(to_string(mdl.solver_params.adaptive_refinment_steps)));
+            value<unsigned>()->default_value(to_string(mdl.solver_params.adaptive_refinment_steps)))
         ("renumbering-type", "Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.", 
             value<unsigned>()->default_value(to_string(mdl.solver_params.renumbering_type)));
 
