@@ -15,7 +15,6 @@ if(BUILD_PROGRAM)
         set(DEALII_DIR ${DEALII_REL_DIR})
     elseif(CMAKE_BUILD_TYPE MATCHES Debug)
         set(DEALII_DIR ${DEALII_DEB_DIR})
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
     endif() 
 
     find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
