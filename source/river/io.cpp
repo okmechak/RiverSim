@@ -66,7 +66,7 @@ namespace River
 
         //file system interface
         options.add_options("File interface")
-        ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value("simdata"))
+        ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value(mdl.prog_opt.output_file_name))
         ("save-each-step", "Save each step of simulation in separate file: simdata_1.json, simdata_2.json.. ")
         ("vtk", "Outputs VTK file of Deal.II solution")
         ("input",
@@ -191,6 +191,8 @@ namespace River
         if (vm.count("vtk")) mdl.prog_opt.save_vtk = true;
         if (vm.count("simulation-type"))
             mdl.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
+        if(vm.count("output")) mdl.prog_opt.output_file_name = vm["output"].as<string>();
+        if(vm.count("input")) mdl.prog_opt.input_file_name = vm["input"].as<string>();
 
         //geometry
         if (vm.count("width")) mdl.width = vm["width"].as<double>();
@@ -332,7 +334,9 @@ namespace River
                     {"NumberOfBackwardSteps", mdl.prog_opt.number_of_backward_steps},
                     {"MaximalRiverHeight", mdl.prog_opt.maximal_river_height},
                     {"Verbose", mdl.prog_opt.verbose},
-                    {"SaveVTK", mdl.prog_opt.save_vtk}}},
+                    {"SaveVTK", mdl.prog_opt.save_vtk},
+                    {"OutputFileName", mdl.prog_opt.output_file_name},
+                    {"InputFileName", mdl.prog_opt.input_file_name}}},
 
                 {"Integration",{
                     {"radius", mdl.integr.integration_radius},
@@ -424,6 +428,9 @@ namespace River
                 if (jprogopt.count("MaximalRiverHeight")) jprogopt.at("MaximalRiverHeight").get_to(mdl.prog_opt.maximal_river_height);
                 if (jprogopt.count("Verbose")) jprogopt.at("Verbose").get_to(mdl.prog_opt.verbose);
                 if (jprogopt.count("SaveVTK")) jprogopt.at("SaveVTK").get_to(mdl.prog_opt.save_vtk);
+                
+                if (jprogopt.count("InputFileName")) jprogopt.at("InputFileName").get_to(mdl.prog_opt.input_file_name);
+                if (jprogopt.count("OutputFileName")) jprogopt.at("OutputFileName").get_to(mdl.prog_opt.output_file_name);
             }
 
             if(jmdl.count("Mesh"))

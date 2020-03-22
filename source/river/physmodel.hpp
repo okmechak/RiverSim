@@ -48,8 +48,8 @@ namespace River
     class ProgramOptions
     {
         public:
-            ///If true - then program will print to standard output.
-            bool verbose = false;
+            ///Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes
+            unsigned simulation_type = 0;
 
             ///Number of simulation steps.
             unsigned number_of_steps = 10;
@@ -63,8 +63,11 @@ namespace River
             ///Outputs VTK file of Deal.II solution
             bool save_vtk = false;
 
-            ///Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes
-            unsigned simulation_type = 0;
+            ///If true - then program will print to standard output.
+            bool verbose = false;
+
+            string output_file_name = "simdata",
+                input_file_name = "";
             
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const ProgramOptions & po);
