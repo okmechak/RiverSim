@@ -63,3 +63,4 @@ research/*.json
 research/*.msh
 research/experiment_results/*
 tests/simulation.json
+CMakeSettings.json
