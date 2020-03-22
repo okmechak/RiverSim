@@ -1,4 +1,4 @@
-set(min_version 2.8)
+set(min_version 3.8)
 cmake_minimum_required(VERSION ${min_version})
 
 project(riversim C CXX)
