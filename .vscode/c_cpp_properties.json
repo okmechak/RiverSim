@@ -27,7 +27,10 @@
                 "${workspaceFolder}/source/**",
                 "${workspaceFolder}/source/river/**",
                 "${workspaceFolder}/source/river/tethex/**",
-                "C:/Users/ofcra/Libs/Deal.II/**"
+                "C:/Users/ofcra/Lib/dealii/include/deal.II"
+            ],
+            "exludePath": [
+                "${workspaceFolder}/docs/**"
             ],
             "defines": [],
             "cStandard": "c11",
