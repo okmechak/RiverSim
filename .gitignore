@@ -47,6 +47,7 @@ install/*
 **/Debug
 **/x64
 Doxyfile
+out/*
 
 #some test files..FIXME:
 tests/solution-0.vtk
