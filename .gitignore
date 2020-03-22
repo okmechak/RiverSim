@@ -61,3 +61,4 @@ research/*.vtk
 research/*.json
 research/*.msh
 research/experiment_results/*
+tests/simulation.json
