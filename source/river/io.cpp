@@ -30,12 +30,19 @@ using json = nlohmann::json;
 
 namespace River
 {
+
+    string bool_to_string(bool b)
+    {
+        if(b) return "true";
+        else return "false";
+    }
+
     cxxopts::ParseResult process_program_options(int argc, char *argv[])
     {
         using namespace cxxopts;
 
         const Model mdl;
-
+        
         Options options(
             "./riversim", ProgramTitle() +" v" + version_string() + " is used to simulate river growth and some other calculations according to \n"
             "Laplace model(for more details pls see references e.g Piotr Morawiecki work.)\n" + 
@@ -56,58 +63,88 @@ namespace River
             "\tDescription of rest of objects You can find in output json file of program. It has description inside.\n" + 
             "\tFor any questions please mail me: oleg.kmechak@gmail.com.\n"
             );
-
+        
         //declare supported options
         //basic
+        
         options.add_options("Basic")
         ("h,help", "Produce help message.")
         ("v,version", "Print version string.")
         ("suppress-signature", "Suppress signature printing.");
-
+        
         //file system interface
+        
         options.add_options("File interface")
-        ("o,output", "Name of simulation data and state of program data.", value<string>()->default_value(mdl.prog_opt.output_file_name))
-        ("save-each-step", "Save each step of simulation in separate file: simdata_1.json, simdata_2.json.. ")
-        ("vtk", "Outputs VTK file of Deal.II solution")
+        ("o,output", "Name of simulation data and state of program data.", 
+            value<string>()->default_value(mdl.prog_opt.output_file_name) )
+        ("save-each-step", "Save each step of simulation in separate file: simdata_1.json, simdata_2.json.. ", 
+            value<bool>()->default_value(bool_to_string(mdl.prog_opt.save_each_step)) )
+        ("vtk", "Outputs VTK file of Deal.II solution", 
+            value<bool>()->default_value(bool_to_string(mdl.prog_opt.save_vtk)) )
         ("input",
-            "input simaultion data, boundary, tree, model parameters. It has very similar structure as output json of program.", cxxopts::value<string>());
-
+            "input simaultion data, boundary, tree, model parameters. It has very similar structure as output json of program.", 
+            value<string>() );
+        
         //prints and logs
         options.add_options("Logs")
-        ("V,verbose", "print detailed log to terminal.", value<bool>()->default_value("False"));
+        ("V,verbose", "print detailed log to terminal.", 
+            value<bool>()->default_value(bool_to_string(mdl.prog_opt.verbose)) );
 
         //Simulation parameters
         options.add_options("Simulation parameters")
-        ("n,number-of-steps", "Number of steps to simulate.", value<unsigned>()->default_value(to_string(mdl.prog_opt.number_of_steps)))
-        ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", value<double>()->default_value(to_string(mdl.prog_opt.maximal_river_height)))
-        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", value<unsigned>()->default_value(to_string(mdl.prog_opt.simulation_type)))
-        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", value<unsigned>()->default_value(to_string(mdl.prog_opt.number_of_backward_steps)));
+        ("n,number-of-steps", "Number of steps to simulate.", 
+            value<unsigned>()->default_value(to_string(mdl.prog_opt.number_of_steps)))
+        ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", 
+            value<double>()->default_value(to_string(mdl.prog_opt.maximal_river_height)))
+        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", 
+            value<unsigned>()->default_value(to_string(mdl.prog_opt.simulation_type)))
+        ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", 
+            value<unsigned>()->default_value(to_string(mdl.prog_opt.number_of_backward_steps)));
         
         //Geometry parameters
         options.add_options("Border geometry parameters")
-        ("width", "Width of river rectangular region.", value<double>()->default_value(to_string(mdl.width)))
-        ("height", "Height of river rectangular region.", value<double>()->default_value(to_string(mdl.height)))
-        ("dx", "dx - shift of initial river position from beginning of coordinates in X dirrections.", value<double>()->default_value(to_string(mdl.dx)));
+        ("dx", "dx - shift of initial river position from beginning of coordinates in X dirrections.", 
+            value<double>()->default_value(to_string(mdl.dx)) )
+        ("width", "Width of river rectangular region.", 
+            value<double>()->default_value(to_string(mdl.width)) )
+        ("height", "Height of river rectangular region.", 
+            value<double>()->default_value(to_string(mdl.height)) );
+        
         //Model parameters
         options.add_options("Model parameters")
-        ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplace(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", value<unsigned>()->default_value(to_string(mdl.boundary_condition)))
-        ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", value<double>()->default_value(to_string(mdl.field_value)))
-        ("eta", "Power of a1^eta used in growth of river.", value<double>()->default_value(to_string(mdl.eta)))
-        ("bifurcation-type", "Bifurcation method type. 0 - a(3)/a(1) > bifurcation_threshold, 1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", value<unsigned>()->default_value(to_string(mdl.bifurcation_type)))
-        ("b,bifurcation-threshold", "Bifuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", value<double>()->default_value(to_string(mdl.bifurcation_threshold)))
-        ("bifurcation-threshold-2", "Biffuraction threshold for second bifurcation type: a(1) > kcrit", value<double>()->default_value(to_string(mdl.bifurcation_threshold_2)))
-        ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", value<double>()->default_value(to_string(mdl.bifurcation_min_dist)))
-        ("bifurcation-angle", "Angle between branches in bifurcation point. Default is Pi/5 which is theoretical value.", value<double>()->default_value(to_string(mdl.bifurcation_angle)))
-        ("growth-type", "Specifies growth type used for evaluation of next point(its dirrection and lenght): 0 - using arctan(a2/a1) method, 1 - by preavuating {dx, dy}. For more details please Piotr Morawiecki", value<unsigned>()->default_value(to_string(mdl.growth_type)))
-        ("growth-threshold", "Growth of branch stops if a(1) < growth-threshold.", value<double>()->default_value(to_string(mdl.growth_threshold)))
-        ("growth-min-distance", "Growth of branch will be with constant speed(ds by each step) if its lenght is less then this value. uUsed for reducing numerical noise", value<double>()->default_value(to_string(mdl.growth_min_distance)))
-        ("ds", "ds - value of growth proportionality: dl = ds*a(1)^eta", value<double>()->default_value(to_string(mdl.ds)));
-
+        ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplace(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", 
+            value<unsigned>()->default_value(to_string(mdl.boundary_condition)) )
+        ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", 
+            value<double>()->default_value(to_string(mdl.field_value)) )
+        ("eta", "Power of a1^eta used in growth of river.", 
+            value<double>()->default_value(to_string(mdl.eta)) )
+        ("bifurcation-type", "Bifurcation method type. 0 - a(3)/a(1) > bifurcation_threshold, 1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", 
+            value<unsigned>()->default_value(to_string(mdl.bifurcation_type)) )
+        ("b,bifurcation-threshold", "Bifuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", 
+            value<double>()->default_value(to_string(mdl.bifurcation_threshold)) )
+        ("bifurcation-threshold-2", "Biffuraction threshold for second bifurcation type: a(1) > kcrit", 
+            value<double>()->default_value(to_string(mdl.bifurcation_threshold_2)) )
+        ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", 
+            value<double>()->default_value(to_string(mdl.bifurcation_min_dist)) )
+        ("bifurcation-angle", "Angle between branches in bifurcation point. Default is Pi/5 which is theoretical value.", 
+            value<double>()->default_value(to_string(mdl.bifurcation_angle)) )
+        ("growth-type", "Specifies growth type used for evaluation of next point(its dirrection and lenght): 0 - using arctan(a2/a1) method, 1 - by preavuating {dx, dy}. For more details please Piotr Morawiecki", 
+            value<unsigned>()->default_value(to_string(mdl.growth_type)) )
+        ("growth-threshold", "Growth of branch stops if a(1) < growth-threshold.", 
+            value<double>()->default_value(to_string(mdl.growth_threshold)) )
+        ("growth-min-distance", "Growth of branch will be with constant speed(ds by each step) if its lenght is less then this value. uUsed for reducing numerical noise", 
+            value<double>()->default_value(to_string(mdl.growth_min_distance)) )
+        ("ds", "ds - value of growth proportionality: dl = ds*a(1)^eta", 
+            value<double>()->default_value(to_string(mdl.ds)) );
+        
         //Integration parameters
         options.add_options("Series parameters integral")
-        ("weight-exp", "Parameter used in integration weight function. For more details please see FreeFem implementation.", value<double>()->default_value(to_string(mdl.integr.exponant)))
-        ("integration-radius", "Radius of integration around tips for evaluation of series parameters", value<double>()->default_value(to_string(mdl.integr.integration_radius)))
-        ("weight-radius", "Parameter used in integration weight function. Weight radius parameter. For more details please see FreeFem implementation.", value<double>()->default_value(to_string(mdl.integr.weigth_func_radius)));
+        ("weight-exp", "Parameter used in integration weight function. For more details please see FreeFem implementation.", 
+            value<double>()->default_value(to_string(mdl.integr.exponant)) )
+        ("integration-radius", "Radius of integration around tips for evaluation of series parameters", 
+            value<double>()->default_value(to_string(mdl.integr.integration_radius)) )
+        ("weight-radius", "Parameter used in integration weight function. Weight radius parameter. For more details please see FreeFem implementation.", 
+            value<double>()->default_value(to_string(mdl.integr.weigth_func_radius)) );
 
         //Mesh parameters
         options.add_options("Mesh refinment parameters. Funciton of area constaint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).")
@@ -148,11 +185,11 @@ namespace River
         ("adaptive-refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
             value<unsigned>()->default_value(to_string(mdl.solver_params.adaptive_refinment_steps)));
 
-
+        
         options.parse_positional({"input"});
-
+        
         auto result = options.parse(argc, argv);
-
+        
         if (result.count("help"))
         {
             cout.precision(17);
@@ -171,17 +208,16 @@ namespace River
 
         if (result.count("version"))
             print_version();
-
+        
         return result;
     }
 
-
-
-    Model& SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl)
+    void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl)
     {
         //program options
-        if (vm.count("verbose")) mdl.prog_opt.verbose = vm["verbose"].as<bool>();
 
+        if (vm.count("simulation-type"))
+            mdl.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
         if (vm.count("number-of-steps")) 
             mdl.prog_opt.number_of_steps = vm["number-of-steps"].as<unsigned>();
         if (vm.count("maximal-river-height"))
@@ -189,17 +225,42 @@ namespace River
         if (vm.count("number-of-backward-steps"))
             mdl.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
         if (vm.count("vtk")) mdl.prog_opt.save_vtk = true;
-        if (vm.count("simulation-type"))
-            mdl.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
+        if (vm.count("verbose")) mdl.prog_opt.verbose = vm["verbose"].as<bool>();
         if(vm.count("output")) mdl.prog_opt.output_file_name = vm["output"].as<string>();
         if(vm.count("input")) mdl.prog_opt.input_file_name = vm["input"].as<string>();
+        if(vm.count("save-each-step")) mdl.prog_opt.save_each_step = true;
 
-        //geometry
-        if (vm.count("width")) mdl.width = vm["width"].as<double>();
-        if (vm.count("height")) mdl.height = vm["height"].as<double>();
-        if (vm.count("dx")) mdl.dx = vm["dx"].as<double>();
+        //mesh options
+        if (vm.count("refinment-radius")) mdl.mesh.refinment_radius = vm["refinment-radius"].as<double>();
+        if (vm.count("mesh-exp")) mdl.mesh.exponant = vm["mesh-exp"].as<double>();
+        if (vm.count("mesh-sigma")) mdl.mesh.sigma = vm["mesh-sigma"].as<double>();
+        if (vm.count("static-refinment-steps")) mdl.mesh.static_refinment_steps = vm["static-refinment-steps"].as<unsigned>();
+        if (vm.count("mesh-max-area")) mdl.mesh.max_area = vm["mesh-max-area"].as<double>();
+        if (vm.count("mesh-min-area")) mdl.mesh.min_area = vm["mesh-min-area"].as<double>();
+        if (vm.count("mesh-min-angle")) mdl.mesh.min_angle = vm["mesh-min-angle"].as<double>();
+        if (vm.count("mesh-max-edge")) mdl.mesh.max_edge = vm["mesh-max-edge"].as<double>();
+        if (vm.count("mesh-min-edge")) mdl.mesh.min_edge = vm["mesh-min-edge"].as<double>();
+        if (vm.count("mesh-ratio")) mdl.mesh.ratio = vm["mesh-ratio"].as<double>();
+        if (vm.count("eps")) mdl.mesh.eps = vm["eps"].as<double>();
+        
+        //integration options
+        if (vm.count("integration-radius")) mdl.integr.integration_radius = vm["integration-radius"].as<double>();
+        if (vm.count("weight-radius")) mdl.integr.weigth_func_radius = vm["weight-radius"].as<double>();
+        if (vm.count("weight-exp")) mdl.integr.exponant = vm["weight-exp"].as<double>();
+
+        //solver options
+        if (vm.count("tol")) mdl.solver_params.tollerance = vm["tol"].as<double>();
+        if (vm.count("iteration-steps")) mdl.solver_params.num_of_iterrations = vm["iteration-steps"].as<unsigned>();
+        if (vm.count("adaptive-refinment-steps")) mdl.solver_params.adaptive_refinment_steps = vm["adaptive-refinment-steps"].as<unsigned>();
+        if (vm.count("refinment-fraction")) mdl.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
+        if (vm.count("quadrature-degree")) mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<unsigned>();
 
         //model parameters
+        //geometry
+        if (vm.count("dx")) mdl.dx = vm["dx"].as<double>();
+        if (vm.count("width")) mdl.width = vm["width"].as<double>();
+        if (vm.count("height")) mdl.height = vm["height"].as<double>();
+
         if (vm.count("boundary-condition")) mdl.boundary_condition = vm["boundary-condition"].as<unsigned>();
         if (vm.count("field-value")) mdl.field_value = vm["field-value"].as<double>();
         if (vm.count("eta")) mdl.eta = vm["eta"].as<double>();
@@ -212,34 +273,6 @@ namespace River
         if (vm.count("growth-threshold")) mdl.growth_threshold = vm["growth-threshold"].as<double>();
         if (vm.count("growth-min-distance")) mdl.growth_min_distance = vm["growth-min-distance"].as<double>();
         if (vm.count("ds")) mdl.ds = vm["ds"].as<double>();
-
-        //mesh options
-        if (vm.count("eps")) mdl.mesh.eps = vm["eps"].as<double>();
-        if (vm.count("mesh-exp")) mdl.mesh.exponant = vm["mesh-exp"].as<double>();
-        if (vm.count("mesh-max-area")) mdl.mesh.max_area = vm["mesh-max-area"].as<double>();
-        if (vm.count("mesh-min-area")) mdl.mesh.min_area = vm["mesh-min-area"].as<double>();
-        if (vm.count("mesh-min-angle")) mdl.mesh.min_angle = vm["mesh-min-angle"].as<double>();
-        if (vm.count("refinment-radius")) mdl.mesh.refinment_radius = vm["refinment-radius"].as<double>();
-        if (vm.count("mesh-sigma")) mdl.mesh.sigma = vm["mesh-sigma"].as<double>();
-        if (vm.count("static-refinment-steps")) mdl.mesh.static_refinment_steps = vm["static-refinment-steps"].as<unsigned>();
-
-        if (vm.count("mesh-max-edge")) mdl.mesh.max_edge = vm["mesh-max-edge"].as<double>();
-        if (vm.count("mesh-min-edge")) mdl.mesh.min_edge = vm["mesh-min-edge"].as<double>();
-        if (vm.count("mesh-ratio")) mdl.mesh.ratio = vm["mesh-ratio"].as<double>();
-
-        //integration options
-        if (vm.count("integration-radius")) mdl.integr.integration_radius = vm["integration-radius"].as<double>();
-        if (vm.count("weight-radius")) mdl.integr.weigth_func_radius = vm["weight-radius"].as<double>();
-        if (vm.count("weight-exp")) mdl.integr.exponant = vm["weight-exp"].as<double>();
-
-        //solver options
-        if (vm.count("quadrature-degree")) mdl.solver_params.quadrature_degree = vm["quadrature-degree"].as<unsigned>();
-        if (vm.count("refinment-fraction")) mdl.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
-        if (vm.count("adaptive-refinment-steps")) mdl.solver_params.adaptive_refinment_steps = vm["adaptive-refinment-steps"].as<unsigned>();
-        if (vm.count("tol")) mdl.solver_params.tollerance = vm["tol"].as<double>();
-        if (vm.count("iteration-steps")) mdl.solver_params.num_of_iterrations = vm["iteration-steps"].as<unsigned>();
-
-        return mdl;
     }
 
     void Save(const Model& mdl, const Timing& time, const Border& border, const Tree& tr, const GeometryDifference &gd, const string file_name, string const input_file)
@@ -336,7 +369,8 @@ namespace River
                     {"Verbose", mdl.prog_opt.verbose},
                     {"SaveVTK", mdl.prog_opt.save_vtk},
                     {"OutputFileName", mdl.prog_opt.output_file_name},
-                    {"InputFileName", mdl.prog_opt.input_file_name}}},
+                    {"InputFileName", mdl.prog_opt.input_file_name},
+                    {"SaveEachStep", mdl.prog_opt.save_each_step}}},
 
                 {"Integration",{
                     {"radius", mdl.integr.integration_radius},
@@ -431,6 +465,7 @@ namespace River
                 
                 if (jprogopt.count("InputFileName")) jprogopt.at("InputFileName").get_to(mdl.prog_opt.input_file_name);
                 if (jprogopt.count("OutputFileName")) jprogopt.at("OutputFileName").get_to(mdl.prog_opt.output_file_name);
+                if (jprogopt.count("SaveEachStep")) jprogopt.at("SaveEachStep").get_to(mdl.prog_opt.save_each_step);
             }
 
             if(jmdl.count("Mesh"))

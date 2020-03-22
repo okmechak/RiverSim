@@ -24,46 +24,94 @@ namespace River
 
     ostream& operator<<(ostream& write, const ProgramOptions & po)
     {
-        cout << "\t verbose = " << po.verbose << endl;
-        cout << "\t save_vtk = " << po.save_vtk << endl;
-        cout << "\t maximal_river_height = " << po.maximal_river_height << endl;
-        cout << "\t number_of_steps = " << po.number_of_steps << endl;
-        cout << "\t number_of_backward_steps = " << po.number_of_backward_steps << endl;
+        write << "\t simulation_type = "          << po.simulation_type  << endl;
+        write << "\t number_of_steps = "          << po.number_of_steps  << endl;
+        write << "\t maximal_river_height = "     << po.maximal_river_height << endl;
+        write << "\t number_of_backward_steps = " << po.number_of_backward_steps << endl;
+        write << "\t save_vtk = "                 << po.save_vtk         << endl;
+        write << "\t verbose = "                  << po.verbose          << endl;
+        write << "\t output_file_name = "         << po.output_file_name << endl;
+        write << "\t input_file_name = "          << po.input_file_name  << endl;
+        write << "\t save each step"              << po.save_each_step   << endl; 
         return write;
     }
 
     ///Prints program options structure to output stream.
     ostream& operator <<(ostream& write, const MeshParams & mp)
     {
-        cout << "\t refinment_radius = " << mp.refinment_radius << endl;
-        cout << "\t exponant = " << mp.exponant << endl;
-        cout << "\t min_area = " << mp.min_area << endl;
-        cout << "\t max_area = " << mp.max_area << endl;
-        cout << "\t min_angle = " << mp.min_angle << endl;
-        cout << "\t max_edge = " << mp.max_edge << endl;
-        cout << "\t min_edge = " << mp.min_edge << endl;
-        cout << "\t ratio = " << mp.ratio << endl;
-        cout << "\t eps = " << mp.eps << endl;
-        cout << "\t sigma = " << mp.sigma << endl;
-        cout << "\t static_refinment_steps = " << mp.static_refinment_steps << endl;
+        write << "\t tip_points:" << endl;
+        for(auto &p: mp.tip_points)
+            write << "\t\t" << p << endl;
+        if(mp.tip_points.empty())
+            write << "\t\t empty" << endl;
+        write << "\t refinment_radius = " << mp.refinment_radius << endl;
+        write << "\t exponant = "  << mp.exponant   << endl;
+        write << "\t min_area = "  << mp.min_area   << endl;
+        write << "\t max_area = "  << mp.max_area   << endl;
+        write << "\t min_angle = " << mp.min_angle  << endl;
+        write << "\t max_edge = "  << mp.max_edge   << endl;
+        write << "\t min_edge = "  << mp.min_edge   << endl;
+        write << "\t ratio = "     << mp.ratio      << endl;
+        write << "\t eps = "       << mp.eps        << endl;
+        write << "\t sigma = "     << mp.sigma      << endl;
+        write << "\t static_refinment_steps = " << mp.static_refinment_steps << endl;
         return write;
     }
 
     ostream& operator <<(ostream& write, const IntegrationParams & ip)
     {
-        cout << "\t weigth_func_radius = " << ip.weigth_func_radius << endl;
-        cout << "\t integration_radius = " << ip.integration_radius << endl;
-        cout << "\t exponant = " << ip.exponant << endl;
+        write << "\t weigth_func_radius = " << ip.weigth_func_radius << endl;
+        write << "\t integration_radius = " << ip.integration_radius << endl;
+        write << "\t exponant = "           << ip.exponant           << endl;
         return write;
     }
 
     ostream& operator <<(ostream& write, const SolverParams & sp)
     {
-        cout << "\t quadrature_degree = " << sp.quadrature_degree << endl;
-        cout << "\t refinment_fraction = " << sp.refinment_fraction << endl;
-        cout << "\t adaptive_refinment_steps = " << sp.adaptive_refinment_steps << endl;
-        cout << "\t tollerance = " << sp.tollerance << endl;
-        cout << "\t number of iteration = " << sp.num_of_iterrations << endl;
+        write << "\t quadrature_degree = "   << sp.quadrature_degree << endl;
+        write << "\t refinment_fraction = "  << sp.refinment_fraction << endl;
+        write << "\t adaptive_refinment_steps = " << sp.adaptive_refinment_steps << endl;
+        write << "\t tollerance = "          << sp.tollerance << endl;
+        write << "\t number of iteration = " << sp.num_of_iterrations << endl;
+        return write;
+    }
+
+    
+    ostream& operator <<(ostream& write, const Model & mdl)
+    {
+        write << "Program options:" << endl;
+        write << mdl.prog_opt;
+
+        write << "Mesh Parameters:" << endl;
+        write << mdl.mesh;
+
+        write << "Integration Parameters:" << endl;
+        write << mdl.integr;
+
+        write << "Solver parameters:" << endl;
+        write << mdl.solver_params;
+
+        write << "Model Parameters:" << endl;
+        write << "\t dx = "                << mdl.dx << endl;
+        write << "\t width = "             << mdl.width << endl;
+        write << "\t height = "            << mdl.height << endl;
+        write << "\t river_boundary_id = " << mdl.river_boundary_id << endl;
+
+        write << "\t boundary_condition = " << mdl.boundary_condition << endl;
+        write << "\t field_value = "       << mdl.field_value << endl;
+        write << "\t eta = "               << mdl.eta << endl;
+        write << "\t bifurcation_type = "  << mdl.bifurcation_type << endl;
+        write << "\t bifurcation_threshold = " << mdl.bifurcation_threshold << endl;
+        write << "\t bifurcation_threshold_2 = " << mdl.bifurcation_threshold_2 << endl;
+        write << "\t bifurcation_min_dist = " << mdl.bifurcation_min_dist << endl;
+        write << "\t bifurcation_angle = " << mdl.bifurcation_angle << endl;
+
+        write << "\t growth_type = "      << mdl.growth_type << endl;
+        write << "\t growth_threshold = " << mdl.growth_threshold << endl;
+        write << "\t growth_min_distance = " << mdl.growth_min_distance << endl;
+
+        write << "\t ds = "               << mdl.ds << endl;        
+
         return write;
     }
 
@@ -78,6 +126,9 @@ namespace River
 
         if(prog_opt.number_of_backward_steps > 30)
             cout << "number_of_backward_steps = " + to_string(prog_opt.number_of_backward_steps) + " parameter is very big, unpredictable behaviour may occur." << endl;
+        
+        if(prog_opt.output_file_name == "")
+            throw invalid_argument("empty output file name");
 
         //Model
         if(dx < 0 || dx > width)
@@ -207,41 +258,5 @@ namespace River
         
         if(solver_params.num_of_iterrations < 2000)
             cout << "num_of_iterrations value is very small: " << solver_params.num_of_iterrations << endl;
-    }
-
-    ostream& operator <<(ostream& write, const Model & mdl)
-    {
-        cout << "Model Parameters:" << endl;
-        cout << "\t dx = " << mdl.dx << endl;
-        cout << "\t width = " << mdl.width << endl;
-        cout << "\t height = " << mdl.height << endl;
-        cout << "\t river_boundary_id = " << mdl.river_boundary_id << endl;
-
-        cout << "\t boundary_condition = " << mdl.boundary_condition << endl;
-        cout << "\t field_value = " << mdl.field_value << endl;
-        cout << "\t eta = " << mdl.eta << endl;
-        cout << "\t bifurcation_type = " << mdl.bifurcation_type << endl;
-        cout << "\t bifurcation_threshold = " << mdl.bifurcation_threshold << endl;
-        cout << "\t bifurcation_threshold_2 = " << mdl.bifurcation_threshold_2 << endl;
-        cout << "\t bifurcation_min_dist = " << mdl.bifurcation_min_dist << endl;
-        cout << "\t bifurcation_angle = " << mdl.bifurcation_angle << endl;
-
-        cout << "\t growth_type = " << mdl.growth_type << endl;
-        cout << "\t growth_threshold = " << mdl.growth_threshold << endl;
-        cout << "\t growth_min_distance = " << mdl.growth_min_distance << endl;
-
-        cout << "\t ds = " << mdl.ds << endl;
-    
-        cout << "Mesh Parameters:" << endl;
-        cout << mdl.mesh;
-
-        cout << "Integration Parameters:" << endl;
-        cout << mdl.integr;
-
-        cout << "Solver parameters:" << endl;
-        cout << mdl.solver_params;
-        
-        cout << "Program options:" << endl;
-        cout << mdl.prog_opt;
     }
 }

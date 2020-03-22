@@ -63,6 +63,8 @@ namespace River
             ///Outputs VTK file of Deal.II solution
             bool save_vtk = false;
 
+            bool save_each_step = false;
+
             ///If true - then program will print to standard output.
             bool verbose = false;
 
@@ -97,6 +99,14 @@ namespace River
 
             ///This value controlls transition slope between small mesh elements and big or course.
             double exponant = 7.;
+
+            /*! \brief Sigma is used in exponence, also as \ref River::MeshParams::exponant controls slope. */
+            double sigma = 1.9;
+
+            /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
+                \details Refinment means splitting one rectangular element into four rectagular elements.
+            */ 
+            unsigned static_refinment_steps = 3;
 
             ///Minimal area of mesh.
             double min_area = 7e-8;
@@ -134,14 +144,6 @@ namespace River
                 \todo eps should depend on elementary step size __ds__.
             */
             double eps = 1e-6;
-
-            /*! \brief Sigma is used in exponence, also as \ref River::MeshParams::exponant controls slope. */
-            double sigma = 1.9;
-
-            /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
-                \details Refinment means splitting one rectangular element into four rectagular elements.
-            */ 
-            unsigned static_refinment_steps = 3;
 
             /*! \brief Evaluates mesh area constraint at {x, y} point.
                 \details
@@ -228,20 +230,20 @@ namespace River
     class SolverParams
     {
         public:
-            ///Polynom degree of quadrature integration.
-            unsigned quadrature_degree = 3;
-            
-            ///Fraction of refined mesh elements.
-            double refinment_fraction = 0.1;
-
-            ///Number of adaptive refinment steps.
-            unsigned adaptive_refinment_steps = 0;
-
             ///Tollerarnce used by dealii Solver.
             double tollerance = 1.e-12;
 
             ///Number of solver iteration steps
             unsigned num_of_iterrations = 6000;
+
+            ///Number of adaptive refinment steps.
+            unsigned adaptive_refinment_steps = 0;
+
+            ///Fraction of refined mesh elements.
+            double refinment_fraction = 0.1;
+
+            ///Polynom degree of quadrature integration.
+            unsigned quadrature_degree = 3;
 
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const SolverParams & mp);
@@ -254,6 +256,18 @@ namespace River
     class Model
     {   
         public: 
+            ///Some global program options
+            ProgramOptions prog_opt;
+
+            ///Mesh and mesh refinment parameters
+            MeshParams mesh;
+
+            ///Series parameteres integral parameters
+            IntegrationParams integr;
+
+            ///Solver parameters used by Deal.II
+            SolverParams solver_params;
+
             //Geometrical parameters
             ///Initial x position of source.
             ///Valid only for rectangular area.
@@ -279,7 +293,11 @@ namespace River
             unsigned boundary_condition = 0;
 
             ///Field value used for Poisson conditions.
-            double field_value = 0.0;
+            double field_value = 1.0;
+            
+            //Numeriacal parameters
+            ///Maximal length of one step of growth.
+            double ds = 0.003;
 
             ///Eta. Growth power of a1^eta
             double eta = 1.0;
@@ -309,22 +327,6 @@ namespace River
             ///Distance of constant tip growing after bifurcation point. Reduces numerical noise.
             double growth_min_distance = 0.01;
             
-            //Numeriacal parameters
-            ///Maximal length of one step of growth.
-            double ds = 0.003;
-            
-            ///Mesh and mesh refinment parameters
-            MeshParams mesh;
-
-            ///Series parameteres integral parameters
-            IntegrationParams integr;
-
-            ///Solver parameters used by Deal.II
-            SolverParams solver_params;
-
-            ///Some global program options
-            ProgramOptions prog_opt;
-
             ///Checks by evaluating series params for bifuraction condition.
             ///More details about that you can find at [PMorawiecki work]()
             bool q_bifurcate(vector<double> a, double branch_lenght) const
