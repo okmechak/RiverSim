@@ -66,7 +66,7 @@ namespace River
             bool save_each_step = false;
 
             ///If true - then program will print to standard output.
-            bool verbose = false;
+            bool verbose = true;
 
             string output_file_name = "simdata",
                 input_file_name = "";
