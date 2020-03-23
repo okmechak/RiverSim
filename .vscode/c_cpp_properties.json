@@ -11,9 +11,6 @@
                 "/usr/local/dealii_release/**",
                 "/mnt/c/users/ofcra/lib/dealii_d_shared/include"
             ],
-            "exludePath": [
-                "${workspaceFolder}/docs/**"
-            ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
@@ -29,9 +26,6 @@
                 "${workspaceFolder}/source/river/**",
                 "${workspaceFolder}/source/river/tethex/**",
                 "C:/Users/ofcra/Lib/dealii/include/deal.II"
-            ],
-            "exludePath": [
-                "${workspaceFolder}/docs/**"
             ],
             "defines": [],
             "cStandard": "c11",
