@@ -176,29 +176,29 @@ namespace River
         //Mesh parameters
         options.add_options("Mesh refinment parameters. Funciton of area constaint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).")
         ("mesh-exp", "Parameter used in mesh refinment function. Reduce(small values) or increase(large values) slope on edge.", 
-            value<double>()->default_value(to_string(mdl.mesh.exponant)))
+            value<double>()->default_value(to_string(mdl.mesh.exponant)) )
         ("mesh-sigma", "Parameter used in mesh refinment function. Shifts maximal slope region relatively to r0 value.", 
-            value<double>()->default_value(to_string(mdl.mesh.sigma)))
+            value<double>()->default_value(to_string(mdl.mesh.sigma)) )
         ("A,mesh-max-area", "Constraints maximal area of triangle element", 
-            value<double>()->default_value(to_string(mdl.mesh.max_area)))
+            value<double>()->default_value(to_string(mdl.mesh.max_area)) )
         ("mesh-min-area", "Constraints minimal area of triangle element.", 
-            value<double>()->default_value(to_string(mdl.mesh.min_area)))
+            value<double>()->default_value(to_string(mdl.mesh.min_area)) )
 
         ("mesh-max-edge", "Constraints maximal edge lenght of triangle element.", 
-            value<double>()->default_value(to_string(mdl.mesh.max_edge)))
+            value<double>()->default_value(to_string(mdl.mesh.max_edge)) )
         ("mesh-min-edge", "Constraints minimal edge lenght of triangle element. It can has higher priority then adaptive function and other mesh constraints.", 
-            value<double>()->default_value(to_string(mdl.mesh.min_edge)))
+            value<double>()->default_value(to_string(mdl.mesh.min_edge)) )
         ("mesh-ratio", "Constraints ratio of triangle element. Relation of longest edge to shortes edge of triangle. Has similar effect and limitation as mesh-min-angle option. Value 2 correspond to minimal nagle 30. So be carefull with setting values less than 2.", 
-            value<double>()->default_value(to_string(mdl.mesh.ratio)))
+            value<double>()->default_value(to_string(mdl.mesh.ratio)) )
 
         ("refinment-radius", "r0 - refinment radius from this formula. Corresponds to position of maximal slope.", 
-            value<double>()->default_value(to_string(mdl.mesh.refinment_radius)))
+            value<double>()->default_value(to_string(mdl.mesh.refinment_radius)) )
         ("q,mesh-min-angle", "Constraints minimal angle of triangle element.", 
-            value<double>()->default_value(to_string(mdl.mesh.min_angle)))
+            value<double>()->default_value(to_string(mdl.mesh.min_angle)) )
         ("e,eps", "Width of branch. Every branch is divided and joined into one big edge which covers all geometry. Width of divided branch corresponds to eps. Such solution is constrain of Deal.II library.", 
-            value<double>()->default_value(to_string(mdl.mesh.eps)))
+            value<double>()->default_value(to_string(mdl.mesh.eps)) )
         ("static-refinment-steps", "Number of mesh refinment steps used by Deal.II mesh functionality.", 
-            value<unsigned>()->default_value(to_string(mdl.mesh.static_refinment_steps)));
+            value<unsigned>()->default_value(to_string(mdl.mesh.static_refinment_steps)) );
 
         options.add_options("Solver Parameters")
         ("quadrature-degree", "Quadrature polynomials degree used in numerical integration of Deal.II solver.", 
@@ -228,7 +228,7 @@ namespace River
                 "Border geometry parameters",
                 "Model parameters",
                 "Series parameters integral",
-                "Mesh refinment parameters. Function of area constraint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).",
+                "Mesh refinment parameters. Funciton of area constaint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).",
                 "Solver Parameters"}) 
                 << endl;
         }
