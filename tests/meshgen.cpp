@@ -8,8 +8,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <math.h>
-#include "tree.hpp"
-#include "border.hpp"
+#include "physmodel.hpp"
 
 using namespace River;
 

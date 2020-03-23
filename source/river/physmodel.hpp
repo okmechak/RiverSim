@@ -26,13 +26,15 @@
 #include <iostream>
 #include <cmath>
 #include <complex>
-#define _USE_MATH_DEFINES
-#include <math.h>
+
 #include <algorithm>
 #include <map>
 ///\endcond
 
 #include "GeometryPrimitives.hpp"
+#include "tree.hpp"
+#include "border.hpp"
+#include "tethex.hpp"
 
 using namespace std;
 
@@ -422,9 +424,6 @@ namespace River
             friend ostream& operator <<(ostream& write, const Model & mdl);
     };
 
-
-
-
     /**
      * This structure holds comparsion data from Backward river simulation.
      */
@@ -509,4 +508,12 @@ namespace River
                 }
             }
     };
+
+    /*! \brief Finnal Boudary Geneartor Class
+        \details
+        Sticks together all components: Tree class, boudary class and model parameters.
+
+        \todo reserve size of tet_lines.
+     */ 
+    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br);
 }

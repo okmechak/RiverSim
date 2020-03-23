@@ -39,9 +39,6 @@
 #include <string>
 ///\endcond
 #include "GeometryPrimitives.hpp"
-#include "tethex.hpp"
-#include "physmodel.hpp"
-#include "border.hpp"
 
 using namespace std;
 
@@ -543,12 +540,4 @@ namespace River
 
     ///Generates trees boundary
     void TreeVector(vector<Point> &tree_vector, int id, const Tree& tree, double eps);
-
-    /*! \brief Finnal Boudary Geneartor Class
-        \details
-        Sticks together all components: Tree class, boudary class and model parameters.
-
-        \todo reserve size of tet_lines.
-     */ 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br);
 }
