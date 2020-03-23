@@ -8,7 +8,8 @@
                 "${workspaceFolder}/source/river/**",
                 "${workspaceFolder}/source/river/tethex/**",
                 "/usr/local/dealii/**",
-                "/usr/local/dealii_release/**"
+                "/usr/local/dealii_release/**",
+                "/mnt/c/users/ofcra/lib/dealii_d_shared/include"
             ],
             "exludePath": [
                 "${workspaceFolder}/docs/**"
