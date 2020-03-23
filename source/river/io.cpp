@@ -15,7 +15,7 @@
 
 #include "io.hpp"
 #include "json.hpp"
-#include "utilities.hpp"
+#include "version.hpp"
 ///\cond
 #include <fstream>
 #include <string>
@@ -30,6 +30,33 @@ using json = nlohmann::json;
 
 namespace River
 {
+    string ProgramTitle()
+    {
+        return "RiverSim 2018";
+    }  
+
+    void print_ascii_signature()
+    {
+        cout << endl;
+        cout << "     _)                    _)           " << endl;
+        cout << "  __| |\\ \\   / _ \\  __| __| | __ `__ \\  " << endl;
+        cout << " |    | \\ \\ /  __/ |  \\__ \\ | |   |   | " << endl;
+        cout << "_|   _|  \\_/ \\___|_|  ____/_|_|  _|  _| " << endl;         
+        cout << endl;            
+    }
+
+    string version_string()
+    {
+        return to_string(VERSION_MAJOR) + "." 
+            + to_string(VERSION_MINOR) + "."
+            + to_string(VERSION_PATCH);
+    }
+
+    void print_version()
+    {
+        cout << ProgramTitle() + " version: " 
+            + version_string() << endl;
+    }
 
     string bool_to_string(bool b)
     {

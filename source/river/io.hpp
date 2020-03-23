@@ -231,10 +231,21 @@
 #include "physmodel.hpp"
 #include "tree.hpp"
 #include "cxxopts.hpp"
-#include "utilities.hpp"
 
 namespace River
 {
+    ///Program title.
+    string ProgramTitle();
+    
+    ///Prints to console program logo.
+    void print_ascii_signature();
+
+    ///Returns version string defined in \ref version.hpp.
+    string version_string();
+
+    ///Prints to console program Version.
+    void print_version();
+
     /*! \brief Processing of program options.
         \details for full list of program options see `.\riversim -h` or River::Model.
     */

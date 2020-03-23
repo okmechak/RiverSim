@@ -27,7 +27,6 @@
 
 #pragma once
 
-#include "utilities.hpp"
 #include "tree.hpp"
 #include "mesh.hpp"
 #include "solver.hpp"

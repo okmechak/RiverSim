@@ -6,9 +6,6 @@ add_library(tethex tethex.hpp tethex.cpp)
 #common
 add_library(GeometryPrimitives GeometryPrimitives.hpp GeometryPrimitives.cpp) 
 
-#utilities
-add_library(utilities utilities.hpp utilities.cpp version.hpp)
-
 #border
 add_library(border border.hpp border.cpp) 
 target_link_libraries(border GeometryPrimitives)
@@ -26,8 +23,8 @@ add_library(triangle triangle.hpp triangle.cpp)
 target_link_libraries(triangle physmodel)
 
 #io
-add_library(io io.hpp io.cpp json.hpp)
-target_link_libraries(io utilities physmodel tree border)
+add_library(io io.hpp io.cpp json.hpp version.hpp)
+target_link_libraries(io physmodel tree border)
 
 #mesh
 add_library(mesh mesh.hpp mesh.cpp) 

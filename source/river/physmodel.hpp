@@ -29,6 +29,9 @@
 
 #include <algorithm>
 #include <map>
+#include <chrono>
+#include <time.h>
+#include <numeric>
 ///\endcond
 
 #include "GeometryPrimitives.hpp"
@@ -43,6 +46,154 @@ using namespace std;
 
 namespace River
 {
+    /*! \brief Timing is used for measuring time of each evaluation cycle and whole program simulation time.
+        \details
+        At creation of object it records current time into string.
+        Then \ref River::Timing::Record() can be used for erecording each cycle time.
+    */
+    class Timing
+    {
+        public:
+            
+            ///Default Constructor, saves time of creation.
+            Timing():
+                tik(clock()),
+                creation_date(chrono::high_resolution_clock::to_time_t(chrono::high_resolution_clock::now()))
+            {
+                tik = clock();
+            }
+
+            ///Return current date string.
+            string CurrentDate() const
+            {   
+                auto now = chrono::high_resolution_clock::now();
+                auto t_time = chrono::high_resolution_clock::to_time_t(now);
+                return ctime(&t_time);
+            }
+
+            ///Return date of object creation string.
+            string CreationtDate() const
+            {   
+                return ctime(&creation_date);
+            }
+
+            ///Returns elapsed time from last \ref Record() call and saves it into vector.
+            double Record()
+            {
+                auto tok = clock();
+                records.push_back((double)(tok - tik)/CLOCKS_PER_SEC);
+                tik = tok;
+                return records.back();
+            }
+
+
+            ///Returns total time of simmulation.
+            double Total() const
+            {
+                double sum = 0;
+                for(auto t: records)
+                    sum += t;
+                return sum;
+            }
+
+            ///Vector that holds all times between Record() calls.
+            vector<double> records;
+        
+        private:
+
+            ///Stores last time from callig Record function.
+            clock_t tik;
+            ///Used for time record.
+            clock_t tok;
+            ///Creation date of object
+            time_t creation_date;
+    };
+
+    /**
+     * This structure holds comparsion data from Backward river simulation.
+     */
+    struct GeometryDifference
+    {
+        ///holds for each branch id all its series parameters: a1, a2, a3
+        map<int, vector<vector<double>>> branches_series_params_and_geom_diff;
+        ///series params info in bifurcation points
+        map<int, vector<vector<double>>> branches_bifuraction_info;
+
+        ///Used for backward river simulation data gathering.
+        void StartBifurcationRecord(int br_id, double bifurcation_difference)
+        {
+            if(bif_difference.count(br_id))
+                throw invalid_argument("StartBifurcationRecord. Such branch already recorded, id: " + to_string(br_id));
+            else
+            {
+                bif_difference[br_id] = bifurcation_difference;
+            }
+        }
+
+        ///Used for backward river simulation data gathering.
+        void EndBifurcationRecord(int br_id, vector<double> series_params)
+        {
+            if(bif_difference.count(br_id))
+            {
+                RecordBifurcationPoint(br_id, bif_difference[br_id], series_params);
+                bif_difference.erase(br_id);
+            }
+        }
+
+        ///Record branch seriesc parameters and geometry difference.
+        void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, const vector<double>& series_params)
+        {
+            if(!branches_series_params_and_geom_diff.count(branch_id))
+            {
+                branches_series_params_and_geom_diff[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}, {0}};
+
+                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).at(0) = dalpha;
+                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).at(0) = ds;
+
+                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).at(0) = series_params.at(0);
+                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).at(0) = series_params.at(1);
+                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).at(0) = series_params.at(2);
+            }
+            else
+            {
+                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).push_back( dalpha);
+                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).push_back( ds);
+
+                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).push_back(series_params.at(0));
+                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).push_back(series_params.at(1));
+                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).push_back(series_params.at(2));
+            }
+        }
+
+        private: 
+
+            ///holds difference between adjacent branches and id of source branch.
+            ///So called branch inconsistency at backward river simulation.
+            map<int, double> bif_difference;
+
+            ///Record bifurcation point
+            void RecordBifurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
+            {
+                if(!branches_bifuraction_info.count(branch_id))
+                {
+                    branches_bifuraction_info[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}};
+                    branches_bifuraction_info[branch_id].at(0/*biff difference index*/).at(0) = bif_difference;
+
+                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).at(0) = bif_series_params.at(0);
+                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).at(0) = bif_series_params.at(1);
+                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).at(0) = bif_series_params.at(2);
+                }
+                else
+                {
+                    branches_bifuraction_info[branch_id][0/*biff difference index*/].push_back(bif_difference);
+
+                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).push_back(bif_series_params.at(0));
+                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).push_back(bif_series_params.at(1));
+                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).push_back(bif_series_params.at(2));
+                }
+            }
+    };
+
     /*! \brief Global program options. 
         \details Program has some options that isn't part simulation itself but rather ease of use.
         So this object is dedicated for such options.
@@ -258,6 +409,11 @@ namespace River
     class Model
     {   
         public: 
+            Border border;
+            Tree tree;
+            Timing timing;
+            GeometryDifference geometry_difference;
+
             ///Some global program options
             ProgramOptions prog_opt;
 
@@ -422,91 +578,6 @@ namespace River
 
             ///Prints model structure and its subclasses
             friend ostream& operator <<(ostream& write, const Model & mdl);
-    };
-
-    /**
-     * This structure holds comparsion data from Backward river simulation.
-     */
-    struct GeometryDifference
-    {
-        ///holds for each branch id all its series parameters: a1, a2, a3
-        map<int, vector<vector<double>>> branches_series_params_and_geom_diff;
-        ///series params info in bifurcation points
-        map<int, vector<vector<double>>> branches_bifuraction_info;
-
-        ///Used for backward river simulation data gathering.
-        void StartBifurcationRecord(int br_id, double bifurcation_difference)
-        {
-            if(bif_difference.count(br_id))
-                throw invalid_argument("StartBifurcationRecord. Such branch already recorded, id: " + to_string(br_id));
-            else
-            {
-                bif_difference[br_id] = bifurcation_difference;
-            }
-        }
-
-        ///Used for backward river simulation data gathering.
-        void EndBifurcationRecord(int br_id, vector<double> series_params)
-        {
-            if(bif_difference.count(br_id))
-            {
-                RecordBifurcationPoint(br_id, bif_difference[br_id], series_params);
-                bif_difference.erase(br_id);
-            }
-        }
-
-        ///Record branch seriesc parameters and geometry difference.
-        void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, const vector<double>& series_params)
-        {
-            if(!branches_series_params_and_geom_diff.count(branch_id))
-            {
-                branches_series_params_and_geom_diff[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}, {0}};
-
-                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).at(0) = dalpha;
-                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).at(0) = ds;
-
-                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).at(0) = series_params.at(0);
-                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).at(0) = series_params.at(1);
-                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).at(0) = series_params.at(2);
-            }
-            else
-            {
-                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).push_back( dalpha);
-                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).push_back( ds);
-
-                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).push_back(series_params.at(0));
-                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).push_back(series_params.at(1));
-                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).push_back(series_params.at(2));
-            }
-        }
-
-        private: 
-
-            ///holds difference between adjacent branches and id of source branch.
-            ///So called branch inconsistency at backward river simulation.
-            map<int, double> bif_difference;
-
-            ///Record bifurcation point
-            void RecordBifurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
-            {
-                if(!branches_bifuraction_info.count(branch_id))
-                {
-                    branches_bifuraction_info[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}};
-                    branches_bifuraction_info[branch_id].at(0/*biff difference index*/).at(0) = bif_difference;
-
-                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).at(0) = bif_series_params.at(0);
-                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).at(0) = bif_series_params.at(1);
-                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).at(0) = bif_series_params.at(2);
-                }
-                else
-                {
-                    branches_bifuraction_info[branch_id][0/*biff difference index*/].push_back(bif_difference);
-
-                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).push_back(bif_series_params.at(0));
-                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).push_back(bif_series_params.at(1));
-                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).push_back(bif_series_params.at(2));
-                }
-            }
     };
 
     /*! \brief Finnal Boudary Geneartor Class
