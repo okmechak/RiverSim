@@ -420,7 +420,7 @@ namespace River{
         }
 
         //Main call to Triangle
-        triangulate(options.c_str(), &in, &out, &vorout, ref);
+        triangulate(options.c_str(), &in, &out, &vorout, mesh_params);
 
         if (Verbose)
         {

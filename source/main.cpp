@@ -131,9 +131,9 @@
 
     \section team Team
 
-    + prof. dr hab Piotr Szymczak
-    + student Stasiek Żukowski
     + student Oleg Kmechak
+    + student Stasiek Żukowski
+    + prof. dr hab Piotr Szymczak
 
 
     \section references References
@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
     tria.MinAngle = mdl.mesh.min_angle;
     tria.Verbose = false;
     tria.Quite =  true;
-    tria.ref = &mdl.mesh;
+    tria.mesh_params = &mdl.mesh;
 
     //Simulation object setup
     River::Solver sim(mdl.solver_params.quadrature_degree);

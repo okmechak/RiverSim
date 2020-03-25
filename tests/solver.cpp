@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     tria.MinAngle = 30;
     tria.AreaConstrain = true;
     tria.MaxTriaArea = 0.01;
-    tria.ref = &mdl.mesh;
+    tria.mesh_params = &mdl.mesh;
     tria.generate(mesh);
     mesh.convert();
     mesh.write("test.msh");
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     tria.AreaConstrain = tria.ConstrainAngle = tria.CustomConstraint = true;
     tria.MaxTriaArea = 0.1;
     tria.MinAngle = 30;
-    tria.ref = &mdl.mesh;
+    tria.mesh_params = &mdl.mesh;
     tria.generate(mesh);
     mesh.convert();
     mesh.write("test.msh");

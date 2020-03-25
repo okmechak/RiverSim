@@ -8,7 +8,8 @@
                 "${workspaceFolder}/source/river/**",
                 "${workspaceFolder}/source/river/tethex/**",
                 "/usr/local/dealii/**",
-                "/usr/local/dealii_release/**"
+                "/usr/local/dealii_release/**",
+                "/mnt/c/users/ofcra/Lib/dealii/include/**"
             ],
             "exludePath": [
                 "${workspaceFolder}/docs/**"
@@ -27,7 +28,7 @@
                 "${workspaceFolder}/source/**",
                 "${workspaceFolder}/source/river/**",
                 "${workspaceFolder}/source/river/tethex/**",
-                "C:/Users/ofcra/Libs/Deal.II/**"
+                "C:/Users/ofcra/Lib/dealii/include/**"
             ],
             "defines": [],
             "cStandard": "c11",

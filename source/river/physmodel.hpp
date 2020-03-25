@@ -266,7 +266,7 @@ namespace River
             int river_boundary_id = 4;
 
             ///all boundaries ids in next order - right, top, left, bottom and river.
-            vector<int> boundary_ids{1, 2, 3, river_boundary_id};
+            vector<int> boundary_ids{1, 5, 3, river_boundary_id};
 
             //Model parameters
             /*! \brief Boundary conditions.
