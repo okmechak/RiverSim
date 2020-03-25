@@ -100,18 +100,18 @@ namespace River
             /*! \brief Reduces lenght of branch by \p lenght.
                 \note
                 If \p lenght is greater than full lenght of branch, then __source_point__ only remains.
-                \throw invalid_argument.
+                \throw Exception.
             */
             BranchNew& Shrink(double lenght);
 
             /*! \brief Remove tip point from branch(simply pops element from vector).
                 \imageSize{BranchNewShrink.jpg, height:30%;width:30%;, }
-                \throw invalid_argument if trying to remove last point.
+                \throw Exception if trying to remove last point.
             */
             inline BranchNew& RemoveTipPoint()
             {
                 if(Size() == 1)
-                    throw invalid_argument("Can't remove last point");   
+                    throw Exception("Can't remove last point");   
                 points.pop_back();
                 return *this;
             }
@@ -125,47 +125,47 @@ namespace River
                 @{
             */
             /*! \brief Return TipPoint of branch(last point in branch).
-                \throw invalid_argument if branch is empty.
+                \throw Exception if branch is empty.
             */
             inline Point TipPoint() const 
             {
                 if(Size() == 0)
-                    throw invalid_argument("Can't return TipPoint size is zero");
+                    throw Exception("Can't return TipPoint size is zero");
                 return points.at(Size() - 1);
             }
 
             /*! \brief Returns vector of tip - difference between two adjacent points.
-                \throw invalid_argument if branch consist only from one point.
+                \throw Exception if branch consist only from one point.
                 \warning name a little confusing cos there is still source_angle variable.
             */
             inline Point TipVector() const 
             {
                 if(Size() == 1)
-                    throw invalid_argument("Can't return TipVector size is 1");
+                    throw Exception("Can't return TipVector size is 1");
 
                 return points.at(Size() - 1) - points.at(Size() - 2);
             }
 
             /*! \brief Returns vector of \p i th segment of branch.
-                \throw invalid_argument if branch size is 1 or is \p i > branch size.
+                \throw Exception if branch size is 1 or is \p i > branch size.
             */
             inline Point Vector(unsigned i) const
             {
                 if(Size() == 1)
-                    throw invalid_argument("Can't return Vector. Size is 1");
+                    throw Exception("Can't return Vector. Size is 1");
                 if(i >= Size() || i == 0)
-                    throw invalid_argument("Can't return Vector. Index is bigger then size or is zero");
+                    throw Exception("Can't return Vector. Index is bigger then size or is zero");
 
                 return points.at(i) - points.at(i - 1);
             }
             
             /*! \brief Returns angle of branch tip.
-                \throw invalid_argument if branch is empty.
+                \throw Exception if branch is empty.
             */
             double TipAngle() const 
             {
                 if(Size() < 1)
-                    throw invalid_argument("TipAngle: size is less then 1!");
+                    throw Exception("TipAngle: size is less then 1!");
                 else if(Size() == 1)
                     return source_angle; 
 
@@ -206,12 +206,12 @@ namespace River
             inline unsigned int Size() const {return points.size();}
 
             /*! \brief Returns BranchNew::Lenght() divided by BranchNew::Size().
-                \throw invalid_argument if branch consist only from one point.
+                \throw Exception if branch consist only from one point.
             */
             double AverageSpeed() const
             {
                 if(Size() == 1)
-                    throw invalid_argument("Average speed can't be evaluated of empty branch");    
+                    throw Exception("Average speed can't be evaluated of empty branch");    
                 return Lenght()/(Size() - 1);
             }
             /**
@@ -317,7 +317,7 @@ namespace River
             int AddBranch(const BranchNew &branch, int id = -999);
 
             /*! Adds new source __branch__ with __id__.
-                \throw invalid_argument if \p id is invalid(invalid value or already exist).
+                \throw Exception if \p id is invalid(invalid value or already exist).
             */
             int AddSourceBranch(const BranchNew &branch, int id = -999)
             {   
@@ -325,7 +325,7 @@ namespace River
                     id = GenerateNewID();
 
                 if(!IsValidBranchId(id))
-                    throw invalid_argument("Invalid id of branch at adding to source branch of tree.");
+                    throw Exception("Invalid id of branch at adding to source branch of tree.");
 
                 source_branches_id.push_back(id);
                 
@@ -338,23 +338,23 @@ namespace River
 
             //Getters of ids
             /*! \brief Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
-                \throw invalid_argument if there is no parent branch.
+                \throw Exception if there is no parent branch.
             */
             int GetParentBranchId(int branch_id) const;
 
             /*! \brief Returns pair of ids of subranches.
-                \throw invalid_argument if there is no sub branches.
+                \throw Exception if there is no sub branches.
             */
             pair<int, int> GetSubBranchesId(int branch_id) const
             {   
                 if(!HasSubBranches(branch_id))
-                    throw invalid_argument("branch does't have sub branches");
+                    throw Exception("branch does't have sub branches");
 
                 return branches_relation.at(branch_id);
             }
 
             /*! \brief Returns id of adjacent branch to current \p sub_branch_id branch.
-                \throw invalid_argument if there is no adjacent branch.
+                \throw Exception if there is no adjacent branch.
             */
             int GetAdjacentBranchId(int sub_branch_id) const;
 
@@ -364,23 +364,23 @@ namespace River
 
             //Getters of Branches
             /*! \brief Returns link to branch with \p id.
-                \throw invalid_argument if there is no such branch.
+                \throw Exception if there is no such branch.
             */
             const BranchNew* GetBranch(int id) const;
 
             /*! \brief Returns link to branch with \p id.
-                \throw invalid_argument if there is no such branch.
+                \throw Exception if there is no such branch.
             */
             BranchNew* GetBranch(int id);
 
             /*! \brief Returns link to parent branch.
-                \throw invalid_argument if there is no parent branch.
+                \throw Exception if there is no parent branch.
             */
             BranchNew* GetParentBranch(int branch_id)
             {return GetBranch(GetParentBranchId(branch_id));}
 
             /*! \brief Returns link to adjacent branch with \p id.
-                \throw invalid_argument if there is no adjacent branch.
+                \throw Exception if there is no adjacent branch.
             */
             BranchNew* GetAdjacentBranch(int sub_branch_id)
             {
@@ -388,7 +388,7 @@ namespace River
             }
 
             /*! \brief Returns reference to subbranches
-                \throw invalid_argument if there is no sub branches.
+                \throw Exception if there is no sub branches.
             */
             pair<BranchNew*, BranchNew*> GetSubBranches(int branch_id)
             {
@@ -439,7 +439,7 @@ namespace River
             int IsSourceBranch(int branch_id) const
             {
                 if(!DoesExistBranch(branch_id))
-                    throw invalid_argument("HasParentBranch: there is no such branch");
+                    throw Exception("HasParentBranch: there is no such branch");
 
                 return find(source_branches_id.begin(), source_branches_id.end(), branch_id) != source_branches_id.end();
             }
@@ -448,7 +448,7 @@ namespace River
             bool HasParentBranch(int branch_id) const
             {
                 if(!DoesExistBranch(branch_id))
-                    throw invalid_argument("HasParentBranch: there is no such branch");
+                    throw Exception("HasParentBranch: there is no such branch");
                 
                 for(auto key_val: branches_relation)
                     if(key_val.second.first == branch_id || key_val.second.second == branch_id)
@@ -461,7 +461,7 @@ namespace River
             bool HasSubBranches(int branch_id) const
             {
                 if(!DoesExistBranch(branch_id))
-                    throw invalid_argument("HasSubBranches: there is no such branch");
+                    throw Exception("HasSubBranches: there is no such branch");
                 return branches_relation.count(branch_id);
             }
 

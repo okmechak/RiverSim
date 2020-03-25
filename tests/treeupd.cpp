@@ -32,32 +32,32 @@ BOOST_AUTO_TEST_CASE( Tree_UPD,
     BOOST_TEST(tree.HasEmptySourceBranch() == true);
     BOOST_TEST(tree.GenerateNewID() == 1);
     
-    BOOST_CHECK_THROW(tree.AddSourceBranch(brTest, 0), invalid_argument);
-    BOOST_CHECK_THROW(tree.AddBranch(brTest, 0), invalid_argument);
-    BOOST_CHECK_THROW(tree.AddSubBranches(0, brTest, brTest), invalid_argument);
+    BOOST_CHECK_THROW(tree.AddSourceBranch(brTest, 0), Exception);
+    BOOST_CHECK_THROW(tree.AddBranch(brTest, 0), Exception);
+    BOOST_CHECK_THROW(tree.AddSubBranches(0, brTest, brTest), Exception);
 
-    BOOST_CHECK_THROW(tree.GetParentBranchId(0), invalid_argument);
-    BOOST_CHECK_THROW(tree.GetParentBranchId(2), invalid_argument);
-    BOOST_CHECK_THROW(tree.GetSubBranchesId(2), invalid_argument);
-    BOOST_CHECK_THROW(tree.GetAdjacentBranchId(2), invalid_argument);
+    BOOST_CHECK_THROW(tree.GetParentBranchId(0), Exception);
+    BOOST_CHECK_THROW(tree.GetParentBranchId(2), Exception);
+    BOOST_CHECK_THROW(tree.GetSubBranchesId(2), Exception);
+    BOOST_CHECK_THROW(tree.GetAdjacentBranchId(2), Exception);
 
-    BOOST_CHECK_THROW(tree.GetBranch(2), invalid_argument);
-    BOOST_CHECK_THROW(tree.GetParentBranch(2), invalid_argument);
-    BOOST_CHECK_THROW(tree.GetAdjacentBranch(2), invalid_argument);
-    BOOST_CHECK_THROW(tree.GetSubBranches(2), invalid_argument);
+    BOOST_CHECK_THROW(tree.GetBranch(2), Exception);
+    BOOST_CHECK_THROW(tree.GetParentBranch(2), Exception);
+    BOOST_CHECK_THROW(tree.GetAdjacentBranch(2), Exception);
+    BOOST_CHECK_THROW(tree.GetSubBranches(2), Exception);
 
-    BOOST_CHECK_THROW(tree.DeleteSubBranches(5), invalid_argument);
-    BOOST_CHECK_THROW(tree.DeleteBranch(5), invalid_argument);
+    BOOST_CHECK_THROW(tree.DeleteSubBranches(5), Exception);
+    BOOST_CHECK_THROW(tree.DeleteBranch(5), Exception);
 
-    BOOST_CHECK_THROW(tree.AddPoints({Point{0, 0}, Point{1, 1}}, {1, 2}), invalid_argument);
-    BOOST_CHECK_THROW(tree.AddPolars({Polar{0, 0}, Polar{1, 1}}, {1, 2}), invalid_argument);
-    BOOST_CHECK_THROW(tree.AddAbsolutePolars({Polar{0, 0}, Polar{1, 1}}, {1, 2}), invalid_argument);
+    BOOST_CHECK_THROW(tree.AddPoints({Point{0, 0}, Point{1, 1}}, {1, 2}), Exception);
+    BOOST_CHECK_THROW(tree.AddPolars({Polar{0, 0}, Polar{1, 1}}, {1, 2}), Exception);
+    BOOST_CHECK_THROW(tree.AddAbsolutePolars({Polar{0, 0}, Polar{1, 1}}, {1, 2}), Exception);
 
 
     BOOST_TEST(tree.DoesExistBranch(1) == false);
-    BOOST_CHECK_THROW(tree.IsSourceBranch(1), invalid_argument);
-    BOOST_CHECK_THROW(tree.HasParentBranch(1), invalid_argument);
-    BOOST_CHECK_THROW(tree.HasSubBranches(1), invalid_argument);
+    BOOST_CHECK_THROW(tree.IsSourceBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.HasParentBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.HasSubBranches(1), Exception);
     BOOST_TEST(tree.HasEmptySourceBranch() == true);
 
     BOOST_TEST(tree.IsValidBranchId(0) == false);

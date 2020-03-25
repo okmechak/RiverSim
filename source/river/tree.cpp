@@ -53,12 +53,12 @@ namespace River
                     lenght -= tip_lenght;
                 }
                 else 
-                    throw invalid_argument("Unhandled case in Shrink method.");
+                    throw Exception("Unhandled case in Shrink method.");
             }
-            catch(const invalid_argument& e)
+            catch(const exception& e)
             {
                 cerr << e.what() << '\n';
-                throw invalid_argument("Shrinikng error: problem with RemoveTipPoint() or TipVector()");
+                throw Exception("Shrinikng error: problem with RemoveTipPoint() or TipVector()");
             }
         }
         
@@ -121,11 +121,11 @@ namespace River
             ss << "Invalid Id, such branch already exists. Id value: " << id << endl;
             ss << "inserted branch: " << endl;
             ss << branch;
-            throw invalid_argument(ss.str());
+            throw Exception(ss.str());
         }
 
         if(!IsValidBranchId(id))
-            throw invalid_argument("Invalid Id, id should be greater then 0. Id value: " + to_string(id));
+            throw Exception("Invalid Id, id should be greater then 0. Id value: " + to_string(id));
                 
         branches.push_back(branch);
         branches_index[id] = &branches.back();
@@ -137,10 +137,10 @@ namespace River
     pair<int, int> Tree::AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch)
     {   
         if(!DoesExistBranch(root_branch_id))
-            throw invalid_argument("Root branch doesn't exis");
+            throw Exception("Root branch doesn't exis");
 
         if(HasSubBranches(root_branch_id))
-            throw invalid_argument("This branch already has subbranches");
+            throw Exception("This branch already has subbranches");
                 
         //adding new branches
         pair<int, int> sub_branches_id;
@@ -168,7 +168,7 @@ namespace River
                     return key_val.first;
         }
         else
-            throw invalid_argument("Branch doesn't have source branch. probabaly it is source itself");
+            throw Exception("Branch doesn't have source branch. probabaly it is source itself");
 
         return invalid_branch;
     }
@@ -183,7 +183,7 @@ namespace River
         else if(right_branch == sub_branch_id)
             return left_branch;
         else
-            throw invalid_argument("something wrong with GetAdjacentBranch");
+            throw Exception("something wrong with GetAdjacentBranch");
     }
 
 
@@ -196,7 +196,7 @@ namespace River
                 br->AddPoint(points.at(i));
             }
             else
-                throw invalid_argument("Such branch does not exist");
+                throw Exception("Such branch does not exist");
 
         return *this;
     }
@@ -222,7 +222,7 @@ namespace River
     const BranchNew* Tree::GetBranch(int id) const
     {
         if(!DoesExistBranch(id))
-            throw invalid_argument("there is no such branch");
+            throw Exception("there is no such branch");
                 
         return branches_index.at(id);
     }
@@ -231,7 +231,7 @@ namespace River
     BranchNew* Tree::GetBranch(int id)
     {
         if(!DoesExistBranch(id))
-            throw invalid_argument("there is no such branch");
+            throw Exception("there is no such branch");
                 
         return branches_index.at(id);
     }
@@ -246,7 +246,7 @@ namespace River
                 br->AddPoint(points.at(i));
             }
             else
-                throw invalid_argument("Such branch does not exist");
+                throw Exception("Such branch does not exist");
 
         return *this;
     }
@@ -261,7 +261,7 @@ namespace River
                 br->AddAbsolutePoint(br->TipPoint() + points.at(i));
             }
             else
-                throw invalid_argument("Such branch does not exist");
+                throw Exception("Such branch does not exist");
         
         return *this;
     }
@@ -271,10 +271,10 @@ namespace River
     Tree& Tree::DeleteSubBranches(int root_branch_id)
     {
         if(!DoesExistBranch(root_branch_id))
-            throw invalid_argument("root branch doesn't exis.");
+            throw Exception("root branch doesn't exis.");
 
         if(!HasSubBranches(root_branch_id))
-            throw invalid_argument("This branch doesn't has subbranches.");
+            throw Exception("This branch doesn't has subbranches.");
 
         auto[sub_left, sub_right] = GetSubBranchesId(root_branch_id);
         

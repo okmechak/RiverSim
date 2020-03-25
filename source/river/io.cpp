@@ -308,10 +308,10 @@ namespace River
     void Save(const Model& model, const string file_name)
     {
         if(file_name.length() == 0)
-            throw invalid_argument("Save: File name is not set.");
+            throw Exception("Save: File name is not set.");
 
         ofstream out(file_name + ".json");
-        if(!out) throw invalid_argument("Save: Can't create file for write");
+        if(!out) throw Exception("Save: Can't create file for write");
 
         out.precision(16);
 
@@ -451,7 +451,7 @@ namespace River
     void Open(Model& model, string file_name, bool& q_update_border)
     {
         ifstream in(file_name);
-        if(!in) throw invalid_argument("Open. Can't create file for read.");
+        if(!in) throw Exception("Open. Can't create file for read.");
 
         json j;
         in >> j;
@@ -582,7 +582,7 @@ namespace River
         if(j.count("Trees"))
         {
             if(!j.count("Border"))
-                throw invalid_argument("Input json file contains Trees and do not contain Border. Make sure that you created corresponding Border object(Trees and Border should contain same source/branches ids - its values and number)");
+                throw Exception("Input json file contains Trees and do not contain Border. Make sure that you created corresponding Border object(Trees and Border should contain same source/branches ids - its values and number)");
             
             model.tree.Clear();
 
@@ -615,7 +615,7 @@ namespace River
                 {
                     model.tree.AddBranch(branch, id);
                 }
-                catch (invalid_argument& e)
+                catch (Exception& e)
                 {   
                     cout << e.what() << endl;
                     cout << "tree io..ivalid inser" << endl;

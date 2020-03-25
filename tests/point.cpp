@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE( static_methods,
   BOOST_TEST(Point::angle(0., -1.) == -M_PI/2.);
   BOOST_TEST(Point::angle(1., -1.) == -M_PI/4.);
 
-  BOOST_CHECK_THROW(Point::angle(0., 0.), std::invalid_argument);
+  BOOST_CHECK_THROW(Point::angle(0., 0.), Exception);
 }
 
 
@@ -95,10 +95,10 @@ BOOST_AUTO_TEST_CASE(methods,
   Point obj_angl(1, -2);
   BOOST_TEST(obj.angle(obj_angl) == - 2*atan(2.));
   Point a(0, 0);
-  BOOST_CHECK_THROW(a.angle(), std::invalid_argument);
-  BOOST_CHECK_THROW(a.normalize(), std::invalid_argument);
-  BOOST_CHECK_THROW(GetNormalizedPoint(a), std::invalid_argument);
-  BOOST_CHECK_THROW(obj.angle(a), std::invalid_argument);
+  BOOST_CHECK_THROW(a.angle(), Exception);
+  BOOST_CHECK_THROW(a.normalize(), Exception);
+  BOOST_CHECK_THROW(GetNormalizedPoint(a), Exception);
+  BOOST_CHECK_THROW(obj.angle(a), Exception);
 
   //getNormalized
   Point obj2 = GetNormalizedPoint(obj);
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(operators,
   a /= 2;
   BOOST_TEST((a.x == 1. && a.y == 1.));
   BOOST_TEST((a[0] == 1. && a[1] == 1.));
-  BOOST_CHECK_THROW(a[2], std::invalid_argument);
+  BOOST_CHECK_THROW(a[2], Exception);
 }
 
 

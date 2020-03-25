@@ -311,7 +311,7 @@ namespace River{
         if (ConstrainAngle && MinAngle > 0 && MinAngle < MAX_ANGLE)
                                 options += to_string(MinAngle);
         else if (ConstrainAngle && MinAngle > MAX_ANGLE)
-            throw invalid_argument("Triangle quality angle should be equal or less then 36");
+            throw Exception("Triangle quality angle should be equal or less then 36");
         //if (StartNumberingFromZero)
         //    options += "z";
         if (Refine)             options += "r";

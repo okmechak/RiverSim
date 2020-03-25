@@ -261,7 +261,7 @@ namespace River
 
         auto branch_id = model.tree.TipBranchesId().back();
         if(branch_id != 1)
-            throw invalid_argument("EvaluateSeriesParams: Branch does not equal to 1: " + to_string(branch_id));
+            throw Exception("EvaluateSeriesParams: Branch does not equal to 1: " + to_string(branch_id));
                 
         auto tip_point = model.tree.GetBranch(branch_id)->TipPoint();
         auto tip_angle = model.tree.GetBranch(branch_id)->TipAngle();

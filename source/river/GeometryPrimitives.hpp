@@ -27,12 +27,21 @@
 ///\cond
 #include <vector>
 #include <iostream>
+#include <exception>
 ///\endcond
 
 using namespace std;
 
 namespace River
 {
+    struct Exception : public exception
+    {
+        string s;
+        Exception(string ss) : s(ss) {}
+        ~Exception() throw () {} // Updated
+        const char* what() const throw() { return s.c_str(); }
+    };
+    
     ///Prints logs depending of log configuration(quiet or verbose)
     void print(bool flag, string str);
     
@@ -41,7 +50,7 @@ namespace River
     class Polar;
 
     /*! \brief Returns normalized vector of current Point.
-        \throw invalid_argument if vector lenght is zero
+        \throw Exception if vector lenght is zero
         \return Normalized vector
     */
     Point GetNormalizedPoint(Point p);
@@ -126,22 +135,22 @@ namespace River
             Point& rotate(double phi);
 
             /*! \brief Normalizes current Point.
-                \throw invalid_argument if vector lenght is zero
+                \throw Exception if vector lenght is zero
             */
             Point& normalize();
 
             /*! \brief Returns angle of vector.
-                \throw invalid_argument if vector lenght is zero
+                \throw Exception if vector lenght is zero
             */
             double angle() const;
 
             /*! \brief Returns angle of {\p x,\p y} vector.
-                \throw invalid_argument if vector lenght is zero
+                \throw Exception if vector lenght is zero
             */
             static double angle(double x, double y);
 
             /*! \brief Returns angle relatively to \p p Point.
-                \throw invalid_argument if vector lenght one of poits is zero
+                \throw Exception if vector lenght one of poits is zero
             */
             double angle(const Point &p) const;
 

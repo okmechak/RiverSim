@@ -34,10 +34,10 @@ namespace River
         
         //checks
         if(sourcesXCoord.at(0) <= 0 || sourcesXCoord.back() >= regionSize.at(0))
-            throw invalid_argument("X coords of sources should be in interval (0, width)");
+            throw Exception("X coords of sources should be in interval (0, width)");
 
         if(!is_sorted(sourcesXCoord.begin(), sourcesXCoord.end()))
-            throw invalid_argument("Sources X coords should be sorted! From smaller to greater");
+            throw Exception("Sources X coords should be sorted! From smaller to greater");
 
         auto width = regionSize.at(0),
             height = regionSize.at(1);

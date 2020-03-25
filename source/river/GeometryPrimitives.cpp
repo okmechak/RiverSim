@@ -31,7 +31,7 @@ Point GetNormalizedPoint(Point p)
 {
 	auto n = p.norm();
 	if (n == 0.)
-		throw std::invalid_argument("norm is equal to zero");
+		throw Exception("norm is equal to zero");
 
 	return Point{p.x / n, p.y / n};
 }
@@ -77,7 +77,7 @@ Point &Point::normalize()
 {
 	auto l = norm();
 	if (l == 0.)
-		throw std::invalid_argument("norm is equal to zero");
+		throw Exception("norm is equal to zero");
 	x /= l;
 	y /= l;
 
@@ -89,7 +89,7 @@ double Point::angle() const
 	auto n = norm();
 
 	if (n == 0.)
-		throw std::invalid_argument("vector doesn't have arc");
+		throw Exception("vector doesn't have arc");
 
 	double phi = acos(x / n);
 	if (y < 0)
@@ -100,7 +100,7 @@ double Point::angle() const
 double Point::angle(double x, double y)
 {
 	if (x == 0. && y == 0.)
-		throw std::invalid_argument("vector doesn't have arc");
+		throw Exception("vector doesn't have arc");
 
 	double phi = acos(x / norm(x, y));
 	if (y < 0)
@@ -115,7 +115,7 @@ double Point::angle(const Point &p) const
 	auto n = norm();
 	auto pn = p.norm();
 	if (n == 0. || pn == 0.)
-		throw std::invalid_argument("norm of one or another vector is 0");
+		throw Exception("norm of one or another vector is 0");
 
 	double phi = acos((x * p.x + y * p.y) / n / pn);
 	double sign = x * p.y - p.x * y > 0 ? 1 : -1;
@@ -188,7 +188,7 @@ double Point::operator[](const int index) const
 	else if (index == 1)
 		return y;
 	else
-		throw std::invalid_argument("index should be 0 or 1");
+		throw Exception("index should be 0 or 1");
 }
 
 ostream &operator<<(ostream &write, const Point &p)

@@ -123,7 +123,7 @@ namespace River
         void StartBifurcationRecord(int br_id, double bifurcation_difference)
         {
             if(bif_difference.count(br_id))
-                throw invalid_argument("StartBifurcationRecord. Such branch already recorded, id: " + to_string(br_id));
+                throw Exception("StartBifurcationRecord. Such branch already recorded, id: " + to_string(br_id));
             else
             {
                 bif_difference[br_id] = bifurcation_difference;
@@ -516,7 +516,7 @@ namespace River
                 else if(bifurcation_type == 3)
                     return false;
                 else 
-                    throw invalid_argument("Wrong bifurcation_type value!");
+                    throw Exception("Wrong bifurcation_type value!");
             }
 
             ///Growth condition.
@@ -551,7 +551,7 @@ namespace River
                     return ToPolar(Point{dx, dy}.rotate(-M_PI/2));
                 }
                 else
-                    throw invalid_argument("Invalid value of growth_type!");
+                    throw Exception("Invalid value of growth_type!");
             }
             
             ///Return boundary line indices with zero value conditions.
@@ -562,7 +562,7 @@ namespace River
                 else if(boundary_condition == 1)
                     return {river_boundary_id};
                 else
-                    throw invalid_argument("Invalid value of boundary_condition");   
+                    throw Exception("Invalid value of boundary_condition");   
             }
 
             ///Return boundary line indices with non-zero value conditions.
@@ -573,7 +573,7 @@ namespace River
                 else if(boundary_condition == 1)
                     return {boundary_ids.at(1)};
                 else
-                    throw invalid_argument("Invalid value of boundary_condition");   
+                    throw Exception("Invalid value of boundary_condition");   
             }
 
             ///Checks if values of parameters are in normal ranges.

@@ -118,7 +118,7 @@ namespace River
         River::print(prog_opt.verbose, "Input parameters check...");
         //program run parameters
         if(prog_opt.maximal_river_height < 0)
-            throw invalid_argument("Invalid value of maximal_river_height = " + to_string(prog_opt.maximal_river_height) + ", it should be in range greater then 0 up to height.");
+            throw Exception("Invalid value of maximal_river_height = " + to_string(prog_opt.maximal_river_height) + ", it should be in range greater then 0 up to height.");
         else if (prog_opt.maximal_river_height > height)
             cout << "maximal_river_height is greater then height of region, so it does not have any effect." << endl;
 
@@ -126,23 +126,23 @@ namespace River
             cout << "number_of_backward_steps = " + to_string(prog_opt.number_of_backward_steps) + " parameter is very big, unpredictable behaviour may occur." << endl;
         
         if(prog_opt.output_file_name == "")
-            throw invalid_argument("empty output file name");
+            throw Exception("empty output file name");
 
         //Model
         if(dx < 0 || dx > width)
-            throw invalid_argument("Invalid value of dx = " + to_string(dx) + ", it should be in range(0, width).");
+            throw Exception("Invalid value of dx = " + to_string(dx) + ", it should be in range(0, width).");
         if(width < 0)
-            throw invalid_argument("width parameter can't be negative: " + to_string(width));
+            throw Exception("width parameter can't be negative: " + to_string(width));
         if(width > 1000)
             cout << "Width value is very large: " << width << endl;
         if(height < 0)
-            throw invalid_argument("height parameter can't be negative: " + to_string(height));
+            throw Exception("height parameter can't be negative: " + to_string(height));
         if(height > 1000)
             cout << "Height value is very large: " << height << endl;
         if(boundary_ids.size() != 4)
-            throw invalid_argument("boundary_ids size isn't 4, which corresponds to rectangular region: " + to_string(boundary_ids.size()));
+            throw Exception("boundary_ids size isn't 4, which corresponds to rectangular region: " + to_string(boundary_ids.size()));
         if(boundary_condition != 0 && boundary_condition!= 1)
-            throw invalid_argument("Wrong value of boundary condition: " + to_string(boundary_condition) + ". It should be 0 or 1");
+            throw Exception("Wrong value of boundary condition: " + to_string(boundary_condition) + ". It should be 0 or 1");
         if(bifurcation_threshold > 100 || bifurcation_threshold < -100)
             cout << "abs(bifurcation_threshold) value is very big: " << abs(bifurcation_threshold) << endl;
 
@@ -150,19 +150,19 @@ namespace River
             cout << "abs(bifurcation_threshold_2) value is very big: " << abs(bifurcation_threshold_2) << endl;
 
         if(bifurcation_min_dist < 0)
-            throw invalid_argument("bifurcation_min_dist parameter can't be negative: " + to_string(bifurcation_min_dist));
+            throw Exception("bifurcation_min_dist parameter can't be negative: " + to_string(bifurcation_min_dist));
 
         if(growth_type != 0 && growth_type!= 1)
-            throw invalid_argument("Wrong value of growth_type: " + to_string(growth_type) + ". It should be 0 or 1");
+            throw Exception("Wrong value of growth_type: " + to_string(growth_type) + ". It should be 0 or 1");
 
         if(growth_threshold < 0)
-            throw invalid_argument("growth_threshold parameter can't be negative: " + to_string(growth_threshold));
+            throw Exception("growth_threshold parameter can't be negative: " + to_string(growth_threshold));
         
         if(growth_min_distance < 0)
-            throw invalid_argument("growth_min_distance parameter can't be negative: " + to_string(growth_min_distance));
+            throw Exception("growth_min_distance parameter can't be negative: " + to_string(growth_min_distance));
         
         if(ds <= 0)
-            throw invalid_argument("ds parameter can't be negative or zero: " + to_string(ds));
+            throw Exception("ds parameter can't be negative or zero: " + to_string(ds));
 
         if(ds < 1e-7)
             cout << "ds is to small = " << ds << endl;
@@ -173,17 +173,17 @@ namespace River
 
         //Mesh
         if(mesh.exponant < 0)
-            throw invalid_argument("mesh-exp parameter can't be negative: " + to_string(mesh.exponant)
+            throw Exception("mesh-exp parameter can't be negative: " + to_string(mesh.exponant)
                 + "best values are in range from >0 to 200");
         
         if(mesh.exponant > 100)
             cout << "Mesh refinment function is very close to step function: " << mesh.exponant << endl;
         
         if(mesh.refinment_radius < 0)
-            throw invalid_argument("mesh refinment-radius parameter can't be negative: " + to_string(mesh.refinment_radius));
+            throw Exception("mesh refinment-radius parameter can't be negative: " + to_string(mesh.refinment_radius));
         
         if(mesh.min_area < 0)
-            throw invalid_argument("mesh-min-area parameter can't be negative: " + to_string(mesh.min_area));
+            throw Exception("mesh-min-area parameter can't be negative: " + to_string(mesh.min_area));
 
         if(mesh.min_area < 1e-12)
             cout << "Triangle can't handle such small values for mesh-min-area: " << mesh.min_area <<
@@ -192,62 +192,62 @@ namespace River
             cout << "mesh-min-area is greater than mesh-max-area. It is not standard case for program." << endl;
         
         if(mesh.min_angle < 0 || mesh.min_angle > 35)
-            throw invalid_argument("Wrong values of mesh-min-angle it should be in range (0, 35): " + to_string(mesh.min_angle));
+            throw Exception("Wrong values of mesh-min-angle it should be in range (0, 35): " + to_string(mesh.min_angle));
         
         if(mesh.max_area < 0)
-            throw invalid_argument("mesh-max-area parameter can't be negative: " + to_string(mesh.min_area));
+            throw Exception("mesh-max-area parameter can't be negative: " + to_string(mesh.min_area));
 
         if(mesh.eps < 0)
-            throw invalid_argument("mesh eps parameter can't be negative: " + to_string(mesh.eps));
+            throw Exception("mesh eps parameter can't be negative: " + to_string(mesh.eps));
 
         if(mesh.eps >  0.1 * ds)
-            throw invalid_argument("mesh eps should be much smaller than ds eps << ds, at least 0.1: eps" + to_string(mesh.eps) + " ds: " + to_string(ds));
+            throw Exception("mesh eps should be much smaller than ds eps << ds, at least 0.1: eps" + to_string(mesh.eps) + " ds: " + to_string(ds));
 
         if(mesh.sigma < 0)
-            throw invalid_argument("mesh sigma parameter can't be negative: " + to_string(mesh.sigma));
+            throw Exception("mesh sigma parameter can't be negative: " + to_string(mesh.sigma));
 
         if(mesh.static_refinment_steps >= 5)
             cout << "mesh static_refinment_steps parameter is very large, and simulation can take a long time: " << mesh.static_refinment_steps << endl;
 
         if(mesh.ratio < 1.9)
-            throw invalid_argument("mesh ratio parameter can't be smaller than 1.9: " + to_string(mesh.ratio));
+            throw Exception("mesh ratio parameter can't be smaller than 1.9: " + to_string(mesh.ratio));
         
         if(mesh.max_edge < 0)
-            throw invalid_argument("mesh max_edge parameter can't be negative " + to_string(mesh.max_edge));
+            throw Exception("mesh max_edge parameter can't be negative " + to_string(mesh.max_edge));
         
         if(mesh.min_edge < 0)
-            throw invalid_argument("mesh min_edge parameter can't be negative " + to_string(mesh.min_edge));
+            throw Exception("mesh min_edge parameter can't be negative " + to_string(mesh.min_edge));
 
         if(mesh.max_edge < 0.001)
             cout << "mesh max_edge parameter is to small " + to_string(mesh.max_edge) << endl;
 
         if(mesh.max_edge < mesh.min_edge)
-            throw invalid_argument("mesh min_edge is bigger than max_edge :" + to_string(mesh.min_edge) + ">" + to_string(mesh.max_edge));
+            throw Exception("mesh min_edge is bigger than max_edge :" + to_string(mesh.min_edge) + ">" + to_string(mesh.max_edge));
 
 
         //Integration
         if(integr.weigth_func_radius < 0)
-            throw invalid_argument("Integration weigth_func_radius parameter can't be negative: " + to_string(integr.weigth_func_radius));
+            throw Exception("Integration weigth_func_radius parameter can't be negative: " + to_string(integr.weigth_func_radius));
 
         if(integr.integration_radius < 0)
-            throw invalid_argument("Integration integration_radius parameter can't be negative: " + to_string(integr.integration_radius));
+            throw Exception("Integration integration_radius parameter can't be negative: " + to_string(integr.integration_radius));
 
         if(integr.exponant < 0)
-            throw invalid_argument("Integration exponant parameter can't be negative: " + to_string(integr.exponant));
+            throw Exception("Integration exponant parameter can't be negative: " + to_string(integr.exponant));
 
 
         //Solver
         if(solver_params.quadrature_degree < 0)
-            throw invalid_argument("Solver quadrature_degree parameter can't be negative: " + to_string(solver_params.quadrature_degree));
+            throw Exception("Solver quadrature_degree parameter can't be negative: " + to_string(solver_params.quadrature_degree));
 
         if(solver_params.refinment_fraction < 0 || solver_params.refinment_fraction > 1)
-            throw invalid_argument("Solver refinment_fraction parameter can't be negative or greater then 1.: " + to_string(solver_params.refinment_fraction));
+            throw Exception("Solver refinment_fraction parameter can't be negative or greater then 1.: " + to_string(solver_params.refinment_fraction));
 
         if(solver_params.adaptive_refinment_steps >= 5)
             cout << "solver adaptive_refinment_steps parameter is very large, and simulation can take a long time: " << solver_params.adaptive_refinment_steps << endl;
 
         if(solver_params.tollerance < 0)
-            throw invalid_argument("Tollerance value of solver is negative: " + to_string(solver_params.tollerance));
+            throw Exception("Tollerance value of solver is negative: " + to_string(solver_params.tollerance));
 
         if(solver_params.tollerance < 1e-13)
             cout << "Tollerance value is very small: " << solver_params.tollerance << endl;
@@ -258,7 +258,7 @@ namespace River
             cout << "num_of_iterrations value is very small: " << solver_params.num_of_iterrations << endl;
 
         if(solver_params.renumbering_type > 7)
-            throw invalid_argument("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
+            throw Exception("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
     }
 
     tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br)

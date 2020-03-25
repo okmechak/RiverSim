@@ -46,14 +46,6 @@ using namespace std;
 
 namespace River
 {
-    struct Exception : public exception
-    {
-        string s;
-        Exception(string ss) : s(ss) {}
-        ~Exception() throw () {} // Updated
-        const char* what() const throw() { return s.c_str(); }
-    };
-
     enum Renumbering 
     {
         Renumbering_none,

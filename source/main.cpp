@@ -212,7 +212,7 @@ int main(int argc, char *argv[])
     }
     //check of consistency between Border and Tree
     if(model.border.GetSourcesId() != model.tree.SourceBranchesID())
-        throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
+        throw Exception("Border ids and tree ids are not the same, or are not in same order!");
 
     //Triangle mesh object setup
     Triangle tria(&model.mesh);
@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
     }
     //unhandled case
     else 
-        throw invalid_argument("Invalid simulation type selected: " + to_string(model.prog_opt.simulation_type));
+        throw Exception("Invalid simulation type selected: " + to_string(model.prog_opt.simulation_type));
 
     print(model.prog_opt.verbose, "End of main loop...");
     print(model.prog_opt.verbose, "Done.");
