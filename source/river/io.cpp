@@ -235,6 +235,9 @@ namespace River
 
         if (result.count("version"))
             print_version();
+
+        if (!result.count("suppress-signature") && result.count("verbose"))
+            print_ascii_signature();
         
         return result;
     }

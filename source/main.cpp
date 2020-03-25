@@ -178,14 +178,10 @@ int main(int argc, char *argv[])
     if (vm.count("help") || vm.count("version"))
         return 0;
 
-    if (!vm.count("suppress-signature") && vm.count("verbose"))
-        print_ascii_signature();
-
-    string output_file_name = vm["output"].as<string>();
-
     //Model object setup
     Model model;
 
+    model.prog_opt.output_file_name = vm["output"].as<string>();
     string input_file;
     if(vm.count("input"))
         model.prog_opt.input_file_name = vm["input"].as<string>();
@@ -238,8 +234,8 @@ int main(int argc, char *argv[])
         {
         //! [StopConditionExample]
             print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-            string str = output_file_name;
-            if(vm.count("save-each-step"))
+            string str = model.prog_opt.output_file_name;
+            if(model.prog_opt.save_each_step)
                 str += "_" + to_string(i);
 
             ForwardRiverEvolution(model, tria, sim, str);
@@ -257,8 +253,8 @@ int main(int argc, char *argv[])
         {
             print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             
-            string str = output_file_name;
-            if(vm.count("save-each-step"))
+            string str = model.prog_opt.output_file_name;
+            if(model.prog_opt.save_each_step)
                 str += "_" + to_string(i);
             
             BackwardForwardRiverEvolution(model, tria, sim, str);
@@ -286,11 +282,7 @@ int main(int argc, char *argv[])
         auto source_branch_id = model.border.GetSourcesId().back();
         model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
 
-        EvaluateSeriesParams(model, tria, sim, output_file_name);
-        model.timing.Record();//Timing
-        Save(model, output_file_name);
-
-        EvaluateSeriesParams(model, tria, sim, output_file_name);
+        EvaluateSeriesParams(model, tria, sim, model.prog_opt.output_file_name);
         model.timing.Record();//Timing
         Save(model, model.prog_opt.output_file_name);
     }
