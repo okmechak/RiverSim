@@ -262,18 +262,26 @@ namespace River{
     Triangle::Triangle()
     {
         set_all_values_to_default();
+    }
 
-        if (Verbose){
-            cout << "Default Options: " << endl;
-            print_options(true);
-        }
+    Triangle::Triangle(MeshParams *mesh_params):
+        mesh_params(mesh_params)
+    {
+        set_all_values_to_default();
+
+        AreaConstrain = true;
+        CustomConstraint = true;
+        MaxTriaArea = mesh_params->max_area;
+        MinAngle = mesh_params->min_angle;
+        Verbose = false;
+        Quite =  true;
     }
 
     Triangle::~Triangle()
     {   
         //we don't call this function
         //free_allocated_memory();
-        //cos it is already present at the of generate() function
+        //cos it is already present at the end of generate() function
     }
 
 
@@ -420,7 +428,7 @@ namespace River{
         }
 
         //Main call to Triangle
-        triangulate(options.c_str(), &in, &out, &vorout, ref);
+        triangulate(options.c_str(), &in, &out, &vorout, mesh_params);
 
         if (Verbose)
         {

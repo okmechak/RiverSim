@@ -34,42 +34,37 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
     //1e-12 - is to small and we receive strange mesh
     mdl.mesh.min_area = 1e-10;
+    mdl.mesh.max_area = 0.01;
+    mdl.mesh.min_angle = 30;
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    Border border;
-    border.MakeRectangular(
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
 
-    Tree tr;
-    tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, tr, border);
+    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
 
-    Triangle tria;
-    tria.ConstrainAngle = tria.CustomConstraint = true;
-    tria.MinAngle = 30;
-    tria.AreaConstrain = true;
-    tria.MaxTriaArea = 0.01;
-    tria.ref = &mdl.mesh;
+    Triangle tria(&mdl.mesh);
     tria.generate(mesh);
     mesh.convert();
     mesh.write("test.msh");
 
     //Simulation
-    River::Solver sim;
-    sim.field_value = 1;
+    mdl.field_value = 1;
+    River::Solver sim(&mdl);
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run();
     
-    auto tip_ids = tr.TipBranchesId();
-    auto point = tr.GetBranch(tip_ids.at(0))->TipPoint();
-    auto angle = tr.GetBranch(tip_ids.at(0))->TipAngle();
+    auto tip_ids = mdl.tree.TipBranchesId();
+    auto point = mdl.tree.GetBranch(tip_ids.at(0))->TipPoint();
+    auto angle = mdl.tree.GetBranch(tip_ids.at(0))->TipAngle();
     auto series_params = sim.integrate(mdl, point, angle);
 
     BOOST_TEST(angle == M_PI/2);
@@ -98,41 +93,37 @@ BOOST_AUTO_TEST_CASE( integration_test,
     Model mdl;
     //1e-12 - is to small and we receive strange mesh
     mdl.mesh.min_area = 1e-10;
+    mdl.mesh.max_area = 0.01;
+    mdl.mesh.min_angle = 30;
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    Border border;
-    border.MakeRectangular(
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
 
-    Tree tr;
-    tr.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tr.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, tr, border);
+    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
 
-    Triangle tria;
-    tria.AreaConstrain = tria.ConstrainAngle = tria.CustomConstraint = true;
-    tria.MaxTriaArea = 0.1;
-    tria.MinAngle = 30;
-    tria.ref = &mdl.mesh;
+    Triangle tria(&mdl.mesh);
     tria.generate(mesh);
     mesh.convert();
     mesh.write("test.msh");
 
     //Simulation
-    River::Solver sim;
+    River::Solver sim(&mdl);
     
     sim.SetBoundaryRegionValue(boundary_ids, 0.);
     sim.OpenMesh("test.msh");
     sim.run();
     sim.field_value = 1;
     
-    auto tip_ids = tr.TipBranchesId();
-    auto point = tr.GetBranch(tip_ids.at(0))->TipPoint();
+    auto tip_ids = mdl.tree.TipBranchesId();
+    auto point = mdl.tree.GetBranch(tip_ids.at(0))->TipPoint();
     auto dr = 0.01;
     auto integration = sim.integration_test(point, dr);
     auto integration_of_whole_region = sim.integration_test(point, 10);
@@ -150,7 +141,8 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
 BOOST_AUTO_TEST_CASE( memory_leak, 
     *utf::tolerance(1e-1))
-{
+{   
+    Model model;
     for(unsigned long int i = 0; i < 1e4; ++i)
-        River::Solver sim;
+        River::Solver sim(&model);
 }

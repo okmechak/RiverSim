@@ -102,7 +102,6 @@ namespace River
             ///Updates options bassing on interface flags.
             string update_options();
 
-
             ///Outupts options with or without detailed description.
             void print_options(bool qDetailedDescription = true);
 
@@ -169,9 +168,10 @@ namespace River
             bool Verbose = false;
         
             ///Mesh refinment object
-            MeshParams* ref;
-        
+            MeshParams* mesh_params = NULL;
+
             Triangle();
+            Triangle(MeshParams *mesh_params);
             ~Triangle();
             
             /**

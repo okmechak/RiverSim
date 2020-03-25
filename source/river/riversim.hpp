@@ -45,7 +45,7 @@ namespace River
          \snippet main.cpp StopConditionExample
          \param[in] border Boundary geometry
          \param[in] tree River tree or network
-         \param[in] mdl Holds maximal value of y-coord, which can be reached by river
+         \param[in] model Holds maximal value of y-coord, which can be reached by river
          \return  Boolean value wich states is river tree close enough to border
          \exception None
          \pre No postcinditions
@@ -57,25 +57,22 @@ namespace River
          \todo generalize to any boundary shape.
          \todo in qudrangular shape crossing of bottom line isn't handled.
     */
-    bool StopConditionOfRiverGrowth(const Model& mdl, const Border& border, const Tree& tree);
+    bool StopConditionOfRiverGrowth(const Model& model);
 
     /*!One step of forward river evolution.*/
     void ForwardRiverEvolution(
-        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
+        Model& model, Triangle& tria, Solver& sim,
         const string file_name, double max_a_backward = -1);
     
     ///This function only makes evaluation of bacward river growth based on pde solution and geometry
     ///but still it returns some data like difference betweem branches if they reached zero.
-    map<int, vector<double>> BackwardRiverEvolution(const Model& mdl, Solver& sim, Tree& tree, 
-        GeometryDifference& gd);
+    map<int, vector<double>> BackwardRiverEvolution(const Model& model, Solver& sim);
 
     ///One step of backward river evolution and its data.
     void BackwardForwardRiverEvolution(
-        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
-        GeometryDifference& gd, const string file_name);
+        Model& model, Triangle& tria, Solver& sim, const string file_name);
 
     ///Evaluate series parameters near tip in predefined geometry. Used fot testing purposes
     void EvaluateSeriesParams(
-        Model& mdl, Triangle& tria, Solver& sim, Tree& tree, const Border& border, 
-        GeometryDifference& gd, const string file_name);
+        Model& model, Triangle& tria, Solver& sim, const string file_name);
 }

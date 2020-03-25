@@ -184,144 +184,118 @@ int main(int argc, char *argv[])
     string output_file_name = vm["output"].as<string>();
 
     //Model object setup
-    Model mdl;
-
-    //Timing Object setup
-    Timing timing;
+    Model model;
 
     string input_file;
     if(vm.count("input"))
-        input_file = vm["input"].as<string>();
-
-    //Border object setup.. Rectangular boundaries
-    Border border;
-    
-    //Tree object setup
-    Tree tree;
-    
-    //Geometry difference
-    GeometryDifference gd;
+        model.prog_opt.input_file_name = vm["input"].as<string>();
 
     //Reading data from json file if it is specified so
     {
         bool q_update_border = false;
-        if(vm.count("input"))
-            Open(mdl, border, tree, gd, vm["input"].as<string>(), q_update_border);
+        if(!model.prog_opt.input_file_name.empty())
+            Open(model, vm["input"].as<string>(), q_update_border);
 
-        SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
+        SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
 
-        mdl.CheckParametersConsistency();
+        model.CheckParametersConsistency();
 
-        if(mdl.prog_opt.verbose)
-            cout << mdl << endl;
+        if(model.prog_opt.verbose)
+            cout << model << endl;
 
         if(!q_update_border)
         {
-            border.MakeRectangular(
-            {mdl.width, mdl.height}, 
-            mdl.boundary_ids,
-            {mdl.dx},
+            model.border.MakeRectangular(
+            {model.width, model.height}, 
+            model.boundary_ids,
+            {model.dx},
             {1});
 
-            tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+            model.tree.Initialize(model.border.GetSourcesPoint(), model.border.GetSourcesNormalAngle(), model.border.GetSourcesId());
         }
     }
     //check of consistency between Border and Tree
-    if(border.GetSourcesId() != tree.SourceBranchesID())
+    if(model.border.GetSourcesId() != model.tree.SourceBranchesID())
         throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
 
     //Triangle mesh object setup
-    Triangle tria;
-    tria.AreaConstrain = true;
-    tria.CustomConstraint = true;
-    tria.MaxTriaArea = mdl.mesh.max_area;
-    tria.MinAngle = mdl.mesh.min_angle;
-    tria.Verbose = false;
-    tria.Quite =  true;
-    tria.ref = &mdl.mesh;
+    Triangle tria(&model.mesh);
 
     //Simulation object setup
-    River::Solver sim(mdl.solver_params.quadrature_degree);
-    sim.field_value = mdl.field_value;
-    sim.tollerance = mdl.solver_params.tollerance;
-    sim.number_of_iterations = mdl.solver_params.num_of_iterrations;
-    sim.num_of_static_refinments = mdl.mesh.static_refinment_steps;
-    sim.num_of_adaptive_refinments = mdl.solver_params.adaptive_refinment_steps;
-    sim.refinment_fraction = mdl.solver_params.refinment_fraction;
-    sim.verbose = mdl.prog_opt.verbose;
-
+    River::Solver sim(&model);
 
     //MAIN LOOP
     unsigned i = 0;
-    print(mdl.prog_opt.verbose, "Start of main loop...");
+    print(model.prog_opt.verbose, "Start of main loop...");
     //forward simulation case
-    if(vm["simulation-type"].as<unsigned>() == 0)
+    
+    if(model.prog_opt.simulation_type == 0)
     {
-        print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
+        print(model.prog_opt.verbose, "Forward river simulation type selected.");
         //! [StopConditionExample]
-        while(!StopConditionOfRiverGrowth(mdl, border, tree) && i < mdl.prog_opt.number_of_steps)
+        while(!StopConditionOfRiverGrowth(model) && i < model.prog_opt.number_of_steps)
         {
         //! [StopConditionExample]
-            print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
+            print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             string str = output_file_name;
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);
 
-            ForwardRiverEvolution(mdl, tria, sim, tree, border, str);
+            ForwardRiverEvolution(model, tria, sim, str);
             
-            timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str, input_file);
+            model.timing.Record();//Timing
+            Save(model, str);
             ++i;
         }
     }
     //Backward simulation
-    else if(vm["simulation-type"].as<unsigned>() == 1)
+    else if(model.prog_opt.simulation_type == 1)
     {
-        print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
-        while(tree.HasEmptySourceBranch() == false && i < mdl.prog_opt.number_of_steps)    
+        print(model.prog_opt.verbose, "Backward river simulation type selected.");
+        while(model.tree.HasEmptySourceBranch() == false && i < model.prog_opt.number_of_steps)    
         {
-            print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
+            print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
             
             string str = output_file_name;
             if(vm.count("save-each-step"))
                 str += "_" + to_string(i);
             
-            BackwardForwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
+            BackwardForwardRiverEvolution(model, tria, sim, str);
 
-            timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str, input_file);
+            model.timing.Record();//Timing
+            Save(model, str);
             ++i;
         }
     }
     //test simulation
-    else if(vm["simulation-type"].as<unsigned>() == 2)
+    else if(model.prog_opt.simulation_type == 2)
     {   
-        print(mdl.prog_opt.verbose, "Test river simulation type selected.");
+        print(model.prog_opt.verbose, "Test river simulation type selected.");
 
         //reinitialize geometry
-        auto b_id = mdl.river_boundary_id;
-        border.MakeRectangular(
-            {mdl.width, mdl.height}, 
+        auto b_id = model.river_boundary_id;
+        model.border.MakeRectangular(
+            {model.width, model.height}, 
             {b_id, b_id, b_id, b_id},
-            {mdl.dx},
+            {model.dx},
             {1});
 
-        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
+        model.tree.Initialize(model.border.GetSourcesPoint(), model.border.GetSourcesNormalAngle(), model.border.GetSourcesId());
 
-        auto source_branch_id = border.GetSourcesId().back();
-        tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
+        auto source_branch_id = model.border.GetSourcesId().back();
+        model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
 
-        EvaluateSeriesParams(mdl, tria, sim, tree, border, gd, output_file_name);
-        timing.Record();//Timing
-        Save(mdl, timing, border, tree, gd, output_file_name);
+        EvaluateSeriesParams(model, tria, sim, output_file_name);
+        model.timing.Record();//Timing
+        Save(model, output_file_name);
 
     }
     //unhandled case
     else 
-        throw invalid_argument("Invalid simulation type selected: " + to_string(vm["simulation-type"].as<unsigned>()));
+        throw invalid_argument("Invalid simulation type selected: " + to_string(model.prog_opt.simulation_type));
 
-    print(mdl.prog_opt.verbose, "End of main loop...");
-    print(mdl.prog_opt.verbose, "Done.");
+    print(model.prog_opt.verbose, "End of main loop...");
+    print(model.prog_opt.verbose, "Done.");
 
     return 0;
 }

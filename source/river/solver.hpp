@@ -81,12 +81,21 @@ namespace River
     {
         public:
             ///Solver constructor
-            Solver(int quadrature_degree = 2): 
+            Solver(Model *model): 
+                model(model),
                 dof_handler(triangulation),
-                fe(quadrature_degree), 
-                quadrature_formula(quadrature_degree),
-                face_quadrature_formula(quadrature_degree)
-            { };
+                fe(model->solver_params.quadrature_degree), 
+                quadrature_formula(model->solver_params.quadrature_degree),
+                face_quadrature_formula(model->solver_params.quadrature_degree)
+            { 
+                tollerance = model->solver_params.tollerance;
+                number_of_iterations = model->solver_params.num_of_iterrations;
+                num_of_adaptive_refinments = model->solver_params.adaptive_refinment_steps;
+                refinment_fraction = model->solver_params.refinment_fraction;
+                verbose = model->prog_opt.verbose;
+                field_value = model->field_value;
+                num_of_static_refinments = model->mesh.static_refinment_steps;
+            };
             
             ~Solver(){clear();}
 
@@ -161,6 +170,8 @@ namespace River
             double coarsening_fraction = 0;
 
         private:
+            Model *model = NULL;
+
             ///Used for setup boudary conditions.
             map<double, vector<int>> boundaryRegionValue;
 
