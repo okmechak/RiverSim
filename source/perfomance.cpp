@@ -21,12 +21,10 @@ int main(int argc, char *argv[])
         River::Model model;
 
         //initialization mdl object
-        
-        bool flag = false;
         if(vm.count("input"))
         {
             model.prog_opt.input_file_name = vm["input"].as<string>();
-            River::Open(model, model.prog_opt.input_file_name, flag);
+            River::Open(model);
         }
 
         River::SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
@@ -36,10 +34,10 @@ int main(int argc, char *argv[])
         if(model.border.vertices.empty())
         {
             model.border.MakeRectangular(
-                {model.width, model.height}, 
+                { model.width, model.height }, 
                 model.boundary_ids,
-                {model.dx},
-                {1});
+                { model.dx },
+                { 1 });
 
             model.tree.Initialize(
                 model.border.GetSourcesPoint(), 

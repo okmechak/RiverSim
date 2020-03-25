@@ -252,12 +252,12 @@ namespace River
     cxxopts::ParseResult process_program_options(int argc, char* argv[]);
 
     ///Initializes River::Model object by Program Options values.
-    void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl);
+    void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& model);
 
     ///Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) and backward simulation data(GeometryDifference).
-    void Save(const Model& mdl, const string file_name);
+    void Save(const Model& model, const string file_name);
     
     ///Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model).
-    void Open(Model& mdl, string file_name, bool& q_update_border);
+    void Open(Model& model);
 
 }//namespace River

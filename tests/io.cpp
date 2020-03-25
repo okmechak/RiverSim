@@ -101,10 +101,6 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.growth_min_distance == model_po.growth_min_distance);
 }
 
-
-
-
-
 BOOST_AUTO_TEST_CASE( program_options, 
     *utf::tolerance(eps))
 {
@@ -353,11 +349,9 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     Save(mdl_out, "iotest");
     
     BOOST_TEST_CHECKPOINT("Input");
-    bool q = false;
-    Open(mdl_in, "iotest.json", q);
 
-
-    BOOST_TEST(q == true);
+    mdl_in.prog_opt.input_file_name = "iotest.json";
+    Open(mdl_in);
 
     //program options
     BOOST_TEST(mdl_in.prog_opt.verbose == true);

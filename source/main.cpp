@@ -181,38 +181,31 @@ int main(int argc, char *argv[])
     //Model object setup
     Model model;
 
-    model.prog_opt.output_file_name = vm["output"].as<string>();
-    string input_file;
     if(vm.count("input"))
-        model.prog_opt.input_file_name = vm["input"].as<string>();
-
-    //Reading data from json file if it is specified so
     {
-        bool q_update_border = false;
-        if(!model.prog_opt.input_file_name.empty())
-            Open(model, vm["input"].as<string>(), q_update_border);
-
-        SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
-
-        model.CheckParametersConsistency();
-
-        if(model.prog_opt.verbose)
-            cout << model << endl;
-
-        if(model.border.vertices.empty())
-        {
-            model.border.MakeRectangular(
-            {model.width, model.height}, 
-            model.boundary_ids,
-            {model.dx},
-            {1});
-
-            model.tree.Initialize(model.border.GetSourcesPoint(), model.border.GetSourcesNormalAngle(), model.border.GetSourcesId());
-        }
+        model.prog_opt.input_file_name = vm["input"].as<string>();
+        Open(model);
     }
-    //check of consistency between Border and Tree
-    if(model.border.GetSourcesId() != model.tree.SourceBranchesID())
-        throw Exception("Border ids and tree ids are not the same, or are not in same order!");
+
+    SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
+
+    model.CheckParametersConsistency();
+
+    if (model.prog_opt.verbose) cout << model << endl;
+
+    if(model.border.vertices.empty())
+    {
+        model.border.MakeRectangular(
+            { model.width, model.height }, 
+            model.boundary_ids,
+            { model.dx },
+            { 1 });
+
+        model.tree.Initialize(
+            model.border.GetSourcesPoint(), 
+            model.border.GetSourcesNormalAngle(), 
+            model.border.GetSourcesId());
+    }
 
     //Triangle mesh object setup
     Triangle tria(&model.mesh);
@@ -221,11 +214,10 @@ int main(int argc, char *argv[])
     River::Solver sim(&model);
 
     //MAIN LOOP
-    //save-each-step option don't work here anymore
     unsigned i = 0;
     print(model.prog_opt.verbose, "Start of main loop...");
+
     //forward simulation case
-    
     if(model.prog_opt.simulation_type == 0)
     {
         print(model.prog_opt.verbose, "Forward river simulation type selected.");
@@ -241,7 +233,7 @@ int main(int argc, char *argv[])
             ForwardRiverEvolution(model, tria, sim, str);
             
             model.timing.Record();//Timing
-            Save(model, str);
+            Save(model, model.prog_opt.output_file_name);
             ++i;
         }
     }
@@ -277,7 +269,10 @@ int main(int argc, char *argv[])
             {model.dx},
             {1});
 
-        model.tree.Initialize(model.border.GetSourcesPoint(), model.border.GetSourcesNormalAngle(), model.border.GetSourcesId());
+        model.tree.Initialize(
+            model.border.GetSourcesPoint(), 
+            model.border.GetSourcesNormalAngle(), 
+            model.border.GetSourcesId());
 
         auto source_branch_id = model.border.GetSourcesId().back();
         model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
