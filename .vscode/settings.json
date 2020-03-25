@@ -58,7 +58,17 @@
         "unordered_set": "cpp",
         "*.edp": "cpp",
         "*.ipp": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "csignal": "cpp",
+        "codecvt": "cpp",
+        "iterator": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "regex": "cpp",
+        "set": "cpp",
+        "string": "cpp",
+        "future": "cpp",
+        "cfenv": "cpp"
     },
     "files.watcherExclude" :{
         "**/.git/objects/**": true,
