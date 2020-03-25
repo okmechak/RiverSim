@@ -35,8 +35,12 @@ if(BUILD_PROGRAM)
 
     add_executable(riversim ${SOURCE_FILES})
     deal_ii_setup_target(riversim)
-
     target_link_libraries(riversim river)
 
+    add_executable(riversim_perfomance perfomance.cpp)
+    deal_ii_setup_target(riversim_perfomance)
+    target_link_libraries(riversim_perfomance riv)
+
     install(TARGETS riversim DESTINATION riversim)
+    install(TARGETS riversim_perfomance DESTINATION riversim)
 endif(BUILD_PROGRAM)

@@ -146,6 +146,12 @@ namespace River
             ///a - maximum triangle area constrain. a0.1
             double MaxTriaArea = -1.;
 
+            ///Maximal triangle edge lenght
+            double MaxEdgeLenght = 0.5;
+            double MinEdgeLenght = 0.01;
+
+            double MaxTriangleRation = 2;
+
             ///If true, then mesh element will be constrined to some maxiaml value.
             bool AreaConstrain = false;
             ///User defined function constrint
