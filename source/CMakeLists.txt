@@ -17,7 +17,7 @@ if(BUILD_PROGRAM)
         set(DEALII_DIR ${DEALII_DEB_DIR})
     endif() 
 
-    find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
+    find_package(deal.II REQUIRED HINTS ${DEALII_DIR} "/mnt/c/users/ofcra/lib/dealii_d_shared")
     deal_ii_initialize_cached_variables()
 
     mark_as_advanced(deal.II_DIR DEALII_DIR DEAL_II_PREFER_STATIC_LIBS)
