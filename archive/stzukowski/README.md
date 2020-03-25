@@ -1,5 +1,5 @@
 # Stasiek's Żukowski results from experiments and Mathematica scripts
-Contact: stasqo@gmail.com
+Contact: zukowski.st@gmail.com
 
 # Mathematica scripts:
 * _back_analysis.nb_ - analysis of the data obtained in the back evolution
