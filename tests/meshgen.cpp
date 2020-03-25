@@ -27,19 +27,19 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
     auto sources_x_coord = vector<double>{0.5, 0.6, 0.7, 0.8};
     auto sources_id = vector<int>{1, 2, 3, 4};
     
-    Border border;
-    border.MakeRectangular(
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
-
-    Tree tree;
-    tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-
-    BOOST_TEST(border.GetSourcesId() == tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl, tree, border);
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+
+    BOOST_TEST(mdl.border.GetSourcesId() == mdl.tree.SourceBranchesID());
+    
+    BOOST_TEST_MESSAGE( "Boundary Generator start" );
+    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
+    BOOST_TEST_MESSAGE( "Boundary Generator done" );
 
 
     BOOST_TEST(mesh.get_n_vertices() == 8);
@@ -110,20 +110,19 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     auto sources_x_coord = vector<double>{0.5, 0.6, 0.7, 0.8};
     auto sources_id = vector<int>{1, 2, 3, 4};
     
-    Border border;
-    border.MakeRectangular(
+    
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
 
-    Tree tree;
-    tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tree.AddPolars({{1, 0}, {2, 0}, {3, 0}, {4, 0}}, sources_id);
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.AddPolars({{1, 0}, {2, 0}, {3, 0}, {4, 0}}, sources_id);
 
-    BOOST_TEST(border.GetSourcesId() == tree.SourceBranchesID());
+    BOOST_TEST(mdl.border.GetSourcesId() == mdl.tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl, tree, border);
+    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
 
 
     BOOST_TEST(mesh.get_n_vertices() == 16);
@@ -250,21 +249,19 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
     auto sources_x_coord = vector<double>{0.5, 0.8};
     auto sources_id = vector<int>{1, 2};
     
-    Border border;
-    border.MakeRectangular(
+    mdl.border.MakeRectangular(
         region_size, 
         boundary_ids,
         sources_x_coord,
         sources_id);
 
-    Tree tree;
-    tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-    tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
-    tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
+    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
+    mdl.tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
 
-    BOOST_TEST(border.GetSourcesId() == tree.SourceBranchesID());
+    BOOST_TEST(mdl.border.GetSourcesId() == mdl.tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl, tree, border);
+    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
 
     BOOST_TEST(mesh.get_n_lines() == 14);
     BOOST_TEST(mesh.get_n_vertices() == 14);

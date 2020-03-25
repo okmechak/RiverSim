@@ -131,9 +131,9 @@
 
     \section team Team
 
-    + prof. dr hab Piotr Szymczak
-    + student Stasiek Żukowski
     + student Oleg Kmechak
+    + student Stasiek Żukowski
+    + prof. dr hab Piotr Szymczak
 
 
     \section references References
@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
         if(model.prog_opt.verbose)
             cout << model << endl;
 
-        if(!q_update_border)
+        if(model.border.vertices.empty())
         {
             model.border.MakeRectangular(
             {model.width, model.height}, 
@@ -225,6 +225,7 @@ int main(int argc, char *argv[])
     River::Solver sim(&model);
 
     //MAIN LOOP
+    //save-each-step option don't work here anymore
     unsigned i = 0;
     print(model.prog_opt.verbose, "Start of main loop...");
     //forward simulation case
@@ -289,6 +290,9 @@ int main(int argc, char *argv[])
         model.timing.Record();//Timing
         Save(model, output_file_name);
 
+        EvaluateSeriesParams(model, tria, sim, output_file_name);
+        model.timing.Record();//Timing
+        Save(model, model.prog_opt.output_file_name);
     }
     //unhandled case
     else 

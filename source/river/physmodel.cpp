@@ -256,6 +256,9 @@ namespace River
         
         if(solver_params.num_of_iterrations < 2000)
             cout << "num_of_iterrations value is very small: " << solver_params.num_of_iterrations << endl;
+
+        if(solver_params.renumbering_type > 7)
+            throw invalid_argument("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
     }
 
     tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br)

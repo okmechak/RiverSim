@@ -398,6 +398,9 @@ namespace River
             ///Polynom degree of quadrature integration.
             unsigned quadrature_degree = 3;
 
+            ///Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
+            unsigned renumbering_type = 0;
+
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const SolverParams & mp);
     };
@@ -441,7 +444,7 @@ namespace River
             int river_boundary_id = 4;
 
             ///all boundaries ids in next order - right, top, left, bottom and river.
-            vector<int> boundary_ids{1, 2, 3, river_boundary_id};
+            vector<int> boundary_ids{1, 5, 3, river_boundary_id};
 
             //Model parameters
             /*! \brief Boundary conditions.
