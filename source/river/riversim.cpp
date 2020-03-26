@@ -63,7 +63,7 @@ namespace River
         return xmax > rxmax - dl || ymax > rymax - dl || xmin < rxmin + dl;
     }
 
-    void TriangulateConvertRefineAndSolve(Model& model, Triangle& tria, Solver& sim, const string file_name)
+    tethex::Mesh TriangulateBoundaries(Model& model, Triangle& tria, const string file_name)
     {
         print(model.prog_opt.verbose, "Boundary generation...");
         //initial boundaries of mesh
@@ -73,12 +73,19 @@ namespace River
         print(model.prog_opt.verbose, "Mesh generation...");
         tria.mesh_params->tip_points = model.tree.TipPoints();
         tria.generate(mesh);//triangulation
+
         print(model.prog_opt.verbose, "Triangles to quadrangles trasformation...");
         mesh.convert();//convertaion from triangles to quadrangles
         model.mesh.number_of_quadrangles = mesh.get_n_quadrangles(); // just saving number of quadrangles
+
         print(model.prog_opt.verbose, "Save intermediate output(*.msh)...");
         mesh.write(file_name + ".msh");
 
+        return mesh;
+    }
+
+    void SolvePDE(Model& model, Solver& sim, const string file_name)
+    {
         //Simulation
         //Deal.II library
         print(model.prog_opt.verbose, "Solving...");
@@ -92,14 +99,8 @@ namespace River
             sim.output_results(file_name);
     }
 
-
-    void ForwardRiverEvolution(Model& model, Triangle& tria, Solver& sim,
-        const string file_name, double max_a_backward)
+    map<int, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim)
     {
-        TriangulateConvertRefineAndSolve(model, tria, sim, file_name);
-
-        //Iterate over each tip and handle branch growth and its bifurcations
-        print(model.prog_opt.verbose, "Series parameters integration over each tip point...");
         map<int, vector<double>> id_series_params;
         for(auto id: model.tree.TipBranchesId())
         {
@@ -108,16 +109,21 @@ namespace River
             id_series_params[id] = sim.integrate(model, tip_point, tip_angle);
         }
 
-        //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
-        double max_a = 0.;
-        if(max_a_backward > 0)
-            max_a = max_a_backward;
-        else 
-            for(auto&[id, series_params]: id_series_params)
-                if (max_a < series_params.at(0))
-                    max_a = series_params.at(0);
+        return id_series_params;
+    }
 
-        print(model.prog_opt.verbose, "Growth(or bifurcation) of tree...");
+    double MaximalA1Value(map<int, vector<double>> ids_seriesparams_map)
+    {
+        double max_a = 0.;
+        for(auto&[id, series_params]: ids_seriesparams_map)
+            if(max_a < series_params.at(0))
+                max_a = series_params.at(0);
+
+        return max_a;
+    }
+
+    void GrowTree(Model &model, map<int, vector<double>> id_series_params, double max_a)
+    {
         for(auto&[id, series_params]: id_series_params)
             if(model.q_growth(series_params))
             {
@@ -132,19 +138,31 @@ namespace River
                     model.tree.AddSubBranches(id, br_left, br_right);
                 }
                 else
-                    model.tree.GetBranch(id)->AddPoint(model.next_point(series_params, model.tree.GetBranch(id)->Lenght(), max_a));
+                    model.tree.GetBranch(id)->AddPoint(
+                        model.next_point(
+                            series_params, 
+                            model.tree.GetBranch(id)->Lenght(), 
+                            max_a));
             }
-        sim.clear();
     }
 
-    double MaximalA1Value(map<int, vector<double>> ids_seriesparams_map)
-    {
-        double max_a = 0.;
-        for(auto&[id, series_params]: ids_seriesparams_map)
-            if(max_a < series_params.at(0))
-                max_a = series_params.at(0);
 
-        return max_a;
+    void ForwardRiverEvolution(Model& model, Triangle& tria, Solver& sim,
+        const string file_name, double max_a_backward)
+    {
+        TriangulateBoundaries(model, tria, file_name);
+        SolvePDE(model, sim, file_name);
+        auto id_series_params_map = EvaluateSeriesParameteresOfTips(model, sim);
+        sim.clear();
+
+        //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
+        double max_a = 0.;
+        if(max_a_backward > 0)
+            max_a = max_a_backward;
+        else 
+            max_a = MaximalA1Value(id_series_params_map);
+
+        GrowTree(model, id_series_params_map, max_a);
     }
 
     //This function only makes evaluation of bacward river growth based on pde solution and geometry
@@ -214,7 +232,8 @@ namespace River
         for(unsigned i = 0; i < model.prog_opt.number_of_backward_steps; ++i)
         {
             print(model.prog_opt.verbose, "\t" + to_string(i));
-            TriangulateConvertRefineAndSolve(model, tria, sim, file_name + + "_backward_" + to_string(i));
+            TriangulateBoundaries(model, tria, file_name);
+            SolvePDE(model, sim, file_name + "_backward_" + to_string(i));
             if( ids_seriesparams_map.empty())
             {
                 ids_seriesparams_map = BackwardRiverEvolution(model, sim);
@@ -257,7 +276,8 @@ namespace River
     void EvaluateSeriesParams(Model& model, Triangle& tria, Solver& sim, 
          const string file_name)
     {
-        TriangulateConvertRefineAndSolve(model, tria, sim, file_name);
+        TriangulateBoundaries(model, tria, file_name);
+        SolvePDE(model, sim, file_name);
 
         auto branch_id = model.tree.TipBranchesId().back();
         if(branch_id != 1)
