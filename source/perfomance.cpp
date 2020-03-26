@@ -7,7 +7,6 @@
 using namespace std;
 
 int main(int argc, char *argv[])
-
 {
     try
     {
@@ -29,21 +28,10 @@ int main(int argc, char *argv[])
 
         River::SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
 
-        model.CheckParametersConsistency();
-
         if(model.border.vertices.empty())
-        {
-            model.border.MakeRectangular(
-                { model.width, model.height }, 
-                model.boundary_ids,
-                { model.dx },
-                { 1 });
+            model.InitializeBorderAndTree();
 
-            model.tree.Initialize(
-                model.border.GetSourcesPoint(), 
-                model.border.GetSourcesNormalAngle(), 
-                model.border.GetSourcesId());
-        }
+        model.CheckParametersConsistency();
 
         //згенерувати геометрію всередині 
         //РіверСолвер і зробити цілу еволюцію там
@@ -53,16 +41,16 @@ int main(int argc, char *argv[])
         FE_Q<dim> fe(2);
         River::RiverSolver r(fe, &model);
         r.run();
-
     }
     catch(const River::Exception& caught)
     {
         cout << caught.what() << endl;
+        return 1;
     }
     catch(...) 
     {
         cout << "GOT UNDEFINED ERROR" << endl;
-        throw;
+        return 2;
     }
     
     return 0;

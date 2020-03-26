@@ -31,7 +31,7 @@ namespace River
         write << "\t verbose = "                  << po.verbose          << endl;
         write << "\t output_file_name = "         << po.output_file_name << endl;
         write << "\t input_file_name = "          << po.input_file_name  << endl;
-        write << "\t save each step"              << po.save_each_step   << endl; 
+        write << "\t save each step = "              << po.save_each_step   << endl; 
         return write;
     }
 
@@ -111,6 +111,20 @@ namespace River
         write << "\t ds = "               << mdl.ds << endl;        
 
         return write;
+    }
+
+    void Model::InitializeBorderAndTree()
+    {
+        border.MakeRectangular(
+            { width, height }, 
+            boundary_ids,
+            { dx },
+            { 1 });
+
+        tree.Initialize(
+            border.GetSourcesPoint(), 
+            border.GetSourcesNormalAngle(), 
+            border.GetSourcesId());
     }
 
     void Model::CheckParametersConsistency() const
@@ -259,6 +273,9 @@ namespace River
 
         if(solver_params.renumbering_type > 7)
             throw Exception("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
+
+        if (border.GetSourcesId() != tree.SourceBranchesID())
+            throw Exception("Border sources ids does not fit trees border sources.");
     }
 
     tethex::Mesh BoundaryGenerator(const Model& model)

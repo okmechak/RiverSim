@@ -191,23 +191,12 @@ int main(int argc, char *argv[])
 
         SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
 
-        model.CheckParametersConsistency();
-
         if (model.prog_opt.verbose) cout << model << endl;
 
         if(model.border.vertices.empty())
-        {
-            model.border.MakeRectangular(
-                { model.width, model.height }, 
-                model.boundary_ids,
-                { model.dx },
-                { 1 });
-
-            model.tree.Initialize(
-                model.border.GetSourcesPoint(), 
-                model.border.GetSourcesNormalAngle(), 
-                model.border.GetSourcesId());
-        }
+            model.InitializeBorderAndTree();
+        
+        model.CheckParametersConsistency();
 
         //Triangle mesh object setup
         Triangle tria(&model.mesh);

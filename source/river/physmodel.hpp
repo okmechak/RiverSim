@@ -429,6 +429,8 @@ namespace River
             ///Solver parameters used by Deal.II
             SolverParams solver_params;
 
+            void InitializeBorderAndTree();
+
             //Geometrical parameters
             ///Initial x position of source.
             ///Valid only for rectangular area.
