@@ -144,7 +144,6 @@ namespace River{
         cout << endl;
     }
 
-
     struct triangulateio Triangle::tethex_to_io(const tethex::Mesh &mesh) const
     {
         struct triangulateio io;
@@ -284,7 +283,6 @@ namespace River{
         //cos it is already present at the end of generate() function
     }
 
-
     void Triangle::set_all_values_to_default()
     {
         update_options();
@@ -293,7 +291,6 @@ namespace River{
         set_tria_to_default(&vorout);
     }
 
-
     void Triangle::free_allocated_memory()
     {
 
@@ -301,7 +298,6 @@ namespace River{
         triangulateiofree(&out);
         triangulateiofree(&vorout);
     }
-
 
     string Triangle::update_options()
     {
@@ -352,7 +348,6 @@ namespace River{
 
         return options;
     }
-
 
     void Triangle::print_options(bool qDetailedDescription)
     {
@@ -405,15 +400,10 @@ namespace River{
         return &out;
     }
 
-
-
-
     struct triangulateio* Triangle::get_voronoi()
     {
         return &vorout;
     }
-
-
 
     void Triangle::generate(tethex::Mesh &initMesh)
     {
