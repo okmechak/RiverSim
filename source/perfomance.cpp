@@ -17,21 +17,7 @@ int main(int argc, char *argv[])
         if (vm.count("help") || vm.count("version"))
             return 0;
             
-        River::Model model;
-
-        //initialization mdl object
-        if(vm.count("input"))
-        {
-            model.prog_opt.input_file_name = vm["input"].as<string>();
-            River::Open(model);
-        }
-
-        River::SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
-
-        if(model.border.vertices.empty())
-            model.InitializeBorderAndTree();
-
-        model.CheckParametersConsistency();
+        auto model = River::InitializeModelObject(vm);
 
         //згенерувати геометрію всередині 
         //РіверСолвер і зробити цілу еволюцію там

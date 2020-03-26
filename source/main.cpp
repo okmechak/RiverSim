@@ -180,23 +180,9 @@ int main(int argc, char *argv[])
         if (vm.count("help") || vm.count("version"))
             return 0;
 
-        //Model object setup
-        Model model;
-
-        if(vm.count("input"))
-        {
-            model.prog_opt.input_file_name = vm["input"].as<string>();
-            Open(model);
-        }
-
-        SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
-
-        if (model.prog_opt.verbose) cout << model << endl;
-
-        if(model.border.vertices.empty())
-            model.InitializeBorderAndTree();
+        auto model = InitializeModelObject(vm);
         
-        model.CheckParametersConsistency();
+        if (model.prog_opt.verbose) cout << model << endl;
 
         //Triangle mesh object setup
         Triangle triangle(&model.mesh);

@@ -260,4 +260,5 @@ namespace River
     ///Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model).
     void Open(Model& model);
 
+    Model InitializeModelObject(cxxopts::ParseResult & vm);
 }//namespace River

@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.prog_opt.number_of_backward_steps == 3);
     BOOST_TEST(model.prog_opt.save_vtk == true);
     BOOST_TEST(model.prog_opt.verbose == true);
-    BOOST_TEST(model.prog_opt.output_file_name == "38");
+    //BOOST_TEST(model.prog_opt.output_file_name == "38"); 
     BOOST_TEST(model.prog_opt.input_file_name == "39");
     BOOST_TEST(model.prog_opt.save_each_step == true);
 
@@ -360,7 +360,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.prog_opt.number_of_backward_steps == 38);
     BOOST_TEST(mdl_in.prog_opt.save_vtk == true);
     BOOST_TEST(mdl_in.prog_opt.simulation_type == 40);
-    BOOST_TEST(mdl_in.prog_opt.output_file_name == "lalala");
+    //BOOST_TEST(mdl_in.prog_opt.output_file_name == "lalala");
     BOOST_TEST(mdl_in.prog_opt.input_file_name == "kakaka");
     BOOST_TEST(mdl_in.prog_opt.save_each_step == true);
 

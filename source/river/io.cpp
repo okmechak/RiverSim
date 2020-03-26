@@ -493,7 +493,7 @@ namespace River
                 if (jprogopt.count("SaveVTK")) jprogopt.at("SaveVTK").get_to(model.prog_opt.save_vtk);
                 
                 if (jprogopt.count("InputFileName")) jprogopt.at("InputFileName").get_to(model.prog_opt.input_file_name);
-                if (jprogopt.count("OutputFileName")) jprogopt.at("OutputFileName").get_to(model.prog_opt.output_file_name);
+                //if (jprogopt.count("OutputFileName")) jprogopt.at("OutputFileName").get_to(model.prog_opt.output_file_name);
                 if (jprogopt.count("SaveEachStep")) jprogopt.at("SaveEachStep").get_to(model.prog_opt.save_each_step);
             }
 
@@ -632,5 +632,23 @@ namespace River
             jgd.at("AlongBranches").get_to(model.geometry_difference.branches_series_params_and_geom_diff);
             jgd.at("BifuractionPoints").get_to(model.geometry_difference.branches_bifuraction_info);
         }
+    }
+
+    Model InitializeModelObject(cxxopts::ParseResult & vm)
+    {
+        Model model;
+        if(vm.count("input"))
+        {
+            model.prog_opt.input_file_name = vm["input"].as<string>();
+            Open(model);
+        }
+
+        //parameters set from program options has higher priority over input file
+        SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
+
+        if(model.border.vertices.empty())
+            model.InitializeBorderAndTree();
+        
+        model.CheckParametersConsistency();
     }
 }//namespace River
