@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
         model.CheckParametersConsistency();
 
         //Triangle mesh object setup
-        Triangle tria(&model.mesh);
+        Triangle triangle(&model.mesh);
 
         //Simulation object setup
         River::Solver sim(&model);
@@ -217,14 +217,14 @@ int main(int argc, char *argv[])
             {
             //! [StopConditionExample]
                 print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-                string str = model.prog_opt.output_file_name;
+                string output_file_name = model.prog_opt.output_file_name;
                 if(model.prog_opt.save_each_step)
-                    str += "_" + to_string(i);
+                    output_file_name += "_" + to_string(i);
 
-                ForwardRiverEvolution(model, tria, sim, str);
+                ForwardRiverEvolution(model, triangle, sim, output_file_name);
 
                 model.timing.Record();//Timing
-                Save(model, model.prog_opt.output_file_name);
+                Save(model, output_file_name);
                 ++i;
             }
         }
@@ -236,14 +236,14 @@ int main(int argc, char *argv[])
             {
                 print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
 
-                string str = model.prog_opt.output_file_name;
+                string output_file_name = model.prog_opt.output_file_name;
                 if(model.prog_opt.save_each_step)
-                    str += "_" + to_string(i);
+                    output_file_name += "_" + to_string(i);
 
-                BackwardForwardRiverEvolution(model, tria, sim, str);
+                BackwardForwardRiverEvolution(model, triangle, sim, output_file_name);
 
                 model.timing.Record();//Timing
-                Save(model, str);
+                Save(model, output_file_name);
                 ++i;
             }
         }
@@ -268,7 +268,7 @@ int main(int argc, char *argv[])
             auto source_branch_id = model.border.GetSourcesId().back();
             model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
 
-            EvaluateSeriesParams(model, tria, sim, model.prog_opt.output_file_name);
+            EvaluateSeriesParams(model, triangle, sim, model.prog_opt.output_file_name);
             model.timing.Record();//Timing
             Save(model, model.prog_opt.output_file_name);
         }
