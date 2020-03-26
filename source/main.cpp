@@ -172,121 +172,134 @@ using namespace std;
 */
 int main(int argc, char *argv[])
 {
-    //Program options
-    auto vm = process_program_options(argc, argv);
-
-    if (vm.count("help") || vm.count("version"))
-        return 0;
-
-    //Model object setup
-    Model model;
-
-    if(vm.count("input"))
+    try
     {
-        model.prog_opt.input_file_name = vm["input"].as<string>();
-        Open(model);
-    }
+        //Program options
+        auto vm = process_program_options(argc, argv);
 
-    SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
+        if (vm.count("help") || vm.count("version"))
+            return 0;
 
-    model.CheckParametersConsistency();
+        //Model object setup
+        Model model;
 
-    if (model.prog_opt.verbose) cout << model << endl;
-
-    if(model.border.vertices.empty())
-    {
-        model.border.MakeRectangular(
-            { model.width, model.height }, 
-            model.boundary_ids,
-            { model.dx },
-            { 1 });
-
-        model.tree.Initialize(
-            model.border.GetSourcesPoint(), 
-            model.border.GetSourcesNormalAngle(), 
-            model.border.GetSourcesId());
-    }
-
-    //Triangle mesh object setup
-    Triangle tria(&model.mesh);
-
-    //Simulation object setup
-    River::Solver sim(&model);
-
-    //MAIN LOOP
-    unsigned i = 0;
-    print(model.prog_opt.verbose, "Start of main loop...");
-
-    //forward simulation case
-    if(model.prog_opt.simulation_type == 0)
-    {
-        print(model.prog_opt.verbose, "Forward river simulation type selected.");
-        //! [StopConditionExample]
-        while(!StopConditionOfRiverGrowth(model) && i < model.prog_opt.number_of_steps)
+        if(vm.count("input"))
         {
-        //! [StopConditionExample]
-            print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-            string str = model.prog_opt.output_file_name;
-            if(model.prog_opt.save_each_step)
-                str += "_" + to_string(i);
+            model.prog_opt.input_file_name = vm["input"].as<string>();
+            Open(model);
+        }
 
-            ForwardRiverEvolution(model, tria, sim, str);
-            
+        SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
+
+        model.CheckParametersConsistency();
+
+        if (model.prog_opt.verbose) cout << model << endl;
+
+        if(model.border.vertices.empty())
+        {
+            model.border.MakeRectangular(
+                { model.width, model.height }, 
+                model.boundary_ids,
+                { model.dx },
+                { 1 });
+
+            model.tree.Initialize(
+                model.border.GetSourcesPoint(), 
+                model.border.GetSourcesNormalAngle(), 
+                model.border.GetSourcesId());
+        }
+
+        //Triangle mesh object setup
+        Triangle tria(&model.mesh);
+
+        //Simulation object setup
+        River::Solver sim(&model);
+
+        //MAIN LOOP
+        unsigned i = 0;
+        print(model.prog_opt.verbose, "Start of main loop...");
+
+        //forward simulation case
+        if(model.prog_opt.simulation_type == 0)
+        {
+            print(model.prog_opt.verbose, "Forward river simulation type selected.");
+            //! [StopConditionExample]
+            while(!StopConditionOfRiverGrowth(model) && i < model.prog_opt.number_of_steps)
+            {
+            //! [StopConditionExample]
+                print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
+                string str = model.prog_opt.output_file_name;
+                if(model.prog_opt.save_each_step)
+                    str += "_" + to_string(i);
+
+                ForwardRiverEvolution(model, tria, sim, str);
+
+                model.timing.Record();//Timing
+                Save(model, model.prog_opt.output_file_name);
+                ++i;
+            }
+        }
+        //Backward simulation
+        else if(model.prog_opt.simulation_type == 1)
+        {
+            print(model.prog_opt.verbose, "Backward river simulation type selected.");
+            while(model.tree.HasEmptySourceBranch() == false && i < model.prog_opt.number_of_steps)    
+            {
+                print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
+
+                string str = model.prog_opt.output_file_name;
+                if(model.prog_opt.save_each_step)
+                    str += "_" + to_string(i);
+
+                BackwardForwardRiverEvolution(model, tria, sim, str);
+
+                model.timing.Record();//Timing
+                Save(model, str);
+                ++i;
+            }
+        }
+        //test simulation
+        else if(model.prog_opt.simulation_type == 2)
+        {   
+            print(model.prog_opt.verbose, "Test river simulation type selected.");
+
+            //reinitialize geometry
+            auto b_id = model.river_boundary_id;
+            model.border.MakeRectangular(
+                {model.width, model.height}, 
+                {b_id, b_id, b_id, b_id},
+                {model.dx},
+                {1});
+
+            model.tree.Initialize(
+                model.border.GetSourcesPoint(), 
+                model.border.GetSourcesNormalAngle(), 
+                model.border.GetSourcesId());
+
+            auto source_branch_id = model.border.GetSourcesId().back();
+            model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
+
+            EvaluateSeriesParams(model, tria, sim, model.prog_opt.output_file_name);
             model.timing.Record();//Timing
             Save(model, model.prog_opt.output_file_name);
-            ++i;
         }
+        //unhandled case
+        else 
+            throw Exception("Invalid simulation type selected: " + to_string(model.prog_opt.simulation_type));
+
+        print(model.prog_opt.verbose, "End of main loop...");
+        print(model.prog_opt.verbose, "Done.");
     }
-    //Backward simulation
-    else if(model.prog_opt.simulation_type == 1)
+    catch(const River::Exception& caught)
     {
-        print(model.prog_opt.verbose, "Backward river simulation type selected.");
-        while(model.tree.HasEmptySourceBranch() == false && i < model.prog_opt.number_of_steps)    
-        {
-            print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-            
-            string str = model.prog_opt.output_file_name;
-            if(model.prog_opt.save_each_step)
-                str += "_" + to_string(i);
-            
-            BackwardForwardRiverEvolution(model, tria, sim, str);
-
-            model.timing.Record();//Timing
-            Save(model, str);
-            ++i;
-        }
+        cout << caught.what() << endl;
+        return 1;
     }
-    //test simulation
-    else if(model.prog_opt.simulation_type == 2)
-    {   
-        print(model.prog_opt.verbose, "Test river simulation type selected.");
-
-        //reinitialize geometry
-        auto b_id = model.river_boundary_id;
-        model.border.MakeRectangular(
-            {model.width, model.height}, 
-            {b_id, b_id, b_id, b_id},
-            {model.dx},
-            {1});
-
-        model.tree.Initialize(
-            model.border.GetSourcesPoint(), 
-            model.border.GetSourcesNormalAngle(), 
-            model.border.GetSourcesId());
-
-        auto source_branch_id = model.border.GetSourcesId().back();
-        model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
-
-        EvaluateSeriesParams(model, tria, sim, model.prog_opt.output_file_name);
-        model.timing.Record();//Timing
-        Save(model, model.prog_opt.output_file_name);
+    catch(...) 
+    {
+        cout << "GOT UNDEFINED ERROR" << endl;
+        return 2;
     }
-    //unhandled case
-    else 
-        throw Exception("Invalid simulation type selected: " + to_string(model.prog_opt.simulation_type));
-
-    print(model.prog_opt.verbose, "End of main loop...");
-    print(model.prog_opt.verbose, "Done.");
 
     return 0;
 }
