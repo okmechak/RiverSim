@@ -146,6 +146,18 @@ namespace River
             }
     }
 
+    void ShrinkTree(Model& model, map<int, vector<double>> id_series_params, double max_a)
+    {
+        print(model.prog_opt.verbose, "Shrinking each branch...");
+        for(auto[id, series_params]: id_series_params)
+            if(model.q_growth(series_params))
+                model.tree.GetBranch(id)->
+                    Shrink(model.next_point(
+                        series_params, 
+                        model.growth_min_distance + 1/*we are not constraining here speed growth near 
+                        biffuraction points, so we set some value greater than it limit*/, max_a).r);
+    }
+
 
     void ForwardRiverEvolution(Model& model, Triangle& tria, Solver& sim,
         const string file_name, double max_a_backward)
@@ -171,32 +183,15 @@ namespace River
     {
         //preevaluation series params to each tip point.
         print(model.prog_opt.verbose, "Series parameters integration over each tip point...");
-        map<int, vector<double>> ids_seriesparams_map;
-        for(auto id: model.tree.TipBranchesId())
-        {
-            auto tip_point = model.tree.GetBranch(id)->TipPoint();
-            auto tip_angle = model.tree.GetBranch(id)->TipAngle();
-            auto series_params = sim.integrate(model, tip_point, tip_angle);
-            ids_seriesparams_map[id] = series_params;
+        auto id_series_params_map = EvaluateSeriesParameteresOfTips(model, sim);
+        for(auto&[id, series_params]: id_series_params_map)
             model.geometry_difference.EndBifurcationRecord(id, series_params);
-        }
 
         //lookup for maximal a(or first) series parameter through all tips
-        double max_a = 0.;
-        for(auto&[id, series_params]: ids_seriesparams_map)
-            if(max_a < series_params.at(0))
-                max_a = series_params.at(0);
+        double max_a = MaximalA1Value(id_series_params_map);
 
-        
         //Processing backward growth by iterating over each tip id and its series_params
-        print(model.prog_opt.verbose, "Shrinking each branch...");
-        for(auto[id, series_params]: ids_seriesparams_map)
-            if(model.q_growth(series_params))
-                model.tree.GetBranch(id)->
-                    Shrink(model.next_point(
-                        series_params, 
-                        model.growth_min_distance + 1/*we are not constraining here speed growth near 
-                        biffuraction points, so we set some value greater than it limit*/, max_a).r);
+        ShrinkTree(model, id_series_params_map, max_a);
 
         //collect branches which reached zero lenght(bifurcation point)
         print(model.prog_opt.verbose, "Collecting branches with zero lenght(if they are)...");
@@ -217,7 +212,7 @@ namespace River
                 model.tree.DeleteSubBranches(parent_id);
             }
 
-        return ids_seriesparams_map;
+        return id_series_params_map;
     }
 
     //This function combines backward evolution, backwardforward evolution, and collects data
@@ -227,7 +222,7 @@ namespace River
         //tree_B will be representing simulated river geometry with new parameters.
         print(model.prog_opt.verbose, "Backward steps:");
         Tree tree_initial = model.tree;
-        map<int, vector<double>> ids_seriesparams_map, ids_seriesparams_map_local;
+        map<int, vector<double>> ids_seriesparams_map;
         vector<double> maximal_a1_params; //this vectors stores maximal a1 params which are used further in forward simulation
         for(unsigned i = 0; i < model.prog_opt.number_of_backward_steps; ++i)
         {
@@ -245,20 +240,23 @@ namespace River
         }
         
         //Several steps of forward growth
-        Tree tree_backforward = model.tree;
         Model model_backforward = model;
         model_backforward.bifurcation_type = 3;//3 - means no biffuraction at all.
         print(model.prog_opt.verbose, "Forward steps:");
         for(unsigned i = 0; i < model.prog_opt.number_of_backward_steps; ++i)
         {
             print(model.prog_opt.verbose, "\t" + to_string(i));
-            ForwardRiverEvolution(model_backforward, tria, sim, file_name + "_backward_forward_" + to_string(i), maximal_a1_params.at(i));
+            ForwardRiverEvolution(
+                model_backforward, 
+                tria, sim, 
+                file_name + "_backward_forward_" + to_string(i), 
+                maximal_a1_params.at(i));
         }
              
         //comparison of tip points with the same ids.
         print(model.prog_opt.verbose, "process geometry difference and collect data...");
         auto original_points = tree_initial.TipIdsAndPoints(),
-            simulated_points = tree_backforward.TipIdsAndPoints();
+            simulated_points = model_backforward.tree.TipIdsAndPoints();
         
         for(auto[tip_original_id, tip_original_point]: original_points)
             if(simulated_points.count(tip_original_id))
