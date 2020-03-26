@@ -67,7 +67,7 @@ namespace River
     {
         print(model.prog_opt.verbose, "Boundary generation...");
         //initial boundaries of mesh
-        auto mesh = BoundaryGenerator(model, model.tree, model.border);
+        auto mesh = BoundaryGenerator(model);
         mesh.write(file_name + "_boundary.msh");
         
         print(model.prog_opt.verbose, "Mesh generation...");

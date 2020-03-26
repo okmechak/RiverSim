@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
     mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
 
     
-    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
+    auto mesh = BoundaryGenerator(mdl);
 
     //Triangle mesh object setup
     for(unsigned long int i = 0; i < 1e4; i ++)

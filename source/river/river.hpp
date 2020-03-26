@@ -113,7 +113,7 @@ namespace River
 
             void generate_triangulation_file()
             {
-                auto mesh = BoundaryGenerator(*model, model->tree, model->border);
+                auto mesh = BoundaryGenerator(*model);
                 
                 triangle.mesh_params->tip_points = model->tree.TipPoints();
                 triangle.generate(mesh);//triangulation

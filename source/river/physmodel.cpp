@@ -261,14 +261,14 @@ namespace River
             throw Exception("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
     }
 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br)
+    tethex::Mesh BoundaryGenerator(const Model& model)
     {
         vector<tethex::Point> tet_vertices;
         vector<tethex::MeshElement *> tet_lines, tet_triangles;
 
-        auto m = br.SourceByVerticeIdMap();
-        auto vertices = br.GetVertices();
-        auto lines = br.GetLines();
+        auto m = model.border.SourceByVerticeIdMap();
+        auto vertices = model.border.GetVertices();
+        auto lines = model.border.GetLines();
         
         for(long unsigned i = 0; i < vertices.size(); ++i)
         {
@@ -280,7 +280,7 @@ namespace River
             else
             {
                 vector<Point> tree_vector;
-                TreeVector(tree_vector, m.at(i)/*source id*/, tree, mdl.mesh.eps);
+                TreeVector(tree_vector, m.at(i)/*source id*/, model.tree, model.mesh.eps);
                 long unsigned shift = tet_vertices.size(); 
                 for(long unsigned i = 0; i < tree_vector.size(); ++i)
                 {
@@ -289,7 +289,7 @@ namespace River
                         new tethex::Line(
                             shift + i, 
                             shift + i + 1, 
-                            mdl.river_boundary_id));
+                            model.river_boundary_id));
                 }
                 for(auto& line: lines)
                     if(line.p2 > i)

@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
     mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
+    auto mesh = BoundaryGenerator(mdl);
 
     Triangle tria(&mdl.mesh);
     tria.generate(mesh);
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
     mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl, mdl.tree, mdl.border);
+    auto mesh = BoundaryGenerator(mdl);
 
     Triangle tria(&mdl.mesh);
     tria.generate(mesh);

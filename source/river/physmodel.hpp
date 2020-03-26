@@ -589,5 +589,5 @@ namespace River
 
         \todo reserve size of tet_lines.
      */ 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br);
+    tethex::Mesh BoundaryGenerator(const Model& model);
 }
