@@ -187,7 +187,9 @@ double Point::operator[](const int index) const
 		return x;
 	else if (index == 1)
 		return y;
-	else
+	else if (index == 2)
+        return 0;/*z coord equals 0*/
+    else
 		throw Exception("index should be 0 or 1");
 }
 
