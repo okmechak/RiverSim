@@ -650,5 +650,7 @@ namespace River
             model.InitializeBorderAndTree();
         
         model.CheckParametersConsistency();
+
+        return model;
     }
 }//namespace River
