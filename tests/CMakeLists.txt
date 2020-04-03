@@ -33,20 +33,19 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary)
 
+    add_executable(ttree tree.cpp)
+    target_link_libraries(ttree tree ${Boost_LIBRARIES})
+    add_test(
+        NAME ttree
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttree)
+
     add_executable(tethex_test tethex.cpp)
     target_link_libraries(tethex_test tethex ${Boost_LIBRARIES})
     add_test(
         NAME tethex_test
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tethex)
-    
-
-    add_executable(tree_test tree.cpp)
-    target_link_libraries(tree_test tree ${Boost_LIBRARIES})
-    add_test(
-        NAME tree_test
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tree)
 
     add_executable(io_test io.cpp)
     target_link_libraries(io_test io ${Boost_LIBRARIES})
