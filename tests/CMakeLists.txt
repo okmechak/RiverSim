@@ -3,37 +3,62 @@ cmake_minimum_required(VERSION 2.8)
 set(BUILD_TEST ON CACHE BOOL "Build Boost Unit Tests")
 
 if(BUILD_TEST)
-        include_directories(${PROJECT_SOURCE_DIR}/source/river)
-        include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
+    include_directories(${PROJECT_SOURCE_DIR}/source/river)
+    include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
 
-        message("========================================")
-        message("Deal II setup")
-        set(deal.II_USE_STATIC_LIBS "ON")
-        find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
-        deal_ii_initialize_cached_variables()
-        
-        find_package(Boost COMPONENTS unit_test_framework REQUIRED)
-        
-        #I like to keep test files in a separate source directory called test
-        file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
-        
-        #Run through each source
-        foreach(testSrc ${TEST_SRCS})
-                #Extract the filename without an extension (NAME_WE)
-                get_filename_component(testName ${testSrc} NAME_WE)
-                set(testName ${testName}t)#name conflict resolving
-                
-                #Add compile target
-                add_executable(${testName} ${testSrc})
-                deal_ii_setup_target(${testName})
-        
-                #link to Boost libraries AND your targets and dependencies
-                target_link_libraries(${testName} ${Boost_LIBRARIES} river)
-        
-                #Finally add it to test execution - 
-                #Notice the WORKING_DIRECTORY and COMMAND
-                add_test(NAME ${testName}
-                         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/${testName})
-        endforeach(testSrc)
+    message("========================================")
+    message("Deal II setup")
+    set(deal.II_USE_STATIC_LIBS "ON")
+    find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
+    deal_ii_initialize_cached_variables()
+
+    message("========================================")
+    message("Boost.Test setup")    
+    find_package(Boost REQUIRED COMPONENTS unit_test_framework REQUIRED)
+    
+    message("========================================")
+    message("Adding executables tests")
+
+    add_executable(tGeometryPrimitives GeometryPrimitives.cpp)
+    target_link_libraries(tGeometryPrimitives GeometryPrimitives ${Boost_LIBRARIES})
+    add_test(
+        NAME tGeometryPrimitives
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tGeometryPrimitives)
+
+    add_executable(tethex_test tethex.cpp)
+    target_link_libraries(tethex_test tethex ${Boost_LIBRARIES})
+    add_test(
+        NAME tethex_test
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tethex)
+    
+    add_executable(boundary_test boundary.cpp)
+    target_link_libraries(boundary_test boundary ${Boost_LIBRARIES})
+    add_test(
+        NAME boundary_test
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/boundary)
+
+    add_executable(tree_test tree.cpp)
+    target_link_libraries(tree_test tree ${Boost_LIBRARIES})
+    add_test(
+        NAME tree_test
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tree)
+
+    add_executable(io_test io.cpp)
+    target_link_libraries(io_test io ${Boost_LIBRARIES})
+    add_test(
+        NAME io_test
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/io)
+
+    add_executable(physmodel_test physmodel.cpp)
+    target_link_libraries(physmodel_test physmodel ${Boost_LIBRARIES})
+    deal_ii_setup_target(physmodel_test)
+    add_test(
+        NAME physmodel_test
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/physmodel)
 endif(BUILD_TEST)
