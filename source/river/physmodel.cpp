@@ -115,16 +115,9 @@ namespace River
 
     void Model::InitializeBorderAndTree()
     {
-        border.MakeRectangular(
-            { width, height }, 
-            boundary_ids,
-            { dx },
-            { 1 });
+        border.MakeRectangularWithHole();
 
-        tree.Initialize(
-            border.GetSourcesPoint(), 
-            border.GetSourcesNormalAngle(), 
-            border.GetSourcesId());
+        tree.Initialize(border.GetSourcesIdsPointsAndAngles());
     }
 
     void Model::CheckParametersConsistency() const
@@ -273,52 +266,5 @@ namespace River
 
         if(solver_params.renumbering_type > 7)
             throw Exception("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
-
-        if (border.GetSourcesId() != tree.SourceBranchesID())
-            throw Exception("Border sources ids does not fit trees border sources.");
-    }
-
-    tethex::Mesh BoundaryGenerator(const Model& model)
-    {
-        vector<tethex::Point> tet_vertices;
-        vector<tethex::MeshElement *> tet_lines, tet_triangles;
-
-        auto m = model.border.SourceByVerticeIdMap();
-        auto vertices = model.border.GetVertices();
-        auto lines = model.border.GetLines();
-        
-        for(long unsigned i = 0; i < vertices.size(); ++i)
-        {
-            if(!m.count(i))
-            {
-                tet_vertices.push_back({vertices.at(i).x, vertices.at(i).y});
-                tet_lines.push_back(new tethex::Line(lines.at(i).p1, lines.at(i).p2, lines.at(i).id));
-            }
-            else
-            {
-                vector<Point> tree_vector;
-                TreeVector(tree_vector, m.at(i)/*source id*/, model.tree, model.mesh.eps);
-                long unsigned shift = tet_vertices.size(); 
-                for(long unsigned i = 0; i < tree_vector.size(); ++i)
-                {
-                    tet_vertices.push_back({tree_vector.at(i).x, tree_vector.at(i).y});
-                    tet_lines.push_back(
-                        new tethex::Line(
-                            shift + i, 
-                            shift + i + 1, 
-                            model.river_boundary_id));
-                }
-                for(auto& line: lines)
-                    if(line.p2 > i)
-                    {
-                        line.p1 += tree_vector.size();
-                        line.p2 += tree_vector.size();
-                    }
-            }
-        }
-        //close line loop
-        tet_lines.back()->set_vertex(1, 0);
-
-        return tethex::Mesh{tet_vertices, tet_lines, tet_triangles};
     }
 }

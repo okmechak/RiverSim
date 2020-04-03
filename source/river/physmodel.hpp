@@ -36,7 +36,7 @@
 
 #include "GeometryPrimitives.hpp"
 #include "tree.hpp"
-#include "border.hpp"
+#include "boundary.hpp"
 #include "tethex.hpp"
 
 using namespace std;
@@ -412,7 +412,7 @@ namespace River
     class Model
     {   
         public: 
-            Border border;
+            Boundaries border;
             Tree tree;
             Timing timing;
             GeometryDifference geometry_difference;
@@ -584,12 +584,4 @@ namespace River
             ///Prints model structure and its subclasses
             friend ostream& operator <<(ostream& write, const Model & mdl);
     };
-
-    /*! \brief Finnal Boudary Geneartor Class
-        \details
-        Sticks together all components: Tree class, boudary class and model parameters.
-
-        \todo reserve size of tet_lines.
-     */ 
-    tethex::Mesh BoundaryGenerator(const Model& model);
 }
