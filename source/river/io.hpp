@@ -27,7 +27,7 @@
     json file contains next objects:
 
     + `Model`(in* / out)
-    + `Border`(in* / out)
+    + `Boundary`(in* / out)
     + `Trees`(in* / out)
     + `GeometryDifference`(out)
     + `RuntimeInfo`(out)
@@ -35,7 +35,7 @@
     __in*__ - means that it is optional input object.
     __out__ - output contains this information.
 
-    \note "Trees" can't be specified without `Border` object.
+    \note "Trees" can't be specified without `Boundary` object.
 
     Lets describe each of them.
 
@@ -116,16 +116,16 @@
     Model: {}
     ```
 
-    ## Border
+    ## Boundary
 
-    Border contains information about River::Border class, which specifies border points, connections between them
+    Boundary contains information about River::Boundary class, which specifies border points, connections between them
     and source points.
 
-    Border has next fields
-    + `coords` - vector of border coordinates. \see River::Border::vertices
+    Boundary has next fields
+    + `coords` - vector of border coordinates. \see River::Boundary::vertices
     + `lines` - vector of border lines and its id. Id handles boundary condition:
         0 - zero Direchlet, 1 - Laplacea zero flow.
-        \see River::Border::lines
+        \see River::Boundary::lines
     + `SourceIds` - contains pairs of source id number and coordinate position number in
         "coords" vector.
 
@@ -134,7 +134,7 @@
     Rectangular border with one source:
 
     ```json
-    "Border": {
+    "Boundary": {
         "SourceIds": [
             [ 1, 4 ]
             ],
@@ -227,7 +227,7 @@
 
 #pragma once
 
-#include "border.hpp"
+#include "boundary.hpp"
 #include "physmodel.hpp"
 #include "tree.hpp"
 #include "cxxopts.hpp"
@@ -254,10 +254,10 @@ namespace River
     ///Initializes River::Model object by Program Options values.
     void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& model);
 
-    ///Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) and backward simulation data(GeometryDifference).
+    ///Save current state of program which includes Geometry(Tree, Boundary), current model parameters(Model) and backward simulation data(GeometryDifference).
     void Save(const Model& model, const string file_name);
     
-    ///Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model).
+    ///Opens state of program from json file which includes Geometry(Tree, Boundary) and current model parameters(Model).
     void Open(Model& model);
 
     Model InitializeModelObject(cxxopts::ParseResult & vm);

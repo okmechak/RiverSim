@@ -27,15 +27,11 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
     auto sources_x_coord = vector<double>{0.5, 0.6, 0.7, 0.8};
     auto sources_id = vector<int>{1, 2, 3, 4};
     
-    mdl.border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    mdl.border.MakeRectangular();
     
-    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
 
-    BOOST_TEST(mdl.border.GetSourcesId() == mdl.tree.SourceBranchesID());
+    BOOST_TEST(mdl.border.GetSourcesIds() == mdl.tree.SourceBranchesID());
     
     BOOST_TEST_MESSAGE( "Boundary Generator start" );
     auto mesh = BoundaryGenerator(mdl);
@@ -111,16 +107,12 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     auto sources_id = vector<int>{1, 2, 3, 4};
     
     
-    mdl.border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
     mdl.tree.AddPolars({{1, 0}, {2, 0}, {3, 0}, {4, 0}}, sources_id);
 
-    BOOST_TEST(mdl.border.GetSourcesId() == mdl.tree.SourceBranchesID());
+    BOOST_TEST(mdl.border.GetSourcesIds() == mdl.tree.SourceBranchesID());
     
     auto mesh = BoundaryGenerator(mdl);
 
@@ -249,17 +241,13 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
     auto sources_x_coord = vector<double>{0.5, 0.8};
     auto sources_id = vector<int>{1, 2};
     
-    mdl.border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
     mdl.tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
     mdl.tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
 
-    BOOST_TEST(mdl.border.GetSourcesId() == mdl.tree.SourceBranchesID());
+    BOOST_TEST(mdl.border.GetSourcesIds() == mdl.tree.SourceBranchesID());
     
     auto mesh = BoundaryGenerator(mdl);
 

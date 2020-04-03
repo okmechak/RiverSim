@@ -85,7 +85,7 @@ namespace River
             "\tProgram also produces vtk and msh files from different stages of program running which can be viewed from Paraview and Gmsh.\n\n" + 
             "Creation of custom input file:\n" + 
             "\tInput file is of json format, and should contain at least next object: Model(for its format please see output json file).\n" + 
-            "\tAlso it can contain Border and Tree(this object can't be setuped without Border object).\n" +  
+            "\tAlso it can contain Boundary and Tree(this object can't be setuped without Boundary object).\n" +  
             "\tIf some field isnt set by Model object they will be replaced by default program options.\n" + 
             "\tDescription of rest of objects You can find in output json file of program. It has description inside.\n" + 
             "\tFor any questions please mail me: oleg.kmechak@gmail.com.\n"
@@ -129,7 +129,7 @@ namespace River
             value<unsigned>()->default_value(to_string(model.prog_opt.number_of_backward_steps)));
         
         //Geometry parameters
-        options.add_options("Border geometry parameters")
+        options.add_options("Boundary geometry parameters")
         ("dx", "dx - shift of initial river position from beginning of coordinates in X dirrections.", 
             value<double>()->default_value(to_string(model.dx)) )
         ("width", "Width of river rectangular region.", 
@@ -225,7 +225,7 @@ namespace River
                 "File interface", 
                 "Logs",
                 "Simulation parameters",
-                "Border geometry parameters",
+                "Boundary geometry parameters",
                 "Model parameters",
                 "Series parameters integral",
                 "Mesh refinment parameters. Funciton of area constaint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).",
@@ -329,12 +329,12 @@ namespace River
             branches.push_back({
                 {"sourcePoint", {branch->SourcePoint().x , branch->SourcePoint().y}},
                 {"sourceAngle", branch->SourceAngle()},
-                {"Desciption", "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Border->SourcesId"},
+                {"Desciption", "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Boundary->SourcesId"},
                 {"coords", coords},
                 {"id", branch_id}});
         }
         
-        //Border
+        //Boundary
         json jborder;
         {
             vector<pair<double, double>> coords;
@@ -429,7 +429,7 @@ namespace River
                     {"adaptiveRefinmentSteps", model.solver_params.adaptive_refinment_steps}}}}
             },
             
-            {"Border", jborder},
+            {"Boundary", jborder},
 
             {"Trees", {
                 {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
@@ -535,9 +535,9 @@ namespace River
             }
         }
 
-        if(j.count("Border"))
+        if(j.count("Boundary"))
         {
-            auto jborder = j.at("Border");
+            auto jborder = j.at("Boundary");
             vector<pair<double, double>> coords;
             vector<Point> points;
             vector<vector<int>> lines_raw;
@@ -556,7 +556,7 @@ namespace River
             for(auto& l : lines_raw)
                 lines.push_back(Line{(long unsigned)l.at(0), (long unsigned)l.at(1), l.at(2)});
 
-            model.border = Border{points, lines, sources};
+            model.border = Boundary{points, lines, sources};
 
             //Get size of bounding box of border and update width and height values of module
             auto xmax = points.at(0).x,
@@ -580,8 +580,8 @@ namespace River
 
         if(j.count("Trees"))
         {
-            if(!j.count("Border"))
-                throw Exception("Input json file contains Trees and do not contain Border. Make sure that you created corresponding Border object(Trees and Border should contain same source/branches ids - its values and number)");
+            if(!j.count("Boundary"))
+                throw Exception("Input json file contains Trees and do not contain Boundary. Make sure that you created corresponding Boundary object(Trees and Boundary should contain same source/branches ids - its values and number)");
             
             model.tree.Clear();
 
@@ -621,9 +621,9 @@ namespace River
                 }
             }
         }
-        else if(j.count("Border"))
+        else if(j.count("Boundary"))
             //If no tree provided but border is, than we reinitialize tree.. to current border.
-            model.tree.Initialize(model.border.GetSourcesPoint(), model.border.GetSourcesNormalAngle(), model.border.GetSourcesId());
+            model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles());
 
         if(j.count("GeometryDifference"))
         { 

@@ -311,23 +311,16 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.growth_min_distance = 16;
     mdl_out.ds = 17;
 
-    //Border object setup.. Rectangular boundaries
+    //Boundary object setup.. Rectangular boundaries
     auto boundary_ids = vec;
     auto region_size = vector<double>{2, 3};
     auto sources_x_coord = vector<double>{0.3};
     auto sources_id = vector<int>{1};
     
-    mdl_out.border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    mdl_out.border.MakeRectangular();
     
     //Tree object setup
-    mdl_out.tree.Initialize(
-        mdl_out.border.GetSourcesPoint(), 
-        mdl_out.border.GetSourcesNormalAngle(), 
-        mdl_out.border.GetSourcesId());
+    mdl_out.tree.Initialize(mdl_out.border.GetSourcesIdsPointsAndAngles());
 
     BranchNew 
         br1left({0, 1}, 2), br1right({3, 4}, 5), 
@@ -410,7 +403,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.growth_min_distance == 16);
     BOOST_TEST(mdl_in.ds == 17);
 
-    //Border Test
+    //Boundary Test
     BOOST_TEST((mdl_in.border.vertices.front() == Point{2, 0}));
     BOOST_TEST((mdl_in.border.vertices.back() == Point{0.3, 0}));
 

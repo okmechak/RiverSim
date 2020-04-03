@@ -10,7 +10,7 @@
 #include "mesh.hpp"
 #include "physmodel.hpp"
 #include "tree.hpp"
-#include "border.hpp"
+#include "boundary.hpp"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
     //Model object setup
     Model mdl;
 
-    //Border object setup.. Rectangular boundaries
+    //Boundary object setup.. Rectangular boundaries
     auto boundary_ids = mdl.boundary_ids;
     auto region_size = vector<double>{mdl.width, mdl.height};
     auto sources_x_coord = vector<double>{mdl.dx};
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
         sources_id);
     
     //Tree object setup
-    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
 
     
     auto mesh = BoundaryGenerator(mdl);

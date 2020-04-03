@@ -9,7 +9,7 @@
 
 #include <math.h>
 #include "solver.hpp"
-#include "border.hpp"
+#include "boundary.hpp"
 #include "tree.hpp"
 #include "mesh.hpp"
 
@@ -39,13 +39,9 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    mdl.border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
     mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
     auto mesh = BoundaryGenerator(mdl);
@@ -98,13 +94,9 @@ BOOST_AUTO_TEST_CASE( integration_test,
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    mdl.border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesPoint(), mdl.border.GetSourcesNormalAngle(), mdl.border.GetSourcesId());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
     mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
     auto mesh = BoundaryGenerator(mdl);

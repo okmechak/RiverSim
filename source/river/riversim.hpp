@@ -31,7 +31,7 @@
 #include "mesh.hpp"
 #include "solver.hpp"
 #include "physmodel.hpp"
-#include "border.hpp"
+#include "boundary.hpp"
 #include "io.hpp"
 
 namespace River
