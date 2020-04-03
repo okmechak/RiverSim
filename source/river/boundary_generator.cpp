@@ -82,11 +82,11 @@ namespace River
     {
         SimpleBoundary boundary;
 
-        for(auto simple_boundary: model.boundary.simple_boundaries)
+        for(auto simple_boundary: model.border.simple_boundaries)
         {
             for(const auto&[source_id, vertice_pos]: simple_boundary.sources)
             {
-                auto tree_boundary = TreeBoundary(model.trees, source_id, model.river_boundary_id, model.mesh.eps);
+                auto tree_boundary = TreeBoundary(model.tree, source_id, model.river_boundary_id, model.mesh.eps);
                 simple_boundary.ReplaceElement(vertice_pos, tree_boundary);
             }
             boundary.Append(simple_boundary);
@@ -116,7 +116,7 @@ namespace River
                 boundary.lines.at(i).boundary_id));
         }
         
-        auto holes = model.boundary.GetHolesList();
+        auto holes = model.border.GetHolesList();
         tet_holes.reserve(holes.size());
         for(auto & hole: holes)
             tet_holes.push_back(hole); 
