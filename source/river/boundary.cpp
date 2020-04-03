@@ -26,7 +26,7 @@ namespace River
 {
     ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition)
     {
-        switch (boundary_condition.boudary_type)
+        switch (boundary_condition.type)
         {
             case DIRICHLET:
                 write << "boudary type: Dirichlet, ";
@@ -35,7 +35,7 @@ namespace River
                 write << "boudary type: Neuman, ";
                 break;
             default:
-                write << "boudary type: Undefined(" <<boundary_condition.boudary_type << "), ";
+                write << "boudary type: Undefined(" <<boundary_condition.type << "), ";
                 break;
         }
         write << "value: " << boundary_condition.value;
@@ -72,7 +72,7 @@ namespace River
             simple_boundary.lines.end());
     }
 
-    void SimpleBoundary::ReplaceElement(Line::vert_pos_t vertice_pos, SimpleBoundary simple_boundary)
+    void SimpleBoundary::ReplaceElement(t_vert_pos vertice_pos, SimpleBoundary simple_boundary)
     {
         if(simple_boundary.vertices.empty())
             return;
@@ -115,15 +115,12 @@ namespace River
 
     bool SimpleBoundary::operator==(const SimpleBoundary &simple_boundary) const
     {
-        if (vertices == simple_boundary.vertices 
+        return vertices == simple_boundary.vertices 
             && lines == simple_boundary.lines
             && sources == simple_boundary.sources
             && inner_boundary == simple_boundary.inner_boundary
             && hole == simple_boundary.hole
-            && name == simple_boundary.name)
-            return true;
-        
-        return false;
+            && name == simple_boundary.name;
     }
 
     ostream& operator <<(ostream& write, const SimpleBoundary & boundary)
@@ -149,15 +146,17 @@ namespace River
         return write;
     }
 
-    void Boundary::Check()
+    void Boundaries::Check()
     {
-        if (simple_boundaries.empty())
+        if (this->empty())
             throw Exception("Boundary is empty.");
         
-        Line::vert_pos_t counter = 0, outer_boudaries = 0;
-        vector<SimpleBoundary::source_id_t> sources_ids;
+        t_vert_pos 
+            counter = 0, 
+            outer_boudaries = 0;
+        vector<t_sources_ids> sources_ids;
 
-        for(const auto& boundary: simple_boundaries)
+        for(const auto& boundary: *this)
         {
             if(boundary.vertices.size() != boundary.lines.size())
                 throw Exception("Vertices and lines sizes, are different in boudary: " + to_string(counter));
@@ -193,29 +192,29 @@ namespace River
             throw Exception("Boundary: Sources ids should be unique numbers!");
     }
 
-    vector<unsigned> Boundary::GetSourcesIds() const
+    vector<t_sources_ids> Boundaries::GetSourcesIds() const
     {
-        vector<SimpleBoundary::source_id_t> sources_ids;
-        for(const auto& simple_boundary: simple_boundaries)
+        vector<t_sources_ids> sources_ids;
+        for(const auto& simple_boundary: *this)
             for(const auto& [source_id, vertice_pos]: simple_boundary.sources)
                 sources_ids.push_back(source_id);
 
         return sources_ids;
     }
 
-    vector<Point> Boundary::GetHolesList() const
+    vector<Point> Boundaries::GetHolesList() const
     {
         vector<Point> holes;
-        for(const auto& simple_boundary: simple_boundaries)
+        for(const auto& simple_boundary: *this)
             if(simple_boundary.inner_boundary)
                 holes.push_back(simple_boundary.hole);
 
         return holes;
     }
 
-    void Boundary::MakeRectangular(double width, double height, double source_x_position)
+    void Boundaries::MakeRectangular(double width, double height, double source_x_position)
     {
-        simple_boundaries = {
+        this->push_back(
             {
                 {/*vertices(counterclockwise order)*/
                     {0, 0},
@@ -236,12 +235,12 @@ namespace River
                 {}/*hole*/,
                 "outer rectangular boudary"
             }/*Outer Boundary*/
-        };
+        );
     }
 
-    void Boundary::MakeRectangularWithHole(double width, double height, double source_x_position)
+    void Boundaries::MakeRectangularWithHole(double width, double height, double source_x_position)
     {
-        simple_boundaries = {
+        this->push_back(
             {/*Outer Boundary*/
                 {/*vertices(counterclockwise order)*/
                     {0, 0},
@@ -261,7 +260,10 @@ namespace River
                 false/*this is not inner boudary*/,
                 {}/*hole*/,
                 "outer boudary"/*just name*/
-            },
+            }
+        );
+
+        this->push_back(
             {/*Hole Boundary*/
                 {/*vertices*/
                     {0.25*width, 0.25*height},
@@ -279,7 +281,9 @@ namespace River
                 true/*this is inner boudary*/,
                 {0.5*width, 0.5*height}/*hole*/,
                 "hole"/*just name*/
-            },
+            });
+
+        this->push_back(
             {/*Hole Boundary*/
                 {/*vertices*/
                     {0.8*width, 0.8*height},
@@ -297,29 +301,28 @@ namespace River
                 true/*this is inner boudary*/,
                 {0.85*width, 0.85*height}/*hole*/,
                 "hole"/*just name*/
-            }
-        };
+            });
     }
 
-    SimpleBoundary& Boundary::GetOuterBoundary()
+    SimpleBoundary& Boundaries::GetOuterBoundary()
     {
-        for(auto& simple_boundary: simple_boundaries)
+        for(auto& simple_boundary: *this)
             if(!simple_boundary.inner_boundary)
                 return simple_boundary;
 
         throw Exception("Boundary: There is no Outer Boundary");
 
-        return simple_boundaries.at(0);
+        return this->at(0);
     }
 
-    pair<Line::vert_pos_t, Line::vert_pos_t> Boundary::GetAdjacentVerticesPositions(
-            const Line::vert_pos_t vertices_size, 
-            const Line::vert_pos_t vertice_pos)
+    pair<t_vert_pos, t_vert_pos> Boundaries::GetAdjacentVerticesPositions(
+            const t_vert_pos vertices_size, 
+            const t_vert_pos vertice_pos)
     {
         if (vertice_pos >= vertices_size)
             throw Exception("Vertice position is bigger then number of vertices: vertice pos " + to_string(vertice_pos));
 
-        Line::vert_pos_t 
+        t_vert_pos 
             left_pos = vertice_pos - 1, 
             right_pos = vertice_pos + 1;
 
@@ -331,7 +334,7 @@ namespace River
         return {left_pos, right_pos};
     }
 
-    double Boundary::NormalAngle(const Point& left, const Point& center, const Point& right)
+    double Boundaries::NormalAngle(const Point& left, const Point& center, const Point& right)
     {
         const auto
             left_vector = center - left,
@@ -351,7 +354,7 @@ namespace River
         return normal_angle;
     }
 
-    double Boundary::GetVerticeNormalAngle(const vector<Point>& vertices, const Line::vert_pos_t vertice_pos, bool inner_boundary)
+    double Boundaries::GetVerticeNormalAngle(const vector<Point>& vertices, const t_vert_pos vertice_pos, bool inner_boundary)
     {
         const auto vertices_size = vertices.size();
         const auto [vertice_pos_left, vertice_pos_right] = GetAdjacentVerticesPositions(vertices_size, vertice_pos);
@@ -370,10 +373,10 @@ namespace River
         return normal_angle;
     }
 
-    Boundary::trees_interface_t Boundary::GetSourcesIdsPointsAndAngles() const
+    Boundaries::trees_interface_t Boundaries::GetSourcesIdsPointsAndAngles() const
     {
         trees_interface_t sources_ids_points_and_angles;
-        for(const auto& boudary: simple_boundaries)
+        for(const auto& boudary: *this)
             for(const auto& [id, v_pos]: boudary.sources)
                 sources_ids_points_and_angles[id] = {
                     boudary.vertices.at(v_pos),
@@ -383,9 +386,9 @@ namespace River
         return sources_ids_points_and_angles;
     }
 
-    ostream& operator <<(ostream& write, const Boundary & boundary)
+    ostream& operator <<(ostream& write, const Boundaries & boundary)
     {
-        for(const auto& simple_boundary:  boundary.simple_boundaries)
+        for(const auto& simple_boundary:  boundary)
             write << simple_boundary << endl;
 
         return write;

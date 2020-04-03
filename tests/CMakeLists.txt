@@ -25,6 +25,13 @@ if(BUILD_TEST)
         NAME tGeometryPrimitives
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tGeometryPrimitives)
+        
+    add_executable(tboundary boundary.cpp)
+    target_link_libraries(tboundary boundary ${Boost_LIBRARIES})
+    add_test(
+        NAME tboundary
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary)
 
     add_executable(tethex_test tethex.cpp)
     target_link_libraries(tethex_test tethex ${Boost_LIBRARIES})
@@ -33,12 +40,6 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tethex)
     
-    add_executable(boundary_test boundary.cpp)
-    target_link_libraries(boundary_test boundary ${Boost_LIBRARIES})
-    add_test(
-        NAME boundary_test
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/boundary)
 
     add_executable(tree_test tree.cpp)
     target_link_libraries(tree_test tree ${Boost_LIBRARIES})

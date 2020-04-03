@@ -28,8 +28,8 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <tuple>
 ///\endcond
+
 #include "GeometryPrimitives.hpp"
 
 using namespace std;
@@ -39,21 +39,31 @@ using namespace std;
 */
 namespace River
 {   
-    enum tBoundary {
+    enum t_boundary 
+    {
         DIRICHLET = 0, 
         NEUMAN
     }; 
+
     /*! \struct BoundaryCondition
         \brief
         Describes boudary condition type.
     */
     struct BoundaryCondition
     {
-        tBoundary boudary_type = DIRICHLET;
+        t_boundary type = DIRICHLET;
         double value = 0;
 
         friend ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition);
     };
+
+    typedef size_t t_vert_pos;
+
+    typedef unsigned t_boundaries_ids, t_sources_ids;
+    
+    typedef map<t_boundaries_ids, BoundaryCondition> t_boundary_conditions;
+
+    typedef map<t_sources_ids, t_vert_pos> t_sources;
 
     /*! \brief 
         Line - holds indexes of __p1__, __p2__ vertices and id.
@@ -62,55 +72,54 @@ namespace River
     class Line
     {
         public:
-            typedef size_t vert_pos_t;
             ///Constructor.
-            Line(vert_pos_t p1v, vert_pos_t p2v, int boundary_id):
+            Line(t_vert_pos p1v, t_vert_pos p2v, t_boundaries_ids boundary_id):
                 p1(p1v), 
                 p2(p2v), 
                 boundary_id(boundary_id)
             {};
 
             ///Point index.
-            vert_pos_t p1, p2;
+            t_vert_pos p1, p2;
 
             ///Line Index.
-            int boundary_id;
+            t_boundaries_ids boundary_id;
 
             friend ostream& operator <<(ostream& write, const Line & line);
             bool operator==(const Line& line) const
             {
-                if(p1 == line.p1 && p2 == line.p2 && boundary_id == line.boundary_id)
-                    return true;
-                return false;
+                return p1 == line.p1 && p2 == line.p2 && boundary_id == line.boundary_id;
             }
     };
 
-    struct SimpleBoundary
+    class SimpleBoundary
     {
-        typedef unsigned source_id_t;
-        vector<Point> vertices;
-        vector<Line> lines;
-        map<unsigned, size_t> sources;
-        bool inner_boundary = false;
-        Point hole;
-        string name = "";
-        void Append(SimpleBoundary simple_boundary);
-        void ReplaceElement(Line::vert_pos_t vertice_pos, SimpleBoundary simple_boundary);
+        public:
+            vector<Point> vertices;
+            vector<Line> lines;
+            map<unsigned, size_t> sources;
+            bool inner_boundary = false;
+            Point hole;
+            string name = "";
+            void Append(SimpleBoundary simple_boundary);
+            void ReplaceElement(t_vert_pos vertice_pos, SimpleBoundary simple_boundary);
 
-        bool operator==(const SimpleBoundary& simple_boundary) const;
-        friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);
+            bool operator==(const SimpleBoundary& simple_boundary) const;
+            friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);
     };
 
-    class Boundary//TODO: public vector<SimpleBoundary>
+    class Boundaries: public vector<SimpleBoundary>
     {
         public:
             typedef map<unsigned, pair<Point, double>> trees_interface_t;
 
-            Boundary(
-                vector<SimpleBoundary> simple_boundaries = {}
-            ):
-                simple_boundaries(simple_boundaries)
-            {}
+            Boundaries(
+                vector<SimpleBoundary> simple_boundaries = {})
+            {
+                this->reserve(simple_boundaries.size());
+                for(auto &sb: simple_boundaries)
+                    this->push_back(sb);
+            }
 
             void MakeRectangular(double width = 1, double height = 1, double source_x_position = 0.25);
             
@@ -120,27 +129,25 @@ namespace River
 
             SimpleBoundary& GetOuterBoundary();
 
-            vector<SimpleBoundary::source_id_t> GetSourcesIds() const;
+            vector<t_sources_ids> GetSourcesIds() const;
 
             vector<Point> GetHolesList() const;
 
             trees_interface_t GetSourcesIdsPointsAndAngles() const;
 
-            vector<SimpleBoundary> simple_boundaries;
+            friend ostream& operator <<(ostream& write, const Boundaries & boundary);
 
-            friend ostream& operator <<(ostream& write, const Boundary & boundary);
-
-        //private:
+        //private:fix me todo
 
             static double NormalAngle(const Point& left, const Point& center, const Point& right);
 
-            static pair<Line::vert_pos_t, Line::vert_pos_t> GetAdjacentVerticesPositions(
-                const Line::vert_pos_t vertices_size, 
-                const Line::vert_pos_t vertice_pos);
+            static pair<t_vert_pos, t_vert_pos> GetAdjacentVerticesPositions(
+                const t_vert_pos vertices_size, 
+                const t_vert_pos vertice_pos);
 
             static double GetVerticeNormalAngle(
                 const vector<Point>& vertices, 
-                const Line::vert_pos_t vertice_pos, 
+                const t_vert_pos vertice_pos, 
                 bool inner_boundary);
     };
 }
