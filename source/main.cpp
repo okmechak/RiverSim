@@ -76,7 +76,7 @@
 
     + River::Polar
     + River::Point
-    + River::Border
+    + River::Boundary
     + River::BranchNew
     + River::Tree
 
@@ -106,7 +106,7 @@
     + Take a look into [File List](files.html). Some more important for understanding files:
         + \ref experiments
         + \ref GeometryPrimitives.hpp
-        + \ref border.hpp
+        + \ref boundary.hpp
         + \ref tree.hpp
         + \ref physmodel.hpp
         + \ref io.hpp
@@ -239,19 +239,11 @@ int main(int argc, char *argv[])
             print(model.prog_opt.verbose, "Test river simulation type selected.");
 
             //reinitialize geometry
-            auto b_id = model.river_boundary_id;
-            model.border.MakeRectangular(
-                {model.width, model.height}, 
-                {b_id, b_id, b_id, b_id},
-                {model.dx},
-                {1});
+            model.border.MakeRectangular();
 
-            model.tree.Initialize(
-                model.border.GetSourcesPoint(), 
-                model.border.GetSourcesNormalAngle(), 
-                model.border.GetSourcesId());
+            model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles());
 
-            auto source_branch_id = model.border.GetSourcesId().back();
+            auto source_branch_id = model.border.GetSourcesIds().back();
             model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
 
             EvaluateSeriesParams(model, triangle, sim, model.prog_opt.output_file_name);
