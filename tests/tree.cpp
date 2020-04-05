@@ -2,40 +2,39 @@
 #define BOOST_TEST_DYN_LINK
 
 //Define our Module name (prints at testing)
-#define BOOST_TEST_MODULE "GemometryNew Classes"
+#define BOOST_TEST_MODULE "Tree and Branch"
 
 //VERY IMPORTANT - include this last
 #include <boost/test/unit_test.hpp>
 
 #include <math.h>
 #include "tree.hpp"
-#include "border.hpp"
 
 using namespace River;
 
 const double eps = 1e-15;
 namespace utf = boost::unit_test;
 
-
-
-// ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( BranchNew_Class, 
     *utf::tolerance(eps))
 {   
-    //or seed point
+    //constructor: empty branch
     auto source_point = Point{0, 0};
-    auto br = BranchNew(source_point, M_PI/2);
+    auto source_angle = M_PI/2;
+    auto br = BranchNew(source_point, source_angle);
 
     BOOST_TEST(br.Empty());
     BOOST_TEST(br.Size() == 1);
     BOOST_TEST(br.Lenght() == 0);
-    BOOST_CHECK_THROW(br.AverageSpeed(), Exception);
-    BOOST_CHECK_THROW(br.TipVector(), Exception);
     BOOST_TEST(br.TipPoint() == source_point);
     BOOST_TEST(br.TipAngle() == M_PI/2);
-    BOOST_TEST(br.SourceAngle() == M_PI/2);
-    BOOST_TEST(br.SourcePoint() == source_point );
     BOOST_CHECK_THROW(br.RemoveTipPoint(), Exception);
+    BOOST_CHECK_THROW(br.TipVector(), Exception);
+    BOOST_CHECK_THROW(br.Vector(0), Exception);
+    BOOST_CHECK_THROW(br.Vector(1), Exception);
+    BOOST_TEST(br.SourcePoint() == source_point );
+    BOOST_TEST(br.SourceAngle() == M_PI/2);
+    BOOST_TEST((br == vector<Point>{source_point}));
 
     //now lets modify a little this branch
     br.AddPoint(Point{0, 1});
@@ -46,31 +45,32 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     BOOST_TEST(!br.Empty());
     BOOST_TEST(br.Size() == 5);
     BOOST_TEST(br.Lenght() == 4);
-    BOOST_TEST(br.AverageSpeed() == 1);
     BOOST_TEST((br.TipVector() == Point{0, 1}));
     BOOST_TEST((br.TipPoint() == Point{0, 4}));
     BOOST_TEST(br.TipAngle() == M_PI/2);
     BOOST_TEST(br.SourceAngle() == M_PI/2);
-    BOOST_TEST(br.SourcePoint() == source_point );
+    BOOST_TEST(br.SourcePoint() == source_point);
+    BOOST_TEST((br == vector<Point>{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}}));
 
-    //now let remove two points
+    //now let remove two tip point
     br.RemoveTipPoint().RemoveTipPoint();
     BOOST_TEST(!br.Empty());
     BOOST_TEST(br.Size() == 3);
     BOOST_TEST(br.Lenght() == 2);
-    BOOST_TEST(br.AverageSpeed() == 1);
     BOOST_TEST((br.TipVector() == Point{0, 1}));
     BOOST_TEST((br.TipPoint() == Point{0, 2}));
     BOOST_TEST(br.TipAngle() == M_PI/2);
     BOOST_TEST(br.SourceAngle() == M_PI/2);
     BOOST_TEST(br.SourcePoint() == source_point );
+    BOOST_TEST((br == vector<Point>{{0, 0}, {0, 1}, {0, 2}}));
     
     br.Shrink(2);
     BOOST_TEST(br.Lenght() == 0);
+    BOOST_TEST(br.Size() == 1);
     BOOST_TEST(br.TipPoint() == source_point);
     BOOST_TEST(br.SourcePoint() == source_point);
+    BOOST_TEST(br.TipAngle() == br.SourceAngle());
     BOOST_CHECK_THROW(br.RemoveTipPoint(), Exception);
-    
 
     //now let add points with different angles
     source_point = Point{0, 0};
@@ -86,10 +86,10 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     source_point = Point{0, 0};
     br = BranchNew(source_point, M_PI/6);
     //clockwise
-    for(int i = 0; i < 10; ++i)
+    for(size_t i = 0; i < 10; ++i)
         br.AddPoint(Polar{1, 2*M_PI/10});
     //counterclockwise
-    for(int i = 0; i < 10; ++i)
+    for(size_t i = 0; i < 10; ++i)
         br.AddPoint(Polar{1, -2*M_PI/10});
 
     BOOST_TEST(br.TipPoint() == br.SourcePoint());
@@ -98,7 +98,6 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     br.Shrink(20);
     BOOST_TEST(br.TipPoint() == br.SourcePoint());
     BOOST_TEST(source_point == br.SourcePoint());
-
 
     br = BranchNew(source_point, 0);
     br.AddPoint(Polar{1, 0});
@@ -113,8 +112,6 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     auto test_p_3 = Point{1, 0};
     BOOST_TEST(br.TipPoint() == test_p_3);
 }
-
-
 
 BOOST_AUTO_TEST_CASE( BranchNew_vector, 
     *utf::tolerance(eps))
@@ -134,20 +131,16 @@ BOOST_AUTO_TEST_CASE( BranchNew_vector,
     BOOST_CHECK_THROW(br.Vector(3), Exception);
 }
 
-
-
-
-
-
 BOOST_AUTO_TEST_CASE( Tree_Class, 
     *utf::tolerance(eps))
 {   
-    vector<int> ids{3, 4, 5};
+    vector<t_sources_ids> ids{3, 4, 5};
     Tree tr;
-    tr.Initialize(
-        {{0.0, 0}, {0.1, 0}, {0.2, 0}}, 
-        {0, 0, 0},
-        ids);
+    tr.Initialize({
+        {3, {{0.0, 0}, 0}},
+        {4, {{0.1, 0}, 0}},
+        {5, {{0.2, 0}, 0}}
+    });
 
     BOOST_TEST(tr.NumberOfSourceBranches() == 3);
     for(auto id: ids)
@@ -159,8 +152,6 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     auto tips = tr.TipBranchesId();
     BOOST_TEST(tips == ids);
 
-
-    //cool work with pointers.. but auto will force simple BranchNew
     auto br = tr.GetBranch(3);
     Point p{1, 1};
     br->AddPoint(p);
@@ -182,22 +173,19 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     auto test_point = Point{1, 1};
     auto tip_point = tr.GetBranch(3)->TipPoint();
 
-    BOOST_TEST(tr.AddPoints({test_point}, {3}).GetBranch(3)->TipPoint() == (tip_point+test_point));
-
+    BOOST_TEST(tr.AddPoints({test_point}, {3}).GetBranch(3)->TipPoint() == (tip_point + test_point));
 }
-
-
-
 
 BOOST_AUTO_TEST_CASE( Tree_Class_methods, 
     *utf::tolerance(eps))
 {   
-    vector<int> ids{5, 4, 9};
+    vector<t_sources_ids> ids{5, 4, 9};
     Tree tr;
-    tr.Initialize(
-        {{0.0, 0}, {0.1, 0}, {0.2, 0}}, 
-        {0.0, 0.1, 0.2},
-        ids);
+    tr.Initialize({
+        {5, {{0.0, 0}, 0}},
+        {4, {{0.1, 0}, 0.1}},
+        {9, {{0.2, 0}, 0.2}}
+    });
 
     BranchNew 
         left_branch{tr.GetBranch(5)->TipPoint(), 0.1},
@@ -210,16 +198,26 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_TEST(tr.HasSubBranches(5));
     BOOST_TEST(tr.DoesExistBranch(b1));
     BOOST_TEST(tr.DoesExistBranch(b2));
+    BOOST_TEST(tr.GetAdjacentBranchId(b1)    == b2);
+    BOOST_TEST(tr.GetAdjacentBranchId(b2)    == b1);
+    BOOST_TEST(tr.GetSubBranchesId(5).first  == b1);
+    BOOST_TEST(tr.GetSubBranchesId(5).second == b2);
+    BOOST_TEST(tr.HasParentBranch(b1));
+    BOOST_TEST(tr.HasParentBranch(b2));
 
     //ADDBRANCH TEST
     BOOST_CHECK_THROW(tr.AddBranch(left_branch, b1), Exception);
     BOOST_CHECK_THROW(tr.AddBranch(right_branch, b2), Exception);
 
-    ids = vector{10};
+    ids = vector<t_sources_ids>{10};
+    tr.Clear();
     tr = Tree();
-    tr.Initialize({{0.0, 0}}, {0.0}, ids);
+    tr.Initialize({{10, {{0.0, 0}, 0.}}});
     
-    BOOST_TEST(tr.TipBranchesId() == ids);
+    auto tree_br = tr.TipBranchesId();
+    for(size_t i = 0; i < tree_br.size(); ++i)
+        BOOST_TEST( tree_br.at(i) == ids.at(i));
+
     auto [c1, c2] = tr.AddSubBranches(10, left_branch, right_branch);
     auto new_ids = vector{c1, c2};
     auto new_ids_r = vector{c2, c1};
@@ -241,7 +239,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
 
     //GENERATE NEW ID
     tr = Tree();
-    tr.Initialize({{0.0, 0}}, {0.0}, {1});
+    tr.Initialize({{1, {{0.0, 0}, 0}}});
 
     BOOST_TEST(!tr.IsValidBranchId(0));
     BOOST_TEST(tr.IsValidBranchId(1));
@@ -256,183 +254,95 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_CHECK_THROW(tr.AddBranch(left_branch, 0), Exception);
 }
 
-
-
-void TEST_POINT(Point p1, Point p2)
-{
-    BOOST_TEST(p1 == p2);
-}
-
-BOOST_AUTO_TEST_CASE( boundary_generator_new, 
-    *utf::tolerance(eps))
-{   
-    Border border;
-    border.MakeRectangular(
-        {1, 1},
-        {0 ,1, 2, 3},
-        {0.5},{1});
-
-    Tree tr;
-    tr.Initialize(
-        border.GetSourcesPoint(), 
-        border.GetSourcesNormalAngle(),
-        border.GetSourcesId());
-    
-    vector<Point> tree_vector;
-    TreeVector(tree_vector, 1, tr, 1e-3);
-    BOOST_TEST(tree_vector.size() == 1);
-    auto p = Point{0.5, 0};
-    BOOST_TEST(tree_vector.at(0) == p);
-
-    auto br = tr.GetBranch(1);
-    br->AddPoint(Polar{0.1, 0});
-    tree_vector.clear();
-    
-    TreeVector(tree_vector, 1, tr, 1e-3);
-    BOOST_TEST(tree_vector.size() == 3);
-    p = Point{0.5 - 1e-3/2, 0};
-    BOOST_TEST(tree_vector.at(0) == p);
-    p = Point{0.5, 0.1};
-    BOOST_TEST(tree_vector.at(1) == p);
-    p = Point{0.5 + 1e-3/2, 0};
-    BOOST_TEST(tree_vector.at(2) == p);
-
-
-    tree_vector.clear();
-    br->AddPoint(Polar{0.1, 0});
-    BranchNew left_branch(br->TipPoint(), br->TipAngle() + M_PI/2);
-    left_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
-    BranchNew right_branch(br->TipPoint(), br->TipAngle() - M_PI/2);
-    right_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
-    tr.AddSubBranches(1, left_branch, right_branch);
-
-    auto tip_ids = vector<int> {2, 3};
-    BOOST_TEST(tr.TipBranchesId() == tip_ids);
-
-    TreeVector(tree_vector, 1, tr, 1e-3);
-    BOOST_TEST(tree_vector.size() == 17);
-
-    //left source branch
-    TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2, 0});
-    TEST_POINT(tree_vector.at(1), Point{0.5 - 1e-3/2, 0.1});
-
-    //left left branch
-    TEST_POINT(tree_vector.at(2), Point{0.5, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(3), Point{0.4, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(4), Point{0.3, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(5), Point{0.2, 0.2});
-    //right left branch
-    TEST_POINT(tree_vector.at(6), Point{0.3, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(7), Point{0.4, 0.2 + 1e-3/2});
-    //left right branch
-    TEST_POINT(tree_vector.at(8), Point{0.5, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(9), Point{0.6, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(10), Point{0.7, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(11), Point{0.8, 0.2});
-    //right right branch
-    TEST_POINT(tree_vector.at(12), Point{0.7, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(13), Point{0.6, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(14), Point{0.5, 0.2 - 1e-3/2});
-    //right source branch
-    TEST_POINT(tree_vector.at(15), Point{0.5 + 1e-3/2, 0.1 });
-    TEST_POINT(tree_vector.at(16), Point{0.5 + 1e-3/2, 0.0 });
-    TEST_POINT(tree_vector.back(), Point{0.5 + 1e-3/2, 0});
-
-}
-
-
-BOOST_AUTO_TEST_CASE( boundary_generator_new_2, 
-    *utf::tolerance(eps))
-{   
-    Border border;
-    border.MakeRectangular(
-        {1, 1},
-        {0 ,1, 2, 3},
-        {0.5},{1});
-
-    Tree tr;
-    tr.Initialize(
-        border.GetSourcesPoint(), 
-        border.GetSourcesNormalAngle(),
-        border.GetSourcesId());
-    
-    vector<Point> tree_vector;
-    TreeVector(tree_vector, 1, tr, 1e-3);
-    BOOST_TEST(tree_vector.size() == 1);
-
-
-    BranchNew l(tr.GetBranch(1)->TipPoint(), tr.GetBranch(1)->TipAngle()+M_PI/4),
-        r(tr.GetBranch(1)->TipPoint(), tr.GetBranch(1)->TipAngle() - M_PI/4);
-    
-    auto[i1, i2] = tr.AddSubBranches(1, l, r);
-    cout << i2;
-    BOOST_TEST(tree_vector.size() == 1);
-    auto p = Point{0.5, 0};
-    BOOST_TEST(tree_vector.at(0) == p);
-
-    tr.GetBranch(i1)->AddPoint(Polar{0.1, 0});
-    tree_vector.clear();
-    TreeVector(tree_vector, 1, tr, 1e-3);
-    BOOST_TEST(tree_vector.size() == 3);
-    TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
-    TEST_POINT(tree_vector.at(1), Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
-    TEST_POINT(tree_vector.at(2), Point{0.5, 0});    
-}
-
-
 BOOST_AUTO_TEST_CASE( tree_tips_point_method, 
     *utf::tolerance(eps))
 {
-    Border border;
-    border.MakeRectangular(
-        {1, 1},
-        {0 ,1, 2, 3},
-        {0.5}, {1});
+    Boundaries border;
+    border.push_back(
+        {
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {0.5, 0}, 
+                {1, 0}, 
+                {1, 1}, 
+                {0, 1}
+            }, 
+            {/*lines*/
+                {0, 1, 0},
+                {1, 2, 0},
+                {2, 3, 1},
+                {3, 4, 2},
+                {4, 0, 3} 
+            }, 
+            {{1, 1}}/*sources*/, 
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer rectangular boudary"
+        }/*Outer Boundary*/
+    );
 
     Tree tr;
     tr.Initialize(
-        border.GetSourcesPoint(), 
-        border.GetSourcesNormalAngle(),
-        border.GetSourcesId());
+        border.GetSourcesIdsPointsAndAngles());
 
     BOOST_TEST(tr.TipPoints().size() == 1);
-    TEST_POINT(tr.TipPoints().at(0), Point{0.5, 0});
+    BOOST_TEST((tr.TipPoints().at(0) == Point{0.5, 0}));
 }
 
 BOOST_AUTO_TEST_CASE( add_points_tests, 
     *utf::tolerance(eps))
 {
-    Border border;
-    border.MakeRectangular(
-        {1, 1},
-        {0 ,1, 2, 3},
-        {0.5, 0.6, 0.7}, {1, 2, 3});
+    Boundaries border;
+    border.push_back(
+        {
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {0.5, 0},
+                {0.6, 0},
+                {0.7, 0}, 
+                {1, 0}, 
+                {1, 1}, 
+                {0, 1}
+            }, 
+            {/*lines*/
+                {0, 1, 0},
+                {1, 2, 0},
+                {2, 3, 0},
+                {3, 4, 0},
+                {4, 5, 1}, 
+                {6, 7, 2}, 
+                {7, 0, 3} 
+            }, 
+            {{1, 1},{2, 2},{3, 3}}/*sources*/, 
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer rectangular boudary"
+        }/*Outer Boundary*/
+    );
 
     Tree tr;
     tr.Initialize(
-        border.GetSourcesPoint(), 
-        border.GetSourcesNormalAngle(),
-        border.GetSourcesId());
+        border.GetSourcesIdsPointsAndAngles());
 
     tr.AddPoints({Point{0, 0.1}, Point{0, 0.1}, Point{0, 0.1}}, {1, 2, 3});
-    TEST_POINT(tr.GetBranch(1)->TipPoint(), Point(0.5, 0.1));
-    TEST_POINT(tr.GetBranch(2)->TipPoint(), Point(0.6, 0.1));
-    TEST_POINT(tr.GetBranch(3)->TipPoint(), Point(0.7, 0.1));
+    BOOST_TEST((tr.GetBranch(1)->TipPoint() == Point(0.5, 0.1)));
+    BOOST_TEST((tr.GetBranch(2)->TipPoint() == Point(0.6, 0.1)));
+    BOOST_TEST((tr.GetBranch(3)->TipPoint() == Point(0.7, 0.1)));
 
     tr.AddPolars({Polar{0.1, 0}, Polar{0.1, 0}, Polar{0.1, 0}}, {1, 2, 3});
-    TEST_POINT(tr.GetBranch(1)->TipPoint(), Point(0.5, 0.2));
-    TEST_POINT(tr.GetBranch(2)->TipPoint(), Point(0.6, 0.2));
-    TEST_POINT(tr.GetBranch(3)->TipPoint(), Point(0.7, 0.2));
+    BOOST_TEST((tr.GetBranch(1)->TipPoint() == Point(0.5, 0.2)));
+    BOOST_TEST((tr.GetBranch(2)->TipPoint() == Point(0.6, 0.2)));
+    BOOST_TEST((tr.GetBranch(3)->TipPoint() == Point(0.7, 0.2)));
 
     tr.AddAbsolutePolars({Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}}, {1, 2, 3});
-    TEST_POINT(tr.GetBranch(1)->TipPoint(), Point(0.5, 0.3));
-    TEST_POINT(tr.GetBranch(2)->TipPoint(), Point(0.6, 0.3));
-    TEST_POINT(tr.GetBranch(3)->TipPoint(), Point(0.7, 0.3));
+    BOOST_TEST((tr.GetBranch(1)->TipPoint() == Point(0.5, 0.3)));
+    BOOST_TEST((tr.GetBranch(2)->TipPoint() == Point(0.6, 0.3)));
+    BOOST_TEST((tr.GetBranch(3)->TipPoint() == Point(0.7, 0.3)));
 
     tr.AddAbsolutePolars({Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}, Polar{0.1, M_PI/2}}, {1, 2, 3});
-    TEST_POINT(tr.GetBranch(1)->TipPoint(), Point(0.5, 0.4));
-    TEST_POINT(tr.GetBranch(2)->TipPoint(), Point(0.6, 0.4));
-    TEST_POINT(tr.GetBranch(3)->TipPoint(), Point(0.7, 0.4));
+    BOOST_TEST((tr.GetBranch(1)->TipPoint() == Point(0.5, 0.4)));
+    BOOST_TEST((tr.GetBranch(2)->TipPoint() == Point(0.6, 0.4)));
+    BOOST_TEST((tr.GetBranch(3)->TipPoint() == Point(0.7, 0.4)));
 }
 
 
@@ -478,4 +388,352 @@ BOOST_AUTO_TEST_CASE(shrink_test, *utf::tolerance(eps))
     br.Shrink(0.001);
     BOOST_TEST(br.Lenght() == 0.);
     BOOST_TEST(br.Size() == 1);
+}
+
+
+// ------------- Tests Follow --------------
+BOOST_AUTO_TEST_CASE( Tree_UPD, 
+    *utf::tolerance(eps))
+{   
+    Tree tree;
+    BranchNew brTest({0, 0}, 0);
+
+    BOOST_TEST(tree.NumberOfSourceBranches() == 0);
+    BOOST_TEST(tree.TipBranchesId().size() == 0);
+    BOOST_TEST(tree.TipIdsAndPoints().size() == 0);
+    BOOST_TEST(tree.TipPoints().size() == 0);
+    BOOST_TEST(tree.HasEmptySourceBranch() == true);
+    BOOST_TEST(tree.GenerateNewID() == 1);
+    
+    BOOST_CHECK_THROW(tree.AddSourceBranch(brTest, 0), Exception);
+    BOOST_CHECK_THROW(tree.AddBranch(brTest, 0), Exception);
+    BOOST_CHECK_THROW(tree.AddSubBranches(0, brTest, brTest), Exception);
+
+    BOOST_CHECK_THROW(tree.GetParentBranchId(0), Exception);
+    BOOST_CHECK_THROW(tree.GetParentBranchId(2), Exception);
+    BOOST_CHECK_THROW(tree.GetSubBranchesId(2), Exception);
+    BOOST_CHECK_THROW(tree.GetAdjacentBranchId(2), Exception);
+
+    BOOST_CHECK_THROW(tree.GetBranch(2), Exception);
+    BOOST_CHECK_THROW(tree.GetParentBranch(2), Exception);
+    BOOST_CHECK_THROW(tree.GetAdjacentBranch(2), Exception);
+    BOOST_CHECK_THROW(tree.GetSubBranches(2), Exception);
+
+    BOOST_CHECK_THROW(tree.DeleteSubBranches(5), Exception);
+    BOOST_CHECK_THROW(tree.DeleteBranch(5), Exception);
+
+    BOOST_CHECK_THROW(tree.AddPoints({Point{0, 0}, Point{1, 1}}, {1, 2}), Exception);
+    BOOST_CHECK_THROW(tree.AddPolars({Polar{0, 0}, Polar{1, 1}}, {1, 2}), Exception);
+    BOOST_CHECK_THROW(tree.AddAbsolutePolars({Polar{0, 0}, Polar{1, 1}}, {1, 2}), Exception);
+
+    BOOST_TEST(tree.DoesExistBranch(1) == false);
+    BOOST_CHECK_THROW(tree.IsSourceBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.HasParentBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.HasSubBranches(1), Exception);
+    BOOST_TEST(tree.HasEmptySourceBranch() == true);
+
+    BOOST_TEST(tree.IsValidBranchId(0) == false);
+    BOOST_TEST(tree.IsValidBranchId(1) == true);
+
+    BranchNew br1({0, 0}, 1.4);
+    br1.AddPoint(Polar{1, 0});
+    br1.AddPoint(Polar{1, 0});
+    br1.AddPoint(Polar{1, 0});
+    br1.AddPoint(Polar{1, 0});
+
+    BranchNew br2({0, 0}, 1.7);
+    br2.AddPoint(Polar{1, 0});
+    br2.AddPoint(Polar{1, 0});
+    br2.AddPoint(Polar{1, 0});
+    br2.AddPoint(Polar{1, 0});
+
+    BranchNew br3({0, 0}, 1.9);
+    br3.AddPoint(Polar{1, 0});
+    br3.AddPoint(Polar{1, 0});
+    br3.AddPoint(Polar{1, 0});
+    br3.AddPoint(Polar{1, 0});
+
+    BranchNew br4({0, 0}, 2.4);
+    br4.AddPoint(Polar{1, 0});
+    br4.AddPoint(Polar{1, 0});
+    br4.AddPoint(Polar{1, 0});
+    br4.AddPoint(Polar{1, 0});
+
+    BranchNew br5({0, 0}, 4.4);
+    br5.AddPoint(Polar{1, 0});
+    br5.AddPoint(Polar{1, 0});
+    br5.AddPoint(Polar{1, 0});
+    br5.AddPoint(Polar{1, 0});
+
+    BranchNew br6({0, 0}, 0.4);
+    br6.AddPoint(Polar{1, 0});
+    br6.AddPoint(Polar{1, 0});
+    br6.AddPoint(Polar{1, 0});
+    br6.AddPoint(Polar{1, 0});
+
+    BranchNew br7({0, 0}, 0.6);
+    br7.AddPoint(Polar{1, 0});
+    br7.AddPoint(Polar{1, 0});
+    br7.AddPoint(Polar{1, 0});
+    br7.AddPoint(Polar{1, 0});
+
+    //building tree
+    auto id = tree.AddSourceBranch(br1);
+    BOOST_TEST(id == 1);
+    BOOST_TEST(tree.NumberOfSourceBranches() == 1);
+    BOOST_TEST(tree.TipBranchesId().size() == 1);
+    BOOST_TEST(tree.TipBranchesId().at(0) == id);
+    BOOST_TEST(tree.TipIdsAndPoints().size() == 1);
+    BOOST_TEST(tree.TipPoints().size() == 1);
+    BOOST_TEST(tree.TipPoints().at(0) == br1.TipPoint());
+    BOOST_TEST(tree.HasEmptySourceBranch() == false);
+    BOOST_TEST(tree.GenerateNewID() == 2);
+
+    BOOST_TEST(tree.DoesExistBranch(id) == true);
+    BOOST_TEST(tree.IsSourceBranch(id) == true);
+    BOOST_TEST(tree.HasParentBranch(id) == false);
+    BOOST_TEST(tree.HasSubBranches(id) == false);
+    BOOST_TEST(tree.HasEmptySourceBranch() == false);
+
+    auto[id2, id3] = tree.AddSubBranches(id, br2, br3);
+    BOOST_TEST(tree.IsSourceBranch(id) == true);
+    BOOST_TEST(tree.HasParentBranch(id) == false);
+    BOOST_TEST(tree.HasSubBranches(id) == true);
+
+    BOOST_TEST(tree.IsSourceBranch(id2) == false);
+    BOOST_TEST(tree.HasParentBranch(id2) == true);
+    BOOST_TEST(tree.HasSubBranches(id2) == false);
+
+    BOOST_TEST(tree.IsSourceBranch(id3) == false);
+    BOOST_TEST(tree.HasParentBranch(id3) == true);
+    BOOST_TEST(tree.HasSubBranches(id3) == false);
+
+    BOOST_TEST(tree.TipBranchesId().size() == 2);
+    BOOST_TEST((tree.TipBranchesId().at(0) == id2 ||
+        tree.TipBranchesId().at(0) == id3));
+    BOOST_TEST((tree.TipBranchesId().at(1) == id2 ||
+        tree.TipBranchesId().at(1) == id3));
+
+    BOOST_TEST(tree.GetParentBranchId(id2) == id);
+    BOOST_TEST(tree.GetParentBranchId(id3) == id);
+    BOOST_TEST(tree.GetAdjacentBranchId(id2) == id3);
+    BOOST_TEST(tree.GetAdjacentBranchId(id3) == id2);
+
+    auto[id4, id5] = tree.AddSubBranches(id2, br4, br5);
+    auto[id6, id7] = tree.AddSubBranches(id3, br6, br7);
+
+    BOOST_TEST(tree.IsSourceBranch(id2) == false);
+    BOOST_TEST(tree.HasParentBranch(id2) == true);
+    BOOST_TEST(tree.HasSubBranches(id2) == true);
+
+    BOOST_TEST(tree.IsSourceBranch(id3) == false);
+    BOOST_TEST(tree.HasParentBranch(id3) == true);
+    BOOST_TEST(tree.HasSubBranches(id3) == true);
+
+    BOOST_TEST((tree.GetSubBranchesId(id2) == pair<t_sources_ids, t_sources_ids>{id4, id5}));
+    BOOST_TEST((tree.GetSubBranchesId(id3) == pair<t_sources_ids, t_sources_ids>{id6, id7}));
+    BOOST_TEST(tree.GetAdjacentBranchId(id4) == id5);
+    BOOST_TEST(tree.GetAdjacentBranchId(id5) == id4);
+    BOOST_TEST(tree.GetAdjacentBranchId(id6) == id7);
+    BOOST_TEST(tree.GetAdjacentBranchId(id7) == id6);
+    BOOST_TEST(tree.GetParentBranchId(id6) == id3);
+    BOOST_TEST(tree.GetParentBranchId(id7) == id3);
+    BOOST_TEST(tree.GetParentBranchId(id4) == id2);
+    BOOST_TEST(tree.GetParentBranchId(id5) == id2);
+
+    BOOST_TEST(tree.NumberOfSourceBranches() == 1);
+    BOOST_TEST(tree.TipBranchesId().size() == 4);
+    BOOST_TEST(tree.TipIdsAndPoints().size() == 4);
+    BOOST_TEST(tree.TipPoints().size() == 4);
+    BOOST_TEST(tree.HasEmptySourceBranch() == false);
+    BOOST_TEST((tree.GenerateNewID() == (t_branch_id)(id7 + 1)));
+
+    //delete
+    tree.DeleteSubBranches(id3);
+    BOOST_TEST(tree.DoesExistBranch(id6) == false);
+    BOOST_TEST(tree.DoesExistBranch(id7) == false);
+    BOOST_TEST(tree.IsSourceBranch(id3) == false);
+    BOOST_TEST(tree.HasParentBranch(id3) == true);
+    BOOST_TEST(tree.HasSubBranches(id3) == false);
+
+    tree.DeleteSubBranches(id);
+    BOOST_TEST(tree.DoesExistBranch(id4) == false);
+    BOOST_TEST(tree.DoesExistBranch(id5) == false);
+    BOOST_TEST(tree.DoesExistBranch(id3) == false);
+    BOOST_TEST(tree.DoesExistBranch(id2) == false);
+    BOOST_TEST(tree.HasSubBranches(id) == false);
+}
+
+BOOST_AUTO_TEST_CASE( Tree_UPD_delete, 
+    *utf::tolerance(eps))
+{   
+    Tree tree;
+    BranchNew br1({0, 0}, 1.4);
+    br1.AddPoint(Polar{1, 0});
+    br1.AddPoint(Polar{1, 0});
+    br1.AddPoint(Polar{1, 0});
+    br1.AddPoint(Polar{1, 0});
+
+    BranchNew br2({0, 0}, 1.7);
+    br2.AddPoint(Polar{1, 0});
+    br2.AddPoint(Polar{1, 0});
+    br2.AddPoint(Polar{1, 0});
+    br2.AddPoint(Polar{1, 0});
+
+    BranchNew br3({0, 0}, 1.9);
+    br3.AddPoint(Polar{1, 0});
+    br3.AddPoint(Polar{1, 0});
+    br3.AddPoint(Polar{1, 0});
+    br3.AddPoint(Polar{1, 0});
+
+    BranchNew br4({0, 0}, 2.4);
+    br4.AddPoint(Polar{1, 0});
+    br4.AddPoint(Polar{1, 0});
+    br4.AddPoint(Polar{1, 0});
+    br4.AddPoint(Polar{1, 0});
+
+    BranchNew br5({0, 0}, 4.4);
+    br5.AddPoint(Polar{1, 0});
+    br5.AddPoint(Polar{1, 0});
+    br5.AddPoint(Polar{1, 0});
+    br5.AddPoint(Polar{1, 0});
+
+    BranchNew br6({0, 0}, 0.4);
+    br6.AddPoint(Polar{1, 0});
+    br6.AddPoint(Polar{1, 0});
+    br6.AddPoint(Polar{1, 0});
+    br6.AddPoint(Polar{1, 0});
+
+    BranchNew br7({0, 0}, 0.6);
+    br7.AddPoint(Polar{1, 0});
+    br7.AddPoint(Polar{1, 0});
+    br7.AddPoint(Polar{1, 0});
+    br7.AddPoint(Polar{1, 0});
+
+    auto id1 = tree.AddSourceBranch(br1);
+    auto[id2, id3] = tree.AddSubBranches(id1, br2, br3);
+    auto[id4, id5] = tree.AddSubBranches(id2, br4, br5);
+    auto[id6, id7] = tree.AddSubBranches(id3, br6, br7);
+
+    BOOST_TEST(tree.DoesExistBranch(id2) == true);
+    BOOST_TEST(tree.DoesExistBranch(id3) == true);
+    BOOST_TEST(tree.DoesExistBranch(id4) == true);
+    BOOST_TEST(tree.DoesExistBranch(id5) == true);
+    BOOST_TEST(tree.DoesExistBranch(id6) == true);
+    BOOST_TEST(tree.DoesExistBranch(id7) == true);
+
+    tree.DeleteSubBranches(id1);
+    BOOST_TEST(tree.DoesExistBranch(id2) == false);
+    BOOST_TEST(tree.DoesExistBranch(id3) == false);
+    BOOST_TEST(tree.DoesExistBranch(id4) == false);
+    BOOST_TEST(tree.DoesExistBranch(id5) == false);
+    BOOST_TEST(tree.DoesExistBranch(id6) == false);
+    BOOST_TEST(tree.DoesExistBranch(id7) == false);
+}
+
+// ------------- Tests Follow --------------
+BOOST_AUTO_TEST_CASE( Tree_UPD_tips, 
+    *utf::tolerance(eps))
+{
+    //TODO test tips: points, ids etc.. 
+}
+
+
+
+
+
+
+BOOST_AUTO_TEST_CASE( construct_empty_tree, 
+    *utf::tolerance(eps))
+{   
+    Tree tree;
+    BOOST_CHECK_THROW(tree.GetParentBranchId(1), Exception);
+    BOOST_CHECK_THROW(tree.GetSubBranchesId(1), Exception);
+    BOOST_CHECK_THROW(tree.GetAdjacentBranchId(1), Exception);
+    BOOST_CHECK_THROW(tree.GetBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.GetParentBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.GetAdjacentBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.GetSubBranches(1), Exception);
+    BOOST_CHECK_THROW(tree.DeleteSubBranches(1), Exception);
+    BOOST_CHECK_THROW(tree.DeleteBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.AddPoints({{1, 1}, {2, 2}}, {1, 2}), Exception);
+    BOOST_CHECK_THROW(tree.AddPolars({{1, 1}, {2, 2}}, {1, 2}), Exception);
+    BOOST_CHECK_THROW(tree.AddAbsolutePolars({{1, 1}, {2, 2}}, {1, 2}), Exception);
+    BOOST_TEST(!tree.DoesExistBranch(1));
+    BOOST_CHECK_THROW(tree.IsSourceBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.HasParentBranch(1), Exception);
+    BOOST_CHECK_THROW(tree.HasSubBranches(1), Exception);
+    BOOST_TEST(tree.HasEmptySourceBranch());
+    BOOST_TEST(tree.Empty());
+    BOOST_TEST((tree.TipBranchesId() == vector<t_branch_id>{}));
+    BOOST_TEST((tree.TipPoints() == vector<Point>{}));
+    BOOST_TEST((tree.TipIdsAndPoints() == map<t_branch_id, Point>{}));
+    BOOST_TEST(tree.NumberOfSourceBranches() == 0);
+    BOOST_TEST(tree.SourceBranchesID().empty());
+}
+
+BOOST_AUTO_TEST_CASE( tree_copy_constructor, 
+    *utf::tolerance(eps))
+{   
+    Tree tree_original;
+    tree_original.Initialize({{1, {{0., 0.}, 10}}});
+
+    Tree tree_copy{tree_original}, tree_not_copy;
+
+    BOOST_TEST(tree_original == tree_copy);
+    BOOST_TEST(!(tree_original == tree_not_copy));
+    BOOST_TEST(tree_original.SourceBranchesID() == tree_copy.SourceBranchesID());
+    BOOST_TEST(tree_original.TipBranchesId() == tree_copy.TipBranchesId());
+    BOOST_TEST(tree_original.TipIdsAndPoints() == tree_copy.TipIdsAndPoints());
+}
+
+BOOST_AUTO_TEST_CASE( tree_initializtion_and_clear, 
+    *utf::tolerance(eps))
+{
+    Boundaries::trees_interface_t ids_points_angles = 
+    {
+        {1, {{2, 3}, 4}},
+        {3, {{3, 4}, 5}},
+        {5, {{4, 5}, 6}},
+        {7, {{5, 6}, 7}}};
+    auto source_branches_id = vector<t_sources_ids>{1, 3, 5, 7};
+    auto tip_points = vector<Point>{{2, 3}, {3, 4}, {4, 5}, {5, 6}};
+    auto tip_ids_and_points = 
+        map<t_sources_ids, Point>{{1, {2, 3}}, {3, {3, 4}}, {5, {4, 5}}, {7, {5, 6}}};
+
+    Tree tree;
+    tree.Initialize(ids_points_angles);
+
+    BOOST_TEST(tree.source_branches_id == source_branches_id);
+    BOOST_TEST(tree.TipBranchesId() == source_branches_id);
+    BOOST_TEST(tree.TipPoints() == tip_points);
+    BOOST_TEST(tree.TipIdsAndPoints() == tip_ids_and_points);
+
+    //clear test
+    tree.Clear();
+    source_branches_id = {};
+    tip_points = {};
+    tip_ids_and_points = {};
+    BOOST_TEST(tree.source_branches_id == source_branches_id);
+    BOOST_TEST(tree.TipBranchesId() == source_branches_id);
+    BOOST_TEST(tree.TipPoints() == tip_points);
+    BOOST_TEST(tree.TipIdsAndPoints() == tip_ids_and_points);
+}
+
+BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch, 
+    *utf::tolerance(eps))
+{
+    Tree tree;
+    BranchNew 
+        branch_1{Point{1, 2}, 3}, 
+        branch_2{Point{2, 3}, 4},
+        branch_3{Point{3, 4}, 5},
+        branch_1_duplicate{Point{1, 2}, 3};
+
+    BOOST_CHECK_THROW(tree.AddBranch(branch_1, 0), Exception);
+    t_branch_id id;
+    BOOST_CHECK_NO_THROW(id = tree.AddBranch(branch_1));
+    BOOST_CHECK_THROW(tree.AddBranch(branch_1, id), Exception);
+
+    //.....
 }
