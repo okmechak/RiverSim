@@ -1094,6 +1094,7 @@ void Mesh::write(const string &file)
 void Mesh::info(ostream &out) const
 {
   out << "\nvertices       : " << vertices.size()
+      << "\nholes          : " << holes.size()
       << "\npoints (phys)  : " << points.size()
       << "\nlines          : " << lines.size()
       << "\ntriangles      : " << triangles.size()
@@ -1108,6 +1109,18 @@ void Mesh::info(ostream &out) const
   cout << "Vertices" << endl;
   cout << "----------" << endl;
   for(auto & p: vertices)
+  {
+    cout << i << ") "<< p << endl;
+    i++;
+  }
+
+  //Holes
+  i = 0;
+  cout << endl;
+  cout << "----------" << endl;
+  cout << "Holes" << endl;
+  cout << "----------" << endl;
+  for(auto & p: holes)
   {
     cout << i << ") "<< p << endl;
     i++;
