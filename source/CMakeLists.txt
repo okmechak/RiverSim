@@ -42,7 +42,7 @@ if(BUILD_PROGRAM)
     target_link_libraries(riversim_perfomance riv)
 
     add_executable(meshgen meshgen.cpp)
-    target_link_libraries(meshgen mesh physmodel io tethex)
+    target_link_libraries(meshgen mesh physmodel io tethex boundary_generator)
 
     install(TARGETS riversim DESTINATION riversim)
     install(TARGETS riversim_perfomance DESTINATION riversim)

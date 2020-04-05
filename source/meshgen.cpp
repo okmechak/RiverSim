@@ -2,6 +2,7 @@
 #include "physmodel.hpp"
 #include "io.hpp"
 #include "tethex.hpp"
+#include "boundary_generator.hpp"
 #include <iostream>
 
 using namespace std;
@@ -24,7 +25,10 @@ int main(int argc, char *argv[])
         River::Triangle triangle(&model.mesh);
 
         River::print(model.prog_opt.verbose, "BoundaryGenerator call..");
-        auto mesh = River::BoundaryGenerator(model);
+        auto boundary = River::SimpleBoundaryGenerator(model);
+
+        River::print(model.prog_opt.verbose, "Convertion to tethex mesh object");
+        auto mesh = tethex::Mesh(boundary);
 
         River::print(model.prog_opt.verbose, "Mesh generation..");
         triangle.generate(mesh);
