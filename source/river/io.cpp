@@ -335,11 +335,15 @@ namespace River
         json jboundaries;
         for(auto& [boundary_id, simple_boundary]: model.border)
         {  
-            vector<pair<double, double>> vertices;
-            vertices.reserve(simple_boundary.lines.size());
+            vector<pair<double, double>> vertices, holes;
+            vertices.reserve(simple_boundary.vertices.size());
             for(auto& vertice: simple_boundary.vertices)
                 vertices.push_back({vertice.x, vertice.y});
             
+            holes.reserve(simple_boundary.holes.size());
+            for(auto& hole: simple_boundary.holes)
+                holes.push_back({hole.x, hole.y});
+
             vector<tuple<t_vert_pos, t_vert_pos, unsigned>> lines;
             lines.reserve(simple_boundary.lines.size());
             for(auto& line : simple_boundary.lines)
@@ -348,8 +352,8 @@ namespace River
             jboundaries.push_back({
                 {"Vertices", vertices},
                 {"Lines", lines},
+                {"Holes", holes},
                 {"InnerBoundary", simple_boundary.inner_boundary},
-                {"Hole", {simple_boundary.hole.x, simple_boundary.hole.y}},
                 {"Name", simple_boundary.name},
                 {"Id", boundary_id}
             });   
@@ -537,7 +541,7 @@ namespace River
                 t_boundary_id boundary_id;
                 
                 //vertices
-                vector<pair<double, double>> vertices;
+                vector<pair<double, double>> vertices, holes;
                 value.at("Vertices").get_to(vertices);
                 simple_boundary.vertices.reserve(vertices.size());
                 for(auto& vertice: vertices)
@@ -550,11 +554,14 @@ namespace River
                 for(auto& line: lines)
                     simple_boundary.lines.push_back({get<0>(line), get<1>(line), get<2>(line)});
 
+                //holes
+                value.at("Holes").get_to(holes);
+                simple_boundary.holes.reserve(holes.size());
+                for(auto& hole: holes)
+                    simple_boundary.holes.push_back({hole.first, hole.second});
+
                 //rest of fields
                 value.at("InnerBoundary").get_to(simple_boundary.inner_boundary);
-                vector<double> hole;
-                value.at("Hole").get_to(hole);
-                simple_boundary.hole = {hole.at(0), hole.at(1)};
                 value.at("Name").get_to(simple_boundary.name);
                 value.at("Id").get_to(boundary_id);
 

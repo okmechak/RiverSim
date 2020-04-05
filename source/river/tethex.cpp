@@ -37,29 +37,22 @@ void requirement_fails(const char *file,
   throw runtime_error(exc);
 }
 
-
-
-
 //-------------------------------------------------------
 //
 // Point
 //
 //-------------------------------------------------------
-ostream & operator<< (ostream &out, const Point &p)
+ostream & operator<< (ostream &write, const tethex::Point &p)
 {
-  cout << "Point{";
-  for(int i = 0; i < p.n_coord - 1; ++i)
-    cout << p.coord[i] << ", ";
+    write << "Point{";
+    for(int i = 0; i < p.n_coord - 1; ++i)
+        write << p.coord[i] << ", ";
 
-  cout << p.coord[p.n_coord - 1] << "}  ";
-  cout << "region tag: " << p.regionTag;
-  cout << ", mesh size: " << p.meshSize;
-  
-  return out;
+    write << p.coord[p.n_coord - 1] << "}  ";
+    write << "region tag: " << p.regionTag;
+    
+    return write;
 }
-
-
-
 
 //-------------------------------------------------------
 //
@@ -79,7 +72,6 @@ MeshElement::MeshElement(int n_ver,
   vertices.resize(n_vertices, 0);
   edges.resize(n_edges, 0);
 }
-
 
 MeshElement::MeshElement(const MeshElement &elem)
   : n_vertices(elem.n_vertices)
@@ -101,7 +93,6 @@ MeshElement& MeshElement::operator =(const MeshElement &elem)
   return *this;
 }
 
-
 void MeshElement::set_vertex(int local_number, int global_number)
 {
   expect(local_number >= 0 && local_number < get_n_vertices(),
@@ -118,7 +109,6 @@ void MeshElement::set_edge(int local_number, int global_number)
   edges[local_number] = global_number;
 }
 
-
 bool MeshElement::contains(int vertex) const
 {
   for (int i = 0; i < n_vertices; ++i)
@@ -127,31 +117,26 @@ bool MeshElement::contains(int vertex) const
   return false;
 }
 
-ostream & operator<< (ostream &out, const MeshElement &el)
+ostream & operator<< (ostream &write, const MeshElement &el)
 {
-  cout << "gmsh type: " << el.gmsh_el_type;
-  cout << "  vert {";
-  for(int i = 0; i < el.n_vertices - 1; ++i)
-    cout << el.vertices[i] << ", ";
-  
-  if(el.n_vertices != 0)
-    cout << el.vertices[el.n_vertices - 1];
+    write << "gmsh type: " << el.gmsh_el_type;
+    write << "  vert {";
+    for(int i = 0; i < el.n_vertices - 1; ++i)
+        write << el.vertices[i] << ", ";
+    
+    if(el.n_vertices != 0)
+        write << el.vertices[el.n_vertices - 1];
 
+    write << "}  edges {";
+    for(int i = 0; i < el.n_edges - 1; ++i)
+        write << el.edges[i] << ", ";
+    if(el.n_edges != 0)
+        write << el.edges[el.n_edges - 1];
 
-  cout << "}  edges {";
-  for(int i = 0; i < el.n_edges - 1; ++i)
-    cout << el.edges[i] << ", ";
-  if(el.n_edges != 0)
-    cout << el.edges[el.n_edges - 1];
+    write << "}  mat id " << el.material_id;
 
-
-  cout << "}  mat id " << el.material_id;
-
-  return out;
+    return write;
 }
-
-
-
 
 //-------------------------------------------------------
 //
@@ -179,9 +164,6 @@ PhysPoint::PhysPoint(int ver, int mat_id)
   vertices[0] = ver;
   material_id = mat_id;
 }
-
-
-
 
 //-------------------------------------------------------
 //
@@ -213,6 +195,14 @@ Line::Line(int v1,
   material_id = mat_id;
 }
 
+Line::Line(const River::Line &line):
+    MeshElement(n_vertices, n_edges, gmsh_el_type)
+{
+    vertices[0] = line.p1;
+    vertices[1] = line.p2;
+    material_id = line.boundary_id;
+}
+
 int Line::common_vertex(const Line& line) const
 {
   for (int i = 0; i < n_vertices; ++i)
@@ -233,10 +223,6 @@ int Line::another_vertex(int vertex) const
   return 0; // to calm compiler down
 }
 
-
-
-
-
 //-------------------------------------------------------
 //
 // Triangle
@@ -245,7 +231,6 @@ int Line::another_vertex(int vertex) const
 Triangle::Triangle()
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 { }
-
 
 Triangle::Triangle(const vector<int> &ver,
                    int mat_id)
@@ -270,7 +255,6 @@ Triangle::Triangle(int v1,
   material_id = mat_id;
 }
 
-
 //-------------------------------------------------------
 //
 // Quadrangle
@@ -279,7 +263,6 @@ Triangle::Triangle(int v1,
 Quadrangle::Quadrangle()
   : MeshElement(n_vertices, n_edges, gmsh_el_type)
 { }
-
 
 Quadrangle::Quadrangle(const vector<int> &ver,
                        int mat_id)
@@ -305,8 +288,6 @@ Quadrangle::Quadrangle(int v1,
   vertices[3] = v4;
   material_id = mat_id;
 }
-
-
 
 //-------------------------------------------------------
 //
@@ -371,15 +352,11 @@ IncidenceMatrix::IncidenceMatrix(int n_vertices,
   delete[] vec;
 }
 
-
-
 IncidenceMatrix::~IncidenceMatrix()
 {
   delete[] row;
   delete[] col;
 }
-
-
 
 int IncidenceMatrix::find(int row_number,
                           int col_number) const
@@ -408,22 +385,19 @@ int IncidenceMatrix::find(int row_number,
   return -1; // to calm compiler down about returned value
 }
 
-
-
-
 //-------------------------------------------------------
 //
 // Mesh
 //
 //-------------------------------------------------------
-Mesh::Mesh()
-  : vertices()
-  , points()
-  , lines()
-  , triangles()
-  , quadrangles()
-  , n_converted_quadrangles(0)
-  , physical_names()
+Mesh::Mesh():
+    vertices(),
+    points(),
+    lines(),
+    triangles(),
+    quadrangles(),
+    n_converted_quadrangles(0),
+    physical_names()
 { }
 
 
@@ -434,11 +408,10 @@ Mesh::Mesh(const Mesh& msh)
   physical_names = msh.physical_names;
   
   //Vertices
-  vertices.reserve(msh.get_n_vertices());
-  for(unsigned i = 0; i < msh.get_n_vertices(); ++i)
-  {
-    vertices.push_back(msh.get_vertex(i));
-  }
+  vertices = msh.get_vertices();
+
+  //holes
+  holes = msh.get_holes();
 
   //PhysPoints
   points.reserve(msh.get_n_points());
@@ -492,11 +465,10 @@ Mesh& Mesh::operator =(const Mesh& msh)
   physical_names = msh.physical_names;
 
   //Vertices
-  vertices.reserve(msh.get_n_vertices());
-  for(unsigned i = 0; i < msh.get_n_vertices(); ++i)
-  {
-    vertices.push_back(msh.get_vertex(i));
-  }
+  vertices = msh.get_vertices();
+
+  //Holes
+  holes = msh.get_holes();
 
   //PhysPoints
   points.reserve(msh.get_n_points());
@@ -545,38 +517,22 @@ Mesh& Mesh::operator =(const Mesh& msh)
   return *this;
 }
 
-
-
-Mesh::Mesh(
-    vector<Point> &verticesVal, 
-    vector<MeshElement *> &linesVal,
-    vector<MeshElement *> &trianglesVal
-  ): vertices(verticesVal)
-  , points()
-  , lines(linesVal)
-  , triangles(trianglesVal)
-  , quadrangles()
-  , n_converted_quadrangles(0)
-  , physical_names()
-{}
-
-Mesh::Mesh(
-  vector<Point> &verticesVal, 
-  vector<MeshElement *> &pointsVal, 
-  vector<MeshElement *> &linesVal,
-  vector<MeshElement *> &trianglesVal,
-  vector<MeshElement *> &quaddranglesVal
-): vertices(verticesVal)
-  , points(pointsVal)
-  , lines(linesVal)
-  , triangles(trianglesVal)
-  , quadrangles(quaddranglesVal)
-  , n_converted_quadrangles(0)
-  , physical_names()//implement this if necessery
-{}
+Mesh::Mesh(const River::SimpleBoundary &boundaries)
+{
+    vertices.reserve(boundaries.vertices.size());
+    lines.reserve(boundaries.lines.size());
+    for(size_t i = 0; i < boundaries.vertices.size(); ++i)
+    {
+        vertices.push_back(boundaries.vertices.at(i));
+        lines.push_back(new tethex::Line(boundaries.lines.at(i)));
+    }
+        
+    holes.reserve(boundaries.holes.size());
+    for(size_t i = 0; i < boundaries.vertices.size(); ++i)
+        holes.push_back(boundaries.holes.at(i));
+}
 
           
-
   void Mesh::set_points(const vector<MeshElement *> &pointsVal)
   {
     for (size_t i = 0; i < points.size(); ++i)
@@ -618,6 +574,7 @@ Mesh::Mesh(
 void Mesh::clean()
 {
   vertices.clear();
+  holes.clear();
   for (size_t i = 0; i < points.size(); ++i)
     delete points[i];
   points.clear();
@@ -638,9 +595,6 @@ void Mesh::clean()
 
   n_converted_quadrangles = 0;
 }
-
-
-
 
 void Mesh::read(const string &file)
 {
@@ -867,9 +821,6 @@ void Mesh::set_new_vertices(const vector<MeshElement*> &elements,
   }
 }
 
-
-
-
 void Mesh::convert_2D()
 {
   // firstly we need to numerate all edges
@@ -912,9 +863,6 @@ void Mesh::convert_2D()
     delete edges[i];
   edges.clear();
 }
-
-
-
 
 void Mesh::convert_triangles(const IncidenceMatrix &incidence_matrix,
                              int n_old_vertices,
@@ -999,9 +947,6 @@ void Mesh::convert_triangles(const IncidenceMatrix &incidence_matrix,
           ") multiplying by 3 (" + d2s(3 * triangles.size()) + ")");
 }
 
-
-
-
 void Mesh::convert_quadrangles()
 {
   for (size_t elem = 0; elem < quadrangles.size(); ++elem)
@@ -1023,8 +968,6 @@ void Mesh::convert_quadrangles()
       quadrangles[elem]->set_vertex(i, quad_vertices[i]);
   }
 }
-
-
 
 void Mesh::redefine_lines(const IncidenceMatrix &incidence_matrix,
                           int n_old_vertices)
@@ -1049,10 +992,6 @@ void Mesh::redefine_lines(const IncidenceMatrix &incidence_matrix,
           ") is not equal to number of original physical lines (" + d2s(n_old_lines) +
           ") multiplying by 2 (" + d2s(2 * n_old_lines) + ")");
 }
-
-
-
-
 
 void Mesh::edge_numeration(vector<MeshElement*> &cells,
                            const IncidenceMatrix &incidence_matrix,
@@ -1103,7 +1042,6 @@ void Mesh::edge_numeration(vector<MeshElement*> &cells,
 
 } // edge numeration
 
-
 void Mesh::write(const string &file)
 {
   ofstream out(file.c_str());
@@ -1152,8 +1090,6 @@ void Mesh::write(const string &file)
 
   out.close();
 }
-
-
 
 void Mesh::info(ostream &out) const
 {
@@ -1228,8 +1164,6 @@ void Mesh::info(ostream &out) const
    
 }
 
-
-
 void Mesh::statistics(ostream &out) const
 {
   out << "\nvertices:\n";
@@ -1250,8 +1184,6 @@ void Mesh::statistics(ostream &out) const
     out << "\n";
   }
 }
-
-
 
 int Mesh::find_face_from_two_edges(int edge1, int edge2,
                                    const IncidenceMatrix &vertices_incidence,
@@ -1275,10 +1207,6 @@ int Mesh::find_face_from_two_edges(int edge1, int edge2,
   return edge_vertex_incidence[opposite_edge].find(common_vertex)->second;
 }
 
-
-
-
-
 //-------------------------------------------------------
 //
 // Auxiliary functions
@@ -1301,9 +1229,6 @@ void write_elements(ostream &out,
   }
 }
 
-
-
-
 void change_vertices_order(int dimension,
                            const vector<Point> &all_mesh_vertices,
                            vector<int> &vertices)
@@ -1323,9 +1248,6 @@ void change_vertices_order(int dimension,
   }else
     require(false, "This feature is not implemented!");
 }
-
-
-
 
 double cell_measure_2D(const vector<Point> &vertices,
                        const vector<int> &indices)

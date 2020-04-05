@@ -61,4 +61,11 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tio)
 
+    add_executable(tboundary_generator boundary.cpp)
+    target_link_libraries(tboundary_generator boundary ${Boost_LIBRARIES})
+    add_test(
+        NAME tboundary_generator
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary_generator)
+
 endif(BUILD_TEST)

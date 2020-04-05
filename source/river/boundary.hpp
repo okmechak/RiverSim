@@ -100,10 +100,10 @@ namespace River
             vector<Point> vertices;
             vector<Line> lines;
             bool inner_boundary = false;
-            Point hole;
+            vector<Point> holes;
             string name = "";
-            void Append(SimpleBoundary simple_boundary);
-            void ReplaceElement(t_vert_pos vertice_pos, SimpleBoundary simple_boundary);
+            void Append(const SimpleBoundary& simple_boundary);
+            void ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary);
 
             bool operator==(const SimpleBoundary& simple_boundary) const;
             friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);

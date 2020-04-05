@@ -51,7 +51,7 @@ namespace River
         return write;
     }
 
-    void SimpleBoundary::Append(SimpleBoundary simple_boundary)
+    void SimpleBoundary::Append(const SimpleBoundary& simple_boundary)
     {
         auto size = vertices.size();
 
@@ -60,19 +60,22 @@ namespace River
             simple_boundary.vertices.begin(), 
             simple_boundary.vertices.end());
         
-        for(auto& line: simple_boundary.lines)
-        {
-            line.p1 += size;
-            line.p2 += size;
-        }
-
+        auto shift = lines.size();
         lines.insert(
             lines.end(),  
             simple_boundary.lines.begin(), 
             simple_boundary.lines.end());
+
+        for(auto i = shift; i < lines.size(); ++i)
+        {
+            lines.at(i).p1 += size;
+            lines.at(i).p2 += size;
+        }
+        
+        holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
-    void SimpleBoundary::ReplaceElement(t_vert_pos vertice_pos, SimpleBoundary simple_boundary)
+    void SimpleBoundary::ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary)
     {
         if(simple_boundary.vertices.empty())
             return;
@@ -101,16 +104,19 @@ namespace River
             else if(line.p2 < vertice_pos && line.p1 > vertice_pos)
                 line.p1 += shift;
 
-        for(auto& line: simple_boundary.lines)
-        {
-            line.p1 += vertice_pos;
-            line.p2 += vertice_pos;
-        }
-
         lines.insert(
             lines.begin() + vertice_pos,  
             simple_boundary.lines.begin(), 
             simple_boundary.lines.end());
+
+        for(size_t i = 0; i < simple_boundary.lines.size(); ++i)
+        {
+            lines.at(i + vertice_pos).p1 += vertice_pos;
+            lines.at(i + vertice_pos).p2 += vertice_pos;
+
+        }
+
+        holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
     bool SimpleBoundary::operator==(const SimpleBoundary &simple_boundary) const
@@ -118,7 +124,7 @@ namespace River
         return vertices == simple_boundary.vertices 
             && lines == simple_boundary.lines
             && inner_boundary == simple_boundary.inner_boundary
-            && hole == simple_boundary.hole
+            && holes == simple_boundary.holes
             && name == simple_boundary.name;
     }
 
@@ -128,7 +134,8 @@ namespace River
 
         write << "inner boudary: " << boundary.inner_boundary << endl;
         if(boundary.inner_boundary)
-            write << "Hole point: " << boundary.hole << endl;
+            for(auto& h: boundary.holes)
+                write << h << endl;
 
         write << "Vertices:" << endl;
         for(const auto& v: boundary.vertices)
@@ -180,7 +187,8 @@ namespace River
         vector<Point> holes;
         for(const auto& [boundary_id, simple_boundary]: *this)
             if(simple_boundary.inner_boundary)
-                holes.push_back(simple_boundary.hole);
+                for(auto& h: simple_boundary.holes)
+                    holes.push_back(h);
 
         return holes;
     }
@@ -255,7 +263,7 @@ namespace River
                     {3, 0, 9} 
                 }, 
                 true/*this is inner boudary*/,
-                {0.5*width, 0.5*height}/*hole*/,
+                {{0.5*width, 0.5*height}}/*holes*/,
                 "hole"/*just name*/
             };
         sources[2] = {2, 2};
@@ -275,7 +283,7 @@ namespace River
                     {3, 0, 13} 
                 }, 
                 true/*this is inner boudary*/,
-                {0.85*width, 0.85*height}/*hole*/,
+                {{0.85*width, 0.85*height}}/*holes*/,
                 "hole"/*just name*/
             };
         sources[3] = {3, 0};

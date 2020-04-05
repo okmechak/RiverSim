@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
             {4, 0, 5} 
         }, 
         false/*this is not inner boudary*/,
-        {}/*hole*/,
+        {}/*holes*/,
         "outer rectangular boudary"
     };
     boundary[1] = outer_simple_boundary;
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
             {3, 0, 4}
         }, 
         false/*this is not inner boudary*/,
-        {0.5*width, 0.5*height}/*hole*/,
+        {{0.5*width, 0.5*height}}/*holes*/,
         "outer rectangular boudary"
     };
     boundary[2] = inner_simple_boundary;

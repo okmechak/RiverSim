@@ -80,47 +80,26 @@ namespace River
 
     SimpleBoundary SimpleBoundaryGenerator(const Model& model)
     {
-        SimpleBoundary boundary;
+        SimpleBoundary final_boundary;
 
-        for(auto simple_boundary: model.border.simple_boundaries)
+        for(auto [boundary_id, simple_boundary]: model.border)
         {
-            for(const auto&[source_id, vertice_pos]: simple_boundary.sources)
+            for(const auto&[source_id, value]: model.sources)
             {
-                auto tree_boundary = TreeBoundary(model.tree, source_id, model.river_boundary_id, model.mesh.eps);
-                simple_boundary.ReplaceElement(vertice_pos, tree_boundary);
+                auto boundary_id_s = value.first;
+                auto vertice_pos = value.second;
+                if(boundary_id == boundary_id_s)
+                {
+                    auto tree_boundary = TreeBoundary(model.tree, source_id, model.river_boundary_id, model.mesh.eps);
+                    simple_boundary.ReplaceElement(vertice_pos, tree_boundary);
+                }
             }
-            boundary.Append(simple_boundary);
+            final_boundary.Append(simple_boundary);
         }
 
-        if (boundary.lines.size() != boundary.vertices.size())
+        if (final_boundary.lines.size() != final_boundary.vertices.size())
             throw Exception("Size of lines and vertices are different.");
             
-        return boundary;
-    }
-
-    tethex::Mesh BoundaryGenerator(const Model& model)
-    {
-        auto boundary  = SimpleBoundaryGenerator(model);
-
-        vector<tethex::Point> tet_vertices, tet_holes;
-        vector<tethex::MeshElement *> tet_lines, tet_triangles;
-
-        tet_vertices.reserve(boundary.vertices.size());
-        tet_lines.reserve(boundary.lines.size());
-        for(size_t i = 0; i < boundary.vertices.size(); ++i)
-        {
-            tet_vertices.push_back(boundary.vertices.at(i));
-            tet_lines.push_back(new tethex::Line(
-                boundary.lines.at(i).p1, 
-                boundary.lines.at(i).p2, 
-                boundary.lines.at(i).boundary_id));
-        }
-        
-        auto holes = model.border.GetHolesList();
-        tet_holes.reserve(holes.size());
-        for(auto & hole: holes)
-            tet_holes.push_back(hole); 
-        
-        return tethex::Mesh{tet_vertices, tet_lines, tet_triangles, tet_holes};
+        return final_boundary;
     }
 }
