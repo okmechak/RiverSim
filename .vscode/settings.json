@@ -3,6 +3,7 @@
         "numeric": "cpp",
         "climits": "cpp",
         "iostream": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "vector": "cpp"
     }
 }
