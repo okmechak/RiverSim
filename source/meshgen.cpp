@@ -19,16 +19,21 @@ int main(int argc, char *argv[])
 
         cout << "Creation of Model object.." << endl;
         auto model = River::InitializeModelObject(vm);
-
-        //Triangle mesh object setup
-        River::print(model.prog_opt.verbose, "Creation of Traingle object..");
-        River::Triangle triangle(&model.mesh);
+        cout << model << endl;
 
         River::print(model.prog_opt.verbose, "BoundaryGenerator call..");
         auto boundary = River::SimpleBoundaryGenerator(model);
+        cout << boundary << endl;
 
         River::print(model.prog_opt.verbose, "Convertion to tethex mesh object");
         auto mesh = tethex::Mesh(boundary);
+        mesh.info();
+        mesh.statistics();
+        mesh.write(model.prog_opt.output_file_name + "_boundary.msh");
+        
+        //Triangle mesh object setup
+        River::print(model.prog_opt.verbose, "Creation of Traingle object..");
+        River::Triangle triangle(&model.mesh);
 
         River::print(model.prog_opt.verbose, "Mesh generation..");
         triangle.generate(mesh);
