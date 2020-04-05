@@ -4,6 +4,7 @@
         "climits": "cpp",
         "iostream": "cpp",
         "tuple": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "*.tcc": "cpp"
     }
 }
