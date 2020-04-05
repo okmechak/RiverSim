@@ -411,6 +411,8 @@ namespace River
 
             Boundaries border;
 
+            Sources sources;
+
             Tree tree;
 
             BoundaryConditions boundary_conditions;

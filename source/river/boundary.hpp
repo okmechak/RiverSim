@@ -59,11 +59,11 @@ namespace River
 
     typedef size_t t_vert_pos;
 
-    typedef unsigned t_boundaries_ids, t_source_id;
+    typedef unsigned t_boundary_id, t_source_id;
     
-    typedef map<t_boundaries_ids, BoundaryCondition> BoundaryConditions;
+    typedef map<t_boundary_id, BoundaryCondition> BoundaryConditions;
 
-    typedef map<t_source_id, t_vert_pos> Sources;
+    typedef map<t_source_id, pair<t_boundary_id, t_vert_pos>> Sources;
 
     /*! \brief 
         Line - holds indexes of __p1__, __p2__ vertices and id.
@@ -73,7 +73,7 @@ namespace River
     {
         public:
             ///Constructor.
-            Line(const t_vert_pos p1v, const t_vert_pos p2v, const t_boundaries_ids boundary_id):
+            Line(const t_vert_pos p1v, const t_vert_pos p2v, const t_boundary_id boundary_id):
                 p1(p1v), 
                 p2(p2v), 
                 boundary_id(boundary_id)
@@ -85,7 +85,7 @@ namespace River
             t_vert_pos p1, p2;
 
             ///Line Index.
-            t_boundaries_ids boundary_id;
+            t_boundary_id boundary_id;
 
             friend ostream& operator <<(ostream& write, const Line & line);
             bool operator==(const Line& line) const
@@ -99,7 +99,6 @@ namespace River
         public:
             vector<Point> vertices;
             vector<Line> lines;
-            Sources sources;
             bool inner_boundary = false;
             Point hole;
             string name = "";
@@ -110,32 +109,29 @@ namespace River
             friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);
     };
 
-    class Boundaries: public vector<SimpleBoundary>//todo replace this with map<id, simple_boundary>
+    class Boundaries: public map<t_boundary_id, SimpleBoundary>
     {
         public:
-            typedef map<unsigned, pair<Point, double>> trees_interface_t;
+            typedef map<t_source_id, pair<Point, double>> trees_interface_t;
 
             Boundaries(
-                vector<SimpleBoundary> simple_boundaries = {})
+                map<t_boundary_id, SimpleBoundary> simple_boundaries = {})
             {
-                this->reserve(simple_boundaries.size());
-                for(auto &sb: simple_boundaries)
-                    this->push_back(sb);
+                for(auto &[boundary_id, simple_boundary]: simple_boundaries)
+                    this->at(boundary_id) = simple_boundary;
             }
 
-            void MakeRectangular(double width = 1, double height = 1, double source_x_position = 0.25);
+            Sources MakeRectangular(double width = 1, double height = 1, double source_x_position = 0.25);
             
-            void MakeRectangularWithHole(double width = 1, double height = 1, double source_x_position = 0.25);
+            Sources MakeRectangularWithHole(double width = 1, double height = 1, double source_x_position = 0.25);
 
             void Check();
 
             SimpleBoundary& GetOuterBoundary();
 
-            vector<t_source_id> GetSourcesIds() const;
-
             vector<Point> GetHolesList() const;
 
-            trees_interface_t GetSourcesIdsPointsAndAngles() const;
+            trees_interface_t GetSourcesIdsPointsAndAngles(const Sources& sources) const;
 
             friend ostream& operator <<(ostream& write, const Boundaries & boundary);
 

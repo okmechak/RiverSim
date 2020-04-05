@@ -15,8 +15,6 @@ using namespace River;
 const double eps = 1e-12;
 namespace utf = boost::unit_test;
 
-
-
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( phys_model_methods, 
     *utf::tolerance(eps))
@@ -31,7 +29,6 @@ BOOST_AUTO_TEST_CASE( phys_model_methods,
     BOOST_TEST(mdl.integr.BaseVector(3, complex<double>(0., 2.)) == -2.);
 }
 
-
 BOOST_AUTO_TEST_CASE( next_point_method, 
     *utf::tolerance(eps))
 {
@@ -40,13 +37,4 @@ BOOST_AUTO_TEST_CASE( next_point_method,
     auto p = mdl.next_point({0.0233587, 0.0117224, 0.621602}, 0, 1/*maximal a series param*/);
     BOOST_TEST(p.r == pow(mdl.ds, mdl.eta));
     BOOST_TEST(p.phi ==-0.054918865933649114);
-
-}
-
-BOOST_AUTO_TEST_CASE(Initialize_Border_And_Tree, 
-    *utf::tolerance(eps))
-{
-    Model model;
-    model.InitializeBorderAndTree();
-    BOOST_TEST(model.border.GetSourcesIds() == model.tree.SourceBranchesID());
 }

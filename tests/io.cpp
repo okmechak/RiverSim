@@ -301,10 +301,10 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     auto sources_x_coord = vector<double>{0.3};
     auto sources_id = vector<t_source_id>{1};
     
-    mdl_out.border.MakeRectangular();
+    mdl_out.sources = mdl_out.border.MakeRectangular();
     
     //Tree object setup
-    mdl_out.tree.Initialize(mdl_out.border.GetSourcesIdsPointsAndAngles());
+    mdl_out.tree.Initialize(mdl_out.border.GetSourcesIdsPointsAndAngles(mdl_out.sources));
 
     BranchNew 
         br1left({0, 1}, 2), br1right({3, 4}, 5), 
@@ -408,4 +408,5 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
 
     BOOST_TEST(mdl_out.border == mdl_in.border);
     BOOST_TEST(mdl_out.tree == mdl_in.tree);
+    BOOST_TEST(mdl_out.sources == mdl_in.sources);
 }

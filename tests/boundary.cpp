@@ -164,16 +164,14 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_CHECK_THROW(boundary.Check(), Exception);
     BOOST_TEST_CHECKPOINT("GetOuterBoundary");
     BOOST_CHECK_THROW(boundary.GetOuterBoundary(), Exception);
-    BOOST_TEST_CHECKPOINT("GetSourcesIds");
-    BOOST_TEST(boundary.GetSourcesIds() == vector<t_source_id>{});
     BOOST_TEST_CHECKPOINT("GetHolesList");
     BOOST_TEST(boundary.GetHolesList() == vector<Point>{});
     BOOST_TEST_CHECKPOINT("GetSourcesIdsPointsAndAngles");
-    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles() == Boundaries::trees_interface_t{});
+    Sources sources;
+    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles(sources) == Boundaries::trees_interface_t{});
     
     BOOST_TEST_CHECKPOINT("With one boundary test");
     const auto source_x_position = 0.25, width = 1., height = 1.;
-    const t_source_id source_id = 1;
     auto outer_simple_boundary = SimpleBoundary
     {
         {/*vertices(counterclockwise order)*/
@@ -190,20 +188,19 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
             {3, 4, 4},
             {4, 0, 5} 
         }, 
-        {{source_id, 1}}/*sources*/, 
         false/*this is not inner boudary*/,
         {}/*hole*/,
         "outer rectangular boudary"
     };
-    boundary.push_back(outer_simple_boundary);
+    boundary[1] = outer_simple_boundary;
+    sources[1] = {1, 1};
 
     //non empty boudary checks
     BOOST_CHECK_NO_THROW(boundary.Check());
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
-    BOOST_TEST(boundary.GetSourcesIds() == vector<t_source_id>{source_id});
     BOOST_TEST(boundary.GetHolesList() == vector<Point>{});
-    auto s = Boundaries::trees_interface_t{{source_id,{{source_x_position, 0}, M_PI/2}}};
-    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles() == s);
+    auto s = Boundaries::trees_interface_t{{1,{{source_x_position, 0}, M_PI/2}}};
+    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles(sources) == s);
 
     //add inner boudnary
     BOOST_TEST_CHECKPOINT("With two boundaries test");
@@ -221,80 +218,52 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
             {2, 3, 3},
             {3, 0, 4}
         }, 
-        {{source_id + 1, 2}}/*sources*/, 
         false/*this is not inner boudary*/,
         {0.5*width, 0.5*height}/*hole*/,
         "outer rectangular boudary"
     };
-    boundary.push_back(inner_simple_boundary);
+    boundary[2] = inner_simple_boundary;
+    sources[2] = {2, 2};
     BOOST_CHECK_THROW(boundary.Check(), Exception);
 
-    boundary.at(1).inner_boundary = true;
+    boundary.at(2).inner_boundary = true;
     
     //checks with inner boundaries
     BOOST_CHECK_NO_THROW(boundary.Check());
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
-    auto sources_ids = vector<t_source_id>{source_id, source_id + 1};
-    BOOST_TEST(boundary.GetSourcesIds() == sources_ids);
     auto holes_list = vector<Point>{{0.5*width, 0.5*height}};
     BOOST_TEST(boundary.GetHolesList() == holes_list);
     s = Boundaries::trees_interface_t{
-        {source_id, {{source_x_position, 0}, M_PI/2}},
-        {source_id + 1, {{0.75*width, 0.75*height}, M_PI/4}}
+        {1, {{source_x_position, 0}, M_PI/2}},
+        {2, {{0.75*width, 0.75*height}, M_PI/4}}
     };
-    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles() == s);
+    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles(sources) == s);
 
-    //modify inner boundary with adding a lot of sources points
-    BOOST_TEST_CHECKPOINT("Modified inner boundary");
-    inner_simple_boundary = SimpleBoundary
-    {
-        {/*vertices(counterclockwise order)*/
-            {0.25*width, 0.25*height},
-            {0.75*width, 0.25*height}, 
-            {0.75*width, 0.75*height}, 
-            {0.25*width, 0.75*height}
-        }, 
-        {/*lines*/
-            {0, 1, 1},
-            {1, 2, 2},
-            {2, 3, 3},
-            {3, 0, 4}
-        }, 
-        {{source_id + 5, 0}, {source_id + 6, 1}, {source_id + 7, 2}, {source_id + 8, 3}}/*sources*/, 
-        true/*this is not inner boudary*/,
-        {0.5*width, 0.5*height}/*hole*/,
-        "outer rectangular boudary"
-    };
-    boundary.at(1) = inner_simple_boundary;
-    boundary.at(0).sources = {
-        {source_id, 0},
-        {source_id + 1, 1},
-        {source_id + 2, 2},
-        {source_id + 3, 3},
-        {source_id + 4, 4}};
-    outer_simple_boundary.sources = boundary.at(0).sources;
+    sources[1] = {1, 0};
+    sources[2] = {1, 1};
+    sources[3] = {1, 2};
+    sources[4] = {1, 3};
+    sources[5] = {1, 4};
+    sources[6] = {2, 0};
+    sources[7] = {2, 1};
+    sources[8] = {2, 2};
+    sources[9] = {2, 3};
 
-    BOOST_CHECK_NO_THROW(boundary.Check());
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
-    sources_ids = vector<t_source_id>{
-        source_id, source_id + 1, source_id + 2, source_id + 3, source_id + 4,
-        source_id + 5, source_id + 6, source_id + 7, source_id + 8};
-
-    BOOST_TEST(boundary.GetSourcesIds() == sources_ids);
-    holes_list = vector<Point>{{0.5*width, 0.5*height}};
+   
     BOOST_TEST(boundary.GetHolesList() == holes_list);
     s = Boundaries::trees_interface_t{
-        {source_id, {{0, 0}, M_PI/4}},
-        {source_id + 1, {{source_x_position, 0}, M_PI/2}},
-        {source_id + 2, {{width, 0}, 3*M_PI/4}},
-        {source_id + 3, {{width, height}, 5*M_PI/4}},
-        {source_id + 4, {{0, height}, 7*M_PI/4}},
-        {source_id + 5, {{0.25*width, 0.25*height}, 5*M_PI/4}},
-        {source_id + 6, {{0.75*width, 0.25*height}, 7*M_PI/4}},
-        {source_id + 7, {{0.75*width, 0.75*height}, M_PI/4}},
-        {source_id + 8, {{0.25*width, 0.75*height}, 3*M_PI/4}}
+        {1, {{0, 0}, M_PI/4}},
+        {2, {{source_x_position, 0}, M_PI/2}},
+        {3, {{width, 0}, 3*M_PI/4}},
+        {4, {{width, height}, 5*M_PI/4}},
+        {5, {{0, height}, 7*M_PI/4}},
+        {6, {{0.25*width, 0.25*height}, 5*M_PI/4}},
+        {7, {{0.75*width, 0.25*height}, 7*M_PI/4}},
+        {8, {{0.75*width, 0.75*height}, M_PI/4}},
+        {9, {{0.25*width, 0.75*height}, 3*M_PI/4}}
     };
-    auto s_2 = boundary.GetSourcesIdsPointsAndAngles();
+    auto s_2 = boundary.GetSourcesIdsPointsAndAngles(sources);
     for(auto& [id, p]: s)
     {
         BOOST_TEST_MESSAGE("source id: " + to_string(id));
@@ -309,18 +278,15 @@ BOOST_AUTO_TEST_CASE( MakeRectangular,
 {   
     Boundaries boundary;
     BOOST_CHECK_THROW(boundary.Check(), Exception);
-    boundary.MakeRectangular();
+    auto sources = boundary.MakeRectangular();
 
     auto& outer_boundary = boundary.GetOuterBoundary();
     BOOST_TEST(outer_boundary.inner_boundary == false );
     
     BOOST_TEST(boundary.GetHolesList() == vector<Point>{});
 
-    auto sources_ids_points_and_angles_map = boundary.GetSourcesIdsPointsAndAngles();
+    auto sources_ids_points_and_angles_map = boundary.GetSourcesIdsPointsAndAngles(sources);
     BOOST_TEST(sources_ids_points_and_angles_map.count(1));
     BOOST_TEST((sources_ids_points_and_angles_map.at(1).first == Point{0.25, 0}));
     BOOST_TEST(sources_ids_points_and_angles_map.at(1).second == M_PI/2);
-
-    auto sources_ids = boundary.GetSourcesIds();
-    BOOST_TEST(sources_ids == vector<t_source_id>{1});
 }

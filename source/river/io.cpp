@@ -333,25 +333,25 @@ namespace River
         
         //Boundaries
         json jboundaries;
-        for(auto& boundary: model.border)
+        for(auto& [boundary_id, simple_boundary]: model.border)
         {  
             vector<pair<double, double>> vertices;
-            vertices.reserve(boundary.lines.size());
-            for(auto& vertice: boundary.vertices)
+            vertices.reserve(simple_boundary.lines.size());
+            for(auto& vertice: simple_boundary.vertices)
                 vertices.push_back({vertice.x, vertice.y});
             
             vector<tuple<t_vert_pos, t_vert_pos, unsigned>> lines;
-            lines.reserve(boundary.lines.size());
-            for(auto& line : boundary.lines)
+            lines.reserve(simple_boundary.lines.size());
+            for(auto& line : simple_boundary.lines)
                 lines.push_back({line.p1, line.p2, line.boundary_id});
 
             jboundaries.push_back({
                 {"Vertices", vertices},
                 {"Lines", lines},
-                {"Sources", boundary.sources},
-                {"InnerBoundary", boundary.inner_boundary},
-                {"Hole", {boundary.hole.x, boundary.hole.y}},
-                {"Name", boundary.name}
+                {"InnerBoundary", simple_boundary.inner_boundary},
+                {"Hole", {simple_boundary.hole.x, simple_boundary.hole.y}},
+                {"Name", simple_boundary.name},
+                {"Id", boundary_id}
             });   
         }
 
@@ -425,7 +425,7 @@ namespace River
             
             {"Boundaries", jboundaries},
             {"BoundariesConditions",""},
-            {"Sources", ""},
+            {"Sources", model.sources},
             {"Trees", {
                 {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
                 {"SourceIds", model.tree.source_branches_id},
@@ -534,6 +534,7 @@ namespace River
             for(auto& [key, value] : jboundaries.items()) 
             {
                 SimpleBoundary simple_boundary;
+                t_boundary_id boundary_id;
                 
                 //vertices
                 vector<pair<double, double>> vertices;
@@ -550,15 +551,14 @@ namespace River
                     simple_boundary.lines.push_back({get<0>(line), get<1>(line), get<2>(line)});
 
                 //rest of fields
-                value.at("Sources").get_to(simple_boundary.sources);
-                value.at("Sources").get_to(simple_boundary.sources);
                 value.at("InnerBoundary").get_to(simple_boundary.inner_boundary);
                 vector<double> hole;
                 value.at("Hole").get_to(hole);
                 simple_boundary.hole = {hole.at(0), hole.at(1)};
                 value.at("Name").get_to(simple_boundary.name);
+                value.at("Id").get_to(boundary_id);
 
-                model.border.push_back(simple_boundary);
+                model.border[boundary_id] = simple_boundary;
                 
                 //evaluation of boundary outfit rectangle
                 if(!simple_boundary.inner_boundary)
@@ -590,6 +590,8 @@ namespace River
             }
         }
 
+        if(j.count("Sources")) j.at("Sources").get_to(model.sources);
+
         if(j.count("Trees"))
         {
             if(!j.count("Boundaries"))
@@ -617,11 +619,11 @@ namespace River
                 BranchNew branch(River::Point{s_point.at(0), s_point.at(1)}, source_angle);
                 branch.resize(coords.size());
 
-                
                 for(unsigned i = 0; i < coords.size(); ++i)
                 {
                     branch[i] = River::Point{coords.at(i).first, coords.at(i).second};
                 }
+
                 try
                 {
                     model.tree.AddBranch(branch, id);
@@ -629,14 +631,14 @@ namespace River
                 catch (Exception& e)
                 {   
                     cout << e.what() << endl;
-                    cout << "tree io..ivalid inser" << endl;
+                    cout << "tree io..ivalid insertion" << endl;
                     throw;
                 }
             }
         }
         else if(j.count("Boundaries"))
             //If no tree provided but border is, than we reinitialize tree.. to current border.
-            model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles());
+            model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
 
         if(j.count("GeometryDifference"))
         { 
@@ -659,7 +661,7 @@ namespace River
         //parameters set from program options has higher priority over input file
         SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
 
-        //if(model.border.vertices.empty())
+        if(model.border.empty())
             model.InitializeBorderAndTree();
         
         model.CheckParametersConsistency();

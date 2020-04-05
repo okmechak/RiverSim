@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE( tree_tips_point_method,
     *utf::tolerance(eps))
 {
     Boundaries border;
-    border.push_back(
+    border[1]=
         {
             {/*vertices(counterclockwise order)*/
                 {0, 0},
@@ -273,17 +273,18 @@ BOOST_AUTO_TEST_CASE( tree_tips_point_method,
                 {2, 3, 1},
                 {3, 4, 2},
                 {4, 0, 3} 
-            }, 
-            {{1, 1}}/*sources*/, 
+            },
             false/*this is not inner boudary*/,
             {}/*hole*/,
             "outer rectangular boudary"
-        }/*Outer Boundary*/
-    );
+        };/*Outer Boundary*/
+
+    Sources sources;
+    sources[1] = {1, 1};
 
     Tree tr;
     tr.Initialize(
-        border.GetSourcesIdsPointsAndAngles());
+        border.GetSourcesIdsPointsAndAngles(sources));
 
     BOOST_TEST(tr.TipPoints().size() == 1);
     BOOST_TEST((tr.TipPoints().at(0) == Point{0.5, 0}));
@@ -293,7 +294,7 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
     *utf::tolerance(eps))
 {
     Boundaries border;
-    border.push_back(
+    border[1] = 
         {
             {/*vertices(counterclockwise order)*/
                 {0, 0},
@@ -313,16 +314,19 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
                 {6, 7, 2}, 
                 {7, 0, 3} 
             }, 
-            {{1, 1},{2, 2},{3, 3}}/*sources*/, 
             false/*this is not inner boudary*/,
             {}/*hole*/,
             "outer rectangular boudary"
-        }/*Outer Boundary*/
-    );
+        };/*Outer Boundary*/
+        
+    Sources sources;
+    sources[1] = {1, 1};
+    sources[2] = {1, 2};
+    sources[3] = {1, 3};
 
     Tree tr;
     tr.Initialize(
-        border.GetSourcesIdsPointsAndAngles());
+        border.GetSourcesIdsPointsAndAngles(sources));
 
     tr.AddPoints({Point{0, 0.1}, Point{0, 0.1}, Point{0, 0.1}}, {1, 2, 3});
     BOOST_TEST((tr.GetBranch(1)->TipPoint() == Point(0.5, 0.1)));
@@ -637,11 +641,6 @@ BOOST_AUTO_TEST_CASE( Tree_UPD_tips,
 {
     //TODO test tips: points, ids etc.. 
 }
-
-
-
-
-
 
 BOOST_AUTO_TEST_CASE( construct_empty_tree, 
     *utf::tolerance(eps))

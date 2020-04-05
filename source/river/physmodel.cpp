@@ -120,9 +120,9 @@ namespace River
 
     void Model::InitializeBorderAndTree()
     {
-        border.MakeRectangularWithHole();
+        sources = border.MakeRectangularWithHole();
 
-        tree.Initialize(border.GetSourcesIdsPointsAndAngles());
+        tree.Initialize(border.GetSourcesIdsPointsAndAngles(sources));
     }
 
     void Model::CheckParametersConsistency() const
