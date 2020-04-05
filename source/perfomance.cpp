@@ -24,19 +24,30 @@ int main(int argc, char *argv[])
         //
         //
         const int dim = 2;
-        FE_Q<dim> fe(2);
-        River::RiverSolver r(fe, &model);
-        r.run();
+        River::RiverSolver<dim> r(&model);
+        r.one_step_forward();
     }
     catch(const River::Exception& caught)
     {
         cout << caught.what() << endl;
         return 1;
     }
+    catch(const cxxopts::OptionException& caught)
+    {
+        cout << "option excetpion" << endl;
+        cout << caught.what() << endl;
+        return 2;
+    }
+    catch(const exception& caught)
+    {
+        cout << "stl exception" << endl;
+        cout << caught.what() << endl;
+        return 3;
+    }
     catch(...) 
     {
         cout << "GOT UNDEFINED ERROR" << endl;
-        return 2;
+        return 4;
     }
     
     return 0;

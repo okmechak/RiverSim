@@ -50,4 +50,4 @@ target_link_libraries(river tethex GeometryPrimitives physmodel boundary triangl
 #river
 add_library(riv river.hpp river.cpp)
 deal_ii_setup_target(riv)
-target_link_libraries(riv tethex GeometryPrimitives physmodel border triangle io solver tree mesh boundary_generator)
+target_link_libraries(riv tethex GeometryPrimitives physmodel triangle io solver tree mesh boundary_generator)

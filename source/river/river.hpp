@@ -2,6 +2,7 @@
 
 #include "physmodel.hpp"
 #include "mesh.hpp"
+#include "boundary_generator.hpp"
 
 //Deal.II headers
 #include <deal.II/base/quadrature_lib.h>
@@ -47,14 +48,6 @@ using namespace std;
 
 namespace River
 {
-    struct Exception : public exception
-    {
-        string s;
-        Exception(string ss) : s(ss) {}
-        ~Exception() throw () {} // Updated
-        const char* what() const throw() { return s.c_str(); }
-    };
-
     enum Renumbering 
     {
         Renumbering_none,
@@ -147,7 +140,8 @@ namespace River
 
             void generate_triangulation_file()
             {
-                auto mesh = BoundaryGenerator(*model);
+                auto boundary = SimpleBoundaryGenerator(*model);
+                tethex::Mesh mesh(boundary);
                 
                 cout << "triangle" <<endl;
                 triangle.mesh_params->tip_points = model->tree.TipPoints();
@@ -156,7 +150,6 @@ namespace River
 
                 cout << "convert" <<endl;
                 mesh.convert();//convertaion from triangles to quadrangles
-                model->mesh.number_of_quadrangles = mesh.get_n_quadrangles(); // just saving number of quadrangles
 
                 cout << "output" <<endl;
                 mesh.write(model->prog_opt.output_file_name + ".msh");

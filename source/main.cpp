@@ -259,13 +259,32 @@ int main(int argc, char *argv[])
     }
     catch(const River::Exception& caught)
     {
+        cout << "river excetpion" << endl;
         cout << caught.what() << endl;
         return 1;
+    }
+    catch(const dealii::ExceptionBase caught)
+    {
+        cout << "dealii excetpion" << endl;
+        cout << caught.what() << endl;
+        return 1;
+    }
+    catch(const cxxopts::OptionException& caught)
+    {
+        cout << "option excetpion" << endl;
+        cout << caught.what() << endl;
+        return 2;
+    }
+    catch(const std::exception& caught)
+    {
+        cout << "stl exception" << endl;
+        cout << caught.what() << endl;
+        return 3;
     }
     catch(...) 
     {
         cout << "GOT UNDEFINED ERROR" << endl;
-        return 2;
+        return 4;
     }
 
     return 0;
