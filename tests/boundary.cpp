@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_TEST_CHECKPOINT("GetOuterBoundary");
     BOOST_CHECK_THROW(boundary.GetOuterBoundary(), Exception);
     BOOST_TEST_CHECKPOINT("GetSourcesIds");
-    BOOST_TEST(boundary.GetSourcesIds() == vector<t_sources_ids>{});
+    BOOST_TEST(boundary.GetSourcesIds() == vector<t_source_id>{});
     BOOST_TEST_CHECKPOINT("GetHolesList");
     BOOST_TEST(boundary.GetHolesList() == vector<Point>{});
     BOOST_TEST_CHECKPOINT("GetSourcesIdsPointsAndAngles");
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     
     BOOST_TEST_CHECKPOINT("With one boundary test");
     const auto source_x_position = 0.25, width = 1., height = 1.;
-    const t_sources_ids source_id = 1;
+    const t_source_id source_id = 1;
     auto outer_simple_boundary = SimpleBoundary
     {
         {/*vertices(counterclockwise order)*/
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     //non empty boudary checks
     BOOST_CHECK_NO_THROW(boundary.Check());
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
-    BOOST_TEST(boundary.GetSourcesIds() == vector<t_sources_ids>{source_id});
+    BOOST_TEST(boundary.GetSourcesIds() == vector<t_source_id>{source_id});
     BOOST_TEST(boundary.GetHolesList() == vector<Point>{});
     auto s = Boundaries::trees_interface_t{{source_id,{{source_x_position, 0}, M_PI/2}}};
     BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles() == s);
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     //checks with inner boundaries
     BOOST_CHECK_NO_THROW(boundary.Check());
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
-    auto sources_ids = vector<t_sources_ids>{source_id, source_id + 1};
+    auto sources_ids = vector<t_source_id>{source_id, source_id + 1};
     BOOST_TEST(boundary.GetSourcesIds() == sources_ids);
     auto holes_list = vector<Point>{{0.5*width, 0.5*height}};
     BOOST_TEST(boundary.GetHolesList() == holes_list);
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
 
     BOOST_CHECK_NO_THROW(boundary.Check());
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
-    sources_ids = vector<t_sources_ids>{
+    sources_ids = vector<t_source_id>{
         source_id, source_id + 1, source_id + 2, source_id + 3, source_id + 4,
         source_id + 5, source_id + 6, source_id + 7, source_id + 8};
 
@@ -322,5 +322,5 @@ BOOST_AUTO_TEST_CASE( MakeRectangular,
     BOOST_TEST(sources_ids_points_and_angles_map.at(1).second == M_PI/2);
 
     auto sources_ids = boundary.GetSourcesIds();
-    BOOST_TEST(sources_ids == vector<t_sources_ids>{1});
+    BOOST_TEST(sources_ids == vector<t_source_id>{1});
 }

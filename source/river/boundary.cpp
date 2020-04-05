@@ -154,7 +154,7 @@ namespace River
         t_vert_pos 
             counter = 0, 
             outer_boudaries = 0;
-        vector<t_sources_ids> sources_ids;
+        vector<t_source_id> sources_ids;
 
         for(const auto& boundary: *this)
         {
@@ -192,9 +192,9 @@ namespace River
             throw Exception("Boundary: Sources ids should be unique numbers!");
     }
 
-    vector<t_sources_ids> Boundaries::GetSourcesIds() const
+    vector<t_source_id> Boundaries::GetSourcesIds() const
     {
-        vector<t_sources_ids> sources_ids;
+        vector<t_source_id> sources_ids;
         for(const auto& simple_boundary: *this)
             for(const auto& [source_id, vertice_pos]: simple_boundary.sources)
                 sources_ids.push_back(source_id);

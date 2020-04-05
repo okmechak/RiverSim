@@ -101,7 +101,6 @@ namespace River
         write << "\t height = "            << mdl.height << endl;
         write << "\t river_boundary_id = " << mdl.river_boundary_id << endl;
 
-        write << "\t boundary_condition = " << mdl.boundary_condition << endl;
         write << "\t field_value = "       << mdl.field_value << endl;
         write << "\t eta = "               << mdl.eta << endl;
         write << "\t bifurcation_type = "  << mdl.bifurcation_type << endl;
@@ -152,10 +151,7 @@ namespace River
             throw Exception("height parameter can't be negative: " + to_string(height));
         if(height > 1000)
             cout << "Height value is very large: " << height << endl;
-        if(boundary_ids.size() != 4)
-            throw Exception("boundary_ids size isn't 4, which corresponds to rectangular region: " + to_string(boundary_ids.size()));
-        if(boundary_condition != 0 && boundary_condition!= 1)
-            throw Exception("Wrong value of boundary condition: " + to_string(boundary_condition) + ". It should be 0 or 1");
+            
         if(bifurcation_threshold > 100 || bifurcation_threshold < -100)
             cout << "abs(bifurcation_threshold) value is very big: " << abs(bifurcation_threshold) << endl;
 

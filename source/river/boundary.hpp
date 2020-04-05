@@ -59,11 +59,11 @@ namespace River
 
     typedef size_t t_vert_pos;
 
-    typedef unsigned t_boundaries_ids, t_sources_ids;
+    typedef unsigned t_boundaries_ids, t_source_id;
     
-    typedef map<t_boundaries_ids, BoundaryCondition> t_boundary_conditions;
+    typedef map<t_boundaries_ids, BoundaryCondition> BoundaryConditions;
 
-    typedef map<t_sources_ids, t_vert_pos> t_sources;
+    typedef map<t_source_id, t_vert_pos> Sources;
 
     /*! \brief 
         Line - holds indexes of __p1__, __p2__ vertices and id.
@@ -73,11 +73,13 @@ namespace River
     {
         public:
             ///Constructor.
-            Line(t_vert_pos p1v, t_vert_pos p2v, t_boundaries_ids boundary_id):
+            Line(const t_vert_pos p1v, const t_vert_pos p2v, const t_boundaries_ids boundary_id):
                 p1(p1v), 
                 p2(p2v), 
                 boundary_id(boundary_id)
             {};
+
+            Line(const Line& line) = default;
 
             ///Point index.
             t_vert_pos p1, p2;
@@ -97,7 +99,7 @@ namespace River
         public:
             vector<Point> vertices;
             vector<Line> lines;
-            map<unsigned, size_t> sources;
+            Sources sources;
             bool inner_boundary = false;
             Point hole;
             string name = "";
@@ -108,7 +110,7 @@ namespace River
             friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);
     };
 
-    class Boundaries: public vector<SimpleBoundary>
+    class Boundaries: public vector<SimpleBoundary>//todo replace this with map<id, simple_boundary>
     {
         public:
             typedef map<unsigned, pair<Point, double>> trees_interface_t;
@@ -129,7 +131,7 @@ namespace River
 
             SimpleBoundary& GetOuterBoundary();
 
-            vector<t_sources_ids> GetSourcesIds() const;
+            vector<t_source_id> GetSourcesIds() const;
 
             vector<Point> GetHolesList() const;
 

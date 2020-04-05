@@ -261,7 +261,7 @@ namespace River
             double eps = 5e-7;
     };
 
-    typedef t_sources_ids t_branch_id;
+    typedef t_source_id t_branch_id;
 
     /*! \brief Combines __BranchNew__ into tree like structure.
         \details

@@ -241,12 +241,6 @@ namespace River
             */
             vector<Point> tip_points;
 
-            ///Number of quadrangle elements.
-            unsigned long number_of_quadrangles = 0;
-
-            ///Number of refined quadrangle elements.
-            unsigned long number_of_refined_quadrangles = 0;
-
             ///Radius of mesh refinment.
             double refinment_radius = 4*Radius;
 
@@ -412,13 +406,18 @@ namespace River
     class Model
     {   
         public: 
-            Boundaries border;
-            Tree tree;
-            Timing timing;
-            GeometryDifference geometry_difference;
-
             ///Some global program options
             ProgramOptions prog_opt;
+
+            Boundaries border;
+
+            Tree tree;
+
+            BoundaryConditions boundary_conditions;
+
+            Timing timing;
+
+            GeometryDifference geometry_difference;
 
             ///Mesh and mesh refinment parameters
             MeshParams mesh;
@@ -443,18 +442,9 @@ namespace River
             double height = 1.;
 
             ///river boundary id and bottom line
-            int river_boundary_id = 4;
-
-            ///all boundaries ids in next order - right, top, left, bottom and river.
-            vector<int> boundary_ids{1, 5, 3, river_boundary_id};
+            unsigned river_boundary_id = 5;
 
             //Model parameters
-            /*! \brief Boundary conditions.
-                \details 0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 
-                1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)
-            */
-            unsigned boundary_condition = 0;
-
             ///Field value used for Poisson conditions.
             double field_value = 1.0;
             

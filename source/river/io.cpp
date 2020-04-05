@@ -21,6 +21,7 @@
 #include <string>
 #include <iomanip>
 #include <iostream>
+#include <tuple>
 ///\endcond
 
 
@@ -135,12 +136,12 @@ namespace River
         ("width", "Width of river rectangular region.", 
             value<double>()->default_value(to_string(model.width)) )
         ("height", "Height of river rectangular region.", 
-            value<double>()->default_value(to_string(model.height)) );
+            value<double>()->default_value(to_string(model.height)) )
+        ("river-boundary-id", "Boundary condition Id set to river boundaries.", 
+            value<unsigned>()->default_value(to_string(model.river_boundary_id)) );
         
         //Model parameters
         options.add_options("Model parameters")
-        ("c,boundary-condition", "0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 1 - Laplace(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)", 
-            value<unsigned>()->default_value(to_string(model.boundary_condition)) )
         ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", 
             value<double>()->default_value(to_string(model.field_value)) )
         ("eta", "Power of a1^eta used in growth of river.", 
@@ -245,7 +246,6 @@ namespace River
     void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& model)
     {
         //program options
-
         if (vm.count("simulation-type"))
             model.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
         if (vm.count("number-of-steps")) 
@@ -290,8 +290,8 @@ namespace River
         if (vm.count("dx")) model.dx = vm["dx"].as<double>();
         if (vm.count("width")) model.width = vm["width"].as<double>();
         if (vm.count("height")) model.height = vm["height"].as<double>();
-
-        if (vm.count("boundary-condition")) model.boundary_condition = vm["boundary-condition"].as<unsigned>();
+        if (vm.count("river-boundary-id")) model.river_boundary_id = vm["river-boundary-id"].as<unsigned>();
+    
         if (vm.count("field-value")) model.field_value = vm["field-value"].as<double>();
         if (vm.count("eta")) model.eta = vm["eta"].as<double>();
         if (vm.count("bifurcation-type")) model.bifurcation_type = vm["bifurcation-type"].as<unsigned>();
@@ -317,44 +317,43 @@ namespace River
 
         //Branches
         json branches;
-        for(auto id: model.tree.branches_index)
+        for(auto& [branch_id, branch_pointer]: model.tree.branches_index)
         {
-            auto branch_id = id.first;
-            auto branch = model.tree.GetBranch(branch_id);
-            vector<pair<double, double>> coords(branch->Size());
-            for(unsigned i = 0; i < branch->Size(); ++i)
-                coords[i] = {branch->GetPoint(i).x, branch->GetPoint(i).y};
-
+            vector<pair<double, double>> vertices;
+            vertices.reserve(branch_pointer->Size());
+            for(auto& vertice: *branch_pointer)
+                vertices.push_back({vertice.x, vertice.y});
 
             branches.push_back({
-                {"sourcePoint", {branch->SourcePoint().x , branch->SourcePoint().y}},
-                {"sourceAngle", branch->SourceAngle()},
-                {"Desciption", "Order of elements should be from source point to tip. Source point should be the same as first point of array. Source angle - represents branch growth dirrection when it consist only from one(source) point. For example perpendiculary to border line. Id should be unique(and >= 1) to each branch and is referenced in Trees->Relations structure and Boundary->SourcesId"},
-                {"coords", coords},
-                {"id", branch_id}});
+                {"SourceVertice", {branch_pointer->SourcePoint().x , branch_pointer->SourcePoint().y}},
+                {"SourceAngle", branch_pointer->SourceAngle()},
+                {"Vertices", vertices},
+                {"Id", branch_id}});
         }
         
-        //Boundary
-        json jborder;
-        {
-            vector<pair<double, double>> coords;
-            vector<vector<int>> lines;
-            coords.reserve(model.border.GetVertices().size());
-            coords.reserve(model.border.GetLines().size());
+        //Boundaries
+        json jboundaries;
+        for(auto& boundary: model.border)
+        {  
+            vector<pair<double, double>> vertices;
+            vertices.reserve(boundary.lines.size());
+            for(auto& vertice: boundary.vertices)
+                vertices.push_back({vertice.x, vertice.y});
+            
+            vector<tuple<t_vert_pos, t_vert_pos, unsigned>> lines;
+            lines.reserve(boundary.lines.size());
+            for(auto& line : boundary.lines)
+                lines.push_back({line.p1, line.p2, line.boundary_id});
 
-            for(auto& p: model.border.GetVertices())
-                coords.push_back({p.x, p.y});
-
-            for(auto& l: model.border.GetLines())
-                lines.push_back({(int)l.p1, (int)l.p2, l.id});
-
-            jborder = {
-                {"SourceIds", model.border.GetSourceMap()}, 
-                {"SomeDetails", "Points and lines should be in counterclockwise order. SourcesIDs is array of pairs - where first number - is related branch id(source branche), and second is index of related point in coords array(after initialization it will be source point of related branch). Lines consist of three numbers: first and second - point index in coords array, third - configures boundary condition(See --boundary-condition option in program: ./riversim -h)."},
-                {"coords", coords},
-                {"lines", lines}};
+            jboundaries.push_back({
+                {"Vertices", vertices},
+                {"Lines", lines},
+                {"Sources", boundary.sources},
+                {"InnerBoundary", boundary.inner_boundary},
+                {"Hole", {boundary.hole.x, boundary.hole.y}},
+                {"Name", boundary.name}
+            });   
         }
-
 
         //implementation with json
         json j = {
@@ -371,23 +370,20 @@ namespace River
             {"Model", {
                 {"Description", "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) "},
                 {"dx", model.dx},
-                {"width", model.width},
-                {"height", model.height},
-                {"riverBoundaryId", model.river_boundary_id},
-                {"boundaryIds", model.boundary_ids}, 
-                {"numberOfBackwardSteps", model.prog_opt.number_of_backward_steps},
+                {"Width", model.width},
+                {"Height", model.height},
+                {"RiverBoundaryId", model.river_boundary_id},
 
-                {"boundaryCondition", model.boundary_condition},
-                {"fieldValue", model.field_value},
-                {"eta", model.eta},
-                {"bifurcationType", model.bifurcation_type},
-                {"bifurcationThreshold", model.bifurcation_threshold},
-                {"bifurcationThreshold2", model.bifurcation_threshold_2},
-                {"bifurcationMinDistance", model.bifurcation_min_dist},
-                {"bifurcationAngle", model.bifurcation_angle},
-                {"growthType", model.growth_type},
-                {"growthThreshold", model.growth_threshold},
-                {"growthMinDistance", model.growth_min_distance},
+                {"FieldValue", model.field_value},
+                {"Eta", model.eta},
+                {"BifurcationType", model.bifurcation_type},
+                {"BifurcationThreshold", model.bifurcation_threshold},
+                {"BifurcationThreshold2", model.bifurcation_threshold_2},
+                {"BifurcationMinDistance", model.bifurcation_min_dist},
+                {"BifurcationAngle", model.bifurcation_angle},
+                {"GrowthType", model.growth_type},
+                {"GrowthThreshold", model.growth_threshold},
+                {"GrowthMinDistance", model.growth_min_distance},
                 {"ds", model.ds},
 
                 {"ProgramOptions", {
@@ -402,35 +398,34 @@ namespace River
                     {"SaveEachStep", model.prog_opt.save_each_step}}},
 
                 {"Integration",{
-                    {"radius", model.integr.integration_radius},
-                    {"exponant", model.integr.exponant},
-                    {"weightRadius", model.integr.weigth_func_radius}}},
+                    {"Radius", model.integr.integration_radius},
+                    {"Exponant", model.integr.exponant},
+                    {"WeightRadius", model.integr.weigth_func_radius}}},
 
                 {"Mesh", {
-                    {"eps", model.mesh.eps},
-                    {"exponant", model.mesh.exponant},
-                    {"refinmentRadius", model.mesh.refinment_radius},
-                    {"minArea", model.mesh.min_area},
-                    {"maxArea", model.mesh.max_area},
-                    {"minAngle", model.mesh.min_angle},
-                    {"maxEdge", model.mesh.max_edge},
-                    {"minEdge", model.mesh.min_edge},
-                    {"ratio", model.mesh.ratio},
-                    {"sigma", model.mesh.sigma},
-                    {"staticRefinmentSteps", model.mesh.static_refinment_steps},
-                    {"numberOfQuadrangles", model.mesh.number_of_quadrangles},
-                    {"numberOfRefinedQuadrangles", model.mesh.number_of_refined_quadrangles}}},
+                    {"BranchWidth", model.mesh.eps},
+                    {"Exponant", model.mesh.exponant},
+                    {"RefinmentRadius", model.mesh.refinment_radius},
+                    {"MinArea", model.mesh.min_area},
+                    {"MaxArea", model.mesh.max_area},
+                    {"MinAngle", model.mesh.min_angle},
+                    {"MaxEdge", model.mesh.max_edge},
+                    {"MinEdge", model.mesh.min_edge},
+                    {"TriangleRatio", model.mesh.ratio},
+                    {"Sigma", model.mesh.sigma},
+                    {"StaticRefinmentSteps", model.mesh.static_refinment_steps}}},
         
                 {"Solver", {
-                    {"tol", model.solver_params.tollerance},
-                    {"iterationSteps", model.solver_params.num_of_iterrations},
-                    {"quadratureDegree", model.solver_params.quadrature_degree},
-                    {"refinmentFraction", model.solver_params.refinment_fraction},
-                    {"adaptiveRefinmentSteps", model.solver_params.adaptive_refinment_steps}}}}
+                    {"Tollerance", model.solver_params.tollerance},
+                    {"IterationSteps", model.solver_params.num_of_iterrations},
+                    {"QuadratureDegree", model.solver_params.quadrature_degree},
+                    {"RefinmentFraction", model.solver_params.refinment_fraction},
+                    {"AdaptiveRefinmentSteps", model.solver_params.adaptive_refinment_steps}}}}
             },
             
-            {"Boundary", jborder},
-
+            {"Boundaries", jboundaries},
+            {"BoundariesConditions",""},
+            {"Sources", ""},
             {"Trees", {
                 {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
                 {"SourceIds", model.tree.source_branches_id},
@@ -447,7 +442,6 @@ namespace River
         out.close();
     }
 
-
     void Open(Model& model)
     {
         ifstream in(model.prog_opt.input_file_name);
@@ -460,25 +454,23 @@ namespace River
         {
             json jmdl = j.at("Model");
             
-            if (jmdl.count("width")) jmdl.at("width").get_to(model.width);
-            if (jmdl.count("height")) jmdl.at("height").get_to(model.height);
+            if (jmdl.count("Width")) jmdl.at("Width").get_to(model.width);
+            if (jmdl.count("Height")) jmdl.at("Height").get_to(model.height);
             if (jmdl.count("dx")) jmdl.at("dx").get_to(model.dx);
-            if (jmdl.count("riverBoundaryId")) jmdl.at("riverBoundaryId").get_to(model.river_boundary_id);
-            if (jmdl.count("boundaryIds")) jmdl.at("boundaryIds").get_to(model.boundary_ids);
-            if (jmdl.count("numberOfBackwardSteps")) jmdl.at("numberOfBackwardSteps").get_to(model.prog_opt.number_of_backward_steps);
+            if (jmdl.count("RiverBoundaryId")) jmdl.at("RiverBoundaryId").get_to(model.river_boundary_id);
+            if (jmdl.count("NumberOfBackwardSteps")) jmdl.at("NumberOfBackwardSteps").get_to(model.prog_opt.number_of_backward_steps);
             
-            if (jmdl.count("boundaryCondition")) jmdl.at("boundaryCondition").get_to(model.boundary_condition);
-            if (jmdl.count("fieldValue")) jmdl.at("fieldValue").get_to(model.field_value);
-            if (jmdl.count("eta")) jmdl.at("eta").get_to(model.eta);
-            if (jmdl.count("bifurcationType")) jmdl.at("bifurcationType").get_to(model.bifurcation_type);
-            if (jmdl.count("bifurcationThreshold")) jmdl.at("bifurcationThreshold").get_to(model.bifurcation_threshold);
-            if (jmdl.count("bifurcationThreshold2")) jmdl.at("bifurcationThreshold2").get_to(model.bifurcation_threshold_2);
-            if (jmdl.count("bifurcationMinDistance")) jmdl.at("bifurcationMinDistance").get_to(model.bifurcation_min_dist);
-            if (jmdl.count("bifurcationAngle")) jmdl.at("bifurcationAngle").get_to(model.bifurcation_angle);
-            if (jmdl.count("bifurcationThreshold")) jmdl.at("bifurcationThreshold").get_to(model.bifurcation_threshold);
-            if (jmdl.count("growthType")) jmdl.at("growthType").get_to(model.growth_type);
-            if (jmdl.count("growthThreshold")) jmdl.at("growthThreshold").get_to(model.growth_threshold);
-            if (jmdl.count("growthMinDistance")) jmdl.at("growthMinDistance").get_to(model.growth_min_distance);
+            if (jmdl.count("FieldValue")) jmdl.at("FieldValue").get_to(model.field_value);
+            if (jmdl.count("Eta")) jmdl.at("Eta").get_to(model.eta);
+            if (jmdl.count("BifurcationType")) jmdl.at("BifurcationType").get_to(model.bifurcation_type);
+            if (jmdl.count("BifurcationThreshold")) jmdl.at("BifurcationThreshold").get_to(model.bifurcation_threshold);
+            if (jmdl.count("BifurcationThreshold2")) jmdl.at("BifurcationThreshold2").get_to(model.bifurcation_threshold_2);
+            if (jmdl.count("BifurcationMinDistance")) jmdl.at("BifurcationMinDistance").get_to(model.bifurcation_min_dist);
+            if (jmdl.count("BifurcationAngle")) jmdl.at("BifurcationAngle").get_to(model.bifurcation_angle);
+            if (jmdl.count("BifurcationThreshold")) jmdl.at("BifurcationThreshold").get_to(model.bifurcation_threshold);
+            if (jmdl.count("GrowthType")) jmdl.at("GrowthType").get_to(model.growth_type);
+            if (jmdl.count("GrowthThreshold")) jmdl.at("GrowthThreshold").get_to(model.growth_threshold);
+            if (jmdl.count("GrowthMinDistance")) jmdl.at("GrowthMinDistance").get_to(model.growth_min_distance);
             if (jmdl.count("ds")) jmdl.at("ds").get_to(model.ds);
             
             if(jmdl.count("ProgramOptions"))
@@ -501,86 +493,106 @@ namespace River
             {
                 auto jmesh = jmdl.at("Mesh");
 
-                if (jmesh.count("eps"))      jmesh.at("eps").get_to(model.mesh.eps);
-                if (jmesh.count("exponant")) jmesh.at("exponant").get_to(model.mesh.exponant);
-                if (jmesh.count("maxArea"))  jmesh.at("maxArea").get_to(model.mesh.max_area);
-                if (jmesh.count("minArea"))  jmesh.at("minArea").get_to(model.mesh.min_area);
-                if (jmesh.count("minAngle")) jmesh.at("minAngle").get_to(model.mesh.min_angle);
-                if (jmesh.count("refinmentRadius"))      jmesh.at("refinmentRadius").get_to(model.mesh.refinment_radius);
-                if (jmesh.count("staticRefinmentSteps")) jmesh.at("staticRefinmentSteps").get_to(model.mesh.static_refinment_steps);
-                if (jmesh.count("sigma"))    jmesh.at("sigma").get_to(model.mesh.sigma);
-                if (jmesh.count("maxEdge"))  jmesh.at("maxEdge").get_to(model.mesh.max_edge);
-                if (jmesh.count("minEdge"))  jmesh.at("minEdge").get_to(model.mesh.min_edge);
-                if (jmesh.count("ratio"))    jmesh.at("ratio").get_to(model.mesh.ratio);   
+                if (jmesh.count("BranchWidth"))jmesh.at("BranchWidth").get_to(model.mesh.eps);
+                if (jmesh.count("Exponant")) jmesh.at("Exponant").get_to(model.mesh.exponant);
+                if (jmesh.count("MaxArea"))  jmesh.at("MaxArea").get_to(model.mesh.max_area);
+                if (jmesh.count("MinArea"))  jmesh.at("MinArea").get_to(model.mesh.min_area);
+                if (jmesh.count("MinAngle")) jmesh.at("MinAngle").get_to(model.mesh.min_angle);
+                if (jmesh.count("RefinmentRadius"))      jmesh.at("RefinmentRadius").get_to(model.mesh.refinment_radius);
+                if (jmesh.count("StaticRefinmentSteps")) jmesh.at("StaticRefinmentSteps").get_to(model.mesh.static_refinment_steps);
+                if (jmesh.count("Sigma"))    jmesh.at("Sigma").get_to(model.mesh.sigma);
+                if (jmesh.count("MaxEdge"))  jmesh.at("MaxEdge").get_to(model.mesh.max_edge);
+                if (jmesh.count("MinEdge"))  jmesh.at("MinEdge").get_to(model.mesh.min_edge);
+                if (jmesh.count("TriangleRatio")) jmesh.at("TriangleRatio").get_to(model.mesh.ratio);   
             }
 
             if(jmdl.count("Integration"))
             {
                 auto jinteg = jmdl.at("Integration");
 
-                if (jinteg.count("radius")) jinteg.at("radius").get_to(model.integr.integration_radius);
-                if (jinteg.count("exponant")) jinteg.at("exponant").get_to(model.integr.exponant);
-                if (jinteg.count("weightRadius")) jinteg.at("weightRadius").get_to(model.integr.weigth_func_radius);
+                if (jinteg.count("Radius")) jinteg.at("Radius").get_to(model.integr.integration_radius);
+                if (jinteg.count("Exponant")) jinteg.at("Exponant").get_to(model.integr.exponant);
+                if (jinteg.count("WeightRadius")) jinteg.at("WeightRadius").get_to(model.integr.weigth_func_radius);
             }
 
             if(jmdl.count("Solver"))
             {
                 auto jsolver = jmdl.at("Solver");
                 
-                if (jsolver.count("quadratureDegree")) jsolver.at("quadratureDegree").get_to(model.solver_params.quadrature_degree);
-                if (jsolver.count("refinmentFraction")) jsolver.at("refinmentFraction").get_to(model.solver_params.refinment_fraction);
-                if (jsolver.count("adaptiveRefinmentSteps")) jsolver.at("adaptiveRefinmentSteps").get_to(model.solver_params.adaptive_refinment_steps);
-                if (jsolver.count("tol")) jsolver.at("tol").get_to(model.solver_params.tollerance);
-                if (jsolver.count("iterationSteps")) jsolver.at("iterationSteps").get_to(model.solver_params.num_of_iterrations);
+                if (jsolver.count("QuadratureDegree")) jsolver.at("QuadratureDegree").get_to(model.solver_params.quadrature_degree);
+                if (jsolver.count("RefinmentFraction")) jsolver.at("RefinmentFraction").get_to(model.solver_params.refinment_fraction);
+                if (jsolver.count("AdaptiveRefinmentSteps")) jsolver.at("AdaptiveRefinmentSteps").get_to(model.solver_params.adaptive_refinment_steps);
+                if (jsolver.count("tollerance")) jsolver.at("Tollerance").get_to(model.solver_params.tollerance);
+                if (jsolver.count("IterationSteps")) jsolver.at("IterationSteps").get_to(model.solver_params.num_of_iterrations);
             }
         }
 
-        if(j.count("Boundary"))
+        if(j.count("Boundaries"))
         {
-            auto jborder = j.at("Boundary");
-            vector<pair<double, double>> coords;
-            vector<Point> points;
-            vector<vector<int>> lines_raw;
-            vector<Line> lines;
-            map<int, long unsigned> sources;
-
-            jborder.at("SourceIds").get_to(sources);
-
-            jborder.at("coords").get_to(coords);
-            points.reserve(coords.size());
-            for(auto& c : coords)
-                points.push_back(Point{c.first, c.second});
-
-            jborder.at("lines").get_to(lines_raw);
-            lines.reserve(lines_raw.size());
-            for(auto& l : lines_raw)
-                lines.push_back(Line{(long unsigned)l.at(0), (long unsigned)l.at(1), l.at(2)});
-
-            model.border = Boundary{points, lines, sources};
-
-            //Get size of bounding box of border and update width and height values of module
-            auto xmax = points.at(0).x,
-                xmin = points.at(0).x,
-                ymax = points.at(0).y,
-                ymin = points.at(0).y;
-            for(auto&p: points)
+            auto jboundaries = j.at("Boundaries");
+            model.border.clear();
+            for(auto& [key, value] : jboundaries.items()) 
             {
-                if(p.x > xmax)
-                    xmax = p.x;
-                if(p.x < xmin)
-                    xmin = p.x;
-                if(p.y > ymax)
-                    ymax = p.y;
-                if(p.y < ymin)
-                    ymin = p.y;
+                SimpleBoundary simple_boundary;
+                
+                //vertices
+                vector<pair<double, double>> vertices;
+                value.at("Vertices").get_to(vertices);
+                simple_boundary.vertices.reserve(vertices.size());
+                for(auto& vertice: vertices)
+                    simple_boundary.vertices.push_back({vertice.first, vertice.second});
+                
+                //lines
+                vector<tuple<t_vert_pos, t_vert_pos, unsigned>> lines;
+                value.at("Lines").get_to(lines);
+                simple_boundary.lines.reserve(lines.size());
+                for(auto& line: lines)
+                    simple_boundary.lines.push_back({get<0>(line), get<1>(line), get<2>(line)});
+
+                //rest of fields
+                value.at("Sources").get_to(simple_boundary.sources);
+                value.at("Sources").get_to(simple_boundary.sources);
+                value.at("InnerBoundary").get_to(simple_boundary.inner_boundary);
+                vector<double> hole;
+                value.at("Hole").get_to(hole);
+                simple_boundary.hole = {hole.at(0), hole.at(1)};
+                value.at("Name").get_to(simple_boundary.name);
+
+                model.border.push_back(simple_boundary);
+                
+                //evaluation of boundary outfit rectangle
+                if(!simple_boundary.inner_boundary)
+                {
+                    //Get size of bounding box of border and update width and height values of module
+                    auto xmax = simple_boundary.vertices.at(0).x,
+                        xmin = simple_boundary.vertices.at(0).x,
+                        ymax = simple_boundary.vertices.at(0).y,
+                        ymin = simple_boundary.vertices.at(0).y;
+                    for(auto&v: simple_boundary.vertices)
+                    {
+                        if(v.x > xmax)
+                            xmax = v.x;
+                        if(v.x < xmin)
+                            xmin = v.x;
+                        if(v.y > ymax)
+                            ymax = v.y;
+                        if(v.y < ymin)
+                            ymin = v.y;
+                    }
+                    
+                    //if width and height equals to default values
+                    if(model.width == 1. && model.height == 1.)
+                    {
+                        model.width = xmax - xmin;
+                        model.height = ymax - ymin;
+                    }
+                }
             }
-            model.width = xmax - xmin;
-            model.height = ymax - ymin;
         }
 
         if(j.count("Trees"))
         {
-            if(!j.count("Boundary"))
+            if(!j.count("Boundaries"))
                 throw Exception("Input json file contains Trees and do not contain Boundary. Make sure that you created corresponding Boundary object(Trees and Boundary should contain same source/branches ids - its values and number)");
             
             model.tree.Clear();
@@ -597,18 +609,18 @@ namespace River
                 double source_angle;
                 int id;
 
-                value.at("sourcePoint").get_to(s_point);
-                value.at("sourceAngle").get_to(source_angle);
-                value.at("coords").get_to(coords);
-                value.at("id").get_to(id);
+                value.at("SourceVertice").get_to(s_point);
+                value.at("SourceAngle").get_to(source_angle);
+                value.at("Vertices").get_to(coords);
+                value.at("Id").get_to(id);
                 
                 BranchNew branch(River::Point{s_point.at(0), s_point.at(1)}, source_angle);
-                branch.points.resize(coords.size());
+                branch.resize(coords.size());
 
                 
                 for(unsigned i = 0; i < coords.size(); ++i)
                 {
-                    branch.points[i] = River::Point{coords.at(i).first, coords.at(i).second};
+                    branch[i] = River::Point{coords.at(i).first, coords.at(i).second};
                 }
                 try
                 {
@@ -618,10 +630,11 @@ namespace River
                 {   
                     cout << e.what() << endl;
                     cout << "tree io..ivalid inser" << endl;
+                    throw;
                 }
             }
         }
-        else if(j.count("Boundary"))
+        else if(j.count("Boundaries"))
             //If no tree provided but border is, than we reinitialize tree.. to current border.
             model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles());
 
@@ -646,7 +659,7 @@ namespace River
         //parameters set from program options has higher priority over input file
         SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
 
-        if(model.border.vertices.empty())
+        //if(model.border.vertices.empty())
             model.InitializeBorderAndTree();
         
         model.CheckParametersConsistency();

@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_vector,
 BOOST_AUTO_TEST_CASE( Tree_Class, 
     *utf::tolerance(eps))
 {   
-    vector<t_sources_ids> ids{3, 4, 5};
+    vector<t_source_id> ids{3, 4, 5};
     Tree tr;
     tr.Initialize({
         {3, {{0.0, 0}, 0}},
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
 BOOST_AUTO_TEST_CASE( Tree_Class_methods, 
     *utf::tolerance(eps))
 {   
-    vector<t_sources_ids> ids{5, 4, 9};
+    vector<t_source_id> ids{5, 4, 9};
     Tree tr;
     tr.Initialize({
         {5, {{0.0, 0}, 0}},
@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_CHECK_THROW(tr.AddBranch(left_branch, b1), Exception);
     BOOST_CHECK_THROW(tr.AddBranch(right_branch, b2), Exception);
 
-    ids = vector<t_sources_ids>{10};
+    ids = vector<t_source_id>{10};
     tr.Clear();
     tr = Tree();
     tr.Initialize({{10, {{0.0, 0}, 0.}}});
@@ -530,8 +530,8 @@ BOOST_AUTO_TEST_CASE( Tree_UPD,
     BOOST_TEST(tree.HasParentBranch(id3) == true);
     BOOST_TEST(tree.HasSubBranches(id3) == true);
 
-    BOOST_TEST((tree.GetSubBranchesId(id2) == pair<t_sources_ids, t_sources_ids>{id4, id5}));
-    BOOST_TEST((tree.GetSubBranchesId(id3) == pair<t_sources_ids, t_sources_ids>{id6, id7}));
+    BOOST_TEST((tree.GetSubBranchesId(id2) == pair<t_source_id, t_source_id>{id4, id5}));
+    BOOST_TEST((tree.GetSubBranchesId(id3) == pair<t_source_id, t_source_id>{id6, id7}));
     BOOST_TEST(tree.GetAdjacentBranchId(id4) == id5);
     BOOST_TEST(tree.GetAdjacentBranchId(id5) == id4);
     BOOST_TEST(tree.GetAdjacentBranchId(id6) == id7);
@@ -696,10 +696,10 @@ BOOST_AUTO_TEST_CASE( tree_initializtion_and_clear,
         {3, {{3, 4}, 5}},
         {5, {{4, 5}, 6}},
         {7, {{5, 6}, 7}}};
-    auto source_branches_id = vector<t_sources_ids>{1, 3, 5, 7};
+    auto source_branches_id = vector<t_source_id>{1, 3, 5, 7};
     auto tip_points = vector<Point>{{2, 3}, {3, 4}, {4, 5}, {5, 6}};
     auto tip_ids_and_points = 
-        map<t_sources_ids, Point>{{1, {2, 3}}, {3, {3, 4}}, {5, {4, 5}}, {7, {5, 6}}};
+        map<t_source_id, Point>{{1, {2, 3}}, {3, {3, 4}}, {5, {4, 5}}, {7, {5, 6}}};
 
     Tree tree;
     tree.Initialize(ids_points_angles);

@@ -21,7 +21,6 @@ const double eps = 1e-12;
 namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
-
 BOOST_AUTO_TEST_CASE( default_program_options, 
     *utf::tolerance(eps))
 {
@@ -54,8 +53,6 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.prog_opt.save_each_step == model_po.prog_opt.save_each_step );
 
     //mesh options
-    //BOOST_TEST(model.mesh.number_of_quadrangles == 18); these are only output fields
-    //BOOST_TEST(model.mesh.number_of_refined_quadrangles == 19);
     BOOST_TEST(model.mesh.refinment_radius == model_po.mesh.refinment_radius);
     BOOST_TEST(model.mesh.exponant == model_po.mesh.exponant);
     BOOST_TEST(model.mesh.sigma == model_po.mesh.sigma);
@@ -85,9 +82,7 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.width == model_po.width);
     BOOST_TEST(model.height == model_po.height);
     //these options are not set from program options interface
-    //BOOST_TEST(model.river_boundary_id == 10);
-    //BOOST_TEST(model.boundary_ids == vec);
-    BOOST_TEST(model.boundary_condition == model_po.boundary_condition);
+    BOOST_TEST(model.river_boundary_id == 5);
     BOOST_TEST(model.field_value == model_po.field_value);
     BOOST_TEST(model.ds == model_po.ds);
     BOOST_TEST(model.eta == model_po.eta);
@@ -151,7 +146,6 @@ BOOST_AUTO_TEST_CASE( program_options,
         "--dx", "23",
         "--width", "24",
         "--height", "25",
-        "--boundary-condition", "26",
         "--field-value", "27",
         "--ds", "28",
         "--eta", "29",
@@ -162,7 +156,8 @@ BOOST_AUTO_TEST_CASE( program_options,
         "--bifurcation-angle", "34",
         "--growth-type", "35",
         "--growth-threshold", "36",
-        "--growth-min-distance", "37"
+        "--growth-min-distance", "37",
+        "--river-boundary-id", "90"
     };
     int argc = std_argv.size();
 
@@ -201,8 +196,6 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.prog_opt.save_each_step == true);
 
     //mesh options
-    //BOOST_TEST(model.mesh.number_of_quadrangles == 18); these are only output fields
-    //BOOST_TEST(model.mesh.number_of_refined_quadrangles == 19);
     BOOST_TEST(model.mesh.refinment_radius == 4);
     BOOST_TEST(model.mesh.exponant == 5);
     BOOST_TEST(model.mesh.sigma == 6);
@@ -231,10 +224,7 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.dx == 23);
     BOOST_TEST(model.width == 24);
     BOOST_TEST(model.height == 25);
-    //these options are not set from program options interface
-    //BOOST_TEST(model.river_boundary_id == 10);
-    //BOOST_TEST(model.boundary_ids == vec);
-    BOOST_TEST(model.boundary_condition == 26);
+    BOOST_TEST(model.river_boundary_id == 90);
     BOOST_TEST(model.field_value == 27);
     BOOST_TEST(model.ds == 28);
     BOOST_TEST(model.eta == 29);
@@ -251,7 +241,7 @@ BOOST_AUTO_TEST_CASE( program_options,
 BOOST_AUTO_TEST_CASE( files_io_methods, 
     *utf::tolerance(eps))
 {
-    Model mdl_out, mdl_in;
+    Model mdl_out;
 
     //program options
     mdl_out.prog_opt.verbose = true;
@@ -265,8 +255,6 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.prog_opt.save_each_step = true;
 
     //mesh options
-    mdl_out.mesh.number_of_quadrangles = 18;
-    mdl_out.mesh.number_of_refined_quadrangles = 19;
     mdl_out.mesh.refinment_radius = 20;
     mdl_out.mesh.exponant = 21;
     mdl_out.mesh.min_area = 22;
@@ -296,9 +284,6 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.width = 2;
     mdl_out.height = 3;
     mdl_out.river_boundary_id = 10;
-    auto vec = vector<int>{3, 4, 5, mdl_out.river_boundary_id};
-    mdl_out.boundary_ids = vec;
-    mdl_out.boundary_condition = 6;
     mdl_out.field_value = 7;
     mdl_out.eta = 8;
     mdl_out.bifurcation_type = 9;
@@ -312,10 +297,9 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.ds = 17;
 
     //Boundary object setup.. Rectangular boundaries
-    auto boundary_ids = vec;
     auto region_size = vector<double>{2, 3};
     auto sources_x_coord = vector<double>{0.3};
-    auto sources_id = vector<int>{1};
+    auto sources_id = vector<t_source_id>{1};
     
     mdl_out.border.MakeRectangular();
     
@@ -343,6 +327,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     
     BOOST_TEST_CHECKPOINT("Input");
 
+    Model mdl_in;
     mdl_in.prog_opt.input_file_name = "iotest.json";
     Open(mdl_in);
 
@@ -389,8 +374,6 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.width == 2);
     BOOST_TEST(mdl_in.height == 3);
     BOOST_TEST(mdl_in.river_boundary_id == 10);
-    BOOST_TEST(mdl_in.boundary_ids == vec);
-    BOOST_TEST(mdl_in.boundary_condition == 6);
     BOOST_TEST(mdl_in.field_value == 7);
     BOOST_TEST(mdl_in.eta == 8);
     BOOST_TEST(mdl_in.bifurcation_type == 9);
@@ -404,17 +387,17 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.ds == 17);
 
     //Boundary Test
-    BOOST_TEST((mdl_in.border.vertices.front() == Point{2, 0}));
-    BOOST_TEST((mdl_in.border.vertices.back() == Point{0.3, 0}));
+    //BOOST_TEST((mdl_in.border.vertices.front() == Point{2, 0}));
+    //BOOST_TEST((mdl_in.border.vertices.back() == Point{0.3, 0}));
 
     //Tree Test
-    BOOST_TEST(mdl_in.tree.source_branches_id == sources_id);
-    map<int, pair<int, int>> t = {{1, {2, 3}}, {3, {4, 5}}};
+    //BOOST_TEST(mdl_in.tree.source_branches_id == sources_id);
+    map<t_branch_id, pair<t_branch_id, t_branch_id>> t = {{1, {2, 3}}, {3, {4, 5}}};
     BOOST_TEST(mdl_in.tree.branches_relation == t);
-    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().x == 11);
-    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().y == 10);
-    BOOST_TEST(mdl_in.tree.GetBranch(1)->TipPoint().x == 0.3);
-    BOOST_TEST(mdl_in.tree.GetBranch(1)->TipPoint().y == 0);
+    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().x == 11.);
+    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().y == 10.);
+    BOOST_TEST(mdl_in.tree.GetBranch(1)->TipPoint().x == 0.25);
+    BOOST_TEST(mdl_in.tree.GetBranch(1)->TipPoint().y == 0.);
 
     //GeometryDifference
     auto a1 = vector<vector<double>>{{2, 3}, {3, 4}, {4, 5}, {5, 6}},
@@ -422,4 +405,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
 
     BOOST_TEST(mdl_in.geometry_difference.branches_bifuraction_info[1] == a1);
     BOOST_TEST(mdl_in.geometry_difference.branches_series_params_and_geom_diff[1] == a2);
+
+    BOOST_TEST(mdl_out.border == mdl_in.border);
+    BOOST_TEST(mdl_out.tree == mdl_in.tree);
 }
