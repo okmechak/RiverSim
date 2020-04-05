@@ -409,4 +409,5 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_out.border == mdl_in.border);
     BOOST_TEST(mdl_out.tree == mdl_in.tree);
     BOOST_TEST(mdl_out.sources == mdl_in.sources);
+    BOOST_TEST(mdl_out.boundary_conditions == mdl_in.boundary_conditions);
 }

@@ -359,6 +359,16 @@ namespace River
             });   
         }
 
+        json jboundary_condition;
+        for(auto& [boundary_id, bound_condition]: model.boundary_conditions)
+        {
+            jboundary_condition.push_back({
+                {"Id", boundary_id},
+                {"Type", bound_condition.type},
+                {"Value", bound_condition.value}
+            });
+        }
+
         //implementation with json
         json j = {
             {"Description", "RiverSim simulation data and state of program. All coordinates are in normal cartesian coordinate system and by default are x > 0 and y > 0. Default values of simulation assumes that coordinates values will be of order 0 - 200. Greater values demands a lot of time to run, small are not tested(Problem of scalling isn't resolved yet TODO)."},
@@ -428,7 +438,7 @@ namespace River
             },
             
             {"Boundaries", jboundaries},
-            {"BoundariesConditions",""},
+            {"BoundaryConditions", jboundary_condition},
             {"Sources", model.sources},
             {"Trees", {
                 {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
@@ -598,6 +608,22 @@ namespace River
         }
 
         if(j.count("Sources")) j.at("Sources").get_to(model.sources);
+        
+        if(j.count("BoundaryConditions"))
+        {
+            auto jboundary_condition = j.at("BoundaryConditions");
+            model.boundary_conditions.clear();
+            for(auto& [key, value] : jboundary_condition.items()) 
+            {
+                t_boundary_id id;
+                value.at("Id").get_to(id);
+                BoundaryCondition boundary_condition;
+                value.at("Type").get_to(boundary_condition.type);
+                value.at("Value").get_to(boundary_condition.value);
+                
+                model.boundary_conditions[id] = boundary_condition;
+            }
+        }
 
         if(j.count("Trees"))
         {

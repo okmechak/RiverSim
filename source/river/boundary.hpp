@@ -54,6 +54,11 @@ namespace River
         t_boundary type = DIRICHLET;
         double value = 0;
 
+        bool operator==(const BoundaryCondition& bc) const
+        {
+            return value == bc.value && type == bc.type;
+        }
+        
         friend ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition);
     };
 
