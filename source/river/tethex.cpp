@@ -528,7 +528,7 @@ Mesh::Mesh(const River::SimpleBoundary &boundaries)
     }
         
     holes.reserve(boundaries.holes.size());
-    for(size_t i = 0; i < boundaries.vertices.size(); ++i)
+    for(size_t i = 0; i < boundaries.holes.size(); ++i)
         holes.push_back(boundaries.holes.at(i));
 }
 
