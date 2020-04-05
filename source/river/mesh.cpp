@@ -167,6 +167,22 @@ namespace River{
             }
         }
 
+        //Holes
+        if(mesh.get_n_holes())
+        {
+            auto holes_num = mesh.get_n_holes();
+            io.numberofholes = holes_num;
+            io.holelist = new REAL[2 * holes_num];
+            
+            int i = 0;
+            for(auto &p: mesh.get_holes())
+            {
+                io.holelist[2 * i ] = p.get_coord(0);
+                io.holelist[2 * i + 1] = p.get_coord(1);
+                ++i;
+            }
+        }
+
         //Segments
         if(mesh.get_n_lines())
         {
@@ -184,6 +200,7 @@ namespace River{
             }
         }
 
+        //Triangles
         if(mesh.get_n_triangles())
         {
             auto triangles_num = mesh.get_n_triangles();
