@@ -40,25 +40,25 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttree)
 
-    add_executable(tethex_test tethex.cpp)
-    target_link_libraries(tethex_test tethex ${Boost_LIBRARIES})
+    add_executable(tphysmodel physmodel.cpp)
+    target_link_libraries(tphysmodel physmodel ${Boost_LIBRARIES})
     add_test(
-        NAME tethex_test
+        NAME tphysmodel
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tethex)
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tphysmodel)
 
-    add_executable(io_test io.cpp)
-    target_link_libraries(io_test io ${Boost_LIBRARIES})
+    add_executable(ttethex tethex.cpp)
+    target_link_libraries(ttethex tethex ${Boost_LIBRARIES})
     add_test(
-        NAME io_test
+        NAME ttethex
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/io)
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttethex)
 
-    add_executable(physmodel_test physmodel.cpp)
-    target_link_libraries(physmodel_test physmodel ${Boost_LIBRARIES})
-    deal_ii_setup_target(physmodel_test)
+    add_executable(tio io.cpp)
+    target_link_libraries(tio io ${Boost_LIBRARIES})
     add_test(
-        NAME physmodel_test
+        NAME tio
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/physmodel)
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tio)
+
 endif(BUILD_TEST)

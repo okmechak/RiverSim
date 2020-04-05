@@ -42,3 +42,11 @@ BOOST_AUTO_TEST_CASE( next_point_method,
     BOOST_TEST(p.phi ==-0.054918865933649114);
 
 }
+
+BOOST_AUTO_TEST_CASE(Initialize_Border_And_Tree, 
+    *utf::tolerance(eps))
+{
+    Model model;
+    model.InitializeBorderAndTree();
+    BOOST_TEST(model.border.GetSourcesIds() == model.tree.SourceBranchesID());
+}

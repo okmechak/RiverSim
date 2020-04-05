@@ -89,6 +89,12 @@ namespace River
         write << "Solver parameters:" << endl;
         write << mdl.solver_params;
 
+        write << "Border:" << endl;
+        write << mdl.border;
+
+        write << "Tree:" << endl;
+        write << mdl.tree;
+
         write << "Model Parameters:" << endl;
         write << "\t dx = "                << mdl.dx << endl;
         write << "\t width = "             << mdl.width << endl;
@@ -176,7 +182,6 @@ namespace River
 
         if(ds > 1000)
             cout << "ds is to big = " << ds << endl;
-        
 
         //Mesh
         if(mesh.exponant < 0)

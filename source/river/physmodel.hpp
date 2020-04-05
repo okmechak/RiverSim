@@ -555,28 +555,6 @@ namespace River
                 else
                     throw Exception("Invalid value of growth_type!");
             }
-            
-            ///Return boundary line indices with zero value conditions.
-            vector<int> GetZeroIndices() const
-            {
-                if(boundary_condition == 0)
-                    return {river_boundary_id};//boundary_ids;
-                else if(boundary_condition == 1)
-                    return {river_boundary_id};
-                else
-                    throw Exception("Invalid value of boundary_condition");   
-            }
-
-            ///Return boundary line indices with non-zero value conditions.
-            vector<int> GetNonZeroIndices() const
-            {
-                if(boundary_condition == 0)
-                    return {};
-                else if(boundary_condition == 1)
-                    return {boundary_ids.at(1)};
-                else
-                    throw Exception("Invalid value of boundary_condition");   
-            }
 
             ///Checks if values of parameters are in normal ranges.
             void CheckParametersConsistency() const;
