@@ -57,8 +57,7 @@ BOOST_AUTO_TEST_CASE( To_Polar,
         pe = {1, M_PI},
         pf = {sqrt(2), -3*M_PI/4},
         pg = {1, -M_PI/2},
-        pk = {sqrt(2),  - M_PI/4},
-        pl = {0, 0};
+        pk = {sqrt(2),  - M_PI/4};
         
 
     BOOST_TEST(ToPolar(a) == pa);
@@ -66,6 +65,7 @@ BOOST_AUTO_TEST_CASE( To_Polar,
     BOOST_TEST(ToPolar(c) == pc);
     BOOST_TEST(ToPolar(d) == pd);
     BOOST_TEST(ToPolar(e) == pe);
+    BOOST_TEST(ToPolar(f) == pf);
     BOOST_TEST(ToPolar(g) == pg);
     BOOST_TEST(ToPolar(k) == pk);
     BOOST_CHECK_THROW(ToPolar(l), Exception);

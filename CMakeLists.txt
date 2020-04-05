@@ -20,10 +20,9 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -g3")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    message("=============pedantic build=============")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -g3")
 endif()
-
 
 add_subdirectory(source)
 add_subdirectory(docsrc)
