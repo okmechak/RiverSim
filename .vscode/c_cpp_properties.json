@@ -3,9 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${workspaceFolder}/source/**",
-                "${workspaceFolder}/source/river/**",
+                "${workspaceFolder}/tests/**",
                 "/mnt/c/users/ofcra/lib/dealii_d_shared/include"
             ],
             "defines": [],
