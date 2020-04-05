@@ -9,6 +9,7 @@
 
 #include <math.h>
 #include "physmodel.hpp"
+#include "boundary_generator.hpp"
 
 using namespace River;
 
@@ -21,20 +22,19 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
 {   
     Model mdl;
     mdl.mesh.eps = 0.01;
-    auto river_boundary_id = 4;
-    auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
+    t_boundary_id river_boundary_id = 4;
+    auto boundary_ids = vector<t_boundary_id>{1, 2, 3, river_boundary_id};
     auto region_size = vector<double>{1, 1};
     auto sources_x_coord = vector<double>{0.5, 0.6, 0.7, 0.8};
-    auto sources_id = vector<int>{1, 2, 3, 4};
+    auto sources_id = vector<t_source_id>{1, 2, 3, 4};
     
-    mdl.border.MakeRectangular();
+    auto sources = mdl.border.MakeRectangular();
     
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
-
-    BOOST_TEST(mdl.border.GetSourcesIds() == mdl.tree.SourceBranchesID());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(sources));
     
     BOOST_TEST_MESSAGE( "Boundary Generator start" );
-    auto mesh = BoundaryGenerator(mdl);
+    auto border = SimpleBoundaryGenerator(mdl);
+    tethex::Mesh mesh(border);
     BOOST_TEST_MESSAGE( "Boundary Generator done" );
 
 
@@ -100,22 +100,19 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
 {   
     Model mdl;
     mdl.mesh.eps = 0.02;
-    auto river_boundary_id = 4;
-    auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
+    t_boundary_id river_boundary_id = 4;
+    auto boundary_ids = vector<t_boundary_id>{1, 2, 3, river_boundary_id};
     auto region_size = vector<double>{1, 1};
     auto sources_x_coord = vector<double>{0.5, 0.6, 0.7, 0.8};
-    auto sources_id = vector<int>{1, 2, 3, 4};
+    auto sources_id = vector<t_source_id>{1, 2, 3, 4};
     
-    
-    mdl.border.MakeRectangular();
+    auto sources = mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(sources));
     mdl.tree.AddPolars({{1, 0}, {2, 0}, {3, 0}, {4, 0}}, sources_id);
-
-    BOOST_TEST(mdl.border.GetSourcesIds() == mdl.tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl);
-
+    auto border = SimpleBoundaryGenerator(mdl);
+    tethex::Mesh mesh(border);
 
     BOOST_TEST(mesh.get_n_vertices() == 16);
     //Vertices test
@@ -228,28 +225,25 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     BOOST_TEST(mesh.get_line(15).get_material_id() == river_boundary_id);
 }
 
-
-
 BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new, 
     *utf::tolerance(eps))
 {   
     Model mdl;
     mdl.mesh.eps = 0.02;
-    auto river_boundary_id = 4;
-    auto boundary_ids = vector<int>{1, 2, 3, river_boundary_id};
+    t_boundary_id river_boundary_id = 4;
+    auto boundary_ids = vector<t_boundary_id>{1, 2, 3, river_boundary_id};
     auto region_size = vector<double>{1, 1};
     auto sources_x_coord = vector<double>{0.5, 0.8};
-    auto sources_id = vector<int>{1, 2};
+    auto sources_id = vector<t_source_id>{1, 2};
     
-    mdl.border.MakeRectangular();
+    auto sources = mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(sources));
     mdl.tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
     mdl.tree.AddPolars({{1, 0}, {2, 0}}, sources_id);
-
-    BOOST_TEST(mdl.border.GetSourcesIds() == mdl.tree.SourceBranchesID());
     
-    auto mesh = BoundaryGenerator(mdl);
+    auto boundary = SimpleBoundaryGenerator(mdl);
+    tethex::Mesh mesh(boundary);
 
     BOOST_TEST(mesh.get_n_lines() == 14);
     BOOST_TEST(mesh.get_n_vertices() == 14);

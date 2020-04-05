@@ -11,6 +11,7 @@
 #include "physmodel.hpp"
 #include "tree.hpp"
 #include "boundary.hpp"
+#include "boundary_generator.hpp"
 
 using namespace std;
 
@@ -27,23 +28,14 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
     //Model object setup
     Model mdl;
 
-    //Boundary object setup.. Rectangular boundaries
-    auto boundary_ids = mdl.boundary_ids;
-    auto region_size = vector<double>{mdl.width, mdl.height};
-    auto sources_x_coord = vector<double>{mdl.dx};
-    auto sources_id = vector<int>{1};
-    
-    mdl.border.MakeRectangular(
-        region_size, 
-        boundary_ids,
-        sources_x_coord,
-        sources_id);
+    mdl.sources = mdl.border.MakeRectangular();
     
     //Tree object setup
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
 
     
-    auto mesh = BoundaryGenerator(mdl);
+    auto boundary = SimpleBoundaryGenerator(mdl);
+    tethex::Mesh mesh(boundary);
 
     //Triangle mesh object setup
     for(unsigned long int i = 0; i < 1e4; i ++)

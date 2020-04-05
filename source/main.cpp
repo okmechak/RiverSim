@@ -239,11 +239,11 @@ int main(int argc, char *argv[])
             print(model.prog_opt.verbose, "Test river simulation type selected.");
 
             //reinitialize geometry
-            model.border.MakeRectangular();
+            model.sources = model.border.MakeRectangular();
 
-            model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles());
+            model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
 
-            auto source_branch_id = model.border.GetSourcesIds().back();
+            auto source_branch_id = 1;//todo
             model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
 
             EvaluateSeriesParams(model, triangle, sim, model.prog_opt.output_file_name);

@@ -20,7 +20,7 @@ namespace River
         Solver Class
 
     */
-    void Solver::SetBoundaryRegionValue(const vector<int>& regionTags, const double value)
+    void Solver::SetBoundaryRegionValue(const vector<t_boundary_id>& regionTags, const double value)
     {
         boundaryRegionValue.insert(make_pair(value, regionTags));
     }

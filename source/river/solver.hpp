@@ -117,7 +117,7 @@ namespace River
             unsigned num_of_static_refinments = 0;
 
             ///Inner function
-            void SetBoundaryRegionValue(const vector<int>& regionTags, const double value);
+            void SetBoundaryRegionValue(const vector<t_boundary_id>& regionTags, const double value);
             
             /*!
               \todo implement this function
@@ -173,7 +173,7 @@ namespace River
             Model *model = NULL;
 
             ///Used for setup boudary conditions.
-            map<double, vector<int>> boundaryRegionValue;
+            map<double, vector<t_boundary_id>> boundaryRegionValue;
 
             ///Dimension of problem.
             const static int dim = 2;

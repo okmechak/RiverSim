@@ -24,14 +24,6 @@ namespace River
 {
     ///Generates trees boundary
     void TreeVertices(vector<Point> &tree_vector, unsigned id, const Tree& trees, double eps);
-
     SimpleBoundary TreeBoundary(const Tree& tree, unsigned source_id, int boundary_id, double eps);
     SimpleBoundary SimpleBoundaryGenerator(const Model& model);
-    /*! \brief Finnal Boudary Geneartor Class
-        \details
-        Sticks together all components: Tree class, boudary class and model parameters.
-
-        \todo reserve size of tet_lines.
-     */ 
-    tethex::Mesh BoundaryGenerator(const Model& model);
 }

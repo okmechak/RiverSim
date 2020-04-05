@@ -19,34 +19,23 @@ if(BUILD_TEST)
     message("========================================")
     message("Adding executables tests")
 
+    #GeometryPrimitives
     add_executable(tGeometryPrimitives GeometryPrimitives.cpp)
     target_link_libraries(tGeometryPrimitives GeometryPrimitives ${Boost_LIBRARIES})
     add_test(
         NAME tGeometryPrimitives
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tGeometryPrimitives)
-        
+    
+    #boundary
     add_executable(tboundary boundary.cpp)
     target_link_libraries(tboundary boundary ${Boost_LIBRARIES})
     add_test(
         NAME tboundary
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary)
-
-    add_executable(ttree tree.cpp)
-    target_link_libraries(ttree tree ${Boost_LIBRARIES})
-    add_test(
-        NAME ttree
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttree)
-
-    add_executable(tphysmodel physmodel.cpp)
-    target_link_libraries(tphysmodel physmodel ${Boost_LIBRARIES})
-    add_test(
-        NAME tphysmodel
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tphysmodel)
-
+    
+    #tethex
     add_executable(ttethex tethex.cpp)
     target_link_libraries(ttethex tethex ${Boost_LIBRARIES})
     add_test(
@@ -54,13 +43,39 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttethex)
 
+    #tree
+    add_executable(ttree tree.cpp)
+    target_link_libraries(ttree tree ${Boost_LIBRARIES})
+    add_test(
+        NAME ttree
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttree)
+
+    #physmodel
+    add_executable(tphysmodel physmodel.cpp)
+    target_link_libraries(tphysmodel physmodel ${Boost_LIBRARIES})
+    add_test(
+        NAME tphysmodel
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tphysmodel)
+
+    #io
     add_executable(tio io.cpp)
     target_link_libraries(tio io ${Boost_LIBRARIES})
     add_test(
         NAME tio
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tio)
-
+    
+    #triangle
+    add_executable(ttriangle triangle.cpp)
+    target_link_libraries(ttriangle mesh boundary_generator ${Boost_LIBRARIES})
+    add_test(
+        NAME ttriangle
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttriangle)
+    
+    #boundary_generator
     add_executable(tboundary_generator boundary.cpp)
     target_link_libraries(tboundary_generator boundary ${Boost_LIBRARIES})
     add_test(
@@ -68,4 +83,21 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary_generator)
 
+    #mesh
+    add_executable(tmesh mesh.cpp)
+    target_link_libraries(tmesh physmodel boundary_generator ${Boost_LIBRARIES})
+    add_test(
+        NAME tmesh
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tmesh)
+
+    #solver
+    add_executable(tsolver solver.cpp)
+    target_link_libraries(tsolver solver mesh boundary_generator ${Boost_LIBRARIES})
+    deal_ii_setup_target(tsolver)
+    add_test(
+        NAME tsolver
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tsolver)
+    
 endif(BUILD_TEST)

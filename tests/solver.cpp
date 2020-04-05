@@ -12,6 +12,7 @@
 #include "boundary.hpp"
 #include "tree.hpp"
 #include "mesh.hpp"
+#include "boundary_generator.hpp"
 
 using namespace River;
 
@@ -19,16 +20,15 @@ const double eps = 1e-4;
 namespace utf = boost::unit_test;
 
 
-
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( integration_params_test, 
     *utf::tolerance(1e-1)*utf::disabled())
 {   
-    auto river_boundary_id = 3;
-    auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
+    t_boundary_id river_boundary_id = 3;
+    auto boundary_ids = vector<t_boundary_id>{0, 1, 2, river_boundary_id};
     auto region_size = vector<double>{1, 1};
     auto sources_x_coord = vector<double>{0.25};
-    auto sources_id = vector<int>{1};
+    auto sources_id = vector<t_source_id>{1};
 
     Model mdl;
 
@@ -39,12 +39,14 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    mdl.border.MakeRectangular();
+    
+    mdl.sources = mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
     mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl);
+    auto boundary = SimpleBoundaryGenerator(mdl);
+    tethex::Mesh  mesh(boundary);
 
     Triangle tria(&mdl.mesh);
     tria.generate(mesh);
@@ -80,11 +82,11 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 BOOST_AUTO_TEST_CASE( integration_test, 
     *utf::tolerance(1e-1)*utf::disabled())
 {
-    auto river_boundary_id = 3;
-    auto boundary_ids = vector<int>{0, 1, 2, river_boundary_id};
+    t_boundary_id river_boundary_id = 3;
+    auto boundary_ids = vector<t_boundary_id>{0, 1, 2, river_boundary_id};
     auto region_size = vector<double>{1, 1};
     auto sources_x_coord = vector<double>{0.25};
-    auto sources_id = vector<int>{1};
+    auto sources_id = vector<t_source_id>{1};
 
     Model mdl;
     //1e-12 - is to small and we receive strange mesh
@@ -94,12 +96,15 @@ BOOST_AUTO_TEST_CASE( integration_test,
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    mdl.border.MakeRectangular();
+    
+    mdl.sources = mdl.border.MakeRectangular();
 
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles());
+    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
     mdl.tree.GetBranch(sources_id.at(0))->AddPoint(Polar{0.1, 0});
 
-    auto mesh = BoundaryGenerator(mdl);
+    auto boundary = SimpleBoundaryGenerator(mdl);
+
+    tethex::Mesh mesh(boundary);
 
     Triangle tria(&mdl.mesh);
     tria.generate(mesh);

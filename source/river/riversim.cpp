@@ -14,6 +14,7 @@
  */
 
 #include "riversim.hpp"
+#include "boundary_generator.hpp"
 
 ///\cond
 #include <math.h>
@@ -23,51 +24,15 @@ namespace River
 {
     bool StopConditionOfRiverGrowth(const Model& model)
     {
-        const auto tips = model.tree.TipPoints();
-
-        auto border_init_point = model.border.GetVertices().back(),
-            tip_init_point = tips.back();
-
-        double xmin = tip_init_point.x, 
-            xmax = xmin, 
-            ymax = tip_init_point.y, 
-            rxmin = border_init_point.x, 
-            rxmax = rxmin, 
-            rymax = border_init_point.y;
-
-        for(auto &p :model.border.GetVertices())
-        {
-            if(p.x > rxmax)
-                rxmax = p.x;
-            if(p.x < rxmin)
-                rxmin = p.x;
-            if(p.y > rymax)
-                rymax = p.y;
-        }
-
-        for(auto &p :tips)
-        {
-            if(p.x > xmax)
-                xmax = p.x;
-            if(p.x < xmin)
-                xmin = p.x;
-            if(p.y > ymax)
-                ymax = p.y;
-        }
-        double dl = 0.007;
-
-        for(auto &br: model.tree.branches)
-            if(br.TipPoint().y > model.prog_opt.maximal_river_height)
-                return true;
-
-        return xmax > rxmax - dl || ymax > rymax - dl || xmin < rxmin + dl;
+        return false;//todo
     }
 
     tethex::Mesh TriangulateBoundaries(Model& model, Triangle& tria, const string file_name)
     {
         print(model.prog_opt.verbose, "Boundary generation...");
         //initial boundaries of mesh
-        auto mesh = BoundaryGenerator(model);
+        auto boundary = SimpleBoundaryGenerator(model);
+        tethex::Mesh mesh(boundary);
         mesh.write(file_name + "_boundary.msh");
         
         print(model.prog_opt.verbose, "Mesh generation...");
@@ -76,7 +41,6 @@ namespace River
 
         print(model.prog_opt.verbose, "Triangles to quadrangles trasformation...");
         mesh.convert();//convertaion from triangles to quadrangles
-        model.mesh.number_of_quadrangles = mesh.get_n_quadrangles(); // just saving number of quadrangles
 
         print(model.prog_opt.verbose, "Save intermediate output(*.msh)...");
         mesh.write(file_name + ".msh");
@@ -89,12 +53,9 @@ namespace River
         //Simulation
         //Deal.II library
         print(model.prog_opt.verbose, "Solving...");
-        sim.SetBoundaryRegionValue(model.GetZeroIndices(), 0.);
-        sim.SetBoundaryRegionValue(model.GetNonZeroIndices(), 1.);
         sim.OpenMesh(file_name + ".msh");
         sim.static_refine_grid(model, model.tree.TipPoints());
         sim.run();
-        model.mesh.number_of_refined_quadrangles = sim.NumberOfRefinedCells();
         if (model.prog_opt.save_vtk)
             sim.output_results(file_name);
     }
