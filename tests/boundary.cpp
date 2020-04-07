@@ -47,6 +47,9 @@ BOOST_AUTO_TEST_CASE( Boundary_Condition_get_Method,
     bd_dirirchlet[1] = {DIRICHLET, 10};
     bd_dirirchlet[3] = {DIRICHLET, 12};
     BOOST_TEST(bd.Get(DIRICHLET) == bd_dirirchlet);
+
+    BOOST_CHECK_THROW(bd.Get((t_boundary)2), Exception);
+    BOOST_CHECK_THROW(bd.Get((t_boundary)3), Exception);
 }
 
 BOOST_AUTO_TEST_CASE( Line_test, 

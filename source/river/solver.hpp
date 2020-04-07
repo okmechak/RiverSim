@@ -116,14 +116,6 @@ namespace River
             ///Splits elements without resolving.
             unsigned num_of_static_refinments = 0;
 
-            ///Inner function
-            void SetBoundaryRegionValue(const vector<t_boundary_id>& regionTags, const double value);
-            
-            /*!
-              \todo implement this function
-            */
-            void SetMesh(const tethex::Mesh &meshio);
-
             ///Open mesh data from file. Msh 2 format.
             void OpenMesh(const string fileName = "river.msh");
 
@@ -171,9 +163,6 @@ namespace River
 
         private:
             Model *model = NULL;
-
-            ///Used for setup boudary conditions.
-            map<double, vector<t_boundary_id>> boundaryRegionValue;
 
             ///Dimension of problem.
             const static int dim = 2;

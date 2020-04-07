@@ -16,90 +16,12 @@
 
 namespace River
 {
-    /*
-        Solver Class
-
-    */
-    void Solver::SetBoundaryRegionValue(const vector<t_boundary_id>& regionTags, const double value)
-    {
-        boundaryRegionValue.insert(make_pair(value, regionTags));
-    }
-
     void Solver::OpenMesh(const string fileName)
     {
         GridIn<dim> gridin;
         gridin.attach_triangulation(triangulation);
         ifstream f(fileName);
         gridin.read_msh(f);
-    }
-
-    void Solver::SetMesh(const tethex::Mesh &meshio)
-    {
-        cout << "set_mesh" << endl;
-        //VERTICES
-        auto n_vertices = meshio.get_n_vertices(); 
-        vector<dealii::Point<dim>> vertices(n_vertices);
-        for (unsigned i = 0; i < n_vertices; ++i)
-        {
-            auto vertice = meshio.get_vertex(i);
-            vertices[i] = dealii::Point<dim>(vertice.get_coord(0), vertice.get_coord(1));
-        }
-
-        cout << "incidence_matrix" << endl;
-        //initialize edge enumeration structure
-        auto incidence_matrix = tethex::IncidenceMatrix(meshio.get_n_vertices(), meshio.get_lines());
-
-        //QUADRANGLES
-        cout << "quads" << endl << flush;
-        auto n_cells = meshio.get_n_quadrangles();
-        vector<CellData<dim>> cells(n_cells, CellData<dim>());
-        SubCellData sub_cells;
-        cout << "for" << endl;
-        for(unsigned i = 0; i < n_cells; ++i)
-        {
-            cells[i].material_id = meshio.get_quadrangle(i).get_material_id();
-
-            auto v0 = cells[i].vertices[0] = meshio.get_quadrangle(i).get_vertex(0);
-            auto v1 = cells[i].vertices[1] = meshio.get_quadrangle(i).get_vertex(1);
-            auto v2 = cells[i].vertices[2] = meshio.get_quadrangle(i).get_vertex(2);
-            auto v3 = cells[i].vertices[3] = meshio.get_quadrangle(i).get_vertex(3);
-
-            /*
-                boundary conditions here are wrong! fix it
-            */
-            auto cellEdges = 
-                //vector<pair<unsigned int, unsigned int>>{{v0, v2}, {v1, v3}, {v0, v1}, {v2, v3}};
-                vector<pair<unsigned int, unsigned int>>{{v0, v1}, {v1, v2}, {v2, v3}, {v3, v0}};
-
-            //Boundary IDS
-            for(auto & edge: cellEdges)
-            {
-                int lineIndex = incidence_matrix.find(edge.first, edge.second);
-                int boundary_id;
-                if(lineIndex > 0)
-                    boundary_id = meshio.get_line(lineIndex).get_material_id();
-                else
-                    boundary_id = numbers::internal_face_boundary_id;
-
-                CellData<1> cell_data;
-
-                cout << "boundary lines" << endl;
-                cout << edge.first << "  " << edge.second << endl;
-                cout << boundary_id << endl;
-
-                cell_data.vertices[0] = edge.first;
-                cell_data.vertices[1] = edge.second;
-                cell_data.boundary_id = boundary_id;
-
-                sub_cells.boundary_lines.push_back(cell_data);
-            }
-
-        }
-
-
-        GridReordering<dim, dim>::invert_all_cells_of_negative_grid (vertices, cells);
-        GridReordering<dim, dim>::reorder_cells (cells);
-        triangulation.create_triangulation_compatibility(vertices, cells, sub_cells);
     }
 
     void Solver::setup_system()
@@ -166,20 +88,19 @@ namespace River
                                    fe_values.JxW(q_index);
                 }
 
+            auto neuman_bd = model->boundary_conditions.Get(NEUMAN);
             for (unsigned int face_number = 0; face_number < GeometryInfo<dim>::faces_per_cell; ++face_number)
                 if (cell->face(face_number)->at_boundary() &&
-                    (cell->face(face_number)->boundary_id() == 5))
+                    neuman_bd.count(cell->face(face_number)->boundary_id()))
                 {
                     fe_face_values.reinit(cell, face_number);
+                    auto boundary_id = cell->face(face_number)->boundary_id();
+                    const auto neuman_value = neuman_bd.at(boundary_id).value;
                     for (unsigned int q_point = 0; q_point < n_face_q_points; ++q_point)
-                    {
-                        const double neumann_value = 1;
-
                         for (unsigned int i = 0; i < dofs_per_cell; ++i)
-                            cell_rhs(i) += neumann_value *
+                            cell_rhs(i) += neuman_value *
                                            fe_face_values.shape_value(i, q_point) *
                                            fe_face_values.JxW(q_point);
-                    }
                 }
 
             cell->get_dof_indices(local_dof_indices);
@@ -199,12 +120,12 @@ namespace River
         hanging_node_constraints.condense(system_rhs);
 
         std::map<types::global_dof_index, double> boundary_values;
-        for(auto &key: boundaryRegionValue)
-            for(auto regionTag: key.second)
+        auto dirichlet_bd = model->boundary_conditions.Get(DIRICHLET);
+        for(const auto &[boundary_id, boundary_condition]: dirichlet_bd)
                 VectorTools::interpolate_boundary_values(
                     dof_handler, 
-                    regionTag, 
-                    ConstantFunction<dim>(key.first), 
+                    boundary_id, 
+                    ConstantFunction<dim>(boundary_condition.value), 
                     boundary_values);
 
         MatrixTools::apply_boundary_values(
@@ -378,7 +299,6 @@ namespace River
 
         return integration_result;
     }
-
 
     double Solver::max_value()
     {

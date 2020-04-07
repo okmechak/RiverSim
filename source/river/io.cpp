@@ -700,8 +700,7 @@ namespace River
         //parameters set from program options has higher priority over input file
         SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
 
-        if(model.border.empty())
-            model.InitializeBorderAndTree();
+        if(model.border.empty()) model.InitializeLaplace();
         
         model.CheckParametersConsistency();
 

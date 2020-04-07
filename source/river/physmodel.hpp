@@ -430,7 +430,11 @@ namespace River
             ///Solver parameters used by Deal.II
             SolverParams solver_params;
 
-            void InitializeBorderAndTree();
+            void InitializeLaplace();
+            void InitializePoisson();
+            void InitializeDirichlet();
+            void InitializeDirichletWithHole();
+            void Clear();
 
             //Geometrical parameters
             ///Initial x position of source.
@@ -444,7 +448,7 @@ namespace River
             double height = 1.;
 
             ///river boundary id and bottom line
-            unsigned river_boundary_id = 5;
+            unsigned river_boundary_id = 100;
 
             //Model parameters
             ///Field value used for Poisson conditions.

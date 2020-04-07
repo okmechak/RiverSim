@@ -193,6 +193,7 @@ namespace River
         return holes;
     }
 
+    //TODO remove this functionality from boundary
     Sources Boundaries::MakeRectangular(double width, double height, double source_x_position)
     {
         (*this)[1] = 
@@ -222,6 +223,7 @@ namespace River
             return sources;
     }
 
+    //TODO remove this functionality from boundary
     Sources Boundaries::MakeRectangularWithHole(double width, double height, double source_x_position)
     {
         (*this)[1] = 

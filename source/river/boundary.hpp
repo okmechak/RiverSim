@@ -73,6 +73,9 @@ namespace River
             t_BoundaryConditions Get(t_boundary type)
             {
                 t_BoundaryConditions bd;
+                if(type != DIRICHLET && type != NEUMAN)
+                    throw Exception("BoundaryConditions:Get: unknown boundary type: " + to_string(type));
+                    
                 for(const auto& [boundary_id, boundary_condition]:*this)
                     if(boundary_condition.type == type)
                         bd[boundary_id] = boundary_condition;

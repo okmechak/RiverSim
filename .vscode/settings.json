@@ -12,6 +12,9 @@
         "array": "cpp",
         "functional": "cpp",
         "type_traits": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "*.ipp": "cpp",
+        "string_view": "cpp",
+        "regex": "cpp"
     }
 }

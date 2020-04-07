@@ -118,13 +118,6 @@ namespace River
         return write;
     }
 
-    void Model::InitializeBorderAndTree()
-    {
-        sources = border.MakeRectangularWithHole();
-
-        tree.Initialize(border.GetSourcesIdsPointsAndAngles(sources));
-    }
-
     void Model::CheckParametersConsistency() const
     {
         River::print(prog_opt.verbose, "Input parameters check...");
@@ -267,5 +260,208 @@ namespace River
 
         if(solver_params.renumbering_type > 7)
             throw Exception("There is no such type of renumbering: " + to_string(solver_params.renumbering_type));
+    }
+
+    void Model::Clear()
+    {
+        border.clear();
+        sources.clear();
+        boundary_conditions.clear();
+        tree.Clear();
+    }
+
+    void Model::InitializeLaplace()
+    {
+        Clear();
+
+        border[1] = 
+        {
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {dx, 0}, 
+                {width, 0}, 
+                {width, height}, 
+                {0, height}
+            }, 
+            {/*lines*/
+                {0, 1, 1},
+                {1, 2, 2},
+                {2, 3, 3},
+                {3, 4, 4},
+                {4, 0, 5} 
+            },
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer rectangular boudary"
+        };/*Outer Boundary*/
+
+        sources[1/*source_id*/] = {1/*boundary id*/, 1/*vertice position*/};
+
+        boundary_conditions[1] = {DIRICHLET, 0};
+        boundary_conditions[2] = {DIRICHLET, 0};
+        boundary_conditions[3] = {NEUMAN, 0};
+        boundary_conditions[4] = {NEUMAN, 1};
+        boundary_conditions[5] = {NEUMAN, 0};
+        boundary_conditions[river_boundary_id] = {DIRICHLET, 0};
+            
+        tree.Initialize({{1, {{dx, 0}, M_PI/2.}}});
+    }
+
+    void Model::InitializePoisson()
+    {
+        Clear();
+        
+        border[1] = 
+        {
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {dx, 0}, 
+                {width, 0}, 
+                {width, height}, 
+                {0, height}
+            }, 
+            {/*lines*/
+                {0, 1, 1},
+                {1, 2, 2},
+                {2, 3, 3},
+                {3, 4, 4},
+                {4, 0, 5} 
+            },
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer rectangular boudary"
+        };/*Outer Boundary*/
+
+        sources[1/*source_id*/] = {1/*boundary id*/, 1/*vertice position*/};
+
+        boundary_conditions[1] = {DIRICHLET, 0};
+        boundary_conditions[2] = {DIRICHLET, 0};
+        boundary_conditions[3] = {NEUMAN, 0};
+        boundary_conditions[4] = {NEUMAN, 0};
+        boundary_conditions[5] = {NEUMAN, 0};
+        boundary_conditions[river_boundary_id] = {DIRICHLET, 0};
+            
+        tree.Initialize({{1, {{dx, 0}, M_PI/2.}}});
+    }
+
+    void Model::InitializeDirichlet()
+    {
+        Clear();
+
+        border[1] = 
+        {
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {dx, 0}, 
+                {width, 0}, 
+                {width, height}, 
+                {0, height}
+            }, 
+            {/*lines*/
+                {0, 1, 1},
+                {1, 2, 2},
+                {2, 3, 3},
+                {3, 4, 4},
+                {4, 0, 5} 
+            },
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer rectangular boudary"
+        };/*Outer Boundary*/
+
+        sources[1/*source_id*/] = {1/*boundary id*/, 1/*vertice position*/};
+
+        boundary_conditions[1] = {DIRICHLET, 0};
+        boundary_conditions[2] = {DIRICHLET, 0};
+        boundary_conditions[3] = {DIRICHLET, 0};
+        boundary_conditions[4] = {DIRICHLET, 0};
+        boundary_conditions[5] = {DIRICHLET, 0};
+        boundary_conditions[river_boundary_id] = {DIRICHLET, 0};
+            
+        tree.Initialize({{1, {{dx, 0}, M_PI/2.}}});
+    }
+
+    void Model::InitializeDirichletWithHole()
+    {
+        Clear();
+
+        border[1] = 
+        {/*Outer Boundary*/
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {dx, 0}, 
+                {width, 0}, 
+                {width, height}, 
+                {0, height}
+            }, 
+            {/*lines*/
+                {0, 1, 1},
+                {1, 2, 2},
+                {2, 3, 3},
+                {3, 4, 4},
+                {4, 0, 5} 
+            }, 
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer boudary"/*just name*/
+        };
+        sources[1] = {1, 1};
+        boundary_conditions[1] = {DIRICHLET, 0};
+        boundary_conditions[2] = {DIRICHLET, 0};
+        boundary_conditions[3] = {NEUMAN, 0};
+        boundary_conditions[4] = {NEUMAN, 1};
+        boundary_conditions[5] = {NEUMAN, 0};
+
+        border[2] =
+        {/*Hole Boundary*/
+            {/*vertices*/
+                {0.25*width, 0.25*height},
+                {0.75*width, 0.25*height}, 
+                {0.75*width, 0.75*height}, 
+                {0.25*width, 0.75*height}
+            }, 
+            {/*lines*/
+                {0, 1, 6},
+                {1, 2, 7},
+                {2, 3, 8},
+                {3, 0, 9} 
+            }, 
+            true/*this is inner boudary*/,
+            {{0.5*width, 0.5*height}}/*holes*/,
+            "hole"/*just name*/
+        };
+        sources[2] = {2, 3};
+        boundary_conditions[6] = {DIRICHLET, 0};
+        boundary_conditions[7] = {DIRICHLET, 0};
+        boundary_conditions[8] = {DIRICHLET, 0};
+        boundary_conditions[9] = {DIRICHLET, 0};
+
+        border[3] =
+        {/*Hole Boundary*/
+            {/*vertices*/
+                {0.8*width, 0.8*height},
+                {0.9*width, 0.8*height}, 
+                {0.9*width, 0.9*height}, 
+                {0.8*width, 0.9*height}
+            }, 
+            {/*lines*/
+                {0, 1, 10},
+                {1, 2, 11},
+                {2, 3, 12},
+                {3, 0, 13} 
+            }, 
+            true/*this is inner boudary*/,
+            {{0.85*width, 0.85*height}}/*holes*/,
+            "hole"/*just name*/
+        };
+        sources[3] = {3, 0};
+        boundary_conditions[10] = {DIRICHLET, 1};
+        boundary_conditions[11] = {DIRICHLET, 1};
+        boundary_conditions[12] = {DIRICHLET, 1};
+        boundary_conditions[13] = {DIRICHLET, 1};
+
+        boundary_conditions[river_boundary_id] = {DIRICHLET, 0}; 
+
+        tree.Initialize(border.GetSourcesIdsPointsAndAngles(sources));
     }
 }
