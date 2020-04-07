@@ -420,6 +420,7 @@ namespace River
             ///Adds  absolute \p points to Branches \p tips_id.
             Tree& AddAbsolutePolars(const vector<Polar>& points, const vector<t_branch_id>& tips_id);
 
+            pair<t_branch_id, t_branch_id> GrowTestTree(t_branch_id branch_id = 1, double ds = 0.05, unsigned n = 3, double dalpha = 0);
 
             //Checks
             ///Checks if branch with \p id exists.

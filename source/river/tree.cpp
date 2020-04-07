@@ -17,6 +17,8 @@
 
 ///\cond
 #include <sstream>
+#define _USE_MATH_DEFINES
+#include <cmath>
 ///\endcond
 
 namespace River
@@ -271,7 +273,7 @@ namespace River
             throw Exception("root branch doesn't exis.");
 
         if(!HasSubBranches(root_branch_id))
-            throw Exception("This branch doesn't has subbranches.");
+            throw Exception("This branch doesn't have subbranches.");
 
         auto[sub_left, sub_right] = GetSubBranchesId(root_branch_id);
         
@@ -289,6 +291,37 @@ namespace River
         branches_relation.erase(root_branch_id);
                 
         return *this;
+    }
+
+    pair<t_branch_id, t_branch_id> Tree::GrowTestTree(t_branch_id branch_id, double ds, unsigned n, double dalpha)
+    {
+        if(!DoesExistBranch(branch_id))
+            throw Exception("GrowTestTree: root branch doesn't exis.");
+        
+        if(HasSubBranches(branch_id))
+            throw Exception("GrowTestTree: This branch have subbranches.");
+
+        auto 
+            branch_source = GetBranch(branch_id);
+
+        auto branch_left = BranchNew{
+                branch_source->TipPoint(), 
+                branch_source->TipAngle() + M_PI/4.},
+            branch_right = BranchNew{
+                branch_source->TipPoint(), 
+                branch_source->TipAngle() - M_PI/4.};
+
+        for(unsigned i = 0; i < n; ++i)
+        {
+            auto p = Polar{ds, dalpha};
+            branch_source->AddPoint(p);
+            branch_left.AddPoint(p);
+            branch_right.AddPoint(p);
+        }
+        
+        auto ids = AddSubBranches(branch_id, branch_left, branch_right);
+
+        return ids;
     }
 
     vector<t_branch_id> Tree::TipBranchesId() const

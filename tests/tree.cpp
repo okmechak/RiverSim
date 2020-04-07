@@ -736,3 +736,93 @@ BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch,
 
     //.....
 }
+
+BOOST_AUTO_TEST_CASE( test_branch_growth, 
+    *utf::tolerance(eps))
+{
+    Boundaries::trees_interface_t ids_points_angles = {
+        {1, {{2, 3}, 0}},
+        {3, {{3, 4},   M_PI/4.}},
+        {5, {{4, 5},   M_PI/2.}},
+        {7, {{5, 6}, 3*M_PI/4.}}
+    };
+
+    Tree tree;
+    tree.Initialize(ids_points_angles);
+    {
+        auto ds = 0.05,
+            dalpha = 0.0;
+        auto n = 3;
+        auto id = 1;
+        auto[left_id, right_id] = tree.GrowTestTree(id, ds, n, dalpha);
+
+        auto br = tree.GetBranch(id), 
+            br_left = tree.GetBranch(left_id),
+            br_right = tree.GetBranch(right_id);
+        auto br_vetices = vector<Point>{
+            {2, 3}, 
+            {2 +   ds, 3}, 
+            {2 + 2*ds, 3}, 
+            {2 + 3*ds, 3}};
+        BOOST_TEST(br->at(0) == br_vetices.at(0));
+        BOOST_TEST(br->at(1) == br_vetices.at(1));
+        BOOST_TEST(br->at(2) == br_vetices.at(2));
+        BOOST_TEST(br->at(3) == br_vetices.at(3));
+
+        auto br_vetices_left = vector<Point>{
+            {2, 3}, 
+            {2 +   ds/sqrt(2.), 3 + ds/sqrt(2.)}, 
+            {2 + 2*ds/sqrt(2.), 3 + 2*ds/sqrt(2.)}, 
+            {2 + 3*ds/sqrt(2.), 3 + 3*ds/sqrt(2.)}};
+        BOOST_TEST(br_left->at(0) == br_vetices_left.at(0));
+        BOOST_TEST(br_left->at(1) == br_vetices_left.at(1));
+        BOOST_TEST(br_left->at(2) == br_vetices_left.at(2));
+        BOOST_TEST(br_left->at(3) == br_vetices_left.at(3));
+
+        auto br_vetices_right = vector<Point>{
+            {2, 3}, 
+            {2 +   ds/sqrt(2.), 3 - ds/sqrt(2.)}, 
+            {2 + 2*ds/sqrt(2.), 3 - 2*ds/sqrt(2.)}, 
+            {2 + 3*ds/sqrt(2.), 3 - 3*ds/sqrt(2.)}};
+        BOOST_TEST(br_right->at(0) == br_vetices_right.at(0));
+        BOOST_TEST(br_right->at(1) == br_vetices_right.at(1));
+        BOOST_TEST(br_right->at(2) == br_vetices_right.at(2));
+        BOOST_TEST(br_right->at(3) == br_vetices_right.at(3));
+    }
+
+    //lets try different branch with different id
+    {
+        auto id = 5;
+        auto ds = 0.1,
+            dalpha = 0.0;
+        auto n = 2;
+        auto[left_id, right_id] = tree.GrowTestTree(id, ds, n, dalpha);
+        
+        auto br = tree.GetBranch(id), 
+            br_left = tree.GetBranch(left_id),
+            br_right = tree.GetBranch(right_id);
+        auto br_vetices = vector<Point>{
+            {4, 5}, 
+            {4, 5 +   ds}, 
+            {4, 5 + 2*ds}};
+        BOOST_TEST(br->at(0) == br_vetices.at(0));
+        BOOST_TEST(br->at(1) == br_vetices.at(1));
+        BOOST_TEST(br->at(2) == br_vetices.at(2));
+    
+        auto br_vetices_left = vector<Point>{
+            {4,                 5}, 
+            {4 -   ds/sqrt(2.), 5 + ds/sqrt(2.)}, 
+            {4 - 2*ds/sqrt(2.), 5 + 2*ds/sqrt(2.)}};
+        BOOST_TEST(br_left->at(0) == br_vetices_left.at(0));
+        BOOST_TEST(br_left->at(1) == br_vetices_left.at(1));
+        BOOST_TEST(br_left->at(2) == br_vetices_left.at(2));
+    
+        auto br_vetices_right = vector<Point>{
+            {4,                 5}, 
+            {4 +   ds/sqrt(2.), 5 + ds/sqrt(2.)}, 
+            {4 + 2*ds/sqrt(2.), 5 + 2*ds/sqrt(2.)}};
+        BOOST_TEST(br_right->at(0) == br_vetices_right.at(0));
+        BOOST_TEST(br_right->at(1) == br_vetices_right.at(1));
+        BOOST_TEST(br_right->at(2) == br_vetices_right.at(2));
+    }
+}
