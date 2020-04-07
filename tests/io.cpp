@@ -296,6 +296,10 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.growth_min_distance = 16;
     mdl_out.ds = 17;
 
+    //Boundary conditions
+    mdl_out.boundary_conditions[2] = {DIRICHLET, 10};
+    mdl_out.boundary_conditions[3] = {NEUMAN, 11};
+
     //Boundary object setup.. Rectangular boundaries
     auto region_size = vector<double>{2, 3};
     auto sources_x_coord = vector<double>{0.3};

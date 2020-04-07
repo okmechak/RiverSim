@@ -66,7 +66,21 @@ namespace River
 
     typedef unsigned t_boundary_id, t_source_id;
     
-    typedef map<t_boundary_id, BoundaryCondition> BoundaryConditions;
+    typedef map<t_boundary_id, BoundaryCondition> t_BoundaryConditions;
+    class BoundaryConditions: public t_BoundaryConditions
+    {
+        public:
+            t_BoundaryConditions Get(t_boundary type)
+            {
+                t_BoundaryConditions bd;
+                for(const auto& [boundary_id, boundary_condition]:*this)
+                    if(boundary_condition.type == type)
+                        bd[boundary_id] = boundary_condition;
+
+                return bd;
+            }
+    };
+
     typedef map<t_source_id, pair<t_boundary_id, t_vert_pos>> t_Sources;
     class Sources: public t_Sources
     {
