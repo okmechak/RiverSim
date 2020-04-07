@@ -78,7 +78,6 @@ BOOST_AUTO_TEST_CASE( constructor_copy_and_assignment,
     BOOST_TEST(msh_assign.get_point(0).get_vertex(0) == 1);
 }
 
-
 tethex::Mesh ReturnSomeMeshObj()
 {
     tethex::Mesh msh;

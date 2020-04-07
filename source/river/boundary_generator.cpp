@@ -81,10 +81,11 @@ namespace River
     SimpleBoundary SimpleBoundaryGenerator(const Model& model)
     {
         SimpleBoundary final_boundary;
+        auto sources = model.sources;
 
         for(auto [boundary_id, simple_boundary]: model.border)
         {
-            for(const auto&[source_id, value]: model.sources)
+            for(const auto&[source_id, value]: sources)
             {
                 auto boundary_id_s = value.first;
                 auto vertice_pos = value.second;
@@ -92,10 +93,20 @@ namespace River
                 {
                     auto tree_boundary = TreeBoundary(model.tree, source_id, model.river_boundary_id, model.mesh.eps);
                     simple_boundary.ReplaceElement(vertice_pos, tree_boundary);
+
+                    //shifting absolute vertice position of source after addition
+                    for(auto&[source_id_m, value_m]: sources)
+                        if(value_m.second > vertice_pos && tree_boundary.vertices.size() > 1)
+                            value_m.second += tree_boundary.vertices.size() - 1;
                 }
             }
             final_boundary.Append(simple_boundary);
         }
+
+        //hotfix. first index of last line element isn't shifted by lenght of last added tree.
+        auto last_pos = final_boundary.lines.size() - 1;
+        if(last_pos >= 2)
+            final_boundary.lines.at(last_pos).p1 = final_boundary.lines.at(last_pos - 1).p2;
 
         if (final_boundary.lines.size() != final_boundary.vertices.size())
             throw Exception("Size of lines and vertices are different.");

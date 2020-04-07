@@ -67,8 +67,19 @@ namespace River
     typedef unsigned t_boundary_id, t_source_id;
     
     typedef map<t_boundary_id, BoundaryCondition> BoundaryConditions;
+    typedef map<t_source_id, pair<t_boundary_id, t_vert_pos>> t_Sources;
+    class Sources: public t_Sources
+    {
+        public:
+            vector<t_source_id> GetSourcesIds() const
+            {
+                vector<t_source_id> sources_ids;
+                for(auto[source_id, value]: *this)
+                    sources_ids.push_back(source_id);
 
-    typedef map<t_source_id, pair<t_boundary_id, t_vert_pos>> Sources;
+                return sources_ids;
+            }
+    };
 
     /*! \brief 
         Line - holds indexes of __p1__, __p2__ vertices and id.

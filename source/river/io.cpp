@@ -607,7 +607,13 @@ namespace River
             }
         }
 
-        if(j.count("Sources")) j.at("Sources").get_to(model.sources);
+        if(j.count("Sources"))
+        {
+            t_Sources sources;
+            j.at("Sources").get_to(sources);
+            for(auto&[id, value]: sources)
+                model.sources[id] = value;
+        }
         
         if(j.count("BoundaryConditions"))
         {

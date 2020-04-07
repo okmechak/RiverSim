@@ -290,3 +290,21 @@ BOOST_AUTO_TEST_CASE( MakeRectangular,
     BOOST_TEST((sources_ids_points_and_angles_map.at(1).first == Point{0.25, 0}));
     BOOST_TEST(sources_ids_points_and_angles_map.at(1).second == M_PI/2);
 }
+
+
+BOOST_AUTO_TEST_CASE( Sources_test, 
+    *utf::tolerance(eps))
+{   
+    Sources sources;
+    sources[1] = {1, 1};
+
+    BOOST_TEST((sources.GetSourcesIds() == vector<t_source_id>{1}));
+
+    sources.clear();
+    BOOST_TEST((sources.GetSourcesIds() == vector<t_source_id>{}));
+
+    sources[1] = {1,1};
+    sources[2] = {1,1};
+    sources[3] = {1,1};
+    BOOST_TEST((sources.GetSourcesIds() == vector<t_source_id>{1, 2, 3}));
+}
