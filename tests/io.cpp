@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.width == model_po.width);
     BOOST_TEST(model.height == model_po.height);
     //these options are not set from program options interface
-    BOOST_TEST(model.river_boundary_id == 5);
+    BOOST_TEST(model.river_boundary_id == model_po.river_boundary_id);
     BOOST_TEST(model.field_value == model_po.field_value);
     BOOST_TEST(model.ds == model_po.ds);
     BOOST_TEST(model.eta == model_po.eta);
