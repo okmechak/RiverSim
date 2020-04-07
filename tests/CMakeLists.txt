@@ -83,14 +83,6 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary_generator)
 
-    #mesh
-    add_executable(tmesh mesh.cpp)
-    target_link_libraries(tmesh physmodel boundary_generator ${Boost_LIBRARIES})
-    add_test(
-        NAME tmesh
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tmesh)
-
     #solver
     add_executable(tsolver solver.cpp)
     target_link_libraries(tsolver solver mesh boundary_generator ${Boost_LIBRARIES})
