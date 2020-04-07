@@ -142,14 +142,12 @@ namespace tethex
             * @param y_coord - y-coordinate of the point
             * @param z_coord - z-coordinate of the point
             * @param region_tag - region tag describes geometric region.
-            * @param mesh_size - used by mesh generators for mesh refinmnet.
             */
             inline Point(
                 const double x_coord,
                 const double y_coord = 0,
                 const double z_coord = 0,
-                const int region_tag = 0,
-                const double mesh_size = 0)
+                const int region_tag = 0)
             {
                 regionTag = region_tag;
                 coord[0] = x_coord;
