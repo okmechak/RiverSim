@@ -236,7 +236,7 @@ namespace River{
                 y = io.pointlist[2 * i + 1];
             auto regionTag = io.pointmarkerlist[i];
 
-            pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag, 1./*default mesh size used in gmsh*/));
+            pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag));
         }
 
         segmentsVal.reserve(io.numberofsegments);
