@@ -217,8 +217,8 @@ namespace River
         if(mesh.static_refinment_steps >= 5)
             cout << "mesh static_refinment_steps parameter is very large, and simulation can take a long time: " << mesh.static_refinment_steps << endl;
 
-        if(mesh.ratio < 1.9)
-            throw Exception("mesh ratio parameter can't be smaller than 1.9: " + to_string(mesh.ratio));
+        if(mesh.ratio <= 1.38)
+            throw Exception("mesh ratio parameter can't be smaller than 1.38 this corresponds to 36 degree: " + to_string(mesh.ratio));
         
         if(mesh.max_edge < 0)
             throw Exception("mesh max_edge parameter can't be negative " + to_string(mesh.max_edge));
