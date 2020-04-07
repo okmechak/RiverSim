@@ -1372,51 +1372,40 @@ River::MeshParams* ac_global = NULL;
 int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
 {
   //test of adaptive mesh function
-  bool q_refine = false;
+  bool custom_point_refinment = false;
   if(ac_global != NULL)
   {
     REAL 
       vert_val_1 = (*ac_global)(triorg[0], triorg[1]), 
       vert_val_2 = (*ac_global)(tridest[0], tridest[1]), 
       vert_val_3 = (*ac_global)(triapex[0], triapex[1]);
-    q_refine = (area > vert_val_1 || area > vert_val_2 || area > vert_val_3);
+    custom_point_refinment = (area > vert_val_1 || area > vert_val_2 || area > vert_val_3);
   }
 
-  //quality limitation
+  //evaluatio of edge lenghts
   auto 
     dl1 = sqrt(pow(triorg[0] - tridest[0], 2) + pow(triorg[1] - tridest[1], 2)),
     dl2 = sqrt(pow(tridest[0] - triapex[0], 2) + pow(tridest[1] - triapex[1], 2)),
     dl3 = sqrt(pow(triapex[0] - triorg[0], 2) + pow(triapex[1] - triorg[1], 2));
   
-  //evaluation of maximal side size
-  auto 
-    max_dl = dl3,
-    min_dl = dl3;
-
-  if(dl1 > dl2 && dl1 > dl3)
-    max_dl = dl1;
-  else if(dl2 > dl1 && dl2 > dl3)
-    max_dl = dl2;
-  //else it will be dl3, but it already equals to it
+  auto max_dl = dl1;
+  if(max_dl < dl2) max_dl = dl2;
+  if(max_dl < dl3) max_dl = dl3;
   
-  if(dl1 < dl2 && dl1 < dl3)
-    min_dl = dl1;
-  else if(dl2 < dl1 && dl2 < dl3)
-    min_dl = dl2;
-  //else it will be dl3, but it already equals to it
+  auto min_dl = dl1;
+  if(min_dl > dl2) min_dl = dl2;
+  if(min_dl > dl3) min_dl = dl3;
+  
+  auto quality = max_dl/min_dl;
 
-  //max edge size constrain
-  if(max_dl > ac_global->max_edge)
-    q_refine = true;
-    
-  //triangle qualitu constrain
-  if(max_dl/min_dl > ac_global->ratio)
-    q_refine = true;
+  if((custom_point_refinment || max_dl > ac_global->max_edge || 
+    area > ac_global->max_area || max_dl/min_dl > ac_global->ratio) && 
+    min_dl > ac_global->min_edge && area > ac_global->min_area &&
+    quality < ac_global->ratio)
 
-  if(min_dl < ac_global->min_edge)
-    q_refine = false;
+    return 1;
 
-  return (int)q_refine;
+  return 0;
 }
 
 
