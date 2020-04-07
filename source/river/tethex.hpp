@@ -350,6 +350,13 @@ namespace tethex
         */
         bool contains(const int vertex) const;
 
+        double measure(const vector<Point> &points) const;
+        double min_angle(const vector<Point> &points) const;
+        double max_angle(const vector<Point> &points) const;
+        double min_edge(const vector<Point> &points) const;
+        double max_edge(const vector<Point> &points) const;
+        double quality(const vector<Point> &points) const;
+
         ///Converts tethex::MeshElement to output stream.
         friend ostream &operator<<(ostream &write, const MeshElement &el);
 
