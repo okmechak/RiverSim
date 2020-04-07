@@ -116,6 +116,8 @@ namespace River
 
             ///Converts \ref triangulateio to tethex::Mesh used by rest of program.
             void io_to_tethex(const struct triangulateio &io, tethex::Mesh &initMesh) const;
+
+            void initialize_mesh_parameters(MeshParams *mesh_params);
       
         public:
       
@@ -145,12 +147,12 @@ namespace River
             double MinAngle = 20;
             ///a - maximum triangle area constrain. a0.1
             double MaxTriaArea = -1.;
+            double MinTriaArea = 0;
             //custom mesh element constraints:
             ///Maximal triangle edge lenght
             double MaxEdgeLenght = 100;
             double MinEdgeLenght = 0;
-            double MinTriaArea = 0;
-            double MaxTriangleRation = 10;
+            double MaxTriangleRatio = 10;
 
             ///If true, then mesh element will be constrined to some maxiaml value.
             bool AreaConstrain = false;

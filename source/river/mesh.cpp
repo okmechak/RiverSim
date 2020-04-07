@@ -222,8 +222,8 @@ namespace River{
         return io;
     }
 
-        void  Triangle::io_to_tethex(
-            const struct triangulateio &io, tethex::Mesh &initMesh) const
+    void  Triangle::io_to_tethex(
+        const struct triangulateio &io, tethex::Mesh &initMesh) const
     {
         vector<tethex::Point> pointsVal;
         vector<tethex::MeshElement*> segmentsVal;
@@ -271,7 +271,6 @@ namespace River{
     }
 
     /*
-    
         Triangle Class
     
     */
@@ -284,11 +283,19 @@ namespace River{
         mesh_params(mesh_params)
     {
         set_all_values_to_default();
+        initialize_mesh_parameters(mesh_params);
+    }
 
+    void Triangle::initialize_mesh_parameters(MeshParams *mesh_params)
+    {
         AreaConstrain = true;
         CustomConstraint = true;
         MaxTriaArea = mesh_params->max_area;
+        MinTriaArea = mesh_params->min_area;
+        MaxEdgeLenght = mesh_params->max_edge;
+        MinEdgeLenght = mesh_params->min_edge;
         MinAngle = mesh_params->min_angle;
+        MaxTriangleRatio = mesh_params->ratio;
         Verbose = false;
         Quite =  true;
     }
