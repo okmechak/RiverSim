@@ -23,10 +23,6 @@ BOOST_AUTO_TEST_CASE( tree_vertices,
     vector<Point> tree_vertices;
     Tree tr;
     BOOST_CHECK_THROW(TreeVertices(tree_vertices, 1, tr, 0.01), Exception);
-
-    Boundary boundary;
-    boundary.MakeRectangular(1, 1, 0.5);
-
 }
 
 BOOST_AUTO_TEST_CASE( tree_boundary, 
@@ -36,13 +32,12 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     Tree tree;
     BOOST_CHECK_THROW(TreeBoundary(tree, 1, 0, 0.01), Exception);
 
-
     //initiazlized tree
-    Boundary boundary;
-    boundary.MakeRectangular(1, 1, 0.5);
+    Boundaries boundaries;
+    auto sources = boundaries.MakeRectangular(1, 1, 0.5);
 
 
-    tree.Initialize(boundary.GetSourcesIdsPointsAndAngles());
+    tree.Initialize(boundaries.GetSourcesIdsPointsAndAngles(sources));
     auto tree_boundary = TreeBoundary(tree, tree.SourceBranchesID().at(0), 10, 0.1);
     BOOST_TEST(tree_boundary.lines.empty());
 
@@ -63,7 +58,6 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     BOOST_TEST(tree_boundary.lines.size() == 4);
     for(size_t i = 0; i < expected_lines.size(); ++i)
         BOOST_TEST(tree_boundary.lines.at(i) == expected_lines.at(i));
-
 }
 
 BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator, 
@@ -75,14 +69,14 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
 
     //TODO setup source as separate structure!!!
     //щоб вони не були частиною границі і дерева а були окремим обєктом
-    model.boundary.MakeRectangularWithHole();
-    model.trees.Initialize(model.boundary.GetSourcesIdsPointsAndAngles());
+    model.sources = model.border.MakeRectangularWithHole();
+    model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
 
     auto boundary = SimpleBoundaryGenerator(model);
 
     BOOST_TEST(boundary.lines.size() == 13);
 
-    model.trees.GetBranch(model.trees.SourceBranchesID().at(0))->AddPoint(Polar{0.01, 0});
+    model.tree.GetBranch(model.tree.SourceBranchesID().at(0))->AddPoint(Polar{0.01, 0});
     boundary = SimpleBoundaryGenerator(model);
     BOOST_TEST(boundary.lines.size() == 15);
 
@@ -96,12 +90,13 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
     };
 
     auto lines =  vector<Line>{
-        {0, 1, 1}, {1, 2, 100}, {2, 3, 100}, {3, 4, 2}, {4, 5, 3}, {5, 6, 4}, {6, 0, 5},
+        {0, 1, 1}, {1, 2, model.river_boundary_id}, {2, 3, model.river_boundary_id}, {3, 4, 2}, {4, 5, 3}, {5, 6, 4}, {6, 0, 5},
         {7, 8, 6}, {8, 9, 7}, {9, 10, 8}, {10, 7, 9},
         {11, 12, 10}, {12, 13, 11}, {13, 14, 12}, {14, 11, 13},
     };
 
-    BOOST_TEST(model.boundary.GetHolesList() == holes);
+    BOOST_TEST(model.border.GetHolesList() == holes);
+    BOOST_TEST(boundary.vertices.size() == 15);
     for(size_t i = 0; i < vertices.size(); ++i)
     {
         BOOST_TEST_MESSAGE(i);
@@ -118,12 +113,12 @@ inline void TEST_POINT(Point p1, Point p2)
 BOOST_AUTO_TEST_CASE( boundary_generator_new, 
     *utf::tolerance(eps))
 {   
-    Boundary boundary;
-    boundary.MakeRectangular(1, 1, 0.5);
+    Boundaries boundary;
+    auto sources = boundary.MakeRectangular(1, 1, 0.5);
 
     Tree tr;
     tr.Initialize(
-        boundary.GetSourcesIdsPointsAndAngles());
+        boundary.GetSourcesIdsPointsAndAngles(sources));
     
     vector<Point> tree_vector;
     TreeVertices(tree_vector, 1, tr, 1e-3);
@@ -153,7 +148,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     right_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
     tr.AddSubBranches(1, left_branch, right_branch);
 
-    auto tip_ids = vector<int> {2, 3};
+    auto tip_ids = vector<t_branch_id> {2, 3};
     BOOST_TEST(tr.TipBranchesId() == tip_ids);
 
     TreeVertices(tree_vector, 1, tr, 1e-3);
@@ -190,17 +185,17 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
 BOOST_AUTO_TEST_CASE( boundary_generator_new_2, 
     *utf::tolerance(eps))
 {   
-    Boundary boundary;
-    boundary.MakeRectangular(1,1,0.5);
+    Boundaries boundary;
+    auto sources = boundary.MakeRectangular(1,1,0.5);
 
     Tree tr;
     tr.Initialize(
-        boundary.GetSourcesIdsPointsAndAngles());
+        boundary.GetSourcesIdsPointsAndAngles(sources));
     
     vector<Point> tree_vector;
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 1);
-
+    
 
     BranchNew l(tr.GetBranch(1)->TipPoint(), tr.GetBranch(1)->TipAngle()+M_PI/4),
         r(tr.GetBranch(1)->TipPoint(), tr.GetBranch(1)->TipAngle() - M_PI/4);
@@ -220,25 +215,18 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     TEST_POINT(tree_vector.at(2), Point{0.5, 0});    
 }
 
-
-
-void TEST_POINT(Point p1, Point p2)
-{
-    BOOST_TEST(p1 == p2);
-}
-
-BOOST_AUTO_TEST_CASE( boundary_generator_new, 
+BOOST_AUTO_TEST_CASE( boundary_generator_new_new, 
     *utf::tolerance(eps))
 {   
     Boundaries border;
-    border.MakeRectangular();
+    auto sources = border.MakeRectangular(1, 1, 0.5);
 
     Tree tr;
     tr.Initialize(
-        border.GetSourcesIdsPointsAndAngles());
+        border.GetSourcesIdsPointsAndAngles(sources));
     
     vector<Point> tree_vector;
-    TreeVector(tree_vector, 1, tr, 1e-3);
+    TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 1);
     auto p = Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
@@ -247,7 +235,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     br->AddPoint(Polar{0.1, 0});
     tree_vector.clear();
     
-    TreeVector(tree_vector, 1, tr, 1e-3);
+    TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
     p = Point{0.5 - 1e-3/2, 0};
     BOOST_TEST(tree_vector.at(0) == p);
@@ -265,10 +253,10 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     right_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
     tr.AddSubBranches(1, left_branch, right_branch);
 
-    auto tip_ids = vector<int> {2, 3};
+    auto tip_ids = vector<t_branch_id> {2, 3};
     BOOST_TEST(tr.TipBranchesId() == tip_ids);
 
-    TreeVector(tree_vector, 1, tr, 1e-3);
+    TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 17);
 
     //left source branch
@@ -299,21 +287,18 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
 
 }
 
-BOOST_AUTO_TEST_CASE( boundary_generator_new_2, 
+BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala, 
     *utf::tolerance(eps))
 {   
     Boundaries border;
-    border.MakeRectangular(
-        {1, 1},
-        {0 ,1, 2, 3},
-        {0.5},{1});
+    auto sources = border.MakeRectangular(1,1, 0.5);
 
     Tree tr;
     tr.Initialize(
-        border.GetSourcesIdsPointsAndAngles());
+        border.GetSourcesIdsPointsAndAngles(sources));
     
     vector<Point> tree_vector;
-    TreeVector(tree_vector, 1, tr, 1e-3);
+    TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 1);
 
 
@@ -328,7 +313,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
 
     tr.GetBranch(i1)->AddPoint(Polar{0.1, 0});
     tree_vector.clear();
-    TreeVector(tree_vector, 1, tr, 1e-3);
+    TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
     TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
     TEST_POINT(tree_vector.at(1), Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});

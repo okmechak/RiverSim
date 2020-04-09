@@ -96,7 +96,7 @@ namespace River
 
                     //shifting absolute vertice position of source after addition
                     for(auto&[source_id_m, value_m]: sources)
-                        if(value_m.second > vertice_pos && tree_boundary.vertices.size() > 1)
+                        if(value_m.first == boundary_id && value_m.second > vertice_pos && tree_boundary.vertices.size() > 1)
                             value_m.second += tree_boundary.vertices.size() - 1;
                 }
             }

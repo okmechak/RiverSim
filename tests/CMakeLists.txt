@@ -76,8 +76,8 @@ if(BUILD_TEST)
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttriangle)
     
     #boundary_generator
-    add_executable(tboundary_generator boundary.cpp)
-    target_link_libraries(tboundary_generator boundary ${Boost_LIBRARIES})
+    add_executable(tboundary_generator boundary_generator.cpp)
+    target_link_libraries(tboundary_generator boundary_generator ${Boost_LIBRARIES})
     add_test(
         NAME tboundary_generator
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
