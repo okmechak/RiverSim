@@ -15,6 +15,7 @@
         "utility": "cpp",
         "*.ipp": "cpp",
         "string_view": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "cmath": "cpp"
     }
 }
