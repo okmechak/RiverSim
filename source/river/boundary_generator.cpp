@@ -21,16 +21,16 @@ namespace River
             if(i == 0)
             {
                 left_vector.push_back(
-                    br.GetPoint(i) + Point{Polar{eps/2, br.SourceAngle() + M_PI/2}});
+                    br.at(i) + Point{Polar{eps/2, br.SourceAngle() + M_PI/2}});
                 right_vector.push_back(
-                    br.GetPoint(i) + Point{Polar{eps/2, br.SourceAngle() - M_PI/2}});
+                    br.at(i) + Point{Polar{eps/2, br.SourceAngle() - M_PI/2}});
             }
             else
             {
                 left_vector.push_back(
-                    br.GetPoint(i) + br.Vector(i).normalize().rotate(M_PI/2)*eps/2);
+                    br.at(i) + br.Vector(i).normalize().rotate(M_PI/2)*eps/2);
                 right_vector.push_back(
-                    br.GetPoint(i) + br.Vector(i).normalize().rotate(-M_PI/2)*eps/2);
+                    br.at(i) + br.Vector(i).normalize().rotate(-M_PI/2)*eps/2);
             }
         }
 
@@ -49,7 +49,7 @@ namespace River
         {
             tree_vertices.insert(end(tree_vertices), 
                 left_vector.begin(), left_vector.end() - 1);
-            tree_vertices.push_back(br.GetPoint(br.size() - 1));
+            tree_vertices.push_back(br.at(br.size() - 1));
             tree_vertices.insert(end(tree_vertices), 
                 right_vector.rbegin() + 1, right_vector.rend());
         }

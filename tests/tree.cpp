@@ -23,7 +23,6 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     auto source_angle = M_PI/2;
     auto br = BranchNew(source_point, source_angle);
 
-    BOOST_TEST(br.Empty());
     BOOST_TEST(br.size() == 1);
     BOOST_TEST(br.Lenght() == 0);
     BOOST_TEST(br.TipPoint() == source_point);
@@ -42,7 +41,6 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     BOOST_CHECK_NO_THROW(br.AddPoint(Polar{1, 0}));
     BOOST_CHECK_NO_THROW(br.AddAbsolutePoint(Polar{1, M_PI/2}));
 
-    BOOST_TEST(!br.Empty());
     BOOST_TEST(br.size() == 5);
     BOOST_TEST(br.Lenght() == 4);
     BOOST_TEST((br.TipVector() == Point{0, 1}));
@@ -54,7 +52,6 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
 
     //now let remove two tip point
     BOOST_CHECK_NO_THROW(br.RemoveTipPoint().RemoveTipPoint());
-    BOOST_TEST(!br.Empty());
     BOOST_TEST(br.size() == 3);
     BOOST_TEST(br.Lenght() == 2);
     BOOST_TEST((br.TipVector() == Point{0, 1}));

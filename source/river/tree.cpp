@@ -122,8 +122,7 @@ namespace River
     pair<t_branch_id, t_branch_id> Tree::AddSubBranches(t_branch_id root_branch_id, 
         const BranchNew &left_branch, const BranchNew &right_branch)
     {   
-        if(!this->count(root_branch_id))
-            throw Exception("Root branch doesn't exis");
+        handle_non_existing_branch_id(root_branch_id);
 
         if(HasSubBranches(root_branch_id))
             throw Exception("This branch already has subbranches");
@@ -145,6 +144,8 @@ namespace River
 
     t_branch_id Tree::GetParentBranchId(t_branch_id branch_id) const
     {
+        handle_non_existing_branch_id(branch_id);
+        
         for(const auto&[parent_id, sub_ids]: branches_relation)
             if(sub_ids.first == branch_id 
                 || sub_ids.second == branch_id)
@@ -157,6 +158,8 @@ namespace River
 
     t_branch_id Tree::GetAdjacentBranchId(t_branch_id sub_branch_id) const
     {
+        handle_non_existing_branch_id(sub_branch_id);
+
         auto [left_branch, right_branch] = GetSubBranchesIds(GetParentBranchId(sub_branch_id));
 
         if(left_branch == sub_branch_id)
@@ -230,8 +233,7 @@ namespace River
 
     void Tree::DeleteSubBranches(t_branch_id root_branch_id)
     {
-        if(!this->count(root_branch_id))
-            throw Exception("root branch doesn't exis.");
+        handle_non_existing_branch_id(root_branch_id);
 
         if(!HasSubBranches(root_branch_id))
             throw Exception("This branch doesn't have subbranches.");
@@ -254,8 +256,7 @@ namespace River
 
     pair<t_branch_id, t_branch_id> Tree::GrowTestTree(t_branch_id branch_id, double ds, unsigned n, double dalpha)
     {
-        if(!this->count(branch_id))
-            throw Exception("GrowTestTree: root branch doesn't exis.");
+        handle_non_existing_branch_id(branch_id);
         
         if(HasSubBranches(branch_id))
             throw Exception("GrowTestTree: This branch have subbranches.");
