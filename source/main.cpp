@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
         else if(model.prog_opt.simulation_type == 1)
         {
             print(model.prog_opt.verbose, "Backward river simulation type selected.");
-            while(model.tree.HasEmptySourceBranch() == false && i < model.prog_opt.number_of_steps)    
+            while(i < model.prog_opt.number_of_steps)    
             {
                 print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
 
@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
             model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
 
             auto source_branch_id = 1;//todo
-            model.tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
+            model.tree.at(source_branch_id).AddPoint(Polar{0.1, 0});
 
             EvaluateSeriesParams(model, triangle, sim, model.prog_opt.output_file_name);
             model.timing.Record();//Timing

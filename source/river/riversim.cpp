@@ -63,10 +63,10 @@ namespace River
     map<int, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim)
     {
         map<int, vector<double>> id_series_params;
-        for(auto id: model.tree.TipBranchesId())
+        for(auto id: model.tree.TipBranchesIds())
         {
-            auto tip_point = model.tree.GetBranch(id)->TipPoint();
-            auto tip_angle = model.tree.GetBranch(id)->TipAngle();
+            auto tip_point = model.tree.at(id).TipPoint();
+            auto tip_angle = model.tree.at(id).TipAngle();
             id_series_params[id] = sim.integrate(model, tip_point, tip_angle);
         }
 
@@ -88,10 +88,10 @@ namespace River
         for(auto&[id, series_params]: id_series_params)
             if(model.q_growth(series_params))
             {
-                if(model.q_bifurcate(series_params, model.tree.GetBranch(id)->Lenght()))
+                if(model.q_bifurcate(series_params, model.tree.at(id).Lenght()))
                 {
-                    auto tip_point = model.tree.GetBranch(id)->TipPoint();
-                    auto tip_angle = model.tree.GetBranch(id)->TipAngle();
+                    auto tip_point = model.tree.at(id).TipPoint();
+                    auto tip_angle = model.tree.at(id).TipAngle();
                     auto br_left = BranchNew(tip_point, tip_angle + model.bifurcation_angle);
                     br_left.AddPoint(Polar{model.ds, 0});
                     auto br_right = BranchNew(tip_point, tip_angle - model.bifurcation_angle);
@@ -99,10 +99,10 @@ namespace River
                     model.tree.AddSubBranches(id, br_left, br_right);
                 }
                 else
-                    model.tree.GetBranch(id)->AddPoint(
+                    model.tree.at(id).AddPoint(
                         model.next_point(
                             series_params, 
-                            model.tree.GetBranch(id)->Lenght(), 
+                            model.tree.at(id).Lenght(), 
                             max_a));
             }
     }
@@ -112,7 +112,7 @@ namespace River
         print(model.prog_opt.verbose, "Shrinking each branch...");
         for(auto[id, series_params]: id_series_params)
             if(model.q_growth(series_params))
-                model.tree.GetBranch(id)->
+                model.tree.at(id).
                     Shrink(model.next_point(
                         series_params, 
                         model.growth_min_distance + 1/*we are not constraining here speed growth near 
@@ -157,8 +157,8 @@ namespace River
         //collect branches which reached zero lenght(bifurcation point)
         print(model.prog_opt.verbose, "Collecting branches with zero lenght(if they are)...");
         vector<int> zero_size_branches_id;
-        for(auto tip_id: model.tree.TipBranchesId())
-            if(model.tree.HasParentBranch(tip_id) && model.tree.GetBranch(tip_id)->Lenght() < 0.05*model.ds/*if lenght is less then 5% of ds*/)
+        for(auto tip_id: model.tree.TipBranchesIds())
+            if(model.tree.HasParentBranch(tip_id) && model.tree.at(tip_id).Lenght() < 0.05*model.ds/*if lenght is less then 5% of ds*/)
                 zero_size_branches_id.push_back(model.tree.GetParentBranchId(tip_id));
         
         //collect difference between adjacent branches lenght(if they are) and delete them
@@ -167,8 +167,8 @@ namespace River
             //for each pair of subbranches we can delete them only once
             if(model.tree.HasSubBranches(parent_id))
             {
-                auto[branch_left, branch_right] = model.tree.GetSubBranches(parent_id);
-                auto biff_diff = abs(branch_left->Lenght() - branch_right->Lenght());
+                auto [branch_left, branch_right] = model.tree.GetSubBranches(parent_id);
+                auto biff_diff = abs(branch_left.Lenght() - branch_right.Lenght());
                 model.geometry_difference.StartBifurcationRecord(parent_id, biff_diff);
                 model.tree.DeleteSubBranches(parent_id);
             }
@@ -238,12 +238,12 @@ namespace River
         TriangulateBoundaries(model, tria, file_name);
         SolvePDE(model, sim, file_name);
 
-        auto branch_id = model.tree.TipBranchesId().back();
+        auto branch_id = model.tree.TipBranchesIds().back();
         if(branch_id != 1)
             throw Exception("EvaluateSeriesParams: Branch does not equal to 1: " + to_string(branch_id));
                 
-        auto tip_point = model.tree.GetBranch(branch_id)->TipPoint();
-        auto tip_angle = model.tree.GetBranch(branch_id)->TipAngle();
+        auto tip_point = model.tree.at(branch_id).TipPoint();
+        auto tip_angle = model.tree.at(branch_id).TipAngle();
         print(model.prog_opt.verbose, "Integration..");
         auto series_params = sim.integrate(model, tip_point, tip_angle);
         auto circle_integr = sim.integration_test(tip_point, 0.1/*dr same as in FreeFEM++*/);

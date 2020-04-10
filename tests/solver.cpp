@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
     
     mdl.InitializeDirichlet();
-    mdl.tree.GetBranch(1)->AddPoint(Polar{0.1, 0});
+    mdl.tree.at(1).AddPoint(Polar{0.1, 0});
 
     auto boundary = SimpleBoundaryGenerator(mdl);
     tethex::Mesh  mesh(boundary);
@@ -52,9 +52,9 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     sim.OpenMesh("test.msh");
     sim.run();
     
-    auto tip_ids = mdl.tree.TipBranchesId();
-    auto point = mdl.tree.GetBranch(tip_ids.at(0))->TipPoint();
-    auto angle = mdl.tree.GetBranch(tip_ids.at(0))->TipAngle();
+    auto tip_ids = mdl.tree.TipBranchesIds();
+    auto point = mdl.tree.at(tip_ids.at(0)).TipPoint();
+    auto angle = mdl.tree.at(tip_ids.at(0)).TipAngle();
     auto series_params = sim.integrate(mdl, point, angle);
 
     BOOST_TEST(angle == M_PI/2);
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     
     mdl.InitializeDirichlet();
 
-    mdl.tree.GetBranch(1)->AddPoint(Polar{0.1, 0});
+    mdl.tree.at(1).AddPoint(Polar{0.1, 0});
 
     auto boundary = SimpleBoundaryGenerator(mdl);
 
@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE( integration_test,
     sim.OpenMesh("test.msh");
     sim.run();
     
-    auto tip_ids = mdl.tree.TipBranchesId();
-    auto point = mdl.tree.GetBranch(tip_ids.at(0))->TipPoint();
+    auto tip_ids = mdl.tree.TipBranchesIds();
+    auto point = mdl.tree.at(tip_ids.at(0)).TipPoint();
     auto dr = 0.01;
     auto integration = sim.integration_test(point, dr);
     auto integration_of_whole_region = sim.integration_test(point, 10);

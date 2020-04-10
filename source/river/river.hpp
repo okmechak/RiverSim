@@ -407,10 +407,10 @@ namespace River
             {
                 //Iterate over each tip and handle branch growth and its bifurcations
                 map<int, vector<double>> id_series_params;
-                for(auto id: model->tree.TipBranchesId())
+                for(auto id: model->tree.TipBranchesIds())
                 {
-                    auto tip_point = model->tree.GetBranch(id)->TipPoint();
-                    auto tip_angle = model->tree.GetBranch(id)->TipAngle();
+                    auto tip_point = model->tree.at(id).TipPoint();
+                    auto tip_angle = model->tree.at(id).TipAngle();
                     id_series_params[id] = series_param_integral(tip_point, tip_angle);
                 }
 
@@ -426,10 +426,10 @@ namespace River
                 for(auto&[id, series_params]: id_series_params)
                     if(model->q_growth(series_params))
                     {
-                        if(model->q_bifurcate(series_params, model->tree.GetBranch(id)->Lenght()))
+                        if(model->q_bifurcate(series_params, model->tree.at(id).Lenght()))
                         {
-                            auto tip_point = model->tree.GetBranch(id)->TipPoint();
-                            auto tip_angle = model->tree.GetBranch(id)->TipAngle();
+                            auto tip_point = model->tree.at(id).TipPoint();
+                            auto tip_angle = model->tree.at(id).TipAngle();
                             auto br_left = BranchNew(tip_point, tip_angle + model->bifurcation_angle);
                             br_left.AddPoint(Polar{model->ds, 0});
                             auto br_right = BranchNew(tip_point, tip_angle - model->bifurcation_angle);
@@ -437,7 +437,7 @@ namespace River
                             model->tree.AddSubBranches(id, br_left, br_right);
                         }
                         else
-                            model->tree.GetBranch(id)->AddPoint(model->next_point(series_params, model->tree.GetBranch(id)->Lenght(), max_a));
+                            model->tree.at(id).AddPoint(model->next_point(series_params, model->tree.at(id).Lenght(), max_a));
                     }
             }
 

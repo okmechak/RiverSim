@@ -398,10 +398,10 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     //BOOST_TEST(mdl_in.tree.source_branches_id == sources_id);
     map<t_branch_id, pair<t_branch_id, t_branch_id>> t = {{1, {2, 3}}, {3, {4, 5}}};
     BOOST_TEST(mdl_in.tree.branches_relation == t);
-    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().x == 11.);
-    BOOST_TEST(mdl_in.tree.GetBranch(5)->TipPoint().y == 10.);
-    BOOST_TEST(mdl_in.tree.GetBranch(1)->TipPoint().x == 0.25);
-    BOOST_TEST(mdl_in.tree.GetBranch(1)->TipPoint().y == 0.);
+    BOOST_TEST(mdl_in.tree.at(5).TipPoint().x == 11.);
+    BOOST_TEST(mdl_in.tree.at(5).TipPoint().y == 10.);
+    BOOST_TEST(mdl_in.tree.at(1).TipPoint().x == 0.25);
+    BOOST_TEST(mdl_in.tree.at(1).TipPoint().y == 0.);
 
     //GeometryDifference
     auto a1 = vector<vector<double>>{{2, 3}, {3, 4}, {4, 5}, {5, 6}},

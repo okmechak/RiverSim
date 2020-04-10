@@ -317,16 +317,16 @@ namespace River
 
         //Branches
         json branches;
-        for(auto& [branch_id, branch_pointer]: model.tree.branches_index)
+        for(const auto& [branch_id, branch]: model.tree)
         {
             vector<pair<double, double>> vertices;
-            vertices.reserve(branch_pointer->Size());
-            for(auto& vertice: *branch_pointer)
+            vertices.reserve(branch.size());
+            for(auto& vertice: branch)
                 vertices.push_back({vertice.x, vertice.y});
 
             branches.push_back({
-                {"SourceVertice", {branch_pointer->SourcePoint().x , branch_pointer->SourcePoint().y}},
-                {"SourceAngle", branch_pointer->SourceAngle()},
+                {"SourceVertice", {branch.SourcePoint().x , branch.SourcePoint().y}},
+                {"SourceAngle", branch.SourceAngle()},
                 {"Vertices", vertices},
                 {"Id", branch_id}});
         }
@@ -442,7 +442,6 @@ namespace River
             {"Sources", model.sources},
             {"Trees", {
                 {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
-                {"SourceIds", model.tree.source_branches_id},
                 {"Relations", model.tree.branches_relation},
                 {"Branches", branches}}},
                 
@@ -639,7 +638,6 @@ namespace River
             model.tree.Clear();
 
             auto jtrees = j.at("Trees");
-            jtrees.at("SourceIds").get_to(model.tree.source_branches_id);
             jtrees.at("Relations").get_to(model.tree.branches_relation);
 
             

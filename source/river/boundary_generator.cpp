@@ -8,35 +8,35 @@ namespace River
     */
     void TreeVertices(vector<Point> &tree_vertices, unsigned id, const Tree& tr, double eps)
     {
-        if (tr.Empty())
+        if (tr.empty())
             throw Exception("Boundary generator: trying to generate tree boundary from empty tree.");
 
-        const auto br = tr.GetBranch(id);
+        const auto& br = tr.at(id);
         vector<Point> left_vector, right_vector;
-        left_vector.reserve(br->Size());
-        right_vector.reserve(br->Size());
+        left_vector.reserve(br.size());
+        right_vector.reserve(br.size());
 
-        for(unsigned i = 0; i < br->Size(); ++i)
+        for(unsigned i = 0; i < br.size(); ++i)
         {
             if(i == 0)
             {
                 left_vector.push_back(
-                    br->GetPoint(i) + Point{Polar{eps/2, br->SourceAngle() + M_PI/2}});
+                    br.GetPoint(i) + Point{Polar{eps/2, br.SourceAngle() + M_PI/2}});
                 right_vector.push_back(
-                    br->GetPoint(i) + Point{Polar{eps/2, br->SourceAngle() - M_PI/2}});
+                    br.GetPoint(i) + Point{Polar{eps/2, br.SourceAngle() - M_PI/2}});
             }
             else
             {
                 left_vector.push_back(
-                    br->GetPoint(i) + br->Vector(i).normalize().rotate(M_PI/2)*eps/2);
+                    br.GetPoint(i) + br.Vector(i).normalize().rotate(M_PI/2)*eps/2);
                 right_vector.push_back(
-                    br->GetPoint(i) + br->Vector(i).normalize().rotate(-M_PI/2)*eps/2);
+                    br.GetPoint(i) + br.Vector(i).normalize().rotate(-M_PI/2)*eps/2);
             }
         }
 
         if(tr.HasSubBranches(id))
         {
-            auto[left_b_id, right_b_id] = tr.GetSubBranchesId(id);
+            auto[left_b_id, right_b_id] = tr.GetSubBranchesIds(id);
             tree_vertices.insert(end(tree_vertices), 
                 left_vector.begin(), left_vector.end() - 1);
             TreeVertices(tree_vertices, left_b_id, tr, eps);
@@ -49,7 +49,7 @@ namespace River
         {
             tree_vertices.insert(end(tree_vertices), 
                 left_vector.begin(), left_vector.end() - 1);
-            tree_vertices.push_back(br->GetPoint(br->Size() - 1));
+            tree_vertices.push_back(br.GetPoint(br.size() - 1));
             tree_vertices.insert(end(tree_vertices), 
                 right_vector.rbegin() + 1, right_vector.rend());
         }
