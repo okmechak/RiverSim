@@ -415,10 +415,10 @@ namespace River
         border[2] =
         {/*Hole Boundary*/
             {/*vertices*/
-                {0.25*width, 0.25*height},
-                {0.75*width, 0.25*height}, 
+                {0.25*width, 0.75*height},
                 {0.75*width, 0.75*height}, 
-                {0.25*width, 0.75*height}
+                {0.75*width, 0.25*height}, 
+                {0.25*width, 0.25*height}
             }, 
             {/*lines*/
                 {0, 1, 6},
@@ -430,7 +430,7 @@ namespace River
             {{0.5*width, 0.5*height}}/*holes*/,
             "hole"/*just name*/
         };
-        sources[2] = {2, 3};
+        sources[2] = {2, 0};
         boundary_conditions[6] = {DIRICHLET, 0};
         boundary_conditions[7] = {DIRICHLET, 0};
         boundary_conditions[8] = {DIRICHLET, 0};
@@ -439,10 +439,10 @@ namespace River
         border[3] =
         {/*Hole Boundary*/
             {/*vertices*/
-                {0.8*width, 0.8*height},
-                {0.9*width, 0.8*height}, 
+                {0.8*width, 0.9*height},
                 {0.9*width, 0.9*height}, 
-                {0.8*width, 0.9*height}
+                {0.9*width, 0.8*height}, 
+                {0.8*width, 0.8*height}
             }, 
             {/*lines*/
                 {0, 1, 10},
@@ -454,7 +454,7 @@ namespace River
             {{0.85*width, 0.85*height}}/*holes*/,
             "hole"/*just name*/
         };
-        sources[3] = {3, 0};
+        sources[3] = {3, 3};
         boundary_conditions[10] = {DIRICHLET, 1};
         boundary_conditions[11] = {DIRICHLET, 1};
         boundary_conditions[12] = {DIRICHLET, 1};

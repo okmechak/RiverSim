@@ -233,10 +233,10 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     auto inner_simple_boundary = SimpleBoundary
     {
         {/*vertices(counterclockwise order)*/
-            {0.25*width, 0.25*height},
-            {0.75*width, 0.25*height}, 
+            {0.25*width, 0.75*height},
             {0.75*width, 0.75*height}, 
-            {0.25*width, 0.75*height}
+            {0.75*width, 0.25*height}, 
+            {0.25*width, 0.25*height}
         }, 
         {/*lines*/
             {0, 1, 1},
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
         "outer rectangular boudary"
     };
     boundary[2] = inner_simple_boundary;
-    sources[2] = {2, 2};
+    sources[2] = {2, 1};
     BOOST_CHECK_THROW(boundary.Check(), Exception);
 
     boundary.at(2).inner_boundary = true;
@@ -278,16 +278,17 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
    
     BOOST_TEST(boundary.GetHolesList() == holes_list);
-    s = Boundaries::trees_interface_t{
+    s = Boundaries::trees_interface_t
+    {
         {1, {{0, 0}, M_PI/4}},
         {2, {{source_x_position, 0}, M_PI/2}},
         {3, {{width, 0}, 3*M_PI/4}},
         {4, {{width, height}, 5*M_PI/4}},
         {5, {{0, height}, 7*M_PI/4}},
-        {6, {{0.25*width, 0.25*height}, 5*M_PI/4}},
-        {7, {{0.75*width, 0.25*height}, 7*M_PI/4}},
-        {8, {{0.75*width, 0.75*height}, M_PI/4}},
-        {9, {{0.25*width, 0.75*height}, 3*M_PI/4}}
+        {6, {{0.25*width, 0.75*height}, 3*M_PI/4}},
+        {7, {{0.75*width, 0.75*height}, M_PI/4}},
+        {8, {{0.75*width, 0.25*height}, -M_PI/4}},
+        {9, {{0.25*width, 0.25*height}, 5*M_PI/4}},
     };
     auto s_2 = boundary.GetSourcesIdsPointsAndAngles(sources);
     for(auto& [id, p]: s)

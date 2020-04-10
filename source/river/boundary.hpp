@@ -178,7 +178,6 @@ namespace River
 
             static double GetVerticeNormalAngle(
                 const vector<Point>& vertices, 
-                const t_vert_pos vertice_pos, 
-                bool inner_boundary);
+                const t_vert_pos vertice_pos);
     };
 }

@@ -94,14 +94,17 @@ namespace River
 
         auto shift = simple_boundary.vertices.size() - 1;
         for(auto& line: lines)
-            if (line.p1 >= vertice_pos && line.p2 >= vertice_pos)
+            //line is right to insertion point
+            if (line.p1 >= vertice_pos && line.p2 > vertice_pos)
             {
                 line.p1 += shift;
                 line.p2 += shift;
             }
-            else if(line.p1 < vertice_pos && line.p2 > vertice_pos)
+            //one of line edges is left to insertion
+            else if(line.p1 <= vertice_pos && line.p2 > vertice_pos)
                 line.p2 += shift;
-            else if(line.p2 < vertice_pos && line.p1 > vertice_pos)
+            //edge is closing the loop
+            else if(line.p1 >= vertice_pos && line.p2 <= vertice_pos)
                 line.p1 += shift;
 
         lines.insert(
@@ -197,98 +200,98 @@ namespace River
     Sources Boundaries::MakeRectangular(double width, double height, double source_x_position)
     {
         (*this)[1] = 
-            {
-                {/*vertices(counterclockwise order)*/
-                    {0, 0},
-                    {source_x_position, 0}, 
-                    {width, 0}, 
-                    {width, height}, 
-                    {0, height}
-                }, 
-                {/*lines*/
-                    {0, 1, 1},
-                    {1, 2, 2},
-                    {2, 3, 3},
-                    {3, 4, 4},
-                    {4, 0, 5} 
-                },
-                false/*this is not inner boudary*/,
-                {}/*hole*/,
-                "outer rectangular boudary"
-            };/*Outer Boundary*/
+        {
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {source_x_position, 0}, 
+                {width, 0}, 
+                {width, height}, 
+                {0, height}
+            }, 
+            {/*lines*/
+                {0, 1, 1},
+                {1, 2, 2},
+                {2, 3, 3},
+                {3, 4, 4},
+                {4, 0, 5} 
+            },
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer rectangular boudary"
+        };/*Outer Boundary*/
 
-            Sources sources;
-            sources[1/*source_id*/] = {1/*boundary id*/, 1/*vertice position*/};
+        Sources sources;
+        sources[1/*source_id*/] = {1/*boundary id*/, 1/*vertice position*/};
             
-            return sources;
+        return sources;
     }
 
     //TODO remove this functionality from boundary
     Sources Boundaries::MakeRectangularWithHole(double width, double height, double source_x_position)
     {
         (*this)[1] = 
-            {/*Outer Boundary*/
-                {/*vertices(counterclockwise order)*/
-                    {0, 0},
-                    {source_x_position, 0}, 
-                    {width, 0}, 
-                    {width, height}, 
-                    {0, height}
-                }, 
-                {/*lines*/
-                    {0, 1, 1},
-                    {1, 2, 2},
-                    {2, 3, 3},
-                    {3, 4, 4},
-                    {4, 0, 5} 
-                }, 
-                false/*this is not inner boudary*/,
-                {}/*hole*/,
-                "outer boudary"/*just name*/
-            };
+        {/*Outer Boundary*/
+            {/*vertices(counterclockwise order)*/
+                {0, 0},
+                {source_x_position, 0}, 
+                {width, 0}, 
+                {width, height}, 
+                {0, height}
+            }, 
+            {/*lines*/
+                {0, 1, 1},
+                {1, 2, 2},
+                {2, 3, 3},
+                {3, 4, 4},
+                {4, 0, 5} 
+            }, 
+            false/*this is not inner boudary*/,
+            {}/*hole*/,
+            "outer boudary"/*just name*/
+        };
 
         Sources sources;
         sources[1] = {1, 1};
 
         (*this)[2] =
-            {/*Hole Boundary*/
-                {/*vertices*/
-                    {0.25*width, 0.25*height},
-                    {0.75*width, 0.25*height}, 
-                    {0.75*width, 0.75*height}, 
-                    {0.25*width, 0.75*height}
-                }, 
-                {/*lines*/
-                    {0, 1, 6},
-                    {1, 2, 7},
-                    {2, 3, 8},
-                    {3, 0, 9} 
-                }, 
-                true/*this is inner boudary*/,
-                {{0.5*width, 0.5*height}}/*holes*/,
-                "hole"/*just name*/
-            };
-        sources[2] = {2, 2};
+        {/*Hole Boundary*/
+            {/*vertices*/
+                {0.25*width, 0.75*height},
+                {0.75*width, 0.75*height}, 
+                {0.75*width, 0.25*height}, 
+                {0.25*width, 0.25*height}
+            }, 
+            {/*lines*/
+                {0, 1, 6},
+                {1, 2, 7},
+                {2, 3, 8},
+                {3, 0, 9} 
+            }, 
+            true/*this is inner boudary*/,
+            {{0.5*width, 0.5*height}}/*holes*/,
+            "hole"/*just name*/
+        };
+        sources[2] = {2, 1};
 
         (*this)[3] =
-            {/*Hole Boundary*/
-                {/*vertices*/
-                    {0.8*width, 0.8*height},
-                    {0.9*width, 0.8*height}, 
-                    {0.9*width, 0.9*height}, 
-                    {0.8*width, 0.9*height}
-                }, 
-                {/*lines*/
-                    {0, 1, 10},
-                    {1, 2, 11},
-                    {2, 3, 12},
-                    {3, 0, 13} 
-                }, 
-                true/*this is inner boudary*/,
-                {{0.85*width, 0.85*height}}/*holes*/,
-                "hole"/*just name*/
-            };
-        sources[3] = {3, 0};
+        {/*Hole Boundary*/
+            {/*vertices*/
+                {0.8*width, 0.9*height},
+                {0.9*width, 0.9*height}, 
+                {0.9*width, 0.8*height}, 
+                {0.8*width, 0.8*height}
+            }, 
+            {/*lines*/
+                {0, 1, 10},
+                {1, 2, 11},
+                {2, 3, 12},
+                {3, 0, 13} 
+            }, 
+            true/*this is inner boudary*/,
+            {{0.85*width, 0.85*height}}/*holes*/,
+            "hole"/*just name*/
+        };
+        sources[3] = {3, 3};
         
         return sources;
     }
@@ -343,7 +346,7 @@ namespace River
         return normal_angle;
     }
 
-    double Boundaries::GetVerticeNormalAngle(const vector<Point>& vertices, const t_vert_pos vertice_pos, bool inner_boundary)
+    double Boundaries::GetVerticeNormalAngle(const vector<Point>& vertices, const t_vert_pos vertice_pos)
     {
         const auto vertices_size = vertices.size();
         const auto [vertice_pos_left, vertice_pos_right] = GetAdjacentVerticesPositions(vertices_size, vertice_pos);
@@ -353,8 +356,6 @@ namespace River
             p_right = vertices.at(vertice_pos_right);
         
         auto normal_angle = NormalAngle(p_left, p_source, p_right);
-        if(inner_boundary)
-            normal_angle += M_PI;
         
         if(normal_angle >= 2*M_PI)
             normal_angle -= 2*M_PI;
@@ -376,8 +377,7 @@ namespace River
                 simple_boundary.vertices.at(vertice_pos),
                 GetVerticeNormalAngle(
                     simple_boundary.vertices,
-                    vertice_pos,
-                    simple_boundary.inner_boundary)
+                    vertice_pos)
                 };
         }
 

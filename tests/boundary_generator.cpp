@@ -80,10 +80,12 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
     boundary = SimpleBoundaryGenerator(model);
     BOOST_TEST(boundary.lines.size() == 15);
 
-    auto vertices =  vector<Point>{
+    auto vertices =  vector<Point>
+    {
         {0, 0}, {0.25-0.01/2, 0}, {0.25, 0.01}, {0.25+0.01/2, 0}, {1, 0}, {1, 1}, {0, 1},
-        {0.25, 0.25}, {0.75, 0.25}, {0.75, 0.75}, {0.25, 0.75},
-        {0.8, 0.8}, {0.9, 0.8}, {0.9, 0.9}, {0.8, 0.9}};
+        {0.25, 0.75}, {0.75, 0.75}, {0.75, 0.25}, {0.25, 0.25},
+        {0.8, 0.9}, {0.9, 0.9}, {0.9, 0.8}, {0.8, 0.8}
+    };
     
     auto holes = vector<Point>{
         {0.5, 0.5}, {0.85, 0.85}
@@ -99,7 +101,6 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
     BOOST_TEST(boundary.vertices.size() == 15);
     for(size_t i = 0; i < vertices.size(); ++i)
     {
-        BOOST_TEST_MESSAGE(i);
         BOOST_TEST(boundary.vertices.at(i) == vertices.at(i));
         BOOST_TEST(boundary.lines.at(i) == lines.at(i));
     }
@@ -682,4 +683,228 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
     BOOST_TEST(mesh.get_line(13).get_vertex(0) == 13);
     BOOST_TEST(mesh.get_line(13).get_vertex(1) == 0);
     BOOST_TEST(mesh.get_line(13).get_material_id() == mdl.river_boundary_id);
+}
+
+
+BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated, 
+    *utf::tolerance(eps))
+{
+    //initial condition setup
+    Model model;
+    model.mesh.eps = 0.02;
+    auto& eps = model.mesh.eps;
+    model.ds = 0.01;
+    auto& ds = model.ds;
+    auto& dx = model.dx;
+    auto& w = model.width;
+    auto& h = model.height;
+    auto& r = model.river_boundary_id;
+
+    //every vertex is a source
+    model.border[1] = 
+    {/*Outer Boundary*/
+        {/*vertices(counterclockwise order)*/
+            {0, 0},
+            {model.dx, 0}, 
+            {model.width, 0}, 
+            {model.width, model.height}, 
+            {0, model.height}
+        }, 
+        {/*lines*/
+            {0, 1, 1},
+            {1, 2, 2},
+            {2, 3, 3},
+            {3, 4, 4},
+            {4, 0, 5} 
+        }, 
+        false/*this is not inner boudary*/,
+        {}/*hole*/,
+        "outer boudary"/*just name*/
+    };
+
+    
+    model.sources[1] = {1, 0};
+    model.sources[2] = {1, 1};
+    model.sources[3] = {1, 2};
+    model.sources[4] = {1, 3};
+    model.sources[5] = {1, 4};
+
+    model.border[2] =
+    {/*Hole Boundary*/
+        {/*vertices*/
+            {0.25 * model.width, 0.75 * model.height},
+            {0.75 * model.width, 0.75 * model.height}, 
+            {0.75 * model.width, 0.25 * model.height}, 
+            {0.25 * model.width, 0.25 * model.height}
+        }, 
+        {/*lines*/
+            {0, 1, 6},
+            {1, 2, 7},
+            {2, 3, 8},
+            {3, 0, 9} 
+        }, 
+        true/*this is inner boudary*/,
+        {{0.5*model.width, 0.5*model.height}}/*holes*/,
+        "hole"/*just name*/
+    };
+
+    model.sources[6] = {2, 0};
+    model.sources[7] = {2, 1};
+    model.sources[8] = {2, 2};
+    model.sources[9] = {2, 3};
+
+    model.border[3] =
+    {/*Hole Boundary*/
+        {/*vertices*/
+            {0.8 * model.width, 0.9 * model.height},
+            {0.9 * model.width, 0.9 * model.height}, 
+            {0.9 * model.width, 0.8 * model.height}, 
+            {0.8 * model.width, 0.8 * model.height}
+        }, 
+        {/*lines*/
+            {0, 1, 10},
+            {1, 2, 11},
+            {2, 3, 12},
+            {3, 0, 13} 
+        }, 
+        true/*this is inner boudary*/,
+        {{0.85*model.width, 0.85*model.height}}/*holes*/,
+        "hole"/*just name*/
+    };
+    model.sources[10] = {3, 0};
+    model.sources[11] = {3, 1};
+    model.sources[12] = {3, 2};
+    model.sources[13] = {3, 3};
+
+    model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
+    
+    //grow each source point by one step
+    Polar p{ds, 0};
+    model.tree.AddPolars(
+        {p, p, p, p, p, p, p, p, p, p,  p,  p,  p}, 
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13});
+
+    //expected values
+    auto vertices = vector<Point>{
+        //outer boundary
+        //0
+        {0 - eps/sqrt(2)/2, 0 + eps/sqrt(2)/2},
+        {0 +  ds/sqrt(2),   0 +  ds/sqrt(2)},
+        {0 + eps/sqrt(2)/2, 0 - eps/sqrt(2)/2},
+        //1
+        {dx - eps/2, 0},
+        {dx,        ds},
+        {dx + eps/2, 0},
+        //2
+        {w - eps/sqrt(2)/2, - eps/sqrt(2)/2},
+        {w  - ds/sqrt(2),      ds/sqrt(2)},
+        {w + eps/sqrt(2)/2, + eps/sqrt(2)/2},
+        //3
+        {w + eps/sqrt(2)/2, h - eps/sqrt(2)/2},
+        {w -  ds/sqrt(2),   h -  ds/sqrt(2)},
+        {w - eps/sqrt(2)/2, h + eps/sqrt(2)/2},
+        //4
+        {+ eps/sqrt(2)/2, h + eps/sqrt(2)/2},
+        {+  ds/sqrt(2),   h -  ds/sqrt(2)},
+        {- eps/sqrt(2)/2, h - eps/sqrt(2)/2},
+        
+        //first inner boundary
+        //5
+        {0.25*w - eps/sqrt(2)/2, 0.75*h - eps/sqrt(2)/2},
+        {0.25*w -  ds/sqrt(2),   0.75*h +  ds/sqrt(2)},
+        {0.25*w + eps/sqrt(2)/2, 0.75*h + eps/sqrt(2)/2},
+        //6
+        {0.75*w - eps/sqrt(2)/2, 0.75*h + eps/sqrt(2)/2},
+        {0.75*w  + ds/sqrt(2),   0.75*h  + ds/sqrt(2)},
+        {0.75*w + eps/sqrt(2)/2, 0.75*h - eps/sqrt(2)/2},
+        //7
+        {0.75*w + eps/sqrt(2)/2, 0.25*h + eps/sqrt(2)/2},
+        {0.75*w +  ds/sqrt(2),   0.25*h -  ds/sqrt(2)},
+        {0.75*w - eps/sqrt(2)/2, 0.25*h - eps/sqrt(2)/2},
+        //8
+        {0.25*w + eps/sqrt(2)/2, 0.25*h - eps/sqrt(2)/2},
+        {0.25*w -  ds/sqrt(2),   0.25*h -  ds/sqrt(2)},
+        {0.25*w - eps/sqrt(2)/2, 0.25*h + eps/sqrt(2)/2},
+
+        //second inner boundary
+        //19
+        {0.8*w - eps/sqrt(2)/2, 0.9*h - eps/sqrt(2)/2},
+        {0.8*w -  ds/sqrt(2),   0.9*h +  ds/sqrt(2)},
+        {0.8*w + eps/sqrt(2)/2, 0.9*h + eps/sqrt(2)/2},
+        //10
+        {0.9*w - eps/sqrt(2)/2, 0.9*h + eps/sqrt(2)/2},
+        {0.9*w  + ds/sqrt(2),   0.9*h + ds/sqrt(2)},
+        {0.9*w + eps/sqrt(2)/2, 0.9*h - eps/sqrt(2)/2},
+        //11
+        {0.9*w + eps/sqrt(2)/2, 0.8*h + eps/sqrt(2)/2},
+        {0.9*w +  ds/sqrt(2),   0.8*h -  ds/sqrt(2)},
+        {0.9*w - eps/sqrt(2)/2, 0.8*h - eps/sqrt(2)/2},
+        //12
+        {0.8*w + eps/sqrt(2)/2, 0.8*h - eps/sqrt(2)/2},
+        {0.8*w -  ds/sqrt(2),   0.8*h -  ds/sqrt(2)},
+        {0.8*w - eps/sqrt(2)/2, 0.8*h + eps/sqrt(2)/2},
+
+    };
+
+    auto lines = vector<Line>{
+        {0,   1,  r},
+        {1,   2,  r},
+        {2,   3,  1},
+        {3,   4,  r},
+        {4,   5,  r},
+        {5,   6,  2},
+        {6,   7,  r},
+        {7,   8,  r},
+        {8,   9,  3},
+        {9,  10,  r},
+        {10, 11,  r},
+        {11, 12,  4},
+        {12, 13,  r},
+        {13, 14,  r},
+        {14,  0,  5},
+
+        {15,  16,  r},
+        {16,  17,  r},
+        {17,  18,  6},
+        {18,  19,  r},
+        {19,  20,  r},
+        {20,  21,  7},
+        {21,  22,  r},
+        {22,  23,  r},
+        {23,  24,  8},
+        {24,  25,  r},
+        {25,  26,  r},
+        {26,  15,  9},
+
+        {27,  28,  r},
+        {28,  29,  r},
+        {29,  30,  10},
+        {30,  31,  r},
+        {31,  32,  r},
+        {32,  33,  11},
+        {33,  34,  r},
+        {34,  35,  r},
+        {35,  36,  12},
+        {36,  37,  r},
+        {37,  38,  r},
+        {38,  27,  13},
+        
+    };
+    auto holes = vector<Point>
+    {
+        { 0.5*w,  0.5*w},
+        {0.85*w, 0.85*w}
+    };
+
+    //generatre boundary
+    auto final_boundary = SimpleBoundaryGenerator(model);
+
+    for(size_t i = 0; i < final_boundary.vertices.size(); ++i)
+    {
+        BOOST_TEST_MESSAGE(to_string(i));
+        BOOST_TEST(final_boundary.vertices.at(i) == vertices.at(i));
+        BOOST_TEST(   final_boundary.lines.at(i) == lines.at(i));
+    }      
+
+    BOOST_TEST(final_boundary.holes == holes);
 }
