@@ -15,15 +15,15 @@ target_link_libraries(tethex GeometryPrimitives)
 
 #tree
 add_library(tree tree.hpp tree.cpp) 
-target_link_libraries(tree GeometryPrimitives boundary)
+target_link_libraries(tree boundary)
 
 #physmodel
 add_library(physmodel physmodel.hpp physmodel.cpp) 
-target_link_libraries(physmodel GeometryPrimitives tree boundary tethex)
+target_link_libraries(physmodel tree tethex)
 
 #io
 add_library(io io.hpp io.cpp json.hpp version.hpp)
-target_link_libraries(io physmodel tree boundary)
+target_link_libraries(io physmodel)
 
 #triangle
 add_library(triangle triangle.hpp triangle.cpp) 
@@ -31,23 +31,23 @@ target_link_libraries(triangle physmodel)
 
 #boundary_generator
 add_library(boundary_generator boundary_generator.hpp boundary_generator.cpp) 
-target_link_libraries(boundary_generator GeometryPrimitives tethex physmodel boundary tree)
+target_link_libraries(boundary_generator physmodel)
 
 #mesh
 add_library(mesh mesh.hpp mesh.cpp) 
-target_link_libraries(mesh tethex physmodel triangle)
+target_link_libraries(mesh tethex triangle)
 
 #solver
 add_library(solver solver.hpp solver.cpp) 
 deal_ii_setup_target(solver)
-target_link_libraries(solver physmodel boundary)
+target_link_libraries(solver physmodel)
 
 #riversim
 add_library(river riversim.hpp riversim.cpp)
 deal_ii_setup_target(river)
-target_link_libraries(river tethex GeometryPrimitives physmodel boundary triangle io solver tree mesh boundary_generator)
+target_link_libraries(river io solver mesh boundary_generator)
 
 #river
 add_library(riv river.hpp river.cpp)
 deal_ii_setup_target(riv)
-target_link_libraries(riv tethex GeometryPrimitives physmodel triangle io solver tree mesh boundary_generator)
+target_link_libraries(riv io solver mesh boundary_generator)
