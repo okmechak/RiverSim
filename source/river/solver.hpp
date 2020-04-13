@@ -143,6 +143,11 @@ namespace River
             ///Maximal value of solution, used for test purpose.
             double max_value();
 
+            bool solved() const 
+            {
+                return solution.size() > 0;
+            }
+
             ///Clear Solver object.
             void clear()
             {
@@ -150,6 +155,7 @@ namespace River
               triangulation.clear();
               hanging_node_constraints.clear();
               system_matrix.clear();
+              solution.reinit(0);
             }
             
             ///Outer field value. See Puasson, Laplace equations.

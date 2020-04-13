@@ -21,6 +21,8 @@ namespace River
         GridIn<dim> gridin;
         gridin.attach_triangulation(triangulation);
         ifstream f(fileName);
+        if(!f)
+            throw Exception("OpenMesh: there is no mesh file  - " + fileName);
         gridin.read_msh(f);
     }
 
@@ -345,9 +347,12 @@ namespace River
     {
         for (unsigned cycle = 0; cycle <= num_of_adaptive_refinments; ++cycle)
         {
-            //cout << "Cycle " << cycle << ':' << endl;
+            
             if (cycle > 0)
+            {
+                print(verbose, "--------------------------------#" + to_string(cycle) + "--------------------------------");
                 refine_grid();
+            }
             print(verbose, "   Number of active cells:");
             print(verbose, "\t" + to_string(triangulation.n_active_cells()));
             setup_system();
