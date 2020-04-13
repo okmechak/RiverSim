@@ -146,13 +146,13 @@ namespace River
             value<double>()->default_value(to_string(model.field_value)) )
         ("eta", "Power of a1^eta used in growth of river.", 
             value<double>()->default_value(to_string(model.eta)) )
-        ("bifurcation-type", "Bifurcation method type. 0 - a(3)/a(1) > bifurcation_threshold, 1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", 
+        ("b,bifurcation-type", "Bifurcation method type. 0 - a(3)/a(1) > bifurcation_threshold, 1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", 
             value<unsigned>()->default_value(to_string(model.bifurcation_type)) )
-        ("b,bifurcation-threshold", "Bifuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", 
+        ("bifurcation-threshold", "Bifuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", 
             value<double>()->default_value(to_string(model.bifurcation_threshold)) )
         ("bifurcation-threshold-2", "Biffuraction threshold for second bifurcation type: a(1) > kcrit", 
             value<double>()->default_value(to_string(model.bifurcation_threshold_2)) )
-        ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, if lenght of branch is greater of specified value, only than it can biffurcate. Used for reducing numerical noise.", 
+        ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, branch can bifurcate only when it is longer than minimal distance. Used for reducing numerical noise.", 
             value<double>()->default_value(to_string(model.bifurcation_min_dist)) )
         ("bifurcation-angle", "Angle between branches in bifurcation point. Default is Pi/5 which is theoretical value.", 
             value<double>()->default_value(to_string(model.bifurcation_angle)) )
