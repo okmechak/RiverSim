@@ -8,20 +8,10 @@ if(BUILD_PROGRAM)
     message("========================================")
     message("Deal II setup")
 
-    set(DEALII_REL_DIR "/mnt/c/users/ofcra/lib/dealii_shared" CACHE STRING "Deal.II release SDK directory location.") 
-    set(DEALII_DEB_DIR "/mnt/c/users/ofcra/lib/dealii_d_shared" CACHE STRING "Deal.II debug SDK directory location.") 
-
-    if(CMAKE_BUILD_TYPE MATCHES Release)
-        set(DEALII_DIR ${DEALII_REL_DIR})
-    elseif(CMAKE_BUILD_TYPE MATCHES Debug)
-        set(DEALII_DIR ${DEALII_DEB_DIR})
-    endif() 
-
-    find_package(deal.II REQUIRED HINTS ${DEALII_DIR} "/mnt/c/users/ofcra/lib/dealii_d_shared")
+    find_package(deal.II REQUIRED HINTS ${DEALII_DIR})
     deal_ii_initialize_cached_variables()
 
     mark_as_advanced(deal.II_DIR DEALII_DIR DEAL_II_PREFER_STATIC_LIBS)
-
 
     message("========================================")
     message("River, Tethex, Triangle setup")
@@ -42,7 +32,7 @@ if(BUILD_PROGRAM)
     target_link_libraries(riversim_perfomance riv)
 
     add_executable(meshgen meshgen.cpp)
-    target_link_libraries(meshgen mesh physmodel io tethex boundary_generator)
+    target_link_libraries(meshgen mesh io boundary_generator)
 
     install(TARGETS riversim DESTINATION riversim)
     install(TARGETS riversim_perfomance DESTINATION riversim)
