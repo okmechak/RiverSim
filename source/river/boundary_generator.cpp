@@ -104,9 +104,12 @@ namespace River
         }
 
         //hotfix. first index of last line element isn't shifted by lenght of last added tree.
-        auto last_pos = final_boundary.lines.size() - 1;
-        if(last_pos >= 2)
-            final_boundary.lines.at(last_pos).p1 = final_boundary.lines.at(last_pos - 1).p2;
+        if(!final_boundary.lines.empty())
+        {
+            auto last_pos = final_boundary.lines.size() - 1;
+            if(last_pos >= 2)
+                final_boundary.lines.at(last_pos).p1 = final_boundary.lines.at(last_pos - 1).p2;
+        }
 
         if (final_boundary.lines.size() != final_boundary.vertices.size())
             throw Exception("Size of lines and vertices are different.");
