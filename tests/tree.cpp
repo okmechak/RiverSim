@@ -738,7 +738,7 @@ BOOST_AUTO_TEST_CASE( test_branch_growth,
             &br_right = tree.at(right_id);
 
         auto br_vetices = vector<Point>{
-            {2, 3}, 
+            {2,        3}, 
             {2 +   ds, 3}, 
             {2 + 2*ds, 3}, 
             {2 + 3*ds, 3}};
@@ -748,20 +748,20 @@ BOOST_AUTO_TEST_CASE( test_branch_growth,
         BOOST_TEST(br.at(3) == br_vetices.at(3));
 
         auto br_vetices_left = vector<Point>{
-            {2, 3}, 
-            {2 +   ds/sqrt(2.), 3 + ds/sqrt(2.)}, 
-            {2 + 2*ds/sqrt(2.), 3 + 2*ds/sqrt(2.)}, 
-            {2 + 3*ds/sqrt(2.), 3 + 3*ds/sqrt(2.)}};
+            {2 + 3*ds,                 3}, 
+            {2 + 3*ds +   ds/sqrt(2.), 3 + ds/sqrt(2.)}, 
+            {2 + 3*ds + 2*ds/sqrt(2.), 3 + 2*ds/sqrt(2.)}, 
+            {2 + 3*ds + 3*ds/sqrt(2.), 3 + 3*ds/sqrt(2.)}};
         BOOST_TEST(br_left.at(0) == br_vetices_left.at(0));
         BOOST_TEST(br_left.at(1) == br_vetices_left.at(1));
         BOOST_TEST(br_left.at(2) == br_vetices_left.at(2));
         BOOST_TEST(br_left.at(3) == br_vetices_left.at(3));
 
         auto br_vetices_right = vector<Point>{
-            {2, 3}, 
-            {2 +   ds/sqrt(2.), 3 - ds/sqrt(2.)}, 
-            {2 + 2*ds/sqrt(2.), 3 - 2*ds/sqrt(2.)}, 
-            {2 + 3*ds/sqrt(2.), 3 - 3*ds/sqrt(2.)}};
+            {2 + 3*ds,                 3}, 
+            {2 + 3*ds +   ds/sqrt(2.), 3 - ds/sqrt(2.)}, 
+            {2 + 3*ds + 2*ds/sqrt(2.), 3 - 2*ds/sqrt(2.)}, 
+            {2 + 3*ds + 3*ds/sqrt(2.), 3 - 3*ds/sqrt(2.)}};
         BOOST_TEST(br_right.at(0) == br_vetices_right.at(0));
         BOOST_TEST(br_right.at(1) == br_vetices_right.at(1));
         BOOST_TEST(br_right.at(2) == br_vetices_right.at(2));
@@ -788,19 +788,56 @@ BOOST_AUTO_TEST_CASE( test_branch_growth,
         BOOST_TEST(br.at(2) == br_vetices.at(2));
     
         auto br_vetices_left = vector<Point>{
-            {4,                 5}, 
-            {4 -   ds/sqrt(2.), 5 + ds/sqrt(2.)}, 
-            {4 - 2*ds/sqrt(2.), 5 + 2*ds/sqrt(2.)}};
+            {4,                 5 + 2*ds}, 
+            {4 -   ds/sqrt(2.), 5 + 2*ds + ds/sqrt(2.)}, 
+            {4 - 2*ds/sqrt(2.), 5 + 2*ds + 2*ds/sqrt(2.)}};
         BOOST_TEST(br_left.at(0) == br_vetices_left.at(0));
         BOOST_TEST(br_left.at(1) == br_vetices_left.at(1));
         BOOST_TEST(br_left.at(2) == br_vetices_left.at(2));
     
         auto br_vetices_right = vector<Point>{
-            {4,                 5}, 
-            {4 +   ds/sqrt(2.), 5 + ds/sqrt(2.)}, 
-            {4 + 2*ds/sqrt(2.), 5 + 2*ds/sqrt(2.)}};
+            {4,                 5 + 2*ds}, 
+            {4 +   ds/sqrt(2.), 5 + 2*ds + ds/sqrt(2.)}, 
+            {4 + 2*ds/sqrt(2.), 5 + 2*ds + 2*ds/sqrt(2.)}};
         BOOST_TEST(br_right.at(0) == br_vetices_right.at(0));
         BOOST_TEST(br_right.at(1) == br_vetices_right.at(1));
         BOOST_TEST(br_right.at(2) == br_vetices_right.at(2));
     }
+}
+
+BOOST_AUTO_TEST_CASE( test_branch_growth_one_more, 
+    *utf::tolerance(eps))
+{
+    Tree tree;
+    auto branch = BranchNew{{0.5, 0}, M_PI/2.};
+
+    auto id = tree.AddBranch(branch);
+    double ds = 0.1;
+    unsigned n = 4;
+    tree.GrowTestTree(id, ds, n);
+
+    auto first_branch = BranchNew{{0.5, 0}, M_PI/2.},
+        left_branch = BranchNew{{0.5, ds*n}, 3*M_PI/4.},
+        right_branch = BranchNew{{0.5, ds*n}, M_PI/4.};
+
+    first_branch.push_back({0.5, ds});
+    first_branch.push_back({0.5, 2*ds});
+    first_branch.push_back({0.5, 3*ds});
+    first_branch.push_back({0.5, 4*ds});
+
+    left_branch.push_back({0.5 -   ds/sqrt(2),  n*ds +   ds/sqrt(2)});
+    left_branch.push_back({0.5 - 2*ds/sqrt(2),  n*ds + 2*ds/sqrt(2)});
+    left_branch.push_back({0.5 - 3*ds/sqrt(2),  n*ds + 3*ds/sqrt(2)});
+    left_branch.push_back({0.5 - 4*ds/sqrt(2),  n*ds + 4*ds/sqrt(2)});
+
+    right_branch.push_back({0.5 +   ds/sqrt(2), n*ds +   ds/sqrt(2)});
+    right_branch.push_back({0.5 + 2*ds/sqrt(2), n*ds + 2*ds/sqrt(2)});
+    right_branch.push_back({0.5 + 3*ds/sqrt(2), n*ds + 3*ds/sqrt(2)});
+    right_branch.push_back({0.5 + 4*ds/sqrt(2), n*ds + 4*ds/sqrt(2)});
+
+    auto[left, right] = tree.GetSubBranches(id);
+
+    BOOST_TEST(tree.at(id) == first_branch);
+    BOOST_TEST(left == left_branch);
+    BOOST_TEST(right == right_branch);
 }

@@ -263,6 +263,11 @@ namespace River
 
         auto& 
             branch_source = this->at(branch_id);
+        for(unsigned i = 0; i < n; ++i)
+        {
+            auto p = Polar{ds, dalpha};
+            branch_source.AddPoint(p);
+        }
 
         auto branch_left = BranchNew{
                 branch_source.TipPoint(), 
@@ -274,7 +279,6 @@ namespace River
         for(unsigned i = 0; i < n; ++i)
         {
             auto p = Polar{ds, dalpha};
-            branch_source.AddPoint(p);
             branch_left.AddPoint(p);
             branch_right.AddPoint(p);
         }
