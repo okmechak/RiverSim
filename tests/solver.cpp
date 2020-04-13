@@ -22,22 +22,22 @@ namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( integration_params_test, 
-    *utf::tolerance(1e-1)*utf::disabled())
+    *utf::tolerance(1e-2))
 {   
     Model mdl;
 
     //1e-12 - is to small and we receive strange mesh
-    mdl.mesh.min_area = 1e-10;
+    mdl.mesh.min_area = 1e-6;
+    mdl.mesh.static_refinment_steps = 0;
     mdl.mesh.max_area = 0.01;
     mdl.mesh.min_angle = 30;
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
     mdl.dx = 0.25;
-    mdl.field_value = 1;
-    mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
-    
     mdl.InitializeDirichlet();
+
     mdl.tree.at(1).AddPoint(Polar{0.1, 0});
+    mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
 
     auto boundary = SimpleBoundaryGenerator(mdl);
     tethex::Mesh  mesh(boundary);
@@ -68,15 +68,16 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 }
 
 BOOST_AUTO_TEST_CASE( integration_test, 
-    *utf::tolerance(1e-1)*utf::disabled())
+    *utf::tolerance(1e-2))
 {
     Model mdl;
     //1e-12 - is to small and we receive strange mesh
-    mdl.mesh.min_area = 1e-10;
+    mdl.mesh.min_area = 1e-6;
     mdl.mesh.max_area = 0.01;
     mdl.mesh.min_angle = 30;
     mdl.mesh.refinment_radius = 0.25;
     mdl.mesh.exponant = 4;
+    mdl.integr.integration_radius = 0.01;
     mdl.field_value = 1;
     mdl.dx = 0.25;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
@@ -116,10 +117,9 @@ BOOST_AUTO_TEST_CASE( integration_test,
     BOOST_TEST(max_value == 0.07257921834603551);
 }
 
-BOOST_AUTO_TEST_CASE( memory_leak, 
-    *utf::tolerance(1e-1))
+BOOST_AUTO_TEST_CASE( memory_leak)
 {   
     Model model;
-    for(unsigned long int i = 0; i < 1e4; ++i)
+    for(unsigned long int i = 0; i < 1e5; ++i)
         River::Solver sim(&model);
 }
