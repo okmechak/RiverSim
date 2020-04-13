@@ -274,6 +274,8 @@ namespace River
     {
         Clear();
 
+        field_value = 0;
+
         border[1] = 
         {
             {/*vertices(counterclockwise order)*/
@@ -310,6 +312,8 @@ namespace River
     void Model::InitializePoisson()
     {
         Clear();
+
+        field_value = 1;
         
         border[1] = 
         {
@@ -348,6 +352,8 @@ namespace River
     {
         Clear();
 
+        field_value = 1;
+
         border[1] = 
         {
             {/*vertices(counterclockwise order)*/
@@ -384,6 +390,8 @@ namespace River
     void Model::InitializeDirichletWithHole()
     {
         Clear();
+
+        field_value = 1;
 
         border[1] = 
         {/*Outer Boundary*/
