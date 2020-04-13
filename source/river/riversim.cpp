@@ -32,6 +32,9 @@ namespace River
         print(model.prog_opt.verbose, "Boundary generation...");
         //initial boundaries of mesh
         auto boundary = SimpleBoundaryGenerator(model);
+        if(boundary.vertices.size() == 0)
+            throw Exception("TriangulateBoundaries: boundary is enpty");
+
         tethex::Mesh mesh(boundary);
         mesh.write(file_name + "_boundary.msh");
         
@@ -53,6 +56,7 @@ namespace River
         //Simulation
         //Deal.II library
         print(model.prog_opt.verbose, "Solving...");
+        sim.clear();
         sim.OpenMesh(file_name + ".msh");
         sim.static_refine_grid(model, model.tree.TipPoints());
         sim.run();
@@ -62,6 +66,9 @@ namespace River
 
     map<int, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim)
     {
+        if(!sim.solved())
+            throw Exception("EvaluateSeriesParameteresOfTips: run of solver wasn't called");
+
         map<int, vector<double>> id_series_params;
         for(auto id: model.tree.TipBranchesIds())
         {
@@ -73,19 +80,22 @@ namespace River
         return id_series_params;
     }
 
-    double MaximalA1Value(map<int, vector<double>> ids_seriesparams_map)
+    double MaximalA1Value(const map<int, vector<double>>& ids_seriesparams_map)
     {
         double max_a = 0.;
-        for(auto&[id, series_params]: ids_seriesparams_map)
+        for(const auto&[id, series_params]: ids_seriesparams_map)
             if(max_a < series_params.at(0))
                 max_a = series_params.at(0);
 
         return max_a;
     }
 
-    void GrowTree(Model &model, map<int, vector<double>> id_series_params, double max_a)
+    void GrowTree(Model &model, const map<int, vector<double>>& id_series_params, double max_a)
     {
-        for(auto&[id, series_params]: id_series_params)
+        if(model.tree.empty())
+            throw Exception("GrowTree: tree is empty");
+
+        for(const auto&[id, series_params]: id_series_params)
             if(model.q_growth(series_params))
             {
                 if(model.q_bifurcate(series_params, model.tree.at(id).Lenght()))
@@ -107,18 +117,21 @@ namespace River
             }
     }
 
-    void ShrinkTree(Model& model, map<int, vector<double>> id_series_params, double max_a)
+    void ShrinkTree(Model& model, const map<int, vector<double>>& id_series_params, double max_a)
     {
+        if(model.tree.empty())
+            throw Exception("ShrinkTree: tree is empty");
+
         print(model.prog_opt.verbose, "Shrinking each branch...");
-        for(auto[id, series_params]: id_series_params)
+        for(const auto&[id, series_params]: id_series_params)
             if(model.q_growth(series_params))
                 model.tree.at(id).
-                    Shrink(model.next_point(
-                        series_params, 
-                        model.growth_min_distance + 1/*we are not constraining here speed growth near 
-                        biffuraction points, so we set some value greater than it limit*/, max_a).r);
+                    Shrink(
+                        model.next_point(
+                            series_params, 
+                            model.growth_min_distance + 9/*we are not constraining here speed growth near 
+                            biffuraction points, so we set some value greater than its limit*/, max_a).r);
     }
-
 
     void ForwardRiverEvolution(Model& model, Triangle& tria, Solver& sim,
         const string file_name, double max_a_backward)

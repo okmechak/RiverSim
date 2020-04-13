@@ -59,6 +59,18 @@ namespace River
     */
     bool StopConditionOfRiverGrowth(const Model& model);
 
+    tethex::Mesh TriangulateBoundaries(Model& model, Triangle& tria, const string file_name);
+    
+    void SolvePDE(Model& model, Solver& sim, const string file_name);
+    
+    map<int, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim);
+    
+    double MaximalA1Value(const map<int, vector<double>>& ids_seriesparams_map);
+
+    void GrowTree(Model &model, const map<int, vector<double>>& id_series_params, double max_a);
+
+    void ShrinkTree(Model& model, const map<int, vector<double>>& id_series_params, double max_a);
+
     /*!One step of forward river evolution.*/
     void ForwardRiverEvolution(
         Model& model, Triangle& tria, Solver& sim,
