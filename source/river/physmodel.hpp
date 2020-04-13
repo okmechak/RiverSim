@@ -253,10 +253,10 @@ namespace River
             /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
                 \details Refinment means splitting one rectangular element into four rectagular elements.
             */ 
-            unsigned static_refinment_steps = 3;
+            unsigned static_refinment_steps = 1;
 
             ///Minimal area of mesh.
-            double min_area = 7e-8;
+            double min_area = 7e-4;
 
             ///Maximal area of mesh element.
             double max_area = 1e5;
@@ -384,7 +384,7 @@ namespace River
             unsigned num_of_iterrations = 6000;
 
             ///Number of adaptive refinment steps.
-            unsigned adaptive_refinment_steps = 0;
+            unsigned adaptive_refinment_steps = 2;
 
             ///Fraction of refined mesh elements.
             double refinment_fraction = 0.1;
@@ -456,7 +456,7 @@ namespace River
             
             //Numeriacal parameters
             ///Maximal length of one step of growth.
-            double ds = 0.003;
+            double ds = 0.01;
 
             ///Eta. Growth power of a1^eta
             double eta = 1.0;
@@ -490,7 +490,7 @@ namespace River
             ///More details about that you can find at [PMorawiecki work]()
             bool q_bifurcate(vector<double> a, double branch_lenght) const
             {
-                bool dist_flag = branch_lenght > bifurcation_min_dist;
+                bool dist_flag = branch_lenght >= bifurcation_min_dist;
 
                 if(bifurcation_type == 0)
                 {
@@ -521,12 +521,10 @@ namespace River
             ///Checks series parameters around river tip and evaluates if it is enough to grow.
             inline bool q_growth(vector<double> a) const
             {
-                return a.at(0) > growth_threshold;
+                return a.at(0) >= growth_threshold;
             }
 
-            /*! \brief Evaluate next point of simualtion based on series parameters around tip.
-                \todo test different types of growth. Especially growth_type == 1.
-            */
+            ///Evaluate next point of simualtion based on series parameters around tip.
             Polar next_point(vector<double> series_params, double branch_lenght, double max_a) const
             {
                 //handle situation near bifurcation point, to reduce "killing/shading" one branch by another
@@ -536,6 +534,7 @@ namespace River
 
                 auto beta = series_params.at(0)/series_params.at(1),
                     dl = ds * pow(series_params.at(0)/max_a, eta_local);
+
                 if(growth_type == 0)
                 {
                     double phi = -atan(2 / beta * sqrt(dl));
