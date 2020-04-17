@@ -64,12 +64,12 @@ namespace River
             sim.output_results(file_name);
     }
 
-    map<int, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim)
+    map<t_branch_id, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim)
     {
         if(!sim.solved())
             throw Exception("EvaluateSeriesParameteresOfTips: run of solver wasn't called");
 
-        map<int, vector<double>> id_series_params;
+        map<t_branch_id, vector<double>> id_series_params;
         for(auto id: model.tree.TipBranchesIds())
         {
             auto tip_point = model.tree.at(id).TipPoint();
@@ -80,7 +80,7 @@ namespace River
         return id_series_params;
     }
 
-    double MaximalA1Value(const map<int, vector<double>>& ids_seriesparams_map)
+    double MaximalA1Value(const map<t_branch_id, vector<double>>& ids_seriesparams_map)
     {
         double max_a = 0.;
         for(const auto&[id, series_params]: ids_seriesparams_map)
@@ -90,7 +90,7 @@ namespace River
         return max_a;
     }
 
-    void GrowTree(Model &model, const map<int, vector<double>>& id_series_params, double max_a)
+    void GrowTree(Model &model, const map<t_branch_id, vector<double>>& id_series_params, double max_a)
     {
         if(model.tree.empty())
             throw Exception("GrowTree: tree is empty");
@@ -117,7 +117,7 @@ namespace River
             }
     }
 
-    void ShrinkTree(Model& model, const map<int, vector<double>>& id_series_params, double max_a)
+    void ShrinkTree(Model& model, const map<t_branch_id, vector<double>>& id_series_params, double max_a)
     {
         if(model.tree.empty())
             throw Exception("ShrinkTree: tree is empty");
@@ -141,6 +141,8 @@ namespace River
         auto id_series_params_map = EvaluateSeriesParameteresOfTips(model, sim);
         sim.clear();
 
+        model.model_sim_data.RecordSeriesParams(id_series_params_map);
+
         //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
         double max_a = 0.;
         if(max_a_backward > 0)
@@ -153,7 +155,7 @@ namespace River
 
     //This function only makes evaluation of bacward river growth based on pde solution and geometry
     //it returns data like difference betweem branches if they reached zero
-    map<int, vector<double>> BackwardRiverEvolution(Model& model, Solver& sim)
+    map<t_branch_id, vector<double>> BackwardRiverEvolution(Model& model, Solver& sim)
     {
         //preevaluation series params to each tip point.
         print(model.prog_opt.verbose, "Series parameters integration over each tip point...");
@@ -196,7 +198,7 @@ namespace River
         //tree_B will be representing simulated river geometry with new parameters.
         print(model.prog_opt.verbose, "Backward steps:");
         Tree tree_initial = model.tree;
-        map<int, vector<double>> ids_seriesparams_map;
+        map<t_branch_id, vector<double>> ids_seriesparams_map;
         vector<double> maximal_a1_params; //this vectors stores maximal a1 params which are used further in forward simulation
         for(unsigned i = 0; i < model.prog_opt.number_of_backward_steps; ++i)
         {

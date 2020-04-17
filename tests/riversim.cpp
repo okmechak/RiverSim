@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE( Maximal_A1_Value,
 {
     BOOST_TEST(MaximalA1Value({}) == 0);
 
-    map<int, vector<double>> id_series_params;
+    map<t_branch_id, vector<double>> id_series_params;
     id_series_params[1] = {1,  2, 3};
     id_series_params[2] = {10, 2, 3};
     id_series_params[3] = {2,  2, 3};
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE( Grow_Tree,
     model.bifurcation_type = 0;
     model.bifurcation_threshold = -1;
     model.eta = 0;
-    map<int, vector<double>> id_series_params;
+    map<t_branch_id, vector<double>> id_series_params;
     BOOST_CHECK_THROW(GrowTree(model, id_series_params, 0), Exception);
 
     auto source_branch = BranchNew{{0, 0}, M_PI/2.};
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE( Grow_Tree_biffurcation,
 
     auto source_branch = BranchNew{{0, 0}, 0};
     auto id = model.tree.AddBranch(source_branch);
-    map<int, vector<double>> id_series_params;
+    map<t_branch_id, vector<double>> id_series_params;
     id_series_params[id] = {1, 0, 0};
 
     BOOST_CHECK_NO_THROW(GrowTree(model, id_series_params, 1));
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE( Shrink_Tree,
     *utf::description("edge test and simple max value"))
 {
     Model model;
-    map<int, vector<double>> id_series_params;
+    map<t_branch_id, vector<double>> id_series_params;
 
     //Empty test
     BOOST_CHECK_THROW(ShrinkTree(model, id_series_params, 0), Exception);

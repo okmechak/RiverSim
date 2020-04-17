@@ -108,3 +108,24 @@ BOOST_AUTO_TEST_CASE( next_point,
     BOOST_TEST((model.next_point({0.5, 0, 1}, 1, 1) == Polar{model.ds*0.25, 0}));
 }
 
+BOOST_AUTO_TEST_CASE( Model_Simulation_Data, 
+    *utf::tolerance(eps))
+{
+    ModelSimulationData model_sim_data;
+    BOOST_TEST(model_sim_data.empty());
+
+    map<t_branch_id, vector<double>> id_series_params;
+    id_series_params[1] = {1., 2., 3.};
+    id_series_params[2] = {4., 5., 6.};
+    id_series_params[3] = {7., 8., 9.};
+    model_sim_data.RecordSeriesParams(id_series_params);
+    BOOST_TEST((model_sim_data.at(1).at(0) == vector<double>{1., 2., 3.}));
+    BOOST_TEST((model_sim_data.at(2).at(0) == vector<double>{4., 5., 6.}));
+    BOOST_TEST((model_sim_data.at(3).at(0) == vector<double>{7., 8., 9.}));
+
+    model_sim_data.RecordSeriesParams(id_series_params);
+    BOOST_TEST((model_sim_data.at(1).at(1) == vector<double>{1., 2., 3.}));
+    BOOST_TEST((model_sim_data.at(2).at(1) == vector<double>{4., 5., 6.}));
+    BOOST_TEST((model_sim_data.at(3).at(1) == vector<double>{7., 8., 9.}));
+
+}

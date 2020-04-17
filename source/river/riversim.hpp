@@ -63,13 +63,13 @@ namespace River
     
     void SolvePDE(Model& model, Solver& sim, const string file_name);
     
-    map<int, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim);
+    map<t_branch_id, vector<double>> EvaluateSeriesParameteresOfTips(Model &model, Solver& sim);
     
-    double MaximalA1Value(const map<int, vector<double>>& ids_seriesparams_map);
+    double MaximalA1Value(const map<t_branch_id, vector<double>>& ids_seriesparams_map);
 
-    void GrowTree(Model &model, const map<int, vector<double>>& id_series_params, double max_a);
+    void GrowTree(Model &model, const map<t_branch_id, vector<double>>& id_series_params, double max_a);
 
-    void ShrinkTree(Model& model, const map<int, vector<double>>& id_series_params, double max_a);
+    void ShrinkTree(Model& model, const map<t_branch_id, vector<double>>& id_series_params, double max_a);
 
     /*!One step of forward river evolution.*/
     void ForwardRiverEvolution(
@@ -78,7 +78,7 @@ namespace River
     
     ///This function only makes evaluation of bacward river growth based on pde solution and geometry
     ///but still it returns some data like difference betweem branches if they reached zero.
-    map<int, vector<double>> BackwardRiverEvolution(const Model& model, Solver& sim);
+    map<t_branch_id, vector<double>> BackwardRiverEvolution(const Model& model, Solver& sim);
 
     ///One step of backward river evolution and its data.
     void BackwardForwardRiverEvolution(

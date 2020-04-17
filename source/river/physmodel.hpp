@@ -47,7 +47,33 @@ using namespace std;
 namespace River
 {
 
-    typedef map<t_branch_id, vector<vector<double>>> ModelSimulationData;
+    typedef map<t_branch_id, vector<vector<double>>> t_ModelSimulationData;
+
+    class ModelSimulationData: public t_ModelSimulationData
+    {
+        public:
+            void RecordSeriesParams(const map<t_branch_id, vector<double>>& id_series_params)
+            {
+                for(const auto&[branch_id, series_params]: id_series_params)
+                {
+                    if (!this->count(branch_id))
+                        (*this)[branch_id] = {};
+                    
+                    (*this)[branch_id].push_back(series_params);
+                }
+                    
+            }
+    };
+
+    class SimulationData
+    {
+        public: 
+            ModelSimulationData model_sim_data;
+            //backward data
+            vector<size_t> mesh_size;
+            vector<size_t> degree_of_freedom;
+            map<string, vector<double>> timing;
+    };
 
     /*! \brief Timing is used for measuring time of each evaluation cycle and whole program simulation time.
         \details
@@ -434,6 +460,8 @@ namespace River
             SolverParams solver_params;
 
             ModelSimulationData model_sim_data;
+
+            SimulationData sim_data;
 
             void InitializeLaplace();
             void InitializePoisson();

@@ -321,6 +321,10 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.tree.AddSubBranches(1, br1left, br1right);
     mdl_out.tree.AddSubBranches(3, br2left, br2right);
 
+    //ModelSimulationData
+    mdl_out.model_sim_data[1] = {{1., 2., 3.}, {1., 2., 3.}};
+    mdl_out.model_sim_data[2] = {{4., 5., 6.}, {7., 8., 9.}};
+
     //Geometry difference object
     mdl_out.geometry_difference.branches_bifuraction_info[1] = {{2, 3}, {3, 4}, {4, 5}, {5, 6}};
     mdl_out.geometry_difference.branches_series_params_and_geom_diff[1] = {{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
@@ -402,6 +406,8 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.tree.at(5).TipPoint().y == 10.);
     BOOST_TEST(mdl_in.tree.at(1).TipPoint().x == 0.25);
     BOOST_TEST(mdl_in.tree.at(1).TipPoint().y == 0.);
+
+    BOOST_TEST(mdl_out.model_sim_data == mdl_in.model_sim_data);
 
     //GeometryDifference
     auto a1 = vector<vector<double>>{{2, 3}, {3, 4}, {4, 5}, {5, 6}},

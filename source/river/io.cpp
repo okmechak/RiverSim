@@ -444,6 +444,7 @@ namespace River
                 {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
                 {"Relations", model.tree.branches_relation},
                 {"Branches", branches}}},
+            {"ModelSimulationData", (t_ModelSimulationData)model.model_sim_data},
                 
             {"GeometryDifference", {
                 {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in bifurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached bifurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."},
@@ -676,6 +677,14 @@ namespace River
         else if(j.count("Boundaries"))
             //If no tree provided but border is, than we reinitialize tree.. to current border.
             model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
+
+        if(j.count("ModelSimulationData"))
+        {
+            t_ModelSimulationData data;
+            j.at("ModelSimulationData").get_to(data);
+            for(const auto&[key, value]: data)
+                model.model_sim_data[key] = value;
+        }
 
         if(j.count("GeometryDifference"))
         { 
