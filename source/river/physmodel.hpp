@@ -46,6 +46,9 @@ using namespace std;
 
 namespace River
 {
+
+    typedef map<t_branch_id, vector<vector<double>>> ModelSimulationData;
+
     /*! \brief Timing is used for measuring time of each evaluation cycle and whole program simulation time.
         \details
         At creation of object it records current time into string.
@@ -430,6 +433,8 @@ namespace River
             ///Solver parameters used by Deal.II
             SolverParams solver_params;
 
+            ModelSimulationData model_sim_data;
+
             void InitializeLaplace();
             void InitializePoisson();
             void InitializeDirichlet();
@@ -496,20 +501,20 @@ namespace River
                 {
                     if(prog_opt.verbose)
                         cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
-                    return a.at(2)/a.at(0) < bifurcation_threshold && dist_flag;
+                    return (a.at(2)/a.at(0) <= bifurcation_threshold) && dist_flag;
                 }
                 else if(bifurcation_type == 1)
                 {
                     if(prog_opt.verbose)
                         cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
-                    return a.at(0) > bifurcation_threshold_2 && dist_flag;
+                    return (a.at(0) >= bifurcation_threshold_2) && dist_flag;
                 }
                 else if(bifurcation_type == 2)
                 {
                     if(prog_opt.verbose)
                         cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
                              << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
-                    return a.at(2)/a.at(0) < bifurcation_threshold && a.at(0) > bifurcation_threshold_2 && dist_flag;
+                    return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold_2 && dist_flag;
                 }
                 else if(bifurcation_type == 3)
                     return false;

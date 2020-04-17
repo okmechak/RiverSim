@@ -38,3 +38,73 @@ BOOST_AUTO_TEST_CASE( next_point_method,
     BOOST_TEST(p.r == pow(mdl.ds, mdl.eta));
     BOOST_TEST(p.phi ==-0.054918865933649114);
 }
+
+BOOST_AUTO_TEST_CASE( mesh_params, 
+    *utf::tolerance(eps))
+{
+    MeshParams mesh_params;
+    mesh_params.tip_points = {{0., 0.}, {100, 100}};
+    mesh_params.exponant = 100;
+    mesh_params.sigma = 1;
+    mesh_params.min_area = 0.1;
+    mesh_params.max_area = 10;
+    mesh_params.refinment_radius = 1;
+
+    BOOST_TEST(mesh_params(0, 0) == mesh_params.min_area);
+    BOOST_TEST(mesh_params(10, 10) == mesh_params.max_area);
+    BOOST_TEST(mesh_params(100, 100) == mesh_params.min_area);
+}
+
+BOOST_AUTO_TEST_CASE( q_bifurcate, 
+    *utf::tolerance(eps))
+{
+    Model model;
+    model.bifurcation_min_dist = 10;
+    model.bifurcation_type = 0;
+    BOOST_TEST(model.q_bifurcate({1, 2, 3}, 6) == false);
+
+    model.bifurcation_type = 0;
+    model.bifurcation_threshold = 3;
+    BOOST_TEST(model.q_bifurcate({1, 2, 3}, 11) == true);
+
+    model.bifurcation_threshold = 2.999;
+    BOOST_TEST(model.q_bifurcate({1, 2, 3}, 11) == false);
+
+    model.bifurcation_type = 1;
+    model.bifurcation_threshold_2 = 10;
+    BOOST_TEST(model.q_bifurcate({10, 2, 3}, 11) == true);
+
+    model.bifurcation_threshold_2 = 10;
+    BOOST_TEST(model.q_bifurcate({9.99, 2, 3}, 11) == false);
+}
+
+BOOST_AUTO_TEST_CASE( q_growth, 
+    *utf::tolerance(eps))
+{
+    Model model;
+    model.growth_threshold = 1;
+    BOOST_TEST(model.q_growth({1, 2, 3}) == true);
+
+    model.growth_threshold = 1.00001;
+    BOOST_TEST(model.q_growth({1, 2, 3}) == false);
+}
+
+BOOST_AUTO_TEST_CASE( next_point, 
+    *utf::tolerance(eps))
+{
+    Model model;
+    model.ds = 0.1;
+    model.eta = 1;
+    model.growth_min_distance = 0;
+
+    BOOST_TEST((model.next_point({1, 0, 1}, 0, 1) == Polar{model.ds, 0}));
+
+    model.eta = 2;
+    model.growth_min_distance = 1;
+    BOOST_TEST((model.next_point({1, 0, 1}, 0, 1) == Polar{model.ds, 0}));
+    BOOST_TEST((model.next_point({0.5, 0, 1}, 0, 1) == Polar{model.ds, 0}));
+
+    BOOST_TEST((model.next_point({1, 0, 1}, 1, 1) == Polar{model.ds, 0}));
+    BOOST_TEST((model.next_point({0.5, 0, 1}, 1, 1) == Polar{model.ds*0.25, 0}));
+}
+
