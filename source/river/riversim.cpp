@@ -139,9 +139,11 @@ namespace River
         TriangulateBoundaries(model, tria, file_name);
         SolvePDE(model, sim, file_name);
         auto id_series_params_map = EvaluateSeriesParameteresOfTips(model, sim);
+        model.sim_data.mesh_size.push_back(sim.NumberOfRefinedCells());
+        model.sim_data.degree_of_freedom.push_back(sim.NumberOfDOFs());
         sim.clear();
 
-        model.model_sim_data.RecordSeriesParams(id_series_params_map);
+        model.sim_data.model_sim_data.RecordSeriesParams(id_series_params_map);
 
         //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
         double max_a = 0.;

@@ -128,6 +128,11 @@ namespace River
                 return triangulation.n_active_cells();
             }
 
+            unsigned long NumberOfDOFs()
+            {
+                return dof_handler.n_dofs();
+            }
+
             ///Run fem solution.
             void run();
 
