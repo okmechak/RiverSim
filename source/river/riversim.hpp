@@ -47,7 +47,7 @@ namespace River
 
             void euler_solver();
             
-            void one_step();
+            void one_step(string output_file_name);
             double maximal_distance();
             void advanced_solver();
 

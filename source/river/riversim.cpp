@@ -62,9 +62,8 @@ namespace River
         }
     }
 
-    void ForwardRiverSimulation::one_step()
+    void ForwardRiverSimulation::one_step(string output_file_name)
     {
-        string output_file_name = model->prog_opt.output_file_name;
         generate_boudaries(output_file_name);
         generate_mesh_file(output_file_name);
         solve(output_file_name);
@@ -83,7 +82,7 @@ namespace River
             if(model->prog_opt.save_each_step || model->prog_opt.debug)
                 output_file_name += "_" + to_string(step);
 
-            one_step();
+            one_step(output_file_name + "_first_half_step");
             if( model->prog_opt.debug)
                 Save(*model, output_file_name + "_first_half_step");
 
@@ -91,10 +90,10 @@ namespace River
             unsigned i = 0;
             while(true)
             {                                   
-                print(model->prog_opt.verbose, "non-euler solver cycle----------#" + to_string(i++) + "--------------------------------");
+                print(model->prog_opt.verbose, "non-euler solver cycle----------#" + to_string(i) + "--------------------------------");
                 auto bif_type = model->bifurcation_type;
                 model->bifurcation_type = 3;//no biffurcation
-                one_step();
+                one_step(output_file_name + "_second_half_step_" + to_string(i));
                 model->bifurcation_type = bif_type;
 
                 if( model->prog_opt.debug)
@@ -119,6 +118,7 @@ namespace River
                     model->RevertLastSimulationStep();
                     break;
                 }
+                ++i;
             }
             Save(*model, model->prog_opt.output_file_name);
         }

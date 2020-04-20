@@ -17,6 +17,7 @@
         "string_view": "cpp",
         "regex": "cpp",
         "cmath": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "string": "cpp"
     }
 }
