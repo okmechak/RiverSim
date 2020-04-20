@@ -99,7 +99,6 @@ namespace River
                 if( model->prog_opt.debug)
                     Save(*model, output_file_name + "_second_half_step_" + to_string(i));
                     
-
                 if(model->tree.maximal_tip_curvature_distance() > model->solver_params.max_distance)
                 {
                     auto tip_ids = model->tree.TipBranchesIds();
@@ -120,7 +119,7 @@ namespace River
                 }
                 ++i;
             }
-            Save(*model, model->prog_opt.output_file_name);
+            Save(*model, output_file_name);
         }
     }
 
