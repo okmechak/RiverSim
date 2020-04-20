@@ -363,7 +363,7 @@ namespace River
             }
 
             ///Evaluates curvature of tips. Used in non-euler growth
-            double maximal_tip_curvature() const;
+            double maximal_tip_curvature_distance() const;
 
             ///Removes tips points, or in other words reverts one step of simulation.
             void remove_tip_points();

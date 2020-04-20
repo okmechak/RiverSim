@@ -346,13 +346,11 @@ namespace River
     void Solver::run()
     {
         for (unsigned cycle = 0; cycle <= num_of_adaptive_refinments; ++cycle)
-        {
+        {                   
+            print(verbose, "adaptive mesh solver cycle-#" + to_string(cycle) + "---------------------------");
             
             if (cycle > 0)
-            {
-                print(verbose, "--------------------------------#" + to_string(cycle) + "--------------------------------");
                 refine_grid();
-            }
             print(verbose, "   Number of active cells:");
             print(verbose, "\t" + to_string(triangulation.n_active_cells()));
             setup_system();

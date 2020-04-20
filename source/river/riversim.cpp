@@ -35,7 +35,7 @@ namespace River
             print(model->prog_opt.verbose, "----------------------------------------#" + to_string(step) + "----------------------------------------");
 
             string output_file_name = model->prog_opt.output_file_name;
-            if(model->prog_opt.save_each_step)
+            if(model->prog_opt.save_each_step || model->prog_opt.debug)
                 output_file_name += "_" + to_string(step);
 
             print(model->prog_opt.verbose, "Boundary generation...");
@@ -72,47 +72,36 @@ namespace River
         auto max_a1 = get_max_a1(id_series_params);
         grow_tree(id_series_params, max_a1);
     }
-
-    /// \todo this function should be part of tree class
-    double ForwardRiverSimulation::maximal_distance()
-    {
-        double max_dist = 0.;
-
-        auto tip_ids = model->tree.TipBranchesIds();
-
-        for(auto id: tip_ids)
-        {
-            auto branch = model->tree.at(id);
-            auto tip_p_pos = branch.size() - 1;
-            auto 
-                av_midle_point = (branch.at(tip_p_pos) + branch.at(tip_p_pos - 2))/2,
-                midle_point = branch.at(tip_p_pos - 1);
-
-            auto dist = (av_midle_point - midle_point).norm();
-
-            if(dist > max_dist)
-                max_dist = dist;
-        }
-
-        return max_dist;
-    }
     
-    /// \todo how about making method: revert of model class?
-    /// \todo make method revert for tree.
     void ForwardRiverSimulation::advanced_solver()
     {
         for(unsigned step = 0; step < model->prog_opt.number_of_steps; ++step)
-        {
-            print(model->prog_opt.verbose, "----------------------------------------#" + to_string(step) + "----------------------------------------");
+        {                                   
+            print(model->prog_opt.verbose, "global cycle----------------------------#" + to_string(step) + "----------------------------------------");
+            
+            string output_file_name = model->prog_opt.output_file_name;
+            if(model->prog_opt.save_each_step || model->prog_opt.debug)
+                output_file_name += "_" + to_string(step);
+
             one_step();
+            if( model->prog_opt.debug)
+                Save(*model, output_file_name + "_first_half_step");
+
+
+            unsigned i = 0;
             while(true)
-            {    
+            {                                   
+                print(model->prog_opt.verbose, "non-euler solver cycle----------#" + to_string(i++) + "--------------------------------");
                 auto bif_type = model->bifurcation_type;
                 model->bifurcation_type = 3;//no biffurcation
                 one_step();
                 model->bifurcation_type = bif_type;
 
-                if(maximal_distance() > model->solver_params.max_distance)
+                if( model->prog_opt.debug)
+                    Save(*model, output_file_name + "_second_half_step_" + to_string(i));
+                    
+
+                if(model->tree.maximal_tip_curvature_distance() > model->solver_params.max_distance)
                 {
                     auto tip_ids = model->tree.TipBranchesIds();
                     for(auto id: tip_ids)
@@ -127,9 +116,7 @@ namespace River
                 }
                 else
                 {
-                    //should we delete last step? - yes cos this growth is without bifurcations.
-                    for(auto id: model->tree.TipBranchesIds())
-                        model->tree.at(id).pop_back();
+                    model->RevertLastSimulationStep();
                     break;
                 }
             }
@@ -147,10 +134,14 @@ namespace River
     void ForwardRiverSimulation::generate_mesh_file(string file_name)
     {
         auto mesh = tethex::Mesh(boundary);
-        mesh.write(file_name + "_boundary.msh");
+        if(model->prog_opt.debug)
+            mesh.write(file_name + "_boundary.msh");
 
         triangle->mesh_params->tip_points = model->tree.TipPoints();
         triangle->generate(mesh);//triangulation
+
+        if(model->prog_opt.debug)
+            mesh.write(file_name + "_triangles.msh");
 
         mesh.convert();//convertaion from triangles to quadrangles
 
@@ -163,7 +154,7 @@ namespace River
         solver->OpenMesh(mesh_file_name + ".msh");
         solver->static_refine_grid(*model, model->tree.TipPoints());
         solver->run();
-        if (model->prog_opt.save_vtk)
+        if (model->prog_opt.save_vtk || model->prog_opt.debug)
             solver->output_results(mesh_file_name);
     }
 

@@ -322,7 +322,7 @@ namespace River
         return ids_points_map;
     }
 
-    double Tree::maximal_tip_curvature() const
+    double Tree::maximal_tip_curvature_distance() const
     {
         double max_dist = 0;
         for(auto id: TipBranchesIds())
