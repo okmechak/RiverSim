@@ -76,6 +76,7 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.solver_params.adaptive_refinment_steps == model_po.solver_params.adaptive_refinment_steps);
     BOOST_TEST(model.solver_params.refinment_fraction == model_po.solver_params.refinment_fraction);
     BOOST_TEST(model.solver_params.quadrature_degree == model_po.solver_params.quadrature_degree);
+    BOOST_TEST(model.solver_params.max_distance == model_po.solver_params.max_distance);
 
     //model parameters
     BOOST_TEST(model.dx == model_po.dx);
@@ -141,6 +142,7 @@ BOOST_AUTO_TEST_CASE( program_options,
         "--adaptive-refinment-steps", "20",
         "--refinment-fraction", "21", 
         "--quadrature-degree", "22", 
+        "--max-dist", "99",
 
         //model options
         "--dx", "23",
@@ -219,6 +221,7 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.solver_params.adaptive_refinment_steps == 20);
     BOOST_TEST(model.solver_params.refinment_fraction == 21);
     BOOST_TEST(model.solver_params.quadrature_degree == 22);
+    BOOST_TEST(model.solver_params.max_distance == 99);
 
     //model parameters
     BOOST_TEST(model.dx == 23);
@@ -278,6 +281,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.solver_params.adaptive_refinment_steps = 32;
     mdl_out.solver_params.tollerance = 33;
     mdl_out.solver_params.num_of_iterrations = 34;
+    mdl_out.solver_params.max_distance = 99.;
 
     //model options
     mdl_out.dx = 1;
@@ -374,11 +378,12 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.integr.exponant == 3);
 
     //solver parameters
-    BOOST_TEST(mdl_in.solver_params.quadrature_degree = 31);
-    BOOST_TEST(mdl_in.solver_params.refinment_fraction = 10);
-    BOOST_TEST(mdl_in.solver_params.adaptive_refinment_steps = 32);
-    BOOST_TEST(mdl_in.solver_params.tollerance = 33);
-    BOOST_TEST(mdl_in.solver_params.num_of_iterrations = 34);
+    BOOST_TEST(mdl_in.solver_params.quadrature_degree == 31);
+    BOOST_TEST(mdl_in.solver_params.refinment_fraction == 10);
+    BOOST_TEST(mdl_in.solver_params.adaptive_refinment_steps == 32);
+    BOOST_TEST(mdl_in.solver_params.tollerance == 33);
+    BOOST_TEST(mdl_in.solver_params.num_of_iterrations == 34);
+    BOOST_TEST(mdl_in.solver_params.max_distance == 99);
 
     //model parameters
     BOOST_TEST(mdl_in.dx == 1);

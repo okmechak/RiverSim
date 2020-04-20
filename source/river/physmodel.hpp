@@ -424,6 +424,9 @@ namespace River
             ///Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
             unsigned renumbering_type = 0;
 
+            ///maximal distance between middle point and first solved point, used in non euler growth.
+            double max_distance = 0.002;
+
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const SolverParams & mp);
     };

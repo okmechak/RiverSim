@@ -211,7 +211,9 @@ namespace River
         ("refinment-fraction", "Fraction(percent from total, 0.01 corresponds to 1%) of refined mesh elements using Deal.II adaptive mesh capabilities.", 
             value<double>()->default_value(to_string(model.solver_params.refinment_fraction)))
         ("adaptive-refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
-            value<unsigned>()->default_value(to_string(model.solver_params.adaptive_refinment_steps)));
+            value<unsigned>()->default_value(to_string(model.solver_params.adaptive_refinment_steps)))
+        ("max-dist", "Used by non-euler solver.", 
+            value<double>()->default_value(to_string(model.solver_params.max_distance)));
 
         
         options.parse_positional({"input"});
@@ -284,6 +286,7 @@ namespace River
         if (vm.count("adaptive-refinment-steps")) model.solver_params.adaptive_refinment_steps = vm["adaptive-refinment-steps"].as<unsigned>();
         if (vm.count("refinment-fraction")) model.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
         if (vm.count("quadrature-degree")) model.solver_params.quadrature_degree = vm["quadrature-degree"].as<unsigned>();
+        if (vm.count("max-dist")) model.solver_params.max_distance = vm["max-dist"].as<double>();
 
         //model parameters
         //geometry
@@ -434,7 +437,8 @@ namespace River
                     {"IterationSteps", model.solver_params.num_of_iterrations},
                     {"QuadratureDegree", model.solver_params.quadrature_degree},
                     {"RefinmentFraction", model.solver_params.refinment_fraction},
-                    {"AdaptiveRefinmentSteps", model.solver_params.adaptive_refinment_steps}}}}
+                    {"AdaptiveRefinmentSteps", model.solver_params.adaptive_refinment_steps},
+                    {"MaximalDistance", model.solver_params.max_distance}}}}
             },
             
             {"Boundaries", jboundaries},
@@ -544,8 +548,9 @@ namespace River
                 if (jsolver.count("QuadratureDegree")) jsolver.at("QuadratureDegree").get_to(model.solver_params.quadrature_degree);
                 if (jsolver.count("RefinmentFraction")) jsolver.at("RefinmentFraction").get_to(model.solver_params.refinment_fraction);
                 if (jsolver.count("AdaptiveRefinmentSteps")) jsolver.at("AdaptiveRefinmentSteps").get_to(model.solver_params.adaptive_refinment_steps);
-                if (jsolver.count("tollerance")) jsolver.at("Tollerance").get_to(model.solver_params.tollerance);
+                if (jsolver.count("Tollerance")) jsolver.at("Tollerance").get_to(model.solver_params.tollerance);
                 if (jsolver.count("IterationSteps")) jsolver.at("IterationSteps").get_to(model.solver_params.num_of_iterrations);
+                if (jsolver.count("MaximalDistance")) jsolver.at("MaximalDistance").get_to(model.solver_params.max_distance);
             }
         }
 
