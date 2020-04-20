@@ -69,3 +69,6 @@ tests/mesh_max_triangle_ratio.msh
 tests/mesh_min_angle.msh
 tests/mesh_min_area.msh
 tests/mesh_min_edge_lenght.msh
+tests/test_boundary.msh
+tests/Forward_River_Evolution_boundary.msh
+tests/Forward_River_Evolution.msh
