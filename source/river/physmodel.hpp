@@ -528,20 +528,23 @@ namespace River
                 if(bifurcation_type == 0)
                 {
                     if(prog_opt.verbose)
-                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
+                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
+                             << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
                     return (a.at(2)/a.at(0) <= bifurcation_threshold) && dist_flag;
                 }
                 else if(bifurcation_type == 1)
                 {
                     if(prog_opt.verbose)
-                        cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
+                        cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2
+                             << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
                     return (a.at(0) >= bifurcation_threshold_2) && dist_flag;
                 }
                 else if(bifurcation_type == 2)
                 {
                     if(prog_opt.verbose)
                         cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
-                             << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
+                             << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2
+                             << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
                     return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold_2 && dist_flag;
                 }
                 else if(bifurcation_type == 3)
@@ -554,6 +557,7 @@ namespace River
             ///Checks series parameters around river tip and evaluates if it is enough to grow.
             inline bool q_growth(vector<double> a) const
             {
+                cout << "a1 = " << a.at(0) << ", growth threshold = " << growth_threshold << endl;
                 return a.at(0) >= growth_threshold;
             }
 

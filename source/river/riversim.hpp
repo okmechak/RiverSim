@@ -36,29 +36,60 @@
 
 namespace River
 {
-    /*!  Stop condition of river growth simulation.
+    class ForwardRiverSimulation
+    {
+        public:
+            ForwardRiverSimulation(Model* model, Triangle* triangle, Solver* solver):
+                model(model), 
+                triangle(triangle),
+                solver(solver)
+            {}
 
-         Evaluates if tip of tree is close enough to border. If it is, then 
-         it retuns _True_.
-         \imageSize{StopConditionOfRiverGrowth.jpg, height:40%;width:40%;, }
-         Example of usage in main.cpp function: 
-         \snippet main.cpp StopConditionExample
-         \param[in] border Boundary geometry
-         \param[in] tree River tree or network
-         \param[in] model Holds maximal value of y-coord, which can be reached by river
-         \return  Boolean value wich states is river tree close enough to border
-         \exception None
-         \pre No postcinditions
-         \post No postcinditions
-         \remark Some remark goes here
-         \note Just example of node tag
-         \bug works only for rectangular region and do not consider bottom line
-         \warning   Improper use can crash your application
-         \todo generalize to any boundary shape.
-         \todo in qudrangular shape crossing of bottom line isn't handled.
-    */
-    bool StopConditionOfRiverGrowth(const Model& model);
+            void euler_solver();
+            void advanced_solver();
 
+        protected: 
+
+            void generate_boudaries(string file_name);
+            void generate_mesh_file(string file_name);
+            void solve(string mesh_file_name);
+            map<t_branch_id, vector<double>> evaluate_series_parameters();
+            double get_max_a1(const map<t_branch_id, vector<double>>& id_series_params);
+            void grow_tree(const map<t_branch_id, vector<double>>& id_series_params, double max_a);
+            
+            /*! Stop condition of river growth simulation.
+                Evaluates if tip of tree is close enough to border. If it is, then 
+                it retuns _True_.
+                \imageSize{StopConditionOfRiverGrowth.jpg, height:40%;width:40%;, }
+                Example of usage in main.cpp function: 
+                \snippet main.cpp StopConditionExample
+                \param[in] border Boundary geometry
+                \param[in] tree River tree or network
+                \param[in] model Holds maximal value of y-coord, which can be reached by river
+                \return  Boolean value wich states is river tree close enough to border
+                \exception None
+                \pre No postcinditions
+                \post No postcinditions
+                \remark Some remark goes here
+                \note Just example of node tag
+                \bug works only for rectangular region and do not consider bottom line
+                \warning   Improper use can crash your application
+                \todo generalize to any boundary shape.
+                \todo in qudrangular shape crossing of bottom line isn't handled.
+            */
+            bool growth_stop_condition()
+            {
+                return false;
+            }
+
+            Model* model = NULL;
+            Triangle* triangle = NULL;
+            Solver* solver = NULL;
+
+            SimpleBoundary boundary;
+    };
+
+    
     tethex::Mesh TriangulateBoundaries(Model& model, Triangle& tria, const string file_name);
     
     void SolvePDE(Model& model, Solver& sim, const string file_name);

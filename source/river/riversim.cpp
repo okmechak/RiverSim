@@ -22,11 +22,127 @@
 
 namespace River
 {
-    bool StopConditionOfRiverGrowth(const Model& model)
-    {
-        return false;//todo
+    /*
+        ForwardRiverSimulation
+    */
+    void ForwardRiverSimulation::euler_solver()
+    {   
+        for(unsigned step = 0; step < model->prog_opt.number_of_steps; ++step)
+        {
+            if (growth_stop_condition())
+                break;
+            
+            print(model->prog_opt.verbose, "----------------------------------------#" + to_string(step) + "----------------------------------------");
+
+            string output_file_name = model->prog_opt.output_file_name;
+            if(model->prog_opt.save_each_step)
+                output_file_name += "_" + to_string(step);
+
+            print(model->prog_opt.verbose, "Boundary generation...");
+            generate_boudaries(output_file_name);
+
+            print(model->prog_opt.verbose, "Mesh generation...");
+            generate_mesh_file(output_file_name);
+
+            print(model->prog_opt.verbose, "Solving...");
+            solve(output_file_name);
+            model->sim_data.mesh_size.push_back(solver->NumberOfRefinedCells());
+            model->sim_data.degree_of_freedom.push_back(solver->NumberOfDOFs());
+
+            print(model->prog_opt.verbose, "Series parameters integration...");
+            auto id_series_params = evaluate_series_parameters();
+            model->sim_data.model_sim_data.RecordSeriesParams(id_series_params);
+
+            auto max_a1 = get_max_a1(id_series_params);
+
+            print(model->prog_opt.verbose, "Tree growth...");
+            grow_tree(id_series_params, max_a1);
+
+            Save(*model, output_file_name);
+        }
     }
 
+    void ForwardRiverSimulation::generate_boudaries(string file_name)
+    {
+        boundary = SimpleBoundaryGenerator(*model);
+        if(boundary.vertices.size() == 0)
+            throw Exception("TriangulateBoundaries: boundary is enpty");
+    }
+
+    void ForwardRiverSimulation::generate_mesh_file(string file_name)
+    {
+        auto mesh = tethex::Mesh(boundary);
+        mesh.write(file_name + "_boundary.msh");
+
+        triangle->mesh_params->tip_points = model->tree.TipPoints();
+        triangle->generate(mesh);//triangulation
+
+        mesh.convert();//convertaion from triangles to quadrangles
+
+        mesh.write(file_name + ".msh");
+    }
+
+    void ForwardRiverSimulation::solve(string mesh_file_name)
+    {
+        solver->clear();
+        solver->OpenMesh(mesh_file_name + ".msh");
+        solver->static_refine_grid(*model, model->tree.TipPoints());
+        solver->run();
+        if (model->prog_opt.save_vtk)
+            solver->output_results(mesh_file_name);
+    }
+
+    map<t_branch_id, vector<double>> ForwardRiverSimulation::evaluate_series_parameters()
+    {
+        if(!solver->solved())
+            throw Exception("EvaluateSeriesParameteresOfTips: run of solver wasn't called");
+
+        map<t_branch_id, vector<double>> id_series_params;
+        for(const auto id: model->tree.TipBranchesIds())
+        {
+            auto tip_point = model->tree.at(id).TipPoint();
+            auto tip_angle = model->tree.at(id).TipAngle();
+            id_series_params[id] = solver->integrate(*model, tip_point, tip_angle);
+        }
+
+        return id_series_params;
+    }
+
+    double ForwardRiverSimulation::get_max_a1(const map<t_branch_id, vector<double>>& id_series_params)
+    {
+        double max_a = 0.;
+        for(const auto&[id, series_params]: id_series_params)
+            if(max_a < series_params.at(0))
+                max_a = series_params.at(0);
+
+        return max_a;
+    }
+
+    void ForwardRiverSimulation::grow_tree(const map<t_branch_id, vector<double>>& id_series_params, double max_a)
+    {
+        auto& tree = model->tree;
+        if(tree.empty())
+            throw Exception("GrowTree: tree is empty");
+
+        for(const auto&[id, series_params]: id_series_params)
+            if(model->q_growth(series_params))
+            {
+                if(model->q_bifurcate(series_params, tree.at(id).Lenght()))
+                {
+                    auto tip_point = tree.at(id).TipPoint();
+                    auto tip_angle = tree.at(id).TipAngle();
+                    auto br_left = BranchNew(tip_point, tip_angle + model->bifurcation_angle);
+                    br_left.AddPoint(Polar{model->ds, 0});
+                    auto br_right = BranchNew(tip_point, tip_angle - model->bifurcation_angle);
+                    br_right.AddPoint(Polar{model->ds, 0});
+                    tree.AddSubBranches(id, br_left, br_right);
+                }
+                else
+                    tree.at(id).AddPoint(
+                        model->next_point(series_params, tree.at(id).Lenght(), max_a));
+            }
+    }
+    
     tethex::Mesh TriangulateBoundaries(Model& model, Triangle& tria, const string file_name)
     {
         print(model.prog_opt.verbose, "Boundary generation...");

@@ -198,21 +198,8 @@ int main(int argc, char *argv[])
         if(model.prog_opt.simulation_type == 0)
         {
             print(model.prog_opt.verbose, "Forward river simulation type selected.");
-            //! [StopConditionExample]
-            while(!StopConditionOfRiverGrowth(model) && i < model.prog_opt.number_of_steps)
-            {
-            //! [StopConditionExample]
-                print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-                string output_file_name = model.prog_opt.output_file_name;
-                if(model.prog_opt.save_each_step)
-                    output_file_name += "_" + to_string(i);
-
-                ForwardRiverEvolution(model, triangle, sim, output_file_name);
-
-                model.timing.Record();//Timing
-                Save(model, output_file_name);
-                ++i;
-            }
+            ForwardRiverSimulation fw_river(&model, &triangle, &sim);
+            fw_river.euler_solver();
         }
         //Backward simulation
         else if(model.prog_opt.simulation_type == 1)
