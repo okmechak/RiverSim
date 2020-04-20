@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE( Model_Simulation_Data,
     *utf::tolerance(eps))
 {
     SeriesParameters series_parameters;
-    BOOST_TEST(model_sim_data.empty());
+    BOOST_TEST(series_parameters.empty());
 
     map<t_branch_id, vector<double>> id_series_params;
     id_series_params[1] = {1., 2., 3.};
@@ -128,5 +128,46 @@ BOOST_AUTO_TEST_CASE( Model_Simulation_Data,
     BOOST_TEST((series_parameters.at(1).at(1) == vector<double>{1., 2., 3.}));
     BOOST_TEST((series_parameters.at(2).at(1) == vector<double>{4., 5., 6.}));
     BOOST_TEST((series_parameters.at(3).at(1) == vector<double>{7., 8., 9.}));
+}
 
+BOOST_AUTO_TEST_CASE( revert_simulation, 
+    *utf::tolerance(eps))
+{
+    Model model;
+    model.InitializeLaplace();
+    model.tree.GrowTestTree(1, 1., 2, 0.);
+    model.series_parameters[1] = {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}};
+    model.series_parameters[2] = {{4, 4, 4}, {5, 5, 5}, {6, 6, 6}};
+    model.series_parameters[3] = {{7, 7, 7}, {8, 8, 8}, {9, 9, 9}};
+
+    t_SeriesParameters series_parameters = 
+    {
+        {1, {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}}},
+        {2, {{4, 4, 4}, {5, 5, 5}, {6, 6, 6}}},
+        {3, {{7, 7, 7}, {8, 8, 8}, {9, 9, 9}}}
+    };
+    
+    auto sim_data = SimulationData{
+        {"mesh", {1., 2., 3., 4., 5., 6.}},
+        {"cash", {0.1, 0.2, 0.3, 0.4, 0.5, 0.6}}
+    };
+
+    model.sim_data = sim_data;
+
+    model.RevertLastSimulationStep();
+
+    sim_data = SimulationData 
+    {
+        {"mesh", {1., 2., 3., 4., 5.}},
+        {"cash", {0.1, 0.2, 0.3, 0.4, 0.5}}
+    };
+    BOOST_TEST(model.sim_data == sim_data);
+
+    series_parameters = 
+    {
+        {1, {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}}},
+        {2, {{4, 4, 4}, {5, 5, 5}}},
+        {3, {{7, 7, 7}, {8, 8, 8}}}
+    };
+    BOOST_TEST((t_SeriesParameters)model.series_parameters == series_parameters);
 }

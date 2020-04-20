@@ -472,4 +472,20 @@ namespace River
 
         tree.Initialize(border.GetSourcesIdsPointsAndAngles(sources));
     }
+
+    void Model::RevertLastSimulationStep()
+    {
+        auto tips_ids = tree.TipIdsAndPoints();
+
+        tree.remove_tip_points();
+
+        for(auto& [key, vector_value]: sim_data)
+            vector_value.pop_back();
+
+        for(auto& [branch_id, vector_value]: series_parameters)
+            if(tips_ids.count(branch_id))
+                vector_value.pop_back();
+
+        //\todo how about backward simulation?
+    }
 }

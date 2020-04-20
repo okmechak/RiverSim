@@ -63,7 +63,7 @@ namespace River
                 } 
             }
     };
-
+    
     typedef map<string, vector<double>> SimulationData;
 
     /*! \brief Timing is used for measuring time of each evaluation cycle and whole program simulation time.
