@@ -48,6 +48,7 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.prog_opt.number_of_backward_steps  == model_po.prog_opt.number_of_backward_steps  );
     BOOST_TEST(model.prog_opt.save_vtk == model_po.prog_opt.save_vtk );
     BOOST_TEST(model.prog_opt.verbose == model_po.prog_opt.verbose );
+    BOOST_TEST(model.prog_opt.debug == model_po.prog_opt.debug );
     BOOST_TEST(model.prog_opt.output_file_name == model_po.prog_opt.output_file_name );
     BOOST_TEST(model.prog_opt.input_file_name == model_po.prog_opt.input_file_name );
     BOOST_TEST(model.prog_opt.save_each_step == model_po.prog_opt.save_each_step );
@@ -114,6 +115,7 @@ BOOST_AUTO_TEST_CASE( program_options,
         "--number-of-backward-steps", "3",
         "--vtk",
         "--verbose",
+        "--debug",
         "--output", "38",
         "--input", "39", 
         "--save-each-step",
@@ -193,6 +195,7 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.prog_opt.number_of_backward_steps == 3);
     BOOST_TEST(model.prog_opt.save_vtk == true);
     BOOST_TEST(model.prog_opt.verbose == true);
+    BOOST_TEST(model.prog_opt.debug == true);
     //BOOST_TEST(model.prog_opt.output_file_name == "38"); 
     BOOST_TEST(model.prog_opt.input_file_name == "39");
     BOOST_TEST(model.prog_opt.save_each_step == true);
@@ -248,6 +251,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
 
     //program options
     mdl_out.prog_opt.verbose = true;
+    mdl_out.prog_opt.debug = true;
     mdl_out.prog_opt.number_of_steps = 36;
     mdl_out.prog_opt.maximal_river_height = 37;
     mdl_out.prog_opt.number_of_backward_steps = 38;
@@ -349,6 +353,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
 
     //program options
     BOOST_TEST(mdl_in.prog_opt.verbose == true);
+    BOOST_TEST(mdl_in.prog_opt.debug == true);
     BOOST_TEST(mdl_in.prog_opt.number_of_steps == 36);
     BOOST_TEST(mdl_in.prog_opt.maximal_river_height == 37);
     BOOST_TEST(mdl_in.prog_opt.number_of_backward_steps == 38);

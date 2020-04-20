@@ -240,6 +240,9 @@ namespace River
             ///If true - then program will print to standard output.
             bool verbose = true;
 
+            ///If true - then program will save additional output files for each stage of simulation.
+            bool debug = false;
+
             string output_file_name = "simdata",
                 input_file_name = "";
             

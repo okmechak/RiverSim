@@ -116,7 +116,9 @@ namespace River
         //prints and logs
         options.add_options("Logs")
         ("V,verbose", "print detailed log to terminal.", 
-            value<bool>()->default_value(bool_to_string(model.prog_opt.verbose)) );
+            value<bool>()->default_value(bool_to_string(model.prog_opt.verbose)) )
+        ("D,debug", "save additional output files for each simulation step.", 
+            value<bool>()->default_value(bool_to_string(model.prog_opt.debug)) );
 
         //Simulation parameters
         options.add_options("Simulation parameters")
@@ -258,6 +260,7 @@ namespace River
             model.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
         if (vm.count("vtk")) model.prog_opt.save_vtk = true;
         if (vm.count("verbose")) model.prog_opt.verbose = vm["verbose"].as<bool>();
+        if (vm.count("debug")) model.prog_opt.debug = vm["debug"].as<bool>();
         if(vm.count("output")) model.prog_opt.output_file_name = vm["output"].as<string>();
         if(vm.count("input")) model.prog_opt.input_file_name = vm["input"].as<string>();
         if(vm.count("save-each-step")) model.prog_opt.save_each_step = true;
@@ -409,6 +412,7 @@ namespace River
                     {"NumberOfBackwardSteps", model.prog_opt.number_of_backward_steps},
                     {"MaximalRiverHeight", model.prog_opt.maximal_river_height},
                     {"Verbose", model.prog_opt.verbose},
+                    {"Debug", model.prog_opt.debug},
                     {"SaveVTK", model.prog_opt.save_vtk},
                     {"OutputFileName", model.prog_opt.output_file_name},
                     {"InputFileName", model.prog_opt.input_file_name},
@@ -506,6 +510,7 @@ namespace River
                 if (jprogopt.count("NumberOfBackwardSteps")) jprogopt.at("NumberOfBackwardSteps").get_to(model.prog_opt.number_of_backward_steps);
                 if (jprogopt.count("MaximalRiverHeight")) jprogopt.at("MaximalRiverHeight").get_to(model.prog_opt.maximal_river_height);
                 if (jprogopt.count("Verbose")) jprogopt.at("Verbose").get_to(model.prog_opt.verbose);
+                if (jprogopt.count("Debug")) jprogopt.at("Debug").get_to(model.prog_opt.debug);
                 if (jprogopt.count("SaveVTK")) jprogopt.at("SaveVTK").get_to(model.prog_opt.save_vtk);
                 
                 if (jprogopt.count("InputFileName")) jprogopt.at("InputFileName").get_to(model.prog_opt.input_file_name);
