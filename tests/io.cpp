@@ -325,17 +325,18 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.tree.AddSubBranches(1, br1left, br1right);
     mdl_out.tree.AddSubBranches(3, br2left, br2right);
 
+    //ModelSimulationData
+    mdl_out.series_parameters[1] = {{1., 2., 3.}, {1., 2., 3.}};
+    mdl_out.series_parameters[2] = {{4., 5., 6.}, {7., 8., 9.}};
+
     //SimulationData
-    mdl_out.sim_data.model_sim_data[1] = {{1., 2., 3.}, {1., 2., 3.}};
-    mdl_out.sim_data.model_sim_data[2] = {{4., 5., 6.}, {7., 8., 9.}};
-    mdl_out.sim_data.mesh_size = {1,2, 3,4,5,6,6,7};
-    mdl_out.sim_data.degree_of_freedom = {1,2, 3,4,5,6,6,7, 100, 200};
-    mdl_out.sim_data.timing["mesh"] = {0.1,0.2, 0.3,0.4,0.5,0.6,0.6,0.7, 0.100, 0.200};
+    mdl_out.sim_data["mesh_size"] = vector<double>{1, 2, 3, 4, 5, 6, 6, 7};
+    mdl_out.sim_data["degree_of_freedom"] = vector<double>{1, 2, 3, 4, 5, 6, 6, 7, 100, 200};
+    mdl_out.sim_data["mesh"] = vector<double>{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.6, 0.7, 0.100, 0.200};
 
     //Geometry difference object
     mdl_out.geometry_difference.branches_bifuraction_info[1] = {{2, 3}, {3, 4}, {4, 5}, {5, 6}};
     mdl_out.geometry_difference.branches_series_params_and_geom_diff[1] = {{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
-
 
     BOOST_TEST_CHECKPOINT("Output");
     Save(mdl_out, "iotest");
@@ -415,13 +416,11 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.tree.at(1).TipPoint().x == 0.25);
     BOOST_TEST(mdl_in.tree.at(1).TipPoint().y == 0.);
 
+    //ModelSimulationData
+    BOOST_TEST(mdl_out.series_parameters == mdl_in.series_parameters);
+
     //SimulationData
-    BOOST_TEST(mdl_out.model_sim_data == mdl_in.model_sim_data);
-    BOOST_TEST(mdl_out.sim_data.model_sim_data == mdl_in.sim_data.model_sim_data);
-    BOOST_TEST(mdl_out.sim_data.model_sim_data == mdl_in.sim_data.model_sim_data);
-    BOOST_TEST(mdl_out.sim_data.mesh_size == mdl_in.sim_data.mesh_size);
-    BOOST_TEST(mdl_out.sim_data.degree_of_freedom == mdl_in.sim_data.degree_of_freedom);
-    BOOST_TEST(mdl_out.sim_data.timing == mdl_in.sim_data.timing);
+    BOOST_TEST(mdl_out.sim_data == mdl_in.sim_data);
 
     //GeometryDifference
     auto a1 = vector<vector<double>>{{2, 3}, {3, 4}, {4, 5}, {5, 6}},

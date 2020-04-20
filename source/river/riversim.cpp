@@ -46,12 +46,12 @@ namespace River
 
             print(model->prog_opt.verbose, "Solving...");
             solve(output_file_name);
-            model->sim_data.mesh_size.push_back(solver->NumberOfRefinedCells());
-            model->sim_data.degree_of_freedom.push_back(solver->NumberOfDOFs());
+            model->sim_data["MeshSize"].push_back(solver->NumberOfRefinedCells());
+            model->sim_data["DegreeOfFreedom"].push_back(solver->NumberOfDOFs());
 
             print(model->prog_opt.verbose, "Series parameters integration...");
             auto id_series_params = evaluate_series_parameters();
-            model->sim_data.model_sim_data.RecordSeriesParams(id_series_params);
+            model->series_parameters.record(id_series_params);
 
             auto max_a1 = get_max_a1(id_series_params);
 
@@ -330,11 +330,11 @@ namespace River
         TriangulateBoundaries(model, tria, file_name);
         SolvePDE(model, sim, file_name);
         auto id_series_params_map = EvaluateSeriesParameteresOfTips(model, sim);
-        model.sim_data.mesh_size.push_back(sim.NumberOfRefinedCells());
-        model.sim_data.degree_of_freedom.push_back(sim.NumberOfDOFs());
+        model.sim_data["MeshSize"].push_back(sim.NumberOfRefinedCells());
+        model.sim_data["DegreeOfFreedom"].push_back(sim.NumberOfDOFs());
         sim.clear();
 
-        model.sim_data.model_sim_data.RecordSeriesParams(id_series_params_map);
+        model.series_parameters.record(id_series_params_map);
 
         //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
         double max_a = 0.;

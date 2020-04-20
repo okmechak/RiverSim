@@ -111,21 +111,22 @@ BOOST_AUTO_TEST_CASE( next_point,
 BOOST_AUTO_TEST_CASE( Model_Simulation_Data, 
     *utf::tolerance(eps))
 {
-    ModelSimulationData model_sim_data;
+    SeriesParameters series_parameters;
     BOOST_TEST(model_sim_data.empty());
 
     map<t_branch_id, vector<double>> id_series_params;
     id_series_params[1] = {1., 2., 3.};
     id_series_params[2] = {4., 5., 6.};
     id_series_params[3] = {7., 8., 9.};
-    model_sim_data.RecordSeriesParams(id_series_params);
-    BOOST_TEST((model_sim_data.at(1).at(0) == vector<double>{1., 2., 3.}));
-    BOOST_TEST((model_sim_data.at(2).at(0) == vector<double>{4., 5., 6.}));
-    BOOST_TEST((model_sim_data.at(3).at(0) == vector<double>{7., 8., 9.}));
+    
+    series_parameters.record(id_series_params);
+    BOOST_TEST((series_parameters.at(1).at(0) == vector<double>{1., 2., 3.}));
+    BOOST_TEST((series_parameters.at(2).at(0) == vector<double>{4., 5., 6.}));
+    BOOST_TEST((series_parameters.at(3).at(0) == vector<double>{7., 8., 9.}));
 
-    model_sim_data.RecordSeriesParams(id_series_params);
-    BOOST_TEST((model_sim_data.at(1).at(1) == vector<double>{1., 2., 3.}));
-    BOOST_TEST((model_sim_data.at(2).at(1) == vector<double>{4., 5., 6.}));
-    BOOST_TEST((model_sim_data.at(3).at(1) == vector<double>{7., 8., 9.}));
+    series_parameters.record(id_series_params);
+    BOOST_TEST((series_parameters.at(1).at(1) == vector<double>{1., 2., 3.}));
+    BOOST_TEST((series_parameters.at(2).at(1) == vector<double>{4., 5., 6.}));
+    BOOST_TEST((series_parameters.at(3).at(1) == vector<double>{7., 8., 9.}));
 
 }
