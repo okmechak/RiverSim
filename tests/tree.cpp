@@ -252,26 +252,26 @@ BOOST_AUTO_TEST_CASE( tree_tips_point_method,
     *utf::tolerance(eps))
 {
     Boundaries border;
-    border[1]=
-        {
-            {/*vertices(counterclockwise order)*/
-                {0, 0},
-                {0.5, 0}, 
-                {1, 0}, 
-                {1, 1}, 
-                {0, 1}
-            }, 
-            {/*lines*/
-                {0, 1, 0},
-                {1, 2, 0},
-                {2, 3, 1},
-                {3, 4, 2},
-                {4, 0, 3} 
-            },
-            false/*this is not inner boudary*/,
-            {}/*hole*/,
-            "outer rectangular boudary"
-        };/*Outer Boundary*/
+    border[1] =
+    {
+        {/*vertices(counterclockwise order)*/
+            {0, 0},
+            {0.5, 0}, 
+            {1, 0}, 
+            {1, 1}, 
+            {0, 1}
+        }, 
+        {/*lines*/
+            {0, 1, 0},
+            {1, 2, 0},
+            {2, 3, 1},
+            {3, 4, 2},
+            {4, 0, 3} 
+        },
+        false/*this is not inner boudary*/,
+        {}/*hole*/,
+        "outer rectangular boudary"
+    };/*Outer Boundary*/
 
     Sources sources;
     sources[1] = {1, 1};
@@ -289,29 +289,29 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
 {
     Boundaries border;
     border[1] = 
-        {
-            {/*vertices(counterclockwise order)*/
-                {0, 0},
-                {0.5, 0},
-                {0.6, 0},
-                {0.7, 0}, 
-                {1, 0}, 
-                {1, 1}, 
-                {0, 1}
-            }, 
-            {/*lines*/
-                {0, 1, 0},
-                {1, 2, 0},
-                {2, 3, 0},
-                {3, 4, 0},
-                {4, 5, 1}, 
-                {6, 7, 2}, 
-                {7, 0, 3} 
-            }, 
-            false/*this is not inner boudary*/,
-            {}/*hole*/,
-            "outer rectangular boudary"
-        };/*Outer Boundary*/
+    {
+        {/*vertices(counterclockwise order)*/
+            {0, 0},
+            {0.5, 0},
+            {0.6, 0},
+            {0.7, 0}, 
+            {1, 0}, 
+            {1, 1}, 
+            {0, 1}
+        }, 
+        {/*lines*/
+            {0, 1, 0},
+            {1, 2, 0},
+            {2, 3, 0},
+            {3, 4, 0},
+            {4, 5, 1}, 
+            {6, 7, 2}, 
+            {7, 0, 3} 
+        }, 
+        false/*this is not inner boudary*/,
+        {}/*hole*/,
+        "outer rectangular boudary"
+    };/*Outer Boundary*/
         
     Sources sources;
     sources[1] = {1, 1};
@@ -863,4 +863,51 @@ BOOST_AUTO_TEST_CASE( test_maximal_tip_curvature,
     tree.AddBranch(branch1);
 
     BOOST_TEST(tree.maximal_tip_curvature() == 1./sqrt(2.));
+}
+
+BOOST_AUTO_TEST_CASE( test_remove_tip_points, 
+    *utf::tolerance(eps))
+{
+    t_branch_id id = 1;
+    Boundaries::trees_interface_t ids_points_angles = {
+        {id, {{0., 0.}, M_PI/2.}}
+    };
+
+    Tree tree;
+    tree.Initialize(ids_points_angles);
+    double ds = 1,
+        dalpha = 0.;
+    unsigned n = 2;
+    auto[left_id, right_id] = tree.GrowTestTree(id, ds, n, dalpha);
+    
+    auto expected_point = Point{ - sqrt(2)*ds, 2 + sqrt(2)*ds};
+    BOOST_TEST(tree.at(left_id).TipPoint()  == expected_point);
+    
+    expected_point = Point{ + sqrt(2)*ds, 2 + sqrt(2)*ds};
+    BOOST_TEST(tree.at(right_id).TipPoint() == expected_point);
+
+    tree.remove_tip_points();
+    expected_point = Point{ - ds/sqrt(2), 2 + ds/sqrt(2)};
+    BOOST_TEST(tree.at(left_id ).TipPoint() == expected_point);
+
+    expected_point = Point{ + ds/sqrt(2), 2 + ds/sqrt(2)};
+    BOOST_TEST(tree.at(right_id).TipPoint() == expected_point);
+
+    tree.remove_tip_points();
+    BOOST_TEST(tree.count(left_id ) == false);
+    BOOST_TEST(tree.count(right_id) == false);
+
+    expected_point = Point{0, 2};
+    BOOST_TEST(tree.at(id).TipPoint() == expected_point);
+
+    tree.remove_tip_points();
+    expected_point = Point{0, 1};
+    BOOST_TEST(tree.at(id).TipPoint() == expected_point);
+
+    tree.remove_tip_points();
+    expected_point = Point{0, 0};
+    BOOST_TEST(tree.at(id).TipPoint() == expected_point);
+
+    tree.remove_tip_points();
+    BOOST_TEST(tree.at(id).TipPoint() == expected_point);
 }

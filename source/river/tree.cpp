@@ -345,6 +345,25 @@ namespace River
 
         return max_dist;
     }
+
+    void Tree::remove_tip_points()
+    {
+        vector<t_branch_id> zero_lenght_branches;
+        for (auto id: TipBranchesIds())
+        {
+            auto& branch = this->at(id);
+
+            if(branch.size() >= 2)
+                branch.pop_back();
+
+            if (branch.size() == 1)
+                zero_lenght_branches.push_back(id);
+        }
+
+        for(auto id: zero_lenght_branches)
+            if (this->count(id) && HasParentBranch(id))
+                DeleteSubBranches(GetParentBranchId(id));
+    }
     
     ostream& operator<<(ostream& write, const Tree & b)
     {
