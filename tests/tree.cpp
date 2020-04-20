@@ -841,3 +841,26 @@ BOOST_AUTO_TEST_CASE( test_branch_growth_one_more,
     BOOST_TEST(left == left_branch);
     BOOST_TEST(right == right_branch);
 }
+
+BOOST_AUTO_TEST_CASE( test_maximal_tip_curvature, 
+    *utf::tolerance(eps))
+{
+    Tree tree;
+
+    BOOST_TEST(tree.maximal_tip_curvature() == 0.);
+
+    BranchNew branch2({10, 0}, 0);
+    branch2.AddPoint(Polar{1, 0});
+    branch2.AddPoint(Polar{1, 0});
+
+    tree.AddBranch(branch2);
+    BOOST_TEST(tree.maximal_tip_curvature() == 0.);
+
+    BranchNew branch1({0, 0}, 0);
+    branch1.AddPoint(Polar{1, 0});
+    branch1.AddPoint(Polar{1, M_PI/2.});
+
+    tree.AddBranch(branch1);
+
+    BOOST_TEST(tree.maximal_tip_curvature() == 1./sqrt(2.));
+}

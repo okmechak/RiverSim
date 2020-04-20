@@ -361,6 +361,9 @@ namespace River
 
                 return true;
             }
+
+            ///Evaluates curvature of tips. Used in non-euler growth
+            double maximal_tip_curvature() const;
             
             ///Checks if Branch \p branch_id has subbranches.
             bool HasSubBranches(const t_branch_id branch_id) const

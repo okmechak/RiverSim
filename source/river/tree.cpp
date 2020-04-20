@@ -321,6 +321,30 @@ namespace River
                 
         return ids_points_map;
     }
+
+    double Tree::maximal_tip_curvature() const
+    {
+        double max_dist = 0;
+        for(auto id: TipBranchesIds())
+        {
+            auto branch = this->at(id);
+            auto tip_point_pos = branch.size() - 1;
+
+            if(tip_point_pos < 2)
+                break;
+                
+            auto 
+                av_midle_point = (branch.at(tip_point_pos) + branch.at(tip_point_pos - 2))/2,
+                midle_point = branch.at(tip_point_pos - 1);
+
+            auto dist = (av_midle_point - midle_point).norm();
+
+            if(dist > max_dist)
+                max_dist = dist;
+        }
+
+        return max_dist;
+    }
     
     ostream& operator<<(ostream& write, const Tree & b)
     {
