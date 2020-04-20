@@ -62,6 +62,81 @@ namespace River
         }
     }
 
+    void ForwardRiverSimulation::one_step()
+    {
+        string output_file_name = model->prog_opt.output_file_name;
+        generate_boudaries(output_file_name);
+        generate_mesh_file(output_file_name);
+        solve(output_file_name);
+        auto id_series_params = evaluate_series_parameters();
+        auto max_a1 = get_max_a1(id_series_params);
+        grow_tree(id_series_params, max_a1);
+    }
+
+    /// \todo this function should be part of tree class
+    double ForwardRiverSimulation::maximal_distance()
+    {
+        double max_dist = 0.;
+
+        auto tip_ids = model->tree.TipBranchesIds();
+
+        for(auto id: tip_ids)
+        {
+            auto branch = model->tree.at(id);
+            auto tip_p_pos = branch.size() - 1;
+            auto 
+                av_midle_point = (branch.at(tip_p_pos) + branch.at(tip_p_pos - 2))/2,
+                midle_point = branch.at(tip_p_pos - 1);
+
+            auto dist = (av_midle_point - midle_point).norm();
+
+            if(dist > max_dist)
+                max_dist = dist;
+        }
+
+        return max_dist;
+    }
+    
+    /// \todo how about making method: revert of model class?
+    /// \todo make method revert for tree.
+    void ForwardRiverSimulation::advanced_solver()
+    {
+        for(unsigned step = 0; step < model->prog_opt.number_of_steps; ++step)
+        {
+            print(model->prog_opt.verbose, "----------------------------------------#" + to_string(step) + "----------------------------------------");
+            one_step();
+            while(true)
+            {    
+                auto bif_type = model->bifurcation_type;
+                model->bifurcation_type = 3;//no biffurcation
+                one_step();
+                model->bifurcation_type = bif_type;
+
+                if(maximal_distance() > model->solver_params.max_distance)
+                {
+                    auto tip_ids = model->tree.TipBranchesIds();
+                    for(auto id: tip_ids)
+                    {
+                        auto branch = model->tree.at(id);
+                        auto tip_p_pos = branch.size() - 1;
+                        auto av_midle_point = (branch.at(tip_p_pos) + branch.at(tip_p_pos - 2))/2;
+
+                        branch.erase(branch.end() - 2, branch.end());
+                        branch.push_back(av_midle_point);
+                    }
+                }
+                else
+                {
+                    //should we delete last step? - yes cos this growth is without bifurcations.
+                    for(auto id: model->tree.TipBranchesIds())
+                        model->tree.at(id).pop_back();
+                    break;
+                }
+            }
+            Save(*model, model->prog_opt.output_file_name);
+        }
+    }
+
     void ForwardRiverSimulation::generate_boudaries(string file_name)
     {
         boundary = SimpleBoundaryGenerator(*model);

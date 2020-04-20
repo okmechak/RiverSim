@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
         {
             print(model.prog_opt.verbose, "Forward river simulation type selected.");
             ForwardRiverSimulation fw_river(&model, &triangle, &sim);
-            fw_river.euler_solver();
+            fw_river.advanced_solver();
         }
         //Backward simulation
         else if(model.prog_opt.simulation_type == 1)
