@@ -911,3 +911,30 @@ BOOST_AUTO_TEST_CASE( test_remove_tip_points,
     tree.remove_tip_points();
     BOOST_TEST(tree.at(id).TipPoint() == expected_point);
 }
+
+BOOST_AUTO_TEST_CASE( test_zero_lenght_tip_branches_ids, 
+    *utf::tolerance(eps))
+{
+    Tree tree;
+
+    BOOST_TEST(tree.zero_lenght_tip_branches_ids(0.0001).empty());
+
+    t_branch_id id = 1;
+    Boundaries::trees_interface_t ids_points_angles = {
+        {id, {{0., 0.}, M_PI/2.}}
+    };
+    tree.Initialize(ids_points_angles);
+    double ds = 1.,
+        dalpha = 0.;
+    unsigned n = 2;
+    auto[left_id, right_id] = tree.GrowTestTree(id, ds, n, dalpha);
+
+    BOOST_TEST(tree.zero_lenght_tip_branches_ids(0.0001).empty());
+
+    tree.at(left_id).Shrink(ds*n);
+    tree.at(right_id).Shrink(ds*n);
+
+    auto result = tree.zero_lenght_tip_branches_ids(0.0001);
+    BOOST_TEST(result.size() == 1);
+    BOOST_TEST(result.at(0) == id);
+}

@@ -298,6 +298,23 @@ namespace River
 
         return tip_branches_ids;
     }
+
+    vector<t_branch_id> Tree::zero_lenght_tip_branches_ids(double zero_lenght) const
+    {
+        vector<t_branch_id> zero_lenght_branches_id;
+        for (const auto id: TipBranchesIds())
+            if(HasParentBranch(id) && this->at(id).Lenght() <= zero_lenght)
+                zero_lenght_branches_id.push_back(GetParentBranchId(id));
+
+        sort(zero_lenght_branches_id.begin(), zero_lenght_branches_id.end()); 
+        
+        zero_lenght_branches_id.erase( 
+            unique(zero_lenght_branches_id.begin(), zero_lenght_branches_id.end() ), 
+            zero_lenght_branches_id.end());
+
+
+        return zero_lenght_branches_id;
+    }
     
     vector<Point> Tree::TipPoints() const
     {   

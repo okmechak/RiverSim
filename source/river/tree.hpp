@@ -344,6 +344,8 @@ namespace River
             ///Returns vector of tip branches ids.
             vector<t_branch_id> TipBranchesIds() const;
 
+            vector<t_branch_id> zero_lenght_tip_branches_ids(double zero_lenght) const;
+
             ///Returns vector of tip branches Points.
             vector<Point> TipPoints() const;
 
