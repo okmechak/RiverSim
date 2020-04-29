@@ -27,14 +27,9 @@ if(BUILD_PROGRAM)
     deal_ii_setup_target(riversim)
     target_link_libraries(riversim river)
 
-    add_executable(riversim_perfomance perfomance.cpp)
-    deal_ii_setup_target(riversim_perfomance)
-    target_link_libraries(riversim_perfomance riv)
-
     add_executable(meshgen meshgen.cpp)
     target_link_libraries(meshgen mesh io boundary_generator)
 
     install(TARGETS riversim DESTINATION riversim)
-    install(TARGETS riversim_perfomance DESTINATION riversim)
     install(TARGETS meshgen DESTINATION riversim)
 endif(BUILD_PROGRAM)
