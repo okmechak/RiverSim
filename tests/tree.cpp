@@ -938,3 +938,29 @@ BOOST_AUTO_TEST_CASE( test_zero_lenght_tip_branches_ids,
     BOOST_TEST(result.size() == 1);
     BOOST_TEST(result.at(0) == id);
 }
+
+BOOST_AUTO_TEST_CASE( test_flatten_tip_curvature, 
+    *utf::tolerance(eps))
+{
+    Tree tree;
+
+    auto branch = BranchNew{{0, 0}, M_PI/2.};
+    branch.AddPoint(Polar{1, 0});
+    auto id = tree.AddBranch(branch);
+
+    BOOST_CHECK_THROW(tree.flatten_tip_curvature(), Exception);
+
+    tree.Clear();
+
+    branch.AddPoint(Polar{1, 0});
+    id = tree.AddBranch(branch);
+    BOOST_CHECK_NO_THROW(tree.flatten_tip_curvature());
+
+    BOOST_TEST((tree.at(id).at(1) == Point{0, 1}));
+
+    tree.at(id).AddPoint(Polar{1, -M_PI/2.});
+
+    tree.flatten_tip_curvature();
+    auto expected_point = Point{1./2., 1. + 1./2.};
+    BOOST_TEST(tree.at(id).at(2) == expected_point);
+}

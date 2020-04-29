@@ -363,6 +363,21 @@ namespace River
         return max_dist;
     }
 
+    void Tree::flatten_tip_curvature()
+    {
+        for(auto id: TipBranchesIds())
+        {
+            auto& branch = this->at(id);
+            auto tip_p_pos = branch.size() - 1;
+            if(tip_p_pos < 2)
+                throw Exception("flatten_tip_curvature: size of branch should be at least three points");
+
+            auto av_midle_point = (branch.at(tip_p_pos) + branch.at(tip_p_pos - 2))/2;
+
+            branch.at(tip_p_pos - 1) = av_midle_point;
+        }
+    }
+
     void Tree::remove_tip_points()
     {
         vector<t_branch_id> zero_lenght_branches;
