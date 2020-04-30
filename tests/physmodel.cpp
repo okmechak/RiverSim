@@ -120,14 +120,30 @@ BOOST_AUTO_TEST_CASE( Model_Simulation_Data,
     id_series_params[3] = {7., 8., 9.};
     
     series_parameters.record(id_series_params);
-    BOOST_TEST((series_parameters.at(1).at(0) == vector<double>{1., 2., 3.}));
-    BOOST_TEST((series_parameters.at(2).at(0) == vector<double>{4., 5., 6.}));
-    BOOST_TEST((series_parameters.at(3).at(0) == vector<double>{7., 8., 9.}));
+    BOOST_TEST((series_parameters.at(1).at(0) == vector<double>{1.}));
+    BOOST_TEST((series_parameters.at(2).at(0) == vector<double>{4.}));
+    BOOST_TEST((series_parameters.at(3).at(0) == vector<double>{7.}));
+
+    BOOST_TEST((series_parameters.at(1).at(1) == vector<double>{2.}));
+    BOOST_TEST((series_parameters.at(2).at(1) == vector<double>{5.}));
+    BOOST_TEST((series_parameters.at(3).at(1) == vector<double>{8.}));
+
+    BOOST_TEST((series_parameters.at(1).at(2) == vector<double>{3.}));
+    BOOST_TEST((series_parameters.at(2).at(2) == vector<double>{6.}));
+    BOOST_TEST((series_parameters.at(3).at(2) == vector<double>{9.}));
 
     series_parameters.record(id_series_params);
-    BOOST_TEST((series_parameters.at(1).at(1) == vector<double>{1., 2., 3.}));
-    BOOST_TEST((series_parameters.at(2).at(1) == vector<double>{4., 5., 6.}));
-    BOOST_TEST((series_parameters.at(3).at(1) == vector<double>{7., 8., 9.}));
+    BOOST_TEST((series_parameters.at(1).at(0) == vector<double>{1., 1.}));
+    BOOST_TEST((series_parameters.at(2).at(0) == vector<double>{4., 4.}));
+    BOOST_TEST((series_parameters.at(3).at(0) == vector<double>{7., 7.}));
+
+    BOOST_TEST((series_parameters.at(1).at(1) == vector<double>{2., 2.}));
+    BOOST_TEST((series_parameters.at(2).at(1) == vector<double>{5., 5.}));
+    BOOST_TEST((series_parameters.at(3).at(1) == vector<double>{8., 8.}));
+
+    BOOST_TEST((series_parameters.at(1).at(2) == vector<double>{3., 3.}));
+    BOOST_TEST((series_parameters.at(2).at(2) == vector<double>{6., 6.}));
+    BOOST_TEST((series_parameters.at(3).at(2) == vector<double>{9., 9.}));
 }
 
 BOOST_AUTO_TEST_CASE( revert_simulation, 
@@ -170,4 +186,194 @@ BOOST_AUTO_TEST_CASE( revert_simulation,
         {3, {{7, 7, 7}, {8, 8, 8}}}
     };
     BOOST_TEST((t_SeriesParameters)model.series_parameters == series_parameters);
+}
+
+BOOST_AUTO_TEST_CASE( BackwardData_equal, 
+    *utf::tolerance(eps))
+{
+    BackwardData data1, data2;
+
+    data1.a1 = {1, 2, 3};
+    data1.a2 = {3, 4, 5};
+    data1.a3 = {7, 8, 9};
+
+    data1.init = {{1, 2}};
+    data1.backward = {{2, 3}};
+    data1.backward_forward = {{4, 5}};
+
+    data1.branch_lenght_diff = 9;
+
+    BOOST_TEST(!(data1 == data2));
+
+    data2.a1 = {1, 2, 3};
+    data2.a2 = {3, 4, 5};
+    data2.a3 = {7, 8, 9};
+
+    data2.init = {{1, 2}};
+    data2.backward = {{2, 3}};
+    data2.backward_forward = {{4, 5}};
+
+    data2.branch_lenght_diff = 9;
+
+    BOOST_TEST(data1 == data2);
+
+}
+
+BOOST_AUTO_TEST_CASE( ProgramOptions_equal, 
+    *utf::tolerance(eps))
+{
+    ProgramOptions data1, data2;
+
+    BOOST_TEST(data1 == data2);
+
+    data1.simulation_type = 10;
+    data1.number_of_steps = 11;
+    data1.maximal_river_height = 12;
+    data1.number_of_backward_steps = 13;
+    data1.save_vtk = true;
+    data1.save_each_step = true;
+    data1.verbose = true;
+    data1.debug = true;
+    data1.output_file_name = "lalalala";
+
+    BOOST_TEST(!(data1 == data2));
+
+    data2.simulation_type = 10;
+    data2.number_of_steps = 11;
+    data2.maximal_river_height = 12;
+    data2.number_of_backward_steps = 13;
+    data2.save_vtk = true;
+    data2.save_each_step = true;
+    data2.verbose = true;
+    data2.debug = true;
+    data2.output_file_name = "lalalala";
+    BOOST_TEST(data1 == data2);
+}
+
+BOOST_AUTO_TEST_CASE( MeshParams_equal, 
+    *utf::tolerance(eps))
+{
+    MeshParams data1, data2;
+    
+    BOOST_TEST(data1 == data2);
+
+    data1.refinment_radius = 10;
+    data1.exponant = 11;
+    data1.sigma = 12;
+    data1.min_area = 13;
+    data1.max_area = 14;
+    data1.min_angle = 15;
+    data1.max_edge = 16;
+    data1.min_edge = 17;
+    data1.ratio = 18;
+    data1.eps = 19;
+
+    BOOST_TEST(!(data1 == data2));
+
+    data2.refinment_radius = 10;
+    data2.exponant = 11;
+    data2.sigma = 12;
+    data2.min_area = 13;
+    data2.max_area = 14;
+    data2.min_angle = 15;
+    data2.max_edge = 16;
+    data2.min_edge = 17;
+    data2.ratio = 18;
+    data2.eps = 19;
+
+    BOOST_TEST(data1 == data2);
+}
+
+BOOST_AUTO_TEST_CASE( IntegrationParams_equal, 
+    *utf::tolerance(eps))
+{
+    IntegrationParams data1, data2;
+
+    BOOST_TEST(data1 == data2);
+
+    data1.weigth_func_radius = 10;
+    data1.integration_radius = 11;
+    data1.exponant = 12;
+
+    BOOST_TEST(!(data1 == data2));
+
+    data2.weigth_func_radius = 10;
+    data2.integration_radius = 11;
+    data2.exponant = 12;
+
+    BOOST_TEST(data1 == data2);
+}
+
+BOOST_AUTO_TEST_CASE( SolverParams_equal, 
+    *utf::tolerance(eps))
+{
+    SolverParams data1, data2;
+
+    BOOST_TEST(data1 == data2);
+
+    data1.tollerance = 10;
+    data1.num_of_iterrations = 11;
+    data1.adaptive_refinment_steps = 12;
+    data1.refinment_fraction = 13;
+    data1.quadrature_degree = true;
+    data1.renumbering_type = true;
+    data1.max_distance = true;
+
+    BOOST_TEST(!(data1 == data2));
+
+    data2.tollerance = 10;
+    data2.num_of_iterrations = 11;
+    data2.adaptive_refinment_steps = 12;
+    data2.refinment_fraction = 13;
+    data2.quadrature_degree = true;
+    data2.renumbering_type = true;
+    data2.max_distance = true;
+
+    BOOST_TEST(data1 == data2);
+}
+
+BOOST_AUTO_TEST_CASE( PhysModel_equal, 
+    *utf::tolerance(eps))
+{
+    Model data1, data2;
+
+    BOOST_TEST(data1 == data2);
+
+    data1.InitializeDirichletWithHole();
+    data1.dx = 1;
+    data1.width = 2;
+    data1.height = 3;
+    data1.river_boundary_id = 4;
+    data1.field_value = 5;
+    data1.eta = 6;
+    data1.bifurcation_type = 7;
+    data1.bifurcation_threshold = 8;
+    data1.bifurcation_threshold_2 = 9;
+    data1.bifurcation_min_dist = 10;
+    data1.bifurcation_angle = 11;
+    data1.growth_type = 12;
+    data1.growth_threshold = 13;
+    data1.growth_min_distance = 14;
+    data1.ds = 15;
+
+    BOOST_TEST(!(data1 == data2));
+
+    data2.InitializeDirichletWithHole();
+    data2.dx = 1;
+    data2.width = 2;
+    data2.height = 3;
+    data2.river_boundary_id = 4;
+    data2.field_value = 5;
+    data2.eta = 6;
+    data2.bifurcation_type = 7;
+    data2.bifurcation_threshold = 8;
+    data2.bifurcation_threshold_2 = 9;
+    data2.bifurcation_min_dist = 10;
+    data2.bifurcation_angle = 11;
+    data2.growth_type = 12;
+    data2.growth_threshold = 13;
+    data2.growth_min_distance = 14;
+    data2.ds = 15;
+
+    BOOST_TEST(data1 == data2);
 }

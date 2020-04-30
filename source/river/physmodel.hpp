@@ -48,7 +48,6 @@ namespace River
 {
 
     typedef map<t_branch_id, vector<vector<double>>> t_SeriesParameters;
-
     class SeriesParameters: public t_SeriesParameters
     {
         public:
@@ -57,9 +56,14 @@ namespace River
                 for(const auto&[branch_id, series_params]: id_series_params)
                 {
                     if (!this->count(branch_id))
-                        (*this)[branch_id] = {};
+                        (*this)[branch_id] = {{}, {}, {}};
                     
-                    (*this)[branch_id].push_back(series_params);
+                    size_t i = 0;
+                    for(const auto& sp: series_params)
+                    {
+                        (*this)[branch_id].at(i).push_back(sp);
+                        ++i;
+                    }
                 } 
             }
     };
@@ -127,6 +131,45 @@ namespace River
             ///Creation date of object
             time_t creation_date;
     };
+
+    struct BackwardData
+    {
+        vector<double> a1, a2, a3;
+        vector<Point> init, backward, backward_forward;
+        double branch_lenght_diff = -1;
+
+        bool operator==(const BackwardData& data) const
+        {
+            return 
+                a1 == data.a1 && a2 == data.a2 && a3 == data.a3 
+                && init == data.init 
+                && backward == data.backward 
+                && backward_forward == data.backward_forward
+                && branch_lenght_diff == data.branch_lenght_diff;
+        }
+
+        friend ostream& operator <<(ostream& write, const BackwardData & data)
+        {
+            for(size_t i = 0; i < data.a1.size(); ++i)
+            {
+                write 
+                    << "a1 = " << data.a1.at(i)
+                    << ", a2 = " << data.a2.at(i)
+                    << ", a3 = " << data.a3.at(i) << endl;
+                
+                write 
+                    << "init point = " << data.init.at(i) 
+                    << ", backward point = " << data.backward.at(i)
+                    << ", backward-forward point = " << data.backward_forward.at(i) << endl;
+            }
+            
+            write << "branch diff = " << data.branch_lenght_diff << endl;
+
+            return write;
+        }
+    };
+
+    typedef map<t_branch_id, BackwardData> t_GeometryDiffernceNew;
 
     /**
      * This structure holds comparsion data from Backward river simulation.
@@ -248,6 +291,18 @@ namespace River
             
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const ProgramOptions & po);
+
+            bool operator==(const ProgramOptions& po) const
+            {
+                return simulation_type == po.simulation_type 
+                    && number_of_steps == po.number_of_steps
+                    && abs(maximal_river_height - po.maximal_river_height) < EPS
+                    && number_of_backward_steps == po.number_of_backward_steps
+                    && save_vtk == po.save_vtk
+                    && save_each_step == po.save_each_step
+                    && verbose == po.verbose
+                    && output_file_name == po.output_file_name;
+            }
     };
     
     /*! \brief Adaptive mesh area constraint function.
@@ -340,6 +395,21 @@ namespace River
 
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const MeshParams & mp);
+
+            bool operator==(const MeshParams& mp) const
+            {
+                return 
+                    abs(refinment_radius - mp.refinment_radius) < EPS 
+                    && abs(exponant  - mp.exponant) < EPS
+                    && static_refinment_steps == mp.static_refinment_steps
+                    && abs(min_area  - mp.min_area) < EPS
+                    && abs(max_area  - mp.max_area) < EPS
+                    && abs(min_angle - mp.min_angle) < EPS
+                    && abs(max_edge  - mp.max_edge) < EPS
+                    && abs(min_edge  - mp.min_edge) < EPS
+                    && abs(ratio     - mp.ratio) < EPS
+                    && abs(eps       - mp.eps) < EPS;
+            }
     };
 
     /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
@@ -392,6 +462,14 @@ namespace River
 
             ///Prints options structure to output stream.
             friend ostream& operator <<(ostream& write, const IntegrationParams & ip);
+
+            bool operator==(const IntegrationParams& ip) const
+            {
+                return 
+                    abs(weigth_func_radius - ip.weigth_func_radius) < EPS 
+                    && abs(integration_radius  - ip.integration_radius) < EPS
+                    && abs(exponant - ip.exponant) < EPS;
+            }
     };
 
     /*! \brief Holds All parameters used in Deal.II solver.
@@ -422,6 +500,18 @@ namespace River
 
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const SolverParams & mp);
+
+            bool operator==(const SolverParams& sp) const
+            {
+                return 
+                    abs(tollerance - sp.tollerance) < EPS 
+                    && num_of_iterrations  == sp.num_of_iterrations
+                    && adaptive_refinment_steps == sp.adaptive_refinment_steps
+                    && abs(refinment_fraction - sp.refinment_fraction) < EPS
+                    && quadrature_degree == sp.quadrature_degree
+                    && renumbering_type == sp.renumbering_type
+                    && abs(max_distance - sp.max_distance) < EPS;
+            }
     };
 
     /*! \brief Physical model parameters.
@@ -438,7 +528,7 @@ namespace River
 
             Sources sources;
 
-            Tree tree;
+            Tree tree, saved_tree;
 
             BoundaryConditions boundary_conditions;
 
@@ -459,6 +549,8 @@ namespace River
 
             SimulationData sim_data;
 
+            t_GeometryDiffernceNew backward_data;
+
             void InitializeLaplace();
             void InitializePoisson();
             void InitializeDirichlet();
@@ -468,6 +560,15 @@ namespace River
             //Simulation methods
 
             void RevertLastSimulationStep();
+            
+            void SaveCurrentTree()
+            {
+                saved_tree = tree;
+            }
+            void RestoreTree()
+            {
+                tree = saved_tree;
+            }
 
             //Geometrical parameters
             ///Initial x position of source.
@@ -593,5 +694,26 @@ namespace River
 
             ///Prints model structure and its subclasses
             friend ostream& operator <<(ostream& write, const Model & mdl);
+
+            bool operator==(const Model& model) const
+            {
+                return 
+                       abs(dx - model.dx) < EPS 
+                    && abs(width - model.width) < EPS 
+                    && abs(height - model.height) < EPS 
+                    && abs(field_value - model.field_value) < EPS 
+                    && abs(eta - model.eta) < EPS 
+                    && abs(bifurcation_threshold - model.bifurcation_threshold) < EPS 
+                    && abs(bifurcation_threshold_2 - model.bifurcation_threshold_2) < EPS 
+                    && abs(bifurcation_min_dist - model.bifurcation_min_dist) < EPS 
+                    && abs(bifurcation_angle - model.bifurcation_angle) < EPS 
+                    && abs(growth_threshold - model.growth_threshold) < EPS 
+                    && abs(growth_min_distance - model.growth_min_distance) < EPS 
+                    && abs(ds - model.ds) < EPS 
+
+                    && river_boundary_id  == model.river_boundary_id
+                    && bifurcation_type == model.bifurcation_type
+                    && growth_type == model.growth_type;
+            }
     };
 }
