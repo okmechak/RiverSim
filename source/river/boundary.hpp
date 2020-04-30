@@ -82,6 +82,13 @@ namespace River
 
                 return bd;
             }
+            
+            friend ostream& operator <<(ostream& write, const BoundaryConditions & bcs)
+            {
+                for(const auto&[id, value]: bcs)
+                    write << "id = " << id << ", " << value << endl;
+                return write;
+            }
     };
 
     typedef map<t_source_id, pair<t_boundary_id, t_vert_pos>> t_Sources;
@@ -105,7 +112,8 @@ namespace River
     class Line
     {
         public:
-            ///Constructor.
+            Line() = default;
+
             Line(const t_vert_pos p1v, const t_vert_pos p2v, const t_boundary_id boundary_id):
                 p1(p1v), 
                 p2(p2v), 
@@ -115,10 +123,10 @@ namespace River
             Line(const Line& line) = default;
 
             ///Point index.
-            t_vert_pos p1, p2;
+            t_vert_pos p1 = 0, p2 = 0;
 
             ///Line Index.
-            t_boundary_id boundary_id;
+            t_boundary_id boundary_id = 0;
 
             friend ostream& operator <<(ostream& write, const Line & line);
             bool operator==(const Line& line) const
@@ -142,13 +150,14 @@ namespace River
             friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);
     };
 
-    class Boundaries: public map<t_boundary_id, SimpleBoundary>
+    typedef map<t_boundary_id, SimpleBoundary> t_Boundaries;
+    class Boundaries: public t_Boundaries
     {
         public:
             typedef map<t_source_id, pair<Point, double>> trees_interface_t;
 
             Boundaries(
-                map<t_boundary_id, SimpleBoundary> simple_boundaries = {})
+                t_Boundaries simple_boundaries = {})
             {
                 for(auto &[boundary_id, simple_boundary]: simple_boundaries)
                     this->at(boundary_id) = simple_boundary;
