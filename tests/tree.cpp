@@ -128,6 +128,24 @@ BOOST_AUTO_TEST_CASE( BranchNew_vector,
     BOOST_CHECK_THROW(br.Vector(3), Exception);
 }
 
+BOOST_AUTO_TEST_CASE( BranchNew_equal, 
+    *utf::tolerance(eps))
+{  
+    BranchNew 
+        br1{Point{0, 0}, 0}, 
+        br2{Point{0, 0}, 0};
+    
+    BOOST_TEST(br1 == br2);
+
+    br1.AddPoint(Point{1, 2});
+
+    BOOST_TEST(!(br1 == br2));
+
+    br2.AddPoint(Point{1, 2});
+
+    BOOST_TEST(br1 == br2);
+}
+
 BOOST_AUTO_TEST_CASE( Tree_Class, 
     *utf::tolerance(eps))
 {   
@@ -155,7 +173,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     auto& br_new = tr.at(3);
     BOOST_TEST(br_new.size() == 2);
 
-    //addSources
+    //AddSources
     tr.AddBranch(BranchNew{{0.3, 0}, 0}, 6);
     ids.push_back(6);
     BOOST_TEST(tr.TipBranchesIds() == ids);

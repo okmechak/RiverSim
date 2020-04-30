@@ -53,7 +53,8 @@ namespace River
         \imageSize{BranchNewClass.jpg, height:40%;width:40%;, }
         \todo resolve problem with private members
     */
-    class BranchNew: public vector<Point>
+    typedef vector<Point> t_Branch;
+    class BranchNew: public t_Branch
     {
         public:
             BranchNew() = default;
@@ -246,7 +247,8 @@ namespace River
 
         \todo resolve problem with private methods.
      */
-    class Tree: public map<t_branch_id, BranchNew>
+    typedef map<t_branch_id, BranchNew> t_Tree;
+    class Tree: public t_Tree
     {
         public:
             ///Creates empty tree without any branches.
