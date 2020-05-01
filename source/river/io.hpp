@@ -231,6 +231,9 @@
 #include "physmodel.hpp"
 #include "tree.hpp"
 #include "cxxopts.hpp"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 namespace River
 {
@@ -261,4 +264,55 @@ namespace River
     void Open(Model& model);
 
     Model InitializeModelObject(cxxopts::ParseResult & vm);
+
+    void to_json(json& j, const Point& p);
+    void from_json(const json& j, Point& p);
+
+    void to_json(json& j, const Polar& p); 
+    void from_json(const json& j, Polar& p);
+
+    void to_json(json& j, const BoundaryCondition& bc);
+    void from_json(const json& j, BoundaryCondition& bc);
+
+    void to_json(json& j, const BoundaryConditions& bc);
+    void from_json(const json& j, BoundaryConditions& bc);
+
+    void to_json(json& j, const Line& line);
+    void from_json(const json& j, Line& line);
+
+    void to_json(json& j, const SimpleBoundary& boundary); 
+    void from_json(const json& j, SimpleBoundary& boundary); 
+
+    void to_json(json& j, const Boundaries& boundaries); 
+    void from_json(const json& j, Boundaries& boundaries); 
+
+    void to_json(json& j, const Sources& sources); 
+    void from_json(const json& j, Sources& sources); 
+
+    void to_json(json& j, const BranchNew& branch); 
+    void from_json(const json& j, BranchNew& branch); 
+
+    void to_json(json& j, const Tree& tree);
+    void from_json(const json& j, Tree& tree);
+
+    void to_json(json& j, const SeriesParameters& id_series_params);
+    void from_json(const json& j, SeriesParameters& id_series_params);
+
+    void to_json(json& j, const BackwardData& data);
+    void from_json(const json& j, BackwardData& data);
+
+    void to_json(json& j, const ProgramOptions& data);
+    void from_json(const json& j, ProgramOptions& data);
+
+    void to_json(json& j, const MeshParams& data);
+    void from_json(const json& j, MeshParams& data);
+
+    void to_json(json& j, const IntegrationParams& data);
+    void from_json(const json& j, IntegrationParams& data);
+
+    void to_json(json& j, const SolverParams& data);
+    void from_json(const json& j, SolverParams& data);
+
+    void to_json(json& j, const Model& data);
+    void from_json(const json& j, Model& data);
 }//namespace River

@@ -330,8 +330,8 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.tree.AddSubBranches(3, br2left, br2right);
 
     //ModelSimulationData
-    mdl_out.series_parameters[1] = {{1., 2., 3.}, {1., 2., 3.}};
-    mdl_out.series_parameters[2] = {{4., 5., 6.}, {7., 8., 9.}};
+    mdl_out.series_parameters[1] = {{1.}, {2.}, {3.}};
+    mdl_out.series_parameters[2] = {{2.}, {3.}, {4.}};
 
     //SimulationData
     mdl_out.sim_data["mesh_size"] = vector<double>{1, 2, 3, 4, 5, 6, 6, 7};
@@ -339,8 +339,13 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.sim_data["mesh"] = vector<double>{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.6, 0.7, 0.100, 0.200};
 
     //Geometry difference object
-    mdl_out.geometry_difference.branches_bifuraction_info[1] = {{2, 3}, {3, 4}, {4, 5}, {5, 6}};
-    mdl_out.geometry_difference.branches_series_params_and_geom_diff[1] = {{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
+    mdl_out.backward_data[1].a1 = {1};
+    mdl_out.backward_data[1].a2 = {2};
+    mdl_out.backward_data[1].a3 = {3};
+    mdl_out.backward_data[1].init = {{1, 1}};
+    mdl_out.backward_data[1].backward = {{2, 2}};
+    mdl_out.backward_data[1].backward_forward = {{3, 3}};
+    mdl_out.backward_data[1].branch_lenght_diff = 1.;
 
     BOOST_TEST_CHECKPOINT("Output");
     Save(mdl_out, "iotest");
@@ -350,6 +355,8 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     Model mdl_in;
     mdl_in.prog_opt.input_file_name = "iotest.json";
     Open(mdl_in);
+
+    BOOST_TEST_CHECKPOINT("After Input");
 
     //program options
     BOOST_TEST(mdl_in.prog_opt.verbose == true);
@@ -431,11 +438,321 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     auto a1 = vector<vector<double>>{{2, 3}, {3, 4}, {4, 5}, {5, 6}},
         a2 = vector<vector<double>>{{2, 7}, {5, 8}, {6, 9}, {7, 10}, {8, 11}};
 
-    BOOST_TEST(mdl_in.geometry_difference.branches_bifuraction_info[1] == a1);
-    BOOST_TEST(mdl_in.geometry_difference.branches_series_params_and_geom_diff[1] == a2);
+    BOOST_TEST((mdl_in.backward_data[1].a1 == vector<double>{1}));
+    BOOST_TEST((mdl_in.backward_data[1].a2 == vector<double>{2}));
+    BOOST_TEST((mdl_in.backward_data[1].a3 == vector<double>{3}));
+    BOOST_TEST((mdl_in.backward_data[1].init == vector<River::Point>{{1, 1}}));
+    BOOST_TEST((mdl_in.backward_data[1].backward == vector<River::Point>{{2, 2}}));
+    BOOST_TEST((mdl_in.backward_data[1].backward_forward == vector<River::Point>{{3, 3}}));
+    BOOST_TEST(mdl_in.backward_data[1].branch_lenght_diff == 1.);
+    
 
     BOOST_TEST(mdl_out.border == mdl_in.border);
     BOOST_TEST(mdl_out.tree == mdl_in.tree);
     BOOST_TEST(mdl_out.sources == mdl_in.sources);
     BOOST_TEST(mdl_out.boundary_conditions == mdl_in.boundary_conditions);
+}
+
+BOOST_AUTO_TEST_CASE( point_to_json, 
+    *utf::tolerance(eps))
+{
+    Point p {1, 2};
+
+    json j = p;
+
+    auto p2 = j.get<Point>();
+
+    BOOST_TEST(p == p2);
+}
+
+BOOST_AUTO_TEST_CASE( polar_to_json, 
+    *utf::tolerance(eps))
+{
+    Polar p {1, 2};
+
+    json j = p;
+
+    auto p2 = j.get<Polar>();
+
+    BOOST_TEST(p == p2);
+}
+
+BOOST_AUTO_TEST_CASE( BoundaryCondition_to_json, 
+    *utf::tolerance(eps))
+{
+    BoundaryCondition bc;
+
+    bc.type = NEUMAN;
+    bc.value = -90;
+
+    json j = bc;
+
+    auto bcj = j.get<BoundaryCondition>();
+
+    BOOST_TEST(bc == bcj);
+}
+
+BOOST_AUTO_TEST_CASE( BoundaryConditions_to_json, 
+    *utf::tolerance(eps))
+{
+    BoundaryConditions bc;
+
+    bc[1].type = NEUMAN;
+    bc[1].value = -90;
+
+    json j = bc;
+
+    auto bcj = j.get<BoundaryConditions>();
+
+    BOOST_TEST(bc == bcj);
+}
+
+BOOST_AUTO_TEST_CASE( Line_to_json, 
+    *utf::tolerance(eps))
+{
+    Line line(1, 2, 10);
+
+    json j = line;
+
+    auto linej = j.get<Line>();
+
+    BOOST_TEST(line == linej);
+}
+
+BOOST_AUTO_TEST_CASE( SimpleBoundary_to_json, 
+    *utf::tolerance(eps))
+{
+    SimpleBoundary boundary;
+
+    boundary.vertices = {{1, 1}, {2, 2}};
+    boundary.lines = {{1, 2, 3}, {2, 3, 4}};
+    boundary.holes = {{2, 3}, {3, 4}};
+    boundary.name = "lalal";
+    boundary.inner_boundary = false;
+
+    json j = boundary;
+
+    auto boundaryj = j.get<SimpleBoundary>();
+
+    BOOST_TEST(boundary == boundaryj);
+}
+
+BOOST_AUTO_TEST_CASE( Boundaries_to_json, 
+    *utf::tolerance(eps))
+{
+    Boundaries boundary;
+
+    boundary.MakeRectangularWithHole();
+
+    json j = boundary;
+    cout << j << endl;
+    auto boundaryj = j.get<Boundaries>();
+
+    BOOST_TEST(boundary == boundaryj);
+}
+
+BOOST_AUTO_TEST_CASE( Sources_to_json, 
+    *utf::tolerance(eps))
+{
+    Boundaries boundary;
+
+    auto sources = boundary.MakeRectangularWithHole();
+
+    json j = sources;
+    auto sourcesj = j.get<Sources>();
+
+    BOOST_TEST(sources == sourcesj);
+}
+
+//Tree
+//Branch
+BOOST_AUTO_TEST_CASE( Branch_to_json, 
+    *utf::tolerance(eps))
+{
+    BranchNew branch({0, 1}, M_PI/3.);
+    branch.AddPoint(Polar{1, 1});
+
+    json j = branch;
+
+    auto branchj = j.get<BranchNew>();
+    cout << branchj << endl;
+    cout << branch << endl;
+
+    BOOST_TEST(branchj == branch);
+}
+
+//Tree
+BOOST_AUTO_TEST_CASE( Tree_to_json, 
+    *utf::tolerance(eps))
+{
+    BranchNew branch({0, 1}, M_PI/3.);
+    Tree tree;
+    auto id = tree.AddBranch(branch);
+    tree.GrowTestTree(id);
+
+    json j = tree;
+
+    auto treej = j.get<Tree>();
+    cout << treej << endl;
+    cout << tree << endl;
+
+    BOOST_TEST(tree == treej);
+}
+
+//PhysModel
+//SeriesParameters
+BOOST_AUTO_TEST_CASE( SeriesParameters_to_json, 
+    *utf::tolerance(eps))
+{
+    SeriesParameters params;
+
+    params[1] = {{1, 2, 3}, {4, 5 ,6}, {7, 8, 9}};
+    params[3] = {{10, 20, 30}, {40, 50, 60}, {70, 80, 90}};
+
+    json j = params;
+
+    auto paramsj = j.get<SeriesParameters>();
+
+    BOOST_TEST(paramsj == params);
+}
+
+//SimulationData
+    
+//BackwardData
+BOOST_AUTO_TEST_CASE( BackwardData_to_json, 
+    *utf::tolerance(eps))
+{
+    BackwardData data;
+
+    data.a1 = {1};
+    data.a2 = {3};
+    data.a3 = {7};
+
+    data.init = {{1, 2}};
+    data.backward = {{2, 3}};
+    data.backward_forward = {{4, 5}};
+
+    data.branch_lenght_diff = 9;
+
+    json j = data;
+
+    auto dataj = j.get<BackwardData>();
+
+    BOOST_TEST(dataj == data);
+}
+
+//t_GeometryDiffernceNew
+
+//ProgramOptions
+BOOST_AUTO_TEST_CASE( ProgramOptions_to_json, 
+    *utf::tolerance(eps))
+{
+    ProgramOptions data;
+    data.simulation_type = 10;
+    data.number_of_steps = 11;
+    data.maximal_river_height = 12;
+    data.number_of_backward_steps = 13;
+    data.save_vtk = true;
+    data.save_each_step = true;
+    data.verbose = true;
+    data.debug = true;
+    data.output_file_name = "lalalala";
+    data.input_file_name = "kakakaka";
+    
+    json j = data;
+
+    auto dataj = j.get<ProgramOptions>();
+
+    BOOST_TEST(dataj == data);
+}
+
+//MeshParams
+BOOST_AUTO_TEST_CASE( MeshParams_to_json, 
+    *utf::tolerance(eps))
+{
+    MeshParams data;
+    data.refinment_radius = 10;
+    data.exponant = 11;
+    data.sigma = 12;
+    data.static_refinment_steps = 100;
+    data.min_area = 13;
+    data.max_area = 14;
+    data.min_angle = 15;
+    data.max_edge = 16;
+    data.min_edge = 17;
+    data.ratio = 18;
+    data.eps = 19;
+    
+    json j = data;
+
+    auto dataj = j.get<MeshParams>();
+
+    BOOST_TEST(dataj == data);
+}
+
+//IntegrationParams
+BOOST_AUTO_TEST_CASE( IntegrationParams_to_json, 
+    *utf::tolerance(eps))
+{
+    IntegrationParams data;
+    data.weigth_func_radius = 10;
+    data.integration_radius = 11;
+    data.exponant = 12;
+
+    json j = data;
+
+    auto dataj = j.get<IntegrationParams>();
+
+    BOOST_TEST(dataj == data);
+}
+
+//SolverParams
+BOOST_AUTO_TEST_CASE( SolverParams_to_json, 
+    *utf::tolerance(eps))
+{
+    SolverParams data;
+
+    data.tollerance = 10;
+    data.num_of_iterrations = 11;
+    data.adaptive_refinment_steps = 12;
+    data.refinment_fraction = 13;
+    data.quadrature_degree = 14;
+    data.renumbering_type = 15;
+    data.max_distance = 16;
+    
+    json j = data;
+
+    auto dataj = j.get<SolverParams>();
+
+    BOOST_TEST(dataj == data);
+}
+
+//Model
+BOOST_AUTO_TEST_CASE( Model_to_json, 
+    *utf::tolerance(eps))
+{
+    Model data;
+
+    data.InitializeDirichletWithHole();
+    data.dx = 1;
+    data.width = 2;
+    data.height = 3;
+    data.river_boundary_id = 4;
+    data.field_value = 5;
+    data.eta = 6;
+    data.bifurcation_type = 7;
+    data.bifurcation_threshold = 8;
+    data.bifurcation_threshold_2 = 9;
+    data.bifurcation_min_dist = 10;
+    data.bifurcation_angle = 11;
+    data.growth_type = 12;
+    data.growth_threshold = 13;
+    data.growth_min_distance = 14;
+    data.ds = 15;
+    
+    json j = data;
+
+    auto dataj = j.get<Model>();
+
+    BOOST_TEST(dataj == data);
 }

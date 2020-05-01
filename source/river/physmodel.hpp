@@ -47,6 +47,9 @@ using namespace std;
 namespace River
 {
 
+    class Parameter
+    {};
+
     typedef map<t_branch_id, vector<vector<double>>> t_SeriesParameters;
     class SeriesParameters: public t_SeriesParameters
     {
@@ -171,91 +174,6 @@ namespace River
 
     typedef map<t_branch_id, BackwardData> t_GeometryDiffernceNew;
 
-    /**
-     * This structure holds comparsion data from Backward river simulation.
-     */
-    struct GeometryDifference
-    {
-        ///holds for each branch id all its series parameters: a1, a2, a3
-        map<int, vector<vector<double>>> branches_series_params_and_geom_diff;
-        ///series params info in bifurcation points
-        map<int, vector<vector<double>>> branches_bifuraction_info;
-
-        ///Used for backward river simulation data gathering.
-        void StartBifurcationRecord(int br_id, double bifurcation_difference)
-        {
-            if(bif_difference.count(br_id))
-                throw Exception("StartBifurcationRecord. Such branch already recorded, id: " + to_string(br_id));
-            else
-            {
-                bif_difference[br_id] = bifurcation_difference;
-            }
-        }
-
-        ///Used for backward river simulation data gathering.
-        void EndBifurcationRecord(int br_id, vector<double> series_params)
-        {
-            if(bif_difference.count(br_id))
-            {
-                RecordBifurcationPoint(br_id, bif_difference[br_id], series_params);
-                bif_difference.erase(br_id);
-            }
-        }
-
-        ///Record branch seriesc parameters and geometry difference.
-        void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, const vector<double>& series_params)
-        {
-            if(!branches_series_params_and_geom_diff.count(branch_id))
-            {
-                branches_series_params_and_geom_diff[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}, {0}};
-
-                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).at(0) = dalpha;
-                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).at(0) = ds;
-
-                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).at(0) = series_params.at(0);
-                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).at(0) = series_params.at(1);
-                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).at(0) = series_params.at(2);
-            }
-            else
-            {
-                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).push_back( dalpha);
-                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).push_back( ds);
-
-                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).push_back(series_params.at(0));
-                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).push_back(series_params.at(1));
-                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).push_back(series_params.at(2));
-            }
-        }
-
-        private: 
-
-            ///holds difference between adjacent branches and id of source branch.
-            ///So called branch inconsistency at backward river simulation.
-            map<int, double> bif_difference;
-
-            ///Record bifurcation point
-            void RecordBifurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
-            {
-                if(!branches_bifuraction_info.count(branch_id))
-                {
-                    branches_bifuraction_info[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}};
-                    branches_bifuraction_info[branch_id].at(0/*biff difference index*/).at(0) = bif_difference;
-
-                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).at(0) = bif_series_params.at(0);
-                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).at(0) = bif_series_params.at(1);
-                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).at(0) = bif_series_params.at(2);
-                }
-                else
-                {
-                    branches_bifuraction_info[branch_id][0/*biff difference index*/].push_back(bif_difference);
-
-                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).push_back(bif_series_params.at(0));
-                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).push_back(bif_series_params.at(1));
-                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).push_back(bif_series_params.at(2));
-                }
-            }
-    };
-
     /*! \brief Global program options. 
         \details Program has some options that isn't part simulation itself but rather ease of use.
         So this object is dedicated for such options.
@@ -301,7 +219,8 @@ namespace River
                     && save_vtk == po.save_vtk
                     && save_each_step == po.save_each_step
                     && verbose == po.verbose
-                    && output_file_name == po.output_file_name;
+                    //&& output_file_name == po.output_file_name
+                    && input_file_name == po.input_file_name;
             }
     };
     
@@ -533,8 +452,6 @@ namespace River
             BoundaryConditions boundary_conditions;
 
             Timing timing;
-
-            GeometryDifference geometry_difference;
 
             ///Mesh and mesh refinment parameters
             MeshParams mesh;

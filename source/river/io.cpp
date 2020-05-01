@@ -61,8 +61,10 @@ namespace River
 
     string bool_to_string(bool b)
     {
-        if(b) return "true";
-        else return "false";
+        if (b) 
+            return "true";
+        else 
+            return "false";
     }
 
     cxxopts::ParseResult process_program_options(int argc, char *argv[])
@@ -217,7 +219,6 @@ namespace River
         ("max-dist", "Used by non-euler solver.", 
             value<double>()->default_value(to_string(model.solver_params.max_distance)));
 
-        
         options.parse_positional({"input"});
         
         auto result = options.parse(argc, argv);
@@ -311,6 +312,393 @@ namespace River
         if (vm.count("ds")) model.ds = vm["ds"].as<double>();
     }
 
+    //GeometryPrimitives
+    //Point
+    void to_json(json& j, const Point& p) 
+    {
+        j = json{
+            {"x", p.x}, 
+            {"y", p.y}};
+    }
+    void from_json(const json& j, Point& p) 
+    {
+        j.at("x").get_to(p.x);
+        j.at("y").get_to(p.y);
+    }
+
+    //Polar
+    void to_json(json& j, const Polar& p) 
+    {
+        j = json{
+            {"r", p.r}, 
+            {"phi", p.phi}};
+    }
+    void from_json(const json& j, Polar& p) 
+    {
+        j.at("r").get_to(p.r);
+        j.at("phi").get_to(p.phi);
+    }
+
+    //Boundary
+    //BoundaryCondition
+    void to_json(json& j, const BoundaryCondition& bc) 
+    {
+        string type_str = "Dirichlet";
+        if (bc.type == NEUMAN)
+            type_str = "Neuman";
+
+        j = json{
+            {"type", type_str}, 
+            {"value", bc.value}};
+    }
+    void from_json(const json& j, BoundaryCondition& bc) 
+    {
+        string type_str;
+
+        j.at("type").get_to(type_str);
+
+        if(type_str == "Dirichlet")
+            bc.type = DIRICHLET;
+        else if(type_str == "Neuman")
+            bc.type = NEUMAN;
+        else
+            throw Exception("Unknown boundary type: " + type_str);
+
+        j.at("value").get_to(bc.value);
+    }
+
+    //boundary conditions
+    void to_json(json& j, const BoundaryConditions& bc)
+    {
+        j = json{{"boundary_conditions", t_BoundaryConditions(bc)}};
+    }
+    void from_json(const json& j, BoundaryConditions& bc)
+    {
+        t_BoundaryConditions bc_simple;
+        j.at("boundary_conditions").get_to(bc_simple);
+        for(const auto&[key, value]: bc_simple)
+            bc[key] = value;
+    }
+
+    //Line
+    void to_json(json& j, const Line& line) 
+    {
+        j = json{
+            {"p1", line.p1}, 
+            {"p2", line.p2},
+            {"boundary_id", line.boundary_id}};
+    }
+
+    void from_json(const json& j, Line& line) 
+    {
+        j.at("p1").get_to(line.p1);
+        j.at("p2").get_to(line.p2);
+        j.at("boundary_id").get_to(line.boundary_id);
+    }
+
+    //SimpleBoundary
+    void to_json(json& j, const SimpleBoundary& boundary) 
+    {
+        j = json{
+            {"vertices", boundary.vertices}, 
+            {"lines", boundary.lines},
+            {"inner_boundary", boundary.inner_boundary},
+            {"holes", boundary.holes},
+            {"name", boundary.name}};
+    }
+    void from_json(const json& j, SimpleBoundary& boundary) 
+    {
+        j.at("vertices").get_to(boundary.vertices);
+        j.at("lines").get_to(boundary.lines);
+        j.at("inner_boundary").get_to(boundary.inner_boundary);
+        j.at("holes").get_to(boundary.holes);
+        j.at("name").get_to(boundary.name);
+    }
+
+    //Boundaries
+    void to_json(json& j, const Boundaries& boundary) 
+    {
+        j = json{{"boundaries", (t_Boundaries)boundary}};
+    }
+    void from_json(const json& j, Boundaries& boundary) 
+    {
+        t_Boundaries b;
+        j.at("boundaries").get_to(b);
+        for(const auto&[key, value]: b)
+            boundary[key] = value;
+    }
+
+    //Sources
+    void to_json(json& j, const Sources& sources) 
+    {
+        j = json{{"sources", (t_Sources)sources}};
+    }
+    void from_json(const json& j, Sources& sources) 
+    {
+        t_Sources s;
+        j.at("sources").get_to(s);
+        for(const auto&[key, value]: s)
+            sources[key] = value;
+    }
+
+    //Tree
+    //Branch
+    void to_json(json& j, const BranchNew& branch) 
+    {
+        j = json{
+            {"vertices", (t_Branch)branch}, 
+            {"source_angle", branch.source_angle}};
+    }
+    void from_json(const json& j, BranchNew& branch) 
+    {
+        t_Branch vertices;
+        j.at("vertices").get_to(vertices);
+        for(const auto& v: vertices)
+            branch.AddAbsolutePoint(v);
+
+        j.at("source_angle").get_to(branch.source_angle);
+    }
+
+    //Tree
+    void to_json(json& j, const Tree& tree) 
+    {
+        json branches;
+        for(const auto&[id, branch]: tree)
+        {
+            branches.push_back({
+                {"id", id},
+                {"branch", branch}
+            });
+        }
+
+        j = json{
+            {"branches", branches}, 
+            {"relations", tree.branches_relation}};
+    }
+    void from_json(const json& j, Tree& tree) 
+    {
+        t_Tree branches;
+        for(const auto&[key, value]: j.at("branches").items())
+        {
+            t_branch_id id;
+            value.at("id").get_to(id);
+
+            BranchNew branch;
+            value.at("branch").get_to(branch);
+            
+            tree.AddBranch(branch, id);
+        }
+
+        j.at("relations").get_to(tree.branches_relation);
+    }
+
+    //PhysModel
+    //SeriesParameters
+    void to_json(json& j, const SeriesParameters& id_series_params) 
+    {
+        j = json{{"series_params", (t_SeriesParameters)id_series_params}};
+    }
+    void from_json(const json& j, SeriesParameters& id_series_params) 
+    {
+        t_SeriesParameters sp;
+        j.at("series_params").get_to(sp);
+        for(const auto&[key, value]: sp)
+            id_series_params[key] = value;
+    }
+
+    //SimulationData
+    
+    //BackwardData
+    void to_json(json& j, const BackwardData& data) 
+    {
+        j = json{
+            {"a1", data.a1},
+            {"a2", data.a2},
+            {"a3", data.a3} ,
+            {"init_point", data.init},
+            {"backward_point", data.backward},
+            {"backward_forward_point", data.backward_forward},
+            {"branch_lenght_diff", data.branch_lenght_diff}};
+    }
+    void from_json(const json& j, BackwardData& data) 
+    {
+        j.at("a1").get_to(data.a1);
+        j.at("a2").get_to(data.a2);
+        j.at("a3").get_to(data.a3);
+
+        j.at("init_point").get_to(data.init);
+        j.at("backward_point").get_to(data.backward);
+        j.at("backward_forward_point").get_to(data.backward_forward);
+
+        j.at("branch_lenght_diff").get_to(data.branch_lenght_diff);
+    }
+
+    //t_GeometryDiffernceNew
+
+    //ProgramOptions
+    void to_json(json& j, const ProgramOptions& data) 
+    {
+        j = json{
+            {"simulation_type", data.simulation_type},
+            {"number_of_steps", data.number_of_steps},
+            {"maximal_river_height", data.maximal_river_height},
+            {"number_of_backward_steps", data.number_of_backward_steps},
+            {"save_vtk", data.save_vtk},
+            {"save_each_step", data.save_each_step},
+            {"verbose", data.verbose},
+            {"debug", data.debug},
+            {"output_file_name", data.output_file_name},
+            {"input_file_name", data.input_file_name}};
+    }
+    void from_json(const json& j, ProgramOptions& data) 
+    {
+        if(j.count("simulation_type")) j.at("simulation_type").get_to(data.simulation_type);
+        if(j.count("number_of_steps")) j.at("number_of_steps").get_to(data.number_of_steps);
+        if(j.count("maximal_river_height")) j.at("maximal_river_height").get_to(data.maximal_river_height);
+        if(j.count("number_of_backward_steps")) j.at("number_of_backward_steps").get_to(data.number_of_backward_steps);
+        if(j.count("save_vtk")) j.at("save_vtk").get_to(data.save_vtk);
+        if(j.count("save_each_step")) j.at("save_each_step").get_to(data.save_each_step);
+        if(j.count("verbose")) j.at("verbose").get_to(data.verbose);
+        if(j.count("debug")) j.at("debug").get_to(data.debug);
+        if(j.count("input_file_name")) j.at("input_file_name").get_to(data.input_file_name);
+        //j.at("output_file_name").get_to(data.output_file_name);
+    }
+
+    //MeshParams
+    void to_json(json& j, const MeshParams& data) 
+    {
+        j = json{
+            {"refinment_radius", data.refinment_radius},
+            {"exponant", data.exponant},
+            {"sigma", data.sigma},
+            {"static_refinment_steps", data.static_refinment_steps},
+            {"min_area", data.min_area},
+            {"max_area", data.max_area},
+            {"min_angle", data.min_angle},
+            {"max_edge", data.max_edge},
+            {"min_edge", data.min_edge},
+            {"ratio", data.ratio},
+            {"eps", data.eps}};
+    }
+    void from_json(const json& j, MeshParams& data) 
+    {
+        if(j.count("refinment_radius")) j.at("refinment_radius").get_to(data.refinment_radius);
+        if(j.count("exponant")) j.at("exponant").get_to(data.exponant);
+        if(j.count("sigma")) j.at("sigma").get_to(data.sigma);
+        if(j.count("static_refinment_steps")) j.at("static_refinment_steps").get_to(data.static_refinment_steps);
+        if(j.count("min_area")) j.at("min_area").get_to(data.min_area);
+        if(j.count("max_area")) j.at("max_area").get_to(data.max_area);
+        if(j.count("min_angle")) j.at("min_angle").get_to(data.min_angle);
+        if(j.count("max_edge")) j.at("max_edge").get_to(data.max_edge);
+        if(j.count("min_edge")) j.at("min_edge").get_to(data.min_edge);
+        if(j.count("ratio")) j.at("ratio").get_to(data.ratio);
+        if(j.count("eps")) j.at("eps").get_to(data.eps);
+    }
+
+    //IntegrationParams
+    void to_json(json& j, const IntegrationParams& data) 
+    {
+        j = json{
+            {"weigth_func_radius", data.weigth_func_radius},
+            {"integration_radius", data.integration_radius},
+            {"exponant", data.exponant}};
+    }
+    void from_json(const json& j, IntegrationParams& data) 
+    {
+        if(j.count("weigth_func_radius")) j.at("weigth_func_radius").get_to(data.weigth_func_radius);
+        if(j.count("integration_radius")) j.at("integration_radius").get_to(data.integration_radius);
+        if(j.count("exponant")) j.at("exponant").get_to(data.exponant);
+    }
+
+    //SolverParams
+    void to_json(json& j, const SolverParams& data) 
+    {
+        j = json{
+            {"tollerance", data.tollerance},
+            {"num_of_iterrations", data.num_of_iterrations},
+            {"adaptive_refinment_steps", data.adaptive_refinment_steps},
+            {"refinment_fraction", data.refinment_fraction},
+            {"quadrature_degree", data.quadrature_degree},
+            {"renumbering_type", data.renumbering_type},
+            {"max_distance", data.max_distance}};
+    }
+    void from_json(const json& j, SolverParams& data) 
+    {
+        if(j.count("tollerance")) j.at("tollerance").get_to(data.tollerance);
+        if(j.count("num_of_iterrations")) j.at("num_of_iterrations").get_to(data.num_of_iterrations);
+        if(j.count("adaptive_refinment_steps")) j.at("adaptive_refinment_steps").get_to(data.adaptive_refinment_steps);
+        if(j.count("refinment_fraction")) j.at("refinment_fraction").get_to(data.refinment_fraction);
+        if(j.count("quadrature_degree")) j.at("quadrature_degree").get_to(data.quadrature_degree);
+        if(j.count("renumbering_type")) j.at("renumbering_type").get_to(data.renumbering_type);
+        if(j.count("max_distance")) j.at("max_distance").get_to(data.max_distance);
+    }
+
+    //Model
+    void to_json(json& j, const Model& data) 
+    {
+        j = json{
+            {"version", version_string()},
+            {"program_options", data.prog_opt},
+            {"boundaries", data.border},
+            {"sources", data.sources},
+            {"tree", data.tree},
+            {"boundary_conditions", data.boundary_conditions},
+            {"mesh_parameters", data.mesh},
+            {"integration_parameters", data.integr},
+            {"solver_parameters", data.solver_params},
+            {"series_parameters", data.series_parameters},
+            {"simulation_data", data.sim_data},
+            {"backward_data", data.backward_data},
+            {"dx", data.dx},
+            {"width", data.width},
+            {"height", data.height},
+            {"river_boundary_id", data.river_boundary_id},
+            {"field_value", data.field_value},
+            {"eta", data.eta},
+            {"bifurcation_type", data.bifurcation_type},
+            {"bifurcation_threshold", data.bifurcation_threshold},
+            {"bifurcation_threshold_2", data.bifurcation_threshold_2},
+            {"bifurcation_min_dist", data.bifurcation_min_dist},
+            {"bifurcation_angle", data.bifurcation_angle},
+            {"growth_type", data.growth_type},
+            {"growth_threshold", data.growth_threshold},
+            {"growth_min_distance", data.growth_min_distance},
+            {"ds", data.ds}};
+    }
+    void from_json(const json& j, Model& data) 
+    {
+        if(j.count("program_options")) j.at("program_options").get_to(data.prog_opt);
+        
+        if(j.count("boundaries")) j.at("boundaries").get_to(data.border);
+        if(j.count("sources")) j.at("sources").get_to(data.sources);
+        if(j.count("tree")) j.at("tree").get_to(data.tree);
+        if(j.count("boundary_conditions")) j.at("boundary_conditions").get_to(data.boundary_conditions);
+
+        if(j.count("mesh_parameters")) j.at("mesh_parameters").get_to(data.mesh);
+        if(j.count("integration_parameters")) j.at("integration_parameters").get_to(data.integr);
+        if(j.count("solver_parameters")) j.at("solver_parameters").get_to(data.solver_params);
+        
+        if(j.count("series_parameters")) j.at("series_parameters").get_to(data.series_parameters);
+        if(j.count("simulation_data")) j.at("simulation_data").get_to(data.sim_data);
+        if(j.count("backward_data")) j.at("backward_data").get_to(data.backward_data);
+
+        if(j.count("dx")) j.at("dx").get_to(data.dx);
+        if(j.count("width")) j.at("width").get_to(data.width);
+        if(j.count("height")) j.at("height").get_to(data.height);
+        if(j.count("river_boundary_id")) j.at("river_boundary_id").get_to(data.river_boundary_id);
+        if(j.count("field_value")) j.at("field_value").get_to(data.field_value);
+        if(j.count("eta")) j.at("eta").get_to(data.eta);
+        if(j.count("ds")) j.at("ds").get_to(data.ds);
+        if(j.count("bifurcation_type")) j.at("bifurcation_type").get_to(data.bifurcation_type);
+        if(j.count("bifurcation_threshold")) j.at("bifurcation_threshold").get_to(data.bifurcation_threshold);
+        if(j.count("bifurcation_threshold_2")) j.at("bifurcation_threshold_2").get_to(data.bifurcation_threshold_2);
+        if(j.count("bifurcation_min_dist")) j.at("bifurcation_min_dist").get_to(data.bifurcation_min_dist);
+        if(j.count("bifurcation_angle")) j.at("bifurcation_angle").get_to(data.bifurcation_angle);
+        if(j.count("growth_type")) j.at("growth_type").get_to(data.growth_type);
+        if(j.count("growth_threshold")) j.at("growth_threshold").get_to(data.growth_threshold);
+        if(j.count("growth_min_distance")) j.at("growth_min_distance").get_to(data.growth_min_distance);
+    }
+
     void Save(const Model& model, const string file_name)
     {
         if(file_name.length() == 0)
@@ -321,153 +709,11 @@ namespace River
 
         out.precision(16);
 
-        //Branches
-        json branches;
-        for(const auto& [branch_id, branch]: model.tree)
-        {
-            vector<pair<double, double>> vertices;
-            vertices.reserve(branch.size());
-            for(auto& vertice: branch)
-                vertices.push_back({vertice.x, vertice.y});
-
-            branches.push_back({
-                {"SourceVertice", {branch.SourcePoint().x , branch.SourcePoint().y}},
-                {"SourceAngle", branch.SourceAngle()},
-                {"Vertices", vertices},
-                {"Id", branch_id}});
-        }
-        
-        //Boundaries
-        json jboundaries;
-        for(auto& [boundary_id, simple_boundary]: model.border)
-        {  
-            vector<pair<double, double>> vertices, holes;
-            vertices.reserve(simple_boundary.vertices.size());
-            for(auto& vertice: simple_boundary.vertices)
-                vertices.push_back({vertice.x, vertice.y});
-            
-            holes.reserve(simple_boundary.holes.size());
-            for(auto& hole: simple_boundary.holes)
-                holes.push_back({hole.x, hole.y});
-
-            vector<tuple<t_vert_pos, t_vert_pos, unsigned>> lines;
-            lines.reserve(simple_boundary.lines.size());
-            for(auto& line : simple_boundary.lines)
-                lines.push_back({line.p1, line.p2, line.boundary_id});
-
-            jboundaries.push_back({
-                {"Vertices", vertices},
-                {"Lines", lines},
-                {"Holes", holes},
-                {"InnerBoundary", simple_boundary.inner_boundary},
-                {"Name", simple_boundary.name},
-                {"Id", boundary_id}
-            });   
-        }
-
-        json jboundary_condition;
-        for(auto& [boundary_id, bound_condition]: model.boundary_conditions)
-        {
-            jboundary_condition.push_back({
-                {"Id", boundary_id},
-                {"Type", bound_condition.type},
-                {"Value", bound_condition.value}
-            });
-        }
-
-        //implementation with json
-        json j = {
-            {"Description", "RiverSim simulation data and state of program. All coordinates are in normal cartesian coordinate system and by default are x > 0 and y > 0. Default values of simulation assumes that coordinates values will be of order 0 - 200. Greater values demands a lot of time to run, small are not tested(Problem of scalling isn't resolved yet TODO)."},
-            {"Version", version_string()},
-
-            {"RuntimeInfo", {
-                {"Description", "Units are in seconds."},
-                {"StartDate",  model.timing.CreationtDate()},
-                {"EndDate",  model.timing.CurrentDate()},
-                {"TotalTime",  model.timing.Total()},
-                {"EachCycleTime",  model.timing.records}}},
-
-            {"Model", {
-                {"Description", "All model parameters. Almost all options are described in program options: ./riversim -h. riverBoundaryId - value of boundary id of river(solution equals zero on river boundary) "},
-                {"dx", model.dx},
-                {"Width", model.width},
-                {"Height", model.height},
-                {"RiverBoundaryId", model.river_boundary_id},
-
-                {"FieldValue", model.field_value},
-                {"Eta", model.eta},
-                {"BifurcationType", model.bifurcation_type},
-                {"BifurcationThreshold", model.bifurcation_threshold},
-                {"BifurcationThreshold2", model.bifurcation_threshold_2},
-                {"BifurcationMinDistance", model.bifurcation_min_dist},
-                {"BifurcationAngle", model.bifurcation_angle},
-                {"GrowthType", model.growth_type},
-                {"GrowthThreshold", model.growth_threshold},
-                {"GrowthMinDistance", model.growth_min_distance},
-                {"ds", model.ds},
-
-                {"ProgramOptions", {
-                    {"SimulationType", model.prog_opt.simulation_type},
-                    {"NumberOfSteps", model.prog_opt.number_of_steps},
-                    {"NumberOfBackwardSteps", model.prog_opt.number_of_backward_steps},
-                    {"MaximalRiverHeight", model.prog_opt.maximal_river_height},
-                    {"Verbose", model.prog_opt.verbose},
-                    {"Debug", model.prog_opt.debug},
-                    {"SaveVTK", model.prog_opt.save_vtk},
-                    {"OutputFileName", model.prog_opt.output_file_name},
-                    {"InputFileName", model.prog_opt.input_file_name},
-                    {"SaveEachStep", model.prog_opt.save_each_step}}},
-
-                {"Integration",{
-                    {"Radius", model.integr.integration_radius},
-                    {"Exponant", model.integr.exponant},
-                    {"WeightRadius", model.integr.weigth_func_radius}}},
-
-                {"Mesh", {
-                    {"BranchWidth", model.mesh.eps},
-                    {"Exponant", model.mesh.exponant},
-                    {"RefinmentRadius", model.mesh.refinment_radius},
-                    {"MinArea", model.mesh.min_area},
-                    {"MaxArea", model.mesh.max_area},
-                    {"MinAngle", model.mesh.min_angle},
-                    {"MaxEdge", model.mesh.max_edge},
-                    {"MinEdge", model.mesh.min_edge},
-                    {"TriangleRatio", model.mesh.ratio},
-                    {"Sigma", model.mesh.sigma},
-                    {"StaticRefinmentSteps", model.mesh.static_refinment_steps}}},
-        
-                {"Solver", {
-                    {"Tollerance", model.solver_params.tollerance},
-                    {"IterationSteps", model.solver_params.num_of_iterrations},
-                    {"QuadratureDegree", model.solver_params.quadrature_degree},
-                    {"RefinmentFraction", model.solver_params.refinment_fraction},
-                    {"AdaptiveRefinmentSteps", model.solver_params.adaptive_refinment_steps},
-                    {"MaximalDistance", model.solver_params.max_distance}}}}
-            },
-            
-            {"Boundaries", jboundaries},
-            
-            {"BoundaryConditions", jboundary_condition},
-
-            {"Sources", model.sources},
-
-            {"Trees", {
-                {"Description", "SourcesIds represents sources(or root) branches of each rivers(yes you can setup several rivers in one run). Relations is array{...} of next elements {source_branch_id, {left_child_branch_id, right_child_branch_id} it holds structure of river divided into separate branches. Order of left and right id is important."},
-                {"Relations", model.tree.branches_relation},
-                {"Branches", branches}}},
-
-            {"SeriesParameters", (t_SeriesParameters)model.series_parameters},
-
-            {"SimulationData", model.sim_data},
-                
-            {"GeometryDifference", {
-                {"Description", "This structure holds info about backward river simulation. AlongBranches consist of five arrays for each branch: {branch_id: {1..}, {2..}, {3..}, {4..}, {5..}}, Where first consist of angles values allong branch(from tip to source), second - distance between tips, third - a(1) elements, forth - a(2) elements, fifth - a(3) elements. In case of --simulation-type=2, first item - integral value over whole region, second - disk integral over tip with r = 0.1, and rest are series params. BiffuractionPoints - is similar to previous object. It has same parameters but in bifurcation point. {source_branch_id: {lenght of non zero branch, which doesnt reached bifurcation point as its adjacent branch},{a(1)},{a(2)},{a(3)}}."},
-                {"AlongBranches", model.geometry_difference.branches_series_params_and_geom_diff},
-                {"BifuractionPoints", model.geometry_difference.branches_bifuraction_info}}}
-        };
+        json j = {{"model", model}};
 
         out << setw(4) << j;
-        out.close();
+
+        out.close();        
     }
 
     void Open(Model& model)
@@ -478,239 +724,19 @@ namespace River
         json j;
         in >> j;
 
-        if(j.count("Model"))
-        {
-            json jmdl = j.at("Model");
-            
-            if (jmdl.count("Width")) jmdl.at("Width").get_to(model.width);
-            if (jmdl.count("Height")) jmdl.at("Height").get_to(model.height);
-            if (jmdl.count("dx")) jmdl.at("dx").get_to(model.dx);
-            if (jmdl.count("RiverBoundaryId")) jmdl.at("RiverBoundaryId").get_to(model.river_boundary_id);
-            if (jmdl.count("NumberOfBackwardSteps")) jmdl.at("NumberOfBackwardSteps").get_to(model.prog_opt.number_of_backward_steps);
-            
-            if (jmdl.count("FieldValue")) jmdl.at("FieldValue").get_to(model.field_value);
-            if (jmdl.count("Eta")) jmdl.at("Eta").get_to(model.eta);
-            if (jmdl.count("BifurcationType")) jmdl.at("BifurcationType").get_to(model.bifurcation_type);
-            if (jmdl.count("BifurcationThreshold")) jmdl.at("BifurcationThreshold").get_to(model.bifurcation_threshold);
-            if (jmdl.count("BifurcationThreshold2")) jmdl.at("BifurcationThreshold2").get_to(model.bifurcation_threshold_2);
-            if (jmdl.count("BifurcationMinDistance")) jmdl.at("BifurcationMinDistance").get_to(model.bifurcation_min_dist);
-            if (jmdl.count("BifurcationAngle")) jmdl.at("BifurcationAngle").get_to(model.bifurcation_angle);
-            if (jmdl.count("BifurcationThreshold")) jmdl.at("BifurcationThreshold").get_to(model.bifurcation_threshold);
-            if (jmdl.count("GrowthType")) jmdl.at("GrowthType").get_to(model.growth_type);
-            if (jmdl.count("GrowthThreshold")) jmdl.at("GrowthThreshold").get_to(model.growth_threshold);
-            if (jmdl.count("GrowthMinDistance")) jmdl.at("GrowthMinDistance").get_to(model.growth_min_distance);
-            if (jmdl.count("ds")) jmdl.at("ds").get_to(model.ds);
-            
-            if(jmdl.count("ProgramOptions"))
-            {
-                auto jprogopt = jmdl.at("ProgramOptions");
+        j.at("model").get_to(model);
 
-                if (jprogopt.count("SimulationType")) jprogopt.at("SimulationType").get_to(model.prog_opt.simulation_type);
-                if (jprogopt.count("NumberOfSteps")) jprogopt.at("NumberOfSteps").get_to(model.prog_opt.number_of_steps);
-                if (jprogopt.count("NumberOfBackwardSteps")) jprogopt.at("NumberOfBackwardSteps").get_to(model.prog_opt.number_of_backward_steps);
-                if (jprogopt.count("MaximalRiverHeight")) jprogopt.at("MaximalRiverHeight").get_to(model.prog_opt.maximal_river_height);
-                if (jprogopt.count("Verbose")) jprogopt.at("Verbose").get_to(model.prog_opt.verbose);
-                if (jprogopt.count("Debug")) jprogopt.at("Debug").get_to(model.prog_opt.debug);
-                if (jprogopt.count("SaveVTK")) jprogopt.at("SaveVTK").get_to(model.prog_opt.save_vtk);
-                
-                if (jprogopt.count("InputFileName")) jprogopt.at("InputFileName").get_to(model.prog_opt.input_file_name);
-                //if (jprogopt.count("OutputFileName")) jprogopt.at("OutputFileName").get_to(model.prog_opt.output_file_name);
-                if (jprogopt.count("SaveEachStep")) jprogopt.at("SaveEachStep").get_to(model.prog_opt.save_each_step);
-            }
+        if (model.sources.empty())
+            throw Exception("Open: sources from input file are empty");
 
-            if(jmdl.count("Mesh"))
-            {
-                auto jmesh = jmdl.at("Mesh");
+        if (model.boundary_conditions.empty())
+            throw Exception("Open: boundary_conditions from input file are empty");
 
-                if (jmesh.count("BranchWidth"))jmesh.at("BranchWidth").get_to(model.mesh.eps);
-                if (jmesh.count("Exponant")) jmesh.at("Exponant").get_to(model.mesh.exponant);
-                if (jmesh.count("MaxArea"))  jmesh.at("MaxArea").get_to(model.mesh.max_area);
-                if (jmesh.count("MinArea"))  jmesh.at("MinArea").get_to(model.mesh.min_area);
-                if (jmesh.count("MinAngle")) jmesh.at("MinAngle").get_to(model.mesh.min_angle);
-                if (jmesh.count("RefinmentRadius"))      jmesh.at("RefinmentRadius").get_to(model.mesh.refinment_radius);
-                if (jmesh.count("StaticRefinmentSteps")) jmesh.at("StaticRefinmentSteps").get_to(model.mesh.static_refinment_steps);
-                if (jmesh.count("Sigma"))    jmesh.at("Sigma").get_to(model.mesh.sigma);
-                if (jmesh.count("MaxEdge"))  jmesh.at("MaxEdge").get_to(model.mesh.max_edge);
-                if (jmesh.count("MinEdge"))  jmesh.at("MinEdge").get_to(model.mesh.min_edge);
-                if (jmesh.count("TriangleRatio")) jmesh.at("TriangleRatio").get_to(model.mesh.ratio);   
-            }
+        if (model.border.empty())
+            throw Exception("Open: boundaries from input file are empty");
 
-            if(jmdl.count("Integration"))
-            {
-                auto jinteg = jmdl.at("Integration");
-
-                if (jinteg.count("Radius")) jinteg.at("Radius").get_to(model.integr.integration_radius);
-                if (jinteg.count("Exponant")) jinteg.at("Exponant").get_to(model.integr.exponant);
-                if (jinteg.count("WeightRadius")) jinteg.at("WeightRadius").get_to(model.integr.weigth_func_radius);
-            }
-
-            if(jmdl.count("Solver"))
-            {
-                auto jsolver = jmdl.at("Solver");
-                
-                if (jsolver.count("QuadratureDegree")) jsolver.at("QuadratureDegree").get_to(model.solver_params.quadrature_degree);
-                if (jsolver.count("RefinmentFraction")) jsolver.at("RefinmentFraction").get_to(model.solver_params.refinment_fraction);
-                if (jsolver.count("AdaptiveRefinmentSteps")) jsolver.at("AdaptiveRefinmentSteps").get_to(model.solver_params.adaptive_refinment_steps);
-                if (jsolver.count("Tollerance")) jsolver.at("Tollerance").get_to(model.solver_params.tollerance);
-                if (jsolver.count("IterationSteps")) jsolver.at("IterationSteps").get_to(model.solver_params.num_of_iterrations);
-                if (jsolver.count("MaximalDistance")) jsolver.at("MaximalDistance").get_to(model.solver_params.max_distance);
-            }
-        }
-
-        if(j.count("Boundaries"))
-        {
-            auto jboundaries = j.at("Boundaries");
-            model.border.clear();
-            for(auto& [key, value] : jboundaries.items()) 
-            {
-                SimpleBoundary simple_boundary;
-                t_boundary_id boundary_id;
-                
-                //vertices
-                vector<pair<double, double>> vertices, holes;
-                value.at("Vertices").get_to(vertices);
-                simple_boundary.vertices.reserve(vertices.size());
-                for(auto& vertice: vertices)
-                    simple_boundary.vertices.push_back({vertice.first, vertice.second});
-                
-                //lines
-                vector<tuple<t_vert_pos, t_vert_pos, unsigned>> lines;
-                value.at("Lines").get_to(lines);
-                simple_boundary.lines.reserve(lines.size());
-                for(auto& line: lines)
-                    simple_boundary.lines.push_back({get<0>(line), get<1>(line), get<2>(line)});
-
-                //holes
-                value.at("Holes").get_to(holes);
-                simple_boundary.holes.reserve(holes.size());
-                for(auto& hole: holes)
-                    simple_boundary.holes.push_back({hole.first, hole.second});
-
-                //rest of fields
-                value.at("InnerBoundary").get_to(simple_boundary.inner_boundary);
-                value.at("Name").get_to(simple_boundary.name);
-                value.at("Id").get_to(boundary_id);
-
-                model.border[boundary_id] = simple_boundary;
-                
-                //evaluation of boundary outfit rectangle
-                if(!simple_boundary.inner_boundary)
-                {
-                    //Get size of bounding box of border and update width and height values of module
-                    auto xmax = simple_boundary.vertices.at(0).x,
-                        xmin = simple_boundary.vertices.at(0).x,
-                        ymax = simple_boundary.vertices.at(0).y,
-                        ymin = simple_boundary.vertices.at(0).y;
-                    for(auto&v: simple_boundary.vertices)
-                    {
-                        if(v.x > xmax)
-                            xmax = v.x;
-                        if(v.x < xmin)
-                            xmin = v.x;
-                        if(v.y > ymax)
-                            ymax = v.y;
-                        if(v.y < ymin)
-                            ymin = v.y;
-                    }
-                    
-                    //if width and height equals to default values
-                    if(model.width == 1. && model.height == 1.)
-                    {
-                        model.width = xmax - xmin;
-                        model.height = ymax - ymin;
-                    }
-                }
-            }
-        }
-
-        if(j.count("Sources"))
-        {
-            t_Sources sources;
-            j.at("Sources").get_to(sources);
-            for(auto&[id, value]: sources)
-                model.sources[id] = value;
-        }
-        
-        if(j.count("BoundaryConditions"))
-        {
-            auto jboundary_condition = j.at("BoundaryConditions");
-            model.boundary_conditions.clear();
-            for(auto& [key, value] : jboundary_condition.items()) 
-            {
-                t_boundary_id id;
-                value.at("Id").get_to(id);
-                BoundaryCondition boundary_condition;
-                value.at("Type").get_to(boundary_condition.type);
-                value.at("Value").get_to(boundary_condition.value);
-                
-                model.boundary_conditions[id] = boundary_condition;
-            }
-        }
-
-        if(j.count("Trees"))
-        {
-            if(!j.count("Boundaries"))
-                throw Exception("Input json file contains Trees and do not contain Boundary. Make sure that you created corresponding Boundary object(Trees and Boundary should contain same source/branches ids - its values and number)");
-            
-            model.tree.Clear();
-
-            auto jtrees = j.at("Trees");
-            jtrees.at("Relations").get_to(model.tree.branches_relation);
-
-            
-            for(auto& [key, value] : jtrees.at("Branches").items()) 
-            {   
-                vector<double> s_point;
-                vector<pair<double, double>> coords;
-                double source_angle;
-                int id;
-
-                value.at("SourceVertice").get_to(s_point);
-                value.at("SourceAngle").get_to(source_angle);
-                value.at("Vertices").get_to(coords);
-                value.at("Id").get_to(id);
-                
-                BranchNew branch(River::Point{s_point.at(0), s_point.at(1)}, source_angle);
-                branch.resize(coords.size());
-
-                for(unsigned i = 0; i < coords.size(); ++i)
-                {
-                    branch[i] = River::Point{coords.at(i).first, coords.at(i).second};
-                }
-
-                try
-                {
-                    model.tree.AddBranch(branch, id);
-                }
-                catch (Exception& e)
-                {   
-                    cout << e.what() << endl;
-                    cout << "tree io..ivalid insertion" << endl;
-                    throw;
-                }
-            }
-        }
-        else if(j.count("Boundaries"))
-            //If no tree provided but border is, than we reinitialize tree.. to current border.
+        if (model.tree.empty())
             model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
-
-        if (j.count("SeriesParameters"))
-        {
-            t_SeriesParameters data;
-            j.at("SeriesParameters").get_to(data);
-            for(const auto&[key, value]: data)
-                model.series_parameters[key] = value;
-        }
-
-        if (j.count("SimulationData")) j.at("SimulationData").get_to(model.sim_data);
-
-        if (j.count("GeometryDifference"))
-        { 
-            json jgd = j.at("GeometryDifference");
-
-            jgd.at("AlongBranches").get_to(model.geometry_difference.branches_series_params_and_geom_diff);
-            jgd.at("BifuractionPoints").get_to(model.geometry_difference.branches_bifuraction_info);
-        }
     }
 
     Model InitializeModelObject(cxxopts::ParseResult & vm)
