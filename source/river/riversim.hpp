@@ -45,20 +45,30 @@ namespace River
                 solver(solver)
             {}
 
-            void euler_solver();
-            
-            void one_step(string output_file_name);
-            double maximal_distance();
-            void advanced_solver();
+            void linear_solver();
+            void non_linear_solver();
+            void backward_solver();
 
         protected: 
 
-            void generate_boudaries(string file_name);
-            void generate_mesh_file(string file_name);
+            map<t_branch_id, vector<double>> one_linear_step(
+                string output_file_name, double backwardforward_max_a1 = -1.);
+            
+            void one_non_linear_step(string output_file_name, double max_a1_step1 = -1, double max_a1_step2 = -1);
+            
+            map<t_branch_id, vector<double>> one_shrink_step(string output_file_name);
+            void one_backward_step(string output_file_name);
+            void collect_backward_data(Tree& init, Tree& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params);
+            
+            SimpleBoundary generate_boudaries(string file_name);
+            void generate_mesh_file(SimpleBoundary& boundary, string file_name);
             void solve(string mesh_file_name);
-            map<t_branch_id, vector<double>> evaluate_series_parameters();
+            map<t_branch_id, vector<double>> integrate_series_parameters();
+            map<t_branch_id, vector<double>> solve_and_evaluate_series_parameters(string output_file_name);
             double get_max_a1(const map<t_branch_id, vector<double>>& id_series_params);
             void grow_tree(const map<t_branch_id, vector<double>>& id_series_params, double max_a);
+            void shrink_tree(const map<t_branch_id, vector<double>>& id_series_params, double max_a);
+
             
             /*! Stop condition of river growth simulation.
                 Evaluates if tip of tree is close enough to border. If it is, then 
@@ -88,8 +98,6 @@ namespace River
             Model* model = NULL;
             Triangle* triangle = NULL;
             Solver* solver = NULL;
-
-            SimpleBoundary boundary;
     };
 
     

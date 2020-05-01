@@ -175,12 +175,12 @@ int main(int argc, char *argv[])
     try
     {
         //Program options
-        auto vm = process_program_options(argc, argv);
+        auto po = process_program_options(argc, argv);
 
-        if (vm.count("help") || vm.count("version"))
+        if (po.count("help") || po.count("version"))
             return 0;
 
-        auto model = InitializeModelObject(vm);
+        auto model = InitializeModelObject(po);
         
         if (model.prog_opt.verbose) cout << model << endl;
 
@@ -191,34 +191,21 @@ int main(int argc, char *argv[])
         River::Solver sim(&model);
 
         //MAIN LOOP
-        unsigned i = 0;
         print(model.prog_opt.verbose, "Start of main loop...");
 
         //forward simulation case
         if(model.prog_opt.simulation_type == 0)
         {
             print(model.prog_opt.verbose, "Forward river simulation type selected.");
-            ForwardRiverSimulation fw_river(&model, &triangle, &sim);
-            fw_river.advanced_solver();
+            ForwardRiverSimulation river(&model, &triangle, &sim);
+            river.non_linear_solver();
         }
         //Backward simulation
         else if(model.prog_opt.simulation_type == 1)
         {
-            print(model.prog_opt.verbose, "Backward river simulation type selected.");
-            while(i < model.prog_opt.number_of_steps)    
-            {
-                print(model.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-
-                string output_file_name = model.prog_opt.output_file_name;
-                if(model.prog_opt.save_each_step)
-                    output_file_name += "_" + to_string(i);
-
-                BackwardForwardRiverEvolution(model, triangle, sim, output_file_name);
-
-                model.timing.Record();//Timing
-                Save(model, output_file_name);
-                ++i;
-            }
+            print(model.prog_opt.verbose, "Bacward river simulation type selected.");
+            ForwardRiverSimulation river(&model, &triangle, &sim);
+            river.backward_solver();
         }
         //test simulation
         else if(model.prog_opt.simulation_type == 2)
