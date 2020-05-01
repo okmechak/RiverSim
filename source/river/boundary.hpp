@@ -54,11 +54,7 @@ namespace River
         t_boundary type = DIRICHLET;
         double value = 0;
 
-        bool operator==(const BoundaryCondition& bc) const
-        {
-            return value == bc.value && type == bc.type;
-        }
-        
+        bool operator==(const BoundaryCondition& bc) const;
         friend ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition);
     };
 
@@ -70,39 +66,15 @@ namespace River
     class BoundaryConditions: public t_BoundaryConditions
     {
         public:
-            t_BoundaryConditions Get(t_boundary type)
-            {
-                t_BoundaryConditions bd;
-                if(type != DIRICHLET && type != NEUMAN)
-                    throw Exception("BoundaryConditions:Get: unknown boundary type: " + to_string(type));
-                    
-                for(const auto& [boundary_id, boundary_condition]:*this)
-                    if(boundary_condition.type == type)
-                        bd[boundary_id] = boundary_condition;
-
-                return bd;
-            }
-            
-            friend ostream& operator <<(ostream& write, const BoundaryConditions & bcs)
-            {
-                for(const auto&[id, value]: bcs)
-                    write << "id = " << id << ", " << value << endl;
-                return write;
-            }
+            t_BoundaryConditions Get(t_boundary type);
+            friend ostream& operator <<(ostream& write, const BoundaryConditions & bcs);
     };
 
     typedef map<t_source_id, pair<t_boundary_id, t_vert_pos>> t_Sources;
     class Sources: public t_Sources
     {
         public:
-            vector<t_source_id> GetSourcesIds() const
-            {
-                vector<t_source_id> sources_ids;
-                for(auto[source_id, value]: *this)
-                    sources_ids.push_back(source_id);
-
-                return sources_ids;
-            }
+            vector<t_source_id> GetSourcesIds() const;
     };
 
     /*! \brief 
@@ -129,10 +101,7 @@ namespace River
             t_boundary_id boundary_id = 0;
 
             friend ostream& operator <<(ostream& write, const Line & line);
-            bool operator==(const Line& line) const
-            {
-                return p1 == line.p1 && p2 == line.p2 && boundary_id == line.boundary_id;
-            }
+            bool operator==(const Line& line) const;
     };
 
     class SimpleBoundary
@@ -156,12 +125,7 @@ namespace River
         public:
             typedef map<t_source_id, pair<Point, double>> trees_interface_t;
 
-            Boundaries(
-                t_Boundaries simple_boundaries = {})
-            {
-                for(auto &[boundary_id, simple_boundary]: simple_boundaries)
-                    this->at(boundary_id) = simple_boundary;
-            }
+            Boundaries(t_Boundaries simple_boundaries = {});
 
             Sources MakeRectangular(double width = 1, double height = 1, double source_x_position = 0.25);
             

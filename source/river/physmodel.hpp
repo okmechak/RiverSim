@@ -54,86 +54,10 @@ namespace River
     class SeriesParameters: public t_SeriesParameters
     {
         public:
-            void record(const map<t_branch_id, vector<double>>& id_series_params)
-            {
-                for(const auto&[branch_id, series_params]: id_series_params)
-                {
-                    if (!this->count(branch_id))
-                        (*this)[branch_id] = {{}, {}, {}};
-                    
-                    size_t i = 0;
-                    for(const auto& sp: series_params)
-                    {
-                        (*this)[branch_id].at(i).push_back(sp);
-                        ++i;
-                    }
-                } 
-            }
+            void record(const map<t_branch_id, vector<double>>& id_series_params);
     };
     
     typedef map<string, vector<double>> SimulationData;
-
-    /*! \brief Timing is used for measuring time of each evaluation cycle and whole program simulation time.
-        \details
-        At creation of object it records current time into string.
-        Then \ref River::Timing::Record() can be used for erecording each cycle time.
-    */
-    class Timing
-    {
-        public:
-            
-            ///Default Constructor, saves time of creation.
-            Timing():
-                tik(clock()),
-                creation_date(chrono::high_resolution_clock::to_time_t(chrono::high_resolution_clock::now()))
-            {
-                tik = clock();
-            }
-
-            ///Return current date string.
-            string CurrentDate() const
-            {   
-                auto now = chrono::high_resolution_clock::now();
-                auto t_time = chrono::high_resolution_clock::to_time_t(now);
-                return ctime(&t_time);
-            }
-
-            ///Return date of object creation string.
-            string CreationtDate() const
-            {   
-                return ctime(&creation_date);
-            }
-
-            ///Returns elapsed time from last \ref Record() call and saves it into vector.
-            double Record()
-            {
-                auto tok = clock();
-                records.push_back((double)(tok - tik)/CLOCKS_PER_SEC);
-                tik = tok;
-                return records.back();
-            }
-
-            ///Returns total time of simmulation.
-            double Total() const
-            {
-                double sum = 0;
-                for(auto t: records)
-                    sum += t;
-                return sum;
-            }
-
-            ///Vector that holds all times between Record() calls.
-            vector<double> records;
-        
-        private:
-
-            ///Stores last time from callig Record function.
-            clock_t tik;
-            ///Used for time record.
-            clock_t tok;
-            ///Creation date of object
-            time_t creation_date;
-    };
 
     struct BackwardData
     {
@@ -141,35 +65,9 @@ namespace River
         vector<Point> init, backward, backward_forward;
         double branch_lenght_diff = -1;
 
-        bool operator==(const BackwardData& data) const
-        {
-            return 
-                a1 == data.a1 && a2 == data.a2 && a3 == data.a3 
-                && init == data.init 
-                && backward == data.backward 
-                && backward_forward == data.backward_forward
-                && branch_lenght_diff == data.branch_lenght_diff;
-        }
+        bool operator==(const BackwardData& data) const;
 
-        friend ostream& operator <<(ostream& write, const BackwardData & data)
-        {
-            for(size_t i = 0; i < data.a1.size(); ++i)
-            {
-                write 
-                    << "a1 = " << data.a1.at(i)
-                    << ", a2 = " << data.a2.at(i)
-                    << ", a3 = " << data.a3.at(i) << endl;
-                
-                write 
-                    << "init point = " << data.init.at(i) 
-                    << ", backward point = " << data.backward.at(i)
-                    << ", backward-forward point = " << data.backward_forward.at(i) << endl;
-            }
-            
-            write << "branch diff = " << data.branch_lenght_diff << endl;
-
-            return write;
-        }
+        friend ostream& operator <<(ostream& write, const BackwardData & data);
     };
 
     typedef map<t_branch_id, BackwardData> t_GeometryDiffernceNew;
@@ -210,18 +108,7 @@ namespace River
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const ProgramOptions & po);
 
-            bool operator==(const ProgramOptions& po) const
-            {
-                return simulation_type == po.simulation_type 
-                    && number_of_steps == po.number_of_steps
-                    && abs(maximal_river_height - po.maximal_river_height) < EPS
-                    && number_of_backward_steps == po.number_of_backward_steps
-                    && save_vtk == po.save_vtk
-                    && save_each_step == po.save_each_step
-                    && verbose == po.verbose
-                    //&& output_file_name == po.output_file_name
-                    && input_file_name == po.input_file_name;
-            }
+            bool operator==(const ProgramOptions& po) const;
     };
     
     /*! \brief Adaptive mesh area constraint function.
@@ -297,7 +184,6 @@ namespace River
             */
             inline double operator()(double x, double y) const
             {
-                //! [MeshConstrain]
                 double result_area = 10000000/*some large area value*/;
                 for(auto& tip: tip_points)
                 {
@@ -309,26 +195,12 @@ namespace River
                 }
                 
                 return result_area;
-                //! [MeshConstrain]
             }
 
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const MeshParams & mp);
 
-            bool operator==(const MeshParams& mp) const
-            {
-                return 
-                    abs(refinment_radius - mp.refinment_radius) < EPS 
-                    && abs(exponant  - mp.exponant) < EPS
-                    && static_refinment_steps == mp.static_refinment_steps
-                    && abs(min_area  - mp.min_area) < EPS
-                    && abs(max_area  - mp.max_area) < EPS
-                    && abs(min_angle - mp.min_angle) < EPS
-                    && abs(max_edge  - mp.max_edge) < EPS
-                    && abs(min_edge  - mp.min_edge) < EPS
-                    && abs(ratio     - mp.ratio) < EPS
-                    && abs(eps       - mp.eps) < EPS;
-            }
+            bool operator==(const MeshParams& mp) const;
     };
 
     /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
@@ -382,13 +254,7 @@ namespace River
             ///Prints options structure to output stream.
             friend ostream& operator <<(ostream& write, const IntegrationParams & ip);
 
-            bool operator==(const IntegrationParams& ip) const
-            {
-                return 
-                    abs(weigth_func_radius - ip.weigth_func_radius) < EPS 
-                    && abs(integration_radius  - ip.integration_radius) < EPS
-                    && abs(exponant - ip.exponant) < EPS;
-            }
+            bool operator==(const IntegrationParams& ip) const;
     };
 
     /*! \brief Holds All parameters used in Deal.II solver.
@@ -420,17 +286,7 @@ namespace River
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const SolverParams & mp);
 
-            bool operator==(const SolverParams& sp) const
-            {
-                return 
-                    abs(tollerance - sp.tollerance) < EPS 
-                    && num_of_iterrations  == sp.num_of_iterrations
-                    && adaptive_refinment_steps == sp.adaptive_refinment_steps
-                    && abs(refinment_fraction - sp.refinment_fraction) < EPS
-                    && quadrature_degree == sp.quadrature_degree
-                    && renumbering_type == sp.renumbering_type
-                    && abs(max_distance - sp.max_distance) < EPS;
-            }
+            bool operator==(const SolverParams& sp) const;
     };
 
     /*! \brief Physical model parameters.
@@ -450,8 +306,6 @@ namespace River
             Tree tree, saved_tree;
 
             BoundaryConditions boundary_conditions;
-
-            Timing timing;
 
             ///Mesh and mesh refinment parameters
             MeshParams mesh;
@@ -539,72 +393,14 @@ namespace River
             
             ///Checks by evaluating series params for bifuraction condition.
             ///More details about that you can find at [PMorawiecki work]()
-            bool q_bifurcate(vector<double> a, double branch_lenght) const
-            {
-                bool dist_flag = branch_lenght >= bifurcation_min_dist;
-
-                if(bifurcation_type == 0)
-                {
-                    if(prog_opt.verbose)
-                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
-                             << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-                    return (a.at(2)/a.at(0) <= bifurcation_threshold) && dist_flag;
-                }
-                else if(bifurcation_type == 1)
-                {
-                    if(prog_opt.verbose)
-                        cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2
-                             << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-                    return (a.at(0) >= bifurcation_threshold_2) && dist_flag;
-                }
-                else if(bifurcation_type == 2)
-                {
-                    if(prog_opt.verbose)
-                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
-                             << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2
-                             << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-                    return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold_2 && dist_flag;
-                }
-                else if(bifurcation_type == 3)
-                    return false;
-                else 
-                    throw Exception("Wrong bifurcation_type value!");
-            }
+            bool q_bifurcate(vector<double> a, double branch_lenght) const;
 
             ///Growth condition.
             ///Checks series parameters around river tip and evaluates if it is enough to grow.
-            inline bool q_growth(vector<double> a) const
-            {
-                cout << "a1 = " << a.at(0) << ", growth threshold = " << growth_threshold << endl;
-                return a.at(0) >= growth_threshold;
-            }
+            bool q_growth(vector<double> a) const;
 
             ///Evaluate next point of simualtion based on series parameters around tip.
-            Polar next_point(vector<double> series_params, double branch_lenght, double max_a) const
-            {
-                //handle situation near bifurcation point, to reduce "killing/shading" one branch by another
-                auto eta_local = eta;
-                if(branch_lenght < growth_min_distance)
-                    eta_local = 0;//constant growth of both branches.
-
-                auto beta = series_params.at(0)/series_params.at(1),
-                    dl = ds * pow(series_params.at(0)/max_a, eta_local);
-
-                if(growth_type == 0)
-                {
-                    double phi = -atan(2 / beta * sqrt(dl));
-                    return {dl, phi};
-                }
-                else if(growth_type == 1)
-                {
-                    auto dy = beta*beta/9*( pow(27/2*dl/beta/beta + 1, 2./3.) - 1),
-                        dx = 2*sqrt( pow(dy, 3)/pow(beta, 2) + pow(dy, 4) / pow(beta, 3));
-                        
-                    return ToPolar(Point{dx, dy}.rotate(-M_PI/2));
-                }
-                else
-                    throw Exception("Invalid value of growth_type!");
-            }
+            Polar next_point(vector<double> series_params, double branch_lenght, double max_a) const;
 
             ///Checks if values of parameters are in normal ranges.
             void CheckParametersConsistency() const;
@@ -612,25 +408,6 @@ namespace River
             ///Prints model structure and its subclasses
             friend ostream& operator <<(ostream& write, const Model & mdl);
 
-            bool operator==(const Model& model) const
-            {
-                return 
-                       abs(dx - model.dx) < EPS 
-                    && abs(width - model.width) < EPS 
-                    && abs(height - model.height) < EPS 
-                    && abs(field_value - model.field_value) < EPS 
-                    && abs(eta - model.eta) < EPS 
-                    && abs(bifurcation_threshold - model.bifurcation_threshold) < EPS 
-                    && abs(bifurcation_threshold_2 - model.bifurcation_threshold_2) < EPS 
-                    && abs(bifurcation_min_dist - model.bifurcation_min_dist) < EPS 
-                    && abs(bifurcation_angle - model.bifurcation_angle) < EPS 
-                    && abs(growth_threshold - model.growth_threshold) < EPS 
-                    && abs(growth_min_distance - model.growth_min_distance) < EPS 
-                    && abs(ds - model.ds) < EPS 
-
-                    && river_boundary_id  == model.river_boundary_id
-                    && bifurcation_type == model.bifurcation_type
-                    && growth_type == model.growth_type;
-            }
+            bool operator==(const Model& model) const;
     };
 }

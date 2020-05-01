@@ -24,6 +24,11 @@ using namespace std;
 
 namespace River
 {
+    //BoundaryCondition
+    bool BoundaryCondition::operator==(const BoundaryCondition& bc) const
+    {
+        return value == bc.value && type == bc.type;
+    }
     ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition)
     {
         switch (boundary_condition.type)
@@ -43,6 +48,42 @@ namespace River
         return write;
     }
 
+    //BoundaryConditions
+    t_BoundaryConditions BoundaryConditions::Get(t_boundary type)
+    {
+        t_BoundaryConditions bd;
+        if(type != DIRICHLET && type != NEUMAN)
+            throw Exception("BoundaryConditions:Get: unknown boundary type: " + to_string(type));
+            
+        for(const auto& [boundary_id, boundary_condition]:*this)
+            if(boundary_condition.type == type)
+                bd[boundary_id] = boundary_condition;
+
+        return bd;
+    }
+
+    ostream& operator <<(ostream& write, const BoundaryConditions & bcs)
+    {
+        for(const auto&[id, value]: bcs)
+            write << "id = " << id << ", " << value << endl;
+        return write;
+    }
+
+    //Sources
+    vector<t_source_id> Sources::GetSourcesIds() const
+    {
+        vector<t_source_id> sources_ids;
+        for(auto[source_id, value]: *this)
+            sources_ids.push_back(source_id);
+
+        return sources_ids;
+    }
+
+    //Line
+    bool Line::operator==(const Line& line) const
+    {
+        return p1 == line.p1 && p2 == line.p2 && boundary_id == line.boundary_id;
+    }
     ostream& operator <<(ostream& write, const Line & line)
     {
         write << "line [ " << line.p1 << ", " << line.p2 
@@ -51,6 +92,7 @@ namespace River
         return write;
     }
 
+    //SimpleBoundary
     void SimpleBoundary::Append(const SimpleBoundary& simple_boundary)
     {
         auto size = vertices.size();
@@ -151,6 +193,13 @@ namespace River
         return write;
     }
 
+    //Boundaries
+    Boundaries::Boundaries(t_Boundaries simple_boundaries)
+    {
+        for(auto &[boundary_id, simple_boundary]: simple_boundaries)
+            this->at(boundary_id) = simple_boundary;
+    }
+
     void Boundaries::Check()
     {
         if (this->empty())
@@ -196,7 +245,6 @@ namespace River
         return holes;
     }
 
-    //TODO remove this functionality from boundary
     Sources Boundaries::MakeRectangular(double width, double height, double source_x_position)
     {
         (*this)[1] = 
@@ -226,7 +274,6 @@ namespace River
         return sources;
     }
 
-    //TODO remove this functionality from boundary
     Sources Boundaries::MakeRectangularWithHole(double width, double height, double source_x_position)
     {
         (*this)[1] = 

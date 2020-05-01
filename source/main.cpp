@@ -221,7 +221,6 @@ int main(int argc, char *argv[])
             model.tree.at(source_branch_id).AddPoint(Polar{0.1, 0});
 
             EvaluateSeriesParams(model, triangle, sim, model.prog_opt.output_file_name);
-            model.timing.Record();//Timing
             Save(model, model.prog_opt.output_file_name);
         }
         //unhandled case

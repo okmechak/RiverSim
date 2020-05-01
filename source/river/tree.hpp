@@ -64,44 +64,22 @@ namespace River
                 \param[in] source_point_val - Branch source point.
                 \param[in] angle - Intial growth(or flow) dirrection of brahch source point.
             */
-            BranchNew(const Point& source_point_val, const double angle):
-                source_angle(angle)
-            {
-                AddAbsolutePoint(source_point_val);
-            };
+            BranchNew(const Point& source_point_val, const double angle);
 
             /*! \name Modificators
                 @{
             */
             ///Adds point \p __p__ to branch with absolute coords.
-            inline BranchNew& AddAbsolutePoint(const Point& p)
-            {
-                this->push_back(p);
-                return *this;
-            }
+            BranchNew& AddAbsolutePoint(const Point& p);
             
             ///Adds polar \p __p__ coords to branch with absolute angle, but position is relative to tip
-            inline BranchNew& AddAbsolutePoint(const Polar& p)
-            {
-                this->push_back(TipPoint() + Point{p});
-                return *this;
-            }
+            BranchNew& AddAbsolutePoint(const Polar& p);
             
             ///Adds point \p __p__ to branch in tip relative coord system.
-            inline BranchNew& AddPoint(const Point &p)
-            {
-                this->push_back(TipPoint() + p);
-                return *this;
-            }
+            BranchNew& AddPoint(const Point &p);
 
             ///Adds polar \p __p__ to branch in tip relative coord and angle system.
-            inline BranchNew& AddPoint(const Polar& p)
-            {
-                auto p_new = Polar{p};
-                p_new.phi += TipAngle();
-                AddAbsolutePoint(p_new);
-                return *this;
-            }
+            BranchNew& AddPoint(const Polar& p);
 
             /*! \brief Reduces lenght of branch by \p lenght.
                 \note
@@ -114,13 +92,7 @@ namespace River
                 \imageSize{BranchNewShrink.jpg, height:30%;width:30%;, }
                 \throw Exception if trying to remove last point.
             */
-            inline BranchNew& RemoveTipPoint()
-            {
-                if(this->size() == 1)
-                    throw Exception("Last branch point con't be removed");   
-                this->pop_back();
-                return *this;
-            }
+            BranchNew& RemoveTipPoint();
             
             /*! @} */
 
@@ -130,62 +102,29 @@ namespace River
             /*! \brief Return TipPoint of branch(last point in branch).
                 \throw Exception if branch is empty.
             */
-            inline Point TipPoint() const 
-            {
-                if(this->size() == 0)
-                    throw Exception("Can't return TipPoint size is zero");
-                return this->at(this->size() - 1);
-            }
+            Point TipPoint() const;
 
             /*! \brief Returns vector of tip - difference between two adjacent points.
                 \throw Exception if branch consist only from one point.
                 \warning name a little confusing cos there is still source_angle variable.
             */
-            inline Point TipVector() const 
-            {
-                if(this->size() <= 1)
-                    throw Exception("Can't return TipVector size is 1 or even less");
-
-                return this->at(this->size() - 1) - this->at(this->size() - 2);
-            }
+            Point TipVector() const;
 
             /*! \brief Returns vector of \p i th segment of branch.
                 \throw Exception if branch size is 1 or is \p i > branch size.
             */
-            inline Point Vector(unsigned i) const
-            {
-                if(this->size() == 1)
-                    throw Exception("Can't return Vector. Size is 1");
-                if(i >= this->size() || i == 0)
-                    throw Exception("Can't return Vector. Index is bigger then size or is zero");
-
-                return this->at(i) - this->at(i - 1);
-            }
+            Point Vector(unsigned i) const;
             
             /*! \brief Returns angle of branch tip.
                 \throw Exception if branch is empty.
             */
-            double TipAngle() const 
-            {
-                if(this->size() < 1)
-                    throw Exception("TipAngle: size is less then 1!");
-                else if(this->size() == 1)
-                    return source_angle; 
-
-                return TipVector().angle();
-            }
+            double TipAngle() const;
 
             ///Returns SourcePoint of branch(the first one).
-            inline Point SourcePoint() const
-            {
-                return this->at(0);
-            }
+            Point SourcePoint() const;
 
             ///Returns SourceAngle of branch - initial __source_angle__.
-            inline double SourceAngle() const 
-            {
-                return source_angle;
-            }
+            double SourceAngle() const;
             /*! @} */
 
             /*! \name Different Parameters
@@ -193,39 +132,16 @@ namespace River
             */
 
             ///Returns Lenght of whole branch.
-            double Lenght() const 
-            {
-                double lenght = 0.;
-                if(this->size() > 1)
-                    for(unsigned int i = 1; i < this->size(); ++i)
-                        lenght += (this->at(i) - this->at(i - 1)).norm();
-
-                return lenght;
-            };
+            double Lenght() const;
             /**
              * @}
              */
 
             ///Prints branch and all its parameters.
-            friend ostream& operator<<(ostream& write, const BranchNew & b)
-            {
-                int i = 0;
-                write << "Branch " << endl;
-                write << "  lenght - " << b.Lenght() << endl;
-                write << "  size - " << b.size() << endl;
-                write << "  source angle - " << b.source_angle << endl;
-                for(auto p: b)
-                    write <<"   " << i++ << " ) " << p << endl;
-
-                return write;
-            }
+            friend ostream& operator<<(ostream& write, const BranchNew & b);
 
             ///Comparison of branches.
-            bool operator==(const BranchNew& br) const
-            {
-                return equal(this->begin(), this->end(), br.begin()) &&
-                    SourceAngle() == br.SourceAngle();
-            }
+            bool operator==(const BranchNew& br) const;
             
         //private:
 
@@ -275,21 +191,11 @@ namespace River
             pair<t_branch_id, t_branch_id> AddSubBranches(t_branch_id root_branch_id, 
                 const BranchNew &left_branch, const BranchNew &right_branch);
 
-            void DeleteBranch(t_branch_id branch_id)
-            {
-                handle_non_existing_branch_id(branch_id);
-
-                this->erase(branch_id);
-                branches_relation.erase(branch_id);
-            }
+            void DeleteBranch(t_branch_id branch_id);
 
             void DeleteSubBranches(t_branch_id root_branch_id);
 
-            void Clear()
-            {
-                this->clear();
-                branches_relation.clear();
-            }
+            void Clear();
 
             /*! \brief Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
                 \throw Exception if there is no parent branch.
@@ -297,27 +203,15 @@ namespace River
             t_branch_id GetParentBranchId(t_branch_id branch_id) const;
             
             /// Returns link to parent branch.
-            BranchNew& GetParentBranch(t_branch_id branch_id)
-            {
-                return this->at(GetParentBranchId(branch_id));
-            }
+            BranchNew& GetParentBranch(t_branch_id branch_id);
 
             /*! \brief Returns pair of ids of subranches.
                 \throw Exception if there is no sub branches.
             */
-            pair<t_branch_id, t_branch_id> GetSubBranchesIds(t_branch_id branch_id) const
-            {   
-                if(!HasSubBranches(branch_id))
-                    throw Exception("branch does't have sub branches");
+            pair<t_branch_id, t_branch_id> GetSubBranchesIds(t_branch_id branch_id) const;
 
-                return branches_relation.at(branch_id);
-            }
             /// Returns reference to subbranches
-            pair<BranchNew&, BranchNew&> GetSubBranches(t_branch_id branch_id)
-            {
-                auto[left_branch, right_branch] = GetSubBranchesIds(branch_id);
-                return {this->at(left_branch), this->at(right_branch)};
-            }
+            pair<BranchNew&, BranchNew&> GetSubBranches(t_branch_id branch_id);
 
             /*! \brief Returns id of adjacent branch to current \p sub_branch_id branch.
                 \throw Exception if there is no adjacent branch.
@@ -325,10 +219,7 @@ namespace River
             t_branch_id GetAdjacentBranchId(t_branch_id sub_branch_id) const;
 
             ///Returns link to adjacent branch with \p id.
-            BranchNew& GetAdjacentBranch(t_branch_id sub_branch_id)
-            {
-                return this->at(GetAdjacentBranchId(sub_branch_id));
-            }
+            BranchNew& GetAdjacentBranch(t_branch_id sub_branch_id);
 
             //Growth
             ///Adds  relatively vector of \p points to Branches \p tips_id.
@@ -355,16 +246,7 @@ namespace River
             map<t_branch_id, Point> TipIdsAndPoints() const;
 
             ///Checks if current id of branch is source or not.
-            bool IsSourceBranch(const t_branch_id branch_id) const
-            {
-                handle_non_existing_branch_id(branch_id);
-
-                for(const auto&[id, sub_ids]: branches_relation)
-                    if(branch_id == sub_ids.first || branch_id == sub_ids.second)
-                        return false;
-
-                return true;
-            }
+            bool IsSourceBranch(const t_branch_id branch_id) const;
 
             ///Evaluates curvature of tips. Used in non-euler growth
             double maximal_tip_curvature_distance() const;
@@ -375,35 +257,14 @@ namespace River
             void remove_tip_points();
             
             ///Checks if Branch \p branch_id has subbranches.
-            bool HasSubBranches(const t_branch_id branch_id) const
-            {
-                handle_non_existing_branch_id(branch_id);
+            bool HasSubBranches(const t_branch_id branch_id) const;
 
-                return branches_relation.count(branch_id);
-            }
-
-            bool HasParentBranch(t_branch_id sub_branch_id) const
-            {
-                handle_non_existing_branch_id(sub_branch_id);
-
-                for(const auto&[parent_id, sub_ids]: branches_relation)
-                    if(sub_ids.first == sub_branch_id || sub_ids.second == sub_branch_id)
-                        return true;
-
-                return false;
-            }
+            bool HasParentBranch(t_branch_id sub_branch_id) const;
 
             ///Checks for validity of \p id.
-            bool IsValidBranchId(const t_branch_id id) const
-            {
-                return id >= 1 and id != UINT_MAX;
-            }
+            bool IsValidBranchId(const t_branch_id id) const;
 
-            void handle_non_existing_branch_id(const t_branch_id id) const
-            {
-                if (!this->count(id)) 
-                    throw Exception("Branch with id: " + to_string(id) + " do not exist");
-            }
+            void handle_non_existing_branch_id(const t_branch_id id) const;
 
             ///Generates unique id number for new subbranch.
             unsigned GenerateNewID() const;

@@ -205,22 +205,6 @@
         "SourceIds" : [1]
     }
     ```
-    
-    ## GeometryDifference
-    
-    Obcjects: 
-
-    + "AlongBranches" - contains information about difference allong branches.
-    + "BiffuractionPoints" - contains geometry difference at biffuratcion points.
-
-    \see River::GeometryDifference
-
-    ## RuntimeInfo
-
-    Object holds some general information and perfomance measurments. Like total time of simulation, 
-    time of each cycle, start date, end date and input file.
-
-    \see River::Timing
 
     ## [Example of JSON file output](https://github.com/okmechak/RiverSim/blob/master/research/test_tree.json)
 */
