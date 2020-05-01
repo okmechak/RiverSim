@@ -48,7 +48,207 @@ namespace River
 {
 
     class Parameter
-    {};
+    {
+        public:
+
+            Parameter() = default;
+            Parameter (const Parameter &old_obj) = default;
+            Parameter(bool val, string d = "")
+            {
+                value_type = TYPE::BOOL;
+                bool_val = val;
+                description = d;
+            }
+            Parameter(unsigned val, string d = "")
+            {
+                value_type = TYPE::UNSIGNED;
+                unsigned_val = val;
+                description = d;
+            }
+            Parameter(double val, string d = "")
+            {
+                value_type = TYPE::DOUBLE;
+                double_val = val;
+                description = d;
+            }
+            ~Parameter(){}
+
+            operator bool() const 
+            { 
+                if(value_type != TYPE::BOOL)
+                    throw Exception("Parameter wrong cast");
+
+                return bool_val; 
+            }
+
+            operator unsigned() const 
+            { 
+                if(value_type != TYPE::UNSIGNED)
+                    throw Exception("Parameter wrong cast");
+
+                return unsigned_val; 
+            }
+
+            operator double() const 
+            { 
+                if(value_type != TYPE::DOUBLE)
+                    throw Exception("Parameter wrong cast");
+
+                return double_val; 
+            }
+
+            Parameter& operator=(const Parameter& p)
+            {
+                if(value_type != TYPE::UNDEFINED && value_type != p.value_type)
+                    throw Exception("Parameter: Can't assign types are different.");
+                
+                value_type = p.value_type;
+                description = p.description;
+                max_value = p.max_value;
+                min_value = p.min_value;
+
+                switch(p.value_type)
+                {
+                    case Parameter::TYPE::BOOL:
+                        bool_val = p.bool_val;       
+                        break;
+                    case Parameter::TYPE::UNSIGNED:
+                        unsigned_val = p.unsigned_val;
+                        break;
+                    case Parameter::TYPE::DOUBLE:
+                        double_val = p.double_val;
+                        break;
+                    default:
+                        throw Exception("Unknown parameter type");
+                }   
+                
+                return *this;
+            }
+
+            Parameter& operator=(bool val)
+            {
+                if(value_type == TYPE::UNDEFINED || value_type == TYPE::BOOL)
+                {
+                    value_type = TYPE::BOOL;
+                    bool_val = val;
+                }
+                else
+                    throw Exception("Parameter: Can't assign types are different.");
+                
+                return *this;
+            }
+
+            Parameter& operator=(unsigned val)
+            {
+                if(value_type == TYPE::UNDEFINED || value_type == TYPE::UNSIGNED)
+                {
+                    value_type = TYPE::UNSIGNED;
+                    unsigned_val = val;
+                }
+                else
+                    throw Exception("Parameter: Can't assign types are different.");
+                
+                return *this;
+            }
+
+            Parameter& operator=(double val)
+            {
+                if(value_type == TYPE::UNDEFINED || value_type == TYPE::DOUBLE)
+                {
+                    value_type = TYPE::DOUBLE;
+                    double_val = val;
+                }
+                else
+                    throw Exception("Parameter: Can't assign types are different.");
+                
+                return *this;
+            }
+
+            bool operator==(const Parameter& p) const
+            {
+                return value_type == p.value_type &&
+                    bool_val == p.bool_val &&
+                    unsigned_val == p.unsigned_val &&
+                    abs(double_val - p.double_val) < EPS &&
+                    description == p.description;
+            }
+
+            bool operator==(const bool& val) const
+            {
+                if(value_type == TYPE::BOOL)
+                {
+                    return bool_val == val;
+                }
+                else
+                    throw Exception("Parameter: Can't assign types are different.");
+                
+                return false;
+            }
+
+            bool operator==(const unsigned& val) const
+            {
+                if(value_type == TYPE::UNSIGNED)
+                {
+                    return unsigned_val == val;
+                }
+                else
+                    throw Exception("Parameter: Can't assign types are different.");
+                
+                return false;
+            }
+
+            bool operator==(const double& val) const
+            {
+                if(value_type == TYPE::DOUBLE)
+                {
+                    return abs(double_val - val) < EPS;
+                }
+                else
+                    throw Exception("Parameter: Can't assign types are different.");
+                
+                return false;
+            }
+
+            friend ostream& operator <<(ostream& write, const Parameter & p)
+            {
+                switch(p.value_type)
+                {
+                    case Parameter::TYPE::UNDEFINED:
+                        write << "Variable isn't initialized.";
+                        break;
+                    case Parameter::TYPE::BOOL:
+                        write << p.bool_val;
+                        break;
+                    case Parameter::TYPE::UNSIGNED:
+                        write << p.unsigned_val;
+                        break;
+                    case Parameter::TYPE::DOUBLE:
+                        write << p.double_val;
+                        break;
+                    default:
+                        throw Exception("Unknown parameter type");
+                }
+                write << " - " << p.description;
+                return write;
+            }
+            
+        private:
+        
+            union{
+                bool bool_val;
+                unsigned unsigned_val;
+                double double_val;
+            };
+            enum TYPE{
+                UNDEFINED,
+                BOOL, 
+                UNSIGNED, 
+                DOUBLE} 
+                value_type = TYPE::UNDEFINED;
+            
+            string description;
+            double min_value = -100000, max_value = 100000;
+    };
 
     typedef map<t_branch_id, vector<vector<double>>> t_SeriesParameters;
     class SeriesParameters: public t_SeriesParameters
@@ -178,9 +378,31 @@ namespace River
         \details Program has some options that isn't part simulation itself but rather ease of use.
         So this object is dedicated for such options.
      */
-    class ProgramOptions
+    class ProgramOptions: public map<string, Parameter>
     {
         public:
+            ProgramOptions()
+            {
+                auto po = *this;
+
+                po["simulation_type"] = Parameter(0u, 
+                    "Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes");
+                po["number_of_steps"] = Parameter(10u, 
+                    "Number of simulation steps.");
+                po["maximal_river_height"] = Parameter(100u, 
+                    "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.");
+                po["number_of_backward_steps"] = Parameter(1u, 
+                    "Number of backward steps simulations used in backward simulation type.");
+                po["save_vtk"] = Parameter(false, 
+                    "Outputs VTK file of Deal.II solution.");
+                po["save_each_step"] = Parameter(false, 
+                    "Save each step of simulation in JSON separate file.");
+                po["verbose"] = Parameter(true, 
+                    "If true - then program will print to standard output.");
+                po["debug"] = Parameter(false, 
+                    "If true - then program will save additional output files for each stage of simulation.");
+            }
+
             ///Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes
             unsigned simulation_type = 0;
 
@@ -228,9 +450,36 @@ namespace River
         \details
         MeshParams holds all parameters used by mesh generation(see \ref triangle.hpp, \ref mesh.hpp)
      */
-    class MeshParams
+    class MeshParams: public map<string, Parameter>
     {
         public:
+            MeshParams()
+            {
+                auto mp = *this;
+
+                mp["refinment_radius"] = Parameter(4*Radius, 
+                    "Radius of mesh refinment.");
+                mp["exponant"] = Parameter(7., 
+                    "This value controlls transition slope between small mesh elements and big or course.");
+                mp["exponant"] = Parameter(1.9, 
+                    "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.");
+                mp["sigma"] = Parameter(1u, 
+                    "Sigma is used in exponence.");
+                mp["static_refinment_steps"] = Parameter(0u, 
+                    "Number of mesh refinment steps used by Deal.II mesh functionality.");
+                mp["min_area"] = Parameter(7e-4, 
+                    "Minimal area of mesh.");
+                mp["max_area"] = Parameter(1e5, 
+                    "Maximal area of mesh element.");
+                mp["min_angle"] = Parameter(30., 
+                    "Minimal angle of mesh element.");
+                mp["max_edge"] = Parameter(1., 
+                    "Maximal edge size.");
+                mp["min_edge"] = Parameter(8e-8, 
+                    "Minimal edge size.");
+                mp["ratio"] = Parameter(2.3, 
+                    "Ratio of the triangles.");
+            }
             /*! \brief Vector of tip points.
                 \details Tips - are points where mesh size should be small for better accuracy.
                 in this case it corresponds to river tip points.
@@ -260,9 +509,7 @@ namespace River
             ///Minimal angle of mesh element.
             double min_angle = 30.;
 
-            /*! \brief Maximal edge size.
-                \todo implement checks for this values.
-            */
+            ///Maximal edge size.
             double max_edge = 1;
 
             ///Minimal edge size.
@@ -333,9 +580,21 @@ namespace River
 
     /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
     */
-    class IntegrationParams
+    class IntegrationParams: public map<string, Parameter>
     {
         public:
+            
+            IntegrationParams()
+            {
+                auto ip = *this;
+
+                ip["weigth_func_radius"] = Parameter(Radius, 
+                    "Circle radius with centrum in tip point.");
+                ip["integration_radius"] = Parameter(3 * Radius, 
+                    "Circle radius with centrum in tip point.");
+                ip["exponant"] = Parameter(2., 
+                    "TControls slope.");
+            }
             /*! \brief Circle radius with centrum in tip point.
                 \details Parameter is used in River::IntegrationParams::WeightFunction
             */

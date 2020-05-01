@@ -377,3 +377,41 @@ BOOST_AUTO_TEST_CASE( PhysModel_equal,
 
     BOOST_TEST(data1 == data2);
 }
+
+BOOST_AUTO_TEST_CASE( Parameter_Class, 
+    *utf::tolerance(eps))
+{
+    Parameter 
+        p_bool = true, 
+        p_unsigned = 10u,
+        p_double = 0.12;
+
+    bool test_bool;
+    unsigned test_unsigned;
+    double test_double;
+    
+    BOOST_CHECK_NO_THROW(test_bool = p_bool);
+    BOOST_CHECK_THROW(test_unsigned = p_bool, Exception);
+    BOOST_CHECK_THROW(test_double = p_bool, Exception);
+
+    BOOST_TEST(p_bool == test_bool);
+
+    BOOST_CHECK_THROW(test_bool            = p_unsigned, Exception);
+    BOOST_CHECK_NO_THROW(test_unsigned     = p_unsigned);
+    BOOST_CHECK_THROW(test_double          = p_unsigned, Exception);
+
+    BOOST_TEST(p_unsigned == test_unsigned);
+
+    BOOST_CHECK_THROW(test_bool            = p_double, Exception);
+    BOOST_CHECK_THROW(test_unsigned        = p_double, Exception);
+    BOOST_CHECK_NO_THROW(test_double       = p_double);
+
+    BOOST_TEST(p_double == test_double);
+
+    Parameter p, p_lala(1.3, "some description goes here"), p_copy(p_lala);
+
+    BOOST_CHECK_NO_THROW(p = p_lala);
+    
+    BOOST_TEST(p == p_lala);
+    BOOST_TEST(p == p_copy);
+}
