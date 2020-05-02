@@ -366,15 +366,11 @@ namespace River
             ///Eta. Growth power of a1^eta
             double eta = 1.0;
 
-            ///Bifurcation method type. 
-            ///0 - a(3)/a(1) > bifurcation_threshold, 
-            ///1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.
-            unsigned bifurcation_type = 0;
+            ///Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.
+            unsigned bifurcation_type = 1;
             
             ///Bifurcation threshold for "0" bifurcation type.
             double bifurcation_threshold = -0.1;//Probably should be -0.1
-            ///Bifurcation threshold for "1" bifurcation type.
-            double bifurcation_threshold_2 = 0.001;//Probably should be -0.1
 
             ///Minimal distance between adjacent bifurcation points. Reduces numerical noise.
             double bifurcation_min_dist = 0.05;

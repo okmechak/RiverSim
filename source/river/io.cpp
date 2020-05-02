@@ -150,12 +150,10 @@ namespace River
             value<double>()->default_value(to_string(model.field_value)) )
         ("eta", "Power of a1^eta used in growth of river.", 
             value<double>()->default_value(to_string(model.eta)) )
-        ("b,bifurcation-type", "Bifurcation method type. 0 - a(3)/a(1) > bifurcation_threshold, 1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.", 
+        ("b,bifurcation-type", "Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.", 
             value<unsigned>()->default_value(to_string(model.bifurcation_type)) )
-        ("bifurcation-threshold", "Bifuraction threshold for first bifurcation type: a(3)/a(1) < kcrit", 
+        ("bifurcation-threshold", "Bifuraction threshold.", 
             value<double>()->default_value(to_string(model.bifurcation_threshold)) )
-        ("bifurcation-threshold-2", "Biffuraction threshold for second bifurcation type: a(1) > kcrit", 
-            value<double>()->default_value(to_string(model.bifurcation_threshold_2)) )
         ("bifurcation-min-distance", "Minimal distance between adjacent bifurcation points. In other words, branch can bifurcate only when it is longer than minimal distance. Used for reducing numerical noise.", 
             value<double>()->default_value(to_string(model.bifurcation_min_dist)) )
         ("bifurcation-angle", "Angle between branches in bifurcation point. Default is Pi/5 which is theoretical value.", 
@@ -303,7 +301,6 @@ namespace River
         if (vm.count("eta")) model.eta = vm["eta"].as<double>();
         if (vm.count("bifurcation-type")) model.bifurcation_type = vm["bifurcation-type"].as<unsigned>();
         if (vm.count("bifurcation-threshold")) model.bifurcation_threshold = vm["bifurcation-threshold"].as<double>();
-        if (vm.count("bifurcation-threshold-2")) model.bifurcation_threshold_2 = vm["bifurcation-threshold-2"].as<double>();
         if (vm.count("bifurcation-angle")) model.bifurcation_angle = vm["bifurcation-angle"].as<double>();
         if (vm.count("bifurcation-min-distance")) model.bifurcation_min_dist = vm["bifurcation-min-distance"].as<double>();
         if (vm.count("growth-type")) model.growth_type = vm["growth-type"].as<unsigned>();
@@ -657,7 +654,6 @@ namespace River
             {"eta", data.eta},
             {"bifurcation_type", data.bifurcation_type},
             {"bifurcation_threshold", data.bifurcation_threshold},
-            {"bifurcation_threshold_2", data.bifurcation_threshold_2},
             {"bifurcation_min_dist", data.bifurcation_min_dist},
             {"bifurcation_angle", data.bifurcation_angle},
             {"growth_type", data.growth_type},
@@ -691,7 +687,6 @@ namespace River
         if(j.count("ds")) j.at("ds").get_to(data.ds);
         if(j.count("bifurcation_type")) j.at("bifurcation_type").get_to(data.bifurcation_type);
         if(j.count("bifurcation_threshold")) j.at("bifurcation_threshold").get_to(data.bifurcation_threshold);
-        if(j.count("bifurcation_threshold_2")) j.at("bifurcation_threshold_2").get_to(data.bifurcation_threshold_2);
         if(j.count("bifurcation_min_dist")) j.at("bifurcation_min_dist").get_to(data.bifurcation_min_dist);
         if(j.count("bifurcation_angle")) j.at("bifurcation_angle").get_to(data.bifurcation_angle);
         if(j.count("growth_type")) j.at("growth_type").get_to(data.growth_type);

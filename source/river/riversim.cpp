@@ -173,7 +173,7 @@ namespace River
             print(model->prog_opt.verbose, "non-euler solver cycle----------#" + to_string(step) + "--------------------------------");
             
             auto bif_type = model->bifurcation_type;
-            model->bifurcation_type = 3;//no biffurcation
+            model->bifurcation_type = 0;//no biffurcation
 
             one_linear_step(output_file_name + "_second_half_step_" + to_string(step), max_a1_step2);
 
@@ -243,7 +243,7 @@ namespace River
 
         model->SaveCurrentTree();
         auto temp_bif = model->bifurcation_type;
-        model->bifurcation_type = 3;//no biffuraction
+        model->bifurcation_type = 0;//no biffuraction
 
         for(unsigned step = 0; step < model->prog_opt.number_of_backward_steps; step++)
         {
@@ -562,7 +562,7 @@ namespace River
         
         //Several steps of forward growth
         Model model_backforward = model;
-        model_backforward.bifurcation_type = 3;//3 - means no biffuraction at all.
+        model_backforward.bifurcation_type = 0;//0 - means no biffuraction at all.
         print(model.prog_opt.verbose, "Forward steps:");
         for(unsigned i = 0; i < model.prog_opt.number_of_backward_steps; ++i)
         {

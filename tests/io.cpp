@@ -90,7 +90,6 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.eta == model_po.eta);
     BOOST_TEST(model.bifurcation_type == model_po.bifurcation_type);
     BOOST_TEST(model.bifurcation_threshold == model_po.bifurcation_threshold);
-    BOOST_TEST(model.bifurcation_threshold_2 == model_po.bifurcation_threshold_2);
     BOOST_TEST(model.bifurcation_min_dist == model_po.bifurcation_min_dist);
     BOOST_TEST(model.bifurcation_angle == model_po.bifurcation_angle);
     BOOST_TEST(model.growth_type == model_po.growth_type);
@@ -155,7 +154,6 @@ BOOST_AUTO_TEST_CASE( program_options,
         "--eta", "29",
         "--bifurcation-type", "30",
         "--bifurcation-threshold", "31",
-        "--bifurcation-threshold-2", "32",
         "--bifurcation-min-distance", "33",
         "--bifurcation-angle", "34",
         "--growth-type", "35",
@@ -236,7 +234,6 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.eta == 29);
     BOOST_TEST(model.bifurcation_type == 30);
     BOOST_TEST(model.bifurcation_threshold == 31);
-    BOOST_TEST(model.bifurcation_threshold_2 == 32);
     BOOST_TEST(model.bifurcation_min_dist == 33);
     BOOST_TEST(model.bifurcation_angle == 34);
     BOOST_TEST(model.growth_type == 35);
@@ -296,7 +293,6 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.eta = 8;
     mdl_out.bifurcation_type = 9;
     mdl_out.bifurcation_threshold = 10;
-    mdl_out.bifurcation_threshold_2 = 11;
     mdl_out.bifurcation_min_dist = 12;
     mdl_out.bifurcation_angle = 13;
     mdl_out.growth_type = 14;
@@ -407,7 +403,6 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.eta == 8);
     BOOST_TEST(mdl_in.bifurcation_type == 9);
     BOOST_TEST(mdl_in.bifurcation_threshold == 10);
-    BOOST_TEST(mdl_in.bifurcation_threshold_2 == 11);
     BOOST_TEST(mdl_in.bifurcation_min_dist == 12);
     BOOST_TEST(mdl_in.bifurcation_angle == 13);
     BOOST_TEST(mdl_in.growth_type == 14);
@@ -742,7 +737,6 @@ BOOST_AUTO_TEST_CASE( Model_to_json,
     data.eta = 6;
     data.bifurcation_type = 7;
     data.bifurcation_threshold = 8;
-    data.bifurcation_threshold_2 = 9;
     data.bifurcation_min_dist = 10;
     data.bifurcation_angle = 11;
     data.growth_type = 12;

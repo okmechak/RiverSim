@@ -181,29 +181,29 @@ namespace River
     {
         bool dist_flag = branch_lenght >= bifurcation_min_dist;
 
-        if(bifurcation_type == 0)
+        if(bifurcation_type == 1)
         {
             if(prog_opt.verbose)
                 cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
                      << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
             return (a.at(2)/a.at(0) <= bifurcation_threshold) && dist_flag;
         }
-        else if(bifurcation_type == 1)
-        {
-            if(prog_opt.verbose)
-                cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2
-                     << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-            return (a.at(0) >= bifurcation_threshold_2) && dist_flag;
-        }
         else if(bifurcation_type == 2)
         {
             if(prog_opt.verbose)
-                cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
-                     << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2
+                cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold
                      << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-            return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold_2 && dist_flag;
+            return (a.at(0) >= bifurcation_threshold) && dist_flag;
         }
         else if(bifurcation_type == 3)
+        {
+            if(prog_opt.verbose)
+                cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
+                     << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold
+                     << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
+            return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold && dist_flag;
+        }
+        else if(bifurcation_type == 0)
             return false;
         else 
             throw Exception("Wrong bifurcation_type value!");
@@ -271,7 +271,6 @@ namespace River
         write << "\t eta = "               << mdl.eta << endl;
         write << "\t bifurcation_type = "  << mdl.bifurcation_type << endl;
         write << "\t bifurcation_threshold = " << mdl.bifurcation_threshold << endl;
-        write << "\t bifurcation_threshold_2 = " << mdl.bifurcation_threshold_2 << endl;
         write << "\t bifurcation_min_dist = " << mdl.bifurcation_min_dist << endl;
         write << "\t bifurcation_angle = " << mdl.bifurcation_angle << endl;
 
@@ -293,7 +292,6 @@ namespace River
             && abs(field_value - model.field_value) < EPS 
             && abs(eta - model.eta) < EPS 
             && abs(bifurcation_threshold - model.bifurcation_threshold) < EPS 
-            && abs(bifurcation_threshold_2 - model.bifurcation_threshold_2) < EPS 
             && abs(bifurcation_min_dist - model.bifurcation_min_dist) < EPS 
             && abs(bifurcation_angle - model.bifurcation_angle) < EPS 
             && abs(growth_threshold - model.growth_threshold) < EPS 
@@ -333,9 +331,6 @@ namespace River
             
         if(bifurcation_threshold > 100 || bifurcation_threshold < -100)
             cout << "abs(bifurcation_threshold) value is very big: " << abs(bifurcation_threshold) << endl;
-
-        if(bifurcation_threshold_2 > 100 || bifurcation_threshold_2 < -100)
-            cout << "abs(bifurcation_threshold_2) value is very big: " << abs(bifurcation_threshold_2) << endl;
 
         if(bifurcation_min_dist < 0)
             throw Exception("bifurcation_min_dist parameter can't be negative: " + to_string(bifurcation_min_dist));

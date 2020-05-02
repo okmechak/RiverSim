@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE( Grow_Tree,
     //if everything is empty
     Model model;
     model.ds = 0.1;
-    model.bifurcation_type = 0;
+    model.bifurcation_type = 1;
     model.bifurcation_threshold = -1;
     model.eta = 0;
     map<t_branch_id, vector<double>> id_series_params;
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE( Grow_Tree_biffurcation,
     //if everything is empty
     Model model;
     model.ds = 0.1;
-    model.bifurcation_type = 0;
+    model.bifurcation_type = 1;
     model.bifurcation_threshold = 1;
     model.eta = 1;
     model.growth_type = 0;

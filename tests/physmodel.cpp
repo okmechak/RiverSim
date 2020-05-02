@@ -60,22 +60,15 @@ BOOST_AUTO_TEST_CASE( q_bifurcate,
 {
     Model model;
     model.bifurcation_min_dist = 10;
-    model.bifurcation_type = 0;
+    model.bifurcation_type = 1;
     BOOST_TEST(model.q_bifurcate({1, 2, 3}, 6) == false);
 
-    model.bifurcation_type = 0;
+    model.bifurcation_type = 1;
     model.bifurcation_threshold = 3;
     BOOST_TEST(model.q_bifurcate({1, 2, 3}, 11) == true);
 
     model.bifurcation_threshold = 2.999;
     BOOST_TEST(model.q_bifurcate({1, 2, 3}, 11) == false);
-
-    model.bifurcation_type = 1;
-    model.bifurcation_threshold_2 = 10;
-    BOOST_TEST(model.q_bifurcate({10, 2, 3}, 11) == true);
-
-    model.bifurcation_threshold_2 = 10;
-    BOOST_TEST(model.q_bifurcate({9.99, 2, 3}, 11) == false);
 }
 
 BOOST_AUTO_TEST_CASE( q_growth, 
@@ -348,7 +341,6 @@ BOOST_AUTO_TEST_CASE( PhysModel_equal,
     data1.eta = 6;
     data1.bifurcation_type = 7;
     data1.bifurcation_threshold = 8;
-    data1.bifurcation_threshold_2 = 9;
     data1.bifurcation_min_dist = 10;
     data1.bifurcation_angle = 11;
     data1.growth_type = 12;
@@ -367,7 +359,6 @@ BOOST_AUTO_TEST_CASE( PhysModel_equal,
     data2.eta = 6;
     data2.bifurcation_type = 7;
     data2.bifurcation_threshold = 8;
-    data2.bifurcation_threshold_2 = 9;
     data2.bifurcation_min_dist = 10;
     data2.bifurcation_angle = 11;
     data2.growth_type = 12;
