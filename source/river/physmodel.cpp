@@ -177,31 +177,26 @@ namespace River
     }
 
     //Model
-    bool Model::q_bifurcate(vector<double> a, double branch_lenght) const
+    bool Model::q_bifurcate(const vector<double>& a) const
     {
-        bool dist_flag = branch_lenght >= bifurcation_min_dist;
-
         if(bifurcation_type == 1)
         {
             if(prog_opt.verbose)
-                cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
-                     << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-            return (a.at(2)/a.at(0) <= bifurcation_threshold) && dist_flag;
+                cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
+            return (a.at(2)/a.at(0) <= bifurcation_threshold);
         }
         else if(bifurcation_type == 2)
         {
             if(prog_opt.verbose)
-                cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold
-                     << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-            return (a.at(0) >= bifurcation_threshold) && dist_flag;
+                cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
+            return (a.at(0) >= bifurcation_threshold);
         }
         else if(bifurcation_type == 3)
         {
             if(prog_opt.verbose)
                 cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
-                     << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold
-                     << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
-            return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold && dist_flag;
+                     << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
+            return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold;
         }
         else if(bifurcation_type == 0)
             return false;
@@ -209,21 +204,22 @@ namespace River
             throw Exception("Wrong bifurcation_type value!");
     }
 
-    bool Model::q_growth(vector<double> a) const
+    bool Model::q_bifurcate(const vector<double>& a, double branch_lenght) const
+    {
+        cout << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
+        return q_bifurcate(a) && branch_lenght >= bifurcation_min_dist;
+    }
+
+    bool Model::q_growth(const vector<double>& a) const
     {
         cout << "a1 = " << a.at(0) << ", growth threshold = " << growth_threshold << endl;
         return a.at(0) >= growth_threshold;
     }
 
-    Polar Model::next_point(vector<double> series_params, double branch_lenght, double max_a) const
+    Polar Model::next_point(const vector<double>& series_params) const
     {
-        //handle situation near bifurcation point, to reduce "killing/shading" one branch by another
-        auto eta_local = eta;
-        if(branch_lenght < growth_min_distance)
-            eta_local = 0;//constant growth of both branches.
-
         auto beta = series_params.at(0)/series_params.at(1),
-            dl = ds * pow(series_params.at(0)/max_a, eta_local);
+            dl = ds * pow(series_params.at(0), eta);
 
         if(growth_type == 0)
         {
@@ -239,6 +235,22 @@ namespace River
         }
         else
             throw Exception("Invalid value of growth_type!");
+    }
+
+    Polar Model::next_point(const vector<double>& series_params, double branch_lenght, double max_a)
+    {
+        auto normalized_series_params = series_params;
+        normalized_series_params.at(0) /= max_a;
+
+        auto eta_temp = eta;
+        if(branch_lenght <= growth_min_distance)
+            eta = 0;
+        
+        auto p = next_point(normalized_series_params);
+
+        eta = eta_temp;
+        
+        return p;
     }
 
     ostream& operator <<(ostream& write, const Model & mdl)

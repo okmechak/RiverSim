@@ -389,14 +389,18 @@ namespace River
             
             ///Checks by evaluating series params for bifuraction condition.
             ///More details about that you can find at [PMorawiecki work]()
-            bool q_bifurcate(vector<double> a, double branch_lenght) const;
+            bool q_bifurcate(const vector<double>& a) const;
+
+            bool q_bifurcate(const vector<double>& a, double branch_lenght) const;
 
             ///Growth condition.
             ///Checks series parameters around river tip and evaluates if it is enough to grow.
-            bool q_growth(vector<double> a) const;
+            bool q_growth(const vector<double>& a) const;
 
             ///Evaluate next point of simualtion based on series parameters around tip.
-            Polar next_point(vector<double> series_params, double branch_lenght, double max_a) const;
+            Polar next_point(const vector<double>& series_params) const;
+
+            Polar next_point(const vector<double>& series_params, double branch_lenght, double max_a);
 
             ///Checks if values of parameters are in normal ranges.
             void CheckParametersConsistency() const;
