@@ -29,7 +29,7 @@ namespace River
     {
         auto boundary = SimpleBoundaryGenerator(*model);
         if(boundary.vertices.empty())
-            throw Exception("TriangulateBoundaries: boundary is enpty");
+            throw Exception("TriangulateBoundaries: boundary is empty");
         
         return boundary;
     }
