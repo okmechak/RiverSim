@@ -92,12 +92,21 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tsolver)
 
-    #solver
+    #riversim
     add_executable(triversim riversim.cpp)
     target_link_libraries(triversim river ${Boost_LIBRARIES})
     deal_ii_setup_target(triversim)
     add_test(
         NAME triversim
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/triversim)
+
+    #riversim_new
+    add_executable(triversim_new riversim_new.cpp)
+    target_link_libraries(triversim_new river ${Boost_LIBRARIES})
+    deal_ii_setup_target(triversim_new)
+    add_test(
+        NAME triversim_new
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/triversim)
     
