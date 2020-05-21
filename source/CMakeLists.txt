@@ -21,12 +21,16 @@ if(BUILD_PROGRAM)
         ${CMAKE_CURRENT_SOURCE_DIR}/river
         ${CMAKE_CURRENT_SOURCE_DIR}/river/tethex)
 
+    add_library(app app.hpp app.cpp)
+    deal_ii_setup_target(app)
+    target_link_libraries(app river)
+
     set(SOURCE_FILES 
         main.cpp)
 
     add_executable(riversim ${SOURCE_FILES})
     deal_ii_setup_target(riversim)
-    target_link_libraries(riversim river)
+    target_link_libraries(riversim app)
 
     add_executable(meshgen meshgen.cpp)
     target_link_libraries(meshgen mesh io boundary_generator)
@@ -34,6 +38,7 @@ if(BUILD_PROGRAM)
     install(TARGETS riversim DESTINATION riversim)
     install(TARGETS meshgen DESTINATION riversim)
 
+    
     if(BUILD_PYTHON_API)
         message("========================================")
         message("Python API setup")
