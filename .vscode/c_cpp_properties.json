@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/source/**",
                 "${workspaceFolder}/tests/**",
-                "/mnt/c/users/ofcra/lib/dealii_d_shared/include"
+                "/mnt/c/users/ofcra/lib"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
