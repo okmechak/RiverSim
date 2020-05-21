@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 set(BUILD_PROGRAM ON CACHE BOOL "Build(Compile) Option is handy for build only docs.")
+set(BUILD_PYTHON_API ON CACHE BOOL "Generate python library")
 set(DEAL_II_PREFER_STATIC_LIBS ON CACHE BOOL "Static linkage of Deal.II library will be prefferable.")
 
 if(BUILD_PROGRAM)
@@ -32,4 +33,26 @@ if(BUILD_PROGRAM)
 
     install(TARGETS riversim DESTINATION riversim)
     install(TARGETS meshgen DESTINATION riversim)
+
+    if(BUILD_PYTHON_API)
+        message("========================================")
+        message("Python API setup")
+        # Find python and Boost - both are required dependencies
+        find_package(PythonLibs 3.8 REQUIRED)
+        find_package(Boost COMPONENTS python38 REQUIRED)
+
+        # Without this, any build libraries automatically have names "lib{x}.so"
+        set(CMAKE_SHARED_MODULE_PREFIX "")
+
+        # Add a shared module - modules are intended to be imported at runtime.
+        # - This is where you add the source files
+        add_library(riversimPY MODULE pythonapi.hpp pythonapi.cpp)
+        deal_ii_setup_target(riversimPY)
+
+        # Set up the libraries and header search paths for this target
+        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} river)
+        target_include_directories(riversimPY PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+        install(TARGETS riversimPY DESTINATION riversim)
+    endif(BUILD_PYTHON_API)
 endif(BUILD_PROGRAM)
