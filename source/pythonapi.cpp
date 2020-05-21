@@ -1,11 +1,16 @@
 #include "pythonapi.hpp"
 
+#include "app.hpp"
+
 char const* greet()
 {
-    return "hello, world";
+    return "Some text is going here.. blablabla";
 }
 
-BOOST_PYTHON_MODULE(riversimPY)
+BOOST_PYTHON_MODULE(reiversimPY2)
 {
-    def("greet", greet);
+    //def("greet", greet);
+
+    class_<ForwardRiverSimulation>("ForwardRiverSimulation")
+        .def("Run", &App::Run);
 }

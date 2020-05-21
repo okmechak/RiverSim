@@ -6,4 +6,4 @@
 
 using namespace boost::python;
 
-char const* greet();
+char const* hello();
