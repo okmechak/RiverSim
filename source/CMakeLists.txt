@@ -40,6 +40,9 @@ if(BUILD_PROGRAM)
 
     
     if(BUILD_PYTHON_API)
+        if(NOT BUILD_SHARED_LIBS )
+            message(FATAL_ERROR "Python API can't be build with static libraries, make shure You specified BUILD_SHARED_LIBS = true in cmake options" )
+        endif()
         message("========================================")
         message("Python API setup")
         # Find python and Boost - both are required dependencies
@@ -55,7 +58,7 @@ if(BUILD_PROGRAM)
         deal_ii_setup_target(riversimPY)
 
         # Set up the libraries and header search paths for this target
-        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} river)
+        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} app)
         target_include_directories(riversimPY PRIVATE ${PYTHON_INCLUDE_DIRS})
 
         install(TARGETS riversimPY DESTINATION riversim)
