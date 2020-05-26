@@ -60,6 +60,8 @@ if(BUILD_PROGRAM)
         # Set up the libraries and header search paths for this target
         target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} app)
         target_include_directories(riversimPY PRIVATE ${PYTHON_INCLUDE_DIRS})
+        set_target_properties(riversimPY
+            PROPERTIES OUTPUT_NAME riversim)
 
         install(TARGETS riversimPY DESTINATION riversim)
     endif(BUILD_PYTHON_API)

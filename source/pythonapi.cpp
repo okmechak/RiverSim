@@ -9,7 +9,7 @@ char const* greet()
     return "Some text is going here.. blablabla";
 }
 
-BOOST_PYTHON_MODULE(riversimPY)
+BOOST_PYTHON_MODULE(riversim)
 {
     def("greet", greet);
 
