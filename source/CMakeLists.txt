@@ -54,7 +54,7 @@ if(BUILD_PROGRAM)
 
         # Add a shared module - modules are intended to be imported at runtime.
         # - This is where you add the source files
-        add_library(riversimPY MODULE pythonapi.hpp pythonapi.cpp)
+        add_library(riversimPY MODULE pythonapi.cpp)
         deal_ii_setup_target(riversimPY)
 
         # Set up the libraries and header search paths for this target

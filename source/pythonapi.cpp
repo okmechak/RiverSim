@@ -1,16 +1,20 @@
-#include "pythonapi.hpp"
+#include <boost/python.hpp>
 
 #include "app.hpp"
+
+using namespace boost::python;
 
 char const* greet()
 {
     return "Some text is going here.. blablabla";
 }
 
-BOOST_PYTHON_MODULE(reiversimPY2)
+BOOST_PYTHON_MODULE(riversimPY)
 {
-    //def("greet", greet);
+    def("greet", greet);
 
-    class_<ForwardRiverSimulation>("ForwardRiverSimulation")
-        .def("Run", &App::Run);
+
+    class_<River::Point>("Point")
+        .def(init<double, double>())
+    ;
 }
