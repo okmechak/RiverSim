@@ -45,8 +45,3 @@ target_link_libraries(solver physmodel)
 add_library(river riversim.hpp riversim.cpp)
 deal_ii_setup_target(river)
 target_link_libraries(river io solver mesh boundary_generator)
-
-#river
-add_library(riv river.hpp river.cpp)
-deal_ii_setup_target(riv)
-target_link_libraries(riv io solver mesh boundary_generator)
