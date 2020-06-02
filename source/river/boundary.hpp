@@ -104,13 +104,16 @@ namespace River
             bool operator==(const Line& line) const;
     };
 
+    typedef vector<Point> t_PointList;
+    typedef vector<Line> t_LineList;
+
     class SimpleBoundary
     {
         public:
-            vector<Point> vertices;
-            vector<Line> lines;
+            t_PointList vertices;
+            t_LineList lines;
             bool inner_boundary = false;
-            vector<Point> holes;
+            t_PointList holes;
             string name = "";
             void Append(const SimpleBoundary& simple_boundary);
             void ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary);
