@@ -10,15 +10,15 @@ using namespace River;
 BOOST_PYTHON_MODULE(riversim)
 {
     //geometry primitives
-    def("GetNormalizedPoint", River::GetNormalizedPoint, args("p"), "Returns normalized vector of current Point");
+    def("GetNormalizedPoint", GetNormalizedPoint, args("p"), "Returns normalized vector of current Point");
 
-    def("ToPolar", River::ToPolar, args("p"), "Returns Polar representation of vector");
+    def("ToPolar", ToPolar, args("p"), "Returns Polar representation of vector");
 
-    class_<River::Polar>("Polar")
+    class_<Polar>("Polar")
         .def(init<>())
         .def(init<double, double>(args( "r", "phi" )))
-        .def_readwrite("r", &River::Polar::r)
-        .def_readwrite("phi", &River::Polar::phi)
+        .def_readwrite("r", &Polar::r)
+        .def_readwrite("phi", &Polar::phi)
         .def(self == self)
         .def(self != self)
     ;
@@ -31,12 +31,12 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("x", &River::Point::x)
         .def_readwrite("y", &River::Point::y)
         .def("norm", static_cast< double (River::Point::*)() const>( &River::Point::norm ) )
-        //.def("norm", static_cast< double (River::Point::*)(const double, const double) >( &River::Point::norm ), args("x", "y") )
+        //.def("norm", static_cast< double (Point::*)(const double, const double) >( &Point::norm ), args("x", "y") )
         //.staticmethod("norm")
         .def("rotate", &River::Point::rotate, args("phi"), return_value_policy<reference_existing_object>())
         .def("normalize", &River::Point::normalize, return_value_policy<reference_existing_object>())//return value policy
         .def("angle", static_cast< double (River::Point::*)() const>( &River::Point::angle ))
-        //.def("angle", static_cast<double (River::Point::*)(double, double) >( &River::Point::angle ), args("x", "y") )
+        //.def("angle", static_cast<double (Point::*)(double, double) >( &Point::angle ), args("x", "y") )
         //.staticmethod( "angle" )
         .def("angle", static_cast< double (River::Point::*)(const River::Point &) const>( &River::Point::angle ), args("p") )
         .def(self + self) 
@@ -60,22 +60,29 @@ BOOST_PYTHON_MODULE(riversim)
         .export_values()
         ;
 
-    class_<River::BoundaryCondition>("BoundaryCondition")
-        .def_readwrite("value", &River::BoundaryCondition::value)
-        .def_readwrite("type", &River::BoundaryCondition::type)
+    class_<BoundaryCondition>("BoundaryCondition")
+        .def_readwrite("value", &BoundaryCondition::value)
+        .def_readwrite("type", &BoundaryCondition::type)
         .def(self == self) 
     ;
 
-    class_<River::t_BoundaryConditions >("t_BoundaryConditions")
-        .def(map_indexing_suite<River::t_BoundaryConditions>() )
+    BoundaryCondition a, b;
+    a = b;
+
+    class_<map<int, string> >("testMap")
+        .def(map_indexing_suite<map<int, string>, true>())
     ;
-    
-    class_<River::BoundaryConditions, bases<River::t_BoundaryConditions> >("BoundaryConditions")
-        .def("Get", &River::BoundaryConditions::Get)
+
+    class_<t_BoundaryConditions>("t_BoundaryConditions")
+        .def(map_indexing_suite<t_BoundaryConditions, true>())
+    ;
+
+    class_<BoundaryConditions, bases<t_BoundaryConditions>>("BoundaryConditions")
+        .def("Get", static_cast< t_BoundaryConditions (BoundaryConditions::*)(t_boundary)>(&BoundaryConditions::Get))
     ;
 
     class_<River::t_Sources >("t_Sources")
-        .def(map_indexing_suite<River::t_Sources>() )
+        .def(map_indexing_suite<River::t_Sources, true>() )
     ;
 
     class_<River::Sources, bases<River::t_Sources>>("Sources")
@@ -93,11 +100,11 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     class_<River::t_PointList>("t_PointList")
-        .def(vector_indexing_suite<River::t_PointList>())
+        .def(vector_indexing_suite<River::t_PointList, true>())
     ;
 
     class_<River::t_LineList>("t_LineList")
-        .def(vector_indexing_suite<River::t_LineList>())
+        .def(vector_indexing_suite<River::t_LineList, true>())
     ;
 
     class_<River::SimpleBoundary >("SimpleBoundary")
@@ -112,11 +119,11 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     class_<River::t_Boundaries >("t_Boundaries")
-        .def(map_indexing_suite<River::t_Boundaries>())
+        .def(map_indexing_suite<River::t_Boundaries, true>())
     ;
 
     class_<River::Boundaries::trees_interface_t >("trees_interface_t")
-        .def(map_indexing_suite<River::Boundaries::trees_interface_t>())
+        .def(map_indexing_suite<River::Boundaries::trees_interface_t, true>())
     ;
 
     class_<River::Boundaries, bases<River::t_Boundaries> >("Boundaries")
@@ -365,31 +372,31 @@ BOOST_PYTHON_MODULE(riversim)
     //;
 
     //solver
-    class_<River::Solver>("Solver")
-        .def(init<River::Model*>(args("model")))
-        .def_readwrite("tollerance", &River::Solver::tollerance)
-        .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations)
-        .def_readwrite("verbose", &River::Solver::verbose)
-        .def_readwrite("num_of_adaptive_refinments", &River::Solver::num_of_adaptive_refinments)
-        .def_readwrite("num_of_static_refinments", &River::Solver::num_of_static_refinments)
-        .def_readwrite("field_value", &River::Solver::field_value)
-        .def_readwrite("refinment_fraction", &River::Solver::refinment_fraction)
-        .def_readwrite("coarsening_fraction", &River::Solver::coarsening_fraction)
-        .def("OpenMesh", &River::Solver::clear)
-        .def("run", &River::Solver::run)
-        .def("clear", &River::Solver::clear)
-        .def("output_results", &River::Solver::output_results)
-        .def("integrate", &River::Solver::integrate)
-    ;
+    //class_<River::Solver>("Solver")
+    //    .def(init<River::Model*>(args("model")))
+    //    .def_readwrite("tollerance", &River::Solver::tollerance)
+    //    .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations)
+    //    .def_readwrite("verbose", &River::Solver::verbose)
+    //    .def_readwrite("num_of_adaptive_refinments", &River::Solver::num_of_adaptive_refinments)
+    //    .def_readwrite("num_of_static_refinments", &River::Solver::num_of_static_refinments)
+    //    .def_readwrite("field_value", &River::Solver::field_value)
+    //    .def_readwrite("refinment_fraction", &River::Solver::refinment_fraction)
+    //    .def_readwrite("coarsening_fraction", &River::Solver::coarsening_fraction)
+    //    .def("OpenMesh", &River::Solver::clear)
+    //    .def("run", &River::Solver::run)
+    //    .def("clear", &River::Solver::clear)
+    //    .def("output_results", &River::Solver::output_results)
+    //    .def("integrate", &River::Solver::integrate)
+    //;
 
 
     //riversim
-    class_<River::ForwardRiverSimulation>("Solver")
-        .def(init<River::Model*, River::Triangle*, River::Solver*>(args("model", "triangle", "solver")))
-        .def("linear_solver", &River::ForwardRiverSimulation::linear_solver)
-        .def("non_linear_solver", &River::ForwardRiverSimulation::non_linear_solver)
-        .def("backward_solver", &River::ForwardRiverSimulation::backward_solver)
-    ;
+    //class_<River::ForwardRiverSimulation>("Solver")
+    //    .def(init<River::Model*, River::Triangle*, River::Solver*>(args("model", "triangle", "solver")))
+    //    .def("linear_solver", &River::ForwardRiverSimulation::linear_solver)
+    //    .def("non_linear_solver", &River::ForwardRiverSimulation::non_linear_solver)
+    //    .def("backward_solver", &River::ForwardRiverSimulation::backward_solver)
+    //;
 
     //app
     class_<App>("App")
