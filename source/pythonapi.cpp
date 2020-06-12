@@ -70,70 +70,84 @@ BOOST_PYTHON_MODULE(riversim)
     a = b;
 
     class_<map<int, string> >("testMap")
-        .def(map_indexing_suite<map<int, string>, true>())
+        .def(map_indexing_suite<map<int, string>>())
     ;
 
     class_<t_BoundaryConditions>("t_BoundaryConditions")
-        .def(map_indexing_suite<t_BoundaryConditions, true>())
+        .def(map_indexing_suite<t_BoundaryConditions>())
     ;
 
     class_<BoundaryConditions, bases<t_BoundaryConditions>>("BoundaryConditions")
         .def("Get", static_cast< t_BoundaryConditions (BoundaryConditions::*)(t_boundary)>(&BoundaryConditions::Get))
     ;
 
-    class_<River::t_Sources >("t_Sources")
-        .def(map_indexing_suite<River::t_Sources, true>() )
+    class_<t_source_coord >("t_source_coord")
+        .def_readwrite("boundary_id", &t_source_coord::first)
+        .def_readwrite("vert_pos", &t_source_coord::second)
     ;
 
-    class_<River::Sources, bases<River::t_Sources>>("Sources")
-        .def("Get", &River::Sources::GetSourcesIds)
+    class_<t_sources_ids>("t_sources_ids")
+        .def(vector_indexing_suite<t_sources_ids>())
     ;
 
-    class_<River::Line>("Line")
+    class_<t_Sources >("t_Sources")
+        .def(map_indexing_suite<t_Sources>() )
+    ;
+
+    class_<Sources, bases<t_Sources>>("Sources")
+        .def("getSourcesIds", &Sources::GetSourcesIds)
+    ;
+
+    class_<Line>("Line")
         .def(init<>())
-        .def(init<River::Line&>(args("line")))
+        .def(init<Line&>(args("line")))
         .def(init<t_vert_pos, t_vert_pos, t_boundary_id>(args( "p1v", "p2v", "boundary_id")))
-        .def_readwrite("p1", &River::Line::p1)
-        .def_readwrite("p2", &River::Line::p2)
-        .def_readwrite("boundary_id", &River::Line::boundary_id)
+        .def_readwrite("p1", &Line::p1)
+        .def_readwrite("p2", &Line::p2)
+        .def_readwrite("boundary_id", &Line::boundary_id)
         .def(self == self)
     ;
 
-    class_<River::t_PointList>("t_PointList")
-        .def(vector_indexing_suite<River::t_PointList, true>())
+    class_<t_PointList>("t_PointList")
+        .def(vector_indexing_suite<t_PointList>())
     ;
 
-    class_<River::t_LineList>("t_LineList")
-        .def(vector_indexing_suite<River::t_LineList, true>())
+    class_<t_LineList>("t_LineList")
+        .def(vector_indexing_suite<t_LineList>())
     ;
 
-    class_<River::SimpleBoundary >("SimpleBoundary")
-        .def("Append", &River::SimpleBoundary::Append)
-        .def("ReplaceElement", &River::SimpleBoundary::ReplaceElement)
+    class_<SimpleBoundary >("SimpleBoundary")
+        .def("Append", &SimpleBoundary::Append)
+        .def("ReplaceElement", &SimpleBoundary::ReplaceElement)
         .def(self == self)
-        .def_readwrite("name", &River::SimpleBoundary::name)
-        .def_readwrite("vertices", &River::SimpleBoundary::vertices)
-        .def_readwrite("lines", &River::SimpleBoundary::lines)
-        .def_readwrite("inner_boundary", &River::SimpleBoundary::inner_boundary)
-        .def_readwrite("holes", &River::SimpleBoundary::holes)
+        .def_readwrite("name", &SimpleBoundary::name)
+        .def_readwrite("vertices", &SimpleBoundary::vertices)
+        .def_readwrite("lines", &SimpleBoundary::lines)
+        .def_readwrite("inner_boundary", &SimpleBoundary::inner_boundary)
+        .def_readwrite("holes", &SimpleBoundary::holes)
     ;
 
-    class_<River::t_Boundaries >("t_Boundaries")
-        .def(map_indexing_suite<River::t_Boundaries, true>())
+    class_<t_Boundaries>("t_Boundaries")
+        .def(map_indexing_suite<t_Boundaries>())
     ;
 
-    class_<River::Boundaries::trees_interface_t >("trees_interface_t")
-        .def(map_indexing_suite<River::Boundaries::trees_interface_t, true>())
+    class_<t_branch_source >("t_branch_source")
+        .def_readwrite("point", &t_branch_source::first)
+        .def_readwrite("angle", &t_branch_source::second)
     ;
 
-    class_<River::Boundaries, bases<River::t_Boundaries> >("Boundaries")
-        .def(init<River::t_Boundaries>(args("simple_boundaries")))
-        .def("MakeRectangular", &River::Boundaries::MakeRectangular)
-        .def("MakeRectangularWithHole", &River::Boundaries::MakeRectangularWithHole)
-        .def("Check", &River::Boundaries::Check)
-        .def("GetOuterBoundary", &River::Boundaries::GetOuterBoundary, return_internal_reference<>())
-        .def("GetHolesList", &River::Boundaries::GetHolesList)
-        .def("GetSourcesIdsPointsAndAngles", &River::Boundaries::GetSourcesIdsPointsAndAngles)
+    class_<Boundaries::trees_interface_t >("trees_interface_t")
+        .def(map_indexing_suite<Boundaries::trees_interface_t>())
+    ;
+
+    class_<Boundaries, bases<t_Boundaries> >("Boundaries")
+        .def(init<t_Boundaries>(args("simple_boundaries")))
+        .def("MakeRectangular", &Boundaries::MakeRectangular)
+        .def("MakeRectangularWithHole", &Boundaries::MakeRectangularWithHole)
+        .def("Check", &Boundaries::Check)
+        .def("GetOuterBoundary", &Boundaries::GetOuterBoundary, return_internal_reference<>())
+        .def("GetHolesList", &Boundaries::GetHolesList)
+        .def("GetSourcesIdsPointsAndAngles", &Boundaries::GetSourcesIdsPointsAndAngles)
     ;
     
     //tree
