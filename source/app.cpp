@@ -66,7 +66,7 @@ int App::Run(int argc, char *argv[])
         cout << caught.what() << endl;
         return 1;
     }
-    catch(const dealii::ExceptionBase caught)
+    catch(const dealii::ExceptionBase& caught)
     {
         cout << "dealii excetpion" << endl;
         cout << caught.what() << endl;
