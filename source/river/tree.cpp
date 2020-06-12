@@ -32,7 +32,7 @@ namespace River
         source_angle(angle)
     {
         AddAbsolutePoint(source_point_val);
-    };
+    }
 
     BranchNew& BranchNew::AddAbsolutePoint(const Point& p)
     {
