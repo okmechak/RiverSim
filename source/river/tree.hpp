@@ -53,8 +53,7 @@ namespace River
         \imageSize{BranchNewClass.jpg, height:40%;width:40%;, }
         \todo resolve problem with private members
     */
-    typedef vector<Point> t_Branch;
-    class BranchNew: public t_Branch
+    class BranchNew: public t_PointList
     {
         public:
             BranchNew() = default;
@@ -155,6 +154,7 @@ namespace River
     };
 
     typedef t_source_id t_branch_id;
+    typedef pair<t_branch_id, t_branch_id> t_branch_id_pair;
 
     /*! \brief Combines __BranchNew__ into tree like structure.
         \details
@@ -188,7 +188,7 @@ namespace River
             /// Adds new \p branch with \p id (\p id should be unique).
             t_branch_id AddBranch(const BranchNew &branch, t_branch_id id = UINT_MAX);
             
-            pair<t_branch_id, t_branch_id> AddSubBranches(t_branch_id root_branch_id, 
+            t_branch_id_pair AddSubBranches(t_branch_id root_branch_id, 
                 const BranchNew &left_branch, const BranchNew &right_branch);
 
             void DeleteBranch(t_branch_id branch_id);
@@ -208,7 +208,7 @@ namespace River
             /*! \brief Returns pair of ids of subranches.
                 \throw Exception if there is no sub branches.
             */
-            pair<t_branch_id, t_branch_id> GetSubBranchesIds(t_branch_id branch_id) const;
+            t_branch_id_pair GetSubBranchesIds(t_branch_id branch_id) const;
 
             /// Returns reference to subbranches
             pair<BranchNew&, BranchNew&> GetSubBranches(t_branch_id branch_id);
@@ -231,7 +231,7 @@ namespace River
             ///Adds  absolute \p points to Branches \p tips_id.
             void AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points);
 
-            pair<t_branch_id, t_branch_id> GrowTestTree(
+            t_branch_id_pair GrowTestTree(
                 const t_branch_id branch_id = 1, const double ds = 0.05, const unsigned n = 3, const double dalpha = 0);
 
             ///Returns vector of tip branches ids.
@@ -270,7 +270,7 @@ namespace River
             unsigned GenerateNewID() const;
 
             ///Holds realations between root branhces and its subbranches.
-            map<t_branch_id, pair<t_branch_id, t_branch_id>> branches_relation;   
+            map<t_branch_id, t_branch_id_pair> branches_relation;   
 
             ///Prints tree to stream.
             friend ostream& operator<<(ostream& write, const Tree & b);

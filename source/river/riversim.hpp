@@ -32,7 +32,9 @@
 #include "solver.hpp"
 #include "physmodel.hpp"
 #include "boundary.hpp"
+#include "boundary_generator.hpp"
 #include "io.hpp"
+
 
 namespace River
 {

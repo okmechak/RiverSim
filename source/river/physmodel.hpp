@@ -62,7 +62,7 @@ namespace River
     struct BackwardData
     {
         vector<double> a1, a2, a3;
-        vector<Point> init, backward, backward_forward;
+        t_PointList init, backward, backward_forward;
         double branch_lenght_diff = -1;
 
         bool operator==(const BackwardData& data) const;
