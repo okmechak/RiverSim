@@ -34,6 +34,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <cstdlib>
 ///\endcond
 
 #include "GeometryPrimitives.hpp"
@@ -225,6 +226,16 @@ namespace tethex
             */
             friend ostream &operator<<(ostream &write, const tethex::Point &p);
 
+            bool operator==(const tethex::Point& point) const
+            {
+                for(unsigned i = 0; i < n_coord; ++i )
+                {
+                    if (abs(coord[i] - point.get_coord(i)) > 1e-15)
+                        return false;
+                }
+                return true;
+            }
+
         private:
             /**
             * Cartesian coordinates of the point
@@ -348,12 +359,12 @@ namespace tethex
         */
         bool contains(const int vertex) const;
 
-        double measure(const vector<Point> &points) const;
-        double min_angle(const vector<Point> &points) const;
-        double max_angle(const vector<Point> &points) const;
-        double min_edge(const vector<Point> &points) const;
-        double max_edge(const vector<Point> &points) const;
-        double quality(const vector<Point> &points) const;
+        double measure(const vector<tethex::Point> &points) const;
+        double min_angle(const vector<tethex::Point> &points) const;
+        double max_angle(const vector<tethex::Point> &points) const;
+        double min_edge(const vector<tethex::Point> &points) const;
+        double max_edge(const vector<tethex::Point> &points) const;
+        double quality(const vector<tethex::Point> &points) const;
 
         ///Converts tethex::MeshElement to output stream.
         friend ostream &operator<<(ostream &write, const MeshElement &el);

@@ -66,13 +66,6 @@ BOOST_PYTHON_MODULE(riversim)
         .def(self == self) 
     ;
 
-    BoundaryCondition a, b;
-    a = b;
-
-    class_<map<int, string> >("testMap")
-        .def(map_indexing_suite<map<int, string>>())
-    ;
-
     class_<t_BoundaryConditions>("t_BoundaryConditions")
         .def(map_indexing_suite<t_BoundaryConditions>())
     ;
@@ -351,6 +344,69 @@ BOOST_PYTHON_MODULE(riversim)
     def("Open", Open);
     //def("InitializeModelObject", River::InitializeModelObject);
 
+    //boundary_generator
+    def("TreeVertices", TreeVertices);
+    def("TreeBoundary", TreeBoundary);
+    def("SimpleBoundaryGenerator", SimpleBoundaryGenerator);
+
+    //tethex
+    class_<tethex::Point>("TethexPoint")
+        .def(init<>())
+        .def(init<const double, const double, const double, const int>(args( "x", "y", "z", "region_tag")))
+        .def(init<const tethex::Point&>())
+        .def(init<const River::Point&>())
+        .def("get_coord", &tethex::Point::get_coord)
+        .def("set_coord", &tethex::Point::set_coord, args("number", "value"))
+        .def(self == self)
+    ;
+
+    class_<vector<tethex::Point>> ("t_Vector_of_TethexPoint")
+        .def(vector_indexing_suite<vector<tethex::Point>>())
+        
+    ;
+
+    //class_<tethex::MeshElement>("MeshElement")
+    //    .def("get_n_vertices", &tethex::MeshElement::get_n_vertices)
+    //    .def("get_n_edges", &tethex::MeshElement::get_n_edges)
+    //    .def("get_vertex", &tethex::MeshElement::get_vertex, args("number"))
+    //    .def("set_vertex", &tethex::MeshElement::set_vertex, args("local_number", "global_number"))
+    //    .def("get_edge", &tethex::MeshElement::get_edge, args("number"))
+    //    .def("set_edge", &tethex::MeshElement::set_edge, args("local_number", "global_number"))
+    //    .def("contains", &tethex::MeshElement::contains, args("vertex"))
+    //    .def("measure", &tethex::MeshElement::measure, args("points"))
+    //    .def("min_angle", &tethex::MeshElement::min_angle, args("points"))
+    //    .def("max_angle", &tethex::MeshElement::max_angle, args("points"))
+    //    .def("min_edge", &tethex::MeshElement::min_edge, args("points"))
+    //    .def("max_edge", &tethex::MeshElement::max_edge, args("points"))
+    //    .def("quality", &tethex::MeshElement::quality, args("points"))
+    //;
+
+    class_<tethex::Mesh>("TethexMesh")
+        .def(init<>())
+        .def(init<const tethex::Mesh&>(args("mesh")))
+        .def(init<const River::SimpleBoundary&>(args("boundaries")))
+
+        .def("read", &tethex::Mesh::read)
+        .def("write", &tethex::Mesh::write)
+        .def("clean", &tethex::Mesh::clean)
+        .def("convert", &tethex::Mesh::convert)
+
+        .def("get_n_vertices", &tethex::Mesh::get_n_vertices)
+        .def("get_n_holes", &tethex::Mesh::get_n_holes)
+        .def("get_n_points", &tethex::Mesh::get_n_points)
+        .def("get_n_lines", &tethex::Mesh::get_n_lines)
+        .def("get_n_triangles", &tethex::Mesh::get_n_triangles)
+        .def("get_n_quadrangles", &tethex::Mesh::get_n_quadrangles)
+
+    //    .def("get_vertex", &tethex::Mesh::get_vertex, args("number"), return_internal_reference<>())
+    //    .def("get_hole", &tethex::Mesh::get_hole, args("number"), return_internal_reference<>())
+    //    .def("get_point", &tethex::Mesh::get_point, args("number"), return_internal_reference<>())
+    //    .def("get_edge", &tethex::Mesh::get_edge, args("number"), return_internal_reference<>())
+    //    .def("get_line", &tethex::Mesh::get_line, args("number"), return_internal_reference<>())
+    //    .def("get_triangle", &tethex::Mesh::get_triangle, args("number"), return_internal_reference<>())
+    //    .def("get_quadrangle", &tethex::Mesh::get_quadrangle, args("number"), return_internal_reference<>())
+    ;
+
     //triangle
     class_<triangulateio >("triangulateio")
         .def_readwrite("pointlist", &triangulateio::pointlist)
@@ -367,45 +423,53 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("numberoftriangleattributes", &triangulateio::numberoftriangleattributes)
         .def_readwrite("segmentlist", &triangulateio::segmentlist)
         .def_readwrite("segmentmarkerlist", &triangulateio::segmentmarkerlist)
+        .def_readwrite("numberofsegments", &triangulateio::numberofsegments)
         .def_readwrite("holelist", &triangulateio::holelist)
+        .def_readwrite("numberofholes", &triangulateio::numberofholes)
         .def_readwrite("regionlist", &triangulateio::regionlist)
         .def_readwrite("numberofregions", &triangulateio::numberofregions)
         .def_readwrite("edgelist", &triangulateio::edgelist)
         .def_readwrite("edgemarkerlist", &triangulateio::edgemarkerlist)
+        .def_readwrite("normlist", &triangulateio::normlist)
         .def_readwrite("numberofedges", &triangulateio::numberofedges)
     ;
 
-    //boundary_generator
-    def("TreeVertices", TreeVertices);
-    def("TreeBoundary", TreeBoundary);
-    def("SimpleBoundaryGenerator", SimpleBoundaryGenerator);
-
     //mesh
-    //class_<River::Triangle >("Triangle")
-    //    .def("Triangle", &River::Triangle::Triangle)
-    //    .def("generate", &River::Triangle::generate)
-    //    .def_readwrite("Refine", &River::Triangle::Refine)
-    //    .def_readwrite("ConstrainAngle", &River::Triangle::ConstrainAngle)
-    //    .def_readwrite("MinAngle", &River::Triangle::MinAngle)
-    //    .def_readwrite("MaxTriaArea", &River::Triangle::MaxTriaArea)
-    //    .def_readwrite("MaxEdgeLenght", &River::Triangle::MaxEdgeLenght)
-    //    .def_readwrite("MinEdgeLenght", &River::Triangle::MinEdgeLenght)
-    //    .def_readwrite("MaxTriangleRatio", &River::Triangle::MaxTriangleRatio)
-    //    .def_readwrite("AreaConstrain", &River::Triangle::AreaConstrain)
-    //    .def_readwrite("CustomConstraint", &River::Triangle::CustomConstraint)
-    //    .def_readwrite("DelaunayTriangles", &River::Triangle::DelaunayTriangles)
-    //    .def_readwrite("EncloseConvexHull", &River::Triangle::EncloseConvexHull)
-    //    .def_readwrite("CheckFinalMesh", &River::Triangle::CheckFinalMesh)
-    //    .def_readwrite("AssignRegionalAttributes", &River::Triangle::AssignRegionalAttributes)
-    //    .def_readwrite("Algorithm", &River::Triangle::Algorithm)
-    //    .def_readwrite("Quite", &River::Triangle::Quite)
-    //    .def_readwrite("Verbose", &River::Triangle::Verbose)
-    //    .def_readwrite("MeshParams", &River::Triangle::mesh_params)
+    //enum_<Triangle::algorithm>("e_triangle_algorithm")
+    //    .value("CONQUER", Triangle::algorithm::CONQUER)
+    //    .value("FORTUNE", Triangle::algorithm::FORTUNE)
+    //    .value("ITERATOR", Triangle::algorithm::ITERATOR)
+    //    .export_values()
     //;
 
+    class_<Triangle >("Triangle")
+        .def(init<>())
+        .def(init<MeshParams*>(args("mesh_params")))
+
+        .def("generate", &Triangle::generate)
+
+        .def_readwrite("refine", &Triangle::Refine)
+        .def_readwrite("constrain_angle", &Triangle::ConstrainAngle)
+        .def_readwrite("min_angle", &Triangle::MinAngle)
+        .def_readwrite("max_tria_area", &Triangle::MaxTriaArea)
+        .def_readwrite("min_tria_area", &Triangle::MinTriaArea)
+        .def_readwrite("max_edge_lenght", &Triangle::MaxEdgeLenght)
+        .def_readwrite("min_edge_lenght", &Triangle::MinEdgeLenght)
+        .def_readwrite("max_triangle_ratio", &Triangle::MaxTriangleRatio)
+        .def_readwrite("area_constrain", &Triangle::AreaConstrain)
+        .def_readwrite("custom_constraint", &Triangle::CustomConstraint)
+        .def_readwrite("delaunay_triangles", &Triangle::DelaunayTriangles)
+        .def_readwrite("enclose_convex_hull", &Triangle::EncloseConvexHull)
+        .def_readwrite("check_final_mesh", &Triangle::CheckFinalMesh)
+        .def_readwrite("assign_regional_attributes", &Triangle::AssignRegionalAttributes)
+        //.def_readwrite("algorithm", &Triangle::Algorithm)
+        .def_readwrite("quite", &Triangle::Quite)
+        .def_readwrite("verbose", &Triangle::Verbose)
+        .def_readwrite("mesh_params", &Triangle::mesh_params)
+    ;
+
     //solver
-    //class_<River::Solver>("Solver")
-    //    .def(init<River::Model*>(args("model")))
+    //class_<River::Solver>("Solver", init<River::Model*>(args("model")))
     //    .def_readwrite("tollerance", &River::Solver::tollerance)
     //    .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations)
     //    .def_readwrite("verbose", &River::Solver::verbose)
@@ -414,24 +478,27 @@ BOOST_PYTHON_MODULE(riversim)
     //    .def_readwrite("field_value", &River::Solver::field_value)
     //    .def_readwrite("refinment_fraction", &River::Solver::refinment_fraction)
     //    .def_readwrite("coarsening_fraction", &River::Solver::coarsening_fraction)
-    //    .def("OpenMesh", &River::Solver::clear)
+//
+    //    .def("OpenMesh", &River::Solver::OpenMesh)
+    //    .def("static_refine_grid", &River::Solver::static_refine_grid)
+    //    .def("numberOfDOFs", &River::Solver::NumberOfDOFs)
     //    .def("run", &River::Solver::run)
-    //    .def("clear", &River::Solver::clear)
     //    .def("output_results", &River::Solver::output_results)
     //    .def("integrate", &River::Solver::integrate)
+    //    .def("solved", &River::Solver::solved)
+    //    .def("clear", &River::Solver::clear)
     //;
-
 
     //riversim
     //class_<River::ForwardRiverSimulation>("Solver")
-    //    .def(init<River::Model*, River::Triangle*, River::Solver*>(args("model", "triangle", "solver")))
+    //    .def()
     //    .def("linear_solver", &River::ForwardRiverSimulation::linear_solver)
     //    .def("non_linear_solver", &River::ForwardRiverSimulation::non_linear_solver)
     //    .def("backward_solver", &River::ForwardRiverSimulation::backward_solver)
     //;
 
     //app
-    class_<App>("App")
-        .def("Run", &App::Run)
-    ;
+    //class_<App>("App")
+    //    .def("Run", &App::Run)
+    //;
 }
