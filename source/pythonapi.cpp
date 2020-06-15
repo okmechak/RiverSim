@@ -469,36 +469,34 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     //solver
-    //class_<River::Solver>("Solver", init<River::Model*>(args("model")))
-    //    .def_readwrite("tollerance", &River::Solver::tollerance)
-    //    .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations)
-    //    .def_readwrite("verbose", &River::Solver::verbose)
-    //    .def_readwrite("num_of_adaptive_refinments", &River::Solver::num_of_adaptive_refinments)
-    //    .def_readwrite("num_of_static_refinments", &River::Solver::num_of_static_refinments)
-    //    .def_readwrite("field_value", &River::Solver::field_value)
-    //    .def_readwrite("refinment_fraction", &River::Solver::refinment_fraction)
-    //    .def_readwrite("coarsening_fraction", &River::Solver::coarsening_fraction)
-//
-    //    .def("OpenMesh", &River::Solver::OpenMesh)
-    //    .def("static_refine_grid", &River::Solver::static_refine_grid)
-    //    .def("numberOfDOFs", &River::Solver::NumberOfDOFs)
-    //    .def("run", &River::Solver::run)
-    //    .def("output_results", &River::Solver::output_results)
-    //    .def("integrate", &River::Solver::integrate)
-    //    .def("solved", &River::Solver::solved)
-    //    .def("clear", &River::Solver::clear)
-    //;
+    class_<River::Solver, boost::noncopyable>("Solver", init<River::Model*>(args("model")))
+        .def_readwrite("tollerance", &River::Solver::tollerance)
+        .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations)
+        .def_readwrite("verbose", &River::Solver::verbose)
+        .def_readwrite("num_of_adaptive_refinments", &River::Solver::num_of_adaptive_refinments)
+        .def_readwrite("num_of_static_refinments", &River::Solver::num_of_static_refinments)
+        .def_readwrite("field_value", &River::Solver::field_value)
+        .def_readwrite("refinment_fraction", &River::Solver::refinment_fraction)
+        .def_readwrite("coarsening_fraction", &River::Solver::coarsening_fraction)
+        .def("OpenMesh", &River::Solver::OpenMesh)
+        .def("static_refine_grid", &River::Solver::static_refine_grid)
+        .def("numberOfDOFs", &River::Solver::NumberOfDOFs)
+        .def("run", &River::Solver::run)
+        .def("output_results", &River::Solver::output_results)
+        .def("integrate", &River::Solver::integrate)
+        .def("solved", &River::Solver::solved)
+        .def("clear", &River::Solver::clear)
+    ;
 
     //riversim
-    //class_<River::ForwardRiverSimulation>("Solver")
-    //    .def()
-    //    .def("linear_solver", &River::ForwardRiverSimulation::linear_solver)
-    //    .def("non_linear_solver", &River::ForwardRiverSimulation::non_linear_solver)
-    //    .def("backward_solver", &River::ForwardRiverSimulation::backward_solver)
-    //;
+    class_<ForwardRiverSimulation>("ForwardRiverSimulation", init<Model*, Triangle*, River::Solver*>(args("model", "triangle", "solver")))
+        .def("linear_solver", &ForwardRiverSimulation::linear_solver)
+        .def("non_linear_solver", &ForwardRiverSimulation::non_linear_solver)
+        .def("backward_solver", &ForwardRiverSimulation::backward_solver)
+    ;
 
     //app
-    //class_<App>("App")
+    class_<App>("App")
     //    .def("Run", &App::Run)
-    //;
+    ;
 }
