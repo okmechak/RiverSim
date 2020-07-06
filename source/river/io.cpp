@@ -443,12 +443,12 @@ namespace River
     void to_json(json& j, const BranchNew& branch) 
     {
         j = json{
-            {"vertices", (t_Branch)branch}, 
+            {"vertices", (t_PointList)branch}, 
             {"source_angle", branch.source_angle}};
     }
     void from_json(const json& j, BranchNew& branch) 
     {
-        t_Branch vertices;
+        t_PointList vertices;
         j.at("vertices").get_to(vertices);
         for(const auto& v: vertices)
             branch.AddAbsolutePoint(v);
@@ -714,7 +714,7 @@ namespace River
     void Open(Model& model)
     {
         ifstream in(model.prog_opt.input_file_name);
-        if(!in) throw Exception("Open. Can't create file for read.");
+        if(!in) throw Exception("Open. Can't create file for read. : " + model.prog_opt.input_file_name);
 
         json j;
         in >> j;

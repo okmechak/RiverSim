@@ -21,12 +21,16 @@ if(BUILD_PROGRAM)
         ${CMAKE_CURRENT_SOURCE_DIR}/river
         ${CMAKE_CURRENT_SOURCE_DIR}/river/tethex)
 
+    add_library(app app.hpp app.cpp)
+    deal_ii_setup_target(app)
+    target_link_libraries(app river)
+
     set(SOURCE_FILES 
         main.cpp)
 
     add_executable(riversim ${SOURCE_FILES})
     deal_ii_setup_target(riversim)
-    target_link_libraries(riversim river)
+    target_link_libraries(riversim app)
 
     add_executable(meshgen meshgen.cpp)
     target_link_libraries(meshgen mesh io boundary_generator)
@@ -34,7 +38,11 @@ if(BUILD_PROGRAM)
     install(TARGETS riversim DESTINATION riversim)
     install(TARGETS meshgen DESTINATION riversim)
 
+    
     if(BUILD_PYTHON_API)
+        if(NOT BUILD_SHARED_LIBS )
+            message(FATAL_ERROR "Python API can't be build with static libraries, make shure You specified BUILD_SHARED_LIBS = true in cmake options" )
+        endif()
         message("========================================")
         message("Python API setup")
         # Find python and Boost - both are required dependencies
@@ -46,12 +54,14 @@ if(BUILD_PROGRAM)
 
         # Add a shared module - modules are intended to be imported at runtime.
         # - This is where you add the source files
-        add_library(riversimPY MODULE pythonapi.hpp pythonapi.cpp)
+        add_library(riversimPY MODULE pythonapi.cpp)
         deal_ii_setup_target(riversimPY)
 
         # Set up the libraries and header search paths for this target
-        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} river)
+        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} app)
         target_include_directories(riversimPY PRIVATE ${PYTHON_INCLUDE_DIRS})
+        set_target_properties(riversimPY
+            PROPERTIES OUTPUT_NAME riversim)
 
         install(TARGETS riversimPY DESTINATION riversim)
     endif(BUILD_PYTHON_API)

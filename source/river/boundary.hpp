@@ -70,11 +70,13 @@ namespace River
             friend ostream& operator <<(ostream& write, const BoundaryConditions & bcs);
     };
 
-    typedef map<t_source_id, pair<t_boundary_id, t_vert_pos>> t_Sources;
+    typedef pair<t_boundary_id, t_vert_pos> t_source_coord;
+    typedef vector<t_source_id> t_sources_ids;
+    typedef map<t_source_id, t_source_coord> t_Sources;
     class Sources: public t_Sources
     {
         public:
-            vector<t_source_id> GetSourcesIds() const;
+            t_sources_ids GetSourcesIds() const;
     };
 
     /*! \brief 
@@ -104,13 +106,16 @@ namespace River
             bool operator==(const Line& line) const;
     };
 
+    typedef vector<Point> t_PointList;
+    typedef vector<Line> t_LineList;
+
     class SimpleBoundary
     {
         public:
-            vector<Point> vertices;
-            vector<Line> lines;
+            t_PointList vertices;
+            t_LineList lines;
             bool inner_boundary = false;
-            vector<Point> holes;
+            t_PointList holes;
             string name = "";
             void Append(const SimpleBoundary& simple_boundary);
             void ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary);
@@ -120,10 +125,11 @@ namespace River
     };
 
     typedef map<t_boundary_id, SimpleBoundary> t_Boundaries;
+    typedef pair<Point, double> t_branch_source;
     class Boundaries: public t_Boundaries
     {
         public:
-            typedef map<t_source_id, pair<Point, double>> trees_interface_t;
+            typedef map<t_source_id, t_branch_source> trees_interface_t;
 
             Boundaries(t_Boundaries simple_boundaries = {});
 
