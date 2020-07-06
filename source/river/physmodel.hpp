@@ -26,13 +26,18 @@
 #include <iostream>
 #include <cmath>
 #include <complex>
-#define _USE_MATH_DEFINES
-#include <math.h>
+
 #include <algorithm>
 #include <map>
+#include <chrono>
+#include <time.h>
+#include <numeric>
 ///\endcond
 
 #include "GeometryPrimitives.hpp"
+#include "tree.hpp"
+#include "boundary.hpp"
+#include "tethex.hpp"
 
 using namespace std;
 
@@ -41,6 +46,32 @@ using namespace std;
 
 namespace River
 {
+
+    class Parameter
+    {};
+
+    typedef map<t_branch_id, vector<vector<double>>> t_SeriesParameters;
+    class SeriesParameters: public t_SeriesParameters
+    {
+        public:
+            void record(const map<t_branch_id, vector<double>>& id_series_params);
+    };
+    
+    typedef map<string, vector<double>> SimulationData;
+
+    struct BackwardData
+    {
+        vector<double> a1, a2, a3;
+        t_PointList init, backward, backward_forward;
+        double branch_lenght_diff = -1;
+
+        bool operator==(const BackwardData& data) const;
+
+        friend ostream& operator <<(ostream& write, const BackwardData & data);
+    };
+
+    typedef map<t_branch_id, BackwardData> t_GeometryDiffernceNew;
+
     /*! \brief Global program options. 
         \details Program has some options that isn't part simulation itself but rather ease of use.
         So this object is dedicated for such options.
@@ -48,8 +79,8 @@ namespace River
     class ProgramOptions
     {
         public:
-            ///If true - then program will print to standard output.
-            bool verbose = false;
+            ///Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes
+            unsigned simulation_type = 0;
 
             ///Number of simulation steps.
             unsigned number_of_steps = 10;
@@ -63,11 +94,21 @@ namespace River
             ///Outputs VTK file of Deal.II solution
             bool save_vtk = false;
 
-            ///Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes
-            unsigned simulation_type = 0;
+            bool save_each_step = false;
+
+            ///If true - then program will print to standard output.
+            bool verbose = true;
+
+            ///If true - then program will save additional output files for each stage of simulation.
+            bool debug = false;
+
+            string output_file_name = "simdata",
+                input_file_name = "";
             
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const ProgramOptions & po);
+
+            bool operator==(const ProgramOptions& po) const;
     };
     
     /*! \brief Adaptive mesh area constraint function.
@@ -83,20 +124,22 @@ namespace River
             */
             vector<Point> tip_points;
 
-            ///Number of quadrangle elements.
-            unsigned long number_of_quadrangles = 0;
-
-            ///Number of refined quadrangle elements.
-            unsigned long number_of_refined_quadrangles = 0;
-
             ///Radius of mesh refinment.
             double refinment_radius = 4*Radius;
 
             ///This value controlls transition slope between small mesh elements and big or course.
             double exponant = 7.;
 
+            /*! \brief Sigma is used in exponence, also as \ref River::MeshParams::exponant controls slope. */
+            double sigma = 1.9;
+
+            /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
+                \details Refinment means splitting one rectangular element into four rectagular elements.
+            */ 
+            unsigned static_refinment_steps = 1;
+
             ///Minimal area of mesh.
-            double min_area = 7e-8;
+            double min_area = 7e-4;
 
             ///Maximal area of mesh element.
             double max_area = 1e5;
@@ -132,14 +175,6 @@ namespace River
             */
             double eps = 1e-6;
 
-            /*! \brief Sigma is used in exponence, also as \ref River::MeshParams::exponant controls slope. */
-            double sigma = 1.9;
-
-            /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
-                \details Refinment means splitting one rectangular element into four rectagular elements.
-            */ 
-            unsigned static_refinment_steps = 3;
-
             /*! \brief Evaluates mesh area constraint at {x, y} point.
                 \details
 
@@ -149,7 +184,6 @@ namespace River
             */
             inline double operator()(double x, double y) const
             {
-                //! [MeshConstrain]
                 double result_area = 10000000/*some large area value*/;
                 for(auto& tip: tip_points)
                 {
@@ -161,11 +195,12 @@ namespace River
                 }
                 
                 return result_area;
-                //! [MeshConstrain]
             }
 
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const MeshParams & mp);
+
+            bool operator==(const MeshParams& mp) const;
     };
 
     /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
@@ -218,6 +253,8 @@ namespace River
 
             ///Prints options structure to output stream.
             friend ostream& operator <<(ostream& write, const IntegrationParams & ip);
+
+            bool operator==(const IntegrationParams& ip) const;
     };
 
     /*! \brief Holds All parameters used in Deal.II solver.
@@ -225,23 +262,31 @@ namespace River
     class SolverParams
     {
         public:
-            ///Polynom degree of quadrature integration.
-            unsigned quadrature_degree = 3;
-            
-            ///Fraction of refined mesh elements.
-            double refinment_fraction = 0.1;
-
-            ///Number of adaptive refinment steps.
-            unsigned adaptive_refinment_steps = 0;
-
             ///Tollerarnce used by dealii Solver.
             double tollerance = 1.e-12;
 
             ///Number of solver iteration steps
             unsigned num_of_iterrations = 6000;
 
+            ///Number of adaptive refinment steps.
+            unsigned adaptive_refinment_steps = 2;
+
+            ///Fraction of refined mesh elements.
+            double refinment_fraction = 0.1;
+
+            ///Polynom degree of quadrature integration.
+            unsigned quadrature_degree = 3;
+
+            ///Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
+            unsigned renumbering_type = 0;
+
+            ///maximal distance between middle point and first solved point, used in non euler growth.
+            double max_distance = 0.002;
+
             ///Prints program options structure to output stream.
             friend ostream& operator <<(ostream& write, const SolverParams & mp);
+
+            bool operator==(const SolverParams& sp) const;
     };
 
     /*! \brief Physical model parameters.
@@ -251,6 +296,51 @@ namespace River
     class Model
     {   
         public: 
+            ///Some global program options
+            ProgramOptions prog_opt;
+
+            Boundaries border;
+
+            Sources sources;
+
+            Tree tree, saved_tree;
+
+            BoundaryConditions boundary_conditions;
+
+            ///Mesh and mesh refinment parameters
+            MeshParams mesh;
+
+            ///Series parameteres integral parameters
+            IntegrationParams integr;
+
+            ///Solver parameters used by Deal.II
+            SolverParams solver_params;
+
+            SeriesParameters series_parameters;
+
+            SimulationData sim_data;
+
+            t_GeometryDiffernceNew backward_data;
+
+            void InitializeLaplace();
+            void InitializePoisson();
+            void InitializeDirichlet();
+            void InitializeDirichletWithHole();
+            void Clear();
+
+            //Simulation methods
+
+            void RevertLastSimulationStep();
+            
+            void SaveCurrentTree()
+            {
+                saved_tree = tree;
+            }
+            void RestoreTree()
+            {
+                tree = saved_tree;
+            }
+
             //Geometrical parameters
             ///Initial x position of source.
             ///Valid only for rectangular area.
@@ -263,33 +353,24 @@ namespace River
             double height = 1.;
 
             ///river boundary id and bottom line
-            int river_boundary_id = 4;
-
-            ///all boundaries ids in next order - right, top, left, bottom and river.
-            vector<int> boundary_ids{1, 5, 3, river_boundary_id};
+            unsigned river_boundary_id = 100;
 
             //Model parameters
-            /*! \brief Boundary conditions.
-                \details 0 - Poisson(indexes 0,1 and 3 corresponds to free boundary condition, 4 - to zero value on boundary), 
-                1 - Laplacea(Indexes 1 and 3 - free condition, 2 - value one, and 4 - value zero.)
-            */
-            unsigned boundary_condition = 0;
-
             ///Field value used for Poisson conditions.
-            double field_value = 0.0;
+            double field_value = 1.0;
+            
+            //Numeriacal parameters
+            ///Maximal length of one step of growth.
+            double ds = 0.01;
 
             ///Eta. Growth power of a1^eta
             double eta = 1.0;
 
-            ///Bifurcation method type. 
-            ///0 - a(3)/a(1) > bifurcation_threshold, 
-            ///1 - a1 > bifurcation_threshold, 2 - combines both conditions, 3 - no bifurcation at all.
-            unsigned bifurcation_type = 0;
+            ///Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.
+            unsigned bifurcation_type = 1;
             
             ///Bifurcation threshold for "0" bifurcation type.
             double bifurcation_threshold = -0.1;//Probably should be -0.1
-            ///Bifurcation threshold for "1" bifurcation type.
-            double bifurcation_threshold_2 = 0.001;//Probably should be -0.1
 
             ///Minimal distance between adjacent bifurcation points. Reduces numerical noise.
             double bifurcation_min_dist = 0.05;
@@ -306,202 +387,27 @@ namespace River
             ///Distance of constant tip growing after bifurcation point. Reduces numerical noise.
             double growth_min_distance = 0.01;
             
-            //Numeriacal parameters
-            ///Maximal length of one step of growth.
-            double ds = 0.003;
-            
-            ///Mesh and mesh refinment parameters
-            MeshParams mesh;
-
-            ///Series parameteres integral parameters
-            IntegrationParams integr;
-
-            ///Solver parameters used by Deal.II
-            SolverParams solver_params;
-
-            ///Some global program options
-            ProgramOptions prog_opt;
-
             ///Checks by evaluating series params for bifuraction condition.
             ///More details about that you can find at [PMorawiecki work]()
-            bool q_bifurcate(vector<double> a, double branch_lenght) const
-            {
-                bool dist_flag = branch_lenght > bifurcation_min_dist;
+            bool q_bifurcate(const vector<double>& a) const;
 
-                if(bifurcation_type == 0)
-                {
-                    if(prog_opt.verbose)
-                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
-                    return a.at(2)/a.at(0) < bifurcation_threshold && dist_flag;
-                }
-                else if(bifurcation_type == 1)
-                {
-                    if(prog_opt.verbose)
-                        cout << "a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
-                    return a.at(0) > bifurcation_threshold_2 && dist_flag;
-                }
-                else if(bifurcation_type == 2)
-                {
-                    if(prog_opt.verbose)
-                        cout << "a3/a1 = " <<  a.at(2)/a.at(0) << ", bif thr = " << bifurcation_threshold
-                             << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold_2 << endl;
-                    return a.at(2)/a.at(0) < bifurcation_threshold && a.at(0) > bifurcation_threshold_2 && dist_flag;
-                }
-                else if(bifurcation_type == 3)
-                    return false;
-                else 
-                    throw invalid_argument("Wrong bifurcation_type value!");
-            }
+            bool q_bifurcate(const vector<double>& a, double branch_lenght) const;
 
             ///Growth condition.
             ///Checks series parameters around river tip and evaluates if it is enough to grow.
-            inline bool q_growth(vector<double> a) const
-            {
-                return a.at(0) > growth_threshold;
-            }
+            bool q_growth(const vector<double>& a) const;
 
-            /*! \brief Evaluate next point of simualtion based on series parameters around tip.
-                \todo test different types of growth. Especially growth_type == 1.
-            */
-            Polar next_point(vector<double> series_params, double branch_lenght, double max_a) const
-            {
-                //handle situation near bifurcation point, to reduce "killing/shading" one branch by another
-                auto eta_local = eta;
-                if(branch_lenght < growth_min_distance)
-                    eta_local = 0;//constant growth of both branches.
+            ///Evaluate next point of simualtion based on series parameters around tip.
+            Polar next_point(const vector<double>& series_params) const;
 
-                auto beta = series_params.at(0)/series_params.at(1),
-                    dl = ds * pow(series_params.at(0)/max_a, eta_local);
-                if(growth_type == 0)
-                {
-                    double phi = -atan(2 / beta * sqrt(dl));
-                    return {dl, phi};
-                }
-                else if(growth_type == 1)
-                {
-                    auto dy = beta*beta/9*( pow(27/2*dl/beta/beta + 1, 2./3.) - 1),
-                        dx = 2*sqrt( pow(dy, 3)/pow(beta, 2) + pow(dy, 4) / pow(beta, 3));
-                        
-                    return ToPolar(Point{dx, dy}.rotate(-M_PI/2));
-                }
-                else
-                    throw invalid_argument("Invalid value of growth_type!");
-            }
-            
-            ///Return boundary line indices with zero value conditions.
-            vector<int> GetZeroIndices() const
-            {
-                if(boundary_condition == 0)
-                    return {river_boundary_id};//boundary_ids;
-                else if(boundary_condition == 1)
-                    return {river_boundary_id};
-                else
-                    throw invalid_argument("Invalid value of boundary_condition");   
-            }
-
-            ///Return boundary line indices with non-zero value conditions.
-            vector<int> GetNonZeroIndices() const
-            {
-                if(boundary_condition == 0)
-                    return {};
-                else if(boundary_condition == 1)
-                    return {boundary_ids.at(1)};
-                else
-                    throw invalid_argument("Invalid value of boundary_condition");   
-            }
+            Polar next_point(const vector<double>& series_params, double branch_lenght, double max_a);
 
             ///Checks if values of parameters are in normal ranges.
             void CheckParametersConsistency() const;
 
             ///Prints model structure and its subclasses
             friend ostream& operator <<(ostream& write, const Model & mdl);
-    };
 
-
-
-
-    /**
-     * This structure holds comparsion data from Backward river simulation.
-     */
-    struct GeometryDifference
-    {
-        ///holds for each branch id all its series parameters: a1, a2, a3
-        map<int, vector<vector<double>>> branches_series_params_and_geom_diff;
-        ///series params info in bifurcation points
-        map<int, vector<vector<double>>> branches_bifuraction_info;
-
-        ///Used for backward river simulation data gathering.
-        void StartBifurcationRecord(int br_id, double bifurcation_difference)
-        {
-            if(bif_difference.count(br_id))
-                throw invalid_argument("StartBifurcationRecord. Such branch already recorded, id: " + to_string(br_id));
-            else
-            {
-                bif_difference[br_id] = bifurcation_difference;
-            }
-        }
-
-        ///Used for backward river simulation data gathering.
-        void EndBifurcationRecord(int br_id, vector<double> series_params)
-        {
-            if(bif_difference.count(br_id))
-            {
-                RecordBifurcationPoint(br_id, bif_difference[br_id], series_params);
-                bif_difference.erase(br_id);
-            }
-        }
-
-        ///Record branch seriesc parameters and geometry difference.
-        void RecordBranchSeriesParamsAndGeomDiff(int branch_id, double dalpha, double ds, const vector<double>& series_params)
-        {
-            if(!branches_series_params_and_geom_diff.count(branch_id))
-            {
-                branches_series_params_and_geom_diff[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}, {0}};
-
-                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).at(0) = dalpha;
-                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).at(0) = ds;
-
-                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).at(0) = series_params.at(0);
-                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).at(0) = series_params.at(1);
-                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).at(0) = series_params.at(2);
-            }
-            else
-            {
-                branches_series_params_and_geom_diff[branch_id].at(0/*bif difference index*/).push_back( dalpha);
-                branches_series_params_and_geom_diff[branch_id].at(1/*bif difference index*/).push_back( ds);
-
-                branches_series_params_and_geom_diff[branch_id].at(2/*a1 index*/).push_back(series_params.at(0));
-                branches_series_params_and_geom_diff[branch_id].at(3/*a2 index*/).push_back(series_params.at(1));
-                branches_series_params_and_geom_diff[branch_id].at(4/*a3 index*/).push_back(series_params.at(2));
-            }
-        }
-
-        private: 
-
-            ///holds difference between adjacent branches and id of source branch.
-            ///So called branch inconsistency at backward river simulation.
-            map<int, double> bif_difference;
-
-            ///Record bifurcation point
-            void RecordBifurcationPoint(int branch_id, double bif_difference, const vector<double>& bif_series_params)
-            {
-                if(!branches_bifuraction_info.count(branch_id))
-                {
-                    branches_bifuraction_info[branch_id] = vector<vector<double>>{{0}, {0}, {0}, {0}};
-                    branches_bifuraction_info[branch_id].at(0/*biff difference index*/).at(0) = bif_difference;
-
-                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).at(0) = bif_series_params.at(0);
-                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).at(0) = bif_series_params.at(1);
-                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).at(0) = bif_series_params.at(2);
-                }
-                else
-                {
-                    branches_bifuraction_info[branch_id][0/*biff difference index*/].push_back(bif_difference);
-
-                    branches_bifuraction_info[branch_id].at(1/*a1 index*/).push_back(bif_series_params.at(0));
-                    branches_bifuraction_info[branch_id].at(2/*a2 index*/).push_back(bif_series_params.at(1));
-                    branches_bifuraction_info[branch_id].at(3/*a3 index*/).push_back(bif_series_params.at(2));
-                }
-            }
+            bool operator==(const Model& model) const;
     };
 }

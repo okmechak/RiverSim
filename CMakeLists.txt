@@ -1,5 +1,4 @@
-set(min_version 2.8)
-cmake_minimum_required(VERSION ${min_version})
+cmake_minimum_required(VERSION 2.8.12)
 
 project(riversim C CXX)
 
@@ -19,6 +18,19 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     "Debug" "Release")
 endif()
 
+set(DEALII_REL_DIR "/mnt/c/users/ofcra/lib/dealii_shared" CACHE STRING "Deal.II release SDK directory location.") 
+set(DEALII_DEB_DIR "/mnt/c/users/ofcra/lib/dealii_d_shared" CACHE STRING "Deal.II debug SDK directory location.") 
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    message("=============pedantic build=============")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -g3")
+    set(DEALII_DIR ${DEALII_DEB_DIR})
+endif()
+if(CMAKE_BUILD_TYPE MATCHES Release)
+    message("============= speed optimized without compilation errors build =============")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -w")
+    set(DEALII_DIR ${DEALII_REL_DIR})
+endif()
 
 add_subdirectory(source)
 add_subdirectory(docsrc)

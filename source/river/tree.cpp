@@ -16,7 +16,9 @@
 #include "tree.hpp"
 
 ///\cond
-#include <fstream>
+#include <sstream>
+#define _USE_MATH_DEFINES
+#include <cmath>
 ///\endcond
 
 namespace River
@@ -24,6 +26,40 @@ namespace River
     /*
         Branch Class
     */
+    BranchNew::BranchNew(
+        const Point& source_point_val, 
+        const double angle):
+        source_angle(angle)
+    {
+        AddAbsolutePoint(source_point_val);
+    }
+
+    BranchNew& BranchNew::AddAbsolutePoint(const Point& p)
+    {
+        this->push_back(p);
+        return *this;
+    }
+
+    BranchNew& BranchNew::AddAbsolutePoint(const Polar& p)
+    {
+        this->push_back(TipPoint() + Point{p});
+        return *this;
+    }
+
+    BranchNew& BranchNew::AddPoint(const Point &p)
+    {
+        this->push_back(TipPoint() + p);
+        return *this;
+    }
+
+    BranchNew& BranchNew::AddPoint(const Polar& p)
+    {
+        auto p_new = Polar{p};
+        p_new.phi += TipAngle();
+        AddAbsolutePoint(p_new);
+        return *this;
+    }
+
     BranchNew& BranchNew::Shrink(double lenght)
     {
         while(lenght > 0 && Lenght() > 0)
@@ -50,97 +86,165 @@ namespace River
                     lenght -= tip_lenght;
                 }
                 else 
-                    throw invalid_argument("Unhandled case in Shrink method.");
+                    throw Exception("Unhandled case in Shrink method.");
             }
-            catch(const invalid_argument& e)
+            catch(const exception& e)
             {
                 cerr << e.what() << '\n';
-                throw invalid_argument("Shrinikng error: problem with RemoveTipPoint() or TipVector()");
+                throw Exception("Shrinikng error: problem with RemoveTipPoint() or TipVector()");
             }
         }
         
         return *this;
     }
-    
+
+    BranchNew& BranchNew::RemoveTipPoint()
+    {
+        if(this->size() == 1)
+            throw Exception("Last branch point con't be removed");   
+        this->pop_back();
+        return *this;
+    }
+
+    Point BranchNew::TipPoint() const 
+    {
+        if(this->size() == 0)
+            throw Exception("Can't return TipPoint size is zero");
+        return this->at(this->size() - 1);
+    }
+
+    Point BranchNew::TipVector() const 
+    {
+        if(this->size() <= 1)
+            throw Exception("Can't return TipVector size is 1 or even less");
+
+        return this->at(this->size() - 1) - this->at(this->size() - 2);
+    }
+
+    Point BranchNew::Vector(unsigned i) const
+    {
+        if(this->size() == 1)
+            throw Exception("Can't return Vector. Size is 1");
+        if(i >= this->size() || i == 0)
+            throw Exception("Can't return Vector. Index is bigger then size or is zero");
+
+        return this->at(i) - this->at(i - 1);
+    }
+
+    double BranchNew::TipAngle() const 
+    {
+        if(this->size() < 1)
+            throw Exception("TipAngle: size is less then 1!");
+        else if(this->size() == 1)
+            return source_angle; 
+
+        return TipVector().angle();
+    }
+
+    Point BranchNew::SourcePoint() const
+    {
+        return this->at(0);
+    }
+
+    double BranchNew::SourceAngle() const 
+    {
+        return source_angle;
+    }
+
+    double BranchNew::Lenght() const 
+    {
+        double lenght = 0.;
+        if(this->size() > 1)
+            for(unsigned int i = 1; i < this->size(); ++i)
+                lenght += (this->at(i) - this->at(i - 1)).norm();
+
+        return lenght;
+    }
+
+    ostream& operator<<(ostream& write, const BranchNew & b)
+    {
+        int i = 0;
+        write << "Branch " << endl;
+        write << "  lenght - " << b.Lenght() << endl;
+        write << "  size - " << b.size() << endl;
+        write << "  source angle - " << b.source_angle << endl;
+        for(auto p: b)
+            write <<"   " << i++ << " ) " << p << endl;
+
+        return write;
+    }
+
+    bool BranchNew::operator==(const BranchNew& br) const
+    {
+        return equal(this->begin(), this->end(), br.begin()) &&
+            SourceAngle() == br.SourceAngle();
+    }
     
     /*
         Tree Class
     */
+   //todo can we remove this? is there default copy constructor?
     Tree::Tree(const Tree& t)
     {
-        source_branches_id = t.source_branches_id;
-        branches_relation = t.branches_relation;
+        for(const auto&[branch_id, branch]: t)
+            (*this)[branch_id] = branch;
 
-        for(auto[id, br]: t.branches_index)
-        {
-            branches.push_back(*br);
-            branches_index[id] = &branches.back();
-        }
+        this->branches_relation = t.branches_relation;
     }
 
+    //todo can we remove this? is there default assignment function?
     Tree& Tree::operator=(const Tree &t)
     {
-        source_branches_id = t.source_branches_id;
-        branches_relation = t.branches_relation;
+        for(const auto&[branch_id, branch]: t)
+            (*this)[branch_id] = branch;
 
-        for(auto[id, br]: t.branches_index)
-        {
-            branches.push_back(*br);
-            branches_index[id] = &branches.back();
-        }
+        this->branches_relation = t.branches_relation;
 
         return *this;
     }
 
-    Tree& Tree::Initialize(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids)
+    //todo can we remove this? is there default comparison function?
+    bool Tree::operator== (const Tree &t) const
+    {
+        return (this->branches_relation == t.branches_relation) && 
+            equal(this->begin(), this->end(), t.begin());
+    }
+
+    void Tree::Initialize(const Boundaries::trees_interface_t ids_points_angles)
     {
         Clear();
-        for(unsigned int i = 0; i < ids.size(); ++i)
-            AddSourceBranch(BranchNew{
-                    sources_point.at(i), 
-                    sources_angle.at(i)}, 
-                    ids.at(i));
-        return *this;
+        for(auto &[id, point_angle]: ids_points_angles)
+            AddBranch(
+                BranchNew{point_angle.first, point_angle.second}, 
+                id);
     }
 
-    
-    int Tree::AddBranch(const BranchNew &branch, int id)
+    t_branch_id Tree::AddBranch(const BranchNew &branch, t_branch_id id)
     {
-        if(id == -999)
+        if(id == UINT_MAX)
             id = GenerateNewID();
         
-        if(DoesExistBranch(id))
-        {
-            stringstream ss;
-            ss << endl;
-            for(auto[key, val]: branches_index)
-                ss << key << ": " << *val << endl;
-            ss << "Invalid Id, such branch already exists. Id value: " << id << endl;
-            ss << "inserted branch: " << endl;
-            ss << branch;
-            throw invalid_argument(ss.str());
-        }
+        if(this->count(id))
+            throw Exception("Can't add branch. Such branch already exist: " + to_string(id));
 
         if(!IsValidBranchId(id))
-            throw invalid_argument("Invalid Id, id should be greater then 0. Id value: " + to_string(id));
+            throw Exception("Invalid Id, id should be greater then 0. Id value: " + to_string(id));
                 
-        branches.push_back(branch);
-        branches_index[id] = &branches.back();
+        (*this)[id] = branch;
 
         return id;
     }
    
-   
-    pair<int, int> Tree::AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch)
+    pair<t_branch_id, t_branch_id> Tree::AddSubBranches(t_branch_id root_branch_id, 
+        const BranchNew &left_branch, const BranchNew &right_branch)
     {   
-        if(!DoesExistBranch(root_branch_id))
-            throw invalid_argument("Root branch doesn't exis");
+        handle_non_existing_branch_id(root_branch_id);
 
         if(HasSubBranches(root_branch_id))
-            throw invalid_argument("This branch already has subbranches");
+            throw Exception("This branch already has subbranches");
                 
         //adding new branches
-        pair<int, int> sub_branches_id;
+        pair<t_branch_id, t_branch_id> sub_branches_id;
 
         sub_branches_id.first = GenerateNewID();
         AddBranch(left_branch, sub_branches_id.first);
@@ -154,126 +258,116 @@ namespace River
         return sub_branches_id;
     }
 
-
-    int Tree::GetParentBranchId(int branch_id) const
+    void Tree::DeleteBranch(t_branch_id branch_id)
     {
-        if(HasParentBranch(branch_id))
-        {
-            for(auto key_val: branches_relation)
-                if(key_val.second.first == branch_id 
-                    || key_val.second.second == branch_id)
-                    return key_val.first;
-        }
-        else
-            throw invalid_argument("Branch doesn't have source branch. probabaly it is source itself");
+        handle_non_existing_branch_id(branch_id);
 
-        return invalid_branch;
+        this->erase(branch_id);
+        branches_relation.erase(branch_id);
     }
 
-
-    int Tree::GetAdjacentBranchId(int sub_branch_id) const
+    t_branch_id Tree::GetParentBranchId(t_branch_id branch_id) const
     {
-        auto [left_branch, right_branch] = GetSubBranchesId(GetParentBranchId(sub_branch_id));
+        handle_non_existing_branch_id(branch_id);
+        
+        for(const auto&[parent_id, sub_ids]: branches_relation)
+            if(sub_ids.first == branch_id 
+                || sub_ids.second == branch_id)
+                return parent_id;
+
+        throw Exception("Branch doesn't have source branch. probabaly it is source itself");
+
+        return 0;
+    }
+
+    t_branch_id Tree::GetAdjacentBranchId(t_branch_id sub_branch_id) const
+    {
+        handle_non_existing_branch_id(sub_branch_id);
+
+        auto [left_branch, right_branch] = GetSubBranchesIds(GetParentBranchId(sub_branch_id));
 
         if(left_branch == sub_branch_id)
             return right_branch;
         else if(right_branch == sub_branch_id)
             return left_branch;
         else
-            throw invalid_argument("something wrong with GetAdjacentBranch");
+            throw Exception("something wrong with GetAdjacentBranch");
     }
 
-
-    Tree& Tree::AddPoints(const vector<Point>& points, const vector<int>& tips_id)
+    BranchNew& Tree::GetAdjacentBranch(t_branch_id sub_branch_id)
     {
-        for(unsigned i = 0; i < tips_id.size(); ++i)
-            if(DoesExistBranch(tips_id.at(i)))
+        return this->at(GetAdjacentBranchId(sub_branch_id));
+    }
+
+    //todo can input arguments be replaced by map?
+    void Tree::AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points)
+    {
+        for(size_t i = 0; i < tips_id.size(); ++i)
+            if(this->count(tips_id.at(i)))
             {
-                auto br = GetBranch(tips_id.at(i));
-                br->AddPoint(points.at(i));
+                auto& br = this->at(tips_id.at(i));
+                br.AddPoint(points.at(i));
             }
             else
-                throw invalid_argument("Such branch does not exist");
-
-        return *this;
+                throw Exception("AddPoints: no such id.");
+            
     }
 
-
-    unsigned int Tree::GenerateNewID() const
+    t_branch_id Tree::GenerateNewID() const
     {
-        unsigned max_id = 1;
+        t_branch_id max_id = 1;
                 
-        vector<int> branches_id;
-        branches_id.reserve(branches_index.size());
+        vector<t_branch_id> branches_id;
+        branches_id.reserve(this->size());
 
-        for(auto &key_val: branches_index)
-            branches_id.push_back(key_val.first);
+        for(const auto &[branch_id, branch]: *this)
+            branches_id.push_back(branch_id);
 
-        while(find(begin(branches_id), end(branches_id), max_id)!= branches_id.end())
-            max_id += 1;
+        sort(branches_id.begin(), branches_id.end()); 
+
+        for(const auto& id: branches_id)
+        {
+            if(id != max_id)
+                return max_id;
+            else 
+                max_id++;
+        }
 
         return max_id;
     }
 
-
-    const BranchNew* Tree::GetBranch(int id) const
+    void Tree::AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points)
     {
-        if(!DoesExistBranch(id))
-            throw invalid_argument("there is no such branch");
-                
-        return branches_index.at(id);
-    }
-
-
-    BranchNew* Tree::GetBranch(int id)
-    {
-        if(!DoesExistBranch(id))
-            throw invalid_argument("there is no such branch");
-                
-        return branches_index.at(id);
-    }
-
-
-    Tree& Tree::AddPolars(const vector<Polar> &points, const vector<int>& tips_id)
-    {
-        for(unsigned i = 0; i < tips_id.size(); ++i)
-            if(DoesExistBranch(tips_id.at(i)))
+        for(size_t i = 0; i < tips_id.size(); ++i)
+            if(this->count(tips_id.at(i)))
             {
-                auto br = GetBranch(tips_id.at(i));
-                br->AddPoint(points.at(i));
+                auto& br = this->at(tips_id.at(i));
+                br.AddPoint(points.at(i));
             }
-            else
-                throw invalid_argument("Such branch does not exist");
-
-        return *this;
+            else 
+                throw Exception("AddPoints: no such id.");
     }
 
-
-    Tree& Tree::AddAbsolutePolars(const vector<Polar>& points, const vector<int>& tips_id)
+    void Tree::AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points)
     {
-        for(unsigned int i = 0; i < tips_id.size(); ++i)
-            if(DoesExistBranch(tips_id.at(i)))
+        for(size_t i = 0; i < tips_id.size(); ++i)
+            if(this->count(tips_id.at(i)))
             {
-                auto br = GetBranch(tips_id.at(i));
-                br->AddAbsolutePoint(br->TipPoint() + points.at(i));
+                auto& br = this->at(tips_id.at(i));
+                br.AddAbsolutePoint(br.TipPoint() + points.at(i));
             }
-            else
-                throw invalid_argument("Such branch does not exist");
-        
-        return *this;
+            else 
+                throw Exception("AddPoints: no such id.");
     }
 
-
-
-    Tree& Tree::DeleteSubBranches(int root_branch_id)
+    void Tree::DeleteSubBranches(t_branch_id root_branch_id)
     {
-        if(!DoesExistBranch(root_branch_id))
-            throw invalid_argument("root branch doesn't exis.");
+        handle_non_existing_branch_id(root_branch_id);
 
         if(!HasSubBranches(root_branch_id))
-            throw invalid_argument("This branch doesn't has subbranches.");
+            throw Exception("This branch doesn't have subbranches.");
 
-        auto[sub_left, sub_right] = GetSubBranchesId(root_branch_id);
+        auto[sub_left, sub_right] = GetSubBranchesIds(root_branch_id);
         
         //recursively look up for left branch
         if(HasSubBranches(sub_left))
@@ -287,156 +381,227 @@ namespace River
 
         //delete relation
         branches_relation.erase(root_branch_id);
-                
-        return *this;
     }
 
-
-    vector<int> Tree::TipBranchesId() const
+    void Tree::Clear()
     {
-        vector<int> tip_branches_id;
-        for(auto p: branches_index)
-            if(!HasSubBranches(p.first))
-                tip_branches_id.push_back(p.first);
+        this->clear();
+        branches_relation.clear();
+    }
 
-        return tip_branches_id;
+    pair<t_branch_id, t_branch_id> Tree::GrowTestTree(t_branch_id branch_id, double ds, unsigned n, double dalpha)
+    {
+        handle_non_existing_branch_id(branch_id);
+        
+        if(HasSubBranches(branch_id))
+            throw Exception("GrowTestTree: This branch have subbranches.");
+
+        auto& 
+            branch_source = this->at(branch_id);
+        for(unsigned i = 0; i < n; ++i)
+        {
+            auto p = Polar{ds, dalpha};
+            branch_source.AddPoint(p);
+        }
+
+        auto branch_left = BranchNew{
+                branch_source.TipPoint(), 
+                branch_source.TipAngle() + M_PI/4.},
+            branch_right = BranchNew{
+                branch_source.TipPoint(), 
+                branch_source.TipAngle() - M_PI/4.};
+
+        for(unsigned i = 0; i < n; ++i)
+        {
+            auto p = Polar{ds, dalpha};
+            branch_left.AddPoint(p);
+            branch_right.AddPoint(p);
+        }
+        
+        auto ids = AddSubBranches(branch_id, branch_left, branch_right);
+
+        return ids;
+    }
+
+    vector<t_branch_id> Tree::TipBranchesIds() const
+    {
+        vector<t_branch_id> tip_branches_ids;
+
+        for(const auto&[branch_id, branch]: *this)
+            if(!HasSubBranches(branch_id))
+                tip_branches_ids.push_back(branch_id);
+
+        return tip_branches_ids;
+    }
+
+    vector<t_branch_id> Tree::zero_lenght_tip_branches_ids(double zero_lenght) const
+    {
+        vector<t_branch_id> zero_lenght_branches_id;
+        for (const auto id: TipBranchesIds())
+            if(HasParentBranch(id) && this->at(id).Lenght() <= zero_lenght)
+                zero_lenght_branches_id.push_back(GetParentBranchId(id));
+
+        sort(zero_lenght_branches_id.begin(), zero_lenght_branches_id.end()); 
+        
+        zero_lenght_branches_id.erase( 
+            unique(zero_lenght_branches_id.begin(), zero_lenght_branches_id.end() ), 
+            zero_lenght_branches_id.end());
+
+
+        return zero_lenght_branches_id;
+    }
+
+    BranchNew& Tree::GetParentBranch(t_branch_id branch_id)
+    {
+        return this->at(GetParentBranchId(branch_id));
+    }
+
+    pair<t_branch_id, t_branch_id> Tree::GetSubBranchesIds(t_branch_id branch_id) const
+    {   
+        if(!HasSubBranches(branch_id))
+            throw Exception("branch does't have sub branches");
+
+        return branches_relation.at(branch_id);
+    }
+
+    pair<BranchNew&, BranchNew&> Tree::GetSubBranches(t_branch_id branch_id)
+    {
+        auto[left_branch, right_branch] = GetSubBranchesIds(branch_id);
+        return {this->at(left_branch), this->at(right_branch)};
     }
     
-
     vector<Point> Tree::TipPoints() const
     {   
         vector<Point> tip_points;
-        auto tip_branches_id = TipBranchesId();
+        auto tip_branches_id = TipBranchesIds();
         tip_points.reserve(tip_branches_id.size());
         for(auto id: tip_branches_id)
-            tip_points.push_back(GetBranch(id)->TipPoint());
+            tip_points.push_back(this->at(id).TipPoint());
                 
         return tip_points;
     }
 
-
-    map<int, Point> Tree::TipIdsAndPoints() const
+    map<t_branch_id, Point> Tree::TipIdsAndPoints() const
     {   
-        map<int, Point> ids_points_map;
+        map<t_branch_id, Point> ids_points_map;
         auto points = TipPoints();
-        auto ids = TipBranchesId();
+        auto ids = TipBranchesIds();
 
-        for(unsigned i = 0; i < ids.size(); ++i)
+        for(size_t i = 0; i < ids.size(); ++i)
             ids_points_map[ids.at(i)] = points.at(i);
                 
         return ids_points_map;
     }
 
+    bool Tree::IsSourceBranch(const t_branch_id branch_id) const
+    {
+        handle_non_existing_branch_id(branch_id);
+
+        for(const auto&[id, sub_ids]: branches_relation)
+            if(branch_id == sub_ids.first || branch_id == sub_ids.second)
+                return false;
+
+        return true;
+    }
+
+    double Tree::maximal_tip_curvature_distance() const
+    {
+        double max_dist = 0;
+        for(auto id: TipBranchesIds())
+        {
+            auto branch = this->at(id);
+            auto tip_point_pos = branch.size() - 1;
+
+            if(tip_point_pos < 2)
+                break;
+                
+            auto 
+                av_midle_point = (branch.at(tip_point_pos) + branch.at(tip_point_pos - 2))/2,
+                midle_point = branch.at(tip_point_pos - 1);
+
+            auto dist = (av_midle_point - midle_point).norm();
+
+            if(dist > max_dist)
+                max_dist = dist;
+        }
+
+        return max_dist;
+    }
+
+    void Tree::flatten_tip_curvature()
+    {
+        for(auto id: TipBranchesIds())
+        {
+            auto& branch = this->at(id);
+            auto tip_p_pos = branch.size() - 1;
+            if(tip_p_pos < 2)
+                throw Exception("flatten_tip_curvature: size of branch should be at least three points");
+
+            auto av_midle_point = (branch.at(tip_p_pos) + branch.at(tip_p_pos - 2))/2;
+
+            branch.at(tip_p_pos - 1) = av_midle_point;
+        }
+    }
+
+    void Tree::remove_tip_points()
+    {
+        vector<t_branch_id> zero_lenght_branches;
+        for (auto id: TipBranchesIds())
+        {
+            auto& branch = this->at(id);
+
+            if(branch.size() >= 2)
+                branch.pop_back();
+
+            if (branch.size() == 1)
+                zero_lenght_branches.push_back(id);
+        }
+
+        for(auto id: zero_lenght_branches)
+            if (this->count(id) && HasParentBranch(id))
+                DeleteSubBranches(GetParentBranchId(id));
+    }
+
+    bool Tree::HasSubBranches(const t_branch_id branch_id) const
+    {
+        handle_non_existing_branch_id(branch_id);
+
+        return branches_relation.count(branch_id);
+    }
+
+    bool Tree::HasParentBranch(t_branch_id sub_branch_id) const
+    {
+        handle_non_existing_branch_id(sub_branch_id);
+
+        for(const auto&[parent_id, sub_ids]: branches_relation)
+            if(sub_ids.first == sub_branch_id || sub_ids.second == sub_branch_id)
+                return true;
+
+        return false;
+    }
+
+    bool Tree::IsValidBranchId(const t_branch_id id) const
+    {
+        return id >= 1 and id != UINT_MAX;
+    }
     
+    void Tree::handle_non_existing_branch_id(const t_branch_id id) const
+    {
+        if (!this->count(id)) 
+            throw Exception("Branch with id: " + to_string(id) + " do not exist");
+    }
+
     ostream& operator<<(ostream& write, const Tree & b)
     {
-        write << "source branches ids" << endl;
-        for(auto s_id: b.source_branches_id)
-            write << s_id << ", ";
-        write << endl;
-
-        write << "branches relation" << endl;
+        write << "branches relations: " << endl;
         for(auto key_val: b.branches_relation)
             write << key_val.first << " left: " << key_val.second.first 
                 << " right: " << key_val.second.second << endl;
+
+        write << "branches: " << endl;
+        for(const auto& br: b)
+            write << br.second << endl;
         
         return write;
-    }
-
-
-
-
-    /*
-        Tree Vector Generation
-    */
-    void TreeVector(vector<Point> &tree_vector, int id, const Tree& tr, double eps)
-    {
-        const auto br = tr.GetBranch(id);
-        vector<Point> left_vector, right_vector;
-        left_vector.reserve(br->Size());
-        right_vector.reserve(br->Size());
-
-        for(unsigned i = 0; i < br->Size(); ++i)
-        {
-            if(i == 0)
-            {
-                left_vector.push_back(
-                    br->GetPoint(i) + Point{Polar{eps/2, br->SourceAngle() + M_PI/2}});
-                right_vector.push_back(
-                    br->GetPoint(i) + Point{Polar{eps/2, br->SourceAngle() - M_PI/2}});
-            }
-            else
-            {
-                left_vector.push_back(
-                    br->GetPoint(i) + br->Vector(i).normalize().rotate(M_PI/2)*eps/2);
-                right_vector.push_back(
-                    br->GetPoint(i) + br->Vector(i).normalize().rotate(-M_PI/2)*eps/2);
-            }
-        }
-
-
-        if(tr.HasSubBranches(id))
-        {
-            auto[left_b_id, right_b_id] = tr.GetSubBranchesId(id);
-            tree_vector.insert(end(tree_vector), 
-                left_vector.begin(), left_vector.end() - 1);
-            TreeVector(tree_vector, left_b_id, tr, eps);
-            tree_vector.pop_back();
-            TreeVector(tree_vector, right_b_id, tr, eps);
-            tree_vector.insert(end(tree_vector), 
-                right_vector.rbegin() + 1, right_vector.rend());
-        }
-        else
-        {
-            tree_vector.insert(end(tree_vector), 
-                left_vector.begin(), left_vector.end() - 1);
-            tree_vector.push_back(br->GetPoint(br->Size() - 1));
-            tree_vector.insert(end(tree_vector), 
-                right_vector.rbegin() + 1, right_vector.rend());
-        }
-    }
-
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br)
-    {
-        vector<tethex::Point> tet_vertices;
-        vector<tethex::MeshElement *> tet_lines, tet_triangles;
-
-        auto m = br.SourceByVerticeIdMap();
-        auto vertices = br.GetVertices();
-        auto lines = br.GetLines();
-        
-        for(long unsigned i = 0; i < vertices.size(); ++i)
-        {
-            if(!m.count(i))
-            {
-                tet_vertices.push_back({vertices.at(i).x, vertices.at(i).y});
-                tet_lines.push_back(new tethex::Line(lines.at(i).p1, lines.at(i).p2, lines.at(i).id));
-            }
-            else
-            {
-                vector<Point> tree_vector;
-                TreeVector(tree_vector, m.at(i)/*source id*/, tree, mdl.mesh.eps);
-                long unsigned shift = tet_vertices.size(); 
-                for(long unsigned i = 0; i < tree_vector.size(); ++i)
-                {
-                    tet_vertices.push_back({tree_vector.at(i).x, tree_vector.at(i).y});
-                    tet_lines.push_back(
-                        new tethex::Line(
-                            shift + i, 
-                            shift + i + 1, 
-                            mdl.river_boundary_id));
-                }
-                for(auto& line: lines)
-                    if(line.p2 > i)
-                    {
-                        line.p1 += tree_vector.size();
-                        line.p2 += tree_vector.size();
-                    }
-            }
-        }
-        //close line loop
-        tet_lines.back()->set_vertex(1, 0);
-
-        return tethex::Mesh{tet_vertices, tet_lines, tet_triangles};
     }
 }

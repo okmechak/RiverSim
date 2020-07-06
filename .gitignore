@@ -47,6 +47,7 @@ install/*
 **/Debug
 **/x64
 Doxyfile
+out/*
 
 #some test files..FIXME:
 tests/solution-0.vtk
@@ -61,3 +62,13 @@ research/*.vtk
 research/*.json
 research/*.msh
 research/experiment_results/*
+tests/simulation.json
+tests/mesh_max_area.msh
+tests/mesh_max_edge_lenght.msh
+tests/mesh_max_triangle_ratio.msh
+tests/mesh_min_angle.msh
+tests/mesh_min_area.msh
+tests/mesh_min_edge_lenght.msh
+tests/test_boundary.msh
+tests/Forward_River_Evolution_boundary.msh
+tests/Forward_River_Evolution.msh

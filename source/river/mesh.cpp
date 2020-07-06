@@ -144,7 +144,6 @@ namespace River{
         cout << endl;
     }
 
-
     struct triangulateio Triangle::tethex_to_io(const tethex::Mesh &mesh) const
     {
         struct triangulateio io;
@@ -168,6 +167,22 @@ namespace River{
             }
         }
 
+        //Holes
+        if(mesh.get_n_holes())
+        {
+            auto holes_num = mesh.get_n_holes();
+            io.numberofholes = holes_num;
+            io.holelist = new REAL[2 * holes_num];
+            
+            int i = 0;
+            for(auto &p: mesh.get_holes())
+            {
+                io.holelist[2 * i ] = p.get_coord(0);
+                io.holelist[2 * i + 1] = p.get_coord(1);
+                ++i;
+            }
+        }
+
         //Segments
         if(mesh.get_n_lines())
         {
@@ -185,6 +200,7 @@ namespace River{
             }
         }
 
+        //Triangles
         if(mesh.get_n_triangles())
         {
             auto triangles_num = mesh.get_n_triangles();
@@ -206,8 +222,8 @@ namespace River{
         return io;
     }
 
-        void  Triangle::io_to_tethex(
-            const struct triangulateio &io, tethex::Mesh &initMesh) const
+    void  Triangle::io_to_tethex(
+        const struct triangulateio &io, tethex::Mesh &initMesh) const
     {
         vector<tethex::Point> pointsVal;
         vector<tethex::MeshElement*> segmentsVal;
@@ -220,7 +236,7 @@ namespace River{
                 y = io.pointlist[2 * i + 1];
             auto regionTag = io.pointmarkerlist[i];
 
-            pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag, 1./*default mesh size used in gmsh*/));
+            pointsVal.push_back(tethex::Point(x, y, 0/*z-component*/, regionTag));
         }
 
         segmentsVal.reserve(io.numberofsegments);
@@ -255,27 +271,41 @@ namespace River{
     }
 
     /*
-    
         Triangle Class
     
     */
     Triangle::Triangle()
     {
         set_all_values_to_default();
+    }
 
-        if (Verbose){
-            cout << "Default Options: " << endl;
-            print_options(true);
-        }
+    Triangle::Triangle(MeshParams *mesh_params):
+        mesh_params(mesh_params)
+    {
+        set_all_values_to_default();
+        initialize_mesh_parameters(mesh_params);
+    }
+
+    void Triangle::initialize_mesh_parameters(MeshParams *mesh_params)
+    {
+        AreaConstrain = true;
+        CustomConstraint = true;
+        MaxTriaArea = mesh_params->max_area;
+        MinTriaArea = mesh_params->min_area;
+        MaxEdgeLenght = mesh_params->max_edge;
+        MinEdgeLenght = mesh_params->min_edge;
+        MinAngle = mesh_params->min_angle;
+        MaxTriangleRatio = mesh_params->ratio;
+        Verbose = false;
+        Quite =  true;
     }
 
     Triangle::~Triangle()
     {   
         //we don't call this function
         //free_allocated_memory();
-        //cos it is already present at the of generate() function
+        //cos it is already present at the end of generate() function
     }
-
 
     void Triangle::set_all_values_to_default()
     {
@@ -285,7 +315,6 @@ namespace River{
         set_tria_to_default(&vorout);
     }
 
-
     void Triangle::free_allocated_memory()
     {
 
@@ -293,7 +322,6 @@ namespace River{
         triangulateiofree(&out);
         triangulateiofree(&vorout);
     }
-
 
     string Triangle::update_options()
     {
@@ -303,7 +331,7 @@ namespace River{
         if (ConstrainAngle && MinAngle > 0 && MinAngle < MAX_ANGLE)
                                 options += to_string(MinAngle);
         else if (ConstrainAngle && MinAngle > MAX_ANGLE)
-            throw invalid_argument("Triangle quality angle should be equal or less then 36");
+            throw Exception("Triangle quality angle should be equal or less then 36");
         //if (StartNumberingFromZero)
         //    options += "z";
         if (Refine)             options += "r";
@@ -344,7 +372,6 @@ namespace River{
 
         return options;
     }
-
 
     void Triangle::print_options(bool qDetailedDescription)
     {
@@ -397,15 +424,10 @@ namespace River{
         return &out;
     }
 
-
-
-
     struct triangulateio* Triangle::get_voronoi()
     {
         return &vorout;
     }
-
-
 
     void Triangle::generate(tethex::Mesh &initMesh)
     {

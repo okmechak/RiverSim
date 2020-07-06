@@ -27,7 +27,7 @@
     json file contains next objects:
 
     + `Model`(in* / out)
-    + `Border`(in* / out)
+    + `Boundary`(in* / out)
     + `Trees`(in* / out)
     + `GeometryDifference`(out)
     + `RuntimeInfo`(out)
@@ -35,7 +35,7 @@
     __in*__ - means that it is optional input object.
     __out__ - output contains this information.
 
-    \note "Trees" can't be specified without `Border` object.
+    \note "Trees" can't be specified without `Boundary` object.
 
     Lets describe each of them.
 
@@ -116,16 +116,16 @@
     Model: {}
     ```
 
-    ## Border
+    ## Boundary
 
-    Border contains information about River::Border class, which specifies border points, connections between them
+    Boundary contains information about River::Boundary class, which specifies border points, connections between them
     and source points.
 
-    Border has next fields
-    + `coords` - vector of border coordinates. \see River::Border::vertices
+    Boundary has next fields
+    + `coords` - vector of border coordinates. \see River::Boundary::vertices
     + `lines` - vector of border lines and its id. Id handles boundary condition:
         0 - zero Direchlet, 1 - Laplacea zero flow.
-        \see River::Border::lines
+        \see River::Boundary::lines
     + `SourceIds` - contains pairs of source id number and coordinate position number in
         "coords" vector.
 
@@ -134,7 +134,7 @@
     Rectangular border with one source:
 
     ```json
-    "Border": {
+    "Boundary": {
         "SourceIds": [
             [ 1, 4 ]
             ],
@@ -205,48 +205,98 @@
         "SourceIds" : [1]
     }
     ```
-    
-    ## GeometryDifference
-    
-    Obcjects: 
-
-    + "AlongBranches" - contains information about difference allong branches.
-    + "BiffuractionPoints" - contains geometry difference at biffuratcion points.
-
-    \see River::GeometryDifference
-
-    ## RuntimeInfo
-
-    Object holds some general information and perfomance measurments. Like total time of simulation, 
-    time of each cycle, start date, end date and input file.
-
-    \see River::Timing
 
     ## [Example of JSON file output](https://github.com/okmechak/RiverSim/blob/master/research/test_tree.json)
 */
 
 #pragma once
 
-#include "border.hpp"
+#include "boundary.hpp"
 #include "physmodel.hpp"
 #include "tree.hpp"
 #include "cxxopts.hpp"
-#include "utilities.hpp"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 namespace River
 {
+    ///Program title.
+    string ProgramTitle();
+    
+    ///Prints to console program logo.
+    void print_ascii_signature();
+
+    ///Returns version string defined in \ref version.hpp.
+    string version_string();
+
+    ///Prints to console program Version.
+    void print_version();
+
     /*! \brief Processing of program options.
         \details for full list of program options see `.\riversim -h` or River::Model.
     */
     cxxopts::ParseResult process_program_options(int argc, char* argv[]);
 
     ///Initializes River::Model object by Program Options values.
-    Model& SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& mdl);
+    void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& model);
 
-    ///Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) and backward simulation data(GeometryDifference).
-    void Save(const Model& mdl, const Timing& time, const Border& border, const Tree& tr, const GeometryDifference &gd, const string file_name, const string input_file = "");
+    ///Save current state of program which includes Geometry(Tree, Boundary), current model parameters(Model) and backward simulation data(GeometryDifference).
+    void Save(const Model& model, const string file_name);
     
-    ///Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model).
-    void Open(Model& mdl, Border& border, Tree& tr, GeometryDifference &gd, string file_name, bool& q_update_border);
+    ///Opens state of program from json file which includes Geometry(Tree, Boundary) and current model parameters(Model).
+    void Open(Model& model);
 
+    Model InitializeModelObject(cxxopts::ParseResult & vm);
+
+    void to_json(json& j, const Point& p);
+    void from_json(const json& j, Point& p);
+
+    void to_json(json& j, const Polar& p); 
+    void from_json(const json& j, Polar& p);
+
+    void to_json(json& j, const BoundaryCondition& bc);
+    void from_json(const json& j, BoundaryCondition& bc);
+
+    void to_json(json& j, const BoundaryConditions& bc);
+    void from_json(const json& j, BoundaryConditions& bc);
+
+    void to_json(json& j, const Line& line);
+    void from_json(const json& j, Line& line);
+
+    void to_json(json& j, const SimpleBoundary& boundary); 
+    void from_json(const json& j, SimpleBoundary& boundary); 
+
+    void to_json(json& j, const Boundaries& boundaries); 
+    void from_json(const json& j, Boundaries& boundaries); 
+
+    void to_json(json& j, const Sources& sources); 
+    void from_json(const json& j, Sources& sources); 
+
+    void to_json(json& j, const BranchNew& branch); 
+    void from_json(const json& j, BranchNew& branch); 
+
+    void to_json(json& j, const Tree& tree);
+    void from_json(const json& j, Tree& tree);
+
+    void to_json(json& j, const SeriesParameters& id_series_params);
+    void from_json(const json& j, SeriesParameters& id_series_params);
+
+    void to_json(json& j, const BackwardData& data);
+    void from_json(const json& j, BackwardData& data);
+
+    void to_json(json& j, const ProgramOptions& data);
+    void from_json(const json& j, ProgramOptions& data);
+
+    void to_json(json& j, const MeshParams& data);
+    void from_json(const json& j, MeshParams& data);
+
+    void to_json(json& j, const IntegrationParams& data);
+    void from_json(const json& j, IntegrationParams& data);
+
+    void to_json(json& j, const SolverParams& data);
+    void from_json(const json& j, SolverParams& data);
+
+    void to_json(json& j, const Model& data);
+    void from_json(const json& j, Model& data);
 }//namespace River

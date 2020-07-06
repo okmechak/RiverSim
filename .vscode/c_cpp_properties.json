@@ -3,16 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${workspaceFolder}/source/**",
-                "${workspaceFolder}/source/river/**",
-                "${workspaceFolder}/source/river/tethex/**",
-                "/usr/local/dealii/**",
-                "/usr/local/dealii_release/**",
-                "/mnt/c/users/ofcra/Lib/dealii/include/**"
-            ],
-            "exludePath": [
-                "${workspaceFolder}/docs/**"
+                "${workspaceFolder}/tests/**",
+                "/mnt/c/users/ofcra/lib"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
@@ -26,9 +19,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/source/**",
-                "${workspaceFolder}/source/river/**",
-                "${workspaceFolder}/source/river/tethex/**",
-                "C:/Users/ofcra/Lib/dealii/include/**"
+                "C:/Users/ofcra/Lib/dealii/include/deal.II"
             ],
             "defines": [],
             "cStandard": "c11",

@@ -76,7 +76,7 @@
 
     + River::Polar
     + River::Point
-    + River::Border
+    + River::Boundary
     + River::BranchNew
     + River::Tree
 
@@ -106,7 +106,7 @@
     + Take a look into [File List](files.html). Some more important for understanding files:
         + \ref experiments
         + \ref GeometryPrimitives.hpp
-        + \ref border.hpp
+        + \ref boundary.hpp
         + \ref tree.hpp
         + \ref physmodel.hpp
         + \ref io.hpp
@@ -161,167 +161,12 @@
 #include <iostream>
 ///\endcond
 
-#include "riversim.hpp"
+#include "app.hpp"
 
-using namespace River;
-using namespace std;
-
-/*! Entry point of RiverSim program.
-
-    It glues together all user inputs(commands) and inner objects to run simulation 
+/*! Main program
 */
 int main(int argc, char *argv[])
 {
-    //Program options
-    auto vm = process_program_options(argc, argv);
-
-    if (vm.count("help") || vm.count("version"))
-        return 0;
-
-    if (!vm.count("suppress-signature") && vm.count("verbose"))
-        print_ascii_signature();
-
-    string output_file_name = vm["output"].as<string>();
-
-    //Model object setup
-    Model mdl;
-
-    //Timing Object setup
-    Timing timing;
-
-    string input_file;
-    if(vm.count("input"))
-        input_file = vm["input"].as<string>();
-
-    //Border object setup.. Rectangular boundaries
-    Border border;
-    
-    //Tree object setup
-    Tree tree;
-    
-    //Geometry difference
-    GeometryDifference gd;
-
-    //Reading data from json file if it is specified so
-    {
-        bool q_update_border = false;
-        if(vm.count("input"))
-            Open(mdl, border, tree, gd, vm["input"].as<string>(), q_update_border);
-
-        SetupModelParamsFromProgramOptions(vm, mdl);//..if there are so.
-
-        mdl.CheckParametersConsistency();
-
-        if(mdl.prog_opt.verbose)
-            cout << mdl << endl;
-
-        if(!q_update_border)
-        {
-            border.MakeRectangular(
-            {mdl.width, mdl.height}, 
-            mdl.boundary_ids,
-            {mdl.dx},
-            {1});
-
-            tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-        }
-    }
-    //check of consistency between Border and Tree
-    if(border.GetSourcesId() != tree.SourceBranchesID())
-        throw invalid_argument("Border ids and tree ids are not the same, or are not in same order!");
-
-    //Triangle mesh object setup
-    Triangle tria;
-    tria.AreaConstrain = true;
-    tria.CustomConstraint = true;
-    tria.MaxTriaArea = mdl.mesh.max_area;
-    tria.MinAngle = mdl.mesh.min_angle;
-    tria.Verbose = false;
-    tria.Quite =  true;
-    tria.mesh_params = &mdl.mesh;
-
-    //Simulation object setup
-    River::Solver sim(mdl.solver_params.quadrature_degree);
-    sim.field_value = mdl.field_value;
-    sim.tollerance = mdl.solver_params.tollerance;
-    sim.number_of_iterations = mdl.solver_params.num_of_iterrations;
-    sim.num_of_static_refinments = mdl.mesh.static_refinment_steps;
-    sim.num_of_adaptive_refinments = mdl.solver_params.adaptive_refinment_steps;
-    sim.refinment_fraction = mdl.solver_params.refinment_fraction;
-    sim.verbose = mdl.prog_opt.verbose;
-
-
-    //MAIN LOOP
-    unsigned i = 0;
-    print(mdl.prog_opt.verbose, "Start of main loop...");
-    //forward simulation case
-    if(vm["simulation-type"].as<unsigned>() == 0)
-    {
-        print(mdl.prog_opt.verbose, "Forward river simulation type selected.");
-        //! [StopConditionExample]
-        while(!StopConditionOfRiverGrowth(mdl, border, tree) && i < mdl.prog_opt.number_of_steps)
-        {
-        //! [StopConditionExample]
-            print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-            string str = output_file_name;
-            if(vm.count("save-each-step"))
-                str += "_" + to_string(i);
-
-            ForwardRiverEvolution(mdl, tria, sim, tree, border, str);
-            
-            timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str, input_file);
-            ++i;
-        }
-    }
-    //Backward simulation
-    else if(vm["simulation-type"].as<unsigned>() == 1)
-    {
-        print(mdl.prog_opt.verbose, "Backward river simulation type selected.");
-        while(tree.HasEmptySourceBranch() == false && i < mdl.prog_opt.number_of_steps)    
-        {
-            print(mdl.prog_opt.verbose, "----------------------------------------#" + to_string(i) + "----------------------------------------");
-            
-            string str = output_file_name;
-            if(vm.count("save-each-step"))
-                str += "_" + to_string(i);
-            
-            BackwardForwardRiverEvolution(mdl, tria, sim, tree, border, gd, str);
-
-            timing.Record();//Timing
-            Save(mdl, timing, border, tree, gd, str, input_file);
-            ++i;
-        }
-    }
-    //test simulation
-    else if(vm["simulation-type"].as<unsigned>() == 2)
-    {   
-        print(mdl.prog_opt.verbose, "Test river simulation type selected.");
-
-        //reinitialize geometry
-        auto b_id = mdl.river_boundary_id;
-        border.MakeRectangular(
-            {mdl.width, mdl.height}, 
-            {b_id, b_id, b_id, b_id},
-            {mdl.dx},
-            {1});
-
-        tree.Initialize(border.GetSourcesPoint(), border.GetSourcesNormalAngle(), border.GetSourcesId());
-
-        auto source_branch_id = border.GetSourcesId().back();
-        tree.GetBranch(source_branch_id)->AddPoint(Polar{0.1, 0});
-
-        EvaluateSeriesParams(mdl, tria, sim, tree, border, gd, output_file_name);
-        timing.Record();//Timing
-        Save(mdl, timing, border, tree, gd, output_file_name);
-
-    }
-    //unhandled case
-    else 
-        throw invalid_argument("Invalid simulation type selected: " + to_string(vm["simulation-type"].as<unsigned>()));
-
-    print(mdl.prog_opt.verbose, "End of main loop...");
-    print(mdl.prog_opt.verbose, "Done.");
-
-    return 0;
+    App app;
+    return app.Run(argc, argv);
 }
