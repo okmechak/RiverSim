@@ -9,6 +9,8 @@ using namespace River;
 
 BOOST_PYTHON_MODULE(riversim)
 {
+    def("ProgramTitle", ProgramTitle);
+    
     //geometry primitives
     def("GetNormalizedPoint", GetNormalizedPoint, args("p"), "Returns normalized vector of current Point");
 
