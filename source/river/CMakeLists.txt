@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 #GeometryPrimitives
-add_library(GeometryPrimitives SHARED GeometryPrimitives.hpp GeometryPrimitives.cpp) 
-
+add_library(GeometryPrimitives GeometryPrimitives.hpp GeometryPrimitives.cpp) 
+install(TARGETS GeometryPrimitives DESTINATION riversim)
 
 #boundary
 add_library(boundary boundary.hpp boundary.cpp) 

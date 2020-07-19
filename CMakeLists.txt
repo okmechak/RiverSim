@@ -52,6 +52,6 @@ install(
 
 install(
     FILES
-        examples/riversim_api.ipynb
+        examples/python_api.ipynb
     DESTINATION 
         riversim)
