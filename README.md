@@ -1,5 +1,7 @@
 # River Growth Simulation (RiverSim)
 
+[![Build Status](https://travis-ci.org/okmechak/RiverSim.svg?branch=master)](https://travis-ci.org/okmechak/RiverSim)
+
 [![Faculty of Physics. University of Warsaw](https://www.fuw.edu.pl/tl_files/downloads/logo_18/FUW_znak-poziomy-EN.png)](https://www.fuw.edu.pl/)  
 
 Simulation of river growth using model based on Laplace equation[1].
@@ -48,6 +50,11 @@ and call command is same as cmake, but:
 ### CentOS
 Problem: Program uses c++ 17 standard features, but last prebuild gcc version for CentOS is 4.8 and it only supports c++ 11 standart. 
 Solution is to build from source gcc compiler(more details by this [link](https://linuxhostsupport.com/blog/how-to-install-gcc-on-centos-7/)). Then compile Deal.II from source, there will be some problems which can be resolved by this [link](https://stackoverflow.com/questions/5216399/usr-lib-libstdc-so-6-version-glibcxx-3-4-15-not-found).
+
+If gcc is installed in custom path, specify before running `cmake` environmental variable `LD_LIBRARY_PATH`: 
+```bash
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<custom path>/lib64
+```
 
 ## 2. Compiling and running Tests
 When you have configured and setuped all dependencies. Now you can build RiverSim source code using __cmake__.  
