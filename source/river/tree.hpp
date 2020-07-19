@@ -71,7 +71,7 @@ namespace River
             ///Adds point \p __p__ to branch with absolute coords.
             BranchNew& AddAbsolutePoint(const Point& p);
             
-            ///Adds polar \p __p__ coords to branch with absolute angle, but position is relative to tip
+            ///Adds polar \p __p__ coords to branch with absolute angle, but position is relative to tip.
             BranchNew& AddAbsolutePoint(const Polar& p);
             
             ///Adds point \p __p__ to branch in tip relative coord system.
@@ -119,10 +119,10 @@ namespace River
             */
             double TipAngle() const;
 
-            ///Returns SourcePoint of branch(the first one).
+            ///Returns source point of branch(the first one).
             Point SourcePoint() const;
 
-            ///Returns SourceAngle of branch - initial __source_angle__.
+            ///Returns source angle of branch - initial __source_angle__.
             double SourceAngle() const;
             /*! @} */
 
@@ -130,7 +130,7 @@ namespace River
                 @{
             */
 
-            ///Returns Lenght of whole branch.
+            ///Returns lenght of whole branch.
             double Lenght() const;
             /**
              * @}
@@ -155,15 +155,15 @@ namespace River
 
     typedef t_source_id t_branch_id;
     typedef pair<t_branch_id, t_branch_id> t_branch_id_pair;
-
+    
+    typedef map<t_branch_id, BranchNew> t_Tree;
     /*! \brief Combines __BranchNew__ into tree like structure.
         \details
         Tree class represents next structure: 
         \imageSize{TreeClass.jpg, height:40%;width:40%;, }
 
         \todo resolve problem with private methods.
-     */
-    typedef map<t_branch_id, BranchNew> t_Tree;
+    */
     class Tree: public t_Tree
     {
         public:
@@ -188,13 +188,17 @@ namespace River
             /// Adds new \p branch with \p id (\p id should be unique).
             t_branch_id AddBranch(const BranchNew &branch, t_branch_id id = UINT_MAX);
             
+            /// Adds two subbranches with
             t_branch_id_pair AddSubBranches(t_branch_id root_branch_id, 
                 const BranchNew &left_branch, const BranchNew &right_branch);
-
+            
+            ///Delete branch.
             void DeleteBranch(t_branch_id branch_id);
 
+            ///Delete sub branch of current sub branch.
             void DeleteSubBranches(t_branch_id root_branch_id);
 
+            ///Clear whole tree.
             void Clear();
 
             /*! \brief Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
@@ -267,7 +271,7 @@ namespace River
             void handle_non_existing_branch_id(const t_branch_id id) const;
 
             ///Generates unique id number for new subbranch.
-            unsigned GenerateNewID() const;
+            t_branch_id GenerateNewID() const;
 
             ///Holds realations between root branhces and its subbranches.
             map<t_branch_id, t_branch_id_pair> branches_relation;   

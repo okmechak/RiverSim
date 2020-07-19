@@ -24,6 +24,7 @@ if(BUILD_PROGRAM)
     add_library(app app.hpp app.cpp)
     deal_ii_setup_target(app)
     target_link_libraries(app river)
+    install(TARGETS app DESTINATION riversim)
 
     set(SOURCE_FILES 
         main.cpp)
