@@ -156,15 +156,15 @@ namespace River
 
             ///If true, then mesh element will be constrined to some maxiaml value.
             bool AreaConstrain = false;
-            ///User defined function constrint
+            ///User defined function constraint.
             bool CustomConstraint = false;
             ///D - all triangles will be delaunay. Not just constrained delaunay.
             bool DelaunayTriangles = true;
-            ///c - enclose convex hull with segments
+            ///c - enclose convex hull with segments.
             bool EncloseConvexHull = false;
-            ///C - check final mesh if it was conf with X
+            ///C - check final mesh if it was conf with X.
             bool CheckFinalMesh = false;
-            ///A - asign additional regional attribute to each triangle, and specifies it to
+            ///A - assign additional regional attribute to each triangle, and specifies it to
             ///    each closed segment region it belongs. (has effect with -p and without -r)
             bool AssignRegionalAttributes = true;
             ///i - use incremental algorithm instead of divide and conqure

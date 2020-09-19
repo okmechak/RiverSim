@@ -105,15 +105,13 @@ namespace River
             ///Number of solver iterations.
             unsigned number_of_iterations = 6000;
 
-            ///If true, output will be produced to stadard output
+            ///If true, output will be produced to stadard output.
             bool verbose = false;
 
-            ///Number of adaptive mesh refinments.
-            ///Splits mesh elements and resolves.
+            ///Number of adaptive mesh refinments. Splits mesh elements and resolves.
             unsigned num_of_adaptive_refinments = 0;
 
-            ///Number of static mesh refinments.
-            ///Splits elements without resolving.
+            ///Number of static mesh refinments. Splits elements without resolving.
             unsigned num_of_static_refinments = 0;
 
             ///Open mesh data from file. Msh 2 format.

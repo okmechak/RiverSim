@@ -147,9 +147,7 @@ namespace River
             ///Minimal angle of mesh element.
             double min_angle = 30.;
 
-            /*! \brief Maximal edge size.
-                \todo implement checks for this values.
-            */
+            ///Maximal edge size.
             double max_edge = 1;
 
             ///Minimal edge size.
@@ -223,9 +221,7 @@ namespace River
             */
             double exponant = 2.;
             
-            /*! Weight function used in computation of series parameters.
-                \snippet physmodel.hpp WeightFunc
-            */
+            ///Weight function used in computation of series parameters.
             inline double WeightFunction(const double r) const
             {
                 //! [WeightFunc]
@@ -265,7 +261,7 @@ namespace River
             ///Tollerarnce used by dealii Solver.
             double tollerance = 1.e-12;
 
-            ///Number of solver iteration steps
+            ///Number of solver iteration steps.
             unsigned num_of_iterrations = 6000;
 
             ///Number of adaptive refinment steps.
@@ -280,7 +276,7 @@ namespace River
             ///Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
             unsigned renumbering_type = 0;
 
-            ///maximal distance between middle point and first solved point, used in non euler growth.
+            ///Maximal distance between middle point and first solved point, used in non euler growth.
             double max_distance = 0.002;
 
             ///Prints program options structure to output stream.
@@ -388,7 +384,6 @@ namespace River
             double growth_min_distance = 0.01;
             
             ///Checks by evaluating series params for bifuraction condition.
-            ///More details about that you can find at [PMorawiecki work]()
             bool q_bifurcate(const vector<double>& a) const;
 
             bool q_bifurcate(const vector<double>& a, double branch_lenght) const;

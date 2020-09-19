@@ -43,3 +43,15 @@ install(
         sample_trees
     DESTINATION 
         riversim)
+
+install(
+    DIRECTORY 
+        examples
+    DESTINATION 
+        riversim)
+
+install(
+    FILES
+        examples/python_api.ipynb
+    DESTINATION 
+        riversim)

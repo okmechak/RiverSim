@@ -32,7 +32,9 @@ easiest way to install them all is:
 > sudo apt install build-esential
 
 also _Cmake_ with curses gui(Terminal gui) is very handy:
-> sudo app install cmake-curses-gui
+> sudo apt install cmake-curses-gui
+> sudo apt install doxygen
+> sudo apt install graphviz
 
 and call command is same as cmake, but:
 > ccmake <path-to-source> 
