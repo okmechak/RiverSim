@@ -18,7 +18,6 @@
 */
 
 ///\cond
-#define VOID void
 typedef long double longdouble;
 #define REAL longdouble
 
