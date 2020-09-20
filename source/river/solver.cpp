@@ -127,7 +127,7 @@ namespace River
                 VectorTools::interpolate_boundary_values(
                     dof_handler, 
                     boundary_id, 
-                    ConstantFunction<dim>(boundary_condition.value), 
+                    Functions::ConstantFunction<dim>(boundary_condition.value), 
                     boundary_values);
 
         MatrixTools::apply_boundary_values(
