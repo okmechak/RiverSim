@@ -19,7 +19,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/source/**",
-                "C:/Users/ofcra/Lib/dealii/include/deal.II"
+                "C:/Users/ofcra/Bin/dealii/include/deal.II"
             ],
             "defines": [],
             "cStandard": "c11",
