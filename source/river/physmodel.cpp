@@ -218,18 +218,19 @@ namespace River
 
     Polar Model::next_point(const vector<double>& series_params) const
     {
-        auto beta = series_params.at(0)/series_params.at(1),
+        auto beta = series_params.at(1)/series_params.at(0),
             dl = ds * pow(series_params.at(0), eta);
 
         if(growth_type == 0)
         {
-            double phi = -atan(2 / beta * sqrt(dl));
+            double phi = -atan(2 * beta * sqrt(dl));
             return {dl, phi};
         }
         else if(growth_type == 1)
         {
-            auto dy = beta*beta/9*( pow(27/2*dl/beta/beta + 1, 2./3.) - 1),
-                dx = 2*sqrt( pow(dy, 3)/pow(beta, 2) + pow(dy, 4) / pow(beta, 3));
+            auto dy = 1 / pow(beta, 2) / 9 
+                * ( pow( 27 / 2 * dl / pow(beta, 2) + 1, 2./3.) - 1 ),
+                dx = 2*sqrt( pow(dy, 3) / pow(beta, 2) + pow(dy, 4) / pow(beta, 3));
                 
             return ToPolar(Point{dx, dy}.rotate(-M_PI/2));
         }
@@ -243,8 +244,8 @@ namespace River
         normalized_series_params.at(0) /= max_a;
 
         auto eta_temp = eta;
-        if(branch_lenght <= growth_min_distance)
-            eta = 0;
+        if(branch_lenght < growth_min_distance)
+            eta = 0; 
         
         auto p = next_point(normalized_series_params);
 

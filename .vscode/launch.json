@@ -23,6 +23,26 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "test tphysmodel",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../Builds/riversim/tests/tphysmodel",
+            "args": ["--log_level=all"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/../../Builds/riversim/tests",
+            "environment": [],
+            "externalConsole": false,
+            "targetArchitecture": "x86_64",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }

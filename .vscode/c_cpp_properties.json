@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/source/**",
                 "${workspaceFolder}/tests/**",
-                "/mnt/c/users/ofcra/lib"
+                "/mnt/c/users/ofcra/Bin/dealii/include/deal.II",
+                "/usr/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
@@ -19,7 +20,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/source/**",
-                "C:/Users/ofcra/Lib/dealii/include/deal.II"
+                "C:/Users/ofcra/Bin/dealii/include/deal.II"
             ],
             "defines": [],
             "cStandard": "c11",
