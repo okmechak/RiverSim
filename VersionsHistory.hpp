@@ -25,7 +25,7 @@
 
     \subsection v22 2.8.7
 
-    + all field of modle can be imported and exported
+    + all field of model can be imported and exported
     + typewrtiring fixes
 
     \subsection v23 3.0.0

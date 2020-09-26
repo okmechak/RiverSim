@@ -18,7 +18,7 @@
     \details
     Program is higly depended on geometry which consist of Points, Vectors, Polar Vectors, Lines
     and other which are implemented below.
-    Class River::Point is the most important and is basic class for rest geometrical classes like \ref River::BranchNew and \ref River::Border.
+    Class River::Point is the most important and is basic class for rest geometrical classes like \ref River::BranchNew and \ref River::Boundary.
 
     \see River::Point
  */
@@ -27,27 +27,39 @@
 ///\cond
 #include <vector>
 #include <iostream>
+#include <exception>
 ///\endcond
+
+///Absolute preccision comparison between dobule numbers
+#define EPS 1.e-13
 
 using namespace std;
 
 namespace River
 {
+    struct Exception : public exception
+    {
+        string s;
+        Exception(const string ss) : s(ss) {}
+        ~Exception() throw () {} // Updated
+        const char* what() const throw() { return s.c_str(); }
+    };
+    
     ///Prints logs depending of log configuration(quiet or verbose)
-    void print(bool flag, string str);
+    void print(const bool flag, const string str);
     
     class Point;
 
     class Polar;
 
     /*! \brief Returns normalized vector of current Point.
-        \throw invalid_argument if vector lenght is zero
+        \throw Exception if vector lenght is zero
         \return Normalized vector
     */
-    Point GetNormalizedPoint(Point p);
+    Point GetNormalizedPoint(const Point &p);
 
     ///Returns Polar representation of vector.
-    Polar ToPolar(Point p);
+    Polar ToPolar(const Point &p);
 
 
     /*! \class Polar
@@ -58,25 +70,42 @@ namespace River
     */
     class Polar
     {
+        private:
+            static constexpr double eps = EPS;
+
         public:
 
             ///Creates \"zero\"-polar vector(r = 0, phi = 0)
             Polar() = default;
     
             ///Creates \"non-zero\"-polar vector(r = \p dlval, phi = \p phival)
-            Polar(double dlval, double phival):
-              r{dlval}, phi{phival} {};
+            Polar(const double dlval, const double phival):
+                r{dlval}, 
+                phi{phival} 
+                {};
     
             ///Radius of points.
             double r = 0.;
     
             ///Angle of point.
             double phi = 0.;
+
+            ///Equal operator
+            bool operator ==(const Polar & p) const
+            {
+                return abs(p.r - r)/2 + (p.phi - phi)/2 < eps;
+            }
+            
+            ///Not-equal operator
+            bool operator !=(const Polar & p) const
+            {
+                return !(*this == p);
+            }
     
             ///Converts Polar Object \p to string and redirects it to stream object \p write.
             friend ostream& operator <<(ostream& write, const Polar & p)
             {
-                write << "Polar: " << p.r << " " << p.phi << endl;
+                write << "Polar: " << p.r << " " << p.phi;
                 return write;
             }
     };
@@ -93,7 +122,7 @@ namespace River
     {
         private:
             ///Absolute precission parameter, used in Point comparsion \ref operator== function.
-            double eps = 1e-13;
+            static constexpr double eps = EPS;
 
         public:
             ///x coordinate.
@@ -108,7 +137,7 @@ namespace River
             ~Point() = default;
 
             ///Point constructor.
-            Point(double xval, double yval);
+            Point(const double xval, const double yval);
 
             ///Copy constructor
             Point(const Point &p) = default;
@@ -120,28 +149,28 @@ namespace River
             double norm() const;
 
             ///Evaluates norm of vector {\p x, \p y}.
-            static double norm(double x, double y);
+            static double norm(const double x, const double y);
 
             ///Rotates point on \p phi angle(counterclockwise)
-            Point& rotate(double phi);
+            Point& rotate(const double phi);
 
             /*! \brief Normalizes current Point.
-                \throw invalid_argument if vector lenght is zero
+                \throw Exception if vector lenght is zero
             */
             Point& normalize();
 
             /*! \brief Returns angle of vector.
-                \throw invalid_argument if vector lenght is zero
+                \throw Exception if vector lenght is zero
             */
             double angle() const;
 
             /*! \brief Returns angle of {\p x,\p y} vector.
-                \throw invalid_argument if vector lenght is zero
+                \throw Exception if vector lenght is zero
             */
-            static double angle(double x, double y);
+            static double angle(const double x, const double y);
 
             /*! \brief Returns angle relatively to \p p Point.
-                \throw invalid_argument if vector lenght one of poits is zero
+                \throw Exception if vector lenght one of poits is zero
             */
             double angle(const Point &p) const;
 
@@ -171,26 +200,9 @@ namespace River
             /*! @} */
             ///Retrives cordinate using array syntaxis.
             double operator[](const int index) const;
+            double operator()(const int index) const;
 
             ///Converts object to string and redirects it to stream.
             friend ostream& operator <<(ostream& write, const Point & p);
   };
-
-    /*! \brief 
-        Line - holds indexes of __p1__, __p2__ vertices and id.
-        Its structure is depended on Mesh data structure.
-    */
-    class Line
-    {
-        public:
-            ///Constructor.
-            Line(long unsigned p1v, long unsigned p2v, int idv):p1(p1v), p2(p2v), id(idv){};
-            ///Point index.
-            long unsigned p1;
-            ///Point index.
-            long unsigned p2;
-            ///Line Index.
-            int id;
-    };
-
 } // namespace River

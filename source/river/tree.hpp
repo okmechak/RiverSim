@@ -32,16 +32,16 @@
 
 ///\cond
 #include <iostream>
-#include <vector>
-#include <list>
-#include <map>
-#include <algorithm>
 #include <string>
+#include <vector>
+#include <map>
+#include <list>
+#include <algorithm>
+#include <climits>
 ///\endcond
+
 #include "GeometryPrimitives.hpp"
-#include "tethex.hpp"
-#include "physmodel.hpp"
-#include "border.hpp"
+#include "boundary.hpp"
 
 using namespace std;
 
@@ -53,74 +53,45 @@ namespace River
         \imageSize{BranchNewClass.jpg, height:40%;width:40%;, }
         \todo resolve problem with private members
     */
-    class BranchNew
+    class BranchNew: public t_PointList
     {
         public:
+            BranchNew() = default;
+
             /*! \brief BranchNew construcor.
                 \details Initiates branch with initial point \p source_point and initial \p angle.
                 \param[in] source_point_val - Branch source point.
                 \param[in] angle - Intial growth(or flow) dirrection of brahch source point.
             */
-            BranchNew(const Point& source_point_val, double angle):
-                source_angle(angle)
-            {
-                AddAbsolutePoint(source_point_val);
-            };
+            BranchNew(const Point& source_point_val, const double angle);
 
             /*! \name Modificators
                 @{
             */
             ///Adds point \p __p__ to branch with absolute coords.
-            inline BranchNew& AddAbsolutePoint(const Point& p)
-            {
-                points.push_back(p);
-                return *this;
-            }
+            BranchNew& AddAbsolutePoint(const Point& p);
             
-            ///Adds polar \p __p__ coords to branch with absolute angle, but position is relative to tip
-            inline BranchNew& AddAbsolutePoint(const Polar& p)
-            {
-                points.push_back(TipPoint() + Point{p});
-                return *this;
-            }
+            ///Adds polar \p __p__ coords to branch with absolute angle, but position is relative to tip.
+            BranchNew& AddAbsolutePoint(const Polar& p);
             
             ///Adds point \p __p__ to branch in tip relative coord system.
-            inline BranchNew& AddPoint(const Point &p)
-            {
-                points.push_back(TipPoint() + p);
-                return *this;
-            }
+            BranchNew& AddPoint(const Point &p);
 
             ///Adds polar \p __p__ to branch in tip relative coord and angle system.
-            inline BranchNew& AddPoint(const Polar& p)
-            {
-                auto p_new = Polar{p};
-                p_new.phi += TipAngle();
-                AddAbsolutePoint(p_new);
-                return *this;
-            }
+            BranchNew& AddPoint(const Polar& p);
 
             /*! \brief Reduces lenght of branch by \p lenght.
                 \note
                 If \p lenght is greater than full lenght of branch, then __source_point__ only remains.
-                \throw invalid_argument.
+                \throw Exception.
             */
             BranchNew& Shrink(double lenght);
 
             /*! \brief Remove tip point from branch(simply pops element from vector).
                 \imageSize{BranchNewShrink.jpg, height:30%;width:30%;, }
-                \throw invalid_argument if trying to remove last point.
+                \throw Exception if trying to remove last point.
             */
-            inline BranchNew& RemoveTipPoint()
-            {
-                if(Size() == 1)
-                    throw invalid_argument("Can't remove last point");   
-                points.pop_back();
-                return *this;
-            }
-
-            ///Clear Branch
-            inline BranchNew& Clear(){ points.clear(); return *this; }
+            BranchNew& RemoveTipPoint();
             
             /*! @} */
 
@@ -128,427 +99,184 @@ namespace River
                 @{
             */
             /*! \brief Return TipPoint of branch(last point in branch).
-                \throw invalid_argument if branch is empty.
+                \throw Exception if branch is empty.
             */
-            inline Point TipPoint() const 
-            {
-                if(Size() == 0)
-                    throw invalid_argument("Can't return TipPoint size is zero");
-                return points.at(Size() - 1);
-            }
+            Point TipPoint() const;
 
             /*! \brief Returns vector of tip - difference between two adjacent points.
-                \throw invalid_argument if branch consist only from one point.
+                \throw Exception if branch consist only from one point.
                 \warning name a little confusing cos there is still source_angle variable.
             */
-            inline Point TipVector() const 
-            {
-                if(Size() == 1)
-                    throw invalid_argument("Can't return TipVector size is 1");
-
-                return points.at(Size() - 1) - points.at(Size() - 2);
-            }
+            Point TipVector() const;
 
             /*! \brief Returns vector of \p i th segment of branch.
-                \throw invalid_argument if branch size is 1 or is \p i > branch size.
+                \throw Exception if branch size is 1 or is \p i > branch size.
             */
-            inline Point Vector(unsigned i) const
-            {
-                if(Size() == 1)
-                    throw invalid_argument("Can't return Vector. Size is 1");
-                if(i >= Size() || i == 0)
-                    throw invalid_argument("Can't return Vector. Index is bigger then size or is zero");
-
-                return points.at(i) - points.at(i - 1);
-            }
+            Point Vector(unsigned i) const;
             
             /*! \brief Returns angle of branch tip.
-                \throw invalid_argument if branch is empty.
+                \throw Exception if branch is empty.
             */
-            double TipAngle() const 
-            {
-                if(Size() < 1)
-                    throw invalid_argument("TipAngle: size is less then 1!");
-                else if(Size() == 1)
-                    return source_angle; 
+            double TipAngle() const;
 
-                return TipVector().angle();
-            }
+            ///Returns source point of branch(the first one).
+            Point SourcePoint() const;
 
-            ///Returns SourcePoint of branch(the first one).
-            inline Point SourcePoint() const{return points.at(0);}
-
-            ///Returns SourceAngle of branch - initial __source_angle__.
-            inline double SourceAngle() const {return source_angle;}
+            ///Returns source angle of branch - initial __source_angle__.
+            double SourceAngle() const;
             /*! @} */
 
             /*! \name Different Parameters
                 @{
             */
 
-            ///Checks if branch is empyt - but it never should.
-            inline bool Empty() const 
-            {
-                return points.empty() || points.size() == 1/*branch with one point is empty too*/ 
-                    || Lenght() < eps;
-            }
-
-            ///Returns Lenght of whole branch.
-            double Lenght() const 
-            {
-                double lenght = 0.;
-                if(Size() > 1)
-                    for(unsigned int i = 1; i < Size(); ++i)
-                        lenght += (points.at(i) - points.at(i - 1)).norm();
-
-                return lenght;
-            };
-
-
-            ///Returns number of points in branch.
-            inline unsigned int Size() const {return points.size();}
-
-            /*! \brief Returns BranchNew::Lenght() divided by BranchNew::Size().
-                \throw invalid_argument if branch consist only from one point.
-            */
-            double AverageSpeed() const
-            {
-                if(Size() == 1)
-                    throw invalid_argument("Average speed can't be evaluated of empty branch");    
-                return Lenght()/(Size() - 1);
-            }
+            ///Returns lenght of whole branch.
+            double Lenght() const;
             /**
              * @}
              */
 
             ///Prints branch and all its parameters.
-            friend ostream& operator<<(ostream& write, const BranchNew & b)
-            {
-                int i = 0;
-                write << "Branch " << endl;
-                write << "  lenght - " << b.Lenght() << endl;
-                write << "  size - " << b.Size() << endl;
-                write << "  source angle - " << b.source_angle << endl;
-                for(auto p: b.points)
-                    write <<"   " << i++ << " ) " << p << endl;
-
-                return write;
-            }
+            friend ostream& operator<<(ostream& write, const BranchNew & b);
 
             ///Comparison of branches.
-            bool operator==(const BranchNew& br) const
-            {
-                if(br.points != points)
-                    return false;
-                if(SourceAngle() != br.SourceAngle())
-                    return false;
-
-                return true;
-            }
-
-            ///Returns points vector.
-            inline vector<Point> GetPoints(){return points;}
-
-            ///Returns \p i th point vector.
-            inline Point GetPoint(unsigned i) const 
-            {
-                return points.at(i);
-            }
-
+            bool operator==(const BranchNew& br) const;
             
         //private:
 
             ///Initial angle of source(or direction of source).
             double source_angle;
 
-            ///Vector which holds all points of branch.
-            vector<Point> points;
-
             ///Used in Shrink function call.
             ///If after shrink lenght of between adjacent to tip point
             ///is less then eps then we delete it.
-            double eps = 5e-6;
-
+            double eps = 5e-7;
     };
 
-
-
+    typedef t_source_id t_branch_id;
+    typedef pair<t_branch_id, t_branch_id> t_branch_id_pair;
+    
+    typedef map<t_branch_id, BranchNew> t_Tree;
     /*! \brief Combines __BranchNew__ into tree like structure.
         \details
         Tree class represents next structure: 
         \imageSize{TreeClass.jpg, height:40%;width:40%;, }
 
         \todo resolve problem with private methods.
-     */
-    class Tree
+    */
+    class Tree: public t_Tree
     {
         public:
-            /*! \brief Creates empty tree without source branches. */
+            ///Creates empty tree without any branches.
             Tree() = default; 
 
-            ///Copy constructor.
             Tree(const Tree& t);
 
-            ///Destructor
-            ~Tree()
-            {
-                Clear();
-            }
-
-            ///Assignment.
             Tree& operator= (const Tree &t);
+
+            bool operator==(const Tree &t) const;
             
-            /*! \name Modificators
-                @{
-            */
             /*! \brief Initialize __tree__ with source points vector \p source_point and source angle vector \p source_angle.
                 \details
-                This function is designed to fit River::Border class.
+                This function is designed to fit River::Boundary class.
 
                 It creates empty source branches which further will be developed in
                 river networks by design
-
-                \todo does it work for many sources(>1)?
             */
-            Tree& Initialize(vector<Point> sources_point, vector<double> sources_angle, vector<int> ids);
+            void Initialize(const Boundaries::trees_interface_t ids_points_angles);
             
-
-            //Additions
-            /*! \brief Adds new \p branch with \p id (\p id should be unique).
-                \todo make the function this private.
-            */
-            int AddBranch(const BranchNew &branch, int id = -999);
-
-            /*! Adds new source __branch__ with __id__.
-                \throw invalid_argument if \p id is invalid(invalid value or already exist).
-            */
-            int AddSourceBranch(const BranchNew &branch, int id = -999)
-            {   
-                if(id == -999)
-                    id = GenerateNewID();
-
-                if(!IsValidBranchId(id))
-                    throw invalid_argument("Invalid id of branch at adding to source branch of tree.");
-
-                source_branches_id.push_back(id);
-                
-                return AddBranch(branch, id);
-            }
+            /// Adds new \p branch with \p id (\p id should be unique).
+            t_branch_id AddBranch(const BranchNew &branch, t_branch_id id = UINT_MAX);
             
-            ///Adds Sub Branches \p left_brach, \p right_branch to \p root_branch_id.
-            pair<int, int> AddSubBranches(int root_branch_id, BranchNew &left_branch, BranchNew &right_branch);
+            /// Adds two subbranches with
+            t_branch_id_pair AddSubBranches(t_branch_id root_branch_id, 
+                const BranchNew &left_branch, const BranchNew &right_branch);
+            
+            ///Delete branch.
+            void DeleteBranch(t_branch_id branch_id);
 
+            ///Delete sub branch of current sub branch.
+            void DeleteSubBranches(t_branch_id root_branch_id);
 
-            //Getters of ids
+            ///Clear whole tree.
+            void Clear();
+
             /*! \brief Returns root(or source) branch of branch __branch_id__(if there is no such - throw exception).
-                \throw invalid_argument if there is no parent branch.
+                \throw Exception if there is no parent branch.
             */
-            int GetParentBranchId(int branch_id) const;
+            t_branch_id GetParentBranchId(t_branch_id branch_id) const;
+            
+            /// Returns link to parent branch.
+            BranchNew& GetParentBranch(t_branch_id branch_id);
 
             /*! \brief Returns pair of ids of subranches.
-                \throw invalid_argument if there is no sub branches.
+                \throw Exception if there is no sub branches.
             */
-            pair<int, int> GetSubBranchesId(int branch_id) const
-            {   
-                if(!HasSubBranches(branch_id))
-                    throw invalid_argument("branch does't have sub branches");
+            t_branch_id_pair GetSubBranchesIds(t_branch_id branch_id) const;
 
-                return branches_relation.at(branch_id);
-            }
+            /// Returns reference to subbranches
+            pair<BranchNew&, BranchNew&> GetSubBranches(t_branch_id branch_id);
 
             /*! \brief Returns id of adjacent branch to current \p sub_branch_id branch.
-                \throw invalid_argument if there is no adjacent branch.
+                \throw Exception if there is no adjacent branch.
             */
-            int GetAdjacentBranchId(int sub_branch_id) const;
+            t_branch_id GetAdjacentBranchId(t_branch_id sub_branch_id) const;
 
-            ///Generates unique id number for new subbranch.
-            unsigned int GenerateNewID() const;
-
-
-            //Getters of Branches
-            /*! \brief Returns link to branch with \p id.
-                \throw invalid_argument if there is no such branch.
-            */
-            const BranchNew* GetBranch(int id) const;
-
-            /*! \brief Returns link to branch with \p id.
-                \throw invalid_argument if there is no such branch.
-            */
-            BranchNew* GetBranch(int id);
-
-            /*! \brief Returns link to parent branch.
-                \throw invalid_argument if there is no parent branch.
-            */
-            BranchNew* GetParentBranch(int branch_id)
-            {return GetBranch(GetParentBranchId(branch_id));}
-
-            /*! \brief Returns link to adjacent branch with \p id.
-                \throw invalid_argument if there is no adjacent branch.
-            */
-            BranchNew* GetAdjacentBranch(int sub_branch_id)
-            {
-                return GetBranch(GetAdjacentBranchId(sub_branch_id));
-            }
-
-            /*! \brief Returns reference to subbranches
-                \throw invalid_argument if there is no sub branches.
-            */
-            pair<BranchNew*, BranchNew*> GetSubBranches(int branch_id)
-            {
-                auto[left_branch, right_branch] = GetSubBranchesId(branch_id);
-                return{GetBranch(left_branch), GetBranch(right_branch)};
-            }
-
-            //Delete
-            ///Clear all branches from tree.
-            Tree& Clear()
-            {
-                branches_relation.clear();
-                source_branches_id.clear();
-                branches.clear();
-                branches_index.clear();
-
-                return *this;
-            }
-            
-            Tree& DeleteSubBranches(int root_branch_id);
-
-            Tree& DeleteBranch(int branch_id)
-            {
-                branches.remove(*GetBranch(branch_id));
-                branches_index.erase(branch_id);
-                remove(source_branches_id.begin(), source_branches_id.end(), branch_id);
-                branches_relation.erase(branch_id);
-                return *this;
-            }
-
+            ///Returns link to adjacent branch with \p id.
+            BranchNew& GetAdjacentBranch(t_branch_id sub_branch_id);
 
             //Growth
             ///Adds  relatively vector of \p points to Branches \p tips_id.
-            Tree& AddPoints(const vector<Point>& points, const vector<int>& tips_id);
+            void AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points);
 
             ///Adds  relatively \p points to Branches \p tips_id.
-            Tree& AddPolars(const vector<Polar>& points, const vector<int>& tips_id);
+            void AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points);
 
             ///Adds  absolute \p points to Branches \p tips_id.
-            Tree& AddAbsolutePolars(const vector<Polar>& points, const vector<int>& tips_id);
+            void AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points);
 
-
-            //Checks
-            ///Checks if branch with \p id exists.
-            inline bool DoesExistBranch(int id)const{return branches_index.count(id);}
-
-            ///Checks if current id of branch is source or not.
-            int IsSourceBranch(int branch_id) const
-            {
-                if(!DoesExistBranch(branch_id))
-                    throw invalid_argument("HasParentBranch: there is no such branch");
-
-                return find(source_branches_id.begin(), source_branches_id.end(), branch_id) != source_branches_id.end();
-            }
-
-            ///Checks if Branchs \p branch_id has root(or source) branch.
-            bool HasParentBranch(int branch_id) const
-            {
-                if(!DoesExistBranch(branch_id))
-                    throw invalid_argument("HasParentBranch: there is no such branch");
-                
-                for(auto key_val: branches_relation)
-                    if(key_val.second.first == branch_id || key_val.second.second == branch_id)
-                        return true;
-
-                return false;
-            }
-            
-            ///Checks if Branch \p branch_id has subbranches.
-            bool HasSubBranches(int branch_id) const
-            {
-                if(!DoesExistBranch(branch_id))
-                    throw invalid_argument("HasSubBranches: there is no such branch");
-                return branches_relation.count(branch_id);
-            }
-
-            ///Checks if tree has non zero sized branches.
-            bool HasEmptySourceBranch() const
-            {   
-                //No branches at all means empty source too.
-                //It will stop simulation immediately.
-                if(source_branches_id.empty())
-                    return true;
-
-                for(auto id: source_branches_id)
-                    if(GetBranch(id)->Empty())
-                        return true;
-
-                return false;
-            }
-
-            ///Checks for validity of \p id.
-            bool IsValidBranchId(int id) const
-            {return id >= 1;}
-            /**
-             * @}
-             */
-
-            /**
-             * @name Functional
-             * @{
-             */
+            t_branch_id_pair GrowTestTree(
+                const t_branch_id branch_id = 1, const double ds = 0.05, const unsigned n = 3, const double dalpha = 0);
 
             ///Returns vector of tip branches ids.
-            vector<int> TipBranchesId() const;
+            vector<t_branch_id> TipBranchesIds() const;
+
+            vector<t_branch_id> zero_lenght_tip_branches_ids(double zero_lenght) const;
 
             ///Returns vector of tip branches Points.
             vector<Point> TipPoints() const;
 
             ///Returns vector of tip branches Points.
-            map<int, Point> TipIdsAndPoints() const;
-            /**
-             * @}
-             */
+            map<t_branch_id, Point> TipIdsAndPoints() const;
 
-            //Some properties
-            ///Returns number of source branches.
-            inline int NumberOfSourceBranches() const {return source_branches_id.size();}
-            ///Return vector of source branches ids.
-            inline vector<int> SourceBranchesID() const {return source_branches_id;}
+            ///Checks if current id of branch is source or not.
+            bool IsSourceBranch(const t_branch_id branch_id) const;
 
-        //private:
-            /**
-             * @name Private
-             * @{
-             */
+            ///Evaluates curvature of tips. Used in non-euler growth
+            double maximal_tip_curvature_distance() const;
+
+            void flatten_tip_curvature();
+
+            ///Removes tips points, or in other words reverts one step of simulation.
+            void remove_tip_points();
+            
+            ///Checks if Branch \p branch_id has subbranches.
+            bool HasSubBranches(const t_branch_id branch_id) const;
+
+            bool HasParentBranch(t_branch_id sub_branch_id) const;
+
+            ///Checks for validity of \p id.
+            bool IsValidBranchId(const t_branch_id id) const;
+
+            void handle_non_existing_branch_id(const t_branch_id id) const;
+
+            ///Generates unique id number for new subbranch.
+            t_branch_id GenerateNewID() const;
 
             ///Holds realations between root branhces and its subbranches.
-            map<int, pair<int, int>> branches_relation;
-
-            ///Holds branches ids and its position in BranchNew::branches vector.
-            map<int, BranchNew*> branches_index;
-
-            ///Holds all branches.
-            list<BranchNew> branches;
-
-            ///Holds all source branches.
-            vector<int> source_branches_id;
-
-            ///Invalid branch index. Used in error handling.
-            int invalid_branch = -2;        
+            map<t_branch_id, t_branch_id_pair> branches_relation;   
 
             ///Prints tree to stream.
             friend ostream& operator<<(ostream& write, const Tree & b);
-            /**
-             * @}
-             */
     };
-
-    ///Generates trees boundary
-    void TreeVector(vector<Point> &tree_vector, int id, const Tree& tree, double eps);
-
-    /*! \brief Finnal Boudary Geneartor Class
-        \details
-        Sticks together all components: Tree class, boudary class and model parameters.
-
-        \todo reserve size of tet_lines.
-     */ 
-    tethex::Mesh BoundaryGenerator(const Model& mdl, const Tree& tree, const Border &br);
 }

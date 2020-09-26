@@ -1,3 +1,3 @@
 # River
 
-All RiverSim functionality or sa called framework.
+All RiverSim functionality or so called framework.

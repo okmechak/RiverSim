@@ -4,17 +4,37 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
-            "name": "(gdb) Launch",
+            "name": "test tree",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/source/riversim",
-            "args": ["-o", "otest", "--save-each-step", "--height", "50", "test.json"],
+            "program": "enter program name, for example ${workspaceFolder}/tests/ttree",
+            "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/debug",
+            "cwd": "${workspaceFolder}/tests",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
+            "targetArchitecture": "x86_64",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "test tphysmodel",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../Builds/riversim/tests/tphysmodel",
+            "args": ["--log_level=all"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/../../Builds/riversim/tests",
+            "environment": [],
+            "externalConsole": false,
+            "targetArchitecture": "x86_64",
             "MIMode": "gdb",
             "setupCommands": [
                 {

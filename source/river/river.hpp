@@ -1,6 +1,8 @@
 #pragma once
 
 #include "physmodel.hpp"
+#include "mesh.hpp"
+#include "boundary_generator.hpp"
 
 //Deal.II headers
 #include <deal.II/base/quadrature_lib.h>
@@ -22,6 +24,7 @@
 #include <deal.II/grid/grid_refinement.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
+#include <deal.II/grid/grid_in.h>
 
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_accessor.h>
@@ -45,14 +48,6 @@ using namespace std;
 
 namespace River
 {
-    struct Exception : public exception
-    {
-        string s;
-        Exception(string ss) : s(ss) {}
-        ~Exception() throw () {} // Updated
-        const char* what() const throw() { return s.c_str(); }
-    };
-
     enum Renumbering 
     {
         Renumbering_none,
@@ -96,41 +91,109 @@ namespace River
     class RiverSolver
     {
         public:
-            RiverSolver(const FE_Q< dim, spacedim> &fe):
+            RiverSolver(Model *mdl):
             dof_handler(triangulation),
-            fe(&fe)
+            fe(mdl->solver_params.quadrature_degree),
+            model(mdl)
             {
                 deallog.depth_console(3);
+                triangle.mesh_params = &(mdl->mesh);
             }
 
-            void run()
+            void one_step_forward()
+            {
+                for(unsigned i = 0; i < model->prog_opt.number_of_steps; ++i)
+                {
+                    cout << "=====================================" << endl;
+                    dof_handler.clear();
+                    triangulation.clear();
+                    constraints.clear();
+                    system_matrix.clear();
+                    solution = 0;
+                    system_rhs = 0;
+
+                    cout << "generate_triangulation_file" <<endl;
+                    generate_triangulation_file();
+                    cout << "initialize_solver_triangulation_from_file" <<endl;
+                    initialize_solver_triangulation_from_file();
+                    cout << "static_grid_refinement" <<endl;
+                    static_grid_refinement();
+                    cout << "setup_system" <<endl;
+                    setup_system((Renumbering)model->solver_params.renumbering_type);
+                    cout << "assemble_system" <<endl;
+                    assemble_system();
+                    cout << "solve" <<endl;
+                    solve(model->solver_params.num_of_iterrations, model->solver_params.tollerance);
+                    cout << "refine_grid" <<endl;
+                    refine_grid();
+                    cout << "grow_tree" <<endl;
+                    grow_tree();
+                }
+            }
+
+            void one_step_backward()
             {
 
             }
-
 
         private:
 
-            //geometry part
-            void set_boundary()
+            void generate_triangulation_file()
             {
+                auto boundary = SimpleBoundaryGenerator(*model);
+                tethex::Mesh mesh(boundary);
+                
+                cout << "triangle" <<endl;
+                triangle.mesh_params->tip_points = model->tree.TipPoints();
+                cout << "generate" <<endl;
+                triangle.generate(mesh);//triangulation
 
+                cout << "convert" <<endl;
+                mesh.convert();//convertaion from triangles to quadrangles
+
+                cout << "output" <<endl;
+                mesh.write(model->prog_opt.output_file_name + ".msh");
             }
 
-            void generate_triangulation()
+            void initialize_solver_triangulation_from_file()
             {
-
+                GridIn<dim> gridin;
+                gridin.attach_triangulation(triangulation);
+                ifstream f(model->prog_opt.output_file_name + ".msh");
+                gridin.read_msh(f);
             }
 
-            void transform_triangulation()
+            void static_grid_refinement()
             {
-
+                auto tips_points = model->tree.TipPoints();
+                //iterating over refinment steps
+                for (unsigned step = 0; step < model->mesh.static_refinment_steps; ++step)
+                {
+                    //iterating over each mesh cell   
+                    for (auto& cell: triangulation.active_cell_iterators())
+                        for (unsigned int v = 0; v < GeometryInfo<dim>::vertices_per_cell; ++v)
+                        {
+                            for(auto& p: tips_points)
+                            {
+                                auto vertex = cell->vertex(v);
+                                auto r = dealii::Point<dim>{p.x, p.y}.distance(vertex);
+                                if(r < model->integr.integration_radius)
+                                {
+                                    cell->set_refine_flag ();
+                                    break;
+                                }
+                            }
+                            if(cell->refine_flag_set())
+                                break;
+                        }
+                    triangulation.execute_coarsening_and_refinement ();
+                }
             }
 
             //linear solver part
             void setup_system(const Renumbering renumbering_type)
             {
-                dof_handler.distribute_dofs(fe);
+                dof_handler.initialize(triangulation, fe);
 
                 renumber<dim>(renumbering_type, dof_handler);
 
@@ -253,9 +316,9 @@ namespace River
                 constraints.distribute(solution);
             }
 
-            vector<double> series_param_integral(const Model &mdl, const dealii::Point<dim> point, const double angle)
+            vector<double> series_param_integral(const River::Point point, const double angle)
             {
-                QGauss<dim> quadrature_formula(fe.degree + 1);
+                QGauss<dim> quadrature_formula(fe.degree);
 
                 FEValues<dim> fe_values(
                     fe, quadrature_formula,
@@ -268,28 +331,30 @@ namespace River
                     normalization_integral(3, 0),
                     series_params(3, 0); //Series params
 
+                cout << "point.... " << point << endl;
+
                 for(auto dof_cell: dof_handler.active_cell_iterators())
                 {
                     //central point of mesh element
                     auto center = dof_cell->center();
 
                     //distance between tip point and current mesh element
-                    auto dx = center(0) - point(0),
-                        dy = center(1) - point(1),
+                    auto dx = center[0] - point[0],
+                        dy = center[1] - point[1],
                         dist = sqrt(dx*dx + dy*dy);
 
                     //Integrates over points only in this circle
-                    if(dist <= mdl.integr.integration_radius)
+                    if(dist <= model->integr.integration_radius)
                     {
                         fe_values.reinit (dof_cell);
                         fe_values.get_function_values(solution, values);
-                        auto weight_func_value = mdl.integr.WeightFunction(dist);
+                        auto weight_func_value = model->integr.WeightFunction(dist);
 
                         //cycle over all series parameters order
                         for(unsigned param_index = 0; param_index < series_params.size(); ++param_index)
                         {
                             //preevaluate basevector value
-                            auto base_vector_value = mdl.integr.BaseVectorFinal(param_index + 1, angle, dx, dy);
+                            auto base_vector_value = model->integr.BaseVectorFinal(param_index + 1, angle, dx, dy);
 
                             //sum over all quadrature points overIntegrationRadius single mesh element
                             for (unsigned q_point = 0; q_point < quadrature_formula.size(); ++q_point)
@@ -338,6 +403,54 @@ namespace River
                 triangulation.execute_coarsening_and_refinement();
             }
 
+            void grow_tree(double max_a_backward = -1)
+            {
+                //Iterate over each tip and handle branch growth and its bifurcations
+                map<int, vector<double>> id_series_params;
+                for(auto id: model->tree.TipBranchesIds())
+                {
+                    auto tip_point = model->tree.at(id).TipPoint();
+                    auto tip_angle = model->tree.at(id).TipAngle();
+                    id_series_params[id] = series_param_integral(tip_point, tip_angle);
+                }
+
+                //Evaluate maximal a parameter to normalize growth of speed to all branches ds = dt*v / max(v_array).
+                double max_a = 0.;
+                if(max_a_backward > 0)
+                    max_a = max_a_backward;
+                else 
+                    for(auto&[id, series_params]: id_series_params)
+                        if (max_a < series_params.at(0))
+                            max_a = series_params.at(0);
+
+                for(auto&[id, series_params]: id_series_params)
+                    if(model->q_growth(series_params))
+                    {
+                        if(model->q_bifurcate(series_params, model->tree.at(id).Lenght()))
+                        {
+                            auto tip_point = model->tree.at(id).TipPoint();
+                            auto tip_angle = model->tree.at(id).TipAngle();
+                            auto br_left = BranchNew(tip_point, tip_angle + model->bifurcation_angle);
+                            br_left.AddPoint(Polar{model->ds, 0});
+                            auto br_right = BranchNew(tip_point, tip_angle - model->bifurcation_angle);
+                            br_right.AddPoint(Polar{model->ds, 0});
+                            model->tree.AddSubBranches(id, br_left, br_right);
+                        }
+                        else
+                            model->tree.at(id).AddPoint(model->next_point(series_params, model->tree.at(id).Lenght(), max_a));
+                    }
+            }
+
+            double MaximalA1Value(map<int, vector<double>> ids_seriesparams_map)
+            {
+                double max_a = 0.;
+                for(auto&[id, series_params]: ids_seriesparams_map)
+                    if(max_a < series_params.at(0))
+                        max_a = series_params.at(0);
+
+                return max_a;
+            }
+
             void process_solution()
             {
 
@@ -353,7 +466,7 @@ namespace River
             Triangulation<dim> triangulation;
             DoFHandler<dim> dof_handler;
 
-            SmartPointer<const FiniteElement<dim>> fe;
+            const FE_Q<dim> fe;
 
             AffineConstraints<double> constraints;
 
@@ -363,7 +476,13 @@ namespace River
             Vector<double> solution;
             Vector<double> system_rhs;
 
+            Renumbering renumbering_type = Renumbering_none;
+
             ConvergenceTable convergence_table;
+
+            Model *model;
+
+            Triangle triangle;
     };
 
 } //namespace River

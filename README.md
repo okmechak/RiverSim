@@ -1,5 +1,7 @@
 # River Growth Simulation (RiverSim)
 
+[![Build Status](https://travis-ci.org/okmechak/RiverSim.svg?branch=master)](https://travis-ci.org/okmechak/RiverSim)
+
 [![Faculty of Physics. University of Warsaw](https://www.fuw.edu.pl/tl_files/downloads/logo_18/FUW_znak-poziomy-EN.png)](https://www.fuw.edu.pl/)  
 
 Simulation of river growth using model based on Laplace equation[1].
@@ -30,7 +32,9 @@ easiest way to install them all is:
 > sudo apt install build-esential
 
 also _Cmake_ with curses gui(Terminal gui) is very handy:
-> sudo app install cmake-curses-gui
+> sudo apt install cmake-curses-gui
+> sudo apt install doxygen
+> sudo apt install graphviz
 
 and call command is same as cmake, but:
 > ccmake <path-to-source> 

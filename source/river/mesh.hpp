@@ -102,7 +102,6 @@ namespace River
             ///Updates options bassing on interface flags.
             string update_options();
 
-
             ///Outupts options with or without detailed description.
             void print_options(bool qDetailedDescription = true);
 
@@ -117,6 +116,8 @@ namespace River
 
             ///Converts \ref triangulateio to tethex::Mesh used by rest of program.
             void io_to_tethex(const struct triangulateio &io, tethex::Mesh &initMesh) const;
+
+            void initialize_mesh_parameters(MeshParams *mesh_params);
       
         public:
       
@@ -146,24 +147,24 @@ namespace River
             double MinAngle = 20;
             ///a - maximum triangle area constrain. a0.1
             double MaxTriaArea = -1.;
-
+            double MinTriaArea = 0;
+            //custom mesh element constraints:
             ///Maximal triangle edge lenght
-            double MaxEdgeLenght = 0.5;
-            double MinEdgeLenght = 0.01;
-
-            double MaxTriangleRation = 2;
+            double MaxEdgeLenght = 100;
+            double MinEdgeLenght = 0;
+            double MaxTriangleRatio = 10;
 
             ///If true, then mesh element will be constrined to some maxiaml value.
             bool AreaConstrain = false;
-            ///User defined function constrint
+            ///User defined function constraint.
             bool CustomConstraint = false;
             ///D - all triangles will be delaunay. Not just constrained delaunay.
             bool DelaunayTriangles = true;
-            ///c - enclose convex hull with segments
+            ///c - enclose convex hull with segments.
             bool EncloseConvexHull = false;
-            ///C - check final mesh if it was conf with X
+            ///C - check final mesh if it was conf with X.
             bool CheckFinalMesh = false;
-            ///A - asign additional regional attribute to each triangle, and specifies it to
+            ///A - assign additional regional attribute to each triangle, and specifies it to
             ///    each closed segment region it belongs. (has effect with -p and without -r)
             bool AssignRegionalAttributes = true;
             ///i - use incremental algorithm instead of divide and conqure
@@ -175,9 +176,10 @@ namespace River
             bool Verbose = false;
         
             ///Mesh refinment object
-            MeshParams* mesh_params;
-        
+            MeshParams* mesh_params = NULL;
+
             Triangle();
+            Triangle(MeshParams *mesh_params);
             ~Triangle();
             
             /**

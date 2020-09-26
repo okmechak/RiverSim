@@ -23,22 +23,25 @@
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/function.h>
 #include <deal.II/base/convergence_table.h>
+#include <deal.II/base/logstream.h>
 #include <deal.II/base/types.h>
+
+#include <deal.II/grid/tria.h>
+#include <deal.II/grid/tria_accessor.h>
+#include <deal.II/grid/tria_iterator.h>
+#include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_refinement.h>
+#include <deal.II/grid/grid_reordering.h>
+#include <deal.II/grid/grid_in.h>
+#include <deal.II/grid/grid_out.h>
+
+#include <deal.II/fe/fe_q.h>
+#include <deal.II/fe/fe_values.h>
 
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_renumbering.h>
-
-#include <deal.II/fe/fe_q.h>
-#include <deal.II/fe/fe_values.h>
-
-#include <deal.II/grid/tria.h>
-#include <deal.II/grid/grid_generator.h>
-#include <deal.II/grid/grid_in.h>
-#include <deal.II/grid/grid_out.h>
-#include <deal.II/grid/grid_refinement.h>
-#include <deal.II/grid/grid_reordering.h>
 
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/full_matrix.h>
@@ -46,15 +49,17 @@
 #include <deal.II/lac/dynamic_sparsity_pattern.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/precondition.h>
-#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/affine_constraints.h>
 
 #include <deal.II/numerics/vector_tools.h>
-#include <deal.II/numerics/data_out.h>
+#include <deal.II/numerics/matrix_tools.h>
 #include <deal.II/numerics/error_estimator.h>
+#include <deal.II/numerics/data_out.h>
 
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <array>
 #include <unordered_map>
 #include <map>
 #include <utility>
@@ -76,9 +81,23 @@ namespace River
     {
         public:
             ///Solver constructor
-            Solver(int quadrature_degree = 2): fe(2), dof_handler(triangulation),quadrature_formula(quadrature_degree){};
+            Solver(Model *model): 
+                model(model),
+                dof_handler(triangulation),
+                fe(model->solver_params.quadrature_degree), 
+                quadrature_formula(model->solver_params.quadrature_degree),
+                face_quadrature_formula(model->solver_params.quadrature_degree)
+            { 
+                tollerance = model->solver_params.tollerance;
+                number_of_iterations = model->solver_params.num_of_iterrations;
+                num_of_adaptive_refinments = model->solver_params.adaptive_refinment_steps;
+                refinment_fraction = model->solver_params.refinment_fraction;
+                verbose = model->prog_opt.verbose;
+                field_value = model->field_value;
+                num_of_static_refinments = model->mesh.static_refinment_steps;
+            };
             
-            ~Solver(){clear();}///<Solver desctructor
+            ~Solver(){clear();}
 
             ///Solver tollerance
             double tollerance = 1e-12;
@@ -86,23 +105,14 @@ namespace River
             ///Number of solver iterations.
             unsigned number_of_iterations = 6000;
 
-            ///If true, output will be produced to stadard output
+            ///If true, output will be produced to stadard output.
             bool verbose = false;
 
-            ///Number of adaptive mesh refinments.
-            ///Splits mesh elements and resolves.
+            ///Number of adaptive mesh refinments. Splits mesh elements and resolves.
             unsigned num_of_adaptive_refinments = 0;
 
-            ///Number of static mesh refinments.
-            ///Splits elements without resolving.
+            ///Number of static mesh refinments. Splits elements without resolving.
             unsigned num_of_static_refinments = 0;
-
-            ///Inner function
-            void SetBoundaryRegionValue(const vector<int>& regionTags, const double value);
-            /*!
-              \todo implement this function
-            */
-            void SetMesh(const tethex::Mesh &meshio);
 
             ///Open mesh data from file. Msh 2 format.
             void OpenMesh(const string fileName = "river.msh");
@@ -114,6 +124,11 @@ namespace River
             unsigned long NumberOfRefinedCells()
             {
                 return triangulation.n_active_cells();
+            }
+
+            unsigned long NumberOfDOFs()
+            {
+                return dof_handler.n_dofs();
             }
 
             ///Run fem solution.
@@ -131,13 +146,19 @@ namespace River
             ///Maximal value of solution, used for test purpose.
             double max_value();
 
+            bool solved() const 
+            {
+                return solution.size() > 0;
+            }
+
             ///Clear Solver object.
             void clear()
             {
               dof_handler.clear();
               triangulation.clear();
-              constraints.clear();
+              hanging_node_constraints.clear();
               system_matrix.clear();
+              solution.reinit(0);
             }
             
             ///Outer field value. See Puasson, Laplace equations.
@@ -150,69 +171,33 @@ namespace River
             double coarsening_fraction = 0;
 
         private:
+            Model *model = NULL;
+
             ///Dimension of problem.
             const static int dim = 2;
 
-            Triangulation< dim> triangulation;///<See Deal.II from more deatails.
+            Triangulation<dim> triangulation;
+            DoFHandler<dim> dof_handler;
 
-            ///Used for setup boudary conditions.
-            map<double, vector<int>> boundaryRegionValue;
-
-            FE_Q<dim> fe;///<See Deal.II from more deatails.
+            FE_Q<dim> fe;
+            const QGauss<dim> quadrature_formula;
+            const QGauss<dim - 1> face_quadrature_formula;
             
-            DoFHandler<dim> dof_handler;///<See Deal.II from more deatails.
-            
-            const QGauss<dim> quadrature_formula;///<See Deal.II from more deatails.
-            
-            ConstraintMatrix constraints;///<See Deal.II from more deatails.
+            AffineConstraints<double> hanging_node_constraints;
 
-            SparseMatrix<double> system_matrix;///<See Deal.II from more deatails.
-
-            SparsityPattern sparsity_pattern;///<See Deal.II from more deatails.
+            SparsityPattern sparsity_pattern;
+            SparseMatrix<double> system_matrix;
 
             ///Holds solution of problem.
             Vector<double> solution;
             ///Holds right hand side values of linear system.
             Vector<double> system_rhs;
 
-            ///See Deal.II ste-6 from more deatails.
+            ConvergenceTable convergence_table;
+
             void setup_system();
-            ///Creates linear system.
             void assemble_system();
-            ///Runs solver
             void solve();
-            ///Refines grid.
             void refine_grid();
-
-            ///Unknown.
-            void TryInsertCellBoundary(
-                CellData<dim> &cellData,
-                struct SubCellData &subcelldata,
-                std::unordered_map<std::pair<int, int>, int> &bound_ids,
-                int v1, int v2);
-            
-            ///See Deal.II step-6 for more details.
-            class RightHandSide : public Function<dim>
-            {
-              public:
-                ///Value of field in Puasson equation.
-                double fieldValue = 0.;
-                ///See Deal.II step-6 for more details.
-                RightHandSide() : Function<dim>() {}
-                ///See Deal.II step-6 for more details.
-                virtual double value(const dealii::Point<dim> &p,
-                                     const unsigned int component = 0) const;
-            };
-
-            ///See Deal.II step-6 for more details.
-            class BoundaryValues : public Function<dim>
-            {
-              public:
-                ///See Deal.II step-6 for more details.
-                BoundaryValues() : Function<dim>() {}
-                ///See Deal.II step-6 for more details.
-                virtual double value(const dealii::Point<dim> &p,
-                                     const unsigned int component = 0) const;
-            };
     };
 } // namespace River
