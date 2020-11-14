@@ -14,9 +14,14 @@ add_library(tethex tethex.hpp tethex.cpp)
 target_link_libraries(tethex GeometryPrimitives)
 install(TARGETS tethex DESTINATION riversim)
 
+#branch
+add_library(branch branch.hpp branch.cpp) 
+target_link_libraries(branch boundary)
+install(TARGETS branch DESTINATION branch)
+
 #tree
 add_library(tree tree.hpp tree.cpp) 
-target_link_libraries(tree boundary)
+target_link_libraries(tree boundary branch)
 install(TARGETS tree DESTINATION riversim)
 
 #physmodel

@@ -314,7 +314,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     //Tree object setup
     mdl_out.tree.Initialize(mdl_out.border.GetSourcesIdsPointsAndAngles(mdl_out.sources));
 
-    BranchNew 
+    Branch 
         br1left({0, 1}, 2), br1right({3, 4}, 5), 
         br2left({6, 7}, 8), br2right({9, 10}, 11);
 
@@ -564,12 +564,12 @@ BOOST_AUTO_TEST_CASE( Sources_to_json,
 BOOST_AUTO_TEST_CASE( Branch_to_json, 
     *utf::tolerance(eps))
 {
-    BranchNew branch({0, 1}, M_PI/3.);
+    Branch branch({0, 1}, M_PI/3.);
     branch.AddPoint(Polar{1, 1});
 
     json j = branch;
 
-    auto branchj = j.get<BranchNew>();
+    auto branchj = j.get<Branch>();
     cout << branchj << endl;
     cout << branch << endl;
 
@@ -580,7 +580,7 @@ BOOST_AUTO_TEST_CASE( Branch_to_json,
 BOOST_AUTO_TEST_CASE( Tree_to_json, 
     *utf::tolerance(eps))
 {
-    BranchNew branch({0, 1}, M_PI/3.);
+    Branch branch({0, 1}, M_PI/3.);
     Tree tree;
     auto id = tree.AddBranch(branch);
     tree.GrowTestTree(id);

@@ -24,163 +24,6 @@
 namespace River
 {   
     /*
-        Branch Class
-    */
-    BranchNew::BranchNew(
-        const Point& source_point_val, 
-        const double angle):
-        source_angle(angle)
-    {
-        AddAbsolutePoint(source_point_val);
-    }
-
-    BranchNew& BranchNew::AddAbsolutePoint(const Point& p)
-    {
-        this->push_back(p);
-        return *this;
-    }
-
-    BranchNew& BranchNew::AddAbsolutePoint(const Polar& p)
-    {
-        this->push_back(TipPoint() + Point{p});
-        return *this;
-    }
-
-    BranchNew& BranchNew::AddPoint(const Point &p)
-    {
-        this->push_back(TipPoint() + p);
-        return *this;
-    }
-
-    BranchNew& BranchNew::AddPoint(const Polar& p)
-    {
-        auto p_new = Polar{p};
-        p_new.phi += TipAngle();
-        AddAbsolutePoint(p_new);
-        return *this;
-    }
-
-    BranchNew& BranchNew::Shrink(double lenght)
-    {
-        while(lenght > 0 && Lenght() > 0)
-        {
-            try{
-                
-                auto tip_lenght = TipVector().norm();
-                if(lenght < tip_lenght - eps)
-                {
-                    auto k = 1 - lenght/tip_lenght;
-                    auto new_tip = TipVector()*k;
-                    RemoveTipPoint();
-                    AddPoint(new_tip);
-                    lenght = 0;
-                }
-                else if((lenght >= tip_lenght - eps) && (lenght <= tip_lenght + eps))
-                {
-                    RemoveTipPoint();
-                    lenght = 0;
-                }
-                else if(lenght >= tip_lenght + eps)
-                {
-                    RemoveTipPoint();
-                    lenght -= tip_lenght;
-                }
-                else 
-                    throw Exception("Unhandled case in Shrink method.");
-            }
-            catch(const exception& e)
-            {
-                cerr << e.what() << '\n';
-                throw Exception("Shrinikng error: problem with RemoveTipPoint() or TipVector()");
-            }
-        }
-        
-        return *this;
-    }
-
-    BranchNew& BranchNew::RemoveTipPoint()
-    {
-        if(this->size() == 1)
-            throw Exception("Last branch point con't be removed");   
-        this->pop_back();
-        return *this;
-    }
-
-    Point BranchNew::TipPoint() const 
-    {
-        if(this->size() == 0)
-            throw Exception("Can't return TipPoint size is zero");
-        return this->at(this->size() - 1);
-    }
-
-    Point BranchNew::TipVector() const 
-    {
-        if(this->size() <= 1)
-            throw Exception("Can't return TipVector size is 1 or even less");
-
-        return this->at(this->size() - 1) - this->at(this->size() - 2);
-    }
-
-    Point BranchNew::Vector(unsigned i) const
-    {
-        if(this->size() == 1)
-            throw Exception("Can't return Vector. Size is 1");
-        if(i >= this->size() || i == 0)
-            throw Exception("Can't return Vector. Index is bigger then size or is zero");
-
-        return this->at(i) - this->at(i - 1);
-    }
-
-    double BranchNew::TipAngle() const 
-    {
-        if(this->size() < 1)
-            throw Exception("TipAngle: size is less then 1!");
-        else if(this->size() == 1)
-            return source_angle; 
-
-        return TipVector().angle();
-    }
-
-    Point BranchNew::SourcePoint() const
-    {
-        return this->at(0);
-    }
-
-    double BranchNew::SourceAngle() const 
-    {
-        return source_angle;
-    }
-
-    double BranchNew::Lenght() const 
-    {
-        double lenght = 0.;
-        if(this->size() > 1)
-            for(unsigned int i = 1; i < this->size(); ++i)
-                lenght += (this->at(i) - this->at(i - 1)).norm();
-
-        return lenght;
-    }
-
-    ostream& operator<<(ostream& write, const BranchNew & b)
-    {
-        int i = 0;
-        write << "Branch " << endl;
-        write << "  lenght - " << b.Lenght() << endl;
-        write << "  size - " << b.size() << endl;
-        write << "  source angle - " << b.source_angle << endl;
-        for(auto p: b)
-            write <<"   " << i++ << " ) " << p << endl;
-
-        return write;
-    }
-
-    bool BranchNew::operator==(const BranchNew& br) const
-    {
-        return equal(this->begin(), this->end(), br.begin()) &&
-            SourceAngle() == br.SourceAngle();
-    }
-    
-    /*
         Tree Class
     */
    //todo can we remove this? is there default copy constructor?
@@ -215,11 +58,11 @@ namespace River
         Clear();
         for(auto &[id, point_angle]: ids_points_angles)
             AddBranch(
-                BranchNew{point_angle.first, point_angle.second}, 
+                Branch{point_angle.first, point_angle.second}, 
                 id);
     }
 
-    t_branch_id Tree::AddBranch(const BranchNew &branch, t_branch_id id)
+    t_branch_id Tree::AddBranch(const Branch &branch, t_branch_id id)
     {
         if(id == UINT_MAX)
             id = GenerateNewID();
@@ -236,7 +79,7 @@ namespace River
     }
    
     pair<t_branch_id, t_branch_id> Tree::AddSubBranches(t_branch_id root_branch_id, 
-        const BranchNew &left_branch, const BranchNew &right_branch)
+        const Branch &left_branch, const Branch &right_branch)
     {   
         handle_non_existing_branch_id(root_branch_id);
 
@@ -294,7 +137,7 @@ namespace River
             throw Exception("something wrong with GetAdjacentBranch");
     }
 
-    BranchNew& Tree::GetAdjacentBranch(t_branch_id sub_branch_id)
+    Branch& Tree::GetAdjacentBranch(t_branch_id sub_branch_id)
     {
         return this->at(GetAdjacentBranchId(sub_branch_id));
     }
@@ -404,10 +247,10 @@ namespace River
             branch_source.AddPoint(p);
         }
 
-        auto branch_left = BranchNew{
+        auto branch_left = Branch{
                 branch_source.TipPoint(), 
                 branch_source.TipAngle() + M_PI/4.},
-            branch_right = BranchNew{
+            branch_right = Branch{
                 branch_source.TipPoint(), 
                 branch_source.TipAngle() - M_PI/4.};
 
@@ -451,7 +294,7 @@ namespace River
         return zero_lenght_branches_id;
     }
 
-    BranchNew& Tree::GetParentBranch(t_branch_id branch_id)
+    Branch& Tree::GetParentBranch(t_branch_id branch_id)
     {
         return this->at(GetParentBranchId(branch_id));
     }
@@ -464,7 +307,7 @@ namespace River
         return branches_relation.at(branch_id);
     }
 
-    pair<BranchNew&, BranchNew&> Tree::GetSubBranches(t_branch_id branch_id)
+    pair<Branch&, Branch&> Tree::GetSubBranches(t_branch_id branch_id)
     {
         auto[left_branch, right_branch] = GetSubBranchesIds(branch_id);
         return {this->at(left_branch), this->at(right_branch)};

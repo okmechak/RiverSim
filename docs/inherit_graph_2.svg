@@ -12,9 +12,9 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="classRiver_1_1BranchNew.html" target="_top" xlink:title="Holds all functionality that you need to work with single branch. ">
+<g id="a_node1"><a xlink:href="classRiver_1_1Branch.html" target="_top" xlink:title="Holds all functionality that you need to work with single branch. ">
 <polygon fill="#ffffff" stroke="#000000" points="0,-.5 0,-19.5 104,-19.5 104,-.5 0,-.5"/>
-<text text-anchor="middle" x="52" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew</text>
+<text text-anchor="middle" x="52" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Branch</text>
 </a>
 </g>
 </g>

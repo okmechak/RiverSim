@@ -18,7 +18,7 @@
     \details
     Program is higly depended on geometry which consist of Points, Vectors, Polar Vectors, Lines
     and other which are implemented below.
-    Class River::Point is the most important and is basic class for rest geometrical classes like \ref River::BranchNew and \ref River::Boundary.
+    Class River::Point is the most important and is basic class for rest geometrical classes like \ref River::Branch and \ref River::Boundary.
 
     \see River::Point
  */

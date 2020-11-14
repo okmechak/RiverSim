@@ -43,6 +43,14 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttethex)
 
+    #branch
+    add_executable(tbranch branch.cpp)
+    target_link_libraries(tbranch branch ${Boost_LIBRARIES})
+    add_test(
+        NAME tbranch
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tbranch)
+
     #tree
     add_executable(ttree tree.cpp)
     target_link_libraries(ttree tree ${Boost_LIBRARIES})

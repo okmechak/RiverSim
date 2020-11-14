@@ -17,7 +17,7 @@
 <area shape="rect" id="node17" href="$classRiver_1_1Tree.html#a29e2a140f15398b9976e5ca63f1489ea" title="Checks if tree has non zero sized branches. " alt="" coords="116,859,327,900"/>
 <area shape="rect" id="node19" href="$namespaceRiver.html#a7c6d73dce07d3b452acb0987a0e68dc6" title="One step of backward river evolution and its data. " alt="" coords="114,924,329,965"/>
 <area shape="rect" id="node20" href="$classRiver_1_1Tree.html#a2b44fafee44da5af9bebfeb00f49fe49" title="Returns link to branch with id. " alt="" coords="138,990,305,1017"/>
-<area shape="rect" id="node21" href="$classRiver_1_1BranchNew.html#a81a7a1477541ef4310d9e49197643146" title="Adds point p to branch in tip relative coord system. " alt="" coords="120,1041,323,1067"/>
+<area shape="rect" id="node21" href="$classRiver_1_1Branch.html#a81a7a1477541ef4310d9e49197643146" title="Adds point p to branch in tip relative coord system. " alt="" coords="120,1041,323,1067"/>
 <area shape="rect" id="node22" href="$namespaceRiver.html#a1e1c04daa35decf9aafdada0fc881449" title="Evaluate series parameters near tip in predefined geometry. Used fot testing purposes. " alt="" coords="117,1091,326,1118"/>
-<area shape="rect" id="node18" href="$classRiver_1_1BranchNew.html#a44a9acda7bceb1f22c70f0532f4e890e" title="Checks if branch is empyt &#45; but it never should. " alt="" coords="383,866,569,893"/>
+<area shape="rect" id="node18" href="$classRiver_1_1Branch.html#a44a9acda7bceb1f22c70f0532f4e890e" title="Checks if branch is empyt &#45; but it never should. " alt="" coords="383,866,569,893"/>
 </map>

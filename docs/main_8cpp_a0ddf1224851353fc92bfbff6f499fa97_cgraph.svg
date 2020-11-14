@@ -296,9 +296,9 @@
 <!-- Node20 -->
 <g id="node21" class="node">
 <title>Node20</title>
-<g id="a_node21"><a xlink:href="classRiver_1_1BranchNew.html#a81a7a1477541ef4310d9e49197643146" target="_top" xlink:title="Adds point p to branch in tip relative coord system. ">
+<g id="a_node21"><a xlink:href="classRiver_1_1Branch.html#a81a7a1477541ef4310d9e49197643146" target="_top" xlink:title="Adds point p to branch in tip relative coord system. ">
 <polygon fill="#ffffff" stroke="#000000" points="86,-38.5 86,-57.5 238,-57.5 238,-38.5 86,-38.5"/>
-<text text-anchor="middle" x="162" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew::AddPoint</text>
+<text text-anchor="middle" x="162" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Branch::AddPoint</text>
 </a>
 </g>
 </g>
@@ -326,9 +326,9 @@
 <!-- Node17 -->
 <g id="node18" class="node">
 <title>Node17</title>
-<g id="a_node18"><a xlink:href="classRiver_1_1BranchNew.html#a44a9acda7bceb1f22c70f0532f4e890e" target="_top" xlink:title="Checks if branch is empyt &#45; but it never should. ">
+<g id="a_node18"><a xlink:href="classRiver_1_1Branch.html#a44a9acda7bceb1f22c70f0532f4e890e" target="_top" xlink:title="Checks if branch is empyt &#45; but it never should. ">
 <polygon fill="#ffffff" stroke="#000000" points="283,-169.5 283,-188.5 423,-188.5 423,-169.5 283,-169.5"/>
-<text text-anchor="middle" x="353" y="-176.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::BranchNew::Empty</text>
+<text text-anchor="middle" x="353" y="-176.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Branch::Empty</text>
 </a>
 </g>
 </g>

@@ -440,13 +440,13 @@ namespace River
 
     //Tree
     //Branch
-    void to_json(json& j, const BranchNew& branch) 
+    void to_json(json& j, const Branch& branch) 
     {
         j = json{
             {"vertices", (t_PointList)branch}, 
             {"source_angle", branch.source_angle}};
     }
-    void from_json(const json& j, BranchNew& branch) 
+    void from_json(const json& j, Branch& branch) 
     {
         t_PointList vertices;
         j.at("vertices").get_to(vertices);
@@ -480,7 +480,7 @@ namespace River
             t_branch_id id;
             value.at("id").get_to(id);
 
-            BranchNew branch;
+            Branch branch;
             value.at("branch").get_to(branch);
             
             tree.AddBranch(branch, id);

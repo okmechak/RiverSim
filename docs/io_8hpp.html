@@ -142,7 +142,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <h3>Example</h3>
 <p>Rectangular border with one source:</p>
 <div class="fragment"><div class="line">&quot;Border&quot;: {</div><div class="line">    &quot;SourceIds&quot;: [</div><div class="line">        [ 1, 4 ]</div><div class="line">        ],</div><div class="line">    &quot;coords&quot;: [</div><div class="line">        [ 1.0, 0.0 ],</div><div class="line">        [ 1.0, 1.0 ],</div><div class="line">        [ 0.0, 1.0 ],</div><div class="line">        [ 0.0, 0.0 ],</div><div class="line">        [ 0.2, 0.0 ]</div><div class="line">    ],</div><div class="line">    &quot;lines&quot;: [</div><div class="line">        [ 0, 1, 1 ],</div><div class="line">        [ 1, 2, 2 ],</div><div class="line">        [ 2, 3, 3 ],</div><div class="line">        [ 3, 4, 4 ],</div><div class="line">        [ 4, 0, 4 ]</div><div class="line">    ]</div><div class="line">}</div></div><!-- fragment --><h2>Trees</h2>
-<p>Trees structure is representation of <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">River::Tree</a> object. This structure contains information about river network geometry, its separate branches(River::BranchNew) and relationship between them.</p>
+<p>Trees structure is representation of <a class="el" href="classRiver_1_1Tree.html" title="Combines Branch into tree like structure. ">River::Tree</a> object. This structure contains information about river network geometry, its separate branches(River::Branch) and relationship between them.</p>
 <p>It contains next objects:</p>
 <ul>
 <li><code>Branches</code> - vector of <code>branches</code> objects.</li>
@@ -150,10 +150,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <li>"SourceIds" - holds source branches.</li>
 </ul>
 <h3><code>Branches</code></h3>
-<p>For details about <code>Branch</code> object see <a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">River::BranchNew</a>. Each <code>Branch</code> consists of next objects:</p>
+<p>For details about <code>Branch</code> object see <a class="el" href="classRiver_1_1Branch.html" title="Holds all functionality that you need to work with single branch. ">River::Branch</a>. Each <code>Branch</code> consists of next objects:</p>
 <ul>
-<li>"coords" - coordintates of branch. See <a class="el" href="classRiver_1_1BranchNew.html#a6c94d0388c0927d986d3a59bf4311c66" title="Vector which holds all points of branch. ">River::BranchNew::points</a>.</li>
-<li>"sourceAngle" - direction of growth of source point branch. See <a class="el" href="classRiver_1_1BranchNew.html#aa09b22ab98c64dadbee6e8e9de1d9dcd" title="Initial angle of source(or direction of source). ">River::BranchNew::source_angle</a>.</li>
+<li>"coords" - coordintates of branch. See <a class="el" href="classRiver_1_1Branch.html#a6c94d0388c0927d986d3a59bf4311c66" title="Vector which holds all points of branch. ">River::Branch::points</a>.</li>
+<li>"sourceAngle" - direction of growth of source point branch. See <a class="el" href="classRiver_1_1Branch.html#aa09b22ab98c64dadbee6e8e9de1d9dcd" title="Initial angle of source(or direction of source). ">River::Branch::source_angle</a>.</li>
 <li>"id" - unique number which is referenced by <code>Tree:Relations</code> object.</li>
 </ul>
 <h4>Branch Example</h4>

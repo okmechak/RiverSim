@@ -77,7 +77,7 @@
     + River::Polar
     + River::Point
     + River::Boundary
-    + River::BranchNew
+    + River::Branch
     + River::Tree
 
     \imageSize{GeometryClasses.jpg, height:70%;width:70%;, }
