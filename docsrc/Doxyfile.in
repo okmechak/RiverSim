@@ -112,7 +112,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  += @CMAKE_SOURCE_DIR@/source @CMAKE_SOURCE_DIR@/research/ @CMAKE_SOURCE_DIR@/scripts/
+INPUT                  += @CMAKE_SOURCE_DIR@/source @CMAKE_SOURCE_DIR@/research/ @CMAKE_SOURCE_DIR@/scripts/ @CMAKE_SOURCE_DIR@/include
 INPUT                  += @CMAKE_SOURCE_DIR@/VersionsHistory.hpp
 INPUT                  += @CMAKE_SOURCE_DIR@/Glossary.hpp
 INPUT                  += @CMAKE_SOURCE_DIR@/sample_trees/trees_gallery.hpp

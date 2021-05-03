@@ -10,6 +10,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "boundary_generator.hpp"
+#include "tethex.hpp"
 
 using namespace River;
 

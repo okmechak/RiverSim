@@ -32,7 +32,7 @@
 #include <climits>
 ///\endcond
 
-#include "GeometryPrimitives.hpp"
+#include "point.hpp"
 #include "boundary.hpp"
 
 using namespace std;

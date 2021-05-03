@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/source/**",
+                "${workspaceFolder}/include/**",
                 "${workspaceFolder}/tests/**",
                 "/mnt/c/users/ofcra/Bin/dealii/include/deal.II",
                 "/usr/include/**"

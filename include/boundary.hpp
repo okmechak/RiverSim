@@ -30,7 +30,7 @@
 #include <map>
 ///\endcond
 
-#include "GeometryPrimitives.hpp"
+#include "point.hpp"
 
 using namespace std;
 

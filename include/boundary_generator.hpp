@@ -17,7 +17,6 @@
 
 #include "tree.hpp"
 #include "boundary.hpp"
-#include "tethex.hpp"
 #include "physmodel.hpp"
 
 namespace River

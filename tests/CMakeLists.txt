@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 2.8.12)
 set(BUILD_TEST ON CACHE BOOL "Build Boost Unit Tests")
 
 if(BUILD_TEST)
-    include_directories(${PROJECT_SOURCE_DIR}/source/river)
-    include_directories(${PROJECT_SOURCE_DIR}/source/river/tethex)
+    include_directories(${PROJECT_SOURCE_DIR}/source)
+    include_directories(${PROJECT_SOURCE_DIR}/inlcude)
 
     message("========================================")
     message("Deal II setup")
@@ -19,13 +19,13 @@ if(BUILD_TEST)
     message("========================================")
     message("Adding executables tests")
 
-    #GeometryPrimitives
-    add_executable(tGeometryPrimitives GeometryPrimitives.cpp)
-    target_link_libraries(tGeometryPrimitives GeometryPrimitives ${Boost_LIBRARIES})
+    #point
+    add_executable(tpoint point.cpp)
+    target_link_libraries(tpoint point ${Boost_LIBRARIES})
     add_test(
-        NAME tGeometryPrimitives
+        NAME tpoint
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tGeometryPrimitives)
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tpoint)
     
     #boundary
     add_executable(tboundary boundary.cpp)
@@ -85,7 +85,7 @@ if(BUILD_TEST)
     
     #boundary_generator
     add_executable(tboundary_generator boundary_generator.cpp)
-    target_link_libraries(tboundary_generator boundary_generator ${Boost_LIBRARIES})
+    target_link_libraries(tboundary_generator boundary_generator tethex physmodel ${Boost_LIBRARIES})
     add_test(
         NAME tboundary_generator
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
