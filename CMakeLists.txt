@@ -8,7 +8,7 @@ project(riversim
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "Shared libs are preffered over static if ON.")
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Shared libs are preffered over static if ON.")
 
 # Set a default build type if none was specified
 set(DEFAULT_BUILD_TYPE "Release")
@@ -42,20 +42,10 @@ add_subdirectory(scripts)
 enable_testing()
 add_subdirectory(tests)
 
-install(
-    DIRECTORY 
-        sample_trees
-    DESTINATION 
-        riversim)
+install(DIRECTORY sample_trees DESTINATION sample_trees)
 
-install(
-    DIRECTORY 
-        examples
-    DESTINATION 
-        riversim)
+install(DIRECTORY include DESTINATION include)
 
-install(
-    FILES
-        examples/python_api.ipynb
-    DESTINATION 
-        riversim)
+install(DIRECTORY examples DESTINATION examples)
+
+install(FILES examples/python_api.ipynb DESTINATION examples)
