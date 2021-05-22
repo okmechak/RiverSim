@@ -22,8 +22,8 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     "Debug" "Release")
 endif()
 
-set(DEALII_REL_DIR "/mnt/c/users/ofcra/lib/dealii_shared" CACHE STRING "Deal.II release SDK directory location.") 
-set(DEALII_DEB_DIR "/mnt/c/users/ofcra/lib/dealii_d_shared" CACHE STRING "Deal.II debug SDK directory location.") 
+set(DEALII_REL_DIR "/mnt/c/users/ofcra/bin/dealii" CACHE STRING "Deal.II release SDK directory location.") 
+set(DEALII_DEB_DIR "/mnt/c/users/ofcra/bin/dealii" CACHE STRING "Deal.II debug SDK directory location.") 
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     message("=============pedantic build=============")
