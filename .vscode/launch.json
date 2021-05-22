@@ -43,6 +43,26 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "riversim",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../Builds/riversim/source/riversim",
+            "args": [""],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/../../Builds/riversim/source/",
+            "environment": [],
+            "externalConsole": false,
+            "targetArchitecture": "x86_64",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }
