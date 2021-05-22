@@ -27,7 +27,7 @@ As we discussed above product contains few external  dependencies: __Deal.II__ a
 To build system on computer
 
 #### Build environmet
-To build from source at every beginning you need tools like: _CMake_, _Make_, _GCC compiler_ etc.
+To build from source at every beginning you need tools like: _CMake_, _Make_, _GCC compiler_, _Ninja_ etc.
 easiest way to install them all is:
 > sudo apt install build-esential
 
