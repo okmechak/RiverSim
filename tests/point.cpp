@@ -2,279 +2,269 @@
 #define BOOST_TEST_DYN_LINK
 
 //Define our Module name (prints at testing)
-#define BOOST_TEST_MODULE "BaseClassModule"
+#define BOOST_TEST_MODULE "Points(Vector), Polar and their transforamtion test"
 
+#include "point.hpp"
 //VERY IMPORTANT - include this last
 #include <boost/test/unit_test.hpp>
-
-#include <iostream>
-#include <math.h>
-#include "point.hpp"
+#include <boost/test/data/test_case.hpp>
+#include <boost/test/data/monomorphic.hpp>
 
 const double eps = EPS;
 
 namespace utf = boost::unit_test;
+namespace bdata = boost::unit_test::data;
 using namespace River;
 
-BOOST_AUTO_TEST_CASE( Get_Normalized_Point, 
-    *utf::description("GetNormalizedPoint")
-    *utf::tolerance(eps))
-{
-    Point 
-        a = {1, 1}, 
-        b = {10, 10}, 
-        c = {2, 0}, 
-        d = {0, 0},
-        e = {-2, 0};
-
-    BOOST_TEST((GetNormalizedPoint(a) == Point{1/sqrt(2), 1/sqrt(2)}));
-    BOOST_TEST((GetNormalizedPoint(b) == Point{1/sqrt(2), 1/sqrt(2)}));
-    BOOST_TEST((GetNormalizedPoint(c) == Point{1, 0}));
-    BOOST_CHECK_THROW(GetNormalizedPoint(d), Exception);
-    BOOST_TEST((GetNormalizedPoint(e) == Point{-1, 0}));
-}
-
-BOOST_AUTO_TEST_CASE( To_Polar, 
-    *utf::description("ToPolar")
-    *utf::tolerance(eps))
-{
-    Point 
-        a = {1, 0}, 
-        b = {1, 1}, 
-        c = {0, 1}, 
-        d = {-1, 1},
-        e = {-1, 0},
-        f = {-1, -1}, 
-        g = {0, -1},
-        k = {1, -1}, 
-        l = {0, 0};
-    
-    Polar
-        pa = {1, 0},
-        pb = {sqrt(2), M_PI/4},
-        pc = {1, M_PI/2},
-        pd = {sqrt(2), 3*M_PI/4},
-        pe = {1, M_PI},
-        pf = {sqrt(2), -3*M_PI/4},
-        pg = {1, -M_PI/2},
-        pk = {sqrt(2),  - M_PI/4};
-        
-
-    BOOST_TEST(ToPolar(a) == pa);
-    BOOST_TEST(ToPolar(b) == pb);
-    BOOST_TEST(ToPolar(c) == pc);
-    BOOST_TEST(ToPolar(d) == pd);
-    BOOST_TEST(ToPolar(e) == pe);
-    BOOST_TEST(ToPolar(f) == pf);
-    BOOST_TEST(ToPolar(g) == pg);
-    BOOST_TEST(ToPolar(k) == pk);
-    BOOST_CHECK_THROW(ToPolar(l), Exception);
-}
-
-BOOST_AUTO_TEST_CASE( polar, 
-    *utf::description("polar class")
-    *utf::tolerance(eps))
-{
-    //constructor
-    Polar 
-        a,
-        c{2, 3},
-        b{2, 3};
-
-    BOOST_TEST(a.r == 0);
-    BOOST_TEST(a.phi == 0);
-    BOOST_TEST(c.r == 2);
-    BOOST_TEST(c.phi == 3);
-
-    //equal and not equal operator
-    BOOST_TEST(a != c);
-    BOOST_TEST(a == a);
-    BOOST_TEST(c == c);
-    BOOST_TEST(b == c);
-}
-
-BOOST_AUTO_TEST_CASE( point_constructor, 
-    *utf::description("pooint class constructor")
-    *utf::tolerance(eps))
-{
-    //constructors and copyconstructors
-    Point 
-        a,
-        b{1, 2},
-        c{b},
-        d{Polar{10., M_PI/4.}},
-        e{Polar{10., M_PI/2.}};
-
-    BOOST_TEST(a.x == 0.);
-    BOOST_TEST(a.y == 0.);
-    BOOST_TEST(b.x == 1.);
-    BOOST_TEST(b.y == 2.);
-    BOOST_TEST(c.x == 1.);
-    BOOST_TEST(c.y == 2.);
-    BOOST_TEST(d.x == 10./sqrt(2.));
-    BOOST_TEST(d.y == 10./sqrt(2.));
-    BOOST_TEST(e.x == 0.);
-    BOOST_TEST(e.y == 10.);
-
-    //point and polar assignment
-    Point 
-        f = b,
-        g,
-        k = Polar{sqrt(2.), -M_PI/4.},
-        keq = {1, -1};
-    
-    BOOST_TEST(f == b);
-    
-    g = c;
-    BOOST_TEST(g == c);
-    
-    BOOST_TEST(k == keq);
-
-    g = k;
-    BOOST_TEST(g == keq);
-}
-
-BOOST_AUTO_TEST_CASE( point_methods, 
-    *utf::description("pooint class methods")
-    *utf::tolerance(eps))
+//---------------------------------------------------------
+// Point class tests
+//---------------------------------------------------------
+BOOST_TEST_DECORATOR( *utf::description("constructors and copy constructor and assignment") *utf::tolerance(eps) )
+BOOST_DATA_TEST_CASE( point_constructor, bdata::xrange<double>(-5., 5., 0.5) * bdata::xrange<double>(-5., 5., 0.5), x, y)
 {
     //norm
     Point 
-        a{0, 0},
-        b{2, 3},
-        c{-3, -3};
+        a{x, y}, //construcor from coords
+        b{a}; // copy construcotr
+    Polar p{x, y}; 
+    Point 
+        c{p}, // construcotr from polar coords
+        d = p, // Polar to point assignment
+        e = a;
 
-    BOOST_TEST(a.norm() == 0.);
-    BOOST_TEST(b.norm() == sqrt(2.*2. + 3.*3.));
-    BOOST_TEST(c.norm() == 3.*sqrt(2.));
-    
-    BOOST_TEST(a.norm() == Point::norm(a.x, a.y));
-    BOOST_TEST(b.norm() == Point::norm(b.x, b.y));
-    BOOST_TEST(c.norm() == Point::norm(c.x, c.y));
-    
-    //rotate and angle
-    c = Point{0, 0};
-    BOOST_CHECK_THROW(c.angle(), Exception);
+    BOOST_TEST(a.x == x);
+    BOOST_TEST(a.y == y);
 
-    a.rotate(rand()/RAND_MAX*100.);
-    BOOST_TEST((a.x == 0. && a.y == 0.));
-    
-    BOOST_TEST(b.angle() == atan(3./2.));
-    b.rotate(M_PI/2);
-    BOOST_TEST((b.x == -3. && b.y == 2.));
-    BOOST_TEST(b.angle() == atan(3./2.) + M_PI/2);
+    BOOST_TEST(b.x == x);
+    BOOST_TEST(b.y == y);
 
-    b.rotate(M_PI/2);
-    BOOST_TEST((b.x == -2. && b.y == -3));
-    BOOST_TEST(b.angle() == atan(3./2.) - M_PI);
+    BOOST_TEST(c.x == x * cos(y));
+    BOOST_TEST(c.y == x * sin(y));
 
-    b.rotate(M_PI/2);
-    BOOST_TEST((b.x == 3. && b.y == -2));
-    BOOST_TEST(b.angle() == atan(3./2.) - M_PI/2);
+    BOOST_TEST(d.x == x * cos(y));
+    BOOST_TEST(d.y == x * sin(y));
 
-    b.rotate(M_PI/2);
-    BOOST_TEST((b.x == 2. && b.y == 3.));
-    BOOST_TEST(b.angle() == atan(3./2.));
-
-    //normalize
-    a = {0, 0};
-    BOOST_CHECK_THROW(a.normalize(), Exception);
-
-    b = {2, 3};
-    b.normalize();
-    BOOST_TEST(b.x == 2./sqrt(2.*2. + 3.*3.));
-    BOOST_TEST(b.y == 3./sqrt(2.*2. + 3.*3.));
-
-    c = {-3, -3};
-    c.normalize();
-    BOOST_TEST(c.x == -1/sqrt(2));
-    BOOST_TEST(c.y == -1/sqrt(2));
+    BOOST_TEST(e.x == x);
+    BOOST_TEST(e.y == y);
 }
 
-BOOST_AUTO_TEST_CASE( point_static_methods, 
-    *utf::tolerance(eps)
-    *utf::description("point class static methods"))
+BOOST_TEST_DECORATOR(*utf::description("norma and static norma")*utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(norm, bdata::xrange(-5., 5., 0.5) * bdata::xrange(-5., 5., 0.5), x, y)
 {
-    //norm 
-    BOOST_TEST(Point::norm(1., 1.)  == sqrt(2.));
-    BOOST_TEST(Point::norm(-1., 1.) == sqrt(2.));
-    BOOST_TEST(Point::norm(1., -1.) == sqrt(2.));
-    BOOST_TEST(Point::norm(0., 0.)  == sqrt(0.));
+    //norm
+    Point a{x, y};
 
-    //angle lies between [-Pi, +Pi]
-    BOOST_CHECK_THROW(Point::angle(0., 0.), Exception);
-
-    BOOST_TEST(Point::angle(1., 0.)  == 0.);
-    BOOST_TEST(Point::angle(1., 1.)  == M_PI/4.);
-    BOOST_TEST(Point::angle(0., 1.)  == M_PI/2.);
-    BOOST_TEST(Point::angle(-1., 1.) == 3*M_PI/4.);
-    BOOST_TEST(Point::angle(-1., 0.)  == M_PI);
-    BOOST_TEST(Point::angle(-1., -1.) == -3*M_PI/4.);
-    BOOST_TEST(Point::angle(0., -1.)  == -M_PI/2.);
-    BOOST_TEST(Point::angle(1., -1.)  == -M_PI/4.);
+    BOOST_TEST(a.norm() == sqrt(x*x + y*y));
+    BOOST_TEST(Point::norm(a.x, a.y) == sqrt(x*x + y*y));
 }
 
-BOOST_AUTO_TEST_CASE(point_angle_between_points, 
-    *utf::tolerance(eps)
-    *utf::description("angle between points"))
+
+BOOST_TEST_DECORATOR( * utf::description("rotate point") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(rotate, bdata::xrange(-500., 500., 5.1), angle_in_radians)
+{
+    Point a{1, 1};
+
+    a.rotate(angle_in_radians);
+
+    BOOST_TEST(a.x == cos(angle_in_radians) - sin(angle_in_radians));
+    BOOST_TEST(a.y == sin(angle_in_radians) + cos(angle_in_radians));
+
+}
+
+
+BOOST_TEST_DECORATOR( * utf::description("angle of point and its static implementation") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(angle, bdata::xrange(-5., 5., 1.) * bdata::xrange(-5., 5., 1.), x, y)
+{
+    Point a{x, y};
+
+    if(x == 0. && y == 0.) {
+
+        BOOST_CHECK_THROW(a.angle(), Exception);
+        BOOST_CHECK_THROW(Point::angle(x, y), Exception);
+
+    }
+    else {
+
+        double 
+            p_angle = a.angle(),
+            static_angle = Point::angle(x, y);
+
+        BOOST_TEST(static_angle == p_angle);
+
+        double phi = acos(x / sqrt(x*x + y*y));
+    	if (y < 0)
+    		phi = -phi;
+
+        BOOST_TEST(p_angle == phi);
+
+    }
+}
+
+
+BOOST_TEST_DECORATOR( * utf::description("nomalize") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(nomalize, bdata::xrange(-5., 5., 0.1) * bdata::xrange(-5., 5., 0.1), x, y)
+{
+    Point a{x, y};
+    if (abs(x) <= EPS && abs(y) <= EPS)
+        BOOST_CHECK_THROW(a.normalize(), Exception);
+    else {
+        a.normalize();
+        double len = sqrt(x*x + y*y);
+        BOOST_TEST(a.x == x / len);
+        BOOST_TEST(a.y == y / len);
+    }
+}
+
+
+BOOST_TEST_DECORATOR( * utf::description("angle between points") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(angle_between_points, bdata::xrange(-2., 2., 1.) * bdata::xrange(-2., 2., 1.) * bdata::xrange(-2., 2., 1.) * bdata::xrange(-2., 2., 1.), x1, y1, x2, y2)
 {
     Point 
-        a{1, 0},
-        b{1, 0};
+        a{x1, y1},
+        b{x2, y2};  
     
-    for(unsigned i = 0; i < 20; ++i)
-    {
-        if(a.angle() <= 0.)
-            BOOST_TEST(a.angle(b) == i*M_PI/10);
-        else
-            BOOST_TEST(a.angle(b) == i*M_PI/10 - 2*M_PI);
-        a.rotate(-M_PI/10);
+    if (a.norm() <= EPS || b.norm() <= EPS )
+
+        BOOST_CHECK_THROW(a.angle(b), Exception);
+
+    else {
+
+        double 
+    	    expected_angle = x1 * y2 - x2 * y1 > 0 
+                ? acos((x1 * x2 + y1 * y2) / sqrt(x1 * x1 + y1 * y1) / sqrt(x2 * x2 + y2 * y2)) 
+                : - acos((x1 * x2 + y1 * y2) / sqrt(x1 * x1 + y1 * y1) / sqrt(x2 * x2 + y2 * y2)),
+            actual_angle = a.angle(b);
+
+            BOOST_TEST(actual_angle == expected_angle); 
     }
-
-    for(unsigned i = 0; i < 20; ++i)
-    {
-        if(b.angle() >= 0.)
-            BOOST_TEST(a.angle(b) == i*M_PI/10);
-        else
-            BOOST_TEST(a.angle(b) == i*M_PI/10 - 2*M_PI);
-        b.rotate(M_PI/10);
-    }
-
-    //edge condition check
-    a = {0, 0};
-    BOOST_CHECK_THROW(a.angle(b), Exception);
-
-    a = {1, 0};
-    b = {0, 0};
-    BOOST_CHECK_THROW(a.angle(b), Exception);
-
-    a = {0, 0};
-    BOOST_CHECK_THROW(a.angle(b), Exception);
 }
 
-BOOST_AUTO_TEST_CASE(point_operators, 
-    *utf::tolerance(eps)
-    *utf::description("point operators test"))
+
+BOOST_TEST_DECORATOR( * utf::description("point operators test") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(point_operators, bdata::xrange(-2., 2., 0.5) * bdata::xrange(-2., 2., 0.5) * bdata::xrange(-2., 2., 0.5) * bdata::xrange(-2., 2., 0.5), x1, y1, x2, y2)
 {
     //mathematical operations
     Point 
-        a{1, 2},
-        b{3, 4};
+        a{x1, y1},
+        b{x2, y2},
+        c;
+
+    double alpha = y1 + 10;
+
+    // multiplication and division by scalar
+    c = a*alpha;
+    BOOST_TEST(c.x == x1 * alpha);
+    BOOST_TEST(c.y == y1 * alpha);
+
+    c = alpha * a;
+    BOOST_TEST(c.x == x1 * alpha);
+    BOOST_TEST(c.y == y1 * alpha);
+
+    c = a / alpha;
+    BOOST_TEST(c.x == x1 / alpha);
+    BOOST_TEST(c.y == y1 / alpha);
+
+    if(x1 != 0. && y1 != 0.) {
+        c = alpha / a;
+        BOOST_TEST(c.x == alpha / x1);
+        BOOST_TEST(c.y == alpha / y1);
+    }
+
+    c = a;
+    c *= alpha;
+    BOOST_TEST(c.x == x1 * alpha);
+    BOOST_TEST(c.y == y1 * alpha);
+
+    c = a;
+    c /= alpha;
+    BOOST_TEST(c.x == x1 / alpha);
+    BOOST_TEST(c.y == y1 / alpha);
+
+    // point addition
+    c = a + b;
+    BOOST_TEST(c.x == x1 + x2);
+    BOOST_TEST(c.y == y1 + y2);
+
+    c = a;
+    c += b;
+    BOOST_TEST(c.x == x1 + x2);
+    BOOST_TEST(c.y == y1 + y2);
+
+    // point difference
+    c = a - b;
+    BOOST_TEST(c.x == x1 - x2);
+    BOOST_TEST(c.y == y1 - y2);
+
+    c = a;
+    c -= b;
+    BOOST_TEST(c.x == x1 - x2);
+    BOOST_TEST(c.y == y1 - y2);
+
+    //comparison
+    BOOST_TEST((a == b) == (x1 == x2 && y1 == y2));
+
+    // scalar product difference
+    BOOST_TEST(a * b == x1 * x2 + y1 * y2);
+
+    //operators
+    BOOST_TEST(b[0] == x2);
+    BOOST_TEST(b[1] == y2);
+
+    //asignment by parentheses
+    c[0] = x1;
+    c[1] = x2;
+    BOOST_TEST(c.x == x1);
+    BOOST_TEST(c.y == x2);
+}
+
+BOOST_TEST_DECORATOR( * utf::description("get nomalized point") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(get_normalized, bdata::xrange(-5., 5., 1.) * bdata::xrange(-5., 5., 1.), x, y)
+{
+    Point a{x, y};
+    if (x == 0. && y == 0.)
+        BOOST_CHECK_THROW(a.get_normalized(), Exception);
+    else {
+        auto b = a.get_normalized();
+        double len = sqrt(x*x + y*y);
+        BOOST_TEST(b.x == x / len);
+        BOOST_TEST(b.y == y / len);
+    }
+}
+
+//---------------------------------------------------------
+// Polar class tests
+//---------------------------------------------------------
+
+BOOST_TEST_DECORATOR( * utf::description("Polar constructors") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(polar_constructors, bdata::xrange(-5., 5., 1.) * bdata::xrange(-5., 5., 1.), r, phi)
+{
+    Point 
+        a = {r, phi};
     
-    a = a+= (a + a)/2 - a + (a*(-2) + a*2);
-    BOOST_TEST((a.x == 1. && a.y == 2.));
+    Polar
+        p1, 
+        p2 = {r, phi}, 
+        p3 = a;
+        
 
-    a = {1, 2};
-    a /= 2;
-    a *= 2;
-    BOOST_TEST((a.x == 1. && a.y == 2.));
+    BOOST_TEST(p2.r == r);
+    BOOST_TEST(p2.phi == phi);
 
-    a = {1, 2};
-    BOOST_TEST((a[0] == 1. && a[1] == 2.));
-    BOOST_CHECK_THROW(a[3], Exception);
+    BOOST_TEST(p3.r == a.norm());
+    if(p3.r >= EPS)
+        BOOST_TEST(p3.phi == a.angle());
+    else
+        BOOST_TEST(p3.phi == 0.);
+}
 
-    //scalar product
-    a = {1, 2};
-    b = {3, 4};
-    BOOST_TEST(a*b == 1.*3. + 2.*4.);
+BOOST_TEST_DECORATOR( * utf::description("Polar comparison") * utf::tolerance(eps))
+BOOST_DATA_TEST_CASE(polar_comparison, bdata::xrange(-1., 1., 1.) * bdata::xrange(-1., 1., 1.) * bdata::xrange(-1., 1., 1.) * bdata::xrange(-1., 1., 1.), r1, phi1, r2, phi2)
+{
+    Polar
+        p1{r1, phi1}, 
+        p2{r2, phi2};
+        
+    BOOST_TEST((p1 == p2) == (r1 == r2 && phi1 == phi2));
+    BOOST_TEST((p1 != p2) == !(r1 == r2 && phi1 == phi2));
+
 }

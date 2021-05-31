@@ -28,10 +28,12 @@
 #include <vector>
 #include <iostream>
 #include <exception>
+#define _USE_MATH_DEFINES
+#include <math.h>
 ///\endcond
 
 ///Absolute preccision comparison between dobule numbers
-#define EPS 1.e-13
+#define EPS 1.e-16
 
 using namespace std;
 
@@ -48,67 +50,7 @@ namespace River
     ///Prints logs depending of log configuration(quiet or verbose)
     void print(const bool flag, const string str);
     
-    class Point;
-
     class Polar;
-
-    /*! \brief Returns normalized vector of current Point.
-        \throw Exception if vector lenght is zero
-        \return Normalized vector
-    */
-    Point GetNormalizedPoint(const Point &p);
-
-    ///Returns Polar representation of vector.
-    Polar ToPolar(const Point &p);
-
-
-    /*! \class Polar
-        \brief Vector represented in polar coordinates.
-        
-        \details Contains only two public variables: __r__ and __phi__
-        \imageSize{PolarClass.jpg, height:40%;width:40%;, }
-    */
-    class Polar
-    {
-        private:
-            static constexpr double eps = EPS;
-
-        public:
-
-            ///Creates \"zero\"-polar vector(r = 0, phi = 0)
-            Polar() = default;
-    
-            ///Creates \"non-zero\"-polar vector(r = \p dlval, phi = \p phival)
-            Polar(const double dlval, const double phival):
-                r{dlval}, 
-                phi{phival} 
-                {};
-    
-            ///Radius of points.
-            double r = 0.;
-    
-            ///Angle of point.
-            double phi = 0.;
-
-            ///Equal operator
-            bool operator ==(const Polar & p) const
-            {
-                return abs(p.r - r)/2 + (p.phi - phi)/2 < eps;
-            }
-            
-            ///Not-equal operator
-            bool operator !=(const Polar & p) const
-            {
-                return !(*this == p);
-            }
-    
-            ///Converts Polar Object \p to string and redirects it to stream object \p write.
-            friend ostream& operator <<(ostream& write, const Polar & p)
-            {
-                write << "Polar: " << p.r << " " << p.phi;
-                return write;
-            }
-    };
 
     /*! \class Point
         \brief Point object represented as radius vector.
@@ -194,15 +136,86 @@ namespace River
                 @{
             */
             Point operator*(const double gain) const;
+            friend Point operator*(const double gain, const Point& p);
             Point& operator*=(const double gain);
             Point operator/(const double gain) const;
+            friend Point operator/(const double gain, const Point& p);
             Point& operator/=(const double gain);
             /*! @} */
             ///Retrives cordinate using array syntaxis.
+            
             double operator[](const int index) const;
-            double operator()(const int index) const;
+            double& operator[](const int index);
+
+            /*! \brief Returns normalized vector of current Point.
+              \throw Exception if vector lenght is zero
+              \return Normalized vector
+            */
+            Point get_normalized() const;
 
             ///Converts object to string and redirects it to stream.
             friend ostream& operator <<(ostream& write, const Point & p);
-  };
+    };
+
+    ///Vector of points data type.
+    typedef vector<Point> t_PointList;
+
+    /*! \class Polar
+        \brief Vector represented in polar coordinates.
+        
+        \details Contains only two public variables: __r__ and __phi__
+        \imageSize{PolarClass.jpg, height:40%;width:40%;, }
+    */
+    class Polar
+    {
+        private:
+
+            static constexpr double eps = EPS;
+
+        public:
+
+            ///Creates \"zero\"-polar vector(r = 0, phi = 0)
+            Polar() = default;
+    
+            ///Creates \"non-zero\"-polar vector(r = \p dlval, phi = \p phival)
+            Polar(const double dlval, const double phival):
+                r{dlval}, 
+                phi{phival} 
+                {};
+            
+            Polar(const Point& p):
+                r{p.norm()}
+            {
+                if(r <= eps)
+                    phi = 0;
+                else
+                    phi = p.angle();
+            };
+    
+            ///Radius of points.
+            double r = 0.;
+    
+            ///Angle of point.
+            double phi = 0.;
+
+            ///Equal operator
+            bool operator ==(const Polar & p) const
+            {
+                return (abs(p.r - r) < eps) && (abs(p.phi - phi) < eps);
+            }
+            
+            ///Not-equal operator
+            bool operator !=(const Polar & p) const
+            {
+                return !(*this == p);
+            }
+    
+            ///Converts Polar Object \p to string and redirects it to stream object \p write.
+            friend ostream& operator <<(ostream& write, const Polar & p)
+            {
+                write << "Polar: " << p.r << " " << p.phi;
+                return write;
+            }
+    };
+
 } // namespace River

@@ -15,10 +15,6 @@
 
 #include "point.hpp"
 
-///\cond
-#include <math.h>
-///\endcond
-
 namespace River
 {
     double acos_s(const double x)
@@ -33,20 +29,6 @@ namespace River
     void print(const bool flag, const string str)
     {
     	if (flag) cout << str << endl;
-    }
-
-    Point GetNormalizedPoint(const Point &p)
-    {
-    	auto n = p.norm();
-    	if (n < EPS)
-    		throw Exception("norm is equal to zero");
-
-    	return Point{p.x / n, p.y / n};
-    }
-
-    Polar ToPolar(const Point& p)
-    {
-    	return Polar{p.norm(), p.angle()};
     }
 
     Point::Point(double xval, double yval)
@@ -86,6 +68,7 @@ namespace River
     	auto l = norm();
     	if (l < eps)
     		throw Exception("norm is equal to zero");
+
     	x /= l;
     	y /= l;
 
@@ -164,10 +147,15 @@ namespace River
     {
     	return (x * p.x + y * p.y);
     }
-
+    
     Point Point::operator*(const double gain) const
     {
     	return Point{x * gain, y * gain};
+    }
+
+    Point operator*(const double gain, const Point& p)
+    {
+        return Point{gain * p.x, gain * p.y};
     }
 
     Point &Point::operator*=(const double gain)
@@ -182,11 +170,28 @@ namespace River
     	return Point{x / gain, y / gain};
     }
 
+    Point operator/(const double gain, const Point& p)
+    {
+        return Point{gain / p.x, gain / p.y};
+    }
+
     Point &Point::operator/=(const double gain)
     {
     	x /= gain;
     	y /= gain;
     	return *this;
+    }
+
+    double& Point::operator[](const int index)
+    {
+    	if (index == 0)
+    		return x;
+    	else if (index == 1)
+    		return y;
+    	//else if (index == 2)
+        //    return 0;/*z coord equals 0*/
+        else
+    		throw Exception("index should be 0 or 1");
     }
 
     double Point::operator[](const int index) const
@@ -195,10 +200,19 @@ namespace River
     		return x;
     	else if (index == 1)
     		return y;
-    	else if (index == 2)
-            return 0;/*z coord equals 0*/
+    	//else if (index == 2)
+        //    return 0;/*z coord equals 0*/
         else
     		throw Exception("index should be 0 or 1");
+    }
+
+    Point Point::get_normalized() const
+    {
+        auto n = norm();
+    	if (n < EPS)
+    		throw Exception("norm is equal to zero");
+
+    	return Point{x / n, y / n};
     }
 
     ostream &operator<<(ostream &write, const Point &p)
