@@ -45,6 +45,46 @@
             ]
         },
         {
+            "name": "test tboundary",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../Builds/riversim/tests/tboundary",
+            "args": ["--log_level=all"],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/../../Builds/riversim/tests",
+            "environment": [],
+            "externalConsole": false,
+            "targetArchitecture": "x86_64",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "test tpoint",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../Builds/riversim/tests/tpoint",
+            "args": ["--log_level=all"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/../../Builds/riversim/tests",
+            "environment": [],
+            "externalConsole": false,
+            "targetArchitecture": "x86_64",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "riversim",
             "type": "cppdbg",
             "request": "launch",
