@@ -15,19 +15,6 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",
             "configurationProvider": "vector-of-bool.cmake-tools"
-        },
-        {
-            "name": "Windows",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/source/**",
-                "C:/Users/ofcra/Bin/dealii/include/deal.II"
-            ],
-            "defines": [],
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "clang-x64",
-            "configurationProvider": "vector-of-bool.cmake-tools"
         }
     ],
     "version": 4
