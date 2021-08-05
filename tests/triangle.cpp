@@ -8,7 +8,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "mesh.hpp"
-#include "physmodel.hpp"
+#include "river.hpp"
 #include "boundary_generator.hpp"
 
 using namespace std;

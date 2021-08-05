@@ -25,25 +25,19 @@
 #pragma once
 
 ///\cond
-#include <vector>
-#include <string>
 #include <map>
 ///\endcond
 
 #include "point.hpp"
 
-using namespace std;
-
-/*! \namespace River
-    \brief River namespace holds everything that is related to River simulation.
-*/
 namespace River
 {   
     ///Enumeration of different boundary conditions
     enum t_boundary 
     {
         DIRICHLET = 0, 
-        NEUMAN
+        NEUMAN,
+        ROBIN
     }; 
 
     /*! \struct BoundaryCondition
@@ -51,18 +45,24 @@ namespace River
     */
     struct BoundaryCondition
     {
-        t_boundary type = DIRICHLET;
-        double value = 0;
+        public:
 
-        bool operator==(const BoundaryCondition& bc) const;
-        friend ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition);
+            BoundaryCondition() = default;
+            BoundaryCondition(t_boundary type, double value):
+                type{type},
+                value{value}
+            {};
+
+            t_boundary type = DIRICHLET;
+            double value = 0.;
+
+            bool operator==(const BoundaryCondition& bc) const;
+            friend ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition);
     };
 
-    ///Vertice positionn index data type.
-    typedef size_t t_vert_pos;
-    ///Boundary id data type.
-    typedef size_t t_boundary_id;
-    ///Source id data type.
+    ///Vertice positionn index data type, boundary id data type and source id data type.
+    typedef size_t t_vert_pos; 
+    typedef size_t t_boundary_id; 
     typedef size_t t_source_id;
     
     ///Map structure of boundary condition types.
@@ -77,22 +77,28 @@ namespace River
     {
         public:
             ///Returns map structure with boundary conditions of specific type(Neuman or Dirichlet).
-            t_BoundaryConditions Get(t_boundary type);
+            t_BoundaryConditions operator()(t_boundary type) const;
             friend ostream& operator <<(ostream& write, const BoundaryConditions & bcs);
     };
     
     ///Source point coordinate data type. Pair which holds boundary id and vertice position on this id.
+    ///boundary_id is particular boundary where source is located.
+    ///and t_vert_pos is vetice indec position in point list.
     typedef pair<t_boundary_id, t_vert_pos> t_source_coord;
+    ostream& operator <<(ostream& write, const t_source_coord & source_coord);
+    
     ///Vector of source point ids data type.
     typedef vector<t_source_id> t_sources_ids;
+
     ///Map structure which holds source id and its coordinates.
     typedef map<t_source_id, t_source_coord> t_Sources;
+
     ///Map structure which holds source id and its source point coordinates.
     class Sources: public t_Sources
     {
         public:
             ///Returns all sources ids.
-            t_sources_ids GetSourcesIds() const;
+            t_sources_ids getSourcesIds() const;
     };
 
     /*! \brief 
@@ -125,20 +131,27 @@ namespace River
             bool operator==(const Line& line) const;
     };
 
-    ///Vector of points data type.
-    typedef vector<Point> t_PointList;
-    
     ///Vector of lines data type.
     typedef vector<Line> t_LineList;
+
+    class Triangle
+    {
+
+    };
+    
+    
 
     /*! \brief Structure which defines simple boundary data structure.
         
         \details Simple boundary means only one boundary.
         \imageSize{SimpleBoundary.jpg, height:40%;width:40%;, }
     */
-    class SimpleBoundary
+    class Boundary
     {
         public:
+
+            //fields
+
             ///Vertices of boundary vector.
             t_PointList vertices;
             ///Connvections between boundaries.
@@ -149,18 +162,118 @@ namespace River
             t_PointList holes;
             ///Name with description of boundary.
             string name = "";
-            ///Appends another simple boundary at the end of current boundary.
-            void Append(const SimpleBoundary& simple_boundary);
-            ///Replace on element of boundary with whole simple boundary structure.
-            void ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary);
 
-            bool operator==(const SimpleBoundary& simple_boundary) const;
-            friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);
+            //modifiers
+
+            ///Appends another simple boundary at the end of current boundary.
+            void append(const Boundary& simple_boundary);
+            ///Appends vertice with cartesian at the end of current boundary and connect it with line with specified boundary id.
+            void append(const Point& p, const t_boundary_id boundary_id);
+            ///Appends vertice with polar coords at the end of current boundary and connect it with line with specified boundary id.
+            void append(const Polar& p, const t_boundary_id boundary_id);
+            /*! \brief Reduces lenght of branch by \p lenght.
+                \note
+                If \p lenght is greater than full lenght of branch, then __source_point__ only remains.
+                \throw Exception.
+            */
+
+            ///Replace on element of boundary with whole simple boundary structure.
+            void replaceElement(const t_vert_pos vertice_pos, const Boundary& simple_boundary);
+            /*! \brief Reduces lenght of branch by \p lenght.
+                \note
+                If \p lenght is greater than full lenght of branch, then __source_point__ only remains.
+                \throw Exception.
+            */
+            Boundary& shrink(double lenght);
+
+            /*! \brief Remove tip point from branch(simply pops element from vector).
+                \imageSize{BranchShrink.jpg, height:30%;width:30%;, }
+                \throw Exception if trying to remove last point.
+            */
+            Boundary& removeTipPoint();
+
+            ///Clear all data of boundary to make it empty.
+            void clear();
+            
+            //properties and values extractors/evaluators
+
+            /*! \brief Return TipPoint of branch(last point in branch).
+                \throw Exception if branch is empty.
+            */
+            Point tipPoint() const;
+
+            /*! \brief Returns vector of tip - difference between two adjacent points.
+                \throw Exception if branch consist only from one point.
+                \warning name a little confusing cos there is still source_angle variable.
+            */
+            Point tipVector() const;
+
+            /*! \brief Returns vector of \p i th segment of branch.
+                \throw Exception if branch size is 1 or is \p i > branch size.
+            */
+            Point vector(unsigned i) const;
+            
+            /*! \brief Returns angle of branch tip.
+                \throw Exception if branch is empty.
+            */
+            double tipAngle() const;
+
+            ///Returns source point of branch(the first one).
+            Point sourcePoint() const;
+
+            ///Returns lenght of whole branch.
+            double lenght() const;
+            
+            //operators 
+
+            bool operator==(const Boundary& simple_boundary) const;
+
+            friend ostream& operator <<(ostream& write, const Boundary & boundary);
     };
 
-    ///
-    typedef map<t_boundary_id, SimpleBoundary> t_Boundaries;
+    /*! \brief Holds all functionality that you need to work with single branch.
+        \details
+        Take a look on picture:
+        \imageSize{BranchClass.jpg, height:40%;width:40%;, }
+        \todo resolve problem with private members
+    */
+    class Branch: public Boundary
+    {
+        public:
+            Branch() = default;
+
+            /*! \brief Branch construcor.
+                \details Initiates branch with initial point \p source_point and initial \p angle.
+                \param[in] source_point_val - Branch source point.
+                \param[in] angle - Intial growth(or flow) dirrection of brahch source point.
+            */
+            Branch(const Point& source_point_val, const double angle);
+
+            ///Returns source angle of branch - initial __source_angle__.
+            double SourceAngle() const;
+            /*! @} */
+
+            ///Prints branch and all its parameters.
+            friend ostream& operator<<(ostream& write, const Branch & b);
+
+            ///Comparison of branches.
+            bool operator==(const Branch& br) const;
+            
+        //private:
+
+            ///Initial angle of source(or direction of source).
+            double source_angle;
+
+            ///Used in Shrink function call.
+            ///If after shrink lenght of between adjacent to tip point
+            ///is less then eps then we delete it.
+            double eps = EPS;
+    };
+
+    
+    typedef map<t_boundary_id, Boundary> t_Boundaries;
     typedef pair<Point, double> t_branch_source;
+
     /*! \brief Structure which defines Boundaries of region.
         
         \details It is a combination of simple boundaries which of each has  it own unique id.
@@ -185,10 +298,10 @@ namespace River
             void Check();   
 
             ///Return outer simple boundary(There should be only one such).
-            SimpleBoundary& GetOuterBoundary();
+            Boundary& GetOuterBoundary();
 
             ///Returns vector of all holes.
-            vector<Point> GetHolesList() const;
+            t_PointList GetHolesList() const;
 
             ///Returns map of source points ids and coresponding source point and angle of tree \ref Branch.
             trees_interface_t GetSourcesIdsPointsAndAngles(const Sources& sources) const;
@@ -207,7 +320,7 @@ namespace River
             
             ///Returns normal angle at point with vertice_pos index.
             static double GetVerticeNormalAngle(    
-                const vector<Point>& vertices, 
+                const t_PointList& vertices, 
                 const t_vert_pos vertice_pos);
     };
 }

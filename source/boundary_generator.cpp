@@ -6,13 +6,13 @@ namespace River
         Tree Vertices Generation
         \todo chandge parameter order
     */
-    void TreeVertices(vector<Point> &tree_vertices, unsigned id, const Tree& tr, double eps)
+    void TreeVertices(t_PointList &tree_vertices, unsigned id, const Tree& tr, double eps)
     {
         if (tr.empty())
             throw Exception("Boundary generator: trying to generate tree boundary from empty tree.");
 
         const auto& br = tr.at(id);
-        vector<Point> left_vector, right_vector;
+        t_PointList left_vector, right_vector;
         left_vector.reserve(br.size());
         right_vector.reserve(br.size());
 
@@ -78,12 +78,12 @@ namespace River
         return tree_boundary;
     }
 
-    SimpleBoundary SimpleBoundaryGenerator(const Model& model)
+    SimpleBoundary SimpleBoundaryGenerator(Sources &sources, Boundaries &boundaries, 
+        const Tree &tree, const t_boundary_id river_boundary_id, const double mesh_eps)
     {
-        SimpleBoundary final_boundary;
-        auto sources = model.sources;
+        SimpleBoundary final_boundary;        
 
-        for(auto [boundary_id, simple_boundary]: model.border)
+        for(auto& [boundary_id, simple_boundary]: boundaries)
         {
             for(const auto&[source_id, value]: sources)
             {
@@ -91,13 +91,14 @@ namespace River
                 auto vertice_pos = value.second;
                 if(boundary_id == boundary_id_s)
                 {
-                    auto tree_boundary = TreeBoundary(model.tree, source_id, model.river_boundary_id, model.mesh.eps);
+                    auto tree_boundary = TreeBoundary(tree, source_id, river_boundary_id, mesh_eps);
                     simple_boundary.ReplaceElement(vertice_pos, tree_boundary);
 
+                    //TODO: for some reason input argument "sources" are modified here
                     //shifting absolute vertice position of source after addition
-                    for(auto&[source_id_m, value_m]: sources)
+                    for(auto& [source_id_m, value_m]: sources)
                         if(value_m.first == boundary_id && value_m.second > vertice_pos && tree_boundary.vertices.size() > 1)
-                            value_m.second += tree_boundary.vertices.size() - 1;
+                            value_m.second += (tree_boundary.vertices.size() - 1);
                 }
             }
             final_boundary.Append(simple_boundary);

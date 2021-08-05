@@ -19,6 +19,7 @@
 #include <sstream>
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <algorithm>
 ///\endcond
 
 namespace River
@@ -143,7 +144,7 @@ namespace River
     }
 
     //todo can input arguments be replaced by map?
-    void Tree::AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points)
+    void Tree::AddPoints(const vector<t_branch_id>& tips_id, const t_PointList& points)
     {
         for(size_t i = 0; i < tips_id.size(); ++i)
             if(this->count(tips_id.at(i)))
@@ -313,9 +314,9 @@ namespace River
         return {this->at(left_branch), this->at(right_branch)};
     }
     
-    vector<Point> Tree::TipPoints() const
+    t_PointList Tree::TipPoints() const
     {   
-        vector<Point> tip_points;
+        t_PointList tip_points;
         auto tip_branches_id = TipBranchesIds();
         tip_points.reserve(tip_branches_id.size());
         for(auto id: tip_branches_id)

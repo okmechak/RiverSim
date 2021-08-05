@@ -212,7 +212,7 @@
 #pragma once
 
 #include "boundary.hpp"
-#include "physmodel.hpp"
+#include "river.hpp"
 #include "tree.hpp"
 #include "cxxopts.hpp"
 #include "json.hpp"

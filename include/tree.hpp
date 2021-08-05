@@ -31,18 +31,10 @@
 #pragma once
 
 ///\cond
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <list>
-#include <algorithm>
 #include <climits>
 ///\endcond
 
-#include "point.hpp"
 #include "boundary.hpp"
-#include "branch.hpp"
 
 using namespace std;
 
@@ -122,7 +114,7 @@ namespace River
 
             //Growth
             ///Adds  relatively vector of \p points to Branches \p tips_id.
-            void AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points);
+            void AddPoints(const vector<t_branch_id>& tips_id, const t_PointList& points);
 
             ///Adds  relatively \p points to Branches \p tips_id.
             void AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points);
@@ -139,7 +131,7 @@ namespace River
             vector<t_branch_id> zero_lenght_tip_branches_ids(double zero_lenght) const;
 
             ///Returns vector of tip branches Points.
-            vector<Point> TipPoints() const;
+            t_PointList TipPoints() const;
 
             ///Returns vector of tip branches Points.
             map<t_branch_id, Point> TipIdsAndPoints() const;

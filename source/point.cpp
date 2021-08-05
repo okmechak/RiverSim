@@ -206,7 +206,7 @@ namespace River
     		throw Exception("index should be 0 or 1");
     }
 
-    Point Point::get_normalized() const
+    Point Point::getNormalized() const
     {
         auto n = norm();
     	if (n < EPS)

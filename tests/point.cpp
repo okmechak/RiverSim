@@ -222,9 +222,9 @@ BOOST_DATA_TEST_CASE(get_normalized, bdata::xrange(-5., 5., 1.) * bdata::xrange(
 {
     Point a{x, y};
     if (x == 0. && y == 0.)
-        BOOST_CHECK_THROW(a.get_normalized(), Exception);
+        BOOST_CHECK_THROW(a.getNormalized(), Exception);
     else {
-        auto b = a.get_normalized();
+        auto b = a.getNormalized();
         double len = sqrt(x*x + y*y);
         BOOST_TEST(b.x == x / len);
         BOOST_TEST(b.y == y / len);

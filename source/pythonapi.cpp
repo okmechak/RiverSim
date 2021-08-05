@@ -486,10 +486,10 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     //riversim
-    class_<ForwardRiverSimulation>("ForwardRiverSimulation", init<Model*, Triangle*, River::Solver*>(args("model", "triangle", "solver")))
-        .def("linearSolver", &ForwardRiverSimulation::linear_solver)
-        .def("nonLinearSolver", &ForwardRiverSimulation::non_linear_solver)
-        .def("backwardSolver", &ForwardRiverSimulation::backward_solver)
+    class_<RiverSimulation>("RiverSimulation", init<Model*, Triangle*, River::Solver*>(args("model", "triangle", "solver")))
+        .def("linearSolver", &RiverSimulation::linear_solver)
+        .def("nonLinearSolver", &RiverSimulation::non_linear_solver)
+        .def("backwardSolver", &RiverSimulation::backward_solver)
     ;
 
     //app

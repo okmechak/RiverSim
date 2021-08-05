@@ -1,6 +1,6 @@
 #pragma once
 
-#include "riversim.hpp"
+#include "river.hpp"
 
 using namespace River;
 using namespace std;

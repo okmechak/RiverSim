@@ -34,6 +34,14 @@ if(BUILD_TEST)
         NAME tboundary
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary)
+
+    #tree
+    add_executable(ttree tree.cpp)
+    target_link_libraries(ttree tree ${Boost_LIBRARIES})
+    add_test(
+        NAME ttree
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttree)
     
     #tethex
     add_executable(ttethex tethex.cpp)
@@ -43,49 +51,17 @@ if(BUILD_TEST)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttethex)
 
-    #branch
-    add_executable(tbranch branch.cpp)
-    target_link_libraries(tbranch branch ${Boost_LIBRARIES})
-    add_test(
-        NAME tbranch
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tbranch)
-
-    #tree
-    add_executable(ttree tree.cpp)
-    target_link_libraries(ttree tree ${Boost_LIBRARIES})
-    add_test(
-        NAME ttree
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttree)
-
-    #physmodel
-    add_executable(tphysmodel physmodel.cpp)
-    target_link_libraries(tphysmodel physmodel ${Boost_LIBRARIES})
-    add_test(
-        NAME tphysmodel
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tphysmodel)
-
-    #io
-    add_executable(tio io.cpp)
-    target_link_libraries(tio io ${Boost_LIBRARIES})
-    add_test(
-        NAME tio
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tio)
-    
     #triangle
     add_executable(ttriangle triangle.cpp)
-    target_link_libraries(ttriangle mesh boundary_generator ${Boost_LIBRARIES})
+    target_link_libraries(ttriangle triangle ${Boost_LIBRARIES})
     add_test(
         NAME ttriangle
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttriangle)
-    
+
     #boundary_generator
     add_executable(tboundary_generator boundary_generator.cpp)
-    target_link_libraries(tboundary_generator boundary_generator tethex physmodel ${Boost_LIBRARIES})
+    target_link_libraries(tboundary_generator boundary_generator tethex ${Boost_LIBRARIES})
     add_test(
         NAME tboundary_generator
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -93,29 +69,36 @@ if(BUILD_TEST)
 
     #solver
     add_executable(tsolver solver.cpp)
-    target_link_libraries(tsolver solver mesh boundary_generator ${Boost_LIBRARIES})
+    target_link_libraries(tsolver solver ${Boost_LIBRARIES})
     deal_ii_setup_target(tsolver)
     add_test(
         NAME tsolver
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tsolver)
 
-    #riversim
-    add_executable(triversim riversim.cpp)
-    target_link_libraries(triversim river ${Boost_LIBRARIES})
-    deal_ii_setup_target(triversim)
-    add_test(
-        NAME triversim
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/triversim)
+    #river
+    # add_executable(triver river.cpp)
+    # target_link_libraries(triver river ${Boost_LIBRARIES})
+    # add_test(
+    #     NAME triver
+    #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    #     COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/triver)
 
-    #riversim_new
-    add_executable(triversim_new riversim_new.cpp)
-    target_link_libraries(triversim_new river ${Boost_LIBRARIES})
-    deal_ii_setup_target(triversim_new)
-    add_test(
-        NAME triversim_new
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/triversim)
+    #io
+    # add_executable(tio io.cpp)
+    # target_link_libraries(tio io ${Boost_LIBRARIES})
+    # add_test(
+    #     NAME tio
+    #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    #     COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tio)
+
+    #riversim
+    # add_executable(triversim riversim.cpp)
+    # target_link_libraries(triversim river ${Boost_LIBRARIES})
+    # deal_ii_setup_target(triversim)
+    # add_test(
+    #     NAME triversim
+    #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    #     COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/triversim)
     
 endif(BUILD_TEST)

@@ -1,5 +1,5 @@
 #include "mesh.hpp"
-#include "physmodel.hpp"
+#include "river.hpp"
 #include "io.hpp"
 #include "tethex.hpp"
 #include "boundary_generator.hpp"

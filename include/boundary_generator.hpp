@@ -16,13 +16,13 @@
 #pragma once
 
 #include "tree.hpp"
-#include "boundary.hpp"
-#include "physmodel.hpp"
 
 namespace River
 {
     ///Generates trees boundary
     void TreeVertices(t_PointList &tree_vector, unsigned id, const Tree& trees, double eps);
     SimpleBoundary TreeBoundary(const Tree& tree, unsigned source_id, int boundary_id, double eps);
-    SimpleBoundary SimpleBoundaryGenerator(const Model& model);
+
+    SimpleBoundary SimpleBoundaryGenerator(Sources &sources, Boundaries &boundaries, 
+        const Tree &tree, const t_boundary_id river_boundary_id, const double mesh_eps);
 }

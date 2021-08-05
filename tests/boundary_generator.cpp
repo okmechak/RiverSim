@@ -65,22 +65,25 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
 BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator, 
     *utf::tolerance(eps))
 {
-    Model model;
-    model.mesh.eps = 0.01;
-    model.river_boundary_id = 100;
+    //test initialization
+    double mesh_eps = 0.01;
+    t_boundary_id river_boundary_id = 100;
 
     //TODO setup source as separate structure!!!
     //щоб вони не були частиною границі і дерева а були окремим обєктом
-    model.sources = model.border.MakeRectangularWithHole();
+    Boundaries boundaries;
+    auto sources = boundaries.MakeRectangularWithHole();
     auto source_id = 1;
-    model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
+    
+    Tree tree;
+    tree.Initialize(boundaries.GetSourcesIdsPointsAndAngles(sources));
 
-    auto boundary = SimpleBoundaryGenerator(model);
+    auto boundary = SimpleBoundaryGenerator(sources, boundaries, tree, river_boundary_id, mesh_eps);
 
     BOOST_TEST(boundary.lines.size() == 13);
 
-    model.tree.at(source_id).AddPoint(Polar{0.01, 0});
-    boundary = SimpleBoundaryGenerator(model);
+    tree.at(source_id).AddPoint(Polar{0.01, 0});
+    boundary = SimpleBoundaryGenerator(sources, boundaries, tree, river_boundary_id, mesh_eps);
     BOOST_TEST(boundary.lines.size() == 15);
 
     auto vertices =  vector<Point>
@@ -95,12 +98,12 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
     };
 
     auto lines =  vector<Line>{
-        {0, 1, 1}, {1, 2, model.river_boundary_id}, {2, 3, model.river_boundary_id}, {3, 4, 2}, {4, 5, 3}, {5, 6, 4}, {6, 0, 5},
+        {0, 1, 1}, {1, 2, river_boundary_id}, {2, 3, river_boundary_id}, {3, 4, 2}, {4, 5, 3}, {5, 6, 4}, {6, 0, 5},
         {7, 8, 6}, {8, 9, 7}, {9, 10, 8}, {10, 7, 9},
         {11, 12, 10}, {12, 13, 11}, {13, 14, 12}, {14, 11, 13},
     };
 
-    BOOST_TEST(model.border.GetHolesList() == holes);
+    BOOST_TEST(boundaries.GetHolesList() == holes);
     BOOST_TEST(boundary.vertices.size() == 15);
     for(size_t i = 0; i < vertices.size(); ++i)
     {
@@ -327,10 +330,10 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
 BOOST_AUTO_TEST_CASE( BoundaryGenerator_test, 
     *utf::tolerance(eps))
 {   
-    Model mdl;
-    mdl.mesh.eps = 0.01;
-    mdl.river_boundary_id = 4;
-    mdl.border[1] = 
+    double mesh_eps = 0.01;
+    t_boundary_id river_boundary_id = 4;
+    Boundaries boundary;
+    boundary[1] = 
     {
         {
             {1, 0},
@@ -356,15 +359,17 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
         {},
         "test"
     };
-    mdl.sources[1] = {1, 4};
-    mdl.sources[2] = {1, 5};
-    mdl.sources[3] = {1, 6};
-    mdl.sources[4] = {1, 7};
+    Sources sources;
+    sources[1] = {1, 4};
+    sources[2] = {1, 5};
+    sources[3] = {1, 6};
+    sources[4] = {1, 7};
     
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
+    Tree tree;
+    tree.Initialize(boundary.GetSourcesIdsPointsAndAngles(sources));
     
     BOOST_TEST_MESSAGE( "Boundary Generator start" );
-    auto border = SimpleBoundaryGenerator(mdl);
+    auto border = SimpleBoundaryGenerator(sources, boundary, tree, river_boundary_id, mesh_eps);
     tethex::Mesh mesh(border);
     BOOST_TEST_MESSAGE( "Boundary Generator done" );
 
@@ -429,11 +434,11 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
 BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new, 
     *utf::tolerance(eps))
 {   
-    Model mdl;
-    mdl.mesh.eps = 0.02;
-    mdl.river_boundary_id = 5;
+    double mesh_eps = 0.02;
+    t_boundary_id river_boundary_id = 5;
     
-    mdl.border[1] = 
+    Boundaries boundary;
+    boundary[1] = 
     {
         {
             {1, 0},
@@ -449,26 +454,28 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
             {0, 1, 1},
             {1, 2, 2},
             {2, 3, 3},
-            {3, 4, mdl.river_boundary_id},
-            {4, 5, mdl.river_boundary_id},
-            {5, 6, mdl.river_boundary_id},
-            {6, 7, mdl.river_boundary_id},
-            {7, 0, mdl.river_boundary_id},
+            {3, 4, river_boundary_id},
+            {4, 5, river_boundary_id},
+            {5, 6, river_boundary_id},
+            {6, 7, river_boundary_id},
+            {7, 0, river_boundary_id},
         },
         false,
         {},
         "test"
     };
     
-    mdl.sources[1] = {1, 4};
-    mdl.sources[2] = {1, 5};
-    mdl.sources[3] = {1, 6};
-    mdl.sources[4] = {1, 7};
+    Sources sources;
+    sources[1] = {1, 4};
+    sources[2] = {1, 5};
+    sources[3] = {1, 6};
+    sources[4] = {1, 7};
 
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
-    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}, {3, 0}, {4, 0}});
+    Tree tree;
+    tree.Initialize(boundary.GetSourcesIdsPointsAndAngles(sources));
+    tree.AddPolars(sources.GetSourcesIds(), {{1, 0}, {2, 0}, {3, 0}, {4, 0}});
     
-    auto border = SimpleBoundaryGenerator(mdl);
+    auto border = SimpleBoundaryGenerator(sources, boundary, tree, river_boundary_id, mesh_eps);
     tethex::Mesh mesh(border);
 
     BOOST_TEST(mesh.get_n_vertices() == 16);
@@ -531,64 +538,64 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     //4
     BOOST_TEST(mesh.get_line(3).get_vertex(0) == 3);
     BOOST_TEST(mesh.get_line(3).get_vertex(1) == 4);
-    BOOST_TEST(mesh.get_line(3).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(3).get_material_id() == river_boundary_id);
     //5
     BOOST_TEST(mesh.get_line(4).get_vertex(0) == 4);
     BOOST_TEST(mesh.get_line(4).get_vertex(1) == 5);
-    BOOST_TEST(mesh.get_line(4).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(4).get_material_id() == river_boundary_id);
     //6
     BOOST_TEST(mesh.get_line(5).get_vertex(0) == 5);
     BOOST_TEST(mesh.get_line(5).get_vertex(1) == 6);
-    BOOST_TEST(mesh.get_line(5).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(5).get_material_id() == river_boundary_id);
     //7
     BOOST_TEST(mesh.get_line(6).get_vertex(0) == 6);
     BOOST_TEST(mesh.get_line(6).get_vertex(1) == 7);
-    BOOST_TEST(mesh.get_line(6).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(6).get_material_id() == river_boundary_id);
     //8
     BOOST_TEST(mesh.get_line(7).get_vertex(0) == 7);
     BOOST_TEST(mesh.get_line(7).get_vertex(1) == 8);
-    BOOST_TEST(mesh.get_line(7).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(7).get_material_id() == river_boundary_id);
     //9
     BOOST_TEST(mesh.get_line(8).get_vertex(0) == 8);
     BOOST_TEST(mesh.get_line(8).get_vertex(1) == 9);
-    BOOST_TEST(mesh.get_line(8).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(8).get_material_id() == river_boundary_id);
     //10
     BOOST_TEST(mesh.get_line(9).get_vertex(0) == 9);
     BOOST_TEST(mesh.get_line(9).get_vertex(1) == 10);
-    BOOST_TEST(mesh.get_line(9).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(9).get_material_id() == river_boundary_id);
     //11
     BOOST_TEST(mesh.get_line(10).get_vertex(0) == 10);
     BOOST_TEST(mesh.get_line(10).get_vertex(1) == 11);
-    BOOST_TEST(mesh.get_line(10).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(10).get_material_id() == river_boundary_id);
     //12
     BOOST_TEST(mesh.get_line(11).get_vertex(0) == 11);
     BOOST_TEST(mesh.get_line(11).get_vertex(1) == 12);
-    BOOST_TEST(mesh.get_line(11).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(11).get_material_id() == river_boundary_id);
     //13
     BOOST_TEST(mesh.get_line(12).get_vertex(0) == 12);
     BOOST_TEST(mesh.get_line(12).get_vertex(1) == 13);
-    BOOST_TEST(mesh.get_line(12).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(12).get_material_id() == river_boundary_id);
     //14
     BOOST_TEST(mesh.get_line(13).get_vertex(0) == 13);
     BOOST_TEST(mesh.get_line(13).get_vertex(1) == 14);
-    BOOST_TEST(mesh.get_line(13).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(13).get_material_id() == river_boundary_id);
     //15
     BOOST_TEST(mesh.get_line(14).get_vertex(0) == 14);
     BOOST_TEST(mesh.get_line(14).get_vertex(1) == 15);
-    BOOST_TEST(mesh.get_line(14).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(14).get_material_id() == river_boundary_id);
     //16
     BOOST_TEST(mesh.get_line(15).get_vertex(0) == 15);
     BOOST_TEST(mesh.get_line(15).get_vertex(1) == 0);
-    BOOST_TEST(mesh.get_line(15).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(15).get_material_id() == river_boundary_id);
 }
 
 BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new, 
     *utf::tolerance(eps))
 {   
-    Model mdl;
-    mdl.mesh.eps = 0.02;
-    mdl.river_boundary_id = 4;
-    mdl.border[1] = 
+    double mesh_eps = 0.02;
+    t_boundary_id river_boundary_id = 4;
+    Boundaries boundaries;
+    boundaries[1] = 
     {
         {
             {1, 0},
@@ -602,23 +609,25 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
             {0, 1, 1},
             {1, 2, 2},
             {2, 3, 3},
-            {3, 4, mdl.river_boundary_id},
-            {4, 5, mdl.river_boundary_id},
-            {5, 0, mdl.river_boundary_id}
+            {3, 4, river_boundary_id},
+            {4, 5, river_boundary_id},
+            {5, 0, river_boundary_id}
         },
         false,
         {},
         "test"
     };
     
-    mdl.sources[1] = {1, 4};
-    mdl.sources[2] = {1, 5};
+    Sources sources;
+    sources[1] = {1, 4};
+    sources[2] = {1, 5};
 
-    mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
-    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}});
-    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}});
+    Tree tree;
+    tree.Initialize(boundaries.GetSourcesIdsPointsAndAngles(sources));
+    tree.AddPolars(sources.GetSourcesIds(), {{1, 0}, {2, 0}});
+    tree.AddPolars(sources.GetSourcesIds(), {{1, 0}, {2, 0}});
     
-    auto boundary = SimpleBoundaryGenerator(mdl);
+    auto boundary = SimpleBoundaryGenerator(sources, boundaries, tree, river_boundary_id, mesh_eps);
     tethex::Mesh mesh(boundary);
 
     BOOST_TEST(mesh.get_n_lines() == 14);
@@ -649,43 +658,43 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
 
     BOOST_TEST(mesh.get_line(4).get_vertex(0) == 4);
     BOOST_TEST(mesh.get_line(4).get_vertex(1) == 5);
-    BOOST_TEST(mesh.get_line(4).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(4).get_material_id() == river_boundary_id);
     //6
     BOOST_TEST(mesh.get_line(5).get_vertex(0) == 5);
     BOOST_TEST(mesh.get_line(5).get_vertex(1) == 6);
-    BOOST_TEST(mesh.get_line(5).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(5).get_material_id() == river_boundary_id);
     //7
     BOOST_TEST(mesh.get_line(6).get_vertex(0) == 6);
     BOOST_TEST(mesh.get_line(6).get_vertex(1) == 7);
-    BOOST_TEST(mesh.get_line(6).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(6).get_material_id() == river_boundary_id);
     //8
     BOOST_TEST(mesh.get_line(7).get_vertex(0) == 7);
     BOOST_TEST(mesh.get_line(7).get_vertex(1) == 8);
-    BOOST_TEST(mesh.get_line(7).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(7).get_material_id() == river_boundary_id);
     //9
     BOOST_TEST(mesh.get_line(8).get_vertex(0) == 8);
     BOOST_TEST(mesh.get_line(8).get_vertex(1) == 9);
-    BOOST_TEST(mesh.get_line(8).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(8).get_material_id() == river_boundary_id);
     //10
     BOOST_TEST(mesh.get_line(9).get_vertex(0) == 9);
     BOOST_TEST(mesh.get_line(9).get_vertex(1) == 10);
-    BOOST_TEST(mesh.get_line(9).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(9).get_material_id() == river_boundary_id);
     //11
     BOOST_TEST(mesh.get_line(10).get_vertex(0) == 10);
     BOOST_TEST(mesh.get_line(10).get_vertex(1) == 11);
-    BOOST_TEST(mesh.get_line(10).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(10).get_material_id() == river_boundary_id);
     //12
     BOOST_TEST(mesh.get_line(11).get_vertex(0) == 11);
     BOOST_TEST(mesh.get_line(11).get_vertex(1) == 12);
-    BOOST_TEST(mesh.get_line(11).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(11).get_material_id() == river_boundary_id);
     //13
     BOOST_TEST(mesh.get_line(12).get_vertex(0) == 12);
     BOOST_TEST(mesh.get_line(12).get_vertex(1) == 13);
-    BOOST_TEST(mesh.get_line(12).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(12).get_material_id() == river_boundary_id);
     //13
     BOOST_TEST(mesh.get_line(13).get_vertex(0) == 13);
     BOOST_TEST(mesh.get_line(13).get_vertex(1) == 0);
-    BOOST_TEST(mesh.get_line(13).get_material_id() == mdl.river_boundary_id);
+    BOOST_TEST(mesh.get_line(13).get_material_id() == river_boundary_id);
 }
 
 
@@ -693,25 +702,24 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
     *utf::tolerance(eps))
 {
     //initial condition setup
-    Model model;
-    model.mesh.eps = 0.02;
-    auto& eps = model.mesh.eps;
-    model.ds = 0.01;
-    auto& ds = model.ds;
-    auto& dx = model.dx;
-    auto& w = model.width;
-    auto& h = model.height;
-    auto& r = model.river_boundary_id;
+    double mesh_eps = 0.02;
+    auto& eps = mesh_eps;
+    double ds = 0.01;
+    double dx = 0.01;
+    double w = 10;
+    double h = 20;
+    t_boundary_id r = 89;
 
     //every vertex is a source
-    model.border[1] = 
+    Boundaries border;
+    border[1] = 
     {/*Outer Boundary*/
         {/*vertices(counterclockwise order)*/
             {0, 0},
-            {model.dx, 0}, 
-            {model.width, 0}, 
-            {model.width, model.height}, 
-            {0, model.height}
+            {dx, 0}, 
+            {w, 0}, 
+            {w, h}, 
+            {0, h}
         }, 
         {/*lines*/
             {0, 1, 1},
@@ -725,20 +733,20 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
         "outer boudary"/*just name*/
     };
 
-    
-    model.sources[1] = {1, 0};
-    model.sources[2] = {1, 1};
-    model.sources[3] = {1, 2};
-    model.sources[4] = {1, 3};
-    model.sources[5] = {1, 4};
+    Sources sources;
+    sources[1] = {1, 0};
+    sources[2] = {1, 1};
+    sources[3] = {1, 2};
+    sources[4] = {1, 3};
+    sources[5] = {1, 4};
 
-    model.border[2] =
+    border[2] =
     {/*Hole Boundary*/
         {/*vertices*/
-            {0.25 * model.width, 0.75 * model.height},
-            {0.75 * model.width, 0.75 * model.height}, 
-            {0.75 * model.width, 0.25 * model.height}, 
-            {0.25 * model.width, 0.25 * model.height}
+            {0.25 * w, 0.75 * h},
+            {0.75 * w, 0.75 * h}, 
+            {0.75 * w, 0.25 * h}, 
+            {0.25 * w, 0.25 * h}
         }, 
         {/*lines*/
             {0, 1, 6},
@@ -747,22 +755,22 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
             {3, 0, 9} 
         }, 
         true/*this is inner boudary*/,
-        {{0.5*model.width, 0.5*model.height}}/*holes*/,
+        {{0.5*w, 0.5*h}}/*holes*/,
         "hole"/*just name*/
     };
 
-    model.sources[6] = {2, 0};
-    model.sources[7] = {2, 1};
-    model.sources[8] = {2, 2};
-    model.sources[9] = {2, 3};
+    sources[6] = {2, 0};
+    sources[7] = {2, 1};
+    sources[8] = {2, 2};
+    sources[9] = {2, 3};
 
-    model.border[3] =
+    border[3] =
     {/*Hole Boundary*/
         {/*vertices*/
-            {0.8 * model.width, 0.9 * model.height},
-            {0.9 * model.width, 0.9 * model.height}, 
-            {0.9 * model.width, 0.8 * model.height}, 
-            {0.8 * model.width, 0.8 * model.height}
+            {0.8 * w, 0.9 * h},
+            {0.9 * w, 0.9 * h}, 
+            {0.9 * w, 0.8 * h}, 
+            {0.8 * w, 0.8 * h}
         }, 
         {/*lines*/
             {0, 1, 10},
@@ -771,19 +779,20 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
             {3, 0, 13} 
         }, 
         true/*this is inner boudary*/,
-        {{0.85*model.width, 0.85*model.height}}/*holes*/,
+        {{0.85*w, 0.85*h}}/*holes*/,
         "hole"/*just name*/
     };
-    model.sources[10] = {3, 0};
-    model.sources[11] = {3, 1};
-    model.sources[12] = {3, 2};
-    model.sources[13] = {3, 3};
+    sources[10] = {3, 0};
+    sources[11] = {3, 1};
+    sources[12] = {3, 2};
+    sources[13] = {3, 3};
 
-    model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
+    Tree tree;
+    tree.Initialize(border.GetSourcesIdsPointsAndAngles(sources));
     
     //grow each source point by one step
     Polar p{ds, 0};
-    model.tree.AddPolars(
+    tree.AddPolars(
         {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13},
         {p, p, p, p, p, p, p, p, p, p,  p,  p,  p}); 
 
@@ -900,7 +909,7 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
     };
 
     //generatre boundary
-    auto final_boundary = SimpleBoundaryGenerator(model);
+    auto final_boundary = SimpleBoundaryGenerator(sources, border, tree, r, mesh_eps);
 
     for(size_t i = 0; i < final_boundary.vertices.size(); ++i)
     {
@@ -909,5 +918,7 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
         BOOST_TEST(   final_boundary.lines.at(i) == lines.at(i));
     }      
 
-    BOOST_TEST(final_boundary.holes == holes);
+    for(size_t i = 0; i < holes.size(); ++i) {
+        BOOST_TEST(final_boundary.holes.at(i) == holes.at(i));
+    }
 }

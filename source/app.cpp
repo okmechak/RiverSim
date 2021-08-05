@@ -10,7 +10,7 @@ int App::Run(int argc, char *argv[])
         if (po.count("help") || po.count("version"))
             return 0;
 
-        auto model = InitializeModelObject(po);
+        auto model = InitializeModelObjectFromProgramOptions(po);
 
         if (model.prog_opt.verbose) cout << model << endl;
 

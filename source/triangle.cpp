@@ -1367,8 +1367,45 @@ void set_tria_to_default(struct triangulateio *io)
   /*                                                                           */
   /*****************************************************************************/
 
+//MeshParams
+    ///Prints program options structure to output stream.
+    ostream& operator <<(ostream& write, const MeshParams & mp)
+    {
+        write << "\t tip_points:" << endl;
+        for(auto &p: mp.tip_points)
+            write << "\t\t" << p << endl;
+        if(mp.tip_points.empty())
+            write << "\t\t empty" << endl;
+        write << "\t refinment_radius = " << mp.refinment_radius << endl;
+        write << "\t exponant = "  << mp.exponant   << endl;
+        write << "\t min_area = "  << mp.min_area   << endl;
+        write << "\t max_area = "  << mp.max_area   << endl;
+        write << "\t min_angle = " << mp.min_angle  << endl;
+        write << "\t max_edge = "  << mp.max_edge   << endl;
+        write << "\t min_edge = "  << mp.min_edge   << endl;
+        write << "\t ratio = "     << mp.ratio      << endl;
+        write << "\t eps = "       << mp.eps        << endl;
+        write << "\t sigma = "     << mp.sigma      << endl;
+        write << "\t static_refinment_steps = " << mp.static_refinment_steps << endl;
+        return write;
+    }
 
-River::MeshParams* ac_global = NULL;
+    bool MeshParams::operator==(const MeshParams& mp) const
+    {
+        return 
+            abs(refinment_radius - mp.refinment_radius) < EPS 
+            && abs(exponant  - mp.exponant) < EPS
+            && static_refinment_steps == mp.static_refinment_steps
+            && abs(min_area  - mp.min_area) < EPS
+            && abs(max_area  - mp.max_area) < EPS
+            && abs(min_angle - mp.min_angle) < EPS
+            && abs(max_edge  - mp.max_edge) < EPS
+            && abs(min_edge  - mp.min_edge) < EPS
+            && abs(ratio     - mp.ratio) < EPS
+            && abs(eps       - mp.eps) < EPS;
+    }
+
+MeshParams* ac_global = NULL;
 int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
 {
   //test of adaptive mesh function
@@ -11409,7 +11446,7 @@ void statistics(struct mesh *m, struct behavior *b)
 /*****************************************************************************/
 
 void triangulate(const char *triswitches, struct triangulateio *in,
-                 struct triangulateio *out, struct triangulateio *vorout, River::MeshParams* ac)
+                 struct triangulateio *out, struct triangulateio *vorout, MeshParams* ac)
 {
   struct mesh m;
   struct behavior b;

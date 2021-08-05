@@ -37,6 +37,9 @@
 
 using namespace std;
 
+/*! \namespace River
+    \brief River namespace holds everything that is related to River simulation.
+*/
 namespace River
 {
     struct Exception : public exception
@@ -151,7 +154,7 @@ namespace River
               \throw Exception if vector lenght is zero
               \return Normalized vector
             */
-            Point get_normalized() const;
+            Point getNormalized() const;
 
             ///Converts object to string and redirects it to stream.
             friend ostream& operator <<(ostream& write, const Point & p);
@@ -217,5 +220,8 @@ namespace River
                 return write;
             }
     };
+
+    ///Vector of points data type.
+    typedef vector<Polar> t_PolarList;
 
 } // namespace River

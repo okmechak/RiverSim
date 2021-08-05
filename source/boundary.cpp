@@ -15,9 +15,8 @@
 
 #include "boundary.hpp"
 ///\cond
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include <algorithm>
+#include <sstream>
 ///\endcond
 
 using namespace std;
@@ -29,18 +28,22 @@ namespace River
     {
         return value == bc.value && type == bc.type;
     }
+
     ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition)
     {
         switch (boundary_condition.type)
         {
             case DIRICHLET:
-                write << "boudary type: Dirichlet, ";
+                write << "boudary type: Dirichlet,  ";
                 break;
             case NEUMAN:
-                write << "boudary type: Neuman, ";
+                write << "boudary type: Neuman,  ";
+                break;
+            case ROBIN:
+                write << "boudary type: Robin,  ";
                 break;
             default:
-                write << "boudary type: Undefined(" <<boundary_condition.type << "), ";
+                write << "boudary type: Undefined(" <<boundary_condition.type << "),  ";
                 break;
         }
         write << "value: " << boundary_condition.value;
@@ -49,13 +52,13 @@ namespace River
     }
 
     //BoundaryConditions
-    t_BoundaryConditions BoundaryConditions::Get(t_boundary type)
+    t_BoundaryConditions BoundaryConditions::operator()(t_boundary type) const
     {
         t_BoundaryConditions bd;
-        if(type != DIRICHLET && type != NEUMAN)
+        if(type != DIRICHLET && type != NEUMAN && type != ROBIN)
             throw Exception("BoundaryConditions:Get: unknown boundary type: " + to_string(type));
             
-        for(const auto& [boundary_id, boundary_condition]:*this)
+        for(const auto& [boundary_id, boundary_condition]: *this)
             if(boundary_condition.type == type)
                 bd[boundary_id] = boundary_condition;
 
@@ -65,12 +68,18 @@ namespace River
     ostream& operator <<(ostream& write, const BoundaryConditions & bcs)
     {
         for(const auto&[id, value]: bcs)
-            write << "id = " << id << ", " << value << endl;
+            write << "id = " << id << ",  " << value << endl;
+        return write;
+    }
+
+    //print source coord
+    ostream& operator <<(ostream& write, const t_source_coord & source_coord){
+        write << "branch id = " << source_coord.first << ",  vertice index" << source_coord.second;
         return write;
     }
 
     //Sources
-    vector<t_source_id> Sources::GetSourcesIds() const
+    vector<t_source_id> Sources::getSourcesIds() const
     {
         vector<t_source_id> sources_ids;
         for(auto[source_id, value]: *this)
@@ -92,8 +101,8 @@ namespace River
         return write;
     }
 
-    //SimpleBoundary
-    void SimpleBoundary::Append(const SimpleBoundary& simple_boundary)
+    //Boundary
+    void Boundary::append(const Boundary& simple_boundary)
     {
         auto size = vertices.size();
 
@@ -117,13 +126,13 @@ namespace River
         holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
-    void SimpleBoundary::ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary)
+    void Boundary::replaceElement(const t_vert_pos vertice_pos, const Boundary& simple_boundary)
     {
         if(simple_boundary.vertices.empty())
             return;
         
         if(vertice_pos > vertices.size())
-            throw Exception("SimpleBoundary: trying to insert at position out of boundaries");
+            throw Exception("Boundary: trying to insert at position out of boundaries");
 
         //remove target element
         if(!vertices.empty())
@@ -164,7 +173,15 @@ namespace River
         holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
-    bool SimpleBoundary::operator==(const SimpleBoundary &simple_boundary) const
+    void Boundary::clear() {
+        vertices.clear();
+        lines.clear();
+        holes.clear();
+        inner_boundary = false;
+        name = "";
+    }
+
+    bool Boundary::operator==(const Boundary &simple_boundary) const
     {
         return vertices == simple_boundary.vertices 
             && lines == simple_boundary.lines
@@ -173,7 +190,7 @@ namespace River
             && name == simple_boundary.name;
     }
 
-    ostream& operator <<(ostream& write, const SimpleBoundary & boundary)
+    ostream& operator <<(ostream& write, const Boundary & boundary)
     {
         write << "Name: " << boundary.name << endl;
 
@@ -191,6 +208,164 @@ namespace River
             write << l << endl;
 
         return write;
+    }
+
+    /*
+        Branch Class
+    */
+    Branch::Branch(
+        const Point& source_point_val, 
+        const double angle):
+        source_angle(angle)
+    {
+        AddAbsolutePoint(source_point_val);
+    }
+
+    Branch& Branch::AddAbsolutePoint(const Point& p)
+    {
+        vertices.push_back(p);
+        return *this;
+    }
+
+    Branch& Branch::AddAbsolutePoint(const Polar& p)
+    {
+        vertices.push_back(TipPoint() + Point{p});
+        return *this;
+    }
+
+    Branch& Branch::AddPoint(const Point &p)
+    {
+        vertices.push_back(TipPoint() + p);
+        return *this;
+    }
+
+    Branch& Branch::AddPoint(const Polar& p)
+    {
+        auto p_new = Polar{p};
+        p_new.phi += TipAngle();
+        AddAbsolutePoint(p_new);
+        return *this;
+    }
+
+    Branch& Branch::Shrink(double lenght)
+    {
+        while(lenght > 0 && Lenght() > 0)
+        {
+            try{
+                
+                auto tip_lenght = TipVector().norm();
+                if(lenght < tip_lenght - eps)
+                {
+                    auto k = 1 - lenght/tip_lenght;
+                    auto new_tip = TipVector()*k;
+                    RemoveTipPoint();
+                    AddPoint(new_tip);
+                    lenght = 0;
+                }
+                else if((lenght >= tip_lenght - eps) && (lenght <= tip_lenght + eps))
+                {
+                    RemoveTipPoint();
+                    lenght = 0;
+                }
+                else if(lenght >= tip_lenght + eps)
+                {
+                    RemoveTipPoint();
+                    lenght -= tip_lenght;
+                }
+                else 
+                    throw Exception("Unhandled case in Shrink method.");
+            }
+            catch(const exception& e)
+            {
+                cerr << e.what() << '\n';
+                throw Exception("Shrinikng error: problem with RemoveTipPoint() or TipVector()");
+            }
+        }
+        
+        return *this;
+    }
+
+    Branch& Branch::RemoveTipPoint()
+    {
+        if(vertices.size() == 1)
+            throw Exception("Last branch point con't be removed");   
+        vertices.pop_back();
+        return *this;
+    }
+
+    Point Branch::TipPoint() const 
+    {
+        if(vertices.size() == 0)
+            throw Exception("Can't return TipPoint size is zero");
+        return vertices.at(vertices.size() - 1);
+    }
+
+    Point Branch::TipVector() const 
+    {
+        auto vertices_size = vertices.size();
+        if(vertices_size <= 1)
+            throw Exception("Can't return TipVector size is 1 or even less");
+
+        return vertices.at(vertices_size - 1) - vertices.at(vertices_size - 2);
+    }
+
+    Point Branch::Vector(unsigned i) const
+    {
+        if(vertices.size() == 1)
+            throw Exception("Can't return Vector. Size is 1");
+        if(i >= vertices.size() || i == 0)
+            throw Exception("Can't return Vector. Index is bigger then size or is zero");
+
+        return vertices.at(i) - vertices.at(i - 1);
+    }
+
+    double Branch::TipAngle() const 
+    {
+        if(vertices.size() < 1)
+            throw Exception("TipAngle: size is less then 1!");
+        else if(vertices.size() == 1)
+            return source_angle; 
+
+        return TipVector().angle();
+    }
+
+    Point Branch::SourcePoint() const
+    {
+        return vertices.at(0);
+    }
+
+    double Branch::SourceAngle() const 
+    {
+        return source_angle;
+    }
+
+    double Branch::Lenght() const 
+    {
+        double lenght = 0.;
+        if(vertices.size() > 1)
+            for(unsigned int i = 1; i < vertices.size(); ++i)
+                lenght += (vertices.at(i) - vertices.at(i - 1)).norm();
+
+        return lenght;
+    }
+
+    ostream& operator<<(ostream& write, const Branch & b)
+    {
+        int i = 0;
+        write << "Branch " << endl;
+        write << "  lenght - " << b.Lenght() << endl;
+        write << "  size - " << b.vertices.size() << endl;
+        write << "  source angle - " << b.source_angle << endl;
+         for(auto p: b.vertices)
+            write <<"   " << i++ << " ) " << p << endl;
+
+        return write;
+    }
+
+    bool Branch::operator==(const Branch& br) const
+    {
+        return equal(vertices.begin(), vertices.end(), br.vertices.begin()) &&
+            SourceAngle() == br.SourceAngle();
     }
 
     //Boundaries
@@ -234,9 +409,9 @@ namespace River
             throw Exception("Boundary: Boundary ids should be unique numbers!");
     }
 
-    vector<Point> Boundaries::GetHolesList() const
+    t_PointList Boundaries::GetHolesList() const
     {
-        vector<Point> holes;
+        t_PointList holes;
         for(const auto& [boundary_id, simple_boundary]: *this)
             if(simple_boundary.inner_boundary)
                 for(auto& h: simple_boundary.holes)
@@ -343,7 +518,7 @@ namespace River
         return sources;
     }
 
-    SimpleBoundary& Boundaries::GetOuterBoundary()
+    Boundary& Boundaries::GetOuterBoundary()
     {
         for(auto& [boundary_id, simple_boundary]: *this)
             if(!simple_boundary.inner_boundary)
@@ -393,7 +568,7 @@ namespace River
         return normal_angle;
     }
 
-    double Boundaries::GetVerticeNormalAngle(const vector<Point>& vertices, const t_vert_pos vertice_pos)
+    double Boundaries::GetVerticeNormalAngle(const t_PointList& vertices, const t_vert_pos vertice_pos)
     {
         const auto vertices_size = vertices.size();
         const auto [vertice_pos_left, vertice_pos_right] = GetAdjacentVerticesPositions(vertices_size, vertice_pos);

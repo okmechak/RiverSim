@@ -65,14 +65,94 @@
 #include <utility>
 ///\endcond
 
-#include "point.hpp"
 #include "tethex.hpp"
-#include "physmodel.hpp"
 
 using namespace dealii;
 
 namespace River
 {
+    class SolverParams
+    {
+        public:
+            ///Tollerarnce used by dealii Solver.
+            double tollerance = 1.e-12;
+
+            ///Number of solver iteration steps.
+            unsigned num_of_iterrations = 6000;
+
+            ///Number of adaptive refinment steps.
+            unsigned adaptive_refinment_steps = 2;
+
+            ///Fraction of refined mesh elements.
+            double refinment_fraction = 0.1;
+
+            ///Polynom degree of quadrature integration.
+            unsigned quadrature_degree = 3;
+
+            ///Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
+            unsigned renumbering_type = 0;
+
+            ///Maximal distance between middle point and first solved point, used in non euler growth.
+            //double max_distance = 0.002;
+
+            ///Prints program options structure to output stream.
+            friend ostream& operator <<(ostream& write, const SolverParams & mp);
+
+            bool operator==(const SolverParams& sp) const;
+    };
+
+    /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
+    */
+    class IntegrationParams
+    {
+        public:
+            /*! \brief Circle radius with centrum in tip point.
+                \details Parameter is used in River::IntegrationParams::WeightFunction
+            */
+            double weigth_func_radius = 0.01;
+
+            /*! \brief Circle radius with centrum in tip point.
+                \details Parameter is used in River::IntegrationParams::WeightFunction
+            */
+            double integration_radius = 3 * 0.01;
+
+            /*! \brief Controls slope.
+                \details Parameter is used in River::IntegrationParams::WeightFunction
+            */
+            double exponant = 2.;
+            
+            ///Weight function used in computation of series parameters.
+            inline double WeightFunction(const double r) const
+            {
+                //! [WeightFunc]
+                return exp(-pow(r / weigth_func_radius, exponant));
+                //! [WeightFunc]
+            }
+            
+            ///Base Vector function used in computation of series parameters.
+            inline double BaseVector(const int nf, const complex<double> zf) const
+            {
+                if( (nf % 2) == 0)
+                    return -imag(pow(zf, nf/2.));
+                else
+                    return real(pow(zf, nf/2.));
+                
+            }
+
+            ///Base Vector function used in computation of series parameters.
+            inline double BaseVectorFinal(const int nf, const double angle, const double dx, const double dy ) const
+            {
+                return BaseVector(nf, 
+                    exp(-complex<double>(0.0, 1.0)*angle)
+                    *(dx + complex<double>(0.0, 1.0)*dy));
+            }
+
+            ///Prints options structure to output stream.
+            friend ostream& operator <<(ostream& write, const IntegrationParams & ip);
+
+            bool operator==(const IntegrationParams& ip) const;
+    };
+    
     /*! \brief Deal.II Solver Wrapper 
         \details
         For more details read [Deal.II ste-6 tutorial](https://www.dealii.org/current/doxygen/deal.II/step_6.html).
@@ -81,21 +161,19 @@ namespace River
     {
         public:
             ///Solver constructor
-            Solver(Model *model): 
-                model(model),
+            Solver(SolverParams& solver_params, bool verbose, double field_value, unsigned int num_of_static_refinments): 
                 dof_handler(triangulation),
-                fe(model->solver_params.quadrature_degree), 
-                quadrature_formula(model->solver_params.quadrature_degree),
-                face_quadrature_formula(model->solver_params.quadrature_degree)
-            { 
-                tollerance = model->solver_params.tollerance;
-                number_of_iterations = model->solver_params.num_of_iterrations;
-                num_of_adaptive_refinments = model->solver_params.adaptive_refinment_steps;
-                refinment_fraction = model->solver_params.refinment_fraction;
-                verbose = model->prog_opt.verbose;
-                field_value = model->field_value;
-                num_of_static_refinments = model->mesh.static_refinment_steps;
-            };
+                fe(solver_params.quadrature_degree), 
+                quadrature_formula(solver_params.quadrature_degree),
+                face_quadrature_formula(solver_params.quadrature_degree),
+                tollerance(solver_params.tollerance),
+                number_of_iterations(solver_params.num_of_iterrations),
+                num_of_adaptive_refinments(solver_params.adaptive_refinment_steps), 
+                refinment_fraction(solver_params.refinment_fraction),
+                verbose(verbose),
+                field_value(field_value),
+                num_of_static_refinments(num_of_static_refinments)
+            {};
             
             ~Solver(){clear();}
 
@@ -118,7 +196,7 @@ namespace River
             void OpenMesh(const string fileName = "river.msh");
 
             ///Static adaptive mesh refinment.
-            void static_refine_grid(const Model& mdl, const vector<Point>& tips_points);
+            void static_refine_grid(const double integration_radius, const t_PointList& tips_points);
 
             ///Number of refined by Deal.II mesh cells.
             unsigned long NumberOfRefinedCells()
@@ -132,13 +210,13 @@ namespace River
             }
 
             ///Run fem solution.
-            void run();
+            void run(const BoundaryConditions& boundary_conditions);
 
             ///Save results to VTK file.
             void output_results(const string file_name) const;
 
             ///Interation of series parameters around tips points.
-            vector<double> integrate(const Model& mdl, const Point& point, const double angle);
+            vector<double> integrate(const IntegrationParams& integration_params, const Point& point, const double angle);
 
             ///Integration used for test purpose.
             double integration_test(const Point& point, const double dr);
@@ -171,7 +249,6 @@ namespace River
             double coarsening_fraction = 0;
 
         private:
-            Model *model = NULL;
 
             ///Dimension of problem.
             const static int dim = 2;
@@ -196,7 +273,7 @@ namespace River
             ConvergenceTable convergence_table;
 
             void setup_system();
-            void assemble_system();
+            void assemble_system(const BoundaryConditions& boundary_conditions);
             void solve();
             void refine_grid();
     };

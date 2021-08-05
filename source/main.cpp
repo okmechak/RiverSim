@@ -108,7 +108,7 @@
         + \ref point.hpp
         + \ref boundary.hpp
         + \ref tree.hpp
-        + \ref physmodel.hpp
+        + \ref river.hpp
         + \ref io.hpp
     + Next you can overview Classes from those files.
     + For any suggestions or improvments create [issue](github.com/okmechak/RiverSim/issues) on github repo
