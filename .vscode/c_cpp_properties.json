@@ -5,7 +5,6 @@
             "includePath": [
                 "${workspaceFolder}/source/**",
                 "${workspaceFolder}/tests/**",
-                "/mnt/c/users/ofcra/Bin/dealii/include/deal.II",
                 "/usr/include/**"
             ],
             "defines": [],

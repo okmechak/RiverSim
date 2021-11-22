@@ -1,6 +1,0 @@
-<map id="tethex::MeshElement" name="tethex::MeshElement">
-<area shape="rect" id="node2" href="$classtethex_1_1Line.html" title="Line keeps 3 numbers &#45; the number of beginning vertex, the number of the ending one, and a number of physical domain where this line takes place (material identificator &#45; in other words). " alt="" coords="5,380,159,545"/>
-<area shape="rect" id="node3" href="$classtethex_1_1PhysPoint.html" title="PhysPoint keep 2 numbers &#45; the number of the vertex associated with the point, and the number of phys..." alt="" coords="183,395,319,531"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Quadrangle.html" title="Quadrangle &#45; 2&#45;dimensional shape with 4 straight edges. " alt="" coords="343,395,490,531"/>
-<area shape="rect" id="node5" href="$classtethex_1_1Triangle.html" title="Triangle &#45; 2&#45;dimensional simplex. " alt="" coords="514,395,642,531"/>
-</map>

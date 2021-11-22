@@ -32,4 +32,8 @@
     
 
     + multithreading and performance improve
+    
+    \subsection v24 4.0.0 
+
+    + Rebuild geometry generation using CGAL.
 */
