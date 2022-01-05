@@ -72,3 +72,13 @@ tests/mesh_min_edge_lenght.msh
 tests/test_boundary.msh
 tests/Forward_River_Evolution_boundary.msh
 tests/Forward_River_Evolution.msh
+
+#LaTeX
+docsrc/master/*.aux
+docsrc/master/*.bcf
+docsrc/master/*.fls
+docsrc/master/*.log
+docsrc/master/*.run.xml
+docsrc/master/*.synctex.gz
+docsrc/master/*.fdb_latexmk
+docsrc/master/*.toc
