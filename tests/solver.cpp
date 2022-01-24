@@ -22,17 +22,17 @@ namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
 BOOST_AUTO_TEST_CASE( integration_params_test, 
-    *utf::tolerance(1e-2))
+    *utf::tolerance(1e-1))
 {   
     Model mdl;
 
     //1e-12 - is to small and we receive strange mesh
-    mdl.mesh.min_area = 1e-6;
+    mdl.mesh.min_area = 1e-5;
     mdl.mesh.static_refinment_steps = 0;
     mdl.mesh.max_area = 0.01;
     mdl.mesh.min_angle = 30;
-    mdl.mesh.refinment_radius = 0.25;
-    mdl.mesh.exponant = 4;
+    mdl.mesh.refinment_radius = 0.10;
+    mdl.mesh.exponant = 2;
     mdl.dx = 0.25;
     mdl.InitializeDirichlet();
 
@@ -68,15 +68,15 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 }
 
 BOOST_AUTO_TEST_CASE( integration_test, 
-    *utf::tolerance(1e-2))
+    *utf::tolerance(1e-1))
 {
     Model mdl;
     //1e-12 - is to small and we receive strange mesh
-    mdl.mesh.min_area = 1e-6;
+    mdl.mesh.min_area = 1e-5;
     mdl.mesh.max_area = 0.01;
     mdl.mesh.min_angle = 30;
-    mdl.mesh.refinment_radius = 0.25;
-    mdl.mesh.exponant = 4;
+    mdl.mesh.refinment_radius = 0.10;
+    mdl.mesh.exponant = 2;
     mdl.integr.integration_radius = 0.01;
     mdl.field_value = 1;
     mdl.dx = 0.25;
