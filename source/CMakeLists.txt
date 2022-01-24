@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 set(BUILD_PROGRAM ON CACHE BOOL "Build(Compile) Option is handy for build only docs.")
-set(BUILD_PYTHON_API ON CACHE BOOL "Generate python library")
+set(BUILD_PYTHON_API ON CACHE BOOL "Generate python library. Needs BUILD_PROGRAM parameter to be true.")
 set(DEAL_II_PREFER_STATIC_LIBS ON CACHE BOOL "Static linkage of Deal.II library will be prefferable.")
 
 if(BUILD_PROGRAM)
