@@ -24,9 +24,6 @@
 ///mesh convertor tool
 #include "tethex.hpp"
 
-///other dependencies
-#include "physmodel.hpp"
-
 using namespace std;
 
 

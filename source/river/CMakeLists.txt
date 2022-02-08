@@ -4,15 +4,25 @@ cmake_minimum_required(VERSION 2.8.12)
 add_library(GeometryPrimitives GeometryPrimitives.hpp GeometryPrimitives.cpp) 
 install(TARGETS GeometryPrimitives DESTINATION riversim)
 
+#tethex
+add_library(tethex tethex.hpp tethex.cpp) 
+target_link_libraries(tethex GeometryPrimitives)
+install(TARGETS tethex DESTINATION riversim)
+
 #boundary
 add_library(boundary boundary.hpp boundary.cpp) 
 target_link_libraries(boundary GeometryPrimitives)
 install(TARGETS boundary DESTINATION riversim)
 
-#tethex
-add_library(tethex tethex.hpp tethex.cpp) 
-target_link_libraries(tethex GeometryPrimitives)
-install(TARGETS tethex DESTINATION riversim)
+#triangle
+add_library(triangle triangle.hpp triangle.cpp) 
+target_link_libraries(triangle boundary)
+install(TARGETS triangle DESTINATION riversim)
+
+#mesh
+add_library(mesh mesh.hpp mesh.cpp) 
+target_link_libraries(mesh tethex triangle)
+install(TARGETS mesh DESTINATION riversim)
 
 #tree
 add_library(tree tree.hpp tree.cpp) 
@@ -21,7 +31,7 @@ install(TARGETS tree DESTINATION riversim)
 
 #physmodel
 add_library(physmodel physmodel.hpp physmodel.cpp) 
-target_link_libraries(physmodel tree tethex)
+target_link_libraries(physmodel tree mesh)
 install(TARGETS physmodel DESTINATION riversim)
 
 #io
@@ -29,20 +39,10 @@ add_library(io io.hpp io.cpp json.hpp version.hpp)
 target_link_libraries(io physmodel)
 install(TARGETS io DESTINATION riversim)
 
-#triangle
-add_library(triangle triangle.hpp triangle.cpp) 
-target_link_libraries(triangle physmodel)
-install(TARGETS triangle DESTINATION riversim)
-
 #boundary_generator
 add_library(boundary_generator boundary_generator.hpp boundary_generator.cpp) 
 target_link_libraries(boundary_generator physmodel)
 install(TARGETS boundary_generator DESTINATION riversim)
-
-#mesh
-add_library(mesh mesh.hpp mesh.cpp) 
-target_link_libraries(mesh tethex triangle)
-install(TARGETS mesh DESTINATION riversim)
 
 #solver
 add_library(solver solver.hpp solver.cpp) 

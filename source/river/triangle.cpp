@@ -227,7 +227,6 @@
 /*   TRILIBRARY symbol.  Read the file triangle.hpp for details on how to call */
 /*   the procedure triangulate() that results.                               */
 
-
 /* It is possible to generate a smaller version of Triangle using one or     */
 /*   both of the following symbols.  Define the REDUCED symbol to eliminate  */
 /*   all features that are primarily of research interest; specifically, the */
@@ -257,7 +256,6 @@
 /*   For yet more discussion, see Section 5 of my paper, "Adaptive Precision */
 /*   Floating-Point Arithmetic and Fast Robust Geometric Predicates" (also   */
 /*   available as Section 6.6 of my dissertation).                           */
-
 
 #define INEXACT /* Nothing */
 /* #define INEXACT volatile */
@@ -340,6 +338,34 @@
 
 #include "triangle.hpp"
 
+//
+// MeshParams
+/// Prints program options structure to output stream.
+ostream &River::operator<<(ostream &write, const River::MeshParams &mp)
+{
+  write << "\t tip_points:" << endl;
+  for (auto &p : mp.tip_points)
+    write << "\t\t" << p << endl;
+  if (mp.tip_points.empty())
+    write << "\t\t empty" << endl;
+  write << "\t refinment_radius = " << mp.refinment_radius << endl;
+  write << "\t exponant = " << mp.exponant << endl;
+  write << "\t min_area = " << mp.min_area << endl;
+  write << "\t max_area = " << mp.max_area << endl;
+  write << "\t min_angle = " << mp.min_angle << endl;
+  write << "\t max_edge = " << mp.max_edge << endl;
+  write << "\t min_edge = " << mp.min_edge << endl;
+  write << "\t ratio = " << mp.ratio << endl;
+  write << "\t eps = " << mp.eps << endl;
+  write << "\t sigma = " << mp.sigma << endl;
+  write << "\t static_refinment_steps = " << mp.static_refinment_steps << endl;
+  return write;
+}
+
+bool River::MeshParams::operator==(const River::MeshParams &mp) const
+{
+  return abs(refinment_radius - mp.refinment_radius) < EPS && abs(exponant - mp.exponant) < EPS && static_refinment_steps == mp.static_refinment_steps && abs(min_area - mp.min_area) < EPS && abs(max_area - mp.max_area) < EPS && abs(min_angle - mp.min_angle) < EPS && abs(max_edge - mp.max_edge) < EPS && abs(min_edge - mp.min_edge) < EPS && abs(ratio - mp.ratio) < EPS && abs(eps - mp.eps) < EPS;
+}
 
 /* Labels that signify the result of point location.  The result of a        */
 /*   search indicates that the point falls in the interior of a triangle, on */
@@ -796,7 +822,6 @@ struct behavior
   REAL maxarea;
 
   /* Variables for file names.                                                 */
-
 
 }; /* End of `struct behavior'. */
 
@@ -1344,70 +1369,72 @@ void set_tria_to_default(struct triangulateio *io)
   io->numberofedges = 0;     /* Out only */
 }
 
-  /*****************************************************************************/
-  /*                                                                           */
-  /*  triunsuitable()   Determine if a triangle is unsuitable, and thus must   */
-  /*                    be further refined.                                    */
-  /*                                                                           */
-  /*  You may write your own procedure that decides whether or not a selected  */
-  /*  triangle is too big (and needs to be refined).  There are two ways to do */
-  /*  this.                                                                    */
-  /*                                                                           */
-  /*  (1)  Modify the procedure `triunsuitable' below, then recompile          */
-  /*  Triangle.                                                                */
-  /*                                                                           */
-  /*  (2)  Define the symbol EXTERNAL_TEST (either by adding the definition    */
-  /*  to this file, or by using the appropriate compiler switch).  This way,   */
-  /*  you can compile triangle.c separately from your test.  Write your own    */
-  /*  `triunsuitable' procedure in a separate C file (using the same prototype */
-  /*  as below).  Compile it and link the object code with triangle.o.         */
-  /*                                                                           */
-  /*  This procedure returns 1 if the triangle is too large and should be      */
-  /*  refined; 0 otherwise.                                                    */
-  /*                                                                           */
-  /*****************************************************************************/
+/*****************************************************************************/
+/*                                                                           */
+/*  triunsuitable()   Determine if a triangle is unsuitable, and thus must   */
+/*                    be further refined.                                    */
+/*                                                                           */
+/*  You may write your own procedure that decides whether or not a selected  */
+/*  triangle is too big (and needs to be refined).  There are two ways to do */
+/*  this.                                                                    */
+/*                                                                           */
+/*  (1)  Modify the procedure `triunsuitable' below, then recompile          */
+/*  Triangle.                                                                */
+/*                                                                           */
+/*  (2)  Define the symbol EXTERNAL_TEST (either by adding the definition    */
+/*  to this file, or by using the appropriate compiler switch).  This way,   */
+/*  you can compile triangle.c separately from your test.  Write your own    */
+/*  `triunsuitable' procedure in a separate C file (using the same prototype */
+/*  as below).  Compile it and link the object code with triangle.o.         */
+/*                                                                           */
+/*  This procedure returns 1 if the triangle is too large and should be      */
+/*  refined; 0 otherwise.                                                    */
+/*                                                                           */
+/*****************************************************************************/
 
-
-River::MeshParams* ac_global = NULL;
+River::MeshParams *ac_global = NULL;
 int triunsuitable(vertex triorg, vertex tridest, vertex triapex, REAL area)
 {
-  //test of adaptive mesh function
+  // test of adaptive mesh function
   bool custom_point_refinment = false;
-  if(ac_global != NULL)
+  if (ac_global != NULL)
   {
-    REAL 
-      vert_val_1 = (*ac_global)(triorg[0], triorg[1]), 
-      vert_val_2 = (*ac_global)(tridest[0], tridest[1]), 
-      vert_val_3 = (*ac_global)(triapex[0], triapex[1]);
+    REAL
+        vert_val_1 = (*ac_global)(triorg[0], triorg[1]),
+        vert_val_2 = (*ac_global)(tridest[0], tridest[1]),
+        vert_val_3 = (*ac_global)(triapex[0], triapex[1]);
     custom_point_refinment = (area > vert_val_1 || area > vert_val_2 || area > vert_val_3);
   }
 
-  //evaluatio of edge lenghts
-  auto 
-    dl1 = sqrt(pow(triorg[0] - tridest[0], 2) + pow(triorg[1] - tridest[1], 2)),
-    dl2 = sqrt(pow(tridest[0] - triapex[0], 2) + pow(tridest[1] - triapex[1], 2)),
-    dl3 = sqrt(pow(triapex[0] - triorg[0], 2) + pow(triapex[1] - triorg[1], 2));
-  
-  auto max_dl = dl1;
-  if(max_dl < dl2) max_dl = dl2;
-  if(max_dl < dl3) max_dl = dl3;
-  
-  auto min_dl = dl1;
-  if(min_dl > dl2) min_dl = dl2;
-  if(min_dl > dl3) min_dl = dl3;
-  
-  auto quality = max_dl/min_dl;
+  // evaluatio of edge lenghts
+  auto
+      dl1 = sqrt(pow(triorg[0] - tridest[0], 2) + pow(triorg[1] - tridest[1], 2)),
+      dl2 = sqrt(pow(tridest[0] - triapex[0], 2) + pow(tridest[1] - triapex[1], 2)),
+      dl3 = sqrt(pow(triapex[0] - triorg[0], 2) + pow(triapex[1] - triorg[1], 2));
 
-  if((custom_point_refinment || max_dl > ac_global->max_edge || 
-    area > ac_global->max_area || max_dl/min_dl > ac_global->ratio) && 
-    min_dl > ac_global->min_edge && area > ac_global->min_area &&
-    quality < ac_global->ratio)
+  auto max_dl = dl1;
+  if (max_dl < dl2)
+    max_dl = dl2;
+  if (max_dl < dl3)
+    max_dl = dl3;
+
+  auto min_dl = dl1;
+  if (min_dl > dl2)
+    min_dl = dl2;
+  if (min_dl > dl3)
+    min_dl = dl3;
+
+  auto quality = max_dl / min_dl;
+
+  if ((custom_point_refinment || max_dl > ac_global->max_edge ||
+       area > ac_global->max_area || max_dl / min_dl > ac_global->ratio) &&
+      min_dl > ac_global->min_edge && area > ac_global->min_area &&
+      quality < ac_global->ratio)
 
     return 1;
 
   return 0;
 }
-
 
 /**                                                                         **/
 /**                                                                         **/
@@ -1446,12 +1473,12 @@ void trifree(VOID *memptr)
 
 /********* User interaction routines begin here                      *********/
 /**                                                                         **/
-/**                
- * 
- * 
+/**
+ *
+ *
  *                                                          **/
 
-void triangulateiofree(struct triangulateio * io)
+void triangulateiofree(struct triangulateio *io)
 {
   free(io->pointlist);
   free(io->pointattributelist);
@@ -1517,174 +1544,173 @@ void parsecommandline(int argc, const char **argv, struct behavior *b)
 
   for (i = STARTINDEX; i < argc; i++)
   {
-      for (j = STARTINDEX; argv[i][j] != '\0'; j++)
+    for (j = STARTINDEX; argv[i][j] != '\0'; j++)
+    {
+      if (argv[i][j] == 'p')
       {
-        if (argv[i][j] == 'p')
-        {
-          b->poly = 1;
-        }
+        b->poly = 1;
+      }
 #ifndef CDT_ONLY
-        if (argv[i][j] == 'r')
+      if (argv[i][j] == 'r')
+      {
+        b->refine = 1;
+      }
+      if (argv[i][j] == 'q')
+      {
+        b->quality = 1;
+        if (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
+            (argv[i][j + 1] == '.'))
         {
-          b->refine = 1;
-        }
-        if (argv[i][j] == 'q')
-        {
-          b->quality = 1;
-          if (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
-              (argv[i][j + 1] == '.'))
-          {
-            k = 0;
-            while (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
-                   (argv[i][j + 1] == '.'))
-            {
-              j++;
-              workstring[k] = argv[i][j];
-              k++;
-            }
-            workstring[k] = '\0';
-            b->minangle = (REAL)strtod(workstring, (char **)NULL);
-          }
-          else
-          {
-            b->minangle = 20.0;
-          }
-        }
-        if (argv[i][j] == 'a')
-        {
-          b->quality = 1;
-          if (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
-              (argv[i][j + 1] == '.'))
-          {
-            b->fixedarea = 1;
-            k = 0;
-            while (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
-                   (argv[i][j + 1] == '.'))
-            {
-              j++;
-              workstring[k] = argv[i][j];
-              k++;
-            }
-            workstring[k] = '\0';
-            b->maxarea = (REAL)strtod(workstring, (char **)NULL);
-            if (b->maxarea <= 0.0)
-            {
-              printf("Error:  Maximum area must be greater than zero.\n");
-              triexit(1);
-            }
-          }
-          else
-          {
-            b->vararea = 1;
-          }
-        }
-        if (argv[i][j] == 'u')
-        {
-          b->quality = 1;
-          b->usertest = 1;
-        }
-#endif /* not CDT_ONLY */
-        if (argv[i][j] == 'A')
-        {
-          b->regionattrib = 1;
-        }
-        if (argv[i][j] == 'c')
-        {
-          b->convex = 1;
-        }
-        if (argv[i][j] == 'w')
-        {
-          b->weighted = 1;
-        }
-        if (argv[i][j] == 'W')
-        {
-          b->weighted = 2;
-        }
-        if (argv[i][j] == 'j')
-        {
-          b->jettison = 1;
-        }
-        if (argv[i][j] == 'z')
-        {
-          b->firstnumber = 0;
-        }
-        if (argv[i][j] == 'e')
-        {
-          b->edgesout = 1;
-        }
-        if (argv[i][j] == 'v')
-        {
-          b->voronoi = 1;
-        }
-        if (argv[i][j] == 'n')
-        {
-          b->neighbors = 1;
-        }
-        if (argv[i][j] == 'g')
-        {
-          b->geomview = 1;
-        }
-        if (argv[i][j] == 'B')
-        {
-          b->nobound = 1;
-        }
-        if (argv[i][j] == 'P')
-        {
-          b->nopolywritten = 1;
-        }
-        if (argv[i][j] == 'N')
-        {
-          b->nonodewritten = 1;
-        }
-        if (argv[i][j] == 'E')
-        {
-          b->noelewritten = 1;
-        }
-        if (argv[i][j] == 'O')
-        {
-          b->noholes = 1;
-        }
-        if (argv[i][j] == 'X')
-        {
-          b->noexact = 1;
-        }
-        if (argv[i][j] == 'o')
-        {
-          if (argv[i][j + 1] == '2')
+          k = 0;
+          while (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
+                 (argv[i][j + 1] == '.'))
           {
             j++;
-            b->order = 2;
+            workstring[k] = argv[i][j];
+            k++;
           }
+          workstring[k] = '\0';
+          b->minangle = (REAL)strtod(workstring, (char **)NULL);
         }
-#ifndef CDT_ONLY
-        if (argv[i][j] == 'Y')
+        else
         {
-          b->nobisect++;
-        }
-        if (argv[i][j] == 'S')
-        {
-          b->steiner = 0;
-          while ((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9'))
-          {
-            j++;
-            b->steiner = b->steiner * 10 + (int)(argv[i][j] - '0');
-          }
-        }
-#endif /* not CDT_ONLY */
-        if (argv[i][j] == 'l')
-        {
-          b->dwyer = 0;
-        }
-        if (argv[i][j] == 'Q')
-        {
-          b->quiet = 1;
-        }
-        if (argv[i][j] == 'V')
-        {
-          b->verbose++;
+          b->minangle = 20.0;
         }
       }
-
+      if (argv[i][j] == 'a')
+      {
+        b->quality = 1;
+        if (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
+            (argv[i][j + 1] == '.'))
+        {
+          b->fixedarea = 1;
+          k = 0;
+          while (((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9')) ||
+                 (argv[i][j + 1] == '.'))
+          {
+            j++;
+            workstring[k] = argv[i][j];
+            k++;
+          }
+          workstring[k] = '\0';
+          b->maxarea = (REAL)strtod(workstring, (char **)NULL);
+          if (b->maxarea <= 0.0)
+          {
+            printf("Error:  Maximum area must be greater than zero.\n");
+            triexit(1);
+          }
+        }
+        else
+        {
+          b->vararea = 1;
+        }
+      }
+      if (argv[i][j] == 'u')
+      {
+        b->quality = 1;
+        b->usertest = 1;
+      }
+#endif /* not CDT_ONLY */
+      if (argv[i][j] == 'A')
+      {
+        b->regionattrib = 1;
+      }
+      if (argv[i][j] == 'c')
+      {
+        b->convex = 1;
+      }
+      if (argv[i][j] == 'w')
+      {
+        b->weighted = 1;
+      }
+      if (argv[i][j] == 'W')
+      {
+        b->weighted = 2;
+      }
+      if (argv[i][j] == 'j')
+      {
+        b->jettison = 1;
+      }
+      if (argv[i][j] == 'z')
+      {
+        b->firstnumber = 0;
+      }
+      if (argv[i][j] == 'e')
+      {
+        b->edgesout = 1;
+      }
+      if (argv[i][j] == 'v')
+      {
+        b->voronoi = 1;
+      }
+      if (argv[i][j] == 'n')
+      {
+        b->neighbors = 1;
+      }
+      if (argv[i][j] == 'g')
+      {
+        b->geomview = 1;
+      }
+      if (argv[i][j] == 'B')
+      {
+        b->nobound = 1;
+      }
+      if (argv[i][j] == 'P')
+      {
+        b->nopolywritten = 1;
+      }
+      if (argv[i][j] == 'N')
+      {
+        b->nonodewritten = 1;
+      }
+      if (argv[i][j] == 'E')
+      {
+        b->noelewritten = 1;
+      }
+      if (argv[i][j] == 'O')
+      {
+        b->noholes = 1;
+      }
+      if (argv[i][j] == 'X')
+      {
+        b->noexact = 1;
+      }
+      if (argv[i][j] == 'o')
+      {
+        if (argv[i][j + 1] == '2')
+        {
+          j++;
+          b->order = 2;
+        }
+      }
+#ifndef CDT_ONLY
+      if (argv[i][j] == 'Y')
+      {
+        b->nobisect++;
+      }
+      if (argv[i][j] == 'S')
+      {
+        b->steiner = 0;
+        while ((argv[i][j + 1] >= '0') && (argv[i][j + 1] <= '9'))
+        {
+          j++;
+          b->steiner = b->steiner * 10 + (int)(argv[i][j] - '0');
+        }
+      }
+#endif /* not CDT_ONLY */
+      if (argv[i][j] == 'l')
+      {
+        b->dwyer = 0;
+      }
+      if (argv[i][j] == 'Q')
+      {
+        b->quiet = 1;
+      }
+      if (argv[i][j] == 'V')
+      {
+        b->verbose++;
+      }
+    }
   }
 
   b->usesegments = b->poly || b->refine || b->quality || b->convex;
@@ -4726,7 +4752,6 @@ unsigned long randomnation(unsigned int choices)
 /********* Mesh quality testing routines begin here                  *********/
 /**                                                                         **/
 /**                                                                         **/
-
 
 /*****************************************************************************/
 /*                                                                           */
@@ -8079,190 +8104,190 @@ int reconstruct(struct mesh *m, struct behavior *b, int *trianglelist,
           vertexdealloc(m, killvertex);
         }
       }
-  }
-
-  /* Read the triangle's attributes. */
-  for (j = 0; j < m->eextras; j++)
-  {
-    setelemattribute(triangleloop, j, triangleattriblist[attribindex++]);
-  }
-
-  if (b->vararea)
-  {
-    area = trianglearealist[elementnumber - b->firstnumber];
-    setareabound(triangleloop, area);
-  }
-
-  /* Set the triangle's vertices. */
-  triangleloop.orient = 0;
-  setorg(triangleloop, getvertex(m, b, corner[0]));
-  setdest(triangleloop, getvertex(m, b, corner[1]));
-  setapex(triangleloop, getvertex(m, b, corner[2]));
-  /* Try linking the triangle to others that share these vertices. */
-  for (triangleloop.orient = 0; triangleloop.orient < 3;
-       triangleloop.orient++)
-  {
-    /* Take the number for the origin of triangleloop. */
-    aroundvertex = corner[triangleloop.orient];
-    /* Look for other triangles having this vertex. */
-    nexttri = vertexarray[aroundvertex - b->firstnumber];
-    /* Link the current triangle to the next one in the stack. */
-    triangleloop.tri[6 + triangleloop.orient] = nexttri;
-    /* Push the current triangle onto the stack. */
-    vertexarray[aroundvertex - b->firstnumber] = encode(triangleloop);
-    decode(nexttri, checktri);
-    if (checktri.tri != m->dummytri)
-    {
-      dest(triangleloop, tdest);
-      apex(triangleloop, tapex);
-      /* Look for other triangles that share an edge. */
-      do
-      {
-        dest(checktri, checkdest);
-        apex(checktri, checkapex);
-        if (tapex == checkdest)
-        {
-          /* The two triangles share an edge; bond them together. */
-          lprev(triangleloop, triangleleft);
-          bond(triangleleft, checktri);
-        }
-        if (tdest == checkapex)
-        {
-          /* The two triangles share an edge; bond them together. */
-          lprev(checktri, checkleft);
-          bond(triangleloop, checkleft);
-        }
-        /* Find the next triangle in the stack. */
-        nexttri = checktri.tri[6 + checktri.orient];
-        decode(nexttri, checktri);
-      } while (checktri.tri != m->dummytri);
-    }
-  }
-  triangleloop.tri = triangletraverse(m);
-  elementnumber++;
-}
-
-vertexindex = 0;
-
-hullsize = 0; /* Prepare to count the boundary edges. */
-if (b->poly)
-{
-  if (b->verbose)
-  {
-    printf("  Marking segments in triangulation.\n");
-  }
-  /* Read the segments from the .poly file, and link them */
-  /*   to their neighboring triangles.                    */
-  boundmarker = 0;
-  traversalinit(&m->subsegs);
-  subsegloop.ss = subsegtraverse(m);
-  segmentnumber = b->firstnumber;
-  while (subsegloop.ss != (subseg *)NULL)
-  {
-    end[0] = segmentlist[vertexindex++];
-    end[1] = segmentlist[vertexindex++];
-    if (segmentmarkers)
-    {
-      boundmarker = segmentmarkerlist[segmentnumber - b->firstnumber];
     }
 
-    for (j = 0; j < 2; j++)
+    /* Read the triangle's attributes. */
+    for (j = 0; j < m->eextras; j++)
     {
-      if ((end[j] < b->firstnumber) ||
-          (end[j] >= b->firstnumber + m->invertices))
-      {
-        printf("Error:  Segment %ld has an invalid vertex index.\n",
-               segmentnumber);
-        triexit(1);
-      }
+      setelemattribute(triangleloop, j, triangleattriblist[attribindex++]);
     }
 
-    /* set the subsegment's vertices. */
-    subsegloop.ssorient = 0;
-    segmentorg = getvertex(m, b, end[0]);
-    segmentdest = getvertex(m, b, end[1]);
-    setsorg(subsegloop, segmentorg);
-    setsdest(subsegloop, segmentdest);
-    setsegorg(subsegloop, segmentorg);
-    setsegdest(subsegloop, segmentdest);
-    setmark(subsegloop, boundmarker);
-    /* Try linking the subsegment to triangles that share these vertices. */
-    for (subsegloop.ssorient = 0; subsegloop.ssorient < 2;
-         subsegloop.ssorient++)
+    if (b->vararea)
     {
-      /* Take the number for the destination of subsegloop. */
-      aroundvertex = end[1 - subsegloop.ssorient];
-      /* Look for triangles having this vertex. */
-      prevlink = &vertexarray[aroundvertex - b->firstnumber];
+      area = trianglearealist[elementnumber - b->firstnumber];
+      setareabound(triangleloop, area);
+    }
+
+    /* Set the triangle's vertices. */
+    triangleloop.orient = 0;
+    setorg(triangleloop, getvertex(m, b, corner[0]));
+    setdest(triangleloop, getvertex(m, b, corner[1]));
+    setapex(triangleloop, getvertex(m, b, corner[2]));
+    /* Try linking the triangle to others that share these vertices. */
+    for (triangleloop.orient = 0; triangleloop.orient < 3;
+         triangleloop.orient++)
+    {
+      /* Take the number for the origin of triangleloop. */
+      aroundvertex = corner[triangleloop.orient];
+      /* Look for other triangles having this vertex. */
       nexttri = vertexarray[aroundvertex - b->firstnumber];
+      /* Link the current triangle to the next one in the stack. */
+      triangleloop.tri[6 + triangleloop.orient] = nexttri;
+      /* Push the current triangle onto the stack. */
+      vertexarray[aroundvertex - b->firstnumber] = encode(triangleloop);
       decode(nexttri, checktri);
-      sorg(subsegloop, shorg);
-      notfound = 1;
-      /* Look for triangles having this edge.  Note that I'm only       */
-      /*   comparing each triangle's destination with the subsegment;   */
-      /*   each triangle's apex is handled through a different vertex.  */
-      /*   Because each triangle appears on three vertices' lists, each */
-      /*   occurrence of a triangle on a list can (and does) represent  */
-      /*   an edge.  In this way, most edges are represented twice, and */
-      /*   every triangle-subsegment bond is represented once.          */
-      while (notfound && (checktri.tri != m->dummytri))
+      if (checktri.tri != m->dummytri)
       {
-        dest(checktri, checkdest);
-        if (shorg == checkdest)
+        dest(triangleloop, tdest);
+        apex(triangleloop, tapex);
+        /* Look for other triangles that share an edge. */
+        do
         {
-          /* We have a match.  Remove this triangle from the list. */
-          *prevlink = checktri.tri[6 + checktri.orient];
-          /* Bond the subsegment to the triangle. */
-          tsbond(checktri, subsegloop);
-          /* Check if this is a boundary edge. */
-          sym(checktri, checkneighbor);
-          if (checkneighbor.tri == m->dummytri)
+          dest(checktri, checkdest);
+          apex(checktri, checkapex);
+          if (tapex == checkdest)
           {
-            /* The next line doesn't insert a subsegment (because there's */
-            /*   already one there), but it sets the boundary markers of  */
-            /*   the existing subsegment and its vertices.                */
-            insertsubseg(m, b, &checktri, 1);
-            hullsize++;
+            /* The two triangles share an edge; bond them together. */
+            lprev(triangleloop, triangleleft);
+            bond(triangleleft, checktri);
           }
-          notfound = 0;
-        }
-        /* Find the next triangle in the stack. */
-        prevlink = &checktri.tri[6 + checktri.orient];
-        nexttri = checktri.tri[6 + checktri.orient];
-        decode(nexttri, checktri);
+          if (tdest == checkapex)
+          {
+            /* The two triangles share an edge; bond them together. */
+            lprev(checktri, checkleft);
+            bond(triangleloop, checkleft);
+          }
+          /* Find the next triangle in the stack. */
+          nexttri = checktri.tri[6 + checktri.orient];
+          decode(nexttri, checktri);
+        } while (checktri.tri != m->dummytri);
       }
     }
-    subsegloop.ss = subsegtraverse(m);
-    segmentnumber++;
+    triangleloop.tri = triangletraverse(m);
+    elementnumber++;
   }
-}
 
-/* Mark the remaining edges as not being attached to any subsegment. */
-/* Also, count the (yet uncounted) boundary edges.                   */
-for (i = 0; i < m->vertices.items; i++)
-{
-  /* Search the stack of triangles adjacent to a vertex. */
-  nexttri = vertexarray[i];
-  decode(nexttri, checktri);
-  while (checktri.tri != m->dummytri)
+  vertexindex = 0;
+
+  hullsize = 0; /* Prepare to count the boundary edges. */
+  if (b->poly)
   {
-    /* Find the next triangle in the stack before this */
-    /*   information gets overwritten.                 */
-    nexttri = checktri.tri[6 + checktri.orient];
-    /* No adjacent subsegment.  (This overwrites the stack info.) */
-    tsdissolve(checktri);
-    sym(checktri, checkneighbor);
-    if (checkneighbor.tri == m->dummytri)
+    if (b->verbose)
     {
-      insertsubseg(m, b, &checktri, 1);
-      hullsize++;
+      printf("  Marking segments in triangulation.\n");
     }
-    decode(nexttri, checktri);
-  }
-}
+    /* Read the segments from the .poly file, and link them */
+    /*   to their neighboring triangles.                    */
+    boundmarker = 0;
+    traversalinit(&m->subsegs);
+    subsegloop.ss = subsegtraverse(m);
+    segmentnumber = b->firstnumber;
+    while (subsegloop.ss != (subseg *)NULL)
+    {
+      end[0] = segmentlist[vertexindex++];
+      end[1] = segmentlist[vertexindex++];
+      if (segmentmarkers)
+      {
+        boundmarker = segmentmarkerlist[segmentnumber - b->firstnumber];
+      }
 
-trifree((VOID *)vertexarray);
-return hullsize;
+      for (j = 0; j < 2; j++)
+      {
+        if ((end[j] < b->firstnumber) ||
+            (end[j] >= b->firstnumber + m->invertices))
+        {
+          printf("Error:  Segment %ld has an invalid vertex index.\n",
+                 segmentnumber);
+          triexit(1);
+        }
+      }
+
+      /* set the subsegment's vertices. */
+      subsegloop.ssorient = 0;
+      segmentorg = getvertex(m, b, end[0]);
+      segmentdest = getvertex(m, b, end[1]);
+      setsorg(subsegloop, segmentorg);
+      setsdest(subsegloop, segmentdest);
+      setsegorg(subsegloop, segmentorg);
+      setsegdest(subsegloop, segmentdest);
+      setmark(subsegloop, boundmarker);
+      /* Try linking the subsegment to triangles that share these vertices. */
+      for (subsegloop.ssorient = 0; subsegloop.ssorient < 2;
+           subsegloop.ssorient++)
+      {
+        /* Take the number for the destination of subsegloop. */
+        aroundvertex = end[1 - subsegloop.ssorient];
+        /* Look for triangles having this vertex. */
+        prevlink = &vertexarray[aroundvertex - b->firstnumber];
+        nexttri = vertexarray[aroundvertex - b->firstnumber];
+        decode(nexttri, checktri);
+        sorg(subsegloop, shorg);
+        notfound = 1;
+        /* Look for triangles having this edge.  Note that I'm only       */
+        /*   comparing each triangle's destination with the subsegment;   */
+        /*   each triangle's apex is handled through a different vertex.  */
+        /*   Because each triangle appears on three vertices' lists, each */
+        /*   occurrence of a triangle on a list can (and does) represent  */
+        /*   an edge.  In this way, most edges are represented twice, and */
+        /*   every triangle-subsegment bond is represented once.          */
+        while (notfound && (checktri.tri != m->dummytri))
+        {
+          dest(checktri, checkdest);
+          if (shorg == checkdest)
+          {
+            /* We have a match.  Remove this triangle from the list. */
+            *prevlink = checktri.tri[6 + checktri.orient];
+            /* Bond the subsegment to the triangle. */
+            tsbond(checktri, subsegloop);
+            /* Check if this is a boundary edge. */
+            sym(checktri, checkneighbor);
+            if (checkneighbor.tri == m->dummytri)
+            {
+              /* The next line doesn't insert a subsegment (because there's */
+              /*   already one there), but it sets the boundary markers of  */
+              /*   the existing subsegment and its vertices.                */
+              insertsubseg(m, b, &checktri, 1);
+              hullsize++;
+            }
+            notfound = 0;
+          }
+          /* Find the next triangle in the stack. */
+          prevlink = &checktri.tri[6 + checktri.orient];
+          nexttri = checktri.tri[6 + checktri.orient];
+          decode(nexttri, checktri);
+        }
+      }
+      subsegloop.ss = subsegtraverse(m);
+      segmentnumber++;
+    }
+  }
+
+  /* Mark the remaining edges as not being attached to any subsegment. */
+  /* Also, count the (yet uncounted) boundary edges.                   */
+  for (i = 0; i < m->vertices.items; i++)
+  {
+    /* Search the stack of triangles adjacent to a vertex. */
+    nexttri = vertexarray[i];
+    decode(nexttri, checktri);
+    while (checktri.tri != m->dummytri)
+    {
+      /* Find the next triangle in the stack before this */
+      /*   information gets overwritten.                 */
+      nexttri = checktri.tri[6 + checktri.orient];
+      /* No adjacent subsegment.  (This overwrites the stack info.) */
+      tsdissolve(checktri);
+      sym(checktri, checkneighbor);
+      if (checkneighbor.tri == m->dummytri)
+      {
+        insertsubseg(m, b, &checktri, 1);
+        hullsize++;
+      }
+      decode(nexttri, checktri);
+    }
+  }
+
+  trifree((VOID *)vertexarray);
+  return hullsize;
 }
 
 #endif /* not CDT_ONLY */
@@ -8939,7 +8964,6 @@ void insertsegment(struct mesh *m, struct behavior *b,
   /*   vertex on the segment occurred.                                       */
   org(searchtri2, endpoint2);
 
-
   /* Insert the segment directly into the triangulation. */
   constrainededge(m, b, &searchtri1, endpoint2, newmark);
 }
@@ -8949,7 +8973,6 @@ void insertsegment(struct mesh *m, struct behavior *b,
 /*  markhull()   Cover the convex hull of a triangulation with subsegments.  */
 /*                                                                           */
 /*****************************************************************************/
-
 
 void markhull(struct mesh *m, struct behavior *b)
 
@@ -10397,7 +10420,6 @@ void highorder(struct mesh *m, struct behavior *b)
 /**                                                                         **/
 /**                                                                         **/
 
-
 /*****************************************************************************/
 /*                                                                           */
 /*  transfernodes()   Read the vertices from memory.                         */
@@ -10475,8 +10497,6 @@ void transfernodes(struct mesh *m, struct behavior *b, REAL *pointlist,
   /*   Delaunay algorithm.                                                 */
   m->xminextreme = 10 * m->xmin - 9 * m->xmax;
 }
-
-
 
 /*****************************************************************************/
 /*                                                                           */
@@ -10562,7 +10582,6 @@ void writenodes(struct mesh *m, struct behavior *b, REAL **pointlist,
     }
     vertexloop = vertextraverse(m);
   }
-
 }
 
 /*****************************************************************************/
@@ -10673,7 +10692,6 @@ void writeelements(struct mesh *m, struct behavior *b,
     triangleloop.tri = triangletraverse(m);
     elementnumber++;
   }
-
 }
 
 /*****************************************************************************/
@@ -10969,9 +10987,7 @@ void writevoronoi(struct mesh *m, struct behavior *b, REAL **vpointlist,
     }
     triangleloop.tri = triangletraverse(m);
   }
-
 }
-
 
 void writeneighbors(struct mesh *m, struct behavior *b, int **neighborlist)
 {
@@ -11409,7 +11425,7 @@ void statistics(struct mesh *m, struct behavior *b)
 /*****************************************************************************/
 
 void triangulate(const char *triswitches, struct triangulateio *in,
-                 struct triangulateio *out, struct triangulateio *vorout, River::MeshParams* ac)
+                 struct triangulateio *out, struct triangulateio *vorout, River::MeshParams *ac)
 {
   struct mesh m;
   struct behavior b;
@@ -11426,7 +11442,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
                 in->pointmarkerlist, in->numberofpoints,
                 in->numberofpointattributes);
 
-                  
   if (b.refine)
   {
     /* Read and reconstruct a mesh. */
@@ -11442,7 +11457,6 @@ void triangulate(const char *triswitches, struct triangulateio *in,
   {
     m.hullsize = delaunay(&m, &b); /* Triangulate the vertices. */
   }
-
 
   /* Ensure that no vertex can be mistaken for a triangular bounding */
   /*   box vertex in insertvertex().                                 */

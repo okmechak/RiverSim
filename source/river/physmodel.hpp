@@ -34,15 +34,10 @@
 #include <numeric>
 ///\endcond
 
-#include "GeometryPrimitives.hpp"
 #include "tree.hpp"
-#include "boundary.hpp"
-#include "tethex.hpp"
+#include "mesh.hpp"
 
 using namespace std;
-
-///Characteristic radius used by River::MeshParams object.
-#define Radius 0.01
 
 namespace River
 {
@@ -109,96 +104,6 @@ namespace River
             friend ostream& operator <<(ostream& write, const ProgramOptions & po);
 
             bool operator==(const ProgramOptions& po) const;
-    };
-    
-    /*! \brief Adaptive mesh area constraint function.
-        \details
-        MeshParams holds all parameters used by mesh generation(see \ref triangle.hpp, \ref mesh.hpp)
-     */
-    class MeshParams
-    {
-        public:
-            /*! \brief Vector of tip points.
-                \details Tips - are points where mesh size should be small for better accuracy.
-                in this case it corresponds to river tip points.
-            */
-            vector<Point> tip_points;
-
-            ///Radius of mesh refinment.
-            double refinment_radius = 4*Radius;
-
-            ///This value controlls transition slope between small mesh elements and big or course.
-            double exponant = 7.;
-
-            /*! \brief Sigma is used in exponence, also as \ref River::MeshParams::exponant controls slope. */
-            double sigma = 1.9;
-
-            /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
-                \details Refinment means splitting one rectangular element into four rectagular elements.
-            */ 
-            unsigned static_refinment_steps = 1;
-
-            ///Minimal area of mesh.
-            double min_area = 7e-4;
-
-            ///Maximal area of mesh element.
-            double max_area = 1e5;
-
-            ///Minimal angle of mesh element.
-            double min_angle = 30.;
-
-            ///Maximal edge size.
-            double max_edge = 1;
-
-            ///Minimal edge size.
-            double min_edge = 8.e-8;
-
-            /*! \brief Ratio of the triangles: 
-                
-                \details
-                Aspect ratio of a triangle is the ratio of the longest edge to shortest edge. 
-                AR = abc/(8(s-a)(s-b)(s-c)) 
-                Value 2 correspond to 30 degree.
-
-                \todo check if it is implemented
-                \todo handle edge values of ration which will correspond to 35 degree.
-            */
-            double ratio = 2.3;
-
-            /*! \brief Width of branch.
-                \details
-                eps is width of splitting branch of tree into two lines, to make one border line.
-                This is when tree and border is converted into one boundary line.
-                \todo eps should depend on elementary step size __ds__.
-            */
-            double eps = 1e-6;
-
-            /*! \brief Evaluates mesh area constraint at {x, y} point.
-                \details
-
-                ### detailed implementation of function:  
-
-                \snippet physmodel.hpp MeshConstrain
-            */
-            inline double operator()(double x, double y) const
-            {
-                double result_area = 10000000/*some large area value*/;
-                for(auto& tip: tip_points)
-                {
-                    auto r = (Point{x, y} - tip).norm();
-                    auto exp_val = exp( -pow(r/refinment_radius, exponant)/2./sigma/sigma);
-                    auto cur_area = min_area + (max_area - min_area)*(1. - exp_val)/(1. + exp_val);
-                    if(result_area > cur_area)
-                        result_area = cur_area;   
-                }
-                
-                return result_area;
-            }
-
-            ///Prints program options structure to output stream.
-            friend ostream& operator <<(ostream& write, const MeshParams & mp);
-
-            bool operator==(const MeshParams& mp) const;
     };
 
     /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
