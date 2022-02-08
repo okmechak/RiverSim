@@ -53,7 +53,7 @@ namespace River
         \imageSize{BranchNewClass.jpg, height:40%;width:40%;, }
         \todo resolve problem with private members
     */
-    class BranchNew: public t_PointList
+    class BranchNew: public SimpleBoundary
     {
         public:
             BranchNew() = default;
@@ -69,16 +69,16 @@ namespace River
                 @{
             */
             ///Adds point \p __p__ to branch with absolute coords.
-            BranchNew& AddAbsolutePoint(const Point& p);
+            BranchNew& AddAbsolutePoint(const Point& p, const t_boundary_id boundary_id);
             
             ///Adds polar \p __p__ coords to branch with absolute angle, but position is relative to tip.
-            BranchNew& AddAbsolutePoint(const Polar& p);
+            BranchNew& AddAbsolutePoint(const Polar& p, const t_boundary_id boundary_id);
             
             ///Adds point \p __p__ to branch in tip relative coord system.
-            BranchNew& AddPoint(const Point &p);
+            BranchNew& AddPoint(const Point &p, const t_boundary_id boundary_id);
 
             ///Adds polar \p __p__ to branch in tip relative coord and angle system.
-            BranchNew& AddPoint(const Polar& p);
+            BranchNew& AddPoint(const Polar& p, const t_boundary_id boundary_id);
 
             /*! \brief Reduces lenght of branch by \p lenght.
                 \note
@@ -124,6 +124,9 @@ namespace River
 
             ///Returns source angle of branch - initial __source_angle__.
             double SourceAngle() const;
+
+            ///Set source angle of branch.
+            void SetSourceAngle(double src_angle);
             /*! @} */
 
             /*! \name Different Parameters
@@ -142,7 +145,7 @@ namespace River
             ///Comparison of branches.
             bool operator==(const BranchNew& br) const;
             
-        //private:
+        private:
 
             ///Initial angle of source(or direction of source).
             double source_angle;
@@ -227,16 +230,16 @@ namespace River
 
             //Growth
             ///Adds  relatively vector of \p points to Branches \p tips_id.
-            void AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points);
+            void AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points, const vector<t_boundary_id>& boundary_ids);
 
             ///Adds  relatively \p points to Branches \p tips_id.
-            void AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points);
+            void AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points, const vector<t_boundary_id>& boundary_ids);
 
             ///Adds  absolute \p points to Branches \p tips_id.
-            void AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points);
+            void AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points, const vector<t_boundary_id>& boundary_ids);
 
             t_branch_id_pair GrowTestTree(
-                const t_branch_id branch_id = 1, const double ds = 0.05, const unsigned n = 3, const double dalpha = 0);
+                const t_boundary_id boundary_id, const t_branch_id branch_id = 1, const double ds = 0.05, const unsigned n = 3, const double dalpha = 0);
 
             ///Returns vector of tip branches ids.
             vector<t_branch_id> TipBranchesIds() const;

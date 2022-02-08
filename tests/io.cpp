@@ -318,10 +318,10 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
         br1left({0, 1}, 2), br1right({3, 4}, 5), 
         br2left({6, 7}, 8), br2right({9, 10}, 11);
 
-    br1left.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
-    br1right.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
-    br2left.AddPoint(Polar{1, 0}).AddPoint(Polar{1, 0});
-    br2right.AddAbsolutePoint(Polar{1, 0}).AddAbsolutePoint(Polar{1, 0});
+    br1left.AddPoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id).AddPoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id);
+    br1right.AddPoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id).AddPoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id);
+    br2left.AddPoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id).AddPoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id);
+    br2right.AddAbsolutePoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id).AddAbsolutePoint(Polar{1, 0}, (t_boundary_id)mdl_out.river_boundary_id);
     mdl_out.tree.AddSubBranches(1, br1left, br1right);
     mdl_out.tree.AddSubBranches(3, br2left, br2right);
 
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.prog_opt.number_of_backward_steps == 38);
     BOOST_TEST(mdl_in.prog_opt.save_vtk == true);
     BOOST_TEST(mdl_in.prog_opt.simulation_type == 40);
-    //BOOST_TEST(mdl_in.prog_opt.output_file_name == "lalala");
+    //BOOST_TEST(mdl_in.prog_opt.output_file_name == "simdata");
     BOOST_TEST(mdl_in.prog_opt.input_file_name == "kakaka");
     BOOST_TEST(mdl_in.prog_opt.save_each_step == true);
 
@@ -565,7 +565,7 @@ BOOST_AUTO_TEST_CASE( Branch_to_json,
     *utf::tolerance(eps))
 {
     BranchNew branch({0, 1}, M_PI/3.);
-    branch.AddPoint(Polar{1, 1});
+    branch.AddPoint(Polar{1, 1}, (t_boundary_id)0);
 
     json j = branch;
 
@@ -582,8 +582,9 @@ BOOST_AUTO_TEST_CASE( Tree_to_json,
 {
     BranchNew branch({0, 1}, M_PI/3.);
     Tree tree;
-    auto id = tree.AddBranch(branch);
-    tree.GrowTestTree(id);
+    auto branch_id = tree.AddBranch(branch);
+    t_boundary_id boundary_id = 1;
+    tree.GrowTestTree(boundary_id, branch_id);
 
     json j = tree;
 

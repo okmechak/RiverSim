@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE( revert_simulation,
 {
     Model model;
     model.InitializeLaplace();
-    model.tree.GrowTestTree(1, 1., 2, 0.);
+    model.tree.GrowTestTree(1, 1, 1., 2, 0.);
     model.series_parameters[1] = {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}};
     model.series_parameters[2] = {{4, 4, 4}, {5, 5, 5}, {6, 6, 6}};
     model.series_parameters[3] = {{7, 7, 7}, {8, 8, 8}, {9, 9, 9}};

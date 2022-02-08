@@ -48,7 +48,7 @@ int App::Run(int argc, char *argv[])
             model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
 
             auto source_branch_id = 1;//todo
-            model.tree.at(source_branch_id).AddPoint(Polar{0.1, 0});
+            model.tree.at(source_branch_id).AddPoint(Polar{0.1, 0}, model.river_boundary_id);
 
             EvaluateSeriesParams(model, triangle, sim, model.prog_opt.output_file_name);
             Save(model, model.prog_opt.output_file_name);

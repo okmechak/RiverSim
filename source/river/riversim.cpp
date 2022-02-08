@@ -118,14 +118,15 @@ namespace River
                     auto tip_point = tree.at(id).TipPoint();
                     auto tip_angle = tree.at(id).TipAngle();
                     auto br_left = BranchNew(tip_point, tip_angle + model->bifurcation_angle);
-                    br_left.AddPoint(Polar{model->ds, 0});
+                    br_left.AddPoint(Polar{model->ds, 0}, model->river_boundary_id);
                     auto br_right = BranchNew(tip_point, tip_angle - model->bifurcation_angle);
-                    br_right.AddPoint(Polar{model->ds, 0});
+                    br_right.AddPoint(Polar{model->ds, 0}, model->river_boundary_id);
                     tree.AddSubBranches(id, br_left, br_right);
                 }
                 else
                     tree.at(id).AddPoint(
-                        model->next_point(series_params, tree.at(id).Lenght(), max_a));
+                        model->next_point(series_params, tree.at(id).Lenght(), max_a),
+                        model->river_boundary_id);
             }
     }
 
@@ -446,9 +447,9 @@ namespace River
                     auto tip_point = model.tree.at(id).TipPoint();
                     auto tip_angle = model.tree.at(id).TipAngle();
                     auto br_left = BranchNew(tip_point, tip_angle + model.bifurcation_angle);
-                    br_left.AddPoint(Polar{model.ds, 0});
+                    br_left.AddPoint(Polar{model.ds, 0}, model.river_boundary_id);
                     auto br_right = BranchNew(tip_point, tip_angle - model.bifurcation_angle);
-                    br_right.AddPoint(Polar{model.ds, 0});
+                    br_right.AddPoint(Polar{model.ds, 0}, model.river_boundary_id);
                     model.tree.AddSubBranches(id, br_left, br_right);
                 }
                 else
@@ -456,7 +457,8 @@ namespace River
                         model.next_point(
                             series_params, 
                             model.tree.at(id).Lenght(), 
-                            max_a));
+                            max_a),
+                        model.river_boundary_id);
             }
     }
 

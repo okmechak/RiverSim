@@ -27,36 +27,41 @@ namespace River
         Branch Class
     */
     BranchNew::BranchNew(
-        const Point& source_point_val, 
+        const Point& source_point, 
         const double angle):
         source_angle(angle)
     {
-        AddAbsolutePoint(source_point_val);
+        vertices.push_back(source_point);
     }
 
-    BranchNew& BranchNew::AddAbsolutePoint(const Point& p)
+    BranchNew& BranchNew::AddAbsolutePoint(const Point& p, const t_boundary_id boundary_id)
     {
-        this->push_back(p);
+        vertices.push_back(p);
+        t_vert_pos n = vertices.size() - 1;
+        lines.push_back(Line{n - 1, n, boundary_id});
+
         return *this;
     }
 
-    BranchNew& BranchNew::AddAbsolutePoint(const Polar& p)
+    BranchNew& BranchNew::AddAbsolutePoint(const Polar& p, const t_boundary_id boundary_id)
     {
-        this->push_back(TipPoint() + Point{p});
+        AddAbsolutePoint(TipPoint() + Point{p}, boundary_id);
+
         return *this;
     }
 
-    BranchNew& BranchNew::AddPoint(const Point &p)
+    BranchNew& BranchNew::AddPoint(const Point &p, const t_boundary_id boundary_id)
     {
-        this->push_back(TipPoint() + p);
+        AddAbsolutePoint(TipPoint() + p, boundary_id);
         return *this;
     }
 
-    BranchNew& BranchNew::AddPoint(const Polar& p)
+    BranchNew& BranchNew::AddPoint(const Polar& p, const t_boundary_id boundary_id)
     {
         auto p_new = Polar{p};
         p_new.phi += TipAngle();
-        AddAbsolutePoint(p_new);
+        AddAbsolutePoint(TipPoint() + p_new, boundary_id);
+
         return *this;
     }
 
@@ -70,20 +75,25 @@ namespace River
                 if(lenght < tip_lenght - eps)
                 {
                     auto k = 1 - lenght/tip_lenght;
-                    auto new_tip = TipVector()*k;
+                    auto new_point = TipVector()*k;
+                    
+                    auto boundary_id = lines.back().boundary_id;
                     RemoveTipPoint();
-                    AddPoint(new_tip);
+                    AddPoint(new_point, boundary_id);
+
                     lenght = 0;
                 }
                 else if((lenght >= tip_lenght - eps) && (lenght <= tip_lenght + eps))
                 {
-                    RemoveTipPoint();
                     lenght = 0;
+
+                    RemoveTipPoint();
                 }
                 else if(lenght >= tip_lenght + eps)
                 {
-                    RemoveTipPoint();
                     lenght -= tip_lenght;
+                    
+                    RemoveTipPoint();
                 }
                 else 
                     throw Exception("Unhandled case in Shrink method.");
@@ -100,42 +110,53 @@ namespace River
 
     BranchNew& BranchNew::RemoveTipPoint()
     {
-        if(this->size() == 1)
+        if(vertices.size() == 1)
             throw Exception("Last branch point con't be removed");   
-        this->pop_back();
+
+        vertices.pop_back();
+        lines.pop_back();
+
         return *this;
     }
 
     Point BranchNew::TipPoint() const 
     {
-        if(this->size() == 0)
+        if(vertices.size() == 0)
             throw Exception("Can't return TipPoint size is zero");
-        return this->at(this->size() - 1);
+        const auto tip_point_ref = vertices.back();
+        return Point{tip_point_ref.x, tip_point_ref.y};//this->at(this->size() - 1);
     }
 
     Point BranchNew::TipVector() const 
     {
-        if(this->size() <= 1)
+        if(lines.size() == 0)
             throw Exception("Can't return TipVector size is 1 or even less");
-
-        return this->at(this->size() - 1) - this->at(this->size() - 2);
+        else 
+        {
+            auto line = lines.back();
+            return vertices.at(line.p2) - vertices.at(line.p1);
+        }
     }
 
     Point BranchNew::Vector(unsigned i) const
     {
-        if(this->size() == 1)
-            throw Exception("Can't return Vector. Size is 1");
-        if(i >= this->size() || i == 0)
-            throw Exception("Can't return Vector. Index is bigger then size or is zero");
+        if(lines.size() == 0)
+            throw Exception("Can't return Vector. No lines.");
 
-        return this->at(i) - this->at(i - 1);
+        if(i >= lines.size())
+            throw Exception("Can't return Vector. Index is bigger then number of lines.");
+
+        auto line = lines.at(i);
+
+        return vertices.at(line.p2) - vertices.at(line.p1);
     }
 
     double BranchNew::TipAngle() const 
     {
-        if(this->size() < 1)
-            throw Exception("TipAngle: size is less then 1!");
-        else if(this->size() == 1)
+        if(vertices.size() == 0)
+            throw Exception("TipAngle: Vertices is empty.");
+
+        else if(lines.size() == 0)
             return source_angle; 
 
         return TipVector().angle();
@@ -143,7 +164,7 @@ namespace River
 
     Point BranchNew::SourcePoint() const
     {
-        return this->at(0);
+        return vertices.at(0);
     }
 
     double BranchNew::SourceAngle() const 
@@ -151,33 +172,44 @@ namespace River
         return source_angle;
     }
 
+    
+    void BranchNew::SetSourceAngle(double src_angle)
+    {
+        source_angle = src_angle;
+    }
+
     double BranchNew::Lenght() const 
     {
         double lenght = 0.;
-        if(this->size() > 1)
-            for(unsigned int i = 1; i < this->size(); ++i)
-                lenght += (this->at(i) - this->at(i - 1)).norm();
+        for(auto & line: lines)
+            lenght += (vertices.at(line.p2) - vertices.at(line.p1)).norm();
 
         return lenght;
     }
 
     ostream& operator<<(ostream& write, const BranchNew & b)
     {
-        int i = 0;
+        
         write << "Branch " << endl;
         write << "  lenght - " << b.Lenght() << endl;
-        write << "  size - " << b.size() << endl;
+        write << "  number of vertices - " << b.vertices.size() << endl;
         write << "  source angle - " << b.source_angle << endl;
-        for(auto p: b)
+
+        int i = 0;
+        for(auto & p: b.vertices)
             write <<"   " << i++ << " ) " << p << endl;
+
+        i = 0;
+        for(auto & l: b.lines)
+            write <<"   " << i++ << " ) " << l << endl;
 
         return write;
     }
 
     bool BranchNew::operator==(const BranchNew& br) const
     {
-        return equal(this->begin(), this->end(), br.begin()) &&
-            SourceAngle() == br.SourceAngle();
+        return SimpleBoundary::operator==(br)
+            && SourceAngle() == br.SourceAngle();
     }
     
     /*
@@ -300,13 +332,13 @@ namespace River
     }
 
     //todo can input arguments be replaced by map?
-    void Tree::AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points)
+    void Tree::AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points, const vector<t_boundary_id>& boundary_ids)
     {
         for(size_t i = 0; i < tips_id.size(); ++i)
             if(this->count(tips_id.at(i)))
             {
                 auto& br = this->at(tips_id.at(i));
-                br.AddPoint(points.at(i));
+                br.AddPoint(points.at(i), boundary_ids.at(i));
             }
             else
                 throw Exception("AddPoints: no such id.");
@@ -336,25 +368,25 @@ namespace River
         return max_id;
     }
 
-    void Tree::AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points)
+    void Tree::AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points, const vector<t_boundary_id>& boundary_ids)
     {
         for(size_t i = 0; i < tips_id.size(); ++i)
             if(this->count(tips_id.at(i)))
             {
                 auto& br = this->at(tips_id.at(i));
-                br.AddPoint(points.at(i));
+                br.AddPoint(points.at(i), boundary_ids.at(i));
             }
             else 
                 throw Exception("AddPoints: no such id.");
     }
 
-    void Tree::AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points)
+    void Tree::AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points, const vector<t_boundary_id>& boundary_ids)
     {
         for(size_t i = 0; i < tips_id.size(); ++i)
             if(this->count(tips_id.at(i)))
             {
                 auto& br = this->at(tips_id.at(i));
-                br.AddAbsolutePoint(br.TipPoint() + points.at(i));
+                br.AddAbsolutePoint(br.TipPoint() + points.at(i), boundary_ids.at(i));
             }
             else 
                 throw Exception("AddPoints: no such id.");
@@ -389,7 +421,7 @@ namespace River
         branches_relation.clear();
     }
 
-    pair<t_branch_id, t_branch_id> Tree::GrowTestTree(t_branch_id branch_id, double ds, unsigned n, double dalpha)
+    pair<t_branch_id, t_branch_id> Tree::GrowTestTree(const t_boundary_id boundary_id, t_branch_id branch_id, double ds, unsigned n, double dalpha)
     {
         handle_non_existing_branch_id(branch_id);
         
@@ -401,7 +433,7 @@ namespace River
         for(unsigned i = 0; i < n; ++i)
         {
             auto p = Polar{ds, dalpha};
-            branch_source.AddPoint(p);
+            branch_source.AddPoint(p, boundary_id);
         }
 
         auto branch_left = BranchNew{
@@ -414,8 +446,8 @@ namespace River
         for(unsigned i = 0; i < n; ++i)
         {
             auto p = Polar{ds, dalpha};
-            branch_left.AddPoint(p);
-            branch_right.AddPoint(p);
+            branch_left.AddPoint(p, boundary_id);
+            branch_right.AddPoint(p, boundary_id);
         }
         
         auto ids = AddSubBranches(branch_id, branch_left, branch_right);
@@ -510,14 +542,14 @@ namespace River
         for(auto id: TipBranchesIds())
         {
             auto branch = this->at(id);
-            auto tip_point_pos = branch.size() - 1;
+            auto tip_point_pos = branch.vertices.size() - 1;
 
             if(tip_point_pos < 2)
                 break;
                 
             auto 
-                av_midle_point = (branch.at(tip_point_pos) + branch.at(tip_point_pos - 2))/2,
-                midle_point = branch.at(tip_point_pos - 1);
+                av_midle_point = (branch.vertices.at(tip_point_pos) + branch.vertices.at(tip_point_pos - 2))/2,
+                midle_point = branch.vertices.at(tip_point_pos - 1);
 
             auto dist = (av_midle_point - midle_point).norm();
 
@@ -533,13 +565,13 @@ namespace River
         for(auto id: TipBranchesIds())
         {
             auto& branch = this->at(id);
-            auto tip_p_pos = branch.size() - 1;
+            auto tip_p_pos = branch.vertices.size() - 1;
             if(tip_p_pos < 2)
                 throw Exception("flatten_tip_curvature: size of branch should be at least three points");
 
-            auto av_midle_point = (branch.at(tip_p_pos) + branch.at(tip_p_pos - 2))/2;
+            auto av_midle_point = (branch.vertices.at(tip_p_pos) + branch.vertices.at(tip_p_pos - 2))/2;
 
-            branch.at(tip_p_pos - 1) = av_midle_point;
+            branch.vertices.at(tip_p_pos - 1) = av_midle_point;
         }
     }
 
@@ -550,10 +582,10 @@ namespace River
         {
             auto& branch = this->at(id);
 
-            if(branch.size() >= 2)
-                branch.pop_back();
+            if(branch.vertices.size() >= 2)
+                branch.RemoveTipPoint();
 
-            if (branch.size() == 1)
+            if (branch.vertices.size() == 1)
                 zero_lenght_branches.push_back(id);
         }
 

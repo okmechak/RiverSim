@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE( Evaluate_Series_Parameteres_Of_Tips,
     model.mesh.exponant = 4;
     model.InitializeDirichlet();
     
-    model.tree.at(1).AddPoint(Polar{0.1, 0});
+    model.tree.at(1).AddPoint(Polar{0.1, 0}, (t_boundary_id)model.river_boundary_id);
     model.mesh.tip_points = {River::Point{0.25, 0.1}};
 
     //Triangle mesh object setup
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE( Evaluate_Series_Parameteres_Of_Tips_2,
     Model model;
     model.dx = 0.25;
     model.InitializeDirichlet();
-    model.tree.at(1).AddPoint(Polar{0.1, 0});
+    model.tree.at(1).AddPoint(Polar{0.1, 0}, (t_boundary_id)model.river_boundary_id);
 
     //Triangle mesh object setup
     Triangle triangle(&model.mesh);
@@ -176,11 +176,11 @@ BOOST_AUTO_TEST_CASE( Shrink_Tree,
     model.growth_min_distance = 0;
     model.growth_threshold = 0;
     model.InitializeLaplace();
-    unsigned id = 1, n = 4;
-    model.tree.GrowTestTree(id, model.ds, n);
-    BOOST_TEST((model.tree.at(id).TipPoint() == River::Point{model.dx, model.ds*n}));
+    unsigned branch_id = 1, n = 4;
+    model.tree.GrowTestTree(model.river_boundary_id, branch_id, model.ds, n);
+    BOOST_TEST((model.tree.at(branch_id).TipPoint() == River::Point{model.dx, model.ds*n}));
 
-    auto[left_id, right_id] = model.tree.GetSubBranchesIds(id);
+    auto[left_id, right_id] = model.tree.GetSubBranchesIds(branch_id);
     
     id_series_params[left_id] = {1, 0, 0};
     id_series_params[right_id] = {2, 0, 0};

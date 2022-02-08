@@ -43,7 +43,8 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     BOOST_TEST(tree_boundary.lines.empty());
 
     //tree with two points
-    tree.at(source_id).AddPoint(Polar{0.01, 0});
+    t_boundary_id boundary_id = 0;
+    tree.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
     tree_boundary = TreeBoundary(tree, source_id, 10, 0.1);
 
     auto expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}};
@@ -52,7 +53,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
         BOOST_TEST(tree_boundary.lines.at(i) == expected_lines.at(i));
 
     //tree with three points
-    tree.at(source_id).AddPoint(Polar{0.01, 0});
+    tree.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
     tree_boundary = TreeBoundary(tree, source_id, 10, 0.1);
 
     expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}, {2, 3, 10}, {3, 4, 10}};
@@ -78,7 +79,7 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
 
     BOOST_TEST(boundary.lines.size() == 13);
 
-    model.tree.at(source_id).AddPoint(Polar{0.01, 0});
+    model.tree.at(source_id).AddPoint(Polar{0.01, 0}, model.river_boundary_id);
     boundary = SimpleBoundaryGenerator(model);
     BOOST_TEST(boundary.lines.size() == 15);
 
@@ -129,8 +130,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     auto p = Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
 
+    t_boundary_id boundary_id = 0;
     auto& br = tr.at(1);
-    br.AddPoint(Polar{0.1, 0});
+    br.AddPoint(Polar{0.1, 0}, boundary_id);
     tree_vector.clear();
     
     TreeVertices(tree_vector, 1, tr, 1e-3);
@@ -144,11 +146,11 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
 
 
     tree_vector.clear();
-    br.AddPoint(Polar{0.1, 0});
+    br.AddPoint(Polar{0.1, 0}, boundary_id);
     BranchNew left_branch(br.TipPoint(), br.TipAngle() + M_PI/2);
-    left_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
+    left_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     BranchNew right_branch(br.TipPoint(), br.TipAngle() - M_PI/2);
-    right_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
+    right_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     tr.AddSubBranches(1, left_branch, right_branch);
 
     auto tip_ids = vector<t_branch_id> {2, 3};
@@ -209,7 +211,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     auto p = Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
 
-    tr.at(i1).AddPoint(Polar{0.1, 0});
+    t_boundary_id boundary_id = 0;
+    tr.at(i1).AddPoint(Polar{0.1, 0}, boundary_id);
     tree_vector.clear();
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
@@ -234,8 +237,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     auto p = Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
 
+    t_boundary_id boundary_id = 0;
     auto& br = tr.at(1);
-    br.AddPoint(Polar{0.1, 0});
+    br.AddPoint(Polar{0.1, 0}, boundary_id);
     tree_vector.clear();
     
     TreeVertices(tree_vector, 1, tr, 1e-3);
@@ -249,11 +253,11 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
 
 
     tree_vector.clear();
-    br.AddPoint(Polar{0.1, 0});
+    br.AddPoint(Polar{0.1, 0}, boundary_id);
     BranchNew left_branch(br.TipPoint(), br.TipAngle() + M_PI/2);
-    left_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
+    left_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     BranchNew right_branch(br.TipPoint(), br.TipAngle() - M_PI/2);
-    right_branch.AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0}).AddPoint(Polar{0.1, 0});
+    right_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     tr.AddSubBranches(1, left_branch, right_branch);
 
     auto tip_ids = vector<t_branch_id> {2, 3};
@@ -313,8 +317,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     BOOST_TEST(tree_vector.size() == 1);
     auto p = Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
-
-    tr.at(i1).AddPoint(Polar{0.1, 0});
+    
+    t_boundary_id boundary_id = 0;
+    tr.at(i1).AddPoint(Polar{0.1, 0}, boundary_id);
     tree_vector.clear();
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
@@ -465,7 +470,8 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     mdl.sources[4] = {1, 7};
 
     mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
-    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}, {3, 0}, {4, 0}});
+    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}, {3, 0}, {4, 0}}, 
+        {(t_boundary_id)mdl.river_boundary_id, (t_boundary_id)mdl.river_boundary_id, (t_boundary_id)mdl.river_boundary_id, (t_boundary_id)mdl.river_boundary_id});
     
     auto border = SimpleBoundaryGenerator(mdl);
     tethex::Mesh mesh(border);
@@ -614,8 +620,8 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
     mdl.sources[2] = {1, 5};
 
     mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
-    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}});
-    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}});
+    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}}, {(t_boundary_id)mdl.river_boundary_id, (t_boundary_id)mdl.river_boundary_id});
+    mdl.tree.AddPolars(mdl.sources.GetSourcesIds(), {{1, 0}, {2, 0}}, {(t_boundary_id)mdl.river_boundary_id, (t_boundary_id)mdl.river_boundary_id});
     
     auto boundary = SimpleBoundaryGenerator(mdl);
     tethex::Mesh mesh(boundary);
@@ -784,7 +790,8 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
     Polar p{ds, 0};
     model.tree.AddPolars(
         {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13},
-        {p, p, p, p, p, p, p, p, p, p,  p,  p,  p}); 
+        {p, p, p, p, p, p, p, p, p, p,  p,  p,  p},
+        {r, r, r, r, r, r, r, r, r, r,  r,  r,  r}); 
 
     //expected values
     auto vertices = vector<Point>{

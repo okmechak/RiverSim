@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     mdl.dx = 0.25;
     mdl.InitializeDirichlet();
 
-    mdl.tree.at(1).AddPoint(Polar{0.1, 0});
+    mdl.tree.at(1).AddPoint(Polar{0.1, 0}, (t_boundary_id)mdl.river_boundary_id);
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
 
     auto boundary = SimpleBoundaryGenerator(mdl);
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     
     mdl.InitializeDirichlet();
 
-    mdl.tree.at(1).AddPoint(Polar{0.1, 0});
+    mdl.tree.at(1).AddPoint(Polar{0.1, 0}, (t_boundary_id)mdl.river_boundary_id);
 
     auto boundary = SimpleBoundaryGenerator(mdl);
 

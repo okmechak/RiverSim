@@ -143,12 +143,12 @@ BOOST_PYTHON_MODULE(riversim)
     ;
     
     //tree
-    class_<BranchNew, bases<t_PointList>>("Branch", "Holds all functionality that you need to work with single branch.")
+    class_<BranchNew, bases<SimpleBoundary>>("Branch", "Holds all functionality that you need to work with single branch.")
         .def(init<River::Point&, double>(args("source_point", "angle")))
-        .def("addAbsolutePoint", static_cast< BranchNew& (BranchNew::*)(const River::Point&)>( &BranchNew::AddAbsolutePoint), return_internal_reference<>(), "Adds point p to branch with absolute coords.")
-        .def("addAbsolutePoint", static_cast< BranchNew& (BranchNew::*)(const Polar&)>( &BranchNew::AddAbsolutePoint), return_internal_reference<>(), "Adds polar p coords to branch with absolute angle, but position is relative to tip.")
-        .def("addPoint", static_cast< BranchNew& (BranchNew::*)(const River::Point&)>( &BranchNew::AddPoint), return_internal_reference<>(), "Adds point p to branch in tip relative coord system.")
-        .def("addPoint", static_cast< BranchNew& (BranchNew::*)(const Polar&)>( &BranchNew::AddPoint), return_internal_reference<>(), "Adds polar p to branch in tip relative coord and angle system.")
+        .def("addAbsolutePoint", static_cast< BranchNew& (BranchNew::*)(const River::Point&, const t_boundary_id boundary_id)>( &BranchNew::AddAbsolutePoint), return_internal_reference<>(), "Adds point p to branch with absolute coords.")
+        .def("addAbsolutePoint", static_cast< BranchNew& (BranchNew::*)(const Polar&, const t_boundary_id boundary_id)>( &BranchNew::AddAbsolutePoint), return_internal_reference<>(), "Adds polar p coords to branch with absolute angle, but position is relative to tip.")
+        .def("addPoint", static_cast< BranchNew& (BranchNew::*)(const River::Point&, const t_boundary_id boundary_id)>( &BranchNew::AddPoint), return_internal_reference<>(), "Adds point p to branch in tip relative coord system.")
+        .def("addPoint", static_cast< BranchNew& (BranchNew::*)(const Polar&, const t_boundary_id boundary_id)>( &BranchNew::AddPoint), return_internal_reference<>(), "Adds polar p to branch in tip relative coord and angle system.")
         .def("shrink", &BranchNew::Shrink, return_internal_reference<>(), "Reduces lenght of branch by p lenght.")
         .def("removeTipPoint", &BranchNew::RemoveTipPoint, return_internal_reference<>(), "Remove tip point from branch(simply pops element from vector).")
         .def("tipPoint", &BranchNew::TipPoint, "Return TipPoint of branch(last point in branch).")

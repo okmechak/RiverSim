@@ -443,17 +443,25 @@ namespace River
     void to_json(json& j, const BranchNew& branch) 
     {
         j = json{
-            {"vertices", (t_PointList)branch}, 
-            {"source_angle", branch.source_angle}};
+            {"vertices", (t_PointList)branch.vertices}, 
+            {"lines", (t_LineList)branch.lines},
+            {"inner_boundary", branch.inner_boundary},
+            {"holes", branch.holes},
+            {"name", branch.name},
+            {"source_angle", branch.SourceAngle()}
+        };
     }
+
     void from_json(const json& j, BranchNew& branch) 
     {
-        t_PointList vertices;
-        j.at("vertices").get_to(vertices);
-        for(const auto& v: vertices)
-            branch.AddAbsolutePoint(v);
-
-        j.at("source_angle").get_to(branch.source_angle);
+        j.at("vertices").get_to(branch.vertices);
+        j.at("lines").get_to(branch.lines);
+        j.at("inner_boundary").get_to(branch.inner_boundary);
+        j.at("holes").get_to(branch.holes);
+        j.at("name").get_to(branch.name);
+        double source_angle;
+        j.at("source_angle").get_to(source_angle);
+        branch.SetSourceAngle(source_angle);
     }
 
     //Tree
