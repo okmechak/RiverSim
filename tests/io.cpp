@@ -57,7 +57,6 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.mesh.refinment_radius == model_po.mesh.refinment_radius);
     BOOST_TEST(model.mesh.exponant == model_po.mesh.exponant);
     BOOST_TEST(model.mesh.sigma == model_po.mesh.sigma);
-    BOOST_TEST(model.mesh.static_refinment_steps == model_po.mesh.static_refinment_steps);
     BOOST_TEST(model.mesh.min_area == model_po.mesh.min_area);
     BOOST_TEST(model.mesh.max_area == model_po.mesh.max_area);
     BOOST_TEST(model.mesh.min_angle ==  model_po.mesh.min_angle );
@@ -75,17 +74,19 @@ BOOST_AUTO_TEST_CASE( default_program_options,
     BOOST_TEST(model.solver_params.tollerance == model_po.solver_params.tollerance);
     BOOST_TEST(model.solver_params.num_of_iterrations == model_po.solver_params.num_of_iterrations);
     BOOST_TEST(model.solver_params.adaptive_refinment_steps == model_po.solver_params.adaptive_refinment_steps);
+    BOOST_TEST(model.solver_params.static_refinment_steps == model_po.solver_params.static_refinment_steps);
     BOOST_TEST(model.solver_params.refinment_fraction == model_po.solver_params.refinment_fraction);
     BOOST_TEST(model.solver_params.quadrature_degree == model_po.solver_params.quadrature_degree);
     BOOST_TEST(model.solver_params.max_distance == model_po.solver_params.max_distance);
+    BOOST_TEST(model.solver_params.field_value == model_po.solver_params.field_value);
 
     //model parameters
     BOOST_TEST(model.dx == model_po.dx);
     BOOST_TEST(model.width == model_po.width);
     BOOST_TEST(model.height == model_po.height);
+
     //these options are not set from program options interface
     BOOST_TEST(model.river_boundary_id == model_po.river_boundary_id);
-    BOOST_TEST(model.field_value == model_po.field_value);
     BOOST_TEST(model.ds == model_po.ds);
     BOOST_TEST(model.eta == model_po.eta);
     BOOST_TEST(model.bifurcation_type == model_po.bifurcation_type);
@@ -123,7 +124,6 @@ BOOST_AUTO_TEST_CASE( program_options,
         "--refinment-radius", "4",
         "--mesh-exp", "5",
         "--mesh-sigma", "6",
-        "--static-refinment-steps", "7",
         "--mesh-min-area", "8",
         "--mesh-max-area", "9",
         "--mesh-min-angle", "10",
@@ -141,15 +141,16 @@ BOOST_AUTO_TEST_CASE( program_options,
         "--tol", "18", 
         "--iteration-steps", "19", 
         "--adaptive-refinment-steps", "20",
+        "--static-refinment-steps", "7",
         "--refinment-fraction", "21", 
         "--quadrature-degree", "22", 
         "--max-dist", "99",
+        "--field-value", "27",
 
         //model options
         "--dx", "23",
         "--width", "24",
         "--height", "25",
-        "--field-value", "27",
         "--ds", "28",
         "--eta", "29",
         "--bifurcation-type", "30",
@@ -202,7 +203,6 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.mesh.refinment_radius == 4);
     BOOST_TEST(model.mesh.exponant == 5);
     BOOST_TEST(model.mesh.sigma == 6);
-    BOOST_TEST(model.mesh.static_refinment_steps == 7);
     BOOST_TEST(model.mesh.min_area == 8);
     BOOST_TEST(model.mesh.max_area == 9);
     BOOST_TEST(model.mesh.min_angle == 10);
@@ -220,16 +220,17 @@ BOOST_AUTO_TEST_CASE( program_options,
     BOOST_TEST(model.solver_params.tollerance == 18);
     BOOST_TEST(model.solver_params.num_of_iterrations == 19);
     BOOST_TEST(model.solver_params.adaptive_refinment_steps == 20);
+    BOOST_TEST(model.solver_params.static_refinment_steps == 7);
     BOOST_TEST(model.solver_params.refinment_fraction == 21);
     BOOST_TEST(model.solver_params.quadrature_degree == 22);
     BOOST_TEST(model.solver_params.max_distance == 99);
+    BOOST_TEST(model.solver_params.field_value == 27);
 
     //model parameters
     BOOST_TEST(model.dx == 23);
     BOOST_TEST(model.width == 24);
     BOOST_TEST(model.height == 25);
     BOOST_TEST(model.river_boundary_id == 90);
-    BOOST_TEST(model.field_value == 27);
     BOOST_TEST(model.ds == 28);
     BOOST_TEST(model.eta == 29);
     BOOST_TEST(model.bifurcation_type == 30);
@@ -269,7 +270,6 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.mesh.ratio = 27;
     mdl_out.mesh.eps = 28;
     mdl_out.mesh.sigma = 29;
-    mdl_out.mesh.static_refinment_steps = 30;
 
     //integration options
     mdl_out.integr.weigth_func_radius = 10;
@@ -280,16 +280,17 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     mdl_out.solver_params.quadrature_degree = 31;
     mdl_out.solver_params.refinment_fraction = 10;
     mdl_out.solver_params.adaptive_refinment_steps = 32;
+    mdl_out.solver_params.static_refinment_steps = 30;
     mdl_out.solver_params.tollerance = 33;
     mdl_out.solver_params.num_of_iterrations = 34;
     mdl_out.solver_params.max_distance = 99.;
+    mdl_out.solver_params.field_value = 7;
 
     //model options
     mdl_out.dx = 1;
     mdl_out.width = 2;
     mdl_out.height = 3;
     mdl_out.river_boundary_id = 10;
-    mdl_out.field_value = 7;
     mdl_out.eta = 8;
     mdl_out.bifurcation_type = 9;
     mdl_out.bifurcation_threshold = 10;
@@ -379,7 +380,6 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.mesh.ratio == 27);
     BOOST_TEST(mdl_in.mesh.eps == 28);
     BOOST_TEST(mdl_in.mesh.sigma == 29);
-    BOOST_TEST(mdl_in.mesh.static_refinment_steps == 30);
 
     //integration options
     BOOST_TEST(mdl_in.integr.weigth_func_radius == 10);
@@ -390,16 +390,17 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     BOOST_TEST(mdl_in.solver_params.quadrature_degree == 31);
     BOOST_TEST(mdl_in.solver_params.refinment_fraction == 10);
     BOOST_TEST(mdl_in.solver_params.adaptive_refinment_steps == 32);
+    BOOST_TEST(mdl_in.solver_params.static_refinment_steps == 30);
     BOOST_TEST(mdl_in.solver_params.tollerance == 33);
     BOOST_TEST(mdl_in.solver_params.num_of_iterrations == 34);
     BOOST_TEST(mdl_in.solver_params.max_distance == 99);
+    BOOST_TEST(mdl_in.solver_params.field_value == 7);
 
     //model parameters
     BOOST_TEST(mdl_in.dx == 1);
     BOOST_TEST(mdl_in.width == 2);
     BOOST_TEST(mdl_in.height == 3);
     BOOST_TEST(mdl_in.river_boundary_id == 10);
-    BOOST_TEST(mdl_in.field_value == 7);
     BOOST_TEST(mdl_in.eta == 8);
     BOOST_TEST(mdl_in.bifurcation_type == 9);
     BOOST_TEST(mdl_in.bifurcation_threshold == 10);
@@ -451,11 +452,11 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
 BOOST_AUTO_TEST_CASE( point_to_json, 
     *utf::tolerance(eps))
 {
-    Point p {1, 2};
+    River::Point p {1, 2};
 
     json j = p;
 
-    auto p2 = j.get<Point>();
+    auto p2 = j.get<River::Point>();
 
     BOOST_TEST(p == p2);
 }
@@ -670,7 +671,6 @@ BOOST_AUTO_TEST_CASE( MeshParams_to_json,
     data.refinment_radius = 10;
     data.exponant = 11;
     data.sigma = 12;
-    data.static_refinment_steps = 100;
     data.min_area = 13;
     data.max_area = 14;
     data.min_angle = 15;
@@ -711,10 +711,12 @@ BOOST_AUTO_TEST_CASE( SolverParams_to_json,
     data.tollerance = 10;
     data.num_of_iterrations = 11;
     data.adaptive_refinment_steps = 12;
+    data.static_refinment_steps = 49;
     data.refinment_fraction = 13;
     data.quadrature_degree = 14;
     data.renumbering_type = 15;
     data.max_distance = 16;
+    data.field_value = 5;
     
     json j = data;
 
@@ -734,7 +736,6 @@ BOOST_AUTO_TEST_CASE( Model_to_json,
     data.width = 2;
     data.height = 3;
     data.river_boundary_id = 4;
-    data.field_value = 5;
     data.eta = 6;
     data.bifurcation_type = 7;
     data.bifurcation_threshold = 8;

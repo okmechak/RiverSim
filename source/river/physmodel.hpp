@@ -36,6 +36,7 @@
 
 #include "tree.hpp"
 #include "mesh.hpp"
+#include "solver.hpp"
 
 using namespace std;
 
@@ -106,90 +107,6 @@ namespace River
             bool operator==(const ProgramOptions& po) const;
     };
 
-    /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
-    */
-    class IntegrationParams
-    {
-        public:
-            /*! \brief Circle radius with centrum in tip point.
-                \details Parameter is used in River::IntegrationParams::WeightFunction
-            */
-            double weigth_func_radius = Radius;
-
-            /*! \brief Circle radius with centrum in tip point.
-                \details Parameter is used in River::IntegrationParams::WeightFunction
-            */
-            double integration_radius = 3 * Radius;
-
-            /*! \brief Controls slope.
-                \details Parameter is used in River::IntegrationParams::WeightFunction
-            */
-            double exponant = 2.;
-            
-            ///Weight function used in computation of series parameters.
-            inline double WeightFunction(const double r) const
-            {
-                //! [WeightFunc]
-                return exp(-pow(r / weigth_func_radius, exponant));
-                //! [WeightFunc]
-            }
-            
-            ///Base Vector function used in computation of series parameters.
-            inline double BaseVector(const int nf, const complex<double> zf) const
-            {
-                if( (nf % 2) == 0)
-                    return -imag(pow(zf, nf/2.));
-                else
-                    return real(pow(zf, nf/2.));
-                
-            }
-
-            ///Base Vector function used in computation of series parameters.
-            inline double BaseVectorFinal(const int nf, const double angle, const double dx, const double dy ) const
-            {
-                return BaseVector(nf, 
-                    exp(-complex<double>(0.0, 1.0)*angle)
-                    *(dx + complex<double>(0.0, 1.0)*dy));
-            }
-
-            ///Prints options structure to output stream.
-            friend ostream& operator <<(ostream& write, const IntegrationParams & ip);
-
-            bool operator==(const IntegrationParams& ip) const;
-    };
-
-    /*! \brief Holds All parameters used in Deal.II solver.
-    */
-    class SolverParams
-    {
-        public:
-            ///Tollerarnce used by dealii Solver.
-            double tollerance = 1.e-12;
-
-            ///Number of solver iteration steps.
-            unsigned num_of_iterrations = 6000;
-
-            ///Number of adaptive refinment steps.
-            unsigned adaptive_refinment_steps = 2;
-
-            ///Fraction of refined mesh elements.
-            double refinment_fraction = 0.1;
-
-            ///Polynom degree of quadrature integration.
-            unsigned quadrature_degree = 3;
-
-            ///Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
-            unsigned renumbering_type = 0;
-
-            ///Maximal distance between middle point and first solved point, used in non euler growth.
-            double max_distance = 0.002;
-
-            ///Prints program options structure to output stream.
-            friend ostream& operator <<(ostream& write, const SolverParams & mp);
-
-            bool operator==(const SolverParams& sp) const;
-    };
-
     /*! \brief Physical model parameters.
         \details 
         Holds parameters related to model. Region, numerical preocessing, parameters of growth etc.
@@ -256,10 +173,6 @@ namespace River
             ///river boundary id and bottom line
             unsigned river_boundary_id = 100;
 
-            //Model parameters
-            ///Field value used for Poisson conditions.
-            double field_value = 1.0;
-            
             //Numeriacal parameters
             ///Maximal length of one step of growth.
             double ds = 0.01;

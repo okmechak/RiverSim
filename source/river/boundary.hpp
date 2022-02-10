@@ -77,7 +77,7 @@ namespace River
     {
         public:
             ///Returns map structure with boundary conditions of specific type(Neuman or Dirichlet).
-            t_BoundaryConditions Get(t_boundary type);
+            t_BoundaryConditions Get(t_boundary type) const;
             friend ostream& operator <<(ostream& write, const BoundaryConditions & bcs);
     };
     
@@ -188,7 +188,7 @@ namespace River
             SimpleBoundary& GetOuterBoundary();
 
             ///Returns vector of all holes.
-            vector<Point> GetHolesList() const;
+            t_PointList GetHolesList() const;
 
             ///Returns map of source points ids and coresponding source point and angle of tree \ref Branch.
             trees_interface_t GetSourcesIdsPointsAndAngles(const Sources& sources) const;
@@ -207,7 +207,7 @@ namespace River
             
             ///Returns normal angle at point with vertice_pos index.
             static double GetVerticeNormalAngle(    
-                const vector<Point>& vertices, 
+                const t_PointList& vertices, 
                 const t_vert_pos vertice_pos);
     };
 }

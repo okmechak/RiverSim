@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( Solve_PDE,
     *utf::description("if there is no msh file throw error"))
 {
     Model model;
-    River::Solver sim(&model);
+    River::Solver sim(model.solver_params, model.boundary_conditions, true);
     BOOST_CHECK_THROW(SolvePDE(model, sim, "test_unique"), Exception);
 }
 
@@ -42,7 +42,6 @@ BOOST_AUTO_TEST_CASE( Evaluate_Series_Parameteres_Of_Tips,
     model.mesh.min_area = 1e-6;
     model.mesh.max_area = 0.01;
     model.mesh.refinment_radius = 0.25;
-    model.mesh.static_refinment_steps = 0;
     model.mesh.exponant = 4;
     model.InitializeDirichlet();
     
@@ -53,7 +52,7 @@ BOOST_AUTO_TEST_CASE( Evaluate_Series_Parameteres_Of_Tips,
     Triangle triangle(&model.mesh);
 
     //Simulation object setup
-    River::Solver sim(&model);
+    River::Solver sim(model.solver_params, model.boundary_conditions, true);
 
     TriangulateBoundaries(model, triangle, "test");
     SolvePDE(model, sim, "test");
@@ -80,7 +79,7 @@ BOOST_AUTO_TEST_CASE( Evaluate_Series_Parameteres_Of_Tips_2,
     Triangle triangle(&model.mesh);
 
     //Simulation object setup
-    River::Solver sim(&model);
+    River::Solver sim(model.solver_params, model.boundary_conditions, true);
 
     TriangulateBoundaries(model, triangle, "test");
 
@@ -235,7 +234,6 @@ BOOST_AUTO_TEST_CASE( Forward_River_Evolution,
     model.mesh.min_area = 1e-5;
     model.mesh.max_area = 0.01;
     model.mesh.refinment_radius = 0.25;
-    model.mesh.static_refinment_steps = 0;
     model.mesh.exponant = 3;
     model.InitializeLaplace();
 
@@ -243,7 +241,7 @@ BOOST_AUTO_TEST_CASE( Forward_River_Evolution,
     Triangle triangle(&model.mesh);
 
     //Simulation object setup
-    River::Solver sim(&model);
+    River::Solver sim(model.solver_params, model.boundary_conditions, true);
 
     ForwardRiverEvolution(model, triangle, sim, "Forward_River_Evolution", -1);
 

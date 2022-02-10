@@ -1,7 +1,7 @@
 /*
     riversim - river growth simulation.
     Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues  
+    Report issues: github.com/okmechak/RiverSim/issues
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
@@ -13,7 +13,7 @@
     GNU General Public License for more details.
 */
 
-/*! \file solver.hpp 
+/*! \file solver.hpp
     \brief PDE Solver and Integration tool.
     \details Incapsulates all logic of Deal.II PDE solver library and postprocessing of its results.
 */
@@ -65,139 +65,231 @@
 #include <utility>
 ///\endcond
 
-#include "GeometryPrimitives.hpp"
+#include "boundary.hpp"
 #include "tethex.hpp"
-#include "physmodel.hpp"
 
 using namespace dealii;
 
 namespace River
 {
-    /*! \brief Deal.II Solver Wrapper 
+    /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
+     */
+    class IntegrationParams
+    {
+    public:
+        /*! \brief Circle radius with centrum in tip point.
+            \details Parameter is used in River::IntegrationParams::WeightFunction
+        */
+        double weigth_func_radius = 0.01;
+
+        /*! \brief Circle radius with centrum in tip point.
+            \details Parameter is used in River::IntegrationParams::WeightFunction
+        */
+        double integration_radius = 3 * 0.01;
+
+        /*! \brief Controls slope.
+            \details Parameter is used in River::IntegrationParams::WeightFunction
+        */
+        double exponant = 2.;
+
+        /// Weight function used in computation of series parameters.
+        inline double WeightFunction(const double r) const
+        {
+            //! [WeightFunc]
+            return exp(-pow(r / weigth_func_radius, exponant));
+            //! [WeightFunc]
+        }
+
+        /// Base Vector function used in computation of series parameters.
+        inline double BaseVector(const int nf, const complex<double> zf) const
+        {
+            if ((nf % 2) == 0)
+                return -imag(pow(zf, nf / 2.));
+            else
+                return real(pow(zf, nf / 2.));
+        }
+
+        /// Base Vector function used in computation of series parameters.
+        inline double BaseVectorFinal(const int nf, const double angle, const double dx, const double dy) const
+        {
+            return BaseVector(nf,
+                              exp(-complex<double>(0.0, 1.0) * angle) * (dx + complex<double>(0.0, 1.0) * dy));
+        }
+
+        /// Prints options structure to output stream.
+        friend ostream &operator<<(ostream &write, const IntegrationParams &ip);
+
+        bool operator==(const IntegrationParams &ip) const;
+    };
+
+    /*! \brief Holds All parameters used in Deal.II solver.
+     */
+    class SolverParams
+    {
+    public:
+        ///Field value used for Poisson conditions.
+        double field_value = 1.0;
+        
+        /// Tollerarnce used by dealii Solver.
+        double tollerance = 1.e-12;
+
+        /// Number of solver iteration steps.
+        unsigned num_of_iterrations = 6000;
+
+        /// Number of adaptive refinment steps.
+        unsigned adaptive_refinment_steps = 2;
+
+        /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
+            \details Refinment means splitting one rectangular element into four rectagular elements.
+        */
+        unsigned static_refinment_steps = 1;
+
+        /// Fraction of refined mesh elements.
+        double refinment_fraction = 0.1;
+
+        /// Polynom degree of quadrature integration.
+        unsigned quadrature_degree = 3;
+
+        /// Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
+        unsigned renumbering_type = 0;
+
+        /// Maximal distance between middle point and first solved point, used in non euler growth.
+        double max_distance = 0.002;
+
+        /// Prints program options structure to output stream.
+        friend ostream &operator<<(ostream &write, const SolverParams &mp);
+
+        bool operator==(const SolverParams &sp) const;
+    };
+    /*! \brief Deal.II Solver Wrapper
         \details
         For more details read [Deal.II ste-6 tutorial](https://www.dealii.org/current/doxygen/deal.II/step_6.html).
     */
     class Solver
     {
-        public:
-            ///Solver constructor
-            Solver(Model *model): 
-                model(model),
-                dof_handler(triangulation),
-                fe(model->solver_params.quadrature_degree), 
-                quadrature_formula(model->solver_params.quadrature_degree),
-                face_quadrature_formula(model->solver_params.quadrature_degree)
-            { 
-                tollerance = model->solver_params.tollerance;
-                number_of_iterations = model->solver_params.num_of_iterrations;
-                num_of_adaptive_refinments = model->solver_params.adaptive_refinment_steps;
-                refinment_fraction = model->solver_params.refinment_fraction;
-                verbose = model->prog_opt.verbose;
-                field_value = model->field_value;
-                num_of_static_refinments = model->mesh.static_refinment_steps;
-            };
-            
-            ~Solver(){clear();}
+    public:
+        /// Solver constructor
+        Solver(
+            const SolverParams& solver_params, 
+            const BoundaryConditions & boundary_conditions, 
+            const bool verbose) :
+                               dof_handler(triangulation),
+                               fe(solver_params.quadrature_degree),
+                               quadrature_formula(solver_params.quadrature_degree),
+                               face_quadrature_formula(solver_params.quadrature_degree),
+                               verbose(verbose),
+                               boundary_conditions(boundary_conditions)
+        {
+            tollerance = solver_params.tollerance;
+            number_of_iterations = solver_params.num_of_iterrations;
+            num_of_adaptive_refinments = solver_params.adaptive_refinment_steps;
+            refinment_fraction = solver_params.refinment_fraction;
+            field_value = solver_params.field_value;
+            num_of_static_refinments = solver_params.static_refinment_steps;
+        };
 
-            ///Solver tollerance
-            double tollerance = 1e-12;
+        ~Solver() { clear(); }
 
-            ///Number of solver iterations.
-            unsigned number_of_iterations = 6000;
+        /// Solver tollerance
+        double tollerance = 1e-12;
 
-            ///If true, output will be produced to stadard output.
-            bool verbose = false;
+        /// Number of solver iterations.
+        unsigned number_of_iterations = 6000;
 
-            ///Number of adaptive mesh refinments. Splits mesh elements and resolves.
-            unsigned num_of_adaptive_refinments = 0;
+        /// If true, output will be produced to stadard output.
+        bool verbose = false;
 
-            ///Number of static mesh refinments. Splits elements without resolving.
-            unsigned num_of_static_refinments = 0;
+        /// Number of adaptive mesh refinments. Splits mesh elements and resolves.
+        unsigned num_of_adaptive_refinments = 0;
 
-            ///Open mesh data from file. Msh 2 format.
-            void OpenMesh(const string fileName = "river.msh");
+        /// Number of static mesh refinments. Splits elements without resolving.
+        unsigned num_of_static_refinments = 0;
 
-            ///Static adaptive mesh refinment.
-            void static_refine_grid(const Model& mdl, const vector<Point>& tips_points);
+        /// Open mesh data from file. Msh 2 format.
+        void OpenMesh(const string fileName = "river.msh");
 
-            ///Number of refined by Deal.II mesh cells.
-            unsigned long NumberOfRefinedCells()
-            {
-                return triangulation.n_active_cells();
-            }
+        /// Static adaptive mesh refinment.
+        void static_refine_grid(const IntegrationParams &integr, const t_PointList &tips_points);
 
-            unsigned long NumberOfDOFs()
-            {
-                return dof_handler.n_dofs();
-            }
+        /// Number of refined by Deal.II mesh cells.
+        unsigned long NumberOfRefinedCells()
+        {
+            return triangulation.n_active_cells();
+        }
 
-            ///Run fem solution.
-            void run();
+        unsigned long NumberOfDOFs()
+        {
+            return dof_handler.n_dofs();
+        }
 
-            ///Save results to VTK file.
-            void output_results(const string file_name) const;
+        /// Run fem solution.
+        void run();
 
-            ///Interation of series parameters around tips points.
-            vector<double> integrate(const Model& mdl, const Point& point, const double angle);
+        /// Save results to VTK file.
+        void output_results(const string file_name) const;
 
-            ///Integration used for test purpose.
-            double integration_test(const Point& point, const double dr);
+        /// Interation of series parameters around tips points.
+        vector<double> integrate(const IntegrationParams &integ, const Point &point, const double angle);
 
-            ///Maximal value of solution, used for test purpose.
-            double max_value();
+        /// Integration used for test purpose.
+        double integration_test(const Point &point, const double dr);
 
-            bool solved() const 
-            {
-                return solution.size() > 0;
-            }
+        /// Maximal value of solution, used for test purpose.
+        double max_value();
 
-            ///Clear Solver object.
-            void clear()
-            {
-              dof_handler.clear();
-              triangulation.clear();
-              hanging_node_constraints.clear();
-              system_matrix.clear();
-              solution.reinit(0);
-            }
-            
-            ///Outer field value. See Puasson, Laplace equations.
-            double field_value = 0.;
+        bool solved() const
+        {
+            return solution.size() > 0;
+        }
 
-            ///Refinment fraction. Used static mesh elements refinment.
-            double refinment_fraction = 0.01;
-            
-            ///Coarsening fraction. Used static mesh elements refinment.
-            double coarsening_fraction = 0;
+        /// Clear Solver object.
+        void clear()
+        {
+            dof_handler.clear();
+            triangulation.clear();
+            hanging_node_constraints.clear();
+            system_matrix.clear();
+            solution.reinit(0);
+        }
 
-        private:
-            Model *model = NULL;
+        /// Outer field value. See Puasson, Laplace equations.
+        double field_value = 0.;
 
-            ///Dimension of problem.
-            const static int dim = 2;
+        /// Refinment fraction. Used static mesh elements refinment.
+        double refinment_fraction = 0.01;
 
-            Triangulation<dim> triangulation;
-            DoFHandler<dim> dof_handler;
+        /// Coarsening fraction. Used static mesh elements refinment.
+        double coarsening_fraction = 0;
 
-            FE_Q<dim> fe;
-            const QGauss<dim> quadrature_formula;
-            const QGauss<dim - 1> face_quadrature_formula;
-            
-            AffineConstraints<double> hanging_node_constraints;
+        BoundaryConditions boundary_conditions;
 
-            SparsityPattern sparsity_pattern;
-            SparseMatrix<double> system_matrix;
+    private:
 
-            ///Holds solution of problem.
-            Vector<double> solution;
-            ///Holds right hand side values of linear system.
-            Vector<double> system_rhs;
+        /// Dimension of problem.
+        const static int dim = 2;
 
-            ConvergenceTable convergence_table;
+        Triangulation<dim> triangulation;
+        DoFHandler<dim> dof_handler;
 
-            void setup_system();
-            void assemble_system();
-            void solve();
-            void refine_grid();
+        FE_Q<dim> fe;
+        const QGauss<dim> quadrature_formula;
+        const QGauss<dim - 1> face_quadrature_formula;
+
+        AffineConstraints<double> hanging_node_constraints;
+
+        SparsityPattern sparsity_pattern;
+        SparseMatrix<double> system_matrix;
+
+        /// Holds solution of problem.
+        Vector<double> solution;
+        /// Holds right hand side values of linear system.
+        Vector<double> system_rhs;
+
+        ConvergenceTable convergence_table;
+
+        void setup_system();
+        void assemble_system(const BoundaryConditions & boundary_conditions);
+        void solve();
+        void refine_grid();
     };
 } // namespace River

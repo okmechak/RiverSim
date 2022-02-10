@@ -55,11 +55,6 @@ namespace River
     /*! \brief Sigma is used in exponence, also as \ref River::MeshParams::exponant controls slope. */
     double sigma = 1.9;
 
-    /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
-        \details Refinment means splitting one rectangular element into four rectagular elements.
-    */
-    unsigned static_refinment_steps = 1;
-
     /// Minimal area of mesh.
     double min_area = 7e-4;
 

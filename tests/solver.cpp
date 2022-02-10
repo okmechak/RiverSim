@@ -28,7 +28,6 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
 
     //1e-12 - is to small and we receive strange mesh
     mdl.mesh.min_area = 1e-5;
-    mdl.mesh.static_refinment_steps = 0;
     mdl.mesh.max_area = 0.01;
     mdl.mesh.min_angle = 30;
     mdl.mesh.refinment_radius = 0.10;
@@ -48,14 +47,14 @@ BOOST_AUTO_TEST_CASE( integration_params_test,
     mesh.write("test.msh");
 
     //Simulation
-    River::Solver sim(&mdl);
+    River::Solver sim(mdl.solver_params, mdl.boundary_conditions, false);
     sim.OpenMesh("test.msh");
     sim.run();
     
     auto tip_ids = mdl.tree.TipBranchesIds();
     auto point = mdl.tree.at(tip_ids.at(0)).TipPoint();
     auto angle = mdl.tree.at(tip_ids.at(0)).TipAngle();
-    auto series_params = sim.integrate(mdl, point, angle);
+    auto series_params = sim.integrate(mdl.integr, point, angle);
 
     BOOST_TEST(angle == M_PI/2);
     BOOST_TEST((point == River::Point{0.25, 0.1}));
@@ -78,7 +77,6 @@ BOOST_AUTO_TEST_CASE( integration_test,
     mdl.mesh.refinment_radius = 0.10;
     mdl.mesh.exponant = 2;
     mdl.integr.integration_radius = 0.01;
-    mdl.field_value = 1;
     mdl.dx = 0.25;
     mdl.mesh.tip_points = {River::Point{0.25, 0.1}};
     
@@ -96,7 +94,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
     mesh.write("test.msh");
 
     //Simulation
-    River::Solver sim(&mdl);
+    River::Solver sim(mdl.solver_params, mdl.boundary_conditions, false);
     
     sim.OpenMesh("test.msh");
     sim.run();
@@ -119,7 +117,7 @@ BOOST_AUTO_TEST_CASE( integration_test,
 
 BOOST_AUTO_TEST_CASE( memory_leak)
 {   
-    Model model;
+    Model mdl;
     for(unsigned long int i = 0; i < 1e5; ++i)
-        River::Solver sim(&model);
+        River::Solver sim(mdl.solver_params, mdl.boundary_conditions, false);
 }

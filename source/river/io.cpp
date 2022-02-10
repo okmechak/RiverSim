@@ -146,8 +146,6 @@ namespace River
         
         //Model parameters
         options.add_options("Model parameters")
-        ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", 
-            value<double>()->default_value(to_string(model.field_value)) )
         ("eta", "Power of a1^eta used in growth of river.", 
             value<double>()->default_value(to_string(model.eta)) )
         ("b,bifurcation-type", "Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.", 
@@ -199,10 +197,9 @@ namespace River
         ("q,mesh-min-angle", "Constraints minimal angle of triangle element.", 
             value<double>()->default_value(to_string(model.mesh.min_angle)) )
         ("e,eps", "Width of branch. Every branch is divided and joined into one big edge which covers all geometry. Width of divided branch corresponds to eps. Such solution is constrain of Deal.II library.", 
-            value<double>()->default_value(to_string(model.mesh.eps)) )
-        ("static-refinment-steps", "Number of mesh refinment steps used by Deal.II mesh functionality.", 
-            value<unsigned>()->default_value(to_string(model.mesh.static_refinment_steps)) );
+            value<double>()->default_value(to_string(model.mesh.eps)) );
 
+        //Solver parameters
         options.add_options("Solver Parameters")
         ("quadrature-degree", "Quadrature polynomials degree used in numerical integration of Deal.II solver.", 
             value<unsigned>()->default_value(to_string(model.solver_params.quadrature_degree)))
@@ -212,10 +209,14 @@ namespace River
             value<double>()->default_value(to_string(model.solver_params.tollerance)))
         ("refinment-fraction", "Fraction(percent from total, 0.01 corresponds to 1%) of refined mesh elements using Deal.II adaptive mesh capabilities.", 
             value<double>()->default_value(to_string(model.solver_params.refinment_fraction)))
+        ("static-refinment-steps", "Number of mesh refinment steps used by Deal.II mesh functionality.", 
+            value<unsigned>()->default_value(to_string(model.solver_params.static_refinment_steps)) )
         ("adaptive-refinment-steps", "Number of refinment steps used by adaptive Deal.II mesh functionality.", 
             value<unsigned>()->default_value(to_string(model.solver_params.adaptive_refinment_steps)))
         ("max-dist", "Used by non-euler solver.", 
-            value<double>()->default_value(to_string(model.solver_params.max_distance)));
+            value<double>()->default_value(to_string(model.solver_params.max_distance)))
+        ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", 
+            value<double>()->default_value(to_string(model.solver_params.field_value)) );
 
         options.parse_positional({"input"});
         
@@ -268,7 +269,6 @@ namespace River
         if (vm.count("refinment-radius")) model.mesh.refinment_radius = vm["refinment-radius"].as<double>();
         if (vm.count("mesh-exp")) model.mesh.exponant = vm["mesh-exp"].as<double>();
         if (vm.count("mesh-sigma")) model.mesh.sigma = vm["mesh-sigma"].as<double>();
-        if (vm.count("static-refinment-steps")) model.mesh.static_refinment_steps = vm["static-refinment-steps"].as<unsigned>();
         if (vm.count("mesh-max-area")) model.mesh.max_area = vm["mesh-max-area"].as<double>();
         if (vm.count("mesh-min-area")) model.mesh.min_area = vm["mesh-min-area"].as<double>();
         if (vm.count("mesh-min-angle")) model.mesh.min_angle = vm["mesh-min-angle"].as<double>();
@@ -286,9 +286,11 @@ namespace River
         if (vm.count("tol")) model.solver_params.tollerance = vm["tol"].as<double>();
         if (vm.count("iteration-steps")) model.solver_params.num_of_iterrations = vm["iteration-steps"].as<unsigned>();
         if (vm.count("adaptive-refinment-steps")) model.solver_params.adaptive_refinment_steps = vm["adaptive-refinment-steps"].as<unsigned>();
+        if (vm.count("static-refinment-steps")) model.solver_params.static_refinment_steps = vm["static-refinment-steps"].as<unsigned>();
         if (vm.count("refinment-fraction")) model.solver_params.refinment_fraction = vm["refinment-fraction"].as<double>();
         if (vm.count("quadrature-degree")) model.solver_params.quadrature_degree = vm["quadrature-degree"].as<unsigned>();
         if (vm.count("max-dist")) model.solver_params.max_distance = vm["max-dist"].as<double>();
+        if (vm.count("field-value")) model.solver_params.field_value = vm["field-value"].as<double>();
 
         //model parameters
         //geometry
@@ -297,7 +299,6 @@ namespace River
         if (vm.count("height")) model.height = vm["height"].as<double>();
         if (vm.count("river-boundary-id")) model.river_boundary_id = vm["river-boundary-id"].as<unsigned>();
     
-        if (vm.count("field-value")) model.field_value = vm["field-value"].as<double>();
         if (vm.count("eta")) model.eta = vm["eta"].as<double>();
         if (vm.count("bifurcation-type")) model.bifurcation_type = vm["bifurcation-type"].as<unsigned>();
         if (vm.count("bifurcation-threshold")) model.bifurcation_threshold = vm["bifurcation-threshold"].as<double>();
@@ -576,7 +577,6 @@ namespace River
             {"refinment_radius", data.refinment_radius},
             {"exponant", data.exponant},
             {"sigma", data.sigma},
-            {"static_refinment_steps", data.static_refinment_steps},
             {"min_area", data.min_area},
             {"max_area", data.max_area},
             {"min_angle", data.min_angle},
@@ -585,12 +585,12 @@ namespace River
             {"ratio", data.ratio},
             {"eps", data.eps}};
     }
+
     void from_json(const json& j, MeshParams& data) 
     {
         if(j.count("refinment_radius")) j.at("refinment_radius").get_to(data.refinment_radius);
         if(j.count("exponant")) j.at("exponant").get_to(data.exponant);
         if(j.count("sigma")) j.at("sigma").get_to(data.sigma);
-        if(j.count("static_refinment_steps")) j.at("static_refinment_steps").get_to(data.static_refinment_steps);
         if(j.count("min_area")) j.at("min_area").get_to(data.min_area);
         if(j.count("max_area")) j.at("max_area").get_to(data.max_area);
         if(j.count("min_angle")) j.at("min_angle").get_to(data.min_angle);
@@ -622,20 +622,25 @@ namespace River
             {"tollerance", data.tollerance},
             {"num_of_iterrations", data.num_of_iterrations},
             {"adaptive_refinment_steps", data.adaptive_refinment_steps},
+            {"static_refinment_steps", data.static_refinment_steps},
             {"refinment_fraction", data.refinment_fraction},
             {"quadrature_degree", data.quadrature_degree},
             {"renumbering_type", data.renumbering_type},
-            {"max_distance", data.max_distance}};
+            {"max_distance", data.max_distance},
+            {"field_value", data.field_value}};
     }
+    
     void from_json(const json& j, SolverParams& data) 
     {
         if(j.count("tollerance")) j.at("tollerance").get_to(data.tollerance);
         if(j.count("num_of_iterrations")) j.at("num_of_iterrations").get_to(data.num_of_iterrations);
         if(j.count("adaptive_refinment_steps")) j.at("adaptive_refinment_steps").get_to(data.adaptive_refinment_steps);
+        if(j.count("static_refinment_steps")) j.at("static_refinment_steps").get_to(data.static_refinment_steps);
         if(j.count("refinment_fraction")) j.at("refinment_fraction").get_to(data.refinment_fraction);
         if(j.count("quadrature_degree")) j.at("quadrature_degree").get_to(data.quadrature_degree);
         if(j.count("renumbering_type")) j.at("renumbering_type").get_to(data.renumbering_type);
         if(j.count("max_distance")) j.at("max_distance").get_to(data.max_distance);
+        if(j.count("field_value")) j.at("field_value").get_to(data.field_value);
     }
 
     //Model
@@ -658,7 +663,6 @@ namespace River
             {"width", data.width},
             {"height", data.height},
             {"river_boundary_id", data.river_boundary_id},
-            {"field_value", data.field_value},
             {"eta", data.eta},
             {"bifurcation_type", data.bifurcation_type},
             {"bifurcation_threshold", data.bifurcation_threshold},
@@ -690,7 +694,6 @@ namespace River
         if(j.count("width")) j.at("width").get_to(data.width);
         if(j.count("height")) j.at("height").get_to(data.height);
         if(j.count("river_boundary_id")) j.at("river_boundary_id").get_to(data.river_boundary_id);
-        if(j.count("field_value")) j.at("field_value").get_to(data.field_value);
         if(j.count("eta")) j.at("eta").get_to(data.eta);
         if(j.count("ds")) j.at("ds").get_to(data.ds);
         if(j.count("bifurcation_type")) j.at("bifurcation_type").get_to(data.bifurcation_type);

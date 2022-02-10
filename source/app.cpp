@@ -18,7 +18,7 @@ int App::Run(int argc, char *argv[])
         Triangle triangle(&model.mesh);
 
         //Simulation object setup
-        River::Solver sim(&model);
+        River::Solver sim(model.solver_params, model.boundary_conditions, model.prog_opt.verbose);
 
         //MAIN LOOP
         print(model.prog_opt.verbose, "Start of main loop...");

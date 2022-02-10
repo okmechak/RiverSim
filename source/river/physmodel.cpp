@@ -97,47 +97,6 @@ namespace River
             && input_file_name == po.input_file_name;
     }
 
-    //IntegrationParams
-    ostream& operator <<(ostream& write, const IntegrationParams & ip)
-    {
-        write << "\t weigth_func_radius = " << ip.weigth_func_radius << endl;
-        write << "\t integration_radius = " << ip.integration_radius << endl;
-        write << "\t exponant = "           << ip.exponant           << endl;
-        return write;
-    }
-
-    bool IntegrationParams::operator==(const IntegrationParams& ip) const
-    {
-        return 
-            abs(weigth_func_radius - ip.weigth_func_radius) < EPS 
-            && abs(integration_radius  - ip.integration_radius) < EPS
-            && abs(exponant - ip.exponant) < EPS;
-    }
-
-
-    //SolverParams
-    ostream& operator <<(ostream& write, const SolverParams & sp)
-    {
-        write << "\t quadrature_degree = "   << sp.quadrature_degree << endl;
-        write << "\t refinment_fraction = "  << sp.refinment_fraction << endl;
-        write << "\t adaptive_refinment_steps = " << sp.adaptive_refinment_steps << endl;
-        write << "\t tollerance = "          << sp.tollerance << endl;
-        write << "\t number of iteration = " << sp.num_of_iterrations << endl;
-        return write;
-    }
-
-    bool SolverParams::operator==(const SolverParams& sp) const
-    {
-        return 
-            abs(tollerance - sp.tollerance) < EPS 
-            && num_of_iterrations  == sp.num_of_iterrations
-            && adaptive_refinment_steps == sp.adaptive_refinment_steps
-            && abs(refinment_fraction - sp.refinment_fraction) < EPS
-            && quadrature_degree == sp.quadrature_degree
-            && renumbering_type == sp.renumbering_type
-            && abs(max_distance - sp.max_distance) < EPS;
-    }
-
     //Model
     bool Model::q_bifurcate(const vector<double>& a) const
     {
@@ -242,7 +201,6 @@ namespace River
         write << "\t height = "            << mdl.height << endl;
         write << "\t river_boundary_id = " << mdl.river_boundary_id << endl;
 
-        write << "\t field_value = "       << mdl.field_value << endl;
         write << "\t eta = "               << mdl.eta << endl;
         write << "\t bifurcation_type = "  << mdl.bifurcation_type << endl;
         write << "\t bifurcation_threshold = " << mdl.bifurcation_threshold << endl;
@@ -264,7 +222,6 @@ namespace River
                abs(dx - model.dx) < EPS 
             && abs(width - model.width) < EPS 
             && abs(height - model.height) < EPS 
-            && abs(field_value - model.field_value) < EPS 
             && abs(eta - model.eta) < EPS 
             && abs(bifurcation_threshold - model.bifurcation_threshold) < EPS 
             && abs(bifurcation_min_dist - model.bifurcation_min_dist) < EPS 
@@ -363,9 +320,6 @@ namespace River
         if(mesh.sigma < 0)
             throw Exception("mesh sigma parameter can't be negative: " + to_string(mesh.sigma));
 
-        if(mesh.static_refinment_steps >= 5)
-            cout << "mesh static_refinment_steps parameter is very large, and simulation can take a long time: " << mesh.static_refinment_steps << endl;
-
         if(mesh.ratio <= 1.38)
             throw Exception("mesh ratio parameter can't be smaller than 1.38 this corresponds to 36 degree: " + to_string(mesh.ratio));
         
@@ -394,14 +348,14 @@ namespace River
 
 
         //Solver
-        if(solver_params.quadrature_degree < 0)
-            throw Exception("Solver quadrature_degree parameter can't be negative: " + to_string(solver_params.quadrature_degree));
-
         if(solver_params.refinment_fraction < 0 || solver_params.refinment_fraction > 1)
             throw Exception("Solver refinment_fraction parameter can't be negative or greater then 1.: " + to_string(solver_params.refinment_fraction));
 
         if(solver_params.adaptive_refinment_steps >= 5)
-            cout << "solver adaptive_refinment_steps parameter is very large, and simulation can take a long time: " << solver_params.adaptive_refinment_steps << endl;
+            cout << "Solver adaptive_refinment_steps parameter is very large, and simulation can take a long time: " << solver_params.adaptive_refinment_steps << endl;
+
+        if(solver_params.static_refinment_steps >= 5)
+            cout << "Solver static_refinment_steps parameter is very large, and simulation can take a long time: " << solver_params.static_refinment_steps << endl;
 
         if(solver_params.tollerance < 0)
             throw Exception("Tollerance value of solver is negative: " + to_string(solver_params.tollerance));
@@ -430,7 +384,7 @@ namespace River
     {
         Clear();
 
-        field_value = 0;
+        solver_params.field_value = 0;
 
         border[1] = 
         {
@@ -469,7 +423,7 @@ namespace River
     {
         Clear();
 
-        field_value = 1;
+        solver_params.field_value = 1;
         
         border[1] = 
         {
@@ -508,7 +462,7 @@ namespace River
     {
         Clear();
 
-        field_value = 1;
+        solver_params.field_value = 1;
 
         border[1] = 
         {
@@ -547,7 +501,7 @@ namespace River
     {
         Clear();
 
-        field_value = 1;
+        solver_params.field_value = 1;
 
         border[1] = 
         {/*Outer Boundary*/

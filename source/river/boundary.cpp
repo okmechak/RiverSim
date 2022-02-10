@@ -49,7 +49,7 @@ namespace River
     }
 
     //BoundaryConditions
-    t_BoundaryConditions BoundaryConditions::Get(t_boundary type)
+    t_BoundaryConditions BoundaryConditions::Get(t_boundary type) const
     {
         t_BoundaryConditions bd;
         if(type != DIRICHLET && type != NEUMAN)
@@ -234,9 +234,9 @@ namespace River
             throw Exception("Boundary: Boundary ids should be unique numbers!");
     }
 
-    vector<Point> Boundaries::GetHolesList() const
+    t_PointList Boundaries::GetHolesList() const
     {
-        vector<Point> holes;
+        t_PointList holes;
         for(const auto& [boundary_id, simple_boundary]: *this)
             if(simple_boundary.inner_boundary)
                 for(auto& h: simple_boundary.holes)
@@ -393,7 +393,7 @@ namespace River
         return normal_angle;
     }
 
-    double Boundaries::GetVerticeNormalAngle(const vector<Point>& vertices, const t_vert_pos vertice_pos)
+    double Boundaries::GetVerticeNormalAngle(const t_PointList& vertices, const t_vert_pos vertice_pos)
     {
         const auto vertices_size = vertices.size();
         const auto [vertice_pos_left, vertice_pos_right] = GetAdjacentVerticesPositions(vertices_size, vertice_pos);

@@ -311,6 +311,7 @@ BOOST_AUTO_TEST_CASE( SolverParams_equal,
     data1.quadrature_degree = true;
     data1.renumbering_type = true;
     data1.max_distance = true;
+    data1.field_value = 5;
 
     BOOST_TEST(!(data1 == data2));
 
@@ -321,6 +322,7 @@ BOOST_AUTO_TEST_CASE( SolverParams_equal,
     data2.quadrature_degree = true;
     data2.renumbering_type = true;
     data2.max_distance = true;
+    data2.field_value = 5;
 
     BOOST_TEST(data1 == data2);
 }
@@ -337,7 +339,6 @@ BOOST_AUTO_TEST_CASE( PhysModel_equal,
     data1.width = 2;
     data1.height = 3;
     data1.river_boundary_id = 4;
-    data1.field_value = 5;
     data1.eta = 6;
     data1.bifurcation_type = 7;
     data1.bifurcation_threshold = 8;
@@ -355,7 +356,6 @@ BOOST_AUTO_TEST_CASE( PhysModel_equal,
     data2.width = 2;
     data2.height = 3;
     data2.river_boundary_id = 4;
-    data2.field_value = 5;
     data2.eta = 6;
     data2.bifurcation_type = 7;
     data2.bifurcation_threshold = 8;

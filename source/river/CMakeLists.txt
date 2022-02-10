@@ -29,9 +29,15 @@ add_library(tree tree.hpp tree.cpp)
 target_link_libraries(tree boundary)
 install(TARGETS tree DESTINATION riversim)
 
+#solver
+add_library(solver solver.hpp solver.cpp) 
+deal_ii_setup_target(solver)
+target_link_libraries(solver boundary tethex)
+install(TARGETS solver DESTINATION riversim)
+
 #physmodel
 add_library(physmodel physmodel.hpp physmodel.cpp) 
-target_link_libraries(physmodel tree mesh)
+target_link_libraries(physmodel tree mesh solver)
 install(TARGETS physmodel DESTINATION riversim)
 
 #io
@@ -43,12 +49,6 @@ install(TARGETS io DESTINATION riversim)
 add_library(boundary_generator boundary_generator.hpp boundary_generator.cpp) 
 target_link_libraries(boundary_generator physmodel)
 install(TARGETS boundary_generator DESTINATION riversim)
-
-#solver
-add_library(solver solver.hpp solver.cpp) 
-deal_ii_setup_target(solver)
-target_link_libraries(solver physmodel)
-install(TARGETS solver DESTINATION riversim)
 
 #riversim
 add_library(river riversim.hpp riversim.cpp)

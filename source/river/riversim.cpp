@@ -55,7 +55,7 @@ namespace River
     {
         solver->clear();
         solver->OpenMesh(mesh_file_name + ".msh");
-        solver->static_refine_grid(*model, model->tree.TipPoints());
+        solver->static_refine_grid(model->integr, model->tree.TipPoints());
         solver->run();
         if (model->prog_opt.save_vtk || model->prog_opt.debug)
             solver->output_results(mesh_file_name);
@@ -71,7 +71,7 @@ namespace River
         {
             auto tip_point = model->tree.at(id).TipPoint();
             auto tip_angle = model->tree.at(id).TipAngle();
-            id_series_params[id] = solver->integrate(*model, tip_point, tip_angle);
+            id_series_params[id] = solver->integrate(model->integr, tip_point, tip_angle);
         }
 
         return id_series_params;
@@ -402,7 +402,7 @@ namespace River
         print(model.prog_opt.verbose, "Solving...");
         sim.clear();
         sim.OpenMesh(file_name + ".msh");
-        sim.static_refine_grid(model, model.tree.TipPoints());
+        sim.static_refine_grid(model.integr, model.tree.TipPoints());
         sim.run();
         if (model.prog_opt.save_vtk)
             sim.output_results(file_name);
@@ -418,7 +418,7 @@ namespace River
         {
             auto tip_point = model.tree.at(id).TipPoint();
             auto tip_angle = model.tree.at(id).TipAngle();
-            id_series_params[id] = sim.integrate(model, tip_point, tip_angle);
+            id_series_params[id] = sim.integrate(model.integr, tip_point, tip_angle);
         }
 
         return id_series_params;
@@ -607,7 +607,7 @@ namespace River
         auto tip_point = model.tree.at(branch_id).TipPoint();
         auto tip_angle = model.tree.at(branch_id).TipAngle();
         print(model.prog_opt.verbose, "Integration..");
-        auto series_params = sim.integrate(model, tip_point, tip_angle);
+        auto series_params = sim.integrate(model.integr, tip_point, tip_angle);
         auto circle_integr = sim.integration_test(tip_point, 0.1/*dr same as in FreeFEM++*/);
         auto whole_integr = sim.integration_test(tip_point, 10000/*large enough to cover whole region*/);
         sim.clear();

@@ -20,7 +20,7 @@ namespace utf = boost::unit_test;
 BOOST_AUTO_TEST_CASE( tree_vertices, 
     *utf::tolerance(eps))
 {   
-    vector<Point> tree_vertices;
+    t_PointList tree_vertices;
     Tree tr;
     BOOST_CHECK_THROW(TreeVertices(tree_vertices, 1, tr, 0.01), Exception);
 }
@@ -83,14 +83,14 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
     boundary = SimpleBoundaryGenerator(model);
     BOOST_TEST(boundary.lines.size() == 15);
 
-    auto vertices =  vector<Point>
+    auto vertices = t_PointList
     {
         {0, 0}, {0.25-0.01/2, 0}, {0.25, 0.01}, {0.25+0.01/2, 0}, {1, 0}, {1, 1}, {0, 1},
         {0.25, 0.75}, {0.75, 0.75}, {0.75, 0.25}, {0.25, 0.25},
         {0.8, 0.9}, {0.9, 0.9}, {0.9, 0.8}, {0.8, 0.8}
     };
     
-    auto holes = vector<Point>{
+    auto holes = t_PointList{
         {0.5, 0.5}, {0.85, 0.85}
     };
 
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
     }
 }
 
-inline void TEST_POINT(Point p1, Point p2)
+inline void TEST_POINT(River::Point p1, River::Point p2)
 {
     BOOST_TEST(p1 == p2);
 }
@@ -124,33 +124,33 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     tr.Initialize(
         boundary.GetSourcesIdsPointsAndAngles(sources));
     
-    vector<Point> tree_vector;
+    t_PointList tree_vector;
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 1);
-    auto p = Point{0.5, 0};
+    auto p = River::Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
 
     t_boundary_id boundary_id = 0;
     auto& br = tr.at(1);
-    br.AddPoint(Polar{0.1, 0}, boundary_id);
+    br.AddPoint(River::Polar{0.1, 0}, boundary_id);
     tree_vector.clear();
     
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
-    p = Point{0.5 - 1e-3/2, 0};
+    p = River::Point{0.5 - 1e-3/2, 0};
     BOOST_TEST(tree_vector.at(0) == p);
-    p = Point{0.5, 0.1};
+    p = River::Point{0.5, 0.1};
     BOOST_TEST(tree_vector.at(1) == p);
-    p = Point{0.5 + 1e-3/2, 0};
+    p = River::Point{0.5 + 1e-3/2, 0};
     BOOST_TEST(tree_vector.at(2) == p);
 
 
     tree_vector.clear();
-    br.AddPoint(Polar{0.1, 0}, boundary_id);
+    br.AddPoint(River::Polar{0.1, 0}, boundary_id);
     BranchNew left_branch(br.TipPoint(), br.TipAngle() + M_PI/2);
-    left_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
+    left_branch.AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     BranchNew right_branch(br.TipPoint(), br.TipAngle() - M_PI/2);
-    right_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
+    right_branch.AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     tr.AddSubBranches(1, left_branch, right_branch);
 
     auto tip_ids = vector<t_branch_id> {2, 3};
@@ -160,30 +160,30 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     BOOST_TEST(tree_vector.size() == 17);
 
     //left source branch
-    TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2, 0});
-    TEST_POINT(tree_vector.at(1), Point{0.5 - 1e-3/2, 0.1});
+    TEST_POINT(tree_vector.at(0), River::Point{0.5 - 1e-3/2, 0});
+    TEST_POINT(tree_vector.at(1), River::Point{0.5 - 1e-3/2, 0.1});
 
     //left left branch
-    TEST_POINT(tree_vector.at(2), Point{0.5, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(3), Point{0.4, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(4), Point{0.3, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(5), Point{0.2, 0.2});
+    TEST_POINT(tree_vector.at(2), River::Point{0.5, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(3), River::Point{0.4, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(4), River::Point{0.3, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(5), River::Point{0.2, 0.2});
     //right left branch
-    TEST_POINT(tree_vector.at(6), Point{0.3, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(7), Point{0.4, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(6), River::Point{0.3, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(7), River::Point{0.4, 0.2 + 1e-3/2});
     //left right branch
-    TEST_POINT(tree_vector.at(8), Point{0.5, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(9), Point{0.6, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(10), Point{0.7, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(11), Point{0.8, 0.2});
+    TEST_POINT(tree_vector.at(8), River::Point{0.5, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(9), River::Point{0.6, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(10), River::Point{0.7, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(11), River::Point{0.8, 0.2});
     //right right branch
-    TEST_POINT(tree_vector.at(12), Point{0.7, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(13), Point{0.6, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(14), Point{0.5, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(12), River::Point{0.7, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(13), River::Point{0.6, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(14), River::Point{0.5, 0.2 - 1e-3/2});
     //right source branch
-    TEST_POINT(tree_vector.at(15), Point{0.5 + 1e-3/2, 0.1 });
-    TEST_POINT(tree_vector.at(16), Point{0.5 + 1e-3/2, 0.0 });
-    TEST_POINT(tree_vector.back(), Point{0.5 + 1e-3/2, 0});
+    TEST_POINT(tree_vector.at(15), River::Point{0.5 + 1e-3/2, 0.1 });
+    TEST_POINT(tree_vector.at(16), River::Point{0.5 + 1e-3/2, 0.0 });
+    TEST_POINT(tree_vector.back(), River::Point{0.5 + 1e-3/2, 0});
 
 }
 
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     tr.Initialize(
         boundary.GetSourcesIdsPointsAndAngles(sources));
     
-    vector<Point> tree_vector;
+    t_PointList tree_vector;
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 1);
     
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     auto[i1, i2] = tr.AddSubBranches(1, l, r);
     cout << i2;
     BOOST_TEST(tree_vector.size() == 1);
-    auto p = Point{0.5, 0};
+    auto p = River::Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
 
     t_boundary_id boundary_id = 0;
@@ -216,9 +216,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     tree_vector.clear();
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
-    TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
-    TEST_POINT(tree_vector.at(1), Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
-    TEST_POINT(tree_vector.at(2), Point{0.5, 0});    
+    TEST_POINT(tree_vector.at(0), River::Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
+    TEST_POINT(tree_vector.at(1), River::Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
+    TEST_POINT(tree_vector.at(2), River::Point{0.5, 0});    
 }
 
 BOOST_AUTO_TEST_CASE( boundary_generator_new_new, 
@@ -231,10 +231,10 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     tr.Initialize(
         border.GetSourcesIdsPointsAndAngles(sources));
     
-    vector<Point> tree_vector;
+    t_PointList tree_vector;
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 1);
-    auto p = Point{0.5, 0};
+    auto p = River::Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
 
     t_boundary_id boundary_id = 0;
@@ -244,11 +244,11 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
-    p = Point{0.5 - 1e-3/2, 0};
+    p = River::Point{0.5 - 1e-3/2, 0};
     BOOST_TEST(tree_vector.at(0) == p);
-    p = Point{0.5, 0.1};
+    p = River::Point{0.5, 0.1};
     BOOST_TEST(tree_vector.at(1) == p);
-    p = Point{0.5 + 1e-3/2, 0};
+    p = River::Point{0.5 + 1e-3/2, 0};
     BOOST_TEST(tree_vector.at(2) == p);
 
 
@@ -267,30 +267,30 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     BOOST_TEST(tree_vector.size() == 17);
 
     //left source branch
-    TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2, 0});
-    TEST_POINT(tree_vector.at(1), Point{0.5 - 1e-3/2, 0.1});
+    TEST_POINT(tree_vector.at(0), River::Point{0.5 - 1e-3/2, 0});
+    TEST_POINT(tree_vector.at(1), River::Point{0.5 - 1e-3/2, 0.1});
 
     //left left branch
-    TEST_POINT(tree_vector.at(2), Point{0.5, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(3), Point{0.4, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(4), Point{0.3, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(5), Point{0.2, 0.2});
+    TEST_POINT(tree_vector.at(2), River::Point{0.5, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(3), River::Point{0.4, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(4), River::Point{0.3, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(5), River::Point{0.2, 0.2});
     //right left branch
-    TEST_POINT(tree_vector.at(6), Point{0.3, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(7), Point{0.4, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(6), River::Point{0.3, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(7), River::Point{0.4, 0.2 + 1e-3/2});
     //left right branch
-    TEST_POINT(tree_vector.at(8), Point{0.5, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(9), Point{0.6, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(10), Point{0.7, 0.2 + 1e-3/2});
-    TEST_POINT(tree_vector.at(11), Point{0.8, 0.2});
+    TEST_POINT(tree_vector.at(8), River::Point{0.5, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(9), River::Point{0.6, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(10), River::Point{0.7, 0.2 + 1e-3/2});
+    TEST_POINT(tree_vector.at(11), River::Point{0.8, 0.2});
     //right right branch
-    TEST_POINT(tree_vector.at(12), Point{0.7, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(13), Point{0.6, 0.2 - 1e-3/2});
-    TEST_POINT(tree_vector.at(14), Point{0.5, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(12), River::Point{0.7, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(13), River::Point{0.6, 0.2 - 1e-3/2});
+    TEST_POINT(tree_vector.at(14), River::Point{0.5, 0.2 - 1e-3/2});
     //right source branch
-    TEST_POINT(tree_vector.at(15), Point{0.5 + 1e-3/2, 0.1 });
-    TEST_POINT(tree_vector.at(16), Point{0.5 + 1e-3/2, 0.0 });
-    TEST_POINT(tree_vector.back(), Point{0.5 + 1e-3/2, 0});
+    TEST_POINT(tree_vector.at(15), River::Point{0.5 + 1e-3/2, 0.1 });
+    TEST_POINT(tree_vector.at(16), River::Point{0.5 + 1e-3/2, 0.0 });
+    TEST_POINT(tree_vector.back(), River::Point{0.5 + 1e-3/2, 0});
 
 }
 
@@ -304,7 +304,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     tr.Initialize(
         border.GetSourcesIdsPointsAndAngles(sources));
     
-    vector<Point> tree_vector;
+    t_PointList tree_vector;
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 1);
 
@@ -315,7 +315,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     auto[i1, i2] = tr.AddSubBranches(1, l, r);
     cout << i2;
     BOOST_TEST(tree_vector.size() == 1);
-    auto p = Point{0.5, 0};
+    auto p = River::Point{0.5, 0};
     BOOST_TEST(tree_vector.at(0) == p);
     
     t_boundary_id boundary_id = 0;
@@ -323,9 +323,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     tree_vector.clear();
     TreeVertices(tree_vector, 1, tr, 1e-3);
     BOOST_TEST(tree_vector.size() == 3);
-    TEST_POINT(tree_vector.at(0), Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
-    TEST_POINT(tree_vector.at(1), Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
-    TEST_POINT(tree_vector.at(2), Point{0.5, 0});    
+    TEST_POINT(tree_vector.at(0), River::Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
+    TEST_POINT(tree_vector.at(1), River::Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
+    TEST_POINT(tree_vector.at(2), River::Point{0.5, 0});    
 }
 
 BOOST_AUTO_TEST_CASE( BoundaryGenerator_test, 
@@ -794,7 +794,7 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
         {r, r, r, r, r, r, r, r, r, r,  r,  r,  r}); 
 
     //expected values
-    auto vertices = vector<Point>{
+    auto vertices = t_PointList{
         //outer boundary
         //0
         {0 - eps/sqrt(2)/2, 0 + eps/sqrt(2)/2},
@@ -855,7 +855,7 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
 
     };
 
-    auto lines = vector<Line>{
+    auto lines = t_LineList{
         {0,   1,  r},
         {1,   2,  r},
         {2,   3,  1},
@@ -899,7 +899,7 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
         {38,  27,  13},
         
     };
-    auto holes = vector<Point>
+    auto holes = t_PointList
     {
         { 0.5*w,  0.5*w},
         {0.85*w, 0.85*w}

@@ -71,7 +71,7 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     class_<BoundaryConditions, bases<t_BoundaryConditions>>("BoundaryConditions", "Map structure with boundary condition types.")
-        .def("Get", static_cast< t_BoundaryConditions (BoundaryConditions::*)(t_boundary)>(&BoundaryConditions::Get), "Returns map structure with boundary conditions of specific type(Neuman or Dirichlet)")
+        .def("Get", static_cast< t_BoundaryConditions (BoundaryConditions::*)(t_boundary) const>(&BoundaryConditions::Get), "Returns map structure with boundary conditions of specific type(Neuman or Dirichlet)")
     ;
 
     class_<t_source_coord >("t_source_coord", "Source point coordinate data type. Pair which holds boundary id and vertice position on this id.")
@@ -253,7 +253,6 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("refinment_radius", &MeshParams::refinment_radius)
         .def_readwrite("exponant", &MeshParams::exponant, "Radius of mesh refinment.")
         .def_readwrite("sigma", &MeshParams::sigma, "Sigma is used in exponence formula of mesh refinment.")
-        .def_readwrite("static_refinment_steps", &MeshParams::static_refinment_steps, "Number of mesh refinment steps used by Deal.II mesh functionality.")
         .def_readwrite("min_area", &MeshParams::min_area, "Minimal area of mesh.")
         .def_readwrite("max_area", &MeshParams::max_area, "Maximal area of mesh element.")
         .def_readwrite("min_angle", &MeshParams::min_angle, "Minimal angle of mesh element.")
@@ -278,10 +277,12 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("tollerance", &SolverParams::tollerance, "Tollerarnce used by dealii Solver.")
         .def_readwrite("num_of_iterrations", &SolverParams::num_of_iterrations, "Number of solver iteration steps.")
         .def_readwrite("adaptive_refinment_steps", &SolverParams::adaptive_refinment_steps, "Number of adaptive refinment steps.")
+        .def_readwrite("static_refinment_steps", &SolverParams::static_refinment_steps, "Number of mesh refinment steps used by Deal.II mesh functionality.")
         .def_readwrite("refinment_fraction", &SolverParams::refinment_fraction, "Fraction of refined mesh elements.")
         .def_readwrite("quadrature_degree", &SolverParams::quadrature_degree, "Polynom degree of quadrature integration.")
         .def_readwrite("renumbering_type", &SolverParams::renumbering_type, "Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.")
         .def_readwrite("max_distance", &SolverParams::max_distance, "Maximal distance between middle point and first solved point, used in non euler growth.")
+        .def_readwrite("field_value", &SolverParams::field_value, "Field value used for Poisson conditions.")
     ;
 
     class_<Model>("Model")
@@ -309,7 +310,6 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("width", &Model::width, "Width of region.")
         .def_readwrite("height", &Model::height, "Height of region.")
         .def_readwrite("river_boundary_id", &Model::river_boundary_id, "River boundary condition id.")
-        .def_readwrite("field_value", &Model::field_value, "Field value used for Poisson conditions.")
         .def_readwrite("ds", &Model::ds, "Maximal length of one step of growth.")
         .def_readwrite("eta", &Model::eta, "Eta. Growth power of a1^eta.")
         .def_readwrite("bifurcation_type", &Model::bifurcation_type, "Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.")
@@ -465,8 +465,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("mesh_params", &Triangle::mesh_params, "Mesh refinment object.")
     ;
 
-    //solver
-    class_<River::Solver, boost::noncopyable>("Solver", "Deal.II Solver Wrapper.", init<River::Model*>(args("model")))
+    //solver mdl.solver_params, mdl.integr, mdl.boundary_conditions, false
+    class_<River::Solver, boost::noncopyable>("Solver", "Deal.II Solver Wrapper.", init<const River::SolverParams &, const River::BoundaryConditions &, const bool>(args("solver_params", "boundary_conditions", "verbose")))
         .def_readwrite("tollerance", &River::Solver::tollerance, "Solver tollerance")
         .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations, "Number of solver iterations.")
         .def_readwrite("verbose", &River::Solver::verbose, "If true, output will be produced to stadard output.")

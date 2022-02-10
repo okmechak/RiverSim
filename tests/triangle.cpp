@@ -83,7 +83,6 @@ BOOST_AUTO_TEST_CASE( mesh_min_angle,
     mesh_params.min_area = 0.0000000001;
     mesh_params.max_edge = 100;
     mesh_params.min_edge = 0;
-    mesh_params.static_refinment_steps = 0;
     mesh_params.ratio = 100;
     mesh_params.tip_points = {{0.5, 0.5}};
     mesh_params.min_angle = 30;
@@ -145,7 +144,6 @@ BOOST_AUTO_TEST_CASE( mesh_max_area,
     mesh_params.min_area = 0;
     mesh_params.max_edge = 100;
     mesh_params.min_edge = 0;
-    mesh_params.static_refinment_steps = 0;
     mesh_params.ratio = 100;
     mesh_params.tip_points = {};
     mesh_params.min_angle = 30;
@@ -207,7 +205,6 @@ BOOST_AUTO_TEST_CASE( mesh_min_area,
     mesh_params.min_area = 0.0001;
     mesh_params.max_edge = 100;
     mesh_params.min_edge = 0;
-    mesh_params.static_refinment_steps = 0;
     mesh_params.ratio = 100;
     mesh_params.tip_points = {{0.5, 0.5}};
     mesh_params.min_angle = 30;
@@ -269,7 +266,6 @@ BOOST_AUTO_TEST_CASE( mesh_max_edge_lenght,
     mesh_params.min_area = 0.0000000001;
     mesh_params.max_edge = 0.1;
     mesh_params.min_edge = 0;
-    mesh_params.static_refinment_steps = 0;
     mesh_params.ratio = 100;
     mesh_params.tip_points = {{0.5, 0.5}};
     mesh_params.min_angle = 1;
@@ -331,7 +327,6 @@ BOOST_AUTO_TEST_CASE( mesh_min_edge_lenght,
     mesh_params.min_area = 0.0000000001;
     mesh_params.max_edge = 0.1;
     mesh_params.min_edge = 0.01;
-    mesh_params.static_refinment_steps = 0;
     mesh_params.ratio = 100;
     mesh_params.tip_points = {{0.5, 0.5}};
     mesh_params.min_angle = 1;
@@ -393,7 +388,6 @@ BOOST_AUTO_TEST_CASE( mesh_max_triangle_ratio,
     mesh_params.min_area = 0.0000000001;
     mesh_params.max_edge = 100;
     mesh_params.min_edge = 0;
-    mesh_params.static_refinment_steps = 0;
     mesh_params.ratio = 1.5;
     mesh_params.tip_points = {{0.5, 0.5}};
     mesh_params.min_angle = 0;

@@ -358,13 +358,20 @@ ostream &River::operator<<(ostream &write, const River::MeshParams &mp)
   write << "\t ratio = " << mp.ratio << endl;
   write << "\t eps = " << mp.eps << endl;
   write << "\t sigma = " << mp.sigma << endl;
-  write << "\t static_refinment_steps = " << mp.static_refinment_steps << endl;
   return write;
 }
 
 bool River::MeshParams::operator==(const River::MeshParams &mp) const
 {
-  return abs(refinment_radius - mp.refinment_radius) < EPS && abs(exponant - mp.exponant) < EPS && static_refinment_steps == mp.static_refinment_steps && abs(min_area - mp.min_area) < EPS && abs(max_area - mp.max_area) < EPS && abs(min_angle - mp.min_angle) < EPS && abs(max_edge - mp.max_edge) < EPS && abs(min_edge - mp.min_edge) < EPS && abs(ratio - mp.ratio) < EPS && abs(eps - mp.eps) < EPS;
+  return abs(refinment_radius - mp.refinment_radius) < EPS 
+    && abs(exponant - mp.exponant) < EPS 
+    && abs(min_area - mp.min_area) < EPS 
+    && abs(max_area - mp.max_area) < EPS 
+    && abs(min_angle - mp.min_angle) < EPS 
+    && abs(max_edge - mp.max_edge) < EPS 
+    && abs(min_edge - mp.min_edge) < EPS 
+    && abs(ratio - mp.ratio) < EPS 
+    && abs(eps - mp.eps) < EPS;
 }
 
 /* Labels that signify the result of point location.  The result of a        */
