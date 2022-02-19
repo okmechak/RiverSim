@@ -2,7 +2,7 @@
 #define BOOST_TEST_DYN_LINK
 
 //Define our Module name (prints at testing)
-#define BOOST_TEST_MODULE "Tree and Branch"
+#define BOOST_TEST_MODULE "Rivers and Branch"
 
 //VERY IMPORTANT - include this last
 #include <boost/test/unit_test.hpp>
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     *utf::tolerance(eps))
 {   
     vector<t_source_id> ids{3, 4, 5};
-    Tree tr;
+    Rivers tr;
     BOOST_CHECK_NO_THROW(
         tr.Initialize({
         {3, {{0.0, 0}, 0}},
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     *utf::tolerance(eps))
 {   
     vector<t_source_id> ids{5, 4, 9};
-    Tree tr;
+    Rivers tr;
     tr.Initialize({
         {5, {{0.0, 0}, 0}},
         {4, {{0.1, 0}, 0.1}},
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
 
     ids = vector<t_source_id>{10};
     tr.Clear();
-    tr = Tree();
+    tr = Rivers();
     tr.Initialize({{10, {{0.0, 0}, 0.}}});
     
     BOOST_TEST( tr.TipBranchesIds() == ids);
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
 
 
     //GENERATE NEW ID
-    tr = Tree();
+    tr = Rivers();
     tr.Initialize({{1, {{0.0, 0}, 0}}});
 
     BOOST_TEST(!tr.IsValidBranchId(0));
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE( tree_tips_point_method,
     Sources sources;
     sources[1] = {1, 1};
 
-    Tree tr;
+    Rivers tr;
     tr.Initialize(
         border.GetSourcesIdsPointsAndAngles(sources));
 
@@ -335,7 +335,7 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
     sources[2] = {1, 2};
     sources[3] = {1, 3};
 
-    Tree tr;
+    Rivers tr;
     tr.Initialize(
         border.GetSourcesIdsPointsAndAngles(sources));
 
@@ -410,7 +410,7 @@ BOOST_AUTO_TEST_CASE(shrink_test, *utf::tolerance(eps))
 BOOST_AUTO_TEST_CASE( Tree_UPD, 
     *utf::tolerance(eps))
 {   
-    Tree tree;
+    Rivers tree;
     BranchNew brTest({0, 0}, 0);
 
     BOOST_TEST(tree.TipBranchesIds().size() == 0);
@@ -574,7 +574,7 @@ BOOST_AUTO_TEST_CASE( Tree_UPD_delete,
     *utf::tolerance(eps))
 {   
     t_boundary_id boundary_id = 0;
-    Tree tree;
+    Rivers tree;
     BranchNew br1({0, 0}, 1.4);
     br1.AddPoint(Polar{1, 0}, boundary_id);
     br1.AddPoint(Polar{1, 0}, boundary_id);
@@ -648,7 +648,7 @@ BOOST_AUTO_TEST_CASE( Tree_UPD_tips,
 BOOST_AUTO_TEST_CASE( construct_empty_tree, 
     *utf::tolerance(eps))
 {   
-    Tree tree;
+    Rivers tree;
     BOOST_CHECK_THROW(tree.GetParentBranchId(1), Exception);
     BOOST_CHECK_THROW(tree.GetSubBranchesIds(1), Exception);
     BOOST_CHECK_THROW(tree.GetAdjacentBranchId(1), Exception);
@@ -674,10 +674,10 @@ BOOST_AUTO_TEST_CASE( construct_empty_tree,
 BOOST_AUTO_TEST_CASE( tree_copy_constructor, 
     *utf::tolerance(eps))
 {   
-    Tree tree_original;
+    Rivers tree_original;
     tree_original.Initialize({{1, {{0., 0.}, 10}}});
 
-    Tree tree_copy{tree_original}, tree_not_copy;
+    Rivers tree_copy{tree_original}, tree_not_copy;
 
     BOOST_TEST(tree_original == tree_copy);
     BOOST_TEST(!(tree_original == tree_not_copy));
@@ -699,7 +699,7 @@ BOOST_AUTO_TEST_CASE( tree_initializtion_and_clear,
     auto tip_ids_and_points = 
         map<t_source_id, Point>{{1, {2, 3}}, {3, {3, 4}}, {5, {4, 5}}, {7, {5, 6}}};
 
-    Tree tree;
+    Rivers tree;
     tree.Initialize(ids_points_angles);
 
     BOOST_TEST(tree.TipBranchesIds() == source_branches_id);
@@ -719,7 +719,7 @@ BOOST_AUTO_TEST_CASE( tree_initializtion_and_clear,
 BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch, 
     *utf::tolerance(eps))
 {
-    Tree tree;
+    Rivers tree;
     BranchNew 
         branch_1{Point{1, 2}, 3}, 
         branch_2{Point{2, 3}, 4},
@@ -744,7 +744,7 @@ BOOST_AUTO_TEST_CASE( test_branch_growth,
         {7, {{5, 6}, 3*M_PI/4.}}
     };
 
-    Tree tree;
+    Rivers tree;
     
     tree.Initialize(ids_points_angles);
     {
@@ -831,7 +831,7 @@ BOOST_AUTO_TEST_CASE( test_branch_growth,
 BOOST_AUTO_TEST_CASE( test_branch_growth_one_more, 
     *utf::tolerance(eps))
 {
-    Tree tree;
+    Rivers tree;
     auto branch = BranchNew{{0.5, 0}, M_PI/2.};
 
     t_boundary_id boundary_id = 0;
@@ -875,7 +875,7 @@ BOOST_AUTO_TEST_CASE( test_branch_growth_one_more,
 BOOST_AUTO_TEST_CASE( test_maximal_tip_curvature_distance, 
     *utf::tolerance(eps))
 {
-    Tree tree;
+    Rivers tree;
 
     BOOST_TEST(tree.maximal_tip_curvature_distance() == 0.);
 
@@ -904,7 +904,7 @@ BOOST_AUTO_TEST_CASE( test_remove_tip_points,
         {branch_id, {{0., 0.}, M_PI/2.}}
     };
 
-    Tree tree;
+    Rivers tree;
     tree.Initialize(ids_points_angles);
     double ds = 1,
         dalpha = 0.;
@@ -946,7 +946,7 @@ BOOST_AUTO_TEST_CASE( test_remove_tip_points,
 BOOST_AUTO_TEST_CASE( test_zero_lenght_tip_branches_ids, 
     *utf::tolerance(eps))
 {
-    Tree tree;
+    Rivers tree;
 
     BOOST_TEST(tree.zero_lenght_tip_branches_ids(0.0001).empty());
 
@@ -974,7 +974,7 @@ BOOST_AUTO_TEST_CASE( test_zero_lenght_tip_branches_ids,
 BOOST_AUTO_TEST_CASE( test_flatten_tip_curvature, 
     *utf::tolerance(eps))
 {
-    Tree tree;
+    Rivers tree;
 
     auto branch = BranchNew{{0, 0}, M_PI/2.};
     branch.AddPoint(Polar{1, 0}, 0);

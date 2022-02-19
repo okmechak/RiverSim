@@ -23,7 +23,7 @@
 namespace River
 {
     ///Generates trees boundary
-    void TreeVertices(t_PointList &tree_vector, unsigned id, const Tree& trees, double eps);
-    Boundary TreeBoundary(const Tree& tree, unsigned source_id, int boundary_id, double eps);
+    void TreeVertices(t_PointList &tree_vector, unsigned id, const Rivers& trees, double eps);
+    Boundary TreeBoundary(const Rivers& tree, unsigned source_id, int boundary_id, double eps);
     Boundary SimpleBoundaryGenerator(const Model& model);
 }

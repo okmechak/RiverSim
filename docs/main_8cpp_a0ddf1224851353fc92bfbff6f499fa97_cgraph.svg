@@ -50,7 +50,7 @@
 <!-- Node3 -->
 <g id="node4" class="node">
 <title>Node3</title>
-<g id="a_node4"><a xlink:href="namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a" target="_top" xlink:title="Opens state of program from json file which includes Geometry(Tree, Border) and current model paramet...">
+<g id="a_node4"><a xlink:href="namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a" target="_top" xlink:title="Opens state of program from json file which includes Geometry(Rivers, Border) and current model paramet...">
 <polygon fill="#ffffff" stroke="#000000" points="125,-716.5 125,-735.5 199,-735.5 199,-716.5 125,-716.5"/>
 <text text-anchor="middle" x="162" y="-723.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Open</text>
 </a>
@@ -98,7 +98,7 @@
 <title>Node6</title>
 <g id="a_node7"><a xlink:href="classRiver_1_1Tree.html#ac64a5af7aa738e977d9f866c77de9151" target="_top" xlink:title="Initialize tree with source points vector source_point and source angle vector source_angle. ">
 <polygon fill="#ffffff" stroke="#000000" points="104,-590.5 104,-609.5 220,-609.5 220,-590.5 104,-590.5"/>
-<text text-anchor="middle" x="162" y="-597.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Tree::Initialize</text>
+<text text-anchor="middle" x="162" y="-597.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Rivers::Initialize</text>
 </a>
 </g>
 </g>
@@ -160,7 +160,7 @@
 <title>Node10</title>
 <g id="a_node11"><a xlink:href="classRiver_1_1Tree.html#a63aa7ffb3b7d1200e86296b1adf1f683" target="_top" xlink:title="Return vector of source branches ids. ">
 <polygon fill="#ffffff" stroke="#000000" points="80.5,-415.5 80.5,-434.5 243.5,-434.5 243.5,-415.5 80.5,-415.5"/>
-<text text-anchor="middle" x="162" y="-422.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Tree::SourceBranchesID</text>
+<text text-anchor="middle" x="162" y="-422.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Rivers::SourceBranchesID</text>
 </a>
 </g>
 </g>
@@ -234,7 +234,7 @@
 <!-- Node15 -->
 <g id="node16" class="node">
 <title>Node15</title>
-<g id="a_node16"><a xlink:href="namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49" target="_top" xlink:title="Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) ...">
+<g id="a_node16"><a xlink:href="namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49" target="_top" xlink:title="Save current state of program which includes Geometry(Rivers, Border), current model parameters(Model) ...">
 <polygon fill="#ffffff" stroke="#000000" points="126,-213.5 126,-232.5 198,-232.5 198,-213.5 126,-213.5"/>
 <text text-anchor="middle" x="162" y="-220.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Save</text>
 </a>
@@ -251,7 +251,7 @@
 <title>Node16</title>
 <g id="a_node17"><a xlink:href="classRiver_1_1Tree.html#a29e2a140f15398b9976e5ca63f1489ea" target="_top" xlink:title="Checks if tree has non zero sized branches. ">
 <polygon fill="#ffffff" stroke="#000000" points="83,-164 83,-194 241,-194 241,-164 83,-164"/>
-<text text-anchor="start" x="91" y="-182" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Tree::HasEmptySource</text>
+<text text-anchor="start" x="91" y="-182" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Rivers::HasEmptySource</text>
 <text text-anchor="middle" x="162" y="-171" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Branch</text>
 </a>
 </g>
@@ -283,7 +283,7 @@
 <title>Node19</title>
 <g id="a_node20"><a xlink:href="classRiver_1_1Tree.html#a2b44fafee44da5af9bebfeb00f49fe49" target="_top" xlink:title="Returns link to branch with id. ">
 <polygon fill="#ffffff" stroke="#000000" points="99.5,-76.5 99.5,-95.5 224.5,-95.5 224.5,-76.5 99.5,-76.5"/>
-<text text-anchor="middle" x="162" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Tree::GetBranch</text>
+<text text-anchor="middle" x="162" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">River::Rivers::GetBranch</text>
 </a>
 </g>
 </g>

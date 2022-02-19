@@ -60,7 +60,7 @@ namespace River
             
             map<t_branch_id, vector<double>> one_shrink_step(string output_file_name);
             void one_backward_step(string output_file_name);
-            void collect_backward_data(Tree& init, Tree& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params);
+            void collect_backward_data(Rivers& init, Rivers& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params);
             
             Boundary generate_boudaries(string file_name);
             void generate_mesh_file(Boundary& boundary, string file_name);

@@ -192,7 +192,7 @@ namespace River
         write << "Border:" << endl;
         write << mdl.border;
 
-        write << "Tree:" << endl;
+        write << "Rivers:" << endl;
         write << mdl.tree;
 
         write << "Model Parameters:" << endl;

@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
 
     mdl.sources = mdl.border.MakeRectangular();
     
-    //Tree object setup
+    //Rivers object setup
     mdl.tree.Initialize(mdl.border.GetSourcesIdsPointsAndAngles(mdl.sources));
 
     

@@ -169,7 +169,7 @@ namespace River
     class Region: public t_Boundaries
     {
         public:
-            ///Data structure - interface between boundary sources and source points of \ref Tree
+            ///Data structure - interface between boundary sources and source points of \ref Rivers
             typedef map<t_source_id, t_branch_source> trees_interface_t;
             
             ///Constructor

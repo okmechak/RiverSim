@@ -5,7 +5,7 @@
 
     \section pt Poisson Trees
 
-    \subsection test_tree Test Tree:
+    \subsection test_tree Test Rivers:
 
     \imageSize{test_tree.png,     height:30%;width:30%;, }
 

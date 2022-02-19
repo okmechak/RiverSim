@@ -21,11 +21,11 @@
     \details
     File holds two classes: __River::BranchNew__ and __River::Tree__.
     As you can see from picture - River::BranchNew is simple array joined points - piecewice line, 
-    aproximation of real river branch. River::Tree on other hand consist from combination of Branches.
+    aproximation of real river branch. River::Rivers on other hand consist from combination of Branches.
     __Bifurcation point__ - where two rivers unions into one river. So each branch has its subbranches.
-    Structure of branches and sub branches is represented here in class River::Tree.
+    Structure of branches and sub branches is represented here in class River::Rivers.
 
-    \sa River::Tree, River::BranchNew
+    \sa River::Rivers, River::BranchNew
  */
 
 #pragma once
@@ -161,22 +161,22 @@ namespace River
     typedef map<t_branch_id, BranchNew> t_Tree;
     /*! \brief Combines __BranchNew__ into tree like structure.
         \details
-        Tree class represents next structure: 
+        Rivers class represents next structure: 
         \imageSize{TreeClass.jpg, height:40%;width:40%;, }
 
         \todo resolve problem with private methods.
     */
-    class Tree: public t_Tree
+    class Rivers: public t_Tree
     {
         public:
             ///Creates empty tree without any branches.
-            Tree() = default; 
+            Rivers() = default; 
 
-            Tree(const Tree& t);
+            Rivers(const Rivers& t);
 
-            Tree& operator= (const Tree &t);
+            Rivers& operator= (const Rivers &t);
 
-            bool operator==(const Tree &t) const;
+            bool operator==(const Rivers &t) const;
             
             /*! \brief Initialize __tree__ with source points vector \p source_point and source angle vector \p source_angle.
                 \details
@@ -279,6 +279,6 @@ namespace River
             map<t_branch_id, t_branch_id_pair> branches_relation;   
 
             ///Prints tree to stream.
-            friend ostream& operator<<(ostream& write, const Tree & b);
+            friend ostream& operator<<(ostream& write, const Rivers & b);
     };
 }

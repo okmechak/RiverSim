@@ -94,12 +94,12 @@ Model &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memdesc:a258a7b67f297e975438b5b805cc0a932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes <a class="el" href="classRiver_1_1Model.html" title="Physical model parameters. ">River::Model</a> object by Program Options values. <br /></td></tr>
 <tr class="separator:a258a7b67f297e975438b5b805cc0a932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eed247d78b015bf1e1565effc34eb49"><td class="memItemLeft" align="right" valign="top"><a id="a4eed247d78b015bf1e1565effc34eb49"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49">River::Save</a> (const Model &amp;mdl, const Timing &amp;time, const Border &amp;border, const Tree &amp;tr, const GeometryDifference &amp;gd, const string file_name, const string input_file=&quot;&quot;)</td></tr>
-<tr class="memdesc:a4eed247d78b015bf1e1565effc34eb49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) and backward simulation data(GeometryDifference). <br /></td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49">River::Save</a> (const Model &amp;mdl, const Timing &amp;time, const Border &amp;border, const Rivers &amp;tr, const GeometryDifference &amp;gd, const string file_name, const string input_file=&quot;&quot;)</td></tr>
+<tr class="memdesc:a4eed247d78b015bf1e1565effc34eb49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save current state of program which includes Geometry(Rivers, Border), current model parameters(Model) and backward simulation data(GeometryDifference). <br /></td></tr>
 <tr class="separator:a4eed247d78b015bf1e1565effc34eb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc14507125d8c05e31b884f0ed16408a"><td class="memItemLeft" align="right" valign="top"><a id="adc14507125d8c05e31b884f0ed16408a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a">River::Open</a> (Model &amp;mdl, Border &amp;border, Tree &amp;tr, GeometryDifference &amp;gd, string file_name, bool &amp;q_update_border)</td></tr>
-<tr class="memdesc:adc14507125d8c05e31b884f0ed16408a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model). <br /></td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a">River::Open</a> (Model &amp;mdl, Border &amp;border, Rivers &amp;tr, GeometryDifference &amp;gd, string file_name, bool &amp;q_update_border)</td></tr>
+<tr class="memdesc:adc14507125d8c05e31b884f0ed16408a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens state of program from json file which includes Geometry(Rivers, Border) and current model parameters(Model). <br /></td></tr>
 <tr class="separator:adc14507125d8c05e31b884f0ed16408a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -142,7 +142,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <h3>Example</h3>
 <p>Rectangular border with one source:</p>
 <div class="fragment"><div class="line">&quot;Border&quot;: {</div><div class="line">    &quot;SourceIds&quot;: [</div><div class="line">        [ 1, 4 ]</div><div class="line">        ],</div><div class="line">    &quot;coords&quot;: [</div><div class="line">        [ 1.0, 0.0 ],</div><div class="line">        [ 1.0, 1.0 ],</div><div class="line">        [ 0.0, 1.0 ],</div><div class="line">        [ 0.0, 0.0 ],</div><div class="line">        [ 0.2, 0.0 ]</div><div class="line">    ],</div><div class="line">    &quot;lines&quot;: [</div><div class="line">        [ 0, 1, 1 ],</div><div class="line">        [ 1, 2, 2 ],</div><div class="line">        [ 2, 3, 3 ],</div><div class="line">        [ 3, 4, 4 ],</div><div class="line">        [ 4, 0, 4 ]</div><div class="line">    ]</div><div class="line">}</div></div><!-- fragment --><h2>Trees</h2>
-<p>Trees structure is representation of <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">River::Tree</a> object. This structure contains information about river network geometry, its separate branches(River::BranchNew) and relationship between them.</p>
+<p>Trees structure is representation of <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">River::Rivers</a> object. This structure contains information about river network geometry, its separate branches(River::BranchNew) and relationship between them.</p>
 <p>It contains next objects:</p>
 <ul>
 <li><code>Branches</code> - vector of <code>branches</code> objects.</li>
@@ -154,7 +154,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <ul>
 <li>"coords" - coordintates of branch. See <a class="el" href="classRiver_1_1BranchNew.html#a6c94d0388c0927d986d3a59bf4311c66" title="Vector which holds all points of branch. ">River::BranchNew::points</a>.</li>
 <li>"sourceAngle" - direction of growth of source point branch. See <a class="el" href="classRiver_1_1BranchNew.html#aa09b22ab98c64dadbee6e8e9de1d9dcd" title="Initial angle of source(or direction of source). ">River::BranchNew::source_angle</a>.</li>
-<li>"id" - unique number which is referenced by <code>Tree:Relations</code> object.</li>
+<li>"id" - unique number which is referenced by <code>Rivers:Relations</code> object.</li>
 </ul>
 <h4>Branch Example</h4>
 <div class="fragment"><div class="line">{</div><div class="line">    coords: [</div><div class="line">        [ 0.15392550378286424, 0.8574775565643402 ],</div><div class="line">        [ 0.15385809127830358, 0.8576768672025086 ],</div><div class="line">        [ 0.15379076781691314, 0.8578758571295332 ]</div><div class="line">    ],</div><div class="line">    &quot;id&quot;: 9,</div><div class="line">    &quot;sourceAngle&quot;: 1.8695242272923212,</div><div class="line">    &quot;sourcePoint&quot;: [ 0.15392550378286424, 0.8574775565643402 ]</div><div class="line">}</div></div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd><code>sourcePoint</code> and first element of <code>coords</code> are the same.</dd></dl>

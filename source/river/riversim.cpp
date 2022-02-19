@@ -151,7 +151,7 @@ namespace River
     {
         auto id_series_params = solve_and_evaluate_series_parameters(output_file_name);
         
-        print(model->prog_opt.verbose, "Tree growth...");
+        print(model->prog_opt.verbose, "Rivers growth...");
         auto max_a1 = get_max_a1(id_series_params);
         //this functionality is in bacward forward growth, where we should use presaved a1 max parameters from backward evolution
         if(backwardforward_max_a1 > 0)
@@ -275,7 +275,7 @@ namespace River
         collect_backward_data(initial_tree, backwardforward_tree, tip_id_series_params);
     }
 
-    void ForwardRiverSimulation::collect_backward_data(Tree& init, Tree& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params)
+    void ForwardRiverSimulation::collect_backward_data(Rivers& init, Rivers& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params)
     {
         for(const auto&[id, series]: tip_id_series_params)
         {
@@ -544,7 +544,7 @@ namespace River
         //tree_A represent current river geometry,
         //tree_B will be representing simulated river geometry with new parameters.
         print(model.prog_opt.verbose, "Backward steps:");
-        Tree tree_initial = model.tree;
+        Rivers tree_initial = model.tree;
         map<t_branch_id, vector<double>> ids_seriesparams_map;
         vector<double> maximal_a1_params; //this vectors stores maximal a1 params which are used further in forward simulation
         for(unsigned i = 0; i < model.prog_opt.number_of_backward_steps; ++i)

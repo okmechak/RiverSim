@@ -1,7 +1,7 @@
 <map id="main" name="main">
 <area shape="rect" id="node2" href="$namespaceRiver.html#affa8f88114842f27d0a7b829d69120cf" title="Processing of program options. " alt="" coords="133,5,309,47"/>
 <area shape="rect" id="node3" href="$namespaceRiver.html#a02a7bd977ae572b7b678c2b9585a2320" title="Prints to console program logo. " alt="" coords="156,71,287,112"/>
-<area shape="rect" id="node4" href="$namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a" title="Opens state of program from json file which includes Geometry(Tree, Border) and current model paramet..." alt="" coords="172,137,271,163"/>
+<area shape="rect" id="node4" href="$namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a" title="Opens state of program from json file which includes Geometry(Rivers, Border) and current model paramet..." alt="" coords="172,137,271,163"/>
 <area shape="rect" id="node5" href="$namespaceRiver.html#a258a7b67f297e975438b5b805cc0a932" title="Initializes River::Model object by Program Options values. " alt="" coords="111,188,331,229"/>
 <area shape="rect" id="node6" href="$classRiver_1_1Border.html#a2991738514d55e3cc4c29de1c8de2875" title="Initializes Border::borderMesh object of type tethex::Mesh by setting lines and vertices to rectangul..." alt="" coords="108,254,335,281"/>
 <area shape="rect" id="node7" href="$classRiver_1_1Tree.html#ac64a5af7aa738e977d9f866c77de9151" title="Initialize tree with source points vector source_point and source angle vector source_angle. " alt="" coords="144,305,299,331"/>
@@ -13,7 +13,7 @@
 <area shape="rect" id="node13" href="$namespaceRiver.html#a9bf171a0fdf0f067f322d323d8bf0689" title="River::StopConditionOfRiver\lGrowth" alt="" coords="119,640,323,681"/>
 <area shape="rect" id="node14" href="$namespaceRiver.html#ad8226306180d0a1ef887903a5256ff62" title="River::ForwardRiverEvolution" alt="" coords="116,706,327,733"/>
 <area shape="rect" id="node15" href="$classRiver_1_1Timing.html#a76bca6a0cc2ad229073240917e0a9e7d" title="Returns elapsed time from last Record() call and saves it into vector. " alt="" coords="141,757,302,783"/>
-<area shape="rect" id="node16" href="$namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49" title="Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) ..." alt="" coords="173,807,269,834"/>
+<area shape="rect" id="node16" href="$namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49" title="Save current state of program which includes Geometry(Rivers, Border), current model parameters(Model) ..." alt="" coords="173,807,269,834"/>
 <area shape="rect" id="node17" href="$classRiver_1_1Tree.html#a29e2a140f15398b9976e5ca63f1489ea" title="Checks if tree has non zero sized branches. " alt="" coords="116,859,327,900"/>
 <area shape="rect" id="node19" href="$namespaceRiver.html#a7c6d73dce07d3b452acb0987a0e68dc6" title="One step of backward river evolution and its data. " alt="" coords="114,924,329,965"/>
 <area shape="rect" id="node20" href="$classRiver_1_1Tree.html#a2b44fafee44da5af9bebfeb00f49fe49" title="Returns link to branch with id. " alt="" coords="138,990,305,1017"/>

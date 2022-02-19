@@ -3,10 +3,10 @@
 namespace River
 {
     /**
-        Tree Vertices Generation
+        Rivers Vertices Generation
         \todo chandge parameter order
     */
-    void TreeVertices(vector<Point> &tree_vertices, unsigned id, const Tree& tr, double eps)
+    void TreeVertices(vector<Point> &tree_vertices, unsigned id, const Rivers& tr, double eps)
     {
         if (tr.empty())
             throw Exception("Boundary generator: trying to generate tree boundary from empty tree.");
@@ -55,10 +55,10 @@ namespace River
         }
     }
     
-    Boundary TreeBoundary(const Tree& tree, unsigned source_id, int boundary_id, double eps)
+    Boundary TreeBoundary(const Rivers& tree, unsigned source_id, int boundary_id, double eps)
     {
         Boundary tree_boundary;
-        tree_boundary.name = "Tree id = " + to_string(source_id);
+        tree_boundary.name = "Rivers id = " + to_string(source_id);
         tree_boundary.inner_boundary = false;
         
         TreeVertices(tree_boundary.vertices, source_id, tree, eps);

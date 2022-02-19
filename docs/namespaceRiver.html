@@ -98,7 +98,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Timing.html">Timing</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classRiver_1_1Timing.html" title="Timing is used for measuring time of each evaluation cycle and whole program simulation time...">Timing</a> is used for measuring time of each evaluation cycle and whole program simulation time.  <a href="classRiver_1_1Timing.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html">Tree</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html">Rivers</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines <b><a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">BranchNew</a></b> into tree like structure.  <a href="classRiver_1_1Tree.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Triangle.html">Triangle</a></td></tr>
@@ -126,33 +126,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="name
 <tr class="memdesc:a258a7b67f297e975438b5b805cc0a932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes <a class="el" href="classRiver_1_1Model.html" title="Physical model parameters. ">River::Model</a> object by Program Options values. <br /></td></tr>
 <tr class="separator:a258a7b67f297e975438b5b805cc0a932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eed247d78b015bf1e1565effc34eb49"><td class="memItemLeft" align="right" valign="top"><a id="a4eed247d78b015bf1e1565effc34eb49"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49">Save</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Timing.html">Timing</a> &amp;time, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tr, const <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, const string file_name, const string input_file=&quot;&quot;)</td></tr>
-<tr class="memdesc:a4eed247d78b015bf1e1565effc34eb49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save current state of program which includes Geometry(Tree, Border), current model parameters(Model) and backward simulation data(GeometryDifference). <br /></td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a4eed247d78b015bf1e1565effc34eb49">Save</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Timing.html">Timing</a> &amp;time, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tr, const <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, const string file_name, const string input_file=&quot;&quot;)</td></tr>
+<tr class="memdesc:a4eed247d78b015bf1e1565effc34eb49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save current state of program which includes Geometry(Rivers, Border), current model parameters(Model) and backward simulation data(GeometryDifference). <br /></td></tr>
 <tr class="separator:a4eed247d78b015bf1e1565effc34eb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc14507125d8c05e31b884f0ed16408a"><td class="memItemLeft" align="right" valign="top"><a id="adc14507125d8c05e31b884f0ed16408a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a">Open</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tr, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, string file_name, bool &amp;q_update_border)</td></tr>
-<tr class="memdesc:adc14507125d8c05e31b884f0ed16408a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens state of program from json file which includes Geometry(Tree, Border) and current model parameters(Model). <br /></td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#adc14507125d8c05e31b884f0ed16408a">Open</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tr, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, string file_name, bool &amp;q_update_border)</td></tr>
+<tr class="memdesc:adc14507125d8c05e31b884f0ed16408a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens state of program from json file which includes Geometry(Rivers, Border) and current model parameters(Model). <br /></td></tr>
 <tr class="separator:adc14507125d8c05e31b884f0ed16408a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bf171a0fdf0f067f322d323d8bf0689"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a9bf171a0fdf0f067f322d323d8bf0689">StopConditionOfRiverGrowth</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree)</td></tr>
+<tr class="memitem:a9bf171a0fdf0f067f322d323d8bf0689"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a9bf171a0fdf0f067f322d323d8bf0689">StopConditionOfRiverGrowth</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tree)</td></tr>
 <tr class="separator:a9bf171a0fdf0f067f322d323d8bf0689"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8226306180d0a1ef887903a5256ff62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#ad8226306180d0a1ef887903a5256ff62">ForwardRiverEvolution</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const string file_name, double max_a_backward=-1)</td></tr>
+<tr class="memitem:ad8226306180d0a1ef887903a5256ff62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#ad8226306180d0a1ef887903a5256ff62">ForwardRiverEvolution</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, const string file_name, double max_a_backward=-1)</td></tr>
 <tr class="separator:ad8226306180d0a1ef887903a5256ff62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114bf5a324503d712322221ceba9cece"><td class="memItemLeft" align="right" valign="top">map&lt; int, vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a114bf5a324503d712322221ceba9cece">BackwardRiverEvolution</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd)</td></tr>
+<tr class="memitem:a114bf5a324503d712322221ceba9cece"><td class="memItemLeft" align="right" valign="top">map&lt; int, vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a114bf5a324503d712322221ceba9cece">BackwardRiverEvolution</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tree, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd)</td></tr>
 <tr class="memdesc:a114bf5a324503d712322221ceba9cece"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function only makes evaluation of bacward river growth based on pde solution and geometry but still it returns some data like difference betweem branches if they reached zero.  <a href="#a114bf5a324503d712322221ceba9cece">More...</a><br /></td></tr>
 <tr class="separator:a114bf5a324503d712322221ceba9cece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c6d73dce07d3b452acb0987a0e68dc6"><td class="memItemLeft" align="right" valign="top"><a id="a7c6d73dce07d3b452acb0987a0e68dc6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a7c6d73dce07d3b452acb0987a0e68dc6">BackwardForwardRiverEvolution</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, const string file_name)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a7c6d73dce07d3b452acb0987a0e68dc6">BackwardForwardRiverEvolution</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, const string file_name)</td></tr>
 <tr class="memdesc:a7c6d73dce07d3b452acb0987a0e68dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">One step of backward river evolution and its data. <br /></td></tr>
 <tr class="separator:a7c6d73dce07d3b452acb0987a0e68dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e1c04daa35decf9aafdada0fc881449"><td class="memItemLeft" align="right" valign="top"><a id="a1e1c04daa35decf9aafdada0fc881449"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a1e1c04daa35decf9aafdada0fc881449">EvaluateSeriesParams</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, const string file_name)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a1e1c04daa35decf9aafdada0fc881449">EvaluateSeriesParams</a> (<a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, <a class="el" href="classRiver_1_1Triangle.html">Triangle</a> &amp;tria, <a class="el" href="classRiver_1_1Solver.html">Solver</a> &amp;sim, <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;border, <a class="el" href="structRiver_1_1GeometryDifference.html">GeometryDifference</a> &amp;gd, const string file_name)</td></tr>
 <tr class="memdesc:a1e1c04daa35decf9aafdada0fc881449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate series parameters near tip in predefined geometry. Used fot testing purposes. <br /></td></tr>
 <tr class="separator:a1e1c04daa35decf9aafdada0fc881449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace7057edc24ee07f8265dad28b73a41a"><td class="memItemLeft" align="right" valign="top"><a id="ace7057edc24ee07f8265dad28b73a41a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a">TreeVector</a> (vector&lt; <a class="el" href="classRiver_1_1Point.html">Point</a> &gt; &amp;tree_vector, int id, const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, double eps)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#ace7057edc24ee07f8265dad28b73a41a">TreeVector</a> (vector&lt; <a class="el" href="classRiver_1_1Point.html">Point</a> &gt; &amp;tree_vector, int id, const <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tree, double eps)</td></tr>
 <tr class="memdesc:ace7057edc24ee07f8265dad28b73a41a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates trees boundary. <br /></td></tr>
 <tr class="separator:ace7057edc24ee07f8265dad28b73a41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43d55da8d0508b984518c4ebed6e0ad7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1Mesh.html">tethex::Mesh</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7">BoundaryGenerator</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;br)</td></tr>
+<tr class="memitem:a43d55da8d0508b984518c4ebed6e0ad7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtethex_1_1Mesh.html">tethex::Mesh</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7">BoundaryGenerator</a> (const <a class="el" href="classRiver_1_1Model.html">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html">Border</a> &amp;br)</td></tr>
 <tr class="memdesc:a43d55da8d0508b984518c4ebed6e0ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finnal Boudary Geneartor Class.  <a href="#a43d55da8d0508b984518c4ebed6e0ad7">More...</a><br /></td></tr>
 <tr class="separator:a43d55da8d0508b984518c4ebed6e0ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30e6ad5a4569576b155465aaa4bd326a"><td class="memItemLeft" align="right" valign="top"><a id="a30e6ad5a4569576b155465aaa4bd326a"></a>
@@ -253,7 +253,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>&#160;</td>
         </tr>
         <tr>
@@ -326,7 +326,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -384,7 +384,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -418,7 +418,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classRiver_1_1Tree.html">Tree</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -434,7 +434,7 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sticks together all components: <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Tree</a> class, boudary class and model parameters.</p>
+<p>Sticks together all components: <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Rivers</a> class, boudary class and model parameters.</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>reserve size of tet_lines. </dd></dl>
 
 </div>

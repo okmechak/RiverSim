@@ -213,10 +213,10 @@ namespace River
     }
     
     /*
-        Tree Class
+        Rivers Class
     */
    //todo can we remove this? is there default copy constructor?
-    Tree::Tree(const Tree& t)
+    Rivers::Rivers(const Rivers& t)
     {
         for(const auto&[branch_id, branch]: t)
             (*this)[branch_id] = branch;
@@ -225,7 +225,7 @@ namespace River
     }
 
     //todo can we remove this? is there default assignment function?
-    Tree& Tree::operator=(const Tree &t)
+    Rivers& Rivers::operator=(const Rivers &t)
     {
         for(const auto&[branch_id, branch]: t)
             (*this)[branch_id] = branch;
@@ -236,13 +236,13 @@ namespace River
     }
 
     //todo can we remove this? is there default comparison function?
-    bool Tree::operator== (const Tree &t) const
+    bool Rivers::operator== (const Rivers &t) const
     {
         return (this->branches_relation == t.branches_relation) && 
             equal(this->begin(), this->end(), t.begin());
     }
 
-    void Tree::Initialize(const Region::trees_interface_t ids_points_angles)
+    void Rivers::Initialize(const Region::trees_interface_t ids_points_angles)
     {
         Clear();
         for(auto &[id, point_angle]: ids_points_angles)
@@ -251,7 +251,7 @@ namespace River
                 id);
     }
 
-    t_branch_id Tree::AddBranch(const BranchNew &branch, t_branch_id id)
+    t_branch_id Rivers::AddBranch(const BranchNew &branch, t_branch_id id)
     {
         if(id == UINT_MAX)
             id = GenerateNewID();
@@ -267,7 +267,7 @@ namespace River
         return id;
     }
    
-    pair<t_branch_id, t_branch_id> Tree::AddSubBranches(t_branch_id root_branch_id, 
+    pair<t_branch_id, t_branch_id> Rivers::AddSubBranches(t_branch_id root_branch_id, 
         const BranchNew &left_branch, const BranchNew &right_branch)
     {   
         handle_non_existing_branch_id(root_branch_id);
@@ -290,7 +290,7 @@ namespace River
         return sub_branches_id;
     }
 
-    void Tree::DeleteBranch(t_branch_id branch_id)
+    void Rivers::DeleteBranch(t_branch_id branch_id)
     {
         handle_non_existing_branch_id(branch_id);
 
@@ -298,7 +298,7 @@ namespace River
         branches_relation.erase(branch_id);
     }
 
-    t_branch_id Tree::GetParentBranchId(t_branch_id branch_id) const
+    t_branch_id Rivers::GetParentBranchId(t_branch_id branch_id) const
     {
         handle_non_existing_branch_id(branch_id);
         
@@ -312,7 +312,7 @@ namespace River
         return 0;
     }
 
-    t_branch_id Tree::GetAdjacentBranchId(t_branch_id sub_branch_id) const
+    t_branch_id Rivers::GetAdjacentBranchId(t_branch_id sub_branch_id) const
     {
         handle_non_existing_branch_id(sub_branch_id);
 
@@ -326,13 +326,13 @@ namespace River
             throw Exception("something wrong with GetAdjacentBranch");
     }
 
-    BranchNew& Tree::GetAdjacentBranch(t_branch_id sub_branch_id)
+    BranchNew& Rivers::GetAdjacentBranch(t_branch_id sub_branch_id)
     {
         return this->at(GetAdjacentBranchId(sub_branch_id));
     }
 
     //todo can input arguments be replaced by map?
-    void Tree::AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points, const vector<t_boundary_id>& boundary_ids)
+    void Rivers::AddPoints(const vector<t_branch_id>& tips_id, const vector<Point>& points, const vector<t_boundary_id>& boundary_ids)
     {
         for(size_t i = 0; i < tips_id.size(); ++i)
             if(this->count(tips_id.at(i)))
@@ -345,7 +345,7 @@ namespace River
             
     }
 
-    t_branch_id Tree::GenerateNewID() const
+    t_branch_id Rivers::GenerateNewID() const
     {
         t_branch_id max_id = 1;
                 
@@ -368,7 +368,7 @@ namespace River
         return max_id;
     }
 
-    void Tree::AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points, const vector<t_boundary_id>& boundary_ids)
+    void Rivers::AddPolars(const vector<t_branch_id>& tips_id, const vector<Polar> &points, const vector<t_boundary_id>& boundary_ids)
     {
         for(size_t i = 0; i < tips_id.size(); ++i)
             if(this->count(tips_id.at(i)))
@@ -380,7 +380,7 @@ namespace River
                 throw Exception("AddPoints: no such id.");
     }
 
-    void Tree::AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points, const vector<t_boundary_id>& boundary_ids)
+    void Rivers::AddAbsolutePolars(const vector<t_branch_id>& tips_id, const vector<Polar>& points, const vector<t_boundary_id>& boundary_ids)
     {
         for(size_t i = 0; i < tips_id.size(); ++i)
             if(this->count(tips_id.at(i)))
@@ -392,7 +392,7 @@ namespace River
                 throw Exception("AddPoints: no such id.");
     }
 
-    void Tree::DeleteSubBranches(t_branch_id root_branch_id)
+    void Rivers::DeleteSubBranches(t_branch_id root_branch_id)
     {
         handle_non_existing_branch_id(root_branch_id);
 
@@ -415,13 +415,13 @@ namespace River
         branches_relation.erase(root_branch_id);
     }
 
-    void Tree::Clear()
+    void Rivers::Clear()
     {
         this->clear();
         branches_relation.clear();
     }
 
-    pair<t_branch_id, t_branch_id> Tree::GrowTestTree(const t_boundary_id boundary_id, t_branch_id branch_id, double ds, unsigned n, double dalpha)
+    pair<t_branch_id, t_branch_id> Rivers::GrowTestTree(const t_boundary_id boundary_id, t_branch_id branch_id, double ds, unsigned n, double dalpha)
     {
         handle_non_existing_branch_id(branch_id);
         
@@ -455,7 +455,7 @@ namespace River
         return ids;
     }
 
-    vector<t_branch_id> Tree::TipBranchesIds() const
+    vector<t_branch_id> Rivers::TipBranchesIds() const
     {
         vector<t_branch_id> tip_branches_ids;
 
@@ -466,7 +466,7 @@ namespace River
         return tip_branches_ids;
     }
 
-    vector<t_branch_id> Tree::zero_lenght_tip_branches_ids(double zero_lenght) const
+    vector<t_branch_id> Rivers::zero_lenght_tip_branches_ids(double zero_lenght) const
     {
         vector<t_branch_id> zero_lenght_branches_id;
         for (const auto id: TipBranchesIds())
@@ -483,12 +483,12 @@ namespace River
         return zero_lenght_branches_id;
     }
 
-    BranchNew& Tree::GetParentBranch(t_branch_id branch_id)
+    BranchNew& Rivers::GetParentBranch(t_branch_id branch_id)
     {
         return this->at(GetParentBranchId(branch_id));
     }
 
-    pair<t_branch_id, t_branch_id> Tree::GetSubBranchesIds(t_branch_id branch_id) const
+    pair<t_branch_id, t_branch_id> Rivers::GetSubBranchesIds(t_branch_id branch_id) const
     {   
         if(!HasSubBranches(branch_id))
             throw Exception("branch does't have sub branches");
@@ -496,13 +496,13 @@ namespace River
         return branches_relation.at(branch_id);
     }
 
-    pair<BranchNew&, BranchNew&> Tree::GetSubBranches(t_branch_id branch_id)
+    pair<BranchNew&, BranchNew&> Rivers::GetSubBranches(t_branch_id branch_id)
     {
         auto[left_branch, right_branch] = GetSubBranchesIds(branch_id);
         return {this->at(left_branch), this->at(right_branch)};
     }
     
-    vector<Point> Tree::TipPoints() const
+    vector<Point> Rivers::TipPoints() const
     {   
         vector<Point> tip_points;
         auto tip_branches_id = TipBranchesIds();
@@ -513,7 +513,7 @@ namespace River
         return tip_points;
     }
 
-    map<t_branch_id, Point> Tree::TipIdsAndPoints() const
+    map<t_branch_id, Point> Rivers::TipIdsAndPoints() const
     {   
         map<t_branch_id, Point> ids_points_map;
         auto points = TipPoints();
@@ -525,7 +525,7 @@ namespace River
         return ids_points_map;
     }
 
-    bool Tree::IsSourceBranch(const t_branch_id branch_id) const
+    bool Rivers::IsSourceBranch(const t_branch_id branch_id) const
     {
         handle_non_existing_branch_id(branch_id);
 
@@ -536,7 +536,7 @@ namespace River
         return true;
     }
 
-    double Tree::maximal_tip_curvature_distance() const
+    double Rivers::maximal_tip_curvature_distance() const
     {
         double max_dist = 0;
         for(auto id: TipBranchesIds())
@@ -560,7 +560,7 @@ namespace River
         return max_dist;
     }
 
-    void Tree::flatten_tip_curvature()
+    void Rivers::flatten_tip_curvature()
     {
         for(auto id: TipBranchesIds())
         {
@@ -575,7 +575,7 @@ namespace River
         }
     }
 
-    void Tree::remove_tip_points()
+    void Rivers::remove_tip_points()
     {
         vector<t_branch_id> zero_lenght_branches;
         for (auto id: TipBranchesIds())
@@ -594,14 +594,14 @@ namespace River
                 DeleteSubBranches(GetParentBranchId(id));
     }
 
-    bool Tree::HasSubBranches(const t_branch_id branch_id) const
+    bool Rivers::HasSubBranches(const t_branch_id branch_id) const
     {
         handle_non_existing_branch_id(branch_id);
 
         return branches_relation.count(branch_id);
     }
 
-    bool Tree::HasParentBranch(t_branch_id sub_branch_id) const
+    bool Rivers::HasParentBranch(t_branch_id sub_branch_id) const
     {
         handle_non_existing_branch_id(sub_branch_id);
 
@@ -612,18 +612,18 @@ namespace River
         return false;
     }
 
-    bool Tree::IsValidBranchId(const t_branch_id id) const
+    bool Rivers::IsValidBranchId(const t_branch_id id) const
     {
         return id >= 1 and id != UINT_MAX;
     }
     
-    void Tree::handle_non_existing_branch_id(const t_branch_id id) const
+    void Rivers::handle_non_existing_branch_id(const t_branch_id id) const
     {
         if (!this->count(id)) 
             throw Exception("Branch with id: " + to_string(id) + " do not exist");
     }
 
-    ostream& operator<<(ostream& write, const Tree & b)
+    ostream& operator<<(ostream& write, const Rivers & b)
     {
         write << "branches relations: " << endl;
         for(auto key_val: b.branches_relation)

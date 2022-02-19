@@ -312,7 +312,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     
     mdl_out.sources = mdl_out.border.MakeRectangular();
     
-    //Tree object setup
+    //Rivers object setup
     mdl_out.tree.Initialize(mdl_out.border.GetSourcesIdsPointsAndAngles(mdl_out.sources));
 
     BranchNew 
@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     //BOOST_TEST((mdl_in.border.vertices.front() == Point{2, 0}));
     //BOOST_TEST((mdl_in.border.vertices.back() == Point{0.3, 0}));
 
-    //Tree Test
+    //Rivers Test
     //BOOST_TEST(mdl_in.tree.source_branches_id == sources_id);
     map<t_branch_id, pair<t_branch_id, t_branch_id>> t = {{1, {2, 3}}, {3, {4, 5}}};
     BOOST_TEST(mdl_in.tree.branches_relation == t);
@@ -560,7 +560,7 @@ BOOST_AUTO_TEST_CASE( Sources_to_json,
     BOOST_TEST(sources == sourcesj);
 }
 
-//Tree
+//Rivers
 //Branch
 BOOST_AUTO_TEST_CASE( Branch_to_json, 
     *utf::tolerance(eps))
@@ -577,19 +577,19 @@ BOOST_AUTO_TEST_CASE( Branch_to_json,
     BOOST_TEST(branchj == branch);
 }
 
-//Tree
+//Rivers
 BOOST_AUTO_TEST_CASE( Tree_to_json, 
     *utf::tolerance(eps))
 {
     BranchNew branch({0, 1}, M_PI/3.);
-    Tree tree;
+    Rivers tree;
     auto branch_id = tree.AddBranch(branch);
     t_boundary_id boundary_id = 1;
     tree.GrowTestTree(boundary_id, branch_id);
 
     json j = tree;
 
-    auto treej = j.get<Tree>();
+    auto treej = j.get<Rivers>();
     cout << treej << endl;
     cout << tree << endl;
 

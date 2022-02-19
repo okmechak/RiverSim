@@ -157,7 +157,7 @@
 
     ## Trees
 
-    Trees structure is representation of River::Tree object. This structure contains information about river 
+    Trees structure is representation of River::Rivers object. This structure contains information about river 
     network geometry, its separate branches(River::BranchNew) and relationship between them.
     
     It contains next objects:
@@ -173,7 +173,7 @@
 
     + "coords" - coordintates of branch. See River::BranchNew::points.
     + "sourceAngle" - direction of growth of source point branch. See River::BranchNew::source_angle.
-    + "id" - unique number which is referenced by `Tree:Relations` object.
+    + "id" - unique number which is referenced by `Rivers:Relations` object.
 
     #### Branch Example
 
@@ -241,10 +241,10 @@ namespace River
     ///Initializes River::Model object by Program Options values.
     void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& model);
 
-    ///Save current state of program which includes Geometry(Tree, Boundary), current model parameters(Model) and backward simulation data(GeometryDifference).
+    ///Save current state of program which includes Geometry(Rivers, Boundary), current model parameters(Model) and backward simulation data(GeometryDifference).
     void Save(const Model& model, const string file_name);
     
-    ///Opens state of program from json file which includes Geometry(Tree, Boundary) and current model parameters(Model).
+    ///Opens state of program from json file which includes Geometry(Rivers, Boundary) and current model parameters(Model).
     void Open(Model& model);
 
     Model InitializeModelObject(cxxopts::ParseResult & vm);
@@ -276,8 +276,8 @@ namespace River
     void to_json(json& j, const BranchNew& branch); 
     void from_json(const json& j, BranchNew& branch); 
 
-    void to_json(json& j, const Tree& tree);
-    void from_json(const json& j, Tree& tree);
+    void to_json(json& j, const Rivers& tree);
+    void from_json(const json& j, Rivers& tree);
 
     void to_json(json& j, const SeriesParameters& id_series_params);
     void from_json(const json& j, SeriesParameters& id_series_params);

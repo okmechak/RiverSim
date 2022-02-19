@@ -62,7 +62,7 @@ $(function() {
 <p>Resolve problem with private members. </p>
 <p class="enddd">test for different number and position of source points.  </p>
 </dd>
-<dt><a class="anchor" id="_todo000013"></a>Member <a class="el" href="namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7">River::BoundaryGenerator</a>  (const <a class="el" href="classRiver_1_1Model.html" title="Physical model parameters. ">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Tree</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html" title="Handles initial boundary geometry without any geometry of river itself and contains info about source...">Border</a> &amp;br)</dt>
+<dt><a class="anchor" id="_todo000013"></a>Member <a class="el" href="namespaceRiver.html#a43d55da8d0508b984518c4ebed6e0ad7">River::BoundaryGenerator</a>  (const <a class="el" href="classRiver_1_1Model.html" title="Physical model parameters. ">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Rivers</a> &amp;tree, const <a class="el" href="classRiver_1_1Border.html" title="Handles initial boundary geometry without any geometry of river itself and contains info about source...">Border</a> &amp;br)</dt>
 <dd>reserve size of tet_lines.  </dd>
 <dt><a class="anchor" id="_todo000011"></a>Class <a class="el" href="classRiver_1_1BranchNew.html">River::BranchNew</a>  </dt>
 <dd>resolve problem with private members  </dd>
@@ -78,15 +78,15 @@ $(function() {
 <dd>test different types of growth. Especially growth_type == 1.  </dd>
 <dt><a class="anchor" id="_todo000009"></a>Member <a class="el" href="classRiver_1_1Solver.html#a2fc7a505a39dbf983c8bcd3941dd0b5d">River::Solver::SetMesh</a>  (const <a class="el" href="classtethex_1_1Mesh.html" title="Main class that stores all data during program execution. ">tethex::Mesh</a> &amp;meshio)</dt>
 <dd>implement this function  </dd>
-<dt><a class="anchor" id="_todo000008"></a>Member <a class="el" href="namespaceRiver.html#a9bf171a0fdf0f067f322d323d8bf0689">River::StopConditionOfRiverGrowth</a>  (const <a class="el" href="classRiver_1_1Model.html" title="Physical model parameters. ">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Border.html" title="Handles initial boundary geometry without any geometry of river itself and contains info about source...">Border</a> &amp;border, const <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Tree</a> &amp;tree)</dt>
+<dt><a class="anchor" id="_todo000008"></a>Member <a class="el" href="namespaceRiver.html#a9bf171a0fdf0f067f322d323d8bf0689">River::StopConditionOfRiverGrowth</a>  (const <a class="el" href="classRiver_1_1Model.html" title="Physical model parameters. ">Model</a> &amp;mdl, const <a class="el" href="classRiver_1_1Border.html" title="Handles initial boundary geometry without any geometry of river itself and contains info about source...">Border</a> &amp;border, const <a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Rivers</a> &amp;tree)</dt>
 <dd><p class="startdd">generalize to any boundary shape. </p>
 <p class="enddd">in qudrangular shape crossing of bottom line isn't handled.  </p>
 </dd>
-<dt><a class="anchor" id="_todo000012"></a>Class <a class="el" href="classRiver_1_1Tree.html">River::Tree</a>  </dt>
+<dt><a class="anchor" id="_todo000012"></a>Class <a class="el" href="classRiver_1_1Tree.html">River::Rivers</a>  </dt>
 <dd>resolve problem with private methods.  </dd>
-<dt><a class="anchor" id="_todo000015"></a>Member <a class="el" href="classRiver_1_1Tree.html#a1d644a8e5e1d57e1b9e908cc5375aacf">River::Tree::AddBranch</a>  (const <a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">BranchNew</a> &amp;branch, int id=-999)</dt>
+<dt><a class="anchor" id="_todo000015"></a>Member <a class="el" href="classRiver_1_1Tree.html#a1d644a8e5e1d57e1b9e908cc5375aacf">River::Rivers::AddBranch</a>  (const <a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">BranchNew</a> &amp;branch, int id=-999)</dt>
 <dd>make the function this private.  </dd>
-<dt><a class="anchor" id="_todo000014"></a>Member <a class="el" href="classRiver_1_1Tree.html#ac64a5af7aa738e977d9f866c77de9151">River::Tree::Initialize</a>  (vector&lt; Point &gt; sources_point, vector&lt; double &gt; sources_angle, vector&lt; int &gt; ids)</dt>
+<dt><a class="anchor" id="_todo000014"></a>Member <a class="el" href="classRiver_1_1Tree.html#ac64a5af7aa738e977d9f866c77de9151">River::Rivers::Initialize</a>  (vector&lt; Point &gt; sources_point, vector&lt; double &gt; sources_angle, vector&lt; int &gt; ids)</dt>
 <dd>does it work for many sources(&gt;1)?  </dd>
 <dt><a class="anchor" id="_todo000003"></a>Class <a class="el" href="classRiver_1_1Triangle.html">River::Triangle</a>  </dt>
 <dd>implement better interface between triangle and constrint area function.  </dd>

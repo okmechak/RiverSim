@@ -88,7 +88,7 @@ namespace River
             "\tProgram also produces vtk and msh files from different stages of program running which can be viewed from Paraview and Gmsh.\n\n" + 
             "Creation of custom input file:\n" + 
             "\tInput file is of json format, and should contain at least next object: Model(for its format please see output json file).\n" + 
-            "\tAlso it can contain Boundary and Tree(this object can't be setuped without Boundary object).\n" +  
+            "\tAlso it can contain Boundary and Rivers(this object can't be setuped without Boundary object).\n" +  
             "\tIf some field isnt set by Model object they will be replaced by default program options.\n" + 
             "\tDescription of rest of objects You can find in output json file of program. It has description inside.\n" + 
             "\tFor any questions please mail me: oleg.kmechak@gmail.com.\n"
@@ -439,7 +439,7 @@ namespace River
             sources[key] = value;
     }
 
-    //Tree
+    //Rivers
     //Branch
     void to_json(json& j, const BranchNew& branch) 
     {
@@ -465,8 +465,8 @@ namespace River
         branch.SetSourceAngle(source_angle);
     }
 
-    //Tree
-    void to_json(json& j, const Tree& tree) 
+    //Rivers
+    void to_json(json& j, const Rivers& tree) 
     {
         json branches;
         for(const auto&[id, branch]: tree)
@@ -481,7 +481,7 @@ namespace River
             {"branches", branches}, 
             {"relations", tree.branches_relation}};
     }
-    void from_json(const json& j, Tree& tree) 
+    void from_json(const json& j, Rivers& tree) 
     {
         t_Tree branches;
         for(const auto&[key, value]: j.at("branches").items())

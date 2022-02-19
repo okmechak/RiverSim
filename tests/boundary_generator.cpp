@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE( tree_vertices,
     *utf::tolerance(eps))
 {   
     t_PointList tree_vertices;
-    Tree tr;
+    Rivers tr;
     BOOST_CHECK_THROW(TreeVertices(tree_vertices, 1, tr, 0.01), Exception);
 }
 
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     *utf::tolerance(eps))
 {
     //empty tree
-    Tree tree;
+    Rivers tree;
     BOOST_CHECK_THROW(TreeBoundary(tree, 1, 0, 0.01), Exception);
 
     //initiazlized tree
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     Region boundary;
     auto sources = boundary.MakeRectangular(1, 1, 0.5);
 
-    Tree tr;
+    Rivers tr;
     tr.Initialize(
         boundary.GetSourcesIdsPointsAndAngles(sources));
     
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     Region boundary;
     auto sources = boundary.MakeRectangular(1,1,0.5);
 
-    Tree tr;
+    Rivers tr;
     tr.Initialize(
         boundary.GetSourcesIdsPointsAndAngles(sources));
     
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     Region border;
     auto sources = border.MakeRectangular(1, 1, 0.5);
 
-    Tree tr;
+    Rivers tr;
     tr.Initialize(
         border.GetSourcesIdsPointsAndAngles(sources));
     
@@ -300,7 +300,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     Region border;
     auto sources = border.MakeRectangular(1,1, 0.5);
 
-    Tree tr;
+    Rivers tr;
     tr.Initialize(
         border.GetSourcesIdsPointsAndAngles(sources));
     

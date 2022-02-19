@@ -121,7 +121,7 @@ namespace River
 
             Sources sources;
 
-            Tree tree, saved_tree;
+            Rivers tree, saved_tree;
 
             BoundaryConditions boundary_conditions;
 
