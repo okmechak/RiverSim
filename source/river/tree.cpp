@@ -208,7 +208,7 @@ namespace River
 
     bool BranchNew::operator==(const BranchNew& br) const
     {
-        return SimpleBoundary::operator==(br)
+        return Boundary::operator==(br)
             && SourceAngle() == br.SourceAngle();
     }
     

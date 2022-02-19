@@ -518,7 +518,7 @@ BOOST_AUTO_TEST_CASE( Line_to_json,
 BOOST_AUTO_TEST_CASE( SimpleBoundary_to_json, 
     *utf::tolerance(eps))
 {
-    SimpleBoundary boundary;
+    Boundary boundary;
 
     boundary.vertices = {{1, 1}, {2, 2}};
     boundary.lines = {{1, 2, 3}, {2, 3, 4}};
@@ -528,7 +528,7 @@ BOOST_AUTO_TEST_CASE( SimpleBoundary_to_json,
 
     json j = boundary;
 
-    auto boundaryj = j.get<SimpleBoundary>();
+    auto boundaryj = j.get<Boundary>();
 
     BOOST_TEST(boundary == boundaryj);
 }

@@ -108,15 +108,15 @@ BOOST_PYTHON_MODULE(riversim)
         .def(vector_indexing_suite<t_LineList>())
     ;
 
-    class_<SimpleBoundary >("SimpleBoundary", "Structure which defines simple boundary data structure.")
-        .def("append", &SimpleBoundary::Append, "Appends another simple boundary at the end of current boundary.")
-        .def("replaceElement", &SimpleBoundary::ReplaceElement, "Replace on element of boundary with whole simple boundary structure.")
+    class_<Boundary >("Boundary", "Structure which defines simple boundary data structure.")
+        .def("append", &Boundary::Append, "Appends another simple boundary at the end of current boundary.")
+        .def("replaceElement", &Boundary::ReplaceElement, "Replace on element of boundary with whole simple boundary structure.")
         .def(self == self)
-        .def_readwrite("name", &SimpleBoundary::name, "Name with description of boundary.")
-        .def_readwrite("vertices", &SimpleBoundary::vertices, "Vertices of boundary vector.")
-        .def_readwrite("lines", &SimpleBoundary::lines, "Connvections between boundaries.")
-        .def_readwrite("inner_boundary", &SimpleBoundary::inner_boundary, "Is inner boundary. It has consequences on holes evaluation")
-        .def_readwrite("holes", &SimpleBoundary::holes, "Array of holes. Which will be eliminated by mesh generator.")
+        .def_readwrite("name", &Boundary::name, "Name with description of boundary.")
+        .def_readwrite("vertices", &Boundary::vertices, "Vertices of boundary vector.")
+        .def_readwrite("lines", &Boundary::lines, "Connvections between boundaries.")
+        .def_readwrite("inner_boundary", &Boundary::inner_boundary, "Is inner boundary. It has consequences on holes evaluation")
+        .def_readwrite("holes", &Boundary::holes, "Array of holes. Which will be eliminated by mesh generator.")
     ;
 
     class_<t_Boundaries>("t_Boundaries", "Structure which defines Region of region.")
@@ -143,7 +143,7 @@ BOOST_PYTHON_MODULE(riversim)
     ;
     
     //tree
-    class_<BranchNew, bases<SimpleBoundary>>("Branch", "Holds all functionality that you need to work with single branch.")
+    class_<BranchNew, bases<Boundary>>("Branch", "Holds all functionality that you need to work with single branch.")
         .def(init<River::Point&, double>(args("source_point", "angle")))
         .def("addAbsolutePoint", static_cast< BranchNew& (BranchNew::*)(const River::Point&, const t_boundary_id boundary_id)>( &BranchNew::AddAbsolutePoint), return_internal_reference<>(), "Adds point p to branch with absolute coords.")
         .def("addAbsolutePoint", static_cast< BranchNew& (BranchNew::*)(const Polar&, const t_boundary_id boundary_id)>( &BranchNew::AddAbsolutePoint), return_internal_reference<>(), "Adds polar p coords to branch with absolute angle, but position is relative to tip.")
@@ -382,7 +382,7 @@ BOOST_PYTHON_MODULE(riversim)
     class_<tethex::Mesh>("TethexMesh")
         .def(init<>())
         .def(init<const tethex::Mesh&>(args("mesh")))
-        .def(init<const River::SimpleBoundary&>(args("boundaries")))
+        .def(init<const River::Boundary&>(args("boundaries")))
 
         .def("read", &tethex::Mesh::read)
         .def("write", &tethex::Mesh::write)

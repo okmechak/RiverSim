@@ -394,8 +394,8 @@ namespace River
         j.at("boundary_id").get_to(line.boundary_id);
     }
 
-    //SimpleBoundary
-    void to_json(json& j, const SimpleBoundary& boundary) 
+    //Boundary
+    void to_json(json& j, const Boundary& boundary) 
     {
         j = json{
             {"vertices", boundary.vertices}, 
@@ -404,7 +404,7 @@ namespace River
             {"holes", boundary.holes},
             {"name", boundary.name}};
     }
-    void from_json(const json& j, SimpleBoundary& boundary) 
+    void from_json(const json& j, Boundary& boundary) 
     {
         j.at("vertices").get_to(boundary.vertices);
         j.at("lines").get_to(boundary.lines);

@@ -839,7 +839,7 @@ namespace tethex {
       return *this;
     }
 
-    Mesh::Mesh(const River::SimpleBoundary &boundaries)
+    Mesh::Mesh(const River::Boundary &boundaries)
     {
         vertices.reserve(boundaries.vertices.size());
         lines.reserve(boundaries.lines.size());

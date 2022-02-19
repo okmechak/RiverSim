@@ -775,7 +775,7 @@ namespace tethex
             ///Asignment.
             Mesh &operator=(const Mesh &msh);
 
-            Mesh(const River::SimpleBoundary &boundaries);
+            Mesh(const River::Boundary &boundaries);
 
             /**
             * Destructor - to clean the memory

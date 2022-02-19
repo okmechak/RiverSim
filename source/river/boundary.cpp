@@ -92,8 +92,8 @@ namespace River
         return write;
     }
 
-    //SimpleBoundary
-    void SimpleBoundary::Append(const SimpleBoundary& simple_boundary)
+    //Boundary
+    void Boundary::Append(const Boundary& simple_boundary)
     {
         auto size = vertices.size();
 
@@ -117,13 +117,13 @@ namespace River
         holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
-    void SimpleBoundary::ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary)
+    void Boundary::ReplaceElement(t_vert_pos vertice_pos, const Boundary& simple_boundary)
     {
         if(simple_boundary.vertices.empty())
             return;
         
         if(vertice_pos > vertices.size())
-            throw Exception("SimpleBoundary: trying to insert at position out of boundaries");
+            throw Exception("Boundary: trying to insert at position out of boundaries");
 
         //remove target element
         if(!vertices.empty())
@@ -164,7 +164,7 @@ namespace River
         holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
-    bool SimpleBoundary::operator==(const SimpleBoundary &simple_boundary) const
+    bool Boundary::operator==(const Boundary &simple_boundary) const
     {
         return vertices == simple_boundary.vertices 
             && lines == simple_boundary.lines
@@ -173,7 +173,7 @@ namespace River
             && name == simple_boundary.name;
     }
 
-    ostream& operator <<(ostream& write, const SimpleBoundary & boundary)
+    ostream& operator <<(ostream& write, const Boundary & boundary)
     {
         write << "Name: " << boundary.name << endl;
 
@@ -343,7 +343,7 @@ namespace River
         return sources;
     }
 
-    SimpleBoundary& Region::GetOuterBoundary()
+    Boundary& Region::GetOuterBoundary()
     {
         for(auto& [boundary_id, simple_boundary]: *this)
             if(!simple_boundary.inner_boundary)

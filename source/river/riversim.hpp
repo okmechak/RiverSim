@@ -62,8 +62,8 @@ namespace River
             void one_backward_step(string output_file_name);
             void collect_backward_data(Tree& init, Tree& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params);
             
-            SimpleBoundary generate_boudaries(string file_name);
-            void generate_mesh_file(SimpleBoundary& boundary, string file_name);
+            Boundary generate_boudaries(string file_name);
+            void generate_mesh_file(Boundary& boundary, string file_name);
             void solve(string mesh_file_name);
             map<t_branch_id, vector<double>> integrate_series_parameters();
             map<t_branch_id, vector<double>> solve_and_evaluate_series_parameters(string output_file_name);

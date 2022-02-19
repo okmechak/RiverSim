@@ -25,7 +25,7 @@ namespace River
     /*
         ForwardRiverSimulation
     */
-    SimpleBoundary ForwardRiverSimulation::generate_boudaries(string file_name)
+    Boundary ForwardRiverSimulation::generate_boudaries(string file_name)
     {
         auto boundary = SimpleBoundaryGenerator(*model);
         if(boundary.vertices.empty())
@@ -34,7 +34,7 @@ namespace River
         return boundary;
     }
 
-    void ForwardRiverSimulation::generate_mesh_file(SimpleBoundary& boundary, string file_name)
+    void ForwardRiverSimulation::generate_mesh_file(Boundary& boundary, string file_name)
     {
         auto mesh = tethex::Mesh(boundary);
         if(model->prog_opt.debug)

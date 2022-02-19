@@ -55,9 +55,9 @@ namespace River
         }
     }
     
-    SimpleBoundary TreeBoundary(const Tree& tree, unsigned source_id, int boundary_id, double eps)
+    Boundary TreeBoundary(const Tree& tree, unsigned source_id, int boundary_id, double eps)
     {
-        SimpleBoundary tree_boundary;
+        Boundary tree_boundary;
         tree_boundary.name = "Tree id = " + to_string(source_id);
         tree_boundary.inner_boundary = false;
         
@@ -78,9 +78,9 @@ namespace River
         return tree_boundary;
     }
 
-    SimpleBoundary SimpleBoundaryGenerator(const Model& model)
+    Boundary SimpleBoundaryGenerator(const Model& model)
     {
-        SimpleBoundary final_boundary;
+        Boundary final_boundary;
         auto sources = model.sources;
 
         for(auto [boundary_id, simple_boundary]: model.border)

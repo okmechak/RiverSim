@@ -52,7 +52,7 @@ namespace River
         \imageSize{BranchNewClass.jpg, height:40%;width:40%;, }
         \todo resolve problem with private members
     */
-    class BranchNew: public SimpleBoundary
+    class BranchNew: public Boundary
     {
         public:
             BranchNew() = default;

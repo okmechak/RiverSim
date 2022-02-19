@@ -134,9 +134,9 @@ namespace River
     /*! \brief Structure which defines simple boundary data structure.
         
         \details Simple boundary means only one boundary.
-        \imageSize{SimpleBoundary.jpg, height:40%;width:40%;, }
+        \imageSize{Boundary.jpg, height:40%;width:40%;, }
     */
-    class SimpleBoundary
+    class Boundary
     {
         public:
             ///Vertices of boundary vector.
@@ -150,16 +150,16 @@ namespace River
             ///Name with description of boundary.
             string name = "";
             ///Appends another simple boundary at the end of current boundary.
-            void Append(const SimpleBoundary& simple_boundary);
+            void Append(const Boundary& simple_boundary);
             ///Replace on element of boundary with whole simple boundary structure.
-            void ReplaceElement(t_vert_pos vertice_pos, const SimpleBoundary& simple_boundary);
+            void ReplaceElement(t_vert_pos vertice_pos, const Boundary& simple_boundary);
 
-            bool operator==(const SimpleBoundary& simple_boundary) const;
-            friend ostream& operator <<(ostream& write, const SimpleBoundary & boundary);
+            bool operator==(const Boundary& simple_boundary) const;
+            friend ostream& operator <<(ostream& write, const Boundary & boundary);
     };
 
     ///
-    typedef map<t_boundary_id, SimpleBoundary> t_Boundaries;
+    typedef map<t_boundary_id, Boundary> t_Boundaries;
     typedef pair<Point, double> t_branch_source;
     /*! \brief Structure which defines Region of region.
         
@@ -185,7 +185,7 @@ namespace River
             void Check();   
 
             ///Return outer simple boundary(There should be only one such).
-            SimpleBoundary& GetOuterBoundary();
+            Boundary& GetOuterBoundary();
 
             ///Returns vector of all holes.
             t_PointList GetHolesList() const;

@@ -69,11 +69,11 @@ BOOST_AUTO_TEST_CASE( Line_test,
 BOOST_AUTO_TEST_CASE( SimpleBoundary_ReplaceElement, 
     *utf::tolerance(eps))
 {
-    SimpleBoundary b_base;
+    Boundary b_base;
     b_base.vertices = {{0, 0}, {0.5, 0}, {1, 0}, {1, 1}, {0, 1}};
     b_base.lines = {{0, 1, 1}, {1, 2, 2}, {2, 3, 3}, {3, 4, 4}, {4, 0, 5}};
 
-    SimpleBoundary b_insert;
+    Boundary b_insert;
     b_insert.vertices = {{0.3, 0}, {0.3, 0.1}, {0.5, 0.1}, {0.5, 0}};
     b_insert.lines = {{0, 1, 0}, {1, 2, 0}, {2, 3, 0}};
 
@@ -86,14 +86,14 @@ BOOST_AUTO_TEST_CASE( SimpleBoundary_ReplaceElement,
     BOOST_TEST(b_base.lines == expected_lines);
 
     //now lets insert empty boundary
-    SimpleBoundary b_insert_1;
+    Boundary b_insert_1;
     b_base.ReplaceElement(1, b_insert_1);
     b_base.ReplaceElement(3, b_insert_1);
     BOOST_TEST(b_base.vertices == expected_vertices);
     BOOST_TEST(b_base.lines == expected_lines);
 
     //insert boundary with only one element
-    SimpleBoundary b_insert_2;
+    Boundary b_insert_2;
     b_insert_2.vertices = {{10, 10}};
     b_base.ReplaceElement(5, b_insert_2);
     auto expected_vertices_2 = vector<Point>{{0, 0}, {0.3, 0}, {0.3, 0.1}, {0.5, 0.1}, {0.5, 0}, {10, 10}, {1, 1}, {0, 1}};
@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE( SimpleBoundary_ReplaceElement,
 BOOST_AUTO_TEST_CASE( SimpleBoundary_Append, 
     *utf::tolerance(eps))
 {
-    SimpleBoundary b_base, b_insert_1, b_insert_2;
+    Boundary b_base, b_insert_1, b_insert_2;
     b_base.Append(b_insert_1);
     BOOST_TEST(b_base.vertices.empty());
     BOOST_TEST(b_base.lines.empty());    
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     
     BOOST_TEST_CHECKPOINT("With one boundary test");
     const auto source_x_position = 0.25, width = 1., height = 1.;
-    auto outer_simple_boundary = SimpleBoundary
+    auto outer_simple_boundary = Boundary
     {
         {/*vertices(counterclockwise order)*/
             {0, 0},
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
 
     //add inner boudnary
     BOOST_TEST_CHECKPOINT("With two boundaries test");
-    auto inner_simple_boundary = SimpleBoundary
+    auto inner_simple_boundary = Boundary
     {
         {/*vertices(counterclockwise order)*/
             {0.25*width, 0.75*height},
