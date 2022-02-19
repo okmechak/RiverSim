@@ -197,7 +197,7 @@ namespace River
             ///Delete branch.
             void DeleteBranch(t_branch_id branch_id);
 
-            ///Delete sub branch of current sub branch.
+            ///Delete sub branch of current branch.
             void DeleteSubBranches(t_branch_id root_branch_id);
 
             ///Clear whole tree.
