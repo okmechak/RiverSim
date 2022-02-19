@@ -413,12 +413,12 @@ namespace River
         j.at("name").get_to(boundary.name);
     }
 
-    //Boundaries
-    void to_json(json& j, const Boundaries& boundary) 
+    //Region
+    void to_json(json& j, const Region& boundary) 
     {
         j = json{{"boundaries", (t_Boundaries)boundary}};
     }
-    void from_json(const json& j, Boundaries& boundary) 
+    void from_json(const json& j, Region& boundary) 
     {
         t_Boundaries b;
         j.at("boundaries").get_to(b);

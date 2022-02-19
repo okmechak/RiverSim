@@ -212,7 +212,7 @@ Cell["Region Mesh", "Subsection",
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"(*", "Boundaries", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", "Region", "*)"}], "\[IndentingNewLine]", 
   RowBox[{
    RowBox[{"Clear", "[", "rectangulraBoundary", "]"}], "\[IndentingNewLine]", 
    RowBox[{

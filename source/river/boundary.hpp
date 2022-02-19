@@ -161,24 +161,24 @@ namespace River
     ///
     typedef map<t_boundary_id, SimpleBoundary> t_Boundaries;
     typedef pair<Point, double> t_branch_source;
-    /*! \brief Structure which defines Boundaries of region.
+    /*! \brief Structure which defines Region of region.
         
         \details It is a combination of simple boundaries which of each has  it own unique id.
-        \imageSize{Boundaries.jpg, height:40%;width:40%;, }
+        \imageSize{Region.jpg, height:40%;width:40%;, }
     */
-    class Boundaries: public t_Boundaries
+    class Region: public t_Boundaries
     {
         public:
             ///Data structure - interface between boundary sources and source points of \ref Tree
             typedef map<t_source_id, t_branch_source> trees_interface_t;
             
             ///Constructor
-            Boundaries(t_Boundaries simple_boundaries = {});
+            Region(t_Boundaries simple_boundaries = {});
 
-            ///Initialize rectangular Boundaries.
+            ///Initialize rectangular Region.
             Sources MakeRectangular(double width = 1, double height = 1, double source_x_position = 0.25);
             
-            ///Initialize rectangular with hole Boundaries.
+            ///Initialize rectangular with hole Region.
             Sources MakeRectangularWithHole(double width = 1, double height = 1, double source_x_position = 0.25);
 
             ///Some basic checks of data structure.
@@ -193,7 +193,7 @@ namespace River
             ///Returns map of source points ids and coresponding source point and angle of tree \ref Branch.
             trees_interface_t GetSourcesIdsPointsAndAngles(const Sources& sources) const;
 
-            friend ostream& operator <<(ostream& write, const Boundaries & boundary);
+            friend ostream& operator <<(ostream& write, const Region & boundary);
 
         //private:fix me todo
 

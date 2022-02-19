@@ -242,7 +242,7 @@ namespace River
             equal(this->begin(), this->end(), t.begin());
     }
 
-    void Tree::Initialize(const Boundaries::trees_interface_t ids_points_angles)
+    void Tree::Initialize(const Region::trees_interface_t ids_points_angles)
     {
         Clear();
         for(auto &[id, point_angle]: ids_points_angles)

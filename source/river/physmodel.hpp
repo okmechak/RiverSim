@@ -117,7 +117,7 @@ namespace River
             ///Some global program options
             ProgramOptions prog_opt;
 
-            Boundaries border;
+            Region border;
 
             Sources sources;
 

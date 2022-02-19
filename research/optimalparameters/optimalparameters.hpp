@@ -42,7 +42,7 @@
 
     <table style="width:100%">
         <tr>
-            <th> Boundaries setup </th>
+            <th> Region setup </th>
             <th> Mesh generation </th>
             <th> Adaptive mesh </th>
             <th> Solution </th>
@@ -77,7 +77,7 @@
     <CENTER>
     <table style="width:70%">
         <tr>
-            <th> Boundaries setup </th>
+            <th> Region setup </th>
             <th> Refined mesh </th>
             <th> Solution </th>
         </tr>

@@ -536,13 +536,13 @@ BOOST_AUTO_TEST_CASE( SimpleBoundary_to_json,
 BOOST_AUTO_TEST_CASE( Boundaries_to_json, 
     *utf::tolerance(eps))
 {
-    Boundaries boundary;
+    Region boundary;
 
     boundary.MakeRectangularWithHole();
 
     json j = boundary;
     cout << j << endl;
-    auto boundaryj = j.get<Boundaries>();
+    auto boundaryj = j.get<Region>();
 
     BOOST_TEST(boundary == boundaryj);
 }
@@ -550,7 +550,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_to_json,
 BOOST_AUTO_TEST_CASE( Sources_to_json, 
     *utf::tolerance(eps))
 {
-    Boundaries boundary;
+    Region boundary;
 
     auto sources = boundary.MakeRectangularWithHole();
 

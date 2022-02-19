@@ -119,7 +119,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("holes", &SimpleBoundary::holes, "Array of holes. Which will be eliminated by mesh generator.")
     ;
 
-    class_<t_Boundaries>("t_Boundaries", "Structure which defines Boundaries of region.")
+    class_<t_Boundaries>("t_Boundaries", "Structure which defines Region of region.")
         .def(map_indexing_suite<t_Boundaries>())
     ;
 
@@ -128,18 +128,18 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("angle", &t_branch_source::second, "Angle of growth.")
     ;
 
-    class_<Boundaries::trees_interface_t >("trees_interface_t", "Interface between boundary sources and source points of Tree.")
-        .def(map_indexing_suite<Boundaries::trees_interface_t>())
+    class_<Region::trees_interface_t >("trees_interface_t", "Interface between boundary sources and source points of Tree.")
+        .def(map_indexing_suite<Region::trees_interface_t>())
     ;
 
-    class_<Boundaries, bases<t_Boundaries> >("Boundaries", "Structure which defines Boundaries of region.")
+    class_<Region, bases<t_Boundaries> >("Region", "Structure which defines Region of region.")
         .def(init<t_Boundaries>(args("simple_boundaries"), "Constructor"))
-        .def("makeRectangular", &Boundaries::MakeRectangular, "Initialize rectangular Boundaries.")
-        .def("makeRectangularWithHole", &Boundaries::MakeRectangularWithHole, "Initialize rectangular with hole Boundaries.")
-        .def("check", &Boundaries::Check, "Some basic checks of data structure.")
-        .def("getOuterBoundary", &Boundaries::GetOuterBoundary, return_internal_reference<>(), "Return outer simple boundary(There should be only one such).")
-        .def("getHolesList", &Boundaries::GetHolesList, "Returns vector of all holes.")
-        .def("getSourcesIdsPointsAndAngles", &Boundaries::GetSourcesIdsPointsAndAngles, "Returns map of source points ids and coresponding source point and angle of tree Branch.")
+        .def("makeRectangular", &Region::MakeRectangular, "Initialize rectangular Region.")
+        .def("makeRectangularWithHole", &Region::MakeRectangularWithHole, "Initialize rectangular with hole Region.")
+        .def("check", &Region::Check, "Some basic checks of data structure.")
+        .def("getOuterBoundary", &Region::GetOuterBoundary, return_internal_reference<>(), "Return outer simple boundary(There should be only one such).")
+        .def("getHolesList", &Region::GetHolesList, "Returns vector of all holes.")
+        .def("getSourcesIdsPointsAndAngles", &Region::GetSourcesIdsPointsAndAngles, "Returns map of source points ids and coresponding source point and angle of tree Branch.")
     ;
     
     //tree

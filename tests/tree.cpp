@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
 BOOST_AUTO_TEST_CASE( tree_tips_point_method, 
     *utf::tolerance(eps))
 {
-    Boundaries border;
+    Region border;
     border[1] =
     {
         {/*vertices(counterclockwise order)*/
@@ -304,7 +304,7 @@ BOOST_AUTO_TEST_CASE( tree_tips_point_method,
 BOOST_AUTO_TEST_CASE( add_points_tests, 
     *utf::tolerance(eps))
 {
-    Boundaries border;
+    Region border;
     border[1] = 
     {
         {/*vertices(counterclockwise order)*/
@@ -688,7 +688,7 @@ BOOST_AUTO_TEST_CASE( tree_copy_constructor,
 BOOST_AUTO_TEST_CASE( tree_initializtion_and_clear, 
     *utf::tolerance(eps))
 {
-    Boundaries::trees_interface_t ids_points_angles = 
+    Region::trees_interface_t ids_points_angles = 
     {
         {1, {{2, 3}, 4}},
         {3, {{3, 4}, 5}},
@@ -737,7 +737,7 @@ BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch,
 BOOST_AUTO_TEST_CASE( test_branch_growth, 
     *utf::tolerance(eps))
 {
-    Boundaries::trees_interface_t ids_points_angles = {
+    Region::trees_interface_t ids_points_angles = {
         {1, {{2, 3}, 0}},
         {3, {{3, 4},   M_PI/4.}},
         {5, {{4, 5},   M_PI/2.}},
@@ -900,7 +900,7 @@ BOOST_AUTO_TEST_CASE( test_remove_tip_points,
 {
     t_boundary_id boundary_id = 0;
     t_branch_id branch_id = 1;
-    Boundaries::trees_interface_t ids_points_angles = {
+    Region::trees_interface_t ids_points_angles = {
         {branch_id, {{0., 0.}, M_PI/2.}}
     };
 
@@ -952,7 +952,7 @@ BOOST_AUTO_TEST_CASE( test_zero_lenght_tip_branches_ids,
 
     t_boundary_id boundary_id = 0;
     t_branch_id branch_id = 1;
-    Boundaries::trees_interface_t ids_points_angles = {
+    Region::trees_interface_t ids_points_angles = {
         {branch_id, {{0., 0.}, M_PI/2.}}
     };
     tree.Initialize(ids_points_angles);

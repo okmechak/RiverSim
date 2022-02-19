@@ -185,7 +185,7 @@ namespace River
                 It creates empty source branches which further will be developed in
                 river networks by design
             */
-            void Initialize(const Boundaries::trees_interface_t ids_points_angles);
+            void Initialize(const Region::trees_interface_t ids_points_angles);
             
             /// Adds new \p branch with \p id (\p id should be unique).
             t_branch_id AddBranch(const BranchNew &branch, t_branch_id id = UINT_MAX);

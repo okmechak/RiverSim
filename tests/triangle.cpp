@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE( memory_leak_test,
 BOOST_AUTO_TEST_CASE( mesh_min_angle, 
     *utf::tolerance(eps))
 {
-    Boundaries boundaries;
+    Region boundaries;
     boundaries[1] = 
     {
         {
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE( mesh_min_angle,
 BOOST_AUTO_TEST_CASE( mesh_max_area, 
     *utf::tolerance(eps))
 {
-    Boundaries boundaries;
+    Region boundaries;
     boundaries[1] = 
     {
         {
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE( mesh_max_area,
 BOOST_AUTO_TEST_CASE( mesh_min_area, 
     *utf::tolerance(eps))
 {
-        Boundaries boundaries;
+        Region boundaries;
     boundaries[1] = 
     {
         {
@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE( mesh_min_area,
 BOOST_AUTO_TEST_CASE( mesh_max_edge_lenght, 
     *utf::tolerance(eps))
 {
-        Boundaries boundaries;
+        Region boundaries;
     boundaries[1] = 
     {
         {
@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE( mesh_max_edge_lenght,
 BOOST_AUTO_TEST_CASE( mesh_min_edge_lenght, 
     *utf::tolerance(eps))
 {
-            Boundaries boundaries;
+            Region boundaries;
     boundaries[1] = 
     {
         {
@@ -363,7 +363,7 @@ BOOST_AUTO_TEST_CASE( mesh_min_edge_lenght,
 BOOST_AUTO_TEST_CASE( mesh_max_triangle_ratio, 
     *utf::tolerance(eps))
 {
-        Boundaries boundaries;
+        Region boundaries;
     boundaries[1] = 
     {
         {

@@ -193,14 +193,14 @@ namespace River
         return write;
     }
 
-    //Boundaries
-    Boundaries::Boundaries(t_Boundaries simple_boundaries)
+    //Region
+    Region::Region(t_Boundaries simple_boundaries)
     {
         for(auto &[boundary_id, simple_boundary]: simple_boundaries)
             this->at(boundary_id) = simple_boundary;
     }
 
-    void Boundaries::Check()
+    void Region::Check()
     {
         if (this->empty())
             throw Exception("Boundary is empty.");
@@ -234,7 +234,7 @@ namespace River
             throw Exception("Boundary: Boundary ids should be unique numbers!");
     }
 
-    t_PointList Boundaries::GetHolesList() const
+    t_PointList Region::GetHolesList() const
     {
         t_PointList holes;
         for(const auto& [boundary_id, simple_boundary]: *this)
@@ -245,7 +245,7 @@ namespace River
         return holes;
     }
 
-    Sources Boundaries::MakeRectangular(double width, double height, double source_x_position)
+    Sources Region::MakeRectangular(double width, double height, double source_x_position)
     {
         (*this)[1] = 
         {
@@ -274,7 +274,7 @@ namespace River
         return sources;
     }
 
-    Sources Boundaries::MakeRectangularWithHole(double width, double height, double source_x_position)
+    Sources Region::MakeRectangularWithHole(double width, double height, double source_x_position)
     {
         (*this)[1] = 
         {/*Outer Boundary*/
@@ -343,7 +343,7 @@ namespace River
         return sources;
     }
 
-    SimpleBoundary& Boundaries::GetOuterBoundary()
+    SimpleBoundary& Region::GetOuterBoundary()
     {
         for(auto& [boundary_id, simple_boundary]: *this)
             if(!simple_boundary.inner_boundary)
@@ -354,7 +354,7 @@ namespace River
         return this->at(1);
     }
 
-    pair<t_vert_pos, t_vert_pos> Boundaries::GetAdjacentVerticesPositions(
+    pair<t_vert_pos, t_vert_pos> Region::GetAdjacentVerticesPositions(
             const t_vert_pos vertices_size, 
             const t_vert_pos vertice_pos)
     {
@@ -373,7 +373,7 @@ namespace River
         return {left_pos, right_pos};
     }
 
-    double Boundaries::NormalAngle(const Point& left, const Point& center, const Point& right)
+    double Region::NormalAngle(const Point& left, const Point& center, const Point& right)
     {
         const auto
             left_vector = center - left,
@@ -393,7 +393,7 @@ namespace River
         return normal_angle;
     }
 
-    double Boundaries::GetVerticeNormalAngle(const t_PointList& vertices, const t_vert_pos vertice_pos)
+    double Region::GetVerticeNormalAngle(const t_PointList& vertices, const t_vert_pos vertice_pos)
     {
         const auto vertices_size = vertices.size();
         const auto [vertice_pos_left, vertice_pos_right] = GetAdjacentVerticesPositions(vertices_size, vertice_pos);
@@ -410,7 +410,7 @@ namespace River
         return normal_angle;
     }
 
-    Boundaries::trees_interface_t Boundaries::GetSourcesIdsPointsAndAngles(const Sources& sources) const
+    Region::trees_interface_t Region::GetSourcesIdsPointsAndAngles(const Sources& sources) const
     {
         trees_interface_t sources_ids_points_and_angles;
 
@@ -431,7 +431,7 @@ namespace River
         return sources_ids_points_and_angles;
     }
 
-    ostream& operator <<(ostream& write, const Boundaries& boundaries)
+    ostream& operator <<(ostream& write, const Region& boundaries)
     {
         for(const auto& [boundary_id, simple_boundary]: boundaries)
             write << "id = " << boundary_id << ", " << simple_boundary << endl;

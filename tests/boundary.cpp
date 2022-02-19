@@ -161,29 +161,29 @@ BOOST_AUTO_TEST_CASE( SimpleBoundary_Append,
 BOOST_AUTO_TEST_CASE( Boundaries_NormalAngle, 
     *utf::tolerance(eps))
 {   
-    BOOST_TEST(Boundaries::NormalAngle({0, 0}, {1, 0}, {0, 1e-10}) == M_PI);
-    BOOST_TEST(Boundaries::NormalAngle({0, 0}, {1, 0}, {1, -1}) == M_PI/4);
-    BOOST_TEST(Boundaries::NormalAngle({0, 0}, {1, 0}, {1, -1}) == M_PI/4);
+    BOOST_TEST(Region::NormalAngle({0, 0}, {1, 0}, {0, 1e-10}) == M_PI);
+    BOOST_TEST(Region::NormalAngle({0, 0}, {1, 0}, {1, -1}) == M_PI/4);
+    BOOST_TEST(Region::NormalAngle({0, 0}, {1, 0}, {1, -1}) == M_PI/4);
 
     //_ _
-    BOOST_TEST(Boundaries::NormalAngle({0, 0}, {1, 0}, {2, 0}) == M_PI/2);
+    BOOST_TEST(Region::NormalAngle({0, 0}, {1, 0}, {2, 0}) == M_PI/2);
     // _|
-    BOOST_TEST(Boundaries::NormalAngle({0, 0}, {1, 0}, {1, 1}) == M_PI/4*3);
+    BOOST_TEST(Region::NormalAngle({0, 0}, {1, 0}, {1, 1}) == M_PI/4*3);
     // -|
-    BOOST_TEST(Boundaries::NormalAngle({1, 0}, {1, 1}, {0, 1}) == M_PI*5/4);
+    BOOST_TEST(Region::NormalAngle({1, 0}, {1, 1}, {0, 1}) == M_PI*5/4);
     // |-
-    BOOST_TEST(Boundaries::NormalAngle({1, 1}, {0, 1}, {0, 0}) == 7*M_PI/4);
+    BOOST_TEST(Region::NormalAngle({1, 1}, {0, 1}, {0, 0}) == 7*M_PI/4);
     //|_
-    BOOST_TEST(Boundaries::NormalAngle({0, 1}, {0, 0}, {1, 0}) == M_PI/4);
+    BOOST_TEST(Region::NormalAngle({0, 1}, {0, 0}, {1, 0}) == M_PI/4);
 
-    BOOST_TEST(Boundaries::NormalAngle({0, 0}, {1, 0}, {1, -1}) == M_PI/4);
+    BOOST_TEST(Region::NormalAngle({0, 0}, {1, 0}, {1, -1}) == M_PI/4);
 }
 
 BOOST_AUTO_TEST_CASE( Boundaries_some_methods, 
     *utf::tolerance(eps))
 {   
     BOOST_TEST_CHECKPOINT("empty test");
-    Boundaries boundary;
+    Region boundary;
 
     //checks if boundary is empty
     BOOST_TEST_CHECKPOINT("Check");
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_TEST(boundary.GetHolesList() == vector<Point>{});
     BOOST_TEST_CHECKPOINT("GetSourcesIdsPointsAndAngles");
     Sources sources;
-    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles(sources) == Boundaries::trees_interface_t{});
+    BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles(sources) == Region::trees_interface_t{});
     
     BOOST_TEST_CHECKPOINT("With one boundary test");
     const auto source_x_position = 0.25, width = 1., height = 1.;
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_CHECK_NO_THROW(boundary.Check());
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
     BOOST_TEST(boundary.GetHolesList() == vector<Point>{});
-    auto s = Boundaries::trees_interface_t{{1,{{source_x_position, 0}, M_PI/2}}};
+    auto s = Region::trees_interface_t{{1,{{source_x_position, 0}, M_PI/2}}};
     BOOST_TEST(boundary.GetSourcesIdsPointsAndAngles(sources) == s);
 
     //add inner boudnary
@@ -259,7 +259,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
     auto holes_list = vector<Point>{{0.5*width, 0.5*height}};
     BOOST_TEST(boundary.GetHolesList() == holes_list);
-    s = Boundaries::trees_interface_t{
+    s = Region::trees_interface_t{
         {1, {{source_x_position, 0}, M_PI/2}},
         {2, {{0.75*width, 0.75*height}, M_PI/4}}
     };
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_TEST(boundary.GetOuterBoundary() == outer_simple_boundary);
    
     BOOST_TEST(boundary.GetHolesList() == holes_list);
-    s = Boundaries::trees_interface_t
+    s = Region::trees_interface_t
     {
         {1, {{0, 0}, M_PI/4}},
         {2, {{source_x_position, 0}, M_PI/2}},
@@ -303,7 +303,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
 BOOST_AUTO_TEST_CASE( MakeRectangular, 
     *utf::tolerance(eps))
 {   
-    Boundaries boundary;
+    Region boundary;
     BOOST_CHECK_THROW(boundary.Check(), Exception);
     auto sources = boundary.MakeRectangular();
 
