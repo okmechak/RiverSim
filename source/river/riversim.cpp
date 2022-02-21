@@ -117,9 +117,9 @@ namespace River
                 {
                     auto tip_point = tree.at(id).TipPoint();
                     auto tip_angle = tree.at(id).TipAngle();
-                    auto br_left = BranchNew(tip_point, tip_angle + model->bifurcation_angle);
+                    auto br_left = Branch(tip_point, tip_angle + model->bifurcation_angle);
                     br_left.AddPoint(Polar{model->ds, 0}, model->river_boundary_id);
-                    auto br_right = BranchNew(tip_point, tip_angle - model->bifurcation_angle);
+                    auto br_right = Branch(tip_point, tip_angle - model->bifurcation_angle);
                     br_right.AddPoint(Polar{model->ds, 0}, model->river_boundary_id);
                     tree.AddSubBranches(id, br_left, br_right);
                 }
@@ -446,9 +446,9 @@ namespace River
                 {
                     auto tip_point = model.tree.at(id).TipPoint();
                     auto tip_angle = model.tree.at(id).TipAngle();
-                    auto br_left = BranchNew(tip_point, tip_angle + model.bifurcation_angle);
+                    auto br_left = Branch(tip_point, tip_angle + model.bifurcation_angle);
                     br_left.AddPoint(Polar{model.ds, 0}, model.river_boundary_id);
-                    auto br_right = BranchNew(tip_point, tip_angle - model.bifurcation_angle);
+                    auto br_right = Branch(tip_point, tip_angle - model.bifurcation_angle);
                     br_right.AddPoint(Polar{model.ds, 0}, model.river_boundary_id);
                     model.tree.AddSubBranches(id, br_left, br_right);
                 }

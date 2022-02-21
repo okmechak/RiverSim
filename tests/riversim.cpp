@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE( Grow_Tree,
     map<t_branch_id, vector<double>> id_series_params;
     BOOST_CHECK_THROW(GrowTree(model, id_series_params, 0), Exception);
 
-    auto source_branch = BranchNew{{0, 0}, M_PI/2.};
+    auto source_branch = Branch{{0, 0}, M_PI/2.};
     auto id = model.tree.AddBranch(source_branch);
     id_series_params[id] = {1, 0, 3};
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE( Grow_Tree_biffurcation,
     model.growth_threshold = 0;
     model.bifurcation_min_dist = 0;
 
-    auto source_branch = BranchNew{{0, 0}, 0};
+    auto source_branch = Branch{{0, 0}, 0};
     auto id = model.tree.AddBranch(source_branch);
     map<t_branch_id, vector<double>> id_series_params;
     id_series_params[id] = {1, 0, 0};

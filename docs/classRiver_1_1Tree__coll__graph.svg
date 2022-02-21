@@ -75,7 +75,7 @@
 <g id="node3" class="node">
 <title>Node3</title>
 <polygon fill="#ffffff" stroke="#bfbfbf" points="132.5,-485 132.5,-542 273.5,-542 273.5,-485 132.5,-485"/>
-<text text-anchor="middle" x="203" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">list&lt; River::BranchNew &gt;</text>
+<text text-anchor="middle" x="203" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">list&lt; River::Branch &gt;</text>
 <polyline fill="none" stroke="#bfbfbf" points="132.5,-523 273.5,-523 "/>
 <text text-anchor="middle" x="203" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000"> </text>
 <polyline fill="none" stroke="#bfbfbf" points="132.5,-504 273.5,-504 "/>
@@ -126,7 +126,7 @@
 <g id="node6" class="node">
 <title>Node6</title>
 <polygon fill="#ffffff" stroke="#bfbfbf" points="459.5,-485 459.5,-542 634.5,-542 634.5,-485 459.5,-485"/>
-<text text-anchor="middle" x="547" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">map&lt; int, River::BranchNew * &gt;</text>
+<text text-anchor="middle" x="547" y="-530" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">map&lt; int, River::Branch * &gt;</text>
 <polyline fill="none" stroke="#bfbfbf" points="459.5,-523 634.5,-523 "/>
 <text text-anchor="middle" x="547" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000"> </text>
 <polyline fill="none" stroke="#bfbfbf" points="459.5,-504 634.5,-504 "/>

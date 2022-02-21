@@ -315,7 +315,7 @@ BOOST_AUTO_TEST_CASE( files_io_methods,
     //Rivers object setup
     mdl_out.tree.Initialize(mdl_out.border.GetSourcesIdsPointsAndAngles(mdl_out.sources));
 
-    BranchNew 
+    Branch 
         br1left({0, 1}, 2), br1right({3, 4}, 5), 
         br2left({6, 7}, 8), br2right({9, 10}, 11);
 
@@ -565,12 +565,12 @@ BOOST_AUTO_TEST_CASE( Sources_to_json,
 BOOST_AUTO_TEST_CASE( Branch_to_json, 
     *utf::tolerance(eps))
 {
-    BranchNew branch({0, 1}, M_PI/3.);
+    Branch branch({0, 1}, M_PI/3.);
     branch.AddPoint(Polar{1, 1}, (t_boundary_id)0);
 
     json j = branch;
 
-    auto branchj = j.get<BranchNew>();
+    auto branchj = j.get<Branch>();
     cout << branchj << endl;
     cout << branch << endl;
 
@@ -581,7 +581,7 @@ BOOST_AUTO_TEST_CASE( Branch_to_json,
 BOOST_AUTO_TEST_CASE( Tree_to_json, 
     *utf::tolerance(eps))
 {
-    BranchNew branch({0, 1}, M_PI/3.);
+    Branch branch({0, 1}, M_PI/3.);
     Rivers tree;
     auto branch_id = tree.AddBranch(branch);
     t_boundary_id boundary_id = 1;

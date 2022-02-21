@@ -58,7 +58,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Combines <b><a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">BranchNew</a></b> into tree like structure.  
+<p>Combines <b><a class="el" href="classRiver_1_1BranchNew.html" title="Holds all functionality that you need to work with single branch. ">Branch</a></b> into tree like structure.  
  <a href="classRiver_1_1Tree.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="tree_8hpp_source.html">tree.hpp</a>&gt;</code></p>
@@ -96,13 +96,13 @@ vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <tr class="memitem:ac64a5af7aa738e977d9f866c77de9151"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1Tree.html">Rivers</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ac64a5af7aa738e977d9f866c77de9151">Initialize</a> (vector&lt; <a class="el" href="classRiver_1_1Point.html">Point</a> &gt; sources_point, vector&lt; double &gt; sources_angle, vector&lt; int &gt; ids)</td></tr>
 <tr class="memdesc:ac64a5af7aa738e977d9f866c77de9151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize <b>tree</b> with source points vector <code>source_point</code> and source angle vector <code>source_angle</code>.  <a href="#ac64a5af7aa738e977d9f866c77de9151">More...</a><br /></td></tr>
 <tr class="separator:ac64a5af7aa738e977d9f866c77de9151"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d644a8e5e1d57e1b9e908cc5375aacf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a1d644a8e5e1d57e1b9e908cc5375aacf">AddBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;branch, int id=-999)</td></tr>
+<tr class="memitem:a1d644a8e5e1d57e1b9e908cc5375aacf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a1d644a8e5e1d57e1b9e908cc5375aacf">AddBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> &amp;branch, int id=-999)</td></tr>
 <tr class="memdesc:a1d644a8e5e1d57e1b9e908cc5375aacf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new <code>branch</code> with <code>id</code> (<code>id</code> should be unique).  <a href="#a1d644a8e5e1d57e1b9e908cc5375aacf">More...</a><br /></td></tr>
 <tr class="separator:a1d644a8e5e1d57e1b9e908cc5375aacf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16567738129c45c6409956f0f94de667"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a16567738129c45c6409956f0f94de667">AddSourceBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;branch, int id=-999)</td></tr>
+<tr class="memitem:a16567738129c45c6409956f0f94de667"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a16567738129c45c6409956f0f94de667">AddSourceBranch</a> (const <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> &amp;branch, int id=-999)</td></tr>
 <tr class="separator:a16567738129c45c6409956f0f94de667"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae42603046cab7443cf549cbfb94c3351"><td class="memItemLeft" align="right" valign="top"><a id="ae42603046cab7443cf549cbfb94c3351"></a>
-pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ae42603046cab7443cf549cbfb94c3351">AddSubBranches</a> (int root_branch_id, <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;left_branch, <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;right_branch)</td></tr>
+pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ae42603046cab7443cf549cbfb94c3351">AddSubBranches</a> (int root_branch_id, <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> &amp;left_branch, <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> &amp;right_branch)</td></tr>
 <tr class="memdesc:ae42603046cab7443cf549cbfb94c3351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds Sub Branches <code>left_brach</code>, <code>right_branch</code> to <code>root_branch_id</code>. <br /></td></tr>
 <tr class="separator:ae42603046cab7443cf549cbfb94c3351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f13de51296ec4ffaad8b2b9131d387b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a1f13de51296ec4ffaad8b2b9131d387b">GetParentBranchId</a> (int branch_id) const</td></tr>
@@ -118,19 +118,19 @@ pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a cla
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a07194a5c88aae1812da6e47e7d033cfd">GenerateNewID</a> () const</td></tr>
 <tr class="memdesc:a07194a5c88aae1812da6e47e7d033cfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates unique id number for new subbranch. <br /></td></tr>
 <tr class="separator:a07194a5c88aae1812da6e47e7d033cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b44fafee44da5af9bebfeb00f49fe49"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a2b44fafee44da5af9bebfeb00f49fe49">GetBranch</a> (int id) const</td></tr>
+<tr class="memitem:a2b44fafee44da5af9bebfeb00f49fe49"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a2b44fafee44da5af9bebfeb00f49fe49">GetBranch</a> (int id) const</td></tr>
 <tr class="memdesc:a2b44fafee44da5af9bebfeb00f49fe49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns link to branch with <code>id</code>.  <a href="#a2b44fafee44da5af9bebfeb00f49fe49">More...</a><br /></td></tr>
 <tr class="separator:a2b44fafee44da5af9bebfeb00f49fe49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3456d7a7c866475c8ad8ba162db4de4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a3456d7a7c866475c8ad8ba162db4de4e">GetBranch</a> (int id)</td></tr>
+<tr class="memitem:a3456d7a7c866475c8ad8ba162db4de4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">Branch</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a3456d7a7c866475c8ad8ba162db4de4e">GetBranch</a> (int id)</td></tr>
 <tr class="memdesc:a3456d7a7c866475c8ad8ba162db4de4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns link to branch with <code>id</code>.  <a href="#a3456d7a7c866475c8ad8ba162db4de4e">More...</a><br /></td></tr>
 <tr class="separator:a3456d7a7c866475c8ad8ba162db4de4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76f7375bdb628a3f8dc3e8417f3fbf29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a76f7375bdb628a3f8dc3e8417f3fbf29">GetParentBranch</a> (int branch_id)</td></tr>
+<tr class="memitem:a76f7375bdb628a3f8dc3e8417f3fbf29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">Branch</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a76f7375bdb628a3f8dc3e8417f3fbf29">GetParentBranch</a> (int branch_id)</td></tr>
 <tr class="memdesc:a76f7375bdb628a3f8dc3e8417f3fbf29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns link to parent branch.  <a href="#a76f7375bdb628a3f8dc3e8417f3fbf29">More...</a><br /></td></tr>
 <tr class="separator:a76f7375bdb628a3f8dc3e8417f3fbf29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a589638d1b5448a235462d2f44b3b1c7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a589638d1b5448a235462d2f44b3b1c7f">GetAdjacentBranch</a> (int sub_branch_id)</td></tr>
+<tr class="memitem:a589638d1b5448a235462d2f44b3b1c7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRiver_1_1BranchNew.html">Branch</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#a589638d1b5448a235462d2f44b3b1c7f">GetAdjacentBranch</a> (int sub_branch_id)</td></tr>
 <tr class="memdesc:a589638d1b5448a235462d2f44b3b1c7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns link to adjacent branch with <code>id</code>.  <a href="#a589638d1b5448a235462d2f44b3b1c7f">More...</a><br /></td></tr>
 <tr class="separator:a589638d1b5448a235462d2f44b3b1c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad13c1067d0c285dbd67df5561ddceeaf"><td class="memItemLeft" align="right" valign="top">pair&lt; <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> *, <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ad13c1067d0c285dbd67df5561ddceeaf">GetSubBranches</a> (int branch_id)</td></tr>
+<tr class="memitem:ad13c1067d0c285dbd67df5561ddceeaf"><td class="memItemLeft" align="right" valign="top">pair&lt; <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> *, <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#ad13c1067d0c285dbd67df5561ddceeaf">GetSubBranches</a> (int branch_id)</td></tr>
 <tr class="memdesc:ad13c1067d0c285dbd67df5561ddceeaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference to subbranches.  <a href="#ad13c1067d0c285dbd67df5561ddceeaf">More...</a><br /></td></tr>
 <tr class="separator:ad13c1067d0c285dbd67df5561ddceeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a922164ec03537480a79df368cf8c6a06"><td class="memItemLeft" align="right" valign="top"><a id="a922164ec03537480a79df368cf8c6a06"></a>
@@ -200,11 +200,11 @@ map&lt; int, pair&lt; int, int &gt; &gt;&#160;</td><td class="memItemRight" vali
 <tr class="memdesc:a696ae2a797a683ba525c5dbf50652620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds realations between root branhces and its subbranches. <br /></td></tr>
 <tr class="separator:a696ae2a797a683ba525c5dbf50652620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaf71237e2f039581c00ab8d48c1a72d"><td class="memItemLeft" align="right" valign="top"><a id="acaf71237e2f039581c00ab8d48c1a72d"></a>
-map&lt; int, <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#acaf71237e2f039581c00ab8d48c1a72d">branches_index</a></td></tr>
-<tr class="memdesc:acaf71237e2f039581c00ab8d48c1a72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds branches ids and its position in BranchNew::branches vector. <br /></td></tr>
+map&lt; int, <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#acaf71237e2f039581c00ab8d48c1a72d">branches_index</a></td></tr>
+<tr class="memdesc:acaf71237e2f039581c00ab8d48c1a72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds branches ids and its position in Branch::branches vector. <br /></td></tr>
 <tr class="separator:acaf71237e2f039581c00ab8d48c1a72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8dea24d14674d06bc8183514a3e86d6"><td class="memItemLeft" align="right" valign="top"><a id="af8dea24d14674d06bc8183514a3e86d6"></a>
-list&lt; <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#af8dea24d14674d06bc8183514a3e86d6">branches</a></td></tr>
+list&lt; <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRiver_1_1Tree.html#af8dea24d14674d06bc8183514a3e86d6">branches</a></td></tr>
 <tr class="memdesc:af8dea24d14674d06bc8183514a3e86d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds all branches. <br /></td></tr>
 <tr class="separator:af8dea24d14674d06bc8183514a3e86d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0365677b5c58bc04b380bc88dbd9fb83"><td class="memItemLeft" align="right" valign="top"><a id="a0365677b5c58bc04b380bc88dbd9fb83"></a>
@@ -221,7 +221,7 @@ ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 <tr class="separator:abc3f8899b6d4acfc0ff992dbe904224d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classRiver_1_1Tree.html" title="Combines BranchNew into tree like structure. ">Rivers</a> class represents next structure:  <style>div.image img[src="TreeClass.jpg"]{ height:40%;width:40%;}</style> </p><div class="image">
+<div class="textblock"><p><a class="el" href="classRiver_1_1Tree.html" title="Combines Branch into tree like structure. ">Rivers</a> class represents next structure:  <style>div.image img[src="TreeClass.jpg"]{ height:40%;width:40%;}</style> </p><div class="image">
 <img src="TreeClass.jpg" alt="TreeClass.jpg"/>
 </div>
  <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>resolve problem with private methods. </dd></dl>
@@ -277,7 +277,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">int River::Rivers::AddBranch </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> &amp;&#160;</td>
           <td class="paramname"><em>branch</em>, </td>
         </tr>
         <tr>
@@ -309,7 +309,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">int River::Rivers::AddSourceBranch </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classRiver_1_1BranchNew.html">Branch</a> &amp;&#160;</td>
           <td class="paramname"><em>branch</em>, </td>
         </tr>
         <tr>
@@ -426,7 +426,7 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a>* River::Rivers::GetBranch </td>
+          <td class="memname">const <a class="el" href="classRiver_1_1BranchNew.html">Branch</a>* River::Rivers::GetBranch </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
@@ -455,7 +455,7 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a>* River::Rivers::GetBranch </td>
+          <td class="memname"><a class="el" href="classRiver_1_1BranchNew.html">Branch</a>* River::Rivers::GetBranch </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
@@ -482,7 +482,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a>* River::Rivers::GetParentBranch </td>
+          <td class="memname"><a class="el" href="classRiver_1_1BranchNew.html">Branch</a>* River::Rivers::GetParentBranch </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>branch_id</em></td><td>)</td>
@@ -514,7 +514,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a>* River::Rivers::GetAdjacentBranch </td>
+          <td class="memname"><a class="el" href="classRiver_1_1BranchNew.html">Branch</a>* River::Rivers::GetAdjacentBranch </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>sub_branch_id</em></td><td>)</td>
@@ -546,7 +546,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">pair&lt;<a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a>*, <a class="el" href="classRiver_1_1BranchNew.html">BranchNew</a>*&gt; River::Rivers::GetSubBranches </td>
+          <td class="memname">pair&lt;<a class="el" href="classRiver_1_1BranchNew.html">Branch</a>*, <a class="el" href="classRiver_1_1BranchNew.html">Branch</a>*&gt; River::Rivers::GetSubBranches </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>branch_id</em></td><td>)</td>

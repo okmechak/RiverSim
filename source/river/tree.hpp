@@ -20,12 +20,12 @@
 
     \details
     File holds two classes: __River::BranchNew__ and __River::Tree__.
-    As you can see from picture - River::BranchNew is simple array joined points - piecewice line, 
+    As you can see from picture - River::Branch is simple array joined points - piecewice line, 
     aproximation of real river branch. River::Rivers on other hand consist from combination of Branches.
     __Bifurcation point__ - where two rivers unions into one river. So each branch has its subbranches.
     Structure of branches and sub branches is represented here in class River::Rivers.
 
-    \sa River::Rivers, River::BranchNew
+    \sa River::Rivers, River::Branch
  */
 
 #pragma once
@@ -52,45 +52,45 @@ namespace River
         \imageSize{BranchNewClass.jpg, height:40%;width:40%;, }
         \todo resolve problem with private members
     */
-    class BranchNew: public Boundary
+    class Branch: public Boundary
     {
         public:
-            BranchNew() = default;
+            Branch() = default;
 
-            /*! \brief BranchNew construcor.
+            /*! \brief Branch construcor.
                 \details Initiates branch with initial point \p source_point and initial \p angle.
                 \param[in] source_point_val - Branch source point.
                 \param[in] angle - Intial growth(or flow) dirrection of brahch source point.
             */
-            BranchNew(const Point& source_point_val, const double angle);
+            Branch(const Point& source_point_val, const double angle);
 
             /*! \name Modificators
                 @{
             */
             ///Adds point \p __p__ to branch with absolute coords.
-            BranchNew& AddAbsolutePoint(const Point& p, const t_boundary_id boundary_id);
+            Branch& AddAbsolutePoint(const Point& p, const t_boundary_id boundary_id);
             
             ///Adds polar \p __p__ coords to branch with absolute angle, but position is relative to tip.
-            BranchNew& AddAbsolutePoint(const Polar& p, const t_boundary_id boundary_id);
+            Branch& AddAbsolutePoint(const Polar& p, const t_boundary_id boundary_id);
             
             ///Adds point \p __p__ to branch in tip relative coord system.
-            BranchNew& AddPoint(const Point &p, const t_boundary_id boundary_id);
+            Branch& AddPoint(const Point &p, const t_boundary_id boundary_id);
 
             ///Adds polar \p __p__ to branch in tip relative coord and angle system.
-            BranchNew& AddPoint(const Polar& p, const t_boundary_id boundary_id);
+            Branch& AddPoint(const Polar& p, const t_boundary_id boundary_id);
 
             /*! \brief Reduces lenght of branch by \p lenght.
                 \note
                 If \p lenght is greater than full lenght of branch, then __source_point__ only remains.
                 \throw Exception.
             */
-            BranchNew& Shrink(double lenght);
+            Branch& Shrink(double lenght);
 
             /*! \brief Remove tip point from branch(simply pops element from vector).
                 \imageSize{BranchNewShrink.jpg, height:30%;width:30%;, }
                 \throw Exception if trying to remove last point.
             */
-            BranchNew& RemoveTipPoint();
+            Branch& RemoveTipPoint();
             
             /*! @} */
 
@@ -139,10 +139,10 @@ namespace River
              */
 
             ///Prints branch and all its parameters.
-            friend ostream& operator<<(ostream& write, const BranchNew & b);
+            friend ostream& operator<<(ostream& write, const Branch & b);
 
             ///Comparison of branches.
-            bool operator==(const BranchNew& br) const;
+            bool operator==(const Branch& br) const;
             
         private:
 
@@ -158,7 +158,7 @@ namespace River
     typedef t_source_id t_branch_id;
     typedef pair<t_branch_id, t_branch_id> t_branch_id_pair;
     
-    typedef map<t_branch_id, BranchNew> t_Tree;
+    typedef map<t_branch_id, Branch> t_Tree;
     /*! \brief Combines __BranchNew__ into tree like structure.
         \details
         Rivers class represents next structure: 
@@ -188,11 +188,11 @@ namespace River
             void Initialize(const Region::trees_interface_t ids_points_angles);
             
             /// Adds new \p branch with \p id (\p id should be unique).
-            t_branch_id AddBranch(const BranchNew &branch, t_branch_id id = UINT_MAX);
+            t_branch_id AddBranch(const Branch &branch, t_branch_id id = UINT_MAX);
             
             /// Adds two subbranches with
             t_branch_id_pair AddSubBranches(t_branch_id root_branch_id, 
-                const BranchNew &left_branch, const BranchNew &right_branch);
+                const Branch &left_branch, const Branch &right_branch);
             
             ///Delete branch.
             void DeleteBranch(t_branch_id branch_id);
@@ -209,7 +209,7 @@ namespace River
             t_branch_id GetParentBranchId(t_branch_id branch_id) const;
             
             /// Returns link to parent branch.
-            BranchNew& GetParentBranch(t_branch_id branch_id);
+            Branch& GetParentBranch(t_branch_id branch_id);
 
             /*! \brief Returns pair of ids of subranches.
                 \throw Exception if there is no sub branches.
@@ -217,7 +217,7 @@ namespace River
             t_branch_id_pair GetSubBranchesIds(t_branch_id branch_id) const;
 
             /// Returns reference to subbranches
-            pair<BranchNew&, BranchNew&> GetSubBranches(t_branch_id branch_id);
+            pair<Branch&, Branch&> GetSubBranches(t_branch_id branch_id);
 
             /*! \brief Returns id of adjacent branch to current \p sub_branch_id branch.
                 \throw Exception if there is no adjacent branch.
@@ -225,7 +225,7 @@ namespace River
             t_branch_id GetAdjacentBranchId(t_branch_id sub_branch_id) const;
 
             ///Returns link to adjacent branch with \p id.
-            BranchNew& GetAdjacentBranch(t_branch_id sub_branch_id);
+            Branch& GetAdjacentBranch(t_branch_id sub_branch_id);
 
             //Growth
             ///Adds  relatively vector of \p points to Branches \p tips_id.

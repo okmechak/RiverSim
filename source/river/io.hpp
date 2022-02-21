@@ -158,7 +158,7 @@
     ## Trees
 
     Trees structure is representation of River::Rivers object. This structure contains information about river 
-    network geometry, its separate branches(River::BranchNew) and relationship between them.
+    network geometry, its separate branches(River::Branch) and relationship between them.
     
     It contains next objects:
 
@@ -169,10 +169,10 @@
 
     ### `Branches`
 
-    For details about `Branch` object see River::BranchNew. Each `Branch` consists of next objects:
+    For details about `Branch` object see River::Branch. Each `Branch` consists of next objects:
 
-    + "coords" - coordintates of branch. See River::BranchNew::points.
-    + "sourceAngle" - direction of growth of source point branch. See River::BranchNew::source_angle.
+    + "coords" - coordintates of branch. See River::Branch::points.
+    + "sourceAngle" - direction of growth of source point branch. See River::Branch::source_angle.
     + "id" - unique number which is referenced by `Rivers:Relations` object.
 
     #### Branch Example
@@ -273,8 +273,8 @@ namespace River
     void to_json(json& j, const Sources& sources); 
     void from_json(const json& j, Sources& sources); 
 
-    void to_json(json& j, const BranchNew& branch); 
-    void from_json(const json& j, BranchNew& branch); 
+    void to_json(json& j, const Branch& branch); 
+    void from_json(const json& j, Branch& branch); 
 
     void to_json(json& j, const Rivers& tree);
     void from_json(const json& j, Rivers& tree);

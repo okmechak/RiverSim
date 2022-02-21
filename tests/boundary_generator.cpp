@@ -147,9 +147,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
 
     tree_vector.clear();
     br.AddPoint(River::Polar{0.1, 0}, boundary_id);
-    BranchNew left_branch(br.TipPoint(), br.TipAngle() + M_PI/2);
+    Branch left_branch(br.TipPoint(), br.TipAngle() + M_PI/2);
     left_branch.AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
-    BranchNew right_branch(br.TipPoint(), br.TipAngle() - M_PI/2);
+    Branch right_branch(br.TipPoint(), br.TipAngle() - M_PI/2);
     right_branch.AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(River::Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     tr.AddSubBranches(1, left_branch, right_branch);
 
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     BOOST_TEST(tree_vector.size() == 1);
     
 
-    BranchNew l(tr.at(1).TipPoint(), tr.at(1).TipAngle()+M_PI/4),
+    Branch l(tr.at(1).TipPoint(), tr.at(1).TipAngle()+M_PI/4),
         r(tr.at(1).TipPoint(), tr.at(1).TipAngle() - M_PI/4);
     
     auto[i1, i2] = tr.AddSubBranches(1, l, r);
@@ -254,9 +254,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
 
     tree_vector.clear();
     br.AddPoint(Polar{0.1, 0}, boundary_id);
-    BranchNew left_branch(br.TipPoint(), br.TipAngle() + M_PI/2);
+    Branch left_branch(br.TipPoint(), br.TipAngle() + M_PI/2);
     left_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
-    BranchNew right_branch(br.TipPoint(), br.TipAngle() - M_PI/2);
+    Branch right_branch(br.TipPoint(), br.TipAngle() - M_PI/2);
     right_branch.AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id).AddPoint(Polar{0.1, 0}, boundary_id);
     tr.AddSubBranches(1, left_branch, right_branch);
 
@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     BOOST_TEST(tree_vector.size() == 1);
 
 
-    BranchNew l(tr.at(1).TipPoint(), tr.at(1).TipAngle()+M_PI/4),
+    Branch l(tr.at(1).TipPoint(), tr.at(1).TipAngle()+M_PI/4),
         r(tr.at(1).TipPoint(), tr.at(1).TipAngle() - M_PI/4);
     
     auto[i1, i2] = tr.AddSubBranches(1, l, r);

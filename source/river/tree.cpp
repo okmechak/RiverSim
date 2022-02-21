@@ -26,7 +26,7 @@ namespace River
     /*
         Branch Class
     */
-    BranchNew::BranchNew(
+    Branch::Branch(
         const Point& source_point, 
         const double angle):
         source_angle(angle)
@@ -34,7 +34,7 @@ namespace River
         vertices.push_back(source_point);
     }
 
-    BranchNew& BranchNew::AddAbsolutePoint(const Point& p, const t_boundary_id boundary_id)
+    Branch& Branch::AddAbsolutePoint(const Point& p, const t_boundary_id boundary_id)
     {
         vertices.push_back(p);
         t_vert_pos n = vertices.size() - 1;
@@ -43,20 +43,20 @@ namespace River
         return *this;
     }
 
-    BranchNew& BranchNew::AddAbsolutePoint(const Polar& p, const t_boundary_id boundary_id)
+    Branch& Branch::AddAbsolutePoint(const Polar& p, const t_boundary_id boundary_id)
     {
         AddAbsolutePoint(TipPoint() + Point{p}, boundary_id);
 
         return *this;
     }
 
-    BranchNew& BranchNew::AddPoint(const Point &p, const t_boundary_id boundary_id)
+    Branch& Branch::AddPoint(const Point &p, const t_boundary_id boundary_id)
     {
         AddAbsolutePoint(TipPoint() + p, boundary_id);
         return *this;
     }
 
-    BranchNew& BranchNew::AddPoint(const Polar& p, const t_boundary_id boundary_id)
+    Branch& Branch::AddPoint(const Polar& p, const t_boundary_id boundary_id)
     {
         auto p_new = Polar{p};
         p_new.phi += TipAngle();
@@ -65,7 +65,7 @@ namespace River
         return *this;
     }
 
-    BranchNew& BranchNew::Shrink(double lenght)
+    Branch& Branch::Shrink(double lenght)
     {
         while(lenght > 0 && Lenght() > 0)
         {
@@ -108,7 +108,7 @@ namespace River
         return *this;
     }
 
-    BranchNew& BranchNew::RemoveTipPoint()
+    Branch& Branch::RemoveTipPoint()
     {
         if(vertices.size() == 1)
             throw Exception("Last branch point con't be removed");   
@@ -119,7 +119,7 @@ namespace River
         return *this;
     }
 
-    Point BranchNew::TipPoint() const 
+    Point Branch::TipPoint() const 
     {
         if(vertices.size() == 0)
             throw Exception("Can't return TipPoint size is zero");
@@ -127,7 +127,7 @@ namespace River
         return Point{tip_point_ref.x, tip_point_ref.y};//this->at(this->size() - 1);
     }
 
-    Point BranchNew::TipVector() const 
+    Point Branch::TipVector() const 
     {
         if(lines.size() == 0)
             throw Exception("Can't return TipVector size is 1 or even less");
@@ -138,7 +138,7 @@ namespace River
         }
     }
 
-    Point BranchNew::Vector(unsigned i) const
+    Point Branch::Vector(unsigned i) const
     {
         if(lines.size() == 0)
             throw Exception("Can't return Vector. No lines.");
@@ -151,7 +151,7 @@ namespace River
         return vertices.at(line.p2) - vertices.at(line.p1);
     }
 
-    double BranchNew::TipAngle() const 
+    double Branch::TipAngle() const 
     {
         if(vertices.size() == 0)
             throw Exception("TipAngle: Vertices is empty.");
@@ -162,23 +162,23 @@ namespace River
         return TipVector().angle();
     }
 
-    Point BranchNew::SourcePoint() const
+    Point Branch::SourcePoint() const
     {
         return vertices.at(0);
     }
 
-    double BranchNew::SourceAngle() const 
+    double Branch::SourceAngle() const 
     {
         return source_angle;
     }
 
     
-    void BranchNew::SetSourceAngle(double src_angle)
+    void Branch::SetSourceAngle(double src_angle)
     {
         source_angle = src_angle;
     }
 
-    double BranchNew::Lenght() const 
+    double Branch::Lenght() const 
     {
         double lenght = 0.;
         for(auto & line: lines)
@@ -187,7 +187,7 @@ namespace River
         return lenght;
     }
 
-    ostream& operator<<(ostream& write, const BranchNew & b)
+    ostream& operator<<(ostream& write, const Branch & b)
     {
         
         write << "Branch " << endl;
@@ -206,7 +206,7 @@ namespace River
         return write;
     }
 
-    bool BranchNew::operator==(const BranchNew& br) const
+    bool Branch::operator==(const Branch& br) const
     {
         return Boundary::operator==(br)
             && SourceAngle() == br.SourceAngle();
@@ -247,11 +247,11 @@ namespace River
         Clear();
         for(auto &[id, point_angle]: ids_points_angles)
             AddBranch(
-                BranchNew{point_angle.first, point_angle.second}, 
+                Branch{point_angle.first, point_angle.second}, 
                 id);
     }
 
-    t_branch_id Rivers::AddBranch(const BranchNew &branch, t_branch_id id)
+    t_branch_id Rivers::AddBranch(const Branch &branch, t_branch_id id)
     {
         if(id == UINT_MAX)
             id = GenerateNewID();
@@ -268,7 +268,7 @@ namespace River
     }
    
     pair<t_branch_id, t_branch_id> Rivers::AddSubBranches(t_branch_id root_branch_id, 
-        const BranchNew &left_branch, const BranchNew &right_branch)
+        const Branch &left_branch, const Branch &right_branch)
     {   
         handle_non_existing_branch_id(root_branch_id);
 
@@ -326,7 +326,7 @@ namespace River
             throw Exception("something wrong with GetAdjacentBranch");
     }
 
-    BranchNew& Rivers::GetAdjacentBranch(t_branch_id sub_branch_id)
+    Branch& Rivers::GetAdjacentBranch(t_branch_id sub_branch_id)
     {
         return this->at(GetAdjacentBranchId(sub_branch_id));
     }
@@ -436,10 +436,10 @@ namespace River
             branch_source.AddPoint(p, boundary_id);
         }
 
-        auto branch_left = BranchNew{
+        auto branch_left = Branch{
                 branch_source.TipPoint(), 
                 branch_source.TipAngle() + M_PI/4.},
-            branch_right = BranchNew{
+            branch_right = Branch{
                 branch_source.TipPoint(), 
                 branch_source.TipAngle() - M_PI/4.};
 
@@ -483,7 +483,7 @@ namespace River
         return zero_lenght_branches_id;
     }
 
-    BranchNew& Rivers::GetParentBranch(t_branch_id branch_id)
+    Branch& Rivers::GetParentBranch(t_branch_id branch_id)
     {
         return this->at(GetParentBranchId(branch_id));
     }
@@ -496,7 +496,7 @@ namespace River
         return branches_relation.at(branch_id);
     }
 
-    pair<BranchNew&, BranchNew&> Rivers::GetSubBranches(t_branch_id branch_id)
+    pair<Branch&, Branch&> Rivers::GetSubBranches(t_branch_id branch_id)
     {
         auto[left_branch, right_branch] = GetSubBranchesIds(branch_id);
         return {this->at(left_branch), this->at(right_branch)};

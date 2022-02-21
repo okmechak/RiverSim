@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     //constructor: empty branch
     auto source_point = Point{0, 0};
     auto source_angle = M_PI/2;
-    auto br = BranchNew(source_point, source_angle);
+    auto br = Branch(source_point, source_angle);
 
     BOOST_TEST(br.vertices.size() == 1);
     BOOST_TEST(br.Lenght() == 0);
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     BOOST_CHECK_THROW(br.RemoveTipPoint(), Exception);
     //now let add points with different angles
     source_point = Point{0, 0};
-    br = BranchNew(source_point, M_PI/6);
+    br = Branch(source_point, M_PI/6);
     BOOST_CHECK_NO_THROW(br.AddPoint(Polar{1, 0}, boundary_id).AddPoint(Polar{1, 0}, boundary_id));
     Point test_p_1{sqrt(3), 1};
     BOOST_TEST(br.TipPoint() == test_p_1);
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
 
     //now let make circle in clockwise direction:
     source_point = Point{0, 0};
-    br = BranchNew(source_point, M_PI/6);
+    br = Branch(source_point, M_PI/6);
     //clockwise
     for(size_t i = 0; i < 10; ++i)
         br.AddPoint(Polar{1, 2*M_PI/10}, boundary_id);
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     br.Shrink(20);
     BOOST_TEST(br.TipPoint() == br.SourcePoint());
     BOOST_TEST(source_point == br.SourcePoint());
-    br = BranchNew(source_point, 0);
+    br = Branch(source_point, 0);
     br.AddPoint(Polar{1, 0}, boundary_id);
     br.AddPoint(Polar{1, 0}, boundary_id);
     br.Shrink(0.5);
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
 BOOST_AUTO_TEST_CASE( BranchNew_vector, 
     *utf::tolerance(eps))
 {   
-    BranchNew br{Point{0, 0}, 0};
+    Branch br{Point{0, 0}, 0};
     BOOST_CHECK_THROW(br.Vector(0), Exception);
 
     t_boundary_id boundary_id = 0;
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_vector,
 BOOST_AUTO_TEST_CASE( BranchNew_equal, 
     *utf::tolerance(eps))
 {  
-    BranchNew 
+    Branch 
         br1{Point{0, 0}, 0}, 
         br2{Point{0, 0}, 0};
     
@@ -173,10 +173,10 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     BOOST_TEST(br_new.vertices.size() == 2);
 
     //AddSources
-    tr.AddBranch(BranchNew{{0.3, 0}, 0}, 6);
+    tr.AddBranch(Branch{{0.3, 0}, 0}, 6);
     ids.push_back(6);
     BOOST_TEST(tr.TipBranchesIds() == ids);
-    BOOST_CHECK_THROW(tr.AddBranch(BranchNew{{0.3, 0}, 0}, 6), Exception);
+    BOOST_CHECK_THROW(tr.AddBranch(Branch{{0.3, 0}, 0}, 6), Exception);
     BOOST_CHECK_THROW(tr.HasParentBranch(1), Exception);
 
 
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
         {9, {{0.2, 0}, 0.2}}
     });
 
-    BranchNew 
+    Branch 
         left_branch{tr.at(5).TipPoint(), 0.1},
         right_branch{tr.at(5).TipPoint(), -0.1};
     
@@ -255,11 +255,11 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_TEST(!tr.IsValidBranchId(0));
     BOOST_TEST(tr.IsValidBranchId(1));
     BOOST_TEST(tr.GenerateNewID() == 2);
-    tr.AddBranch(BranchNew(Point{0, 0}, 0), 2);
+    tr.AddBranch(Branch(Point{0, 0}, 0), 2);
     BOOST_TEST(tr.GenerateNewID() == 3);
-    tr.AddBranch(BranchNew(Point{0, 0}, 0), 3);
+    tr.AddBranch(Branch(Point{0, 0}, 0), 3);
     BOOST_TEST(tr.GenerateNewID() == 4);
-    tr.AddBranch(BranchNew(Point{0, 0}, 0), 4);
+    tr.AddBranch(Branch(Point{0, 0}, 0), 4);
     BOOST_TEST(tr.GenerateNewID() == 5);
 
     BOOST_CHECK_THROW(tr.AddBranch(left_branch, 0), Exception);
@@ -363,7 +363,7 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
 BOOST_AUTO_TEST_CASE(shrink_test, *utf::tolerance(eps))
 {
     t_boundary_id boundary_id = 0;
-    BranchNew br{Point{0, 0}, 0};
+    Branch br{Point{0, 0}, 0};
     br.AddPoint(Polar{1, 0}, boundary_id);
     br.AddPoint(Polar{1, 0}, boundary_id);
     br.AddPoint(Polar{1, 0}, boundary_id);
@@ -411,7 +411,7 @@ BOOST_AUTO_TEST_CASE( Tree_UPD,
     *utf::tolerance(eps))
 {   
     Rivers tree;
-    BranchNew brTest({0, 0}, 0);
+    Branch brTest({0, 0}, 0);
 
     BOOST_TEST(tree.TipBranchesIds().size() == 0);
     BOOST_TEST(tree.TipIdsAndPoints().size() == 0);
@@ -446,43 +446,43 @@ BOOST_AUTO_TEST_CASE( Tree_UPD,
     BOOST_TEST(tree.IsValidBranchId(1) == true);
 
     t_boundary_id boundary_id = 0;
-    BranchNew br1({0, 0}, 1.4);
+    Branch br1({0, 0}, 1.4);
     br1.AddPoint(Polar{1, 0}, boundary_id);
     br1.AddPoint(Polar{1, 0}, boundary_id);
     br1.AddPoint(Polar{1, 0}, boundary_id);
     br1.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br2({0, 0}, 1.7);
+    Branch br2({0, 0}, 1.7);
     br2.AddPoint(Polar{1, 0}, boundary_id);
     br2.AddPoint(Polar{1, 0}, boundary_id);
     br2.AddPoint(Polar{1, 0}, boundary_id);
     br2.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br3({0, 0}, 1.9);
+    Branch br3({0, 0}, 1.9);
     br3.AddPoint(Polar{1, 0}, boundary_id);
     br3.AddPoint(Polar{1, 0}, boundary_id);
     br3.AddPoint(Polar{1, 0}, boundary_id);
     br3.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br4({0, 0}, 2.4);
+    Branch br4({0, 0}, 2.4);
     br4.AddPoint(Polar{1, 0}, boundary_id);
     br4.AddPoint(Polar{1, 0}, boundary_id);
     br4.AddPoint(Polar{1, 0}, boundary_id);
     br4.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br5({0, 0}, 4.4);
+    Branch br5({0, 0}, 4.4);
     br5.AddPoint(Polar{1, 0}, boundary_id);
     br5.AddPoint(Polar{1, 0}, boundary_id);
     br5.AddPoint(Polar{1, 0}, boundary_id);
     br5.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br6({0, 0}, 0.4);
+    Branch br6({0, 0}, 0.4);
     br6.AddPoint(Polar{1, 0}, boundary_id);
     br6.AddPoint(Polar{1, 0}, boundary_id);
     br6.AddPoint(Polar{1, 0}, boundary_id);
     br6.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br7({0, 0}, 0.6);
+    Branch br7({0, 0}, 0.6);
     br7.AddPoint(Polar{1, 0}, boundary_id);
     br7.AddPoint(Polar{1, 0}, boundary_id);
     br7.AddPoint(Polar{1, 0}, boundary_id);
@@ -575,43 +575,43 @@ BOOST_AUTO_TEST_CASE( Tree_UPD_delete,
 {   
     t_boundary_id boundary_id = 0;
     Rivers tree;
-    BranchNew br1({0, 0}, 1.4);
+    Branch br1({0, 0}, 1.4);
     br1.AddPoint(Polar{1, 0}, boundary_id);
     br1.AddPoint(Polar{1, 0}, boundary_id);
     br1.AddPoint(Polar{1, 0}, boundary_id);
     br1.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br2({0, 0}, 1.7);
+    Branch br2({0, 0}, 1.7);
     br2.AddPoint(Polar{1, 0}, boundary_id);
     br2.AddPoint(Polar{1, 0}, boundary_id);
     br2.AddPoint(Polar{1, 0}, boundary_id);
     br2.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br3({0, 0}, 1.9);
+    Branch br3({0, 0}, 1.9);
     br3.AddPoint(Polar{1, 0}, boundary_id);
     br3.AddPoint(Polar{1, 0}, boundary_id);
     br3.AddPoint(Polar{1, 0}, boundary_id);
     br3.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br4({0, 0}, 2.4);
+    Branch br4({0, 0}, 2.4);
     br4.AddPoint(Polar{1, 0}, boundary_id);
     br4.AddPoint(Polar{1, 0}, boundary_id);
     br4.AddPoint(Polar{1, 0}, boundary_id);
     br4.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br5({0, 0}, 4.4);
+    Branch br5({0, 0}, 4.4);
     br5.AddPoint(Polar{1, 0}, boundary_id);
     br5.AddPoint(Polar{1, 0}, boundary_id);
     br5.AddPoint(Polar{1, 0}, boundary_id);
     br5.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br6({0, 0}, 0.4);
+    Branch br6({0, 0}, 0.4);
     br6.AddPoint(Polar{1, 0}, boundary_id);
     br6.AddPoint(Polar{1, 0}, boundary_id);
     br6.AddPoint(Polar{1, 0}, boundary_id);
     br6.AddPoint(Polar{1, 0}, boundary_id);
 
-    BranchNew br7({0, 0}, 0.6);
+    Branch br7({0, 0}, 0.6);
     br7.AddPoint(Polar{1, 0}, boundary_id);
     br7.AddPoint(Polar{1, 0}, boundary_id);
     br7.AddPoint(Polar{1, 0}, boundary_id);
@@ -720,7 +720,7 @@ BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch,
     *utf::tolerance(eps))
 {
     Rivers tree;
-    BranchNew 
+    Branch 
         branch_1{Point{1, 2}, 3}, 
         branch_2{Point{2, 3}, 4},
         branch_3{Point{3, 4}, 5},
@@ -832,7 +832,7 @@ BOOST_AUTO_TEST_CASE( test_branch_growth_one_more,
     *utf::tolerance(eps))
 {
     Rivers tree;
-    auto branch = BranchNew{{0.5, 0}, M_PI/2.};
+    auto branch = Branch{{0.5, 0}, M_PI/2.};
 
     t_boundary_id boundary_id = 0;
     auto branch_id = tree.AddBranch(branch);
@@ -840,9 +840,9 @@ BOOST_AUTO_TEST_CASE( test_branch_growth_one_more,
     unsigned n = 4;
     tree.GrowTestTree(boundary_id, branch_id, ds, n);
 
-    auto first_branch = BranchNew{{0.5, 0}, M_PI/2.},
-        left_branch = BranchNew{{0.5, ds*n}, 3*M_PI/4.},
-        right_branch = BranchNew{{0.5, ds*n}, M_PI/4.};
+    auto first_branch = Branch{{0.5, 0}, M_PI/2.},
+        left_branch = Branch{{0.5, ds*n}, 3*M_PI/4.},
+        right_branch = Branch{{0.5, ds*n}, M_PI/4.};
 
     first_branch.vertices.push_back({0.5, ds});
     first_branch.vertices.push_back({0.5, 2*ds});
@@ -879,14 +879,14 @@ BOOST_AUTO_TEST_CASE( test_maximal_tip_curvature_distance,
 
     BOOST_TEST(tree.maximal_tip_curvature_distance() == 0.);
 
-    BranchNew branch2({10, 0}, 0);
+    Branch branch2({10, 0}, 0);
     branch2.AddPoint(Polar{1, 0}, 0);
     branch2.AddPoint(Polar{1, 0}, 0);
 
     tree.AddBranch(branch2);
     BOOST_TEST(tree.maximal_tip_curvature_distance() == 0.);
 
-    BranchNew branch1({0, 0}, 0);
+    Branch branch1({0, 0}, 0);
     branch1.AddPoint(Polar{1, 0}, 0);
     branch1.AddPoint(Polar{1, M_PI/2.}, 0);
 
@@ -976,7 +976,7 @@ BOOST_AUTO_TEST_CASE( test_flatten_tip_curvature,
 {
     Rivers tree;
 
-    auto branch = BranchNew{{0, 0}, M_PI/2.};
+    auto branch = Branch{{0, 0}, M_PI/2.};
     branch.AddPoint(Polar{1, 0}, 0);
     auto id = tree.AddBranch(branch);
 
