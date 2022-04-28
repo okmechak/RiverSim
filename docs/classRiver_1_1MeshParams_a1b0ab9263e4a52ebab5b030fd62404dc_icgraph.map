@@ -1,0 +1,4 @@
+<map id="River::MeshParams::meshAreaConstraint" name="River::MeshParams::meshAreaConstraint">
+<area shape="rect" id="node1" title="Evaluates mesh area constraint at {x, y} point." alt="" coords="209,5,365,47"/>
+<area shape="rect" id="node2" href="$classRiver_1_1MeshParams.html#a883ab0e5c06c8ac4b07ef92699262848" title="Specifies a function to indicate whether mesh cells should be refined or not." alt="" coords="5,5,161,47"/>
+</map>

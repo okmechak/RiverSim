@@ -783,6 +783,8 @@ namespace tethex {
 
     Mesh& Mesh::operator =(const Mesh& msh)
     {
+      clean();
+      
       n_converted_quadrangles = msh.get_n_converted_quadrangles();
       physical_names = msh.physical_names;
 
@@ -839,19 +841,19 @@ namespace tethex {
       return *this;
     }
 
-    Mesh::Mesh(const River::Boundary &boundaries)
+    Mesh::Mesh(const River::Boundary &boundary, const River::t_PointList &boundary_holes)
     {
-        vertices.reserve(boundaries.vertices.size());
-        lines.reserve(boundaries.lines.size());
-        for(size_t i = 0; i < boundaries.vertices.size(); ++i)
-        {
-            vertices.push_back(boundaries.vertices.at(i));
-            lines.push_back(new tethex::Line(boundaries.lines.at(i)));
-        }
+        vertices.reserve(boundary.vertices.size());
+        lines.reserve(boundary.lines.size());
+        for(const auto& vertice: boundary.vertices)
+            vertices.push_back(vertice);
+        for(const auto& line: boundary.lines)
+            lines.push_back(new tethex::Line(line));
 
-        holes.reserve(boundaries.holes.size());
-        for(size_t i = 0; i < boundaries.holes.size(); ++i)
-            holes.push_back(boundaries.holes.at(i));
+
+        holes.reserve(boundary_holes.size());
+        for(const auto& hole: boundary_holes)
+            holes.push_back(hole);
     }
 
 

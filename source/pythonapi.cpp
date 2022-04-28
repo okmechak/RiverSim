@@ -2,7 +2,7 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
-#include "app.hpp"
+#include "riversolver.hpp"
 
 using namespace boost::python;
 using namespace River;
@@ -112,11 +112,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def("append", &Boundary::Append, "Appends another simple boundary at the end of current boundary.")
         .def("replaceElement", &Boundary::ReplaceElement, "Replace on element of boundary with whole simple boundary structure.")
         .def(self == self)
-        .def_readwrite("name", &Boundary::name, "Name with description of boundary.")
         .def_readwrite("vertices", &Boundary::vertices, "Vertices of boundary vector.")
         .def_readwrite("lines", &Boundary::lines, "Connvections between boundaries.")
-        .def_readwrite("inner_boundary", &Boundary::inner_boundary, "Is inner boundary. It has consequences on holes evaluation")
-        .def_readwrite("holes", &Boundary::holes, "Array of holes. Which will be eliminated by mesh generator.")
     ;
 
     class_<t_Boundaries>("t_Boundaries", "Structure which defines Region of region.")
@@ -128,8 +125,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("angle", &t_branch_source::second, "Angle of growth.")
     ;
 
-    class_<Region::trees_interface_t >("trees_interface_t", "Interface between boundary sources and source points of Rivers.")
-        .def(map_indexing_suite<Region::trees_interface_t>())
+    class_<t_rivers_interface>("trees_interface_t", "Interface between boundary sources and source points of Rivers.")
+        .def(map_indexing_suite<t_rivers_interface>())
     ;
 
     class_<Region, bases<t_Boundaries> >("Region", "Structure which defines Region of region.")
@@ -137,7 +134,6 @@ BOOST_PYTHON_MODULE(riversim)
         .def("makeRectangular", &Region::MakeRectangular, "Initialize rectangular Region.")
         .def("makeRectangularWithHole", &Region::MakeRectangularWithHole, "Initialize rectangular with hole Region.")
         .def("check", &Region::Check, "Some basic checks of data structure.")
-        .def("getOuterBoundary", &Region::GetOuterBoundary, return_internal_reference<>(), "Return outer simple boundary(There should be only one such).")
         .def("getHolesList", &Region::GetHolesList, "Returns vector of all holes.")
         .def("getSourcesIdsPointsAndAngles", &Region::GetSourcesIdsPointsAndAngles, "Returns map of source points ids and coresponding source point and angle of tree Branch.")
     ;
@@ -161,8 +157,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def(self == self)
     ;
 
-    class_<t_Tree >("t_Tree", "Combines branches into tree like structure.")
-        .def(map_indexing_suite<t_Tree>())
+    class_<t_Rivers>("t_Tree", "Combines branches into tree like structure.")
+        .def(map_indexing_suite<t_Rivers>())
     ;
 
     class_<t_branch_id_pair >("t_branch_id_pair")
@@ -170,7 +166,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("right", &t_branch_id_pair::second, "Right branch id.")
     ;
 
-    class_<Rivers, bases<t_Tree> >("Rivers", "Combines branches into tree like structure.", init<>())
+    class_<Rivers, bases<t_Rivers> >("Rivers", "Combines branches into tree like structure.", init<>())
         .def(init<Rivers&>())
         .def(self == self)
         .def("initialize", &Rivers::Initialize, "Initialize tree with source points vector and source angle vector.")
@@ -201,7 +197,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def("isValidBranchId", &Rivers::IsValidBranchId)
     ;
 
-    //physmodel
+    //model
     class_<vector<vector<double>>> ("t_v2_double")
         .def(vector_indexing_suite<vector<vector<double>>>())
     ;
@@ -235,10 +231,6 @@ BOOST_PYTHON_MODULE(riversim)
 
     class_<ProgramOptions >("ProgramOptions")
         .def(self == self)
-        .def_readwrite("simulation_type", &ProgramOptions::simulation_type, "Simulation type: 0 - Forward, 1 - Backward, 2 - For test purposes.")
-        .def_readwrite("number_of_steps", &ProgramOptions::number_of_steps, "Number of simulation steps.")
-        .def_readwrite("maximal_river_height", &ProgramOptions::maximal_river_height, "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.")
-        .def_readwrite("number_of_backward_steps", &ProgramOptions::number_of_backward_steps, "Number of backward steps simulations used in backward simulation type.")
         .def_readwrite("save_vtk", &ProgramOptions::save_vtk, "Outputs VTK file of Deal.II solution.")
         .def_readwrite("save_each_step", &ProgramOptions::save_each_step)
         .def_readwrite("verbose", &ProgramOptions::verbose, "If true - then program will print to standard output.")
@@ -259,8 +251,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("max_edge", &MeshParams::max_edge, "Maximal edge size.")
         .def_readwrite("min_edge", &MeshParams::min_edge, "Minimal edge size.")
         .def_readwrite("ratio", &MeshParams::ratio, "Ratio of the triangles.")
-        .def_readwrite("eps", &MeshParams::eps, "Width of branch.")
-        .def("areaConstrain", &MeshParams::operator(), "Evaluates mesh area constraint at {x, y} point.")
+        //.def("areaConstrain", &MeshParams::meshAreaConstraint(), "Evaluates mesh area constraint at {x, y} point.")
     ;
 
     class_<IntegrationParams>("IntegrationParams")
@@ -287,12 +278,15 @@ BOOST_PYTHON_MODULE(riversim)
 
     class_<Model>("Model")
         .def(self == self)
-        .def_readwrite("prog_opt", &Model::prog_opt, "Global program options.")
-        .def_readwrite("border", &Model::border, "Border of simulation region.")
+        .def_readwrite("simulation_type", &Model::simulation_type, "Simulation type: 0 - Forward linear, 1 - Forward non linear, 2 - backward.")
+        .def_readwrite("number_of_steps", &Model::number_of_steps, "Number of simulation steps.")
+        .def_readwrite("maximal_river_height", &Model::maximal_river_height, "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.")
+        .def_readwrite("number_of_backward_steps", &Model::number_of_backward_steps, "Number of backward steps simulations used in backward simulation type.")
+        .def_readwrite("border", &Model::region, "Border of simulation region.")
         .def_readwrite("sources", &Model::sources, "Source points of growth.")
-        .def_readwrite("tree", &Model::tree, "Rivers data structure.")
+        .def_readwrite("tree", &Model::rivers, "Rivers data structure.")
         .def_readwrite("boundary_conditions", &Model::boundary_conditions, "Boundary conditions data structure.")
-        .def_readwrite("mesh", &Model::mesh, "Mesh parameters.")
+        .def_readwrite("mesh_params", &Model::mesh_params, "Mesh parameters.")
         .def_readwrite("integr", &Model::integr, "Intergration around tip points parameters.")
         .def_readwrite("solver_params", &Model::solver_params, "Solver parameteres.")
         .def_readwrite("series_parameters", &Model::series_parameters, "Series parameters data structure.")
@@ -302,14 +296,13 @@ BOOST_PYTHON_MODULE(riversim)
         .def("initializePoisson", &Model::InitializePoisson, "Initialize problem to Poisson boundary conditions.")
         .def("initializeDirichlet", &Model::InitializeDirichlet, "Initialize proble to Dirichlet boundary conditions.")
         .def("initializeDirichletWithHole", &Model::InitializeDirichletWithHole, "Intialize problem to Dirirchlet boundary conditions with hole.")
-        .def("clear", &Model::Clear, "Clear all data")
+        .def("clear", &Model::clear, "Clear all data")
         .def("revertLastSimulationStep", &Model::RevertLastSimulationStep, "Revert to last simulation step.")
-        .def("saveCurrentTree", &Model::SaveCurrentTree, "Save current state of tree.")
-        .def("restoreTree", &Model::RestoreTree, "Restore presaved state of tree.")
         .def_readwrite("dx", &Model::dx, "Initial x position of source.")
         .def_readwrite("width", &Model::width, "Width of region.")
         .def_readwrite("height", &Model::height, "Height of region.")
         .def_readwrite("river_boundary_id", &Model::river_boundary_id, "River boundary condition id.")
+        .def_readwrite("river_width", &Model::river_width, "Width of branch.")
         .def_readwrite("ds", &Model::ds, "Maximal length of one step of growth.")
         .def_readwrite("eta", &Model::eta, "Eta. Growth power of a1^eta.")
         .def_readwrite("bifurcation_type", &Model::bifurcation_type, "Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.")
@@ -343,10 +336,9 @@ BOOST_PYTHON_MODULE(riversim)
     def("open", Open, "Opens program state from file.");
     //def("InitializeModelObject", River::InitializeModelObject);
 
-    //boundary_generator
-    def("treeVertices", TreeVertices);
-    def("treeBoundary", TreeBoundary, "");
-    def("simpleBoundaryGenerator", SimpleBoundaryGenerator, "Generates boundary of whole region used by mesh generator.");
+    //region
+    def("RiversBoundary", RiversBoundary, "");
+    def("BoundaryGenerator", BoundaryGenerator, "Generates boundary of whole region used by mesh generator.");
 
     //tethex
     class_<tethex::Point>("TethexPoint",  init<>())
@@ -382,7 +374,7 @@ BOOST_PYTHON_MODULE(riversim)
     class_<tethex::Mesh>("TethexMesh")
         .def(init<>())
         .def(init<const tethex::Mesh&>(args("mesh")))
-        .def(init<const River::Boundary&>(args("boundaries")))
+        .def(init<const River::Boundary&, const River::t_PointList&>(args("boundary", "holes")))
 
         .def("read", &tethex::Mesh::read)
         .def("write", &tethex::Mesh::write)
@@ -441,9 +433,9 @@ BOOST_PYTHON_MODULE(riversim)
     //;
 
     class_<Triangle >("Triangle", init<>())
-        .def(init<MeshParams*>(args("mesh_params")))
+        .def(init<MeshParams>(args("mesh_params")))
 
-        .def("generate", &Triangle::generate)
+        .def("generate", &Triangle::generate_quadrangular_mesh)
 
         .def_readwrite("refine", &Triangle::Refine, "Refine previously generated mesh, with preserving of segments")
         .def_readwrite("constrain_angle", &Triangle::ConstrainAngle, "Sets minimum angle value.")
@@ -454,7 +446,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("min_edge_lenght", &Triangle::MinEdgeLenght, "Minimal mesh element edge length.")
         .def_readwrite("max_triangle_ratio", &Triangle::MaxTriangleRatio, "Maximum triangle ratio")
         .def_readwrite("area_constrain", &Triangle::AreaConstrain, "If true, then mesh element will be constrined to some maxiaml value.")
-        .def_readwrite("custom_constraint", &Triangle::CustomConstraint, "User defined function constraint.")
+        //.def_readwrite("custom_constraint", &Triangle::CustomConstraint, "User defined function constraint.")
         .def_readwrite("delaunay_triangles", &Triangle::DelaunayTriangles, "D - all triangles will be delaunay. Not just constrained delaunay.")
         .def_readwrite("enclose_convex_hull", &Triangle::EncloseConvexHull, "Enclose convex hull with segments.")
         .def_readwrite("check_final_mesh", &Triangle::CheckFinalMesh, "Check final mesh if it was conf with X.")
@@ -466,16 +458,16 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     //solver mdl.solver_params, mdl.integr, mdl.boundary_conditions, false
-    class_<River::Solver, boost::noncopyable>("Solver", "Deal.II Solver Wrapper.", init<const River::SolverParams &, const River::BoundaryConditions &, const bool>(args("solver_params", "boundary_conditions", "verbose")))
+    class_<River::Solver, boost::noncopyable>("Solver", "Deal.II Solver Wrapper.", init<const River::SolverParams &, const bool>(args("solver_params", "boundary_conditions", "verbose")))
         .def_readwrite("tollerance", &River::Solver::tollerance, "Solver tollerance")
         .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations, "Number of solver iterations.")
-        .def_readwrite("verbose", &River::Solver::verbose, "If true, output will be produced to stadard output.")
-        .def_readwrite("num_of_adaptive_refinments", &River::Solver::num_of_adaptive_refinments, "Number of adaptive mesh refinments. Splits mesh elements and resolves.")
+        //.def_readwrite("verbose", &River::Solver::verbose, "If true, output will be produced to stadard output.")
+        //.def_readwrite("num_of_adaptive_refinments", &River::Solver::num_of_adaptive_refinments, "Number of adaptive mesh refinments. Splits mesh elements and resolves.")
         .def_readwrite("num_of_static_refinments", &River::Solver::num_of_static_refinments, "Number of static mesh refinments. Splits elements without resolving.")
         .def_readwrite("field_value", &River::Solver::field_value, "Outer field value. See Puasson, Laplace equations.")
         .def_readwrite("refinment_fraction", &River::Solver::refinment_fraction, "Refinment fraction. Used static mesh elements refinment.")
         .def_readwrite("coarsening_fraction", &River::Solver::coarsening_fraction, "Coarsening fraction. Used static mesh elements refinment.")
-        .def("openMesh", &River::Solver::OpenMesh, "Open mesh data from file. Msh 2 format.")
+        //.def("openMesh", &River::Solver::OpenMesh(), "Open mesh data from file. Msh 2 format.")
         .def("staticRefineGrid", &River::Solver::static_refine_grid, "Static adaptive mesh refinment.")
         .def("numberOfDOFs", &River::Solver::NumberOfDOFs, "Number of refined by Deal.II mesh cells.")
         .def("run", &River::Solver::run, "Run fem solution.")
@@ -483,17 +475,14 @@ BOOST_PYTHON_MODULE(riversim)
         .def("integrate", &River::Solver::integrate, "Interation of series parameters around tips points.")
         .def("solved", &River::Solver::solved)
         .def("clear", &River::Solver::clear, "Clear Solver object.")
+        .def("setBoundaryConditions", &River::Solver::setBoundaryConditions, "Set boundary conditions.")
     ;
 
     //riversim
-    class_<ForwardRiverSimulation>("ForwardRiverSimulation", init<Model*, Triangle*, River::Solver*>(args("model", "triangle", "solver")))
-        .def("linearSolver", &ForwardRiverSimulation::linear_solver)
-        .def("nonLinearSolver", &ForwardRiverSimulation::non_linear_solver)
-        .def("backwardSolver", &ForwardRiverSimulation::backward_solver)
-    ;
+    //class_<ForwardRiverSimulation>("ForwardRiverSimulation", init<Model*, Triangle*, River::Solver*>(args("model", "triangle", "solver")))
+    //    .def("linearSolver", &ForwardRiverSimulation::linear_solver)
+    //    .def("nonLinearSolver", &ForwardRiverSimulation::non_linear_solver)
+    //    .def("backwardSolver", &ForwardRiverSimulation::backward_solver)
+    //;
 
-    //app
-    class_<App>("App")
-    //    .def("Run", &App::Run)
-    ;
 }

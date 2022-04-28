@@ -1,6 +1,0 @@
-<map id="border.hpp" name="border.hpp">
-<area shape="rect" id="node2" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options..." alt="" coords="33,155,95,181"/>
-<area shape="rect" id="node3" href="$riversim_8hpp.html" title="Some general routines like backward, forward simulation etc. " alt="" coords="12,229,116,256"/>
-<area shape="rect" id="node5" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="89,80,165,107"/>
-<area shape="rect" id="node4" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="23,304,105,331"/>
-</map>

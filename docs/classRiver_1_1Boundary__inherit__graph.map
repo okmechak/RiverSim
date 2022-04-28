@@ -1,0 +1,4 @@
+<map id="River::Boundary" name="River::Boundary">
+<area shape="rect" id="node1" title="Structure which defines simple boundary data structure." alt="" coords="5,5,223,156"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Branch.html" title="Holds all functionality that you need to work with single branch." alt="" coords="5,204,223,751"/>
+</map>

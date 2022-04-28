@@ -1,8 +1,9 @@
 <map id="tethex.hpp" name="tethex.hpp">
-<area shape="rect" id="node2" href="$tree_8hpp.html" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="68,80,144,107"/>
-<area shape="rect" id="node6" href="$mesh_8hpp.html" title="Mesh generation functionality. " alt="" coords="144,155,231,181"/>
-<area shape="rect" id="node7" href="$solver_8hpp.html" title="PDE Solver and Integration tool. " alt="" coords="224,80,313,107"/>
-<area shape="rect" id="node3" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options..." alt="" coords="5,155,68,181"/>
-<area shape="rect" id="node4" href="$riversim_8hpp.html" title="Some general routines like backward, forward simulation etc. " alt="" coords="94,229,198,256"/>
-<area shape="rect" id="node5" href="$main_8cpp.html" title="Entry point of program and main loop handler. " alt="" coords="105,304,187,331"/>
+<area shape="rect" id="node1" title="Classes for holding mesh and converting by splitting triangles to quadrangles." alt="" coords="67,5,159,32"/>
+<area shape="rect" id="node2" href="$solver_8hpp.html" title="PDE Solver and Integration tool." alt="" coords="8,80,99,107"/>
+<area shape="rect" id="node7" href="$triangle_8hpp.html" title="Mesh generation functionality." alt="" coords="123,80,223,107"/>
+<area shape="rect" id="node3" href="$model_8hpp.html" title="Contains all RiverSim program parameters." alt="" coords="68,155,159,181"/>
+<area shape="rect" id="node4" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options." alt="" coords="34,229,97,256"/>
+<area shape="rect" id="node6" href="$river_8hpp_source.html" title=" " alt="" coords="121,229,201,256"/>
+<area shape="rect" id="node5" href="$riversolver_8hpp_source.html" title=" " alt="" coords="5,304,125,331"/>
 </map>

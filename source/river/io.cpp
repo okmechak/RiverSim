@@ -59,6 +59,11 @@ namespace River
             + version_string() << endl;
     }
 
+    void print(const bool flag, const string str)
+    {
+    	if (flag) cout << str << endl;
+    }
+
     string bool_to_string(bool b)
     {
         if (b) 
@@ -72,6 +77,7 @@ namespace River
         using namespace cxxopts;
 
         const Model model;
+        const ProgramOptions prog_opt;
         
         Options options(
             "./riversim", ProgramTitle() +" v" + version_string() + " is used to simulate river growth and some other calculations according to \n"
@@ -106,45 +112,47 @@ namespace River
         
         options.add_options("File interface")
         ("o,output", "Name of simulation data and state of program data.", 
-            value<string>()->default_value(model.prog_opt.output_file_name) )
+            value<string>()->default_value(prog_opt.output_file_name) )
         ("save-each-step", "Save each step of simulation in separate file: simdata_1.json, simdata_2.json.. ", 
-            value<bool>()->default_value(bool_to_string(model.prog_opt.save_each_step)) )
+            value<bool>()->default_value(bool_to_string(prog_opt.save_each_step)) )
         ("vtk", "Outputs VTK file of Deal.II solution", 
-            value<bool>()->default_value(bool_to_string(model.prog_opt.save_vtk)) )
+            value<bool>()->default_value(bool_to_string(prog_opt.save_vtk)) )
         ("input",
-            "input simaultion data, boundary, tree, model parameters. It has very similar structure as output json of program.", 
+            "input simaultion data, boundary, rivers, model parameters. It has very similar structure as output json of program.", 
             value<string>() );
         
         //prints and logs
         options.add_options("Logs")
         ("V,verbose", "print detailed log to terminal.", 
-            value<bool>()->default_value(bool_to_string(model.prog_opt.verbose)) )
+            value<bool>()->default_value(bool_to_string(prog_opt.verbose)) )
         ("D,debug", "save additional output files for each simulation step.", 
-            value<bool>()->default_value(bool_to_string(model.prog_opt.debug)) );
+            value<bool>()->default_value(bool_to_string(prog_opt.debug)) );
 
         //Simulation parameters
         options.add_options("Simulation parameters")
         ("n,number-of-steps", "Number of steps to simulate.", 
-            value<unsigned>()->default_value(to_string(model.prog_opt.number_of_steps)))
+            value<unsigned>()->default_value(to_string(model.number_of_steps)))
         ("m,maximal-river-height", "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.", 
-            value<double>()->default_value(to_string(model.prog_opt.maximal_river_height)))
-        ("t,simulation-type", "Type of simulation: 0 - forward river growth, 1 - backward river growth, 2 - Used for development purposes.", 
-            value<unsigned>()->default_value(to_string(model.prog_opt.simulation_type)))
+            value<double>()->default_value(to_string(model.maximal_river_height)))
+        ("t,simulation-type", "Type of simulation: 0 - forward linear river growth, 1 - forward non linear river growth, 2 - backward, 3 - test", 
+            value<unsigned>()->default_value(to_string(model.simulation_type)))
         ("number-of-backward-steps", "Number of backward steps simulations used in backward simulation type.", 
-            value<unsigned>()->default_value(to_string(model.prog_opt.number_of_backward_steps)));
+            value<unsigned>()->default_value(to_string(model.number_of_backward_steps)));
         
         //Geometry parameters
         options.add_options("Boundary geometry parameters")
         ("dx", "dx - shift of initial river position from beginning of coordinates in X dirrections.", 
-            value<double>()->default_value(to_string(model.dx)) )
+            value<double>()->default_value(to_string(model.dx)))
         ("width", "Width of river rectangular region.", 
-            value<double>()->default_value(to_string(model.width)) )
+            value<double>()->default_value(to_string(model.width)))
         ("height", "Height of river rectangular region.", 
-            value<double>()->default_value(to_string(model.height)) )
+            value<double>()->default_value(to_string(model.height)))
         ("river-boundary-id", "Boundary condition Id set to river boundaries.", 
-            value<unsigned>()->default_value(to_string(model.river_boundary_id)) );
+            value<unsigned>()->default_value(to_string(model.river_boundary_id)))
+        ("river-width", "Width of branch. Every branch is divided and joined into one big edge which covers all geometry. Width of divided branch corresponds to eps. Such solution is constrain of Deal.II library.", 
+            value<double>()->default_value(to_string(model.river_width)) );
         
-        //Model parameters
+        //Model parameter
         options.add_options("Model parameters")
         ("eta", "Power of a1^eta used in growth of river.", 
             value<double>()->default_value(to_string(model.eta)) )
@@ -177,28 +185,29 @@ namespace River
         //Mesh parameters
         options.add_options("Mesh refinment parameters. Funciton of area constaint and its parameters: min_area - (max_area - min_area)*(1 - exp( - 1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp})/(1 + exp( -1/(2*{mesh-sigma}^2)*(r/ro)^{mesh-exp}).")
         ("mesh-exp", "Parameter used in mesh refinment function. Reduce(small values) or increase(large values) slope on edge.", 
-            value<double>()->default_value(to_string(model.mesh.exponant)) )
+            value<double>()->default_value(to_string(model.mesh_params.exponant)) )
         ("mesh-sigma", "Parameter used in mesh refinment function. Shifts maximal slope region relatively to r0 value.", 
-            value<double>()->default_value(to_string(model.mesh.sigma)) )
+            value<double>()->default_value(to_string(model.mesh_params.sigma)) )
         ("A,mesh-max-area", "Constraints maximal area of triangle element", 
-            value<double>()->default_value(to_string(model.mesh.max_area)) )
+            value<double>()->default_value(to_string(model.mesh_params.max_area)) )
         ("mesh-min-area", "Constraints minimal area of triangle element.", 
-            value<double>()->default_value(to_string(model.mesh.min_area)) )
-
+            value<double>()->default_value(to_string(model.mesh_params.min_area)) )
         ("mesh-max-edge", "Constraints maximal edge lenght of triangle element.", 
-            value<double>()->default_value(to_string(model.mesh.max_edge)) )
+            value<double>()->default_value(to_string(model.mesh_params.max_edge)) )
         ("mesh-min-edge", "Constraints minimal edge lenght of triangle element. It can has higher priority then adaptive function and other mesh constraints.", 
-            value<double>()->default_value(to_string(model.mesh.min_edge)) )
+            value<double>()->default_value(to_string(model.mesh_params.min_edge)) )
         ("mesh-ratio", "Constraints ratio of triangle element. Relation of longest edge to shortes edge of triangle. Has similar effect and limitation as mesh-min-angle option. Value 2 correspond to minimal nagle 30. So be carefull with setting values less than 2.", 
-            value<double>()->default_value(to_string(model.mesh.ratio)) )
-
+            value<double>()->default_value(to_string(model.mesh_params.ratio)) )
         ("refinment-radius", "r0 - refinment radius from this formula. Corresponds to position of maximal slope.", 
-            value<double>()->default_value(to_string(model.mesh.refinment_radius)) )
+            value<double>()->default_value(to_string(model.mesh_params.refinment_radius)) )
         ("q,mesh-min-angle", "Constraints minimal angle of triangle element.", 
-            value<double>()->default_value(to_string(model.mesh.min_angle)) )
-        ("e,eps", "Width of branch. Every branch is divided and joined into one big edge which covers all geometry. Width of divided branch corresponds to eps. Such solution is constrain of Deal.II library.", 
-            value<double>()->default_value(to_string(model.mesh.eps)) );
-
+            value<double>()->default_value(to_string(model.mesh_params.min_angle)) )
+        ("smoothness-degree", "Smoothnes minimal degree. This value sets threshold for degree between adjacent points below which it should be ignored. This creates smaller mesh.", 
+            value<double>()->default_value(to_string(model.mesh_params.smoothness_degree)) )
+        ("ignored-smoothness-length", "Smoothnes minimal length. This value sets threshold for length where smoothnest near tip will be ignored. Ideally it should be bigger then integration radius.", 
+            value<double>()->default_value(to_string(model.mesh_params.ignored_smoothness_length)) );
+        
+        
         //Solver parameters
         options.add_options("Solver Parameters")
         ("quadrature-degree", "Quadrature polynomials degree used in numerical integration of Deal.II solver.", 
@@ -217,7 +226,7 @@ namespace River
             value<double>()->default_value(to_string(model.solver_params.max_distance)))
         ("f,field-value", "Value of outter force used for Poisson equation(Right-hand side value)", 
             value<double>()->default_value(to_string(model.solver_params.field_value)) );
-
+        
         options.parse_positional({"input"});
         
         auto result = options.parse(argc, argv);
@@ -247,35 +256,31 @@ namespace River
         return result;
     }
 
-    void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& model)
+    Model getModel(const cxxopts::ParseResult& vm)
     {
+        Model model;
         //program options
         if (vm.count("simulation-type"))
-            model.prog_opt.simulation_type = vm["simulation-type"].as<unsigned>();
+            model.simulation_type = vm["simulation-type"].as<unsigned>();
         if (vm.count("number-of-steps")) 
-            model.prog_opt.number_of_steps = vm["number-of-steps"].as<unsigned>();
+            model.number_of_steps = vm["number-of-steps"].as<unsigned>();
         if (vm.count("maximal-river-height"))
-            model.prog_opt.maximal_river_height = vm["maximal-river-height"].as<double>();
+            model.maximal_river_height = vm["maximal-river-height"].as<double>();
         if (vm.count("number-of-backward-steps"))
-            model.prog_opt.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
-        if (vm.count("vtk")) model.prog_opt.save_vtk = true;
-        if (vm.count("verbose")) model.prog_opt.verbose = vm["verbose"].as<bool>();
-        if (vm.count("debug")) model.prog_opt.debug = vm["debug"].as<bool>();
-        if(vm.count("output")) model.prog_opt.output_file_name = vm["output"].as<string>();
-        if(vm.count("input")) model.prog_opt.input_file_name = vm["input"].as<string>();
-        if(vm.count("save-each-step")) model.prog_opt.save_each_step = true;
+            model.number_of_backward_steps = vm["number-of-backward-steps"].as<unsigned>();
 
         //mesh options
-        if (vm.count("refinment-radius")) model.mesh.refinment_radius = vm["refinment-radius"].as<double>();
-        if (vm.count("mesh-exp")) model.mesh.exponant = vm["mesh-exp"].as<double>();
-        if (vm.count("mesh-sigma")) model.mesh.sigma = vm["mesh-sigma"].as<double>();
-        if (vm.count("mesh-max-area")) model.mesh.max_area = vm["mesh-max-area"].as<double>();
-        if (vm.count("mesh-min-area")) model.mesh.min_area = vm["mesh-min-area"].as<double>();
-        if (vm.count("mesh-min-angle")) model.mesh.min_angle = vm["mesh-min-angle"].as<double>();
-        if (vm.count("mesh-max-edge")) model.mesh.max_edge = vm["mesh-max-edge"].as<double>();
-        if (vm.count("mesh-min-edge")) model.mesh.min_edge = vm["mesh-min-edge"].as<double>();
-        if (vm.count("mesh-ratio")) model.mesh.ratio = vm["mesh-ratio"].as<double>();
-        if (vm.count("eps")) model.mesh.eps = vm["eps"].as<double>();
+        if (vm.count("refinment-radius")) model.mesh_params.refinment_radius = vm["refinment-radius"].as<double>();
+        if (vm.count("mesh-exp")) model.mesh_params.exponant = vm["mesh-exp"].as<double>();
+        if (vm.count("mesh-sigma")) model.mesh_params.sigma = vm["mesh-sigma"].as<double>();
+        if (vm.count("mesh-max-area")) model.mesh_params.max_area = vm["mesh-max-area"].as<double>();
+        if (vm.count("mesh-min-area")) model.mesh_params.min_area = vm["mesh-min-area"].as<double>();
+        if (vm.count("mesh-min-angle")) model.mesh_params.min_angle = vm["mesh-min-angle"].as<double>();
+        if (vm.count("mesh-max-edge")) model.mesh_params.max_edge = vm["mesh-max-edge"].as<double>();
+        if (vm.count("mesh-min-edge")) model.mesh_params.min_edge = vm["mesh-min-edge"].as<double>();
+        if (vm.count("mesh-ratio")) model.mesh_params.ratio = vm["mesh-ratio"].as<double>();
+        if (vm.count("smoothness-degree")) model.mesh_params.smoothness_degree = vm["smoothness-degree"].as<double>();
+        if (vm.count("ignored-smoothness-length")) model.mesh_params.ignored_smoothness_length = vm["ignored-smoothness-length"].as<double>();
         
         //integration options
         if (vm.count("integration-radius")) model.integr.integration_radius = vm["integration-radius"].as<double>();
@@ -298,6 +303,7 @@ namespace River
         if (vm.count("width")) model.width = vm["width"].as<double>();
         if (vm.count("height")) model.height = vm["height"].as<double>();
         if (vm.count("river-boundary-id")) model.river_boundary_id = vm["river-boundary-id"].as<unsigned>();
+        if (vm.count("river-width")) model.river_width = vm["river-width"].as<double>();
     
         if (vm.count("eta")) model.eta = vm["eta"].as<double>();
         if (vm.count("bifurcation-type")) model.bifurcation_type = vm["bifurcation-type"].as<unsigned>();
@@ -308,9 +314,50 @@ namespace River
         if (vm.count("growth-threshold")) model.growth_threshold = vm["growth-threshold"].as<double>();
         if (vm.count("growth-min-distance")) model.growth_min_distance = vm["growth-min-distance"].as<double>();
         if (vm.count("ds")) model.ds = vm["ds"].as<double>();
+
+        if(vm.count("input")) Open(model, vm["input"].as<string>());
+
+        model.CheckParametersConsistency();
+
+        return model;
     }
 
-    //GeometryPrimitives
+    ProgramOptions getProgramOptions(const cxxopts::ParseResult& vm)
+    {
+        ProgramOptions prog_opt;   
+
+        prog_opt.save_vtk = vm.count("vtk");
+        if (vm.count("verbose")) prog_opt.verbose = vm["verbose"].as<bool>();
+        if (vm.count("debug")) prog_opt.debug = vm["debug"].as<bool>();
+        if (vm.count("output")) prog_opt.output_file_name = vm["output"].as<string>();
+        if (vm.count("input")) prog_opt.input_file_name = vm["input"].as<string>();
+        prog_opt.save_each_step = vm.count("save-each-step");
+
+        return prog_opt;
+    }
+
+    //ProgramOptions
+    ostream& operator<<(ostream& write, const ProgramOptions & po)
+    {
+        write << "\t save_vtk = "                 << po.save_vtk         << endl;
+        write << "\t verbose = "                  << po.verbose          << endl;
+        write << "\t output_file_name = "         << po.output_file_name << endl;
+        write << "\t input_file_name = "          << po.input_file_name  << endl;
+        write << "\t save each step = "              << po.save_each_step   << endl; 
+        return write;
+    }
+
+    bool ProgramOptions::operator==(const ProgramOptions& po) const
+    {
+        return 
+            save_vtk == po.save_vtk
+            && save_each_step == po.save_each_step
+            && verbose == po.verbose
+            //&& output_file_name == po.output_file_name
+            && input_file_name == po.input_file_name;
+    }
+
+    //point
     //Point
     void to_json(json& j, const Point& p) 
     {
@@ -399,18 +446,12 @@ namespace River
     {
         j = json{
             {"vertices", boundary.vertices}, 
-            {"lines", boundary.lines},
-            {"inner_boundary", boundary.inner_boundary},
-            {"holes", boundary.holes},
-            {"name", boundary.name}};
+            {"lines", boundary.lines}};
     }
     void from_json(const json& j, Boundary& boundary) 
     {
         j.at("vertices").get_to(boundary.vertices);
         j.at("lines").get_to(boundary.lines);
-        j.at("inner_boundary").get_to(boundary.inner_boundary);
-        j.at("holes").get_to(boundary.holes);
-        j.at("name").get_to(boundary.name);
     }
 
     //Region
@@ -446,9 +487,6 @@ namespace River
         j = json{
             {"vertices", (t_PointList)branch.vertices}, 
             {"lines", (t_LineList)branch.lines},
-            {"inner_boundary", branch.inner_boundary},
-            {"holes", branch.holes},
-            {"name", branch.name},
             {"source_angle", branch.SourceAngle()}
         };
     }
@@ -457,19 +495,16 @@ namespace River
     {
         j.at("vertices").get_to(branch.vertices);
         j.at("lines").get_to(branch.lines);
-        j.at("inner_boundary").get_to(branch.inner_boundary);
-        j.at("holes").get_to(branch.holes);
-        j.at("name").get_to(branch.name);
         double source_angle;
         j.at("source_angle").get_to(source_angle);
         branch.SetSourceAngle(source_angle);
     }
 
     //Rivers
-    void to_json(json& j, const Rivers& tree) 
+    void to_json(json& j, const Rivers& rivers) 
     {
         json branches;
-        for(const auto&[id, branch]: tree)
+        for(const auto&[id, branch]: rivers)
         {
             branches.push_back({
                 {"id", id},
@@ -479,11 +514,10 @@ namespace River
 
         j = json{
             {"branches", branches}, 
-            {"relations", tree.branches_relation}};
+            {"relations", rivers.branches_relation}};
     }
-    void from_json(const json& j, Rivers& tree) 
+    void from_json(const json& j, Rivers& rivers) 
     {
-        t_Tree branches;
         for(const auto&[key, value]: j.at("branches").items())
         {
             t_branch_id id;
@@ -492,14 +526,15 @@ namespace River
             Branch branch;
             value.at("branch").get_to(branch);
             
-            tree.AddBranch(branch, id);
+            rivers.AddBranch(branch, id);
         }
 
-        j.at("relations").get_to(tree.branches_relation);
+        j.at("relations").get_to(rivers.branches_relation);
     }
 
     //PhysModel
     //SeriesParameters
+    
     void to_json(json& j, const SeriesParameters& id_series_params) 
     {
         j = json{{"series_params", (t_SeriesParameters)id_series_params}};
@@ -540,15 +575,15 @@ namespace River
     }
 
     //t_GeometryDiffernceNew
-
+    
     //ProgramOptions
     void to_json(json& j, const ProgramOptions& data) 
     {
         j = json{
-            {"simulation_type", data.simulation_type},
-            {"number_of_steps", data.number_of_steps},
-            {"maximal_river_height", data.maximal_river_height},
-            {"number_of_backward_steps", data.number_of_backward_steps},
+            //{"simulation_type", data.simulation_type},
+            //{"number_of_steps", data.number_of_steps},
+            //{"maximal_river_height", data.maximal_river_height},
+            //{"number_of_backward_steps", data.number_of_backward_steps},
             {"save_vtk", data.save_vtk},
             {"save_each_step", data.save_each_step},
             {"verbose", data.verbose},
@@ -558,10 +593,10 @@ namespace River
     }
     void from_json(const json& j, ProgramOptions& data) 
     {
-        if(j.count("simulation_type")) j.at("simulation_type").get_to(data.simulation_type);
-        if(j.count("number_of_steps")) j.at("number_of_steps").get_to(data.number_of_steps);
-        if(j.count("maximal_river_height")) j.at("maximal_river_height").get_to(data.maximal_river_height);
-        if(j.count("number_of_backward_steps")) j.at("number_of_backward_steps").get_to(data.number_of_backward_steps);
+        //if(j.count("simulation_type")) j.at("simulation_type").get_to(data.simulation_type);
+        //if(j.count("number_of_steps")) j.at("number_of_steps").get_to(data.number_of_steps);
+        //if(j.count("maximal_river_height")) j.at("maximal_river_height").get_to(data.maximal_river_height);
+        //if(j.count("number_of_backward_steps")) j.at("number_of_backward_steps").get_to(data.number_of_backward_steps);
         if(j.count("save_vtk")) j.at("save_vtk").get_to(data.save_vtk);
         if(j.count("save_each_step")) j.at("save_each_step").get_to(data.save_each_step);
         if(j.count("verbose")) j.at("verbose").get_to(data.verbose);
@@ -583,7 +618,8 @@ namespace River
             {"max_edge", data.max_edge},
             {"min_edge", data.min_edge},
             {"ratio", data.ratio},
-            {"eps", data.eps}};
+            {"smoothness_degree", data.smoothness_degree},
+            {"ignored_smoothness_length", data.ignored_smoothness_length}};
     }
 
     void from_json(const json& j, MeshParams& data) 
@@ -597,7 +633,8 @@ namespace River
         if(j.count("max_edge")) j.at("max_edge").get_to(data.max_edge);
         if(j.count("min_edge")) j.at("min_edge").get_to(data.min_edge);
         if(j.count("ratio")) j.at("ratio").get_to(data.ratio);
-        if(j.count("eps")) j.at("eps").get_to(data.eps);
+        if(j.count("smoothness_degree")) j.at("smoothness_degree").get_to(data.smoothness_degree);
+        if(j.count("ignored_smoothness_length")) j.at("ignored_smoothness_length").get_to(data.ignored_smoothness_length);
     }
 
     //IntegrationParams
@@ -648,21 +685,25 @@ namespace River
     {
         j = json{
             {"version", version_string()},
-            {"program_options", data.prog_opt},
-            {"boundaries", data.border},
+            {"region", data.region},
             {"sources", data.sources},
-            {"tree", data.tree},
+            {"rivers", data.rivers},
             {"boundary_conditions", data.boundary_conditions},
-            {"mesh_parameters", data.mesh},
+            {"mesh_parameters", data.mesh_params},
             {"integration_parameters", data.integr},
             {"solver_parameters", data.solver_params},
             {"series_parameters", data.series_parameters},
             {"simulation_data", data.sim_data},
             {"backward_data", data.backward_data},
+            {"simulation_type", data.simulation_type},
+            {"number_of_steps", data.number_of_steps},
+            {"maximal_river_height", data.maximal_river_height},
+            {"number_of_backward_steps", data.number_of_backward_steps},
             {"dx", data.dx},
             {"width", data.width},
             {"height", data.height},
             {"river_boundary_id", data.river_boundary_id},
+            {"river_width", data.river_width},
             {"eta", data.eta},
             {"bifurcation_type", data.bifurcation_type},
             {"bifurcation_threshold", data.bifurcation_threshold},
@@ -674,26 +715,28 @@ namespace River
             {"ds", data.ds}};
     }
     void from_json(const json& j, Model& data) 
-    {
-        if(j.count("program_options")) j.at("program_options").get_to(data.prog_opt);
-        
-        if(j.count("boundaries")) j.at("boundaries").get_to(data.border);
+    {   
+        if(j.count("region")) j.at("region").get_to(data.region);
         if(j.count("sources")) j.at("sources").get_to(data.sources);
-        if(j.count("tree")) j.at("tree").get_to(data.tree);
+        if(j.count("rivers")) j.at("rivers").get_to(data.rivers);
         if(j.count("boundary_conditions")) j.at("boundary_conditions").get_to(data.boundary_conditions);
 
-        if(j.count("mesh_parameters")) j.at("mesh_parameters").get_to(data.mesh);
+        if(j.count("mesh_parameters")) j.at("mesh_parameters").get_to(data.mesh_params);
         if(j.count("integration_parameters")) j.at("integration_parameters").get_to(data.integr);
         if(j.count("solver_parameters")) j.at("solver_parameters").get_to(data.solver_params);
         
         if(j.count("series_parameters")) j.at("series_parameters").get_to(data.series_parameters);
         if(j.count("simulation_data")) j.at("simulation_data").get_to(data.sim_data);
         if(j.count("backward_data")) j.at("backward_data").get_to(data.backward_data);
-
+        if(j.count("simulation_type")) j.at("simulation_type").get_to(data.simulation_type);
+        if(j.count("number_of_steps")) j.at("number_of_steps").get_to(data.number_of_steps);
+        if(j.count("maximal_river_height")) j.at("maximal_river_height").get_to(data.maximal_river_height);
+        if(j.count("number_of_backward_steps")) j.at("number_of_backward_steps").get_to(data.number_of_backward_steps);
         if(j.count("dx")) j.at("dx").get_to(data.dx);
         if(j.count("width")) j.at("width").get_to(data.width);
         if(j.count("height")) j.at("height").get_to(data.height);
         if(j.count("river_boundary_id")) j.at("river_boundary_id").get_to(data.river_boundary_id);
+        if(j.count("river_width")) j.at("river_width").get_to(data.river_width);
         if(j.count("eta")) j.at("eta").get_to(data.eta);
         if(j.count("ds")) j.at("ds").get_to(data.ds);
         if(j.count("bifurcation_type")) j.at("bifurcation_type").get_to(data.bifurcation_type);
@@ -722,10 +765,10 @@ namespace River
         out.close();        
     }
 
-    void Open(Model& model)
+    void Open(Model& model, const string file_name)
     {
-        ifstream in(model.prog_opt.input_file_name);
-        if(!in) throw Exception("Open. Can't create file for read. : " + model.prog_opt.input_file_name);
+        ifstream in(file_name);
+        if(!in) throw Exception("Open. Can't create file for read. : " + file_name);
 
         json j;
         in >> j;
@@ -738,29 +781,10 @@ namespace River
         if (model.boundary_conditions.empty())
             throw Exception("Open: boundary_conditions from input file are empty");
 
-        if (model.border.empty())
+        if (model.region.empty())
             throw Exception("Open: boundaries from input file are empty");
 
-        if (model.tree.empty())
-            model.tree.Initialize(model.border.GetSourcesIdsPointsAndAngles(model.sources));
-    }
-
-    Model InitializeModelObject(cxxopts::ParseResult & vm)
-    {
-        Model model;
-        if(vm.count("input"))
-        {
-            model.prog_opt.input_file_name = vm["input"].as<string>();
-            Open(model);
-        }
-
-        //parameters set from program options has higher priority over input file
-        SetupModelParamsFromProgramOptions(vm, model);//..if there are so.
-
-        if(model.border.empty()) model.InitializeLaplace();
-        
-        model.CheckParametersConsistency();
-
-        return model;
+        if (model.rivers.empty())
+            model.rivers.Initialize(model.region.GetSourcesIdsPointsAndAngles(model.sources));
     }
 }//namespace River

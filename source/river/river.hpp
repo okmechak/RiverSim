@@ -1,8 +1,8 @@
 #pragma once
 
-#include "physmodel.hpp"
+#include "model.hpp"
 #include "mesh.hpp"
-#include "boundary_generator.hpp"
+#include "region.hpp"
 
 //Deal.II headers
 #include <deal.II/base/quadrature_lib.h>

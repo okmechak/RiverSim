@@ -1,3 +1,6 @@
 <map id="tethex::Triangle" name="tethex::Triangle">
-<area shape="rect" id="node2" href="$classtethex_1_1MeshElement.html" title="This class implements the most part of functionality of all elements of mesh: triangles, tetrahedra, quadrangles, hexahedra, etc. " alt="" coords="136,189,303,443"/>
+<area shape="rect" id="node1" title="Triangle &#45; 2&#45;dimensional simplex." alt="" coords="7,507,131,613"/>
+<area shape="rect" id="node2" href="$classtethex_1_1MeshElement.html" title="This class implements the most part of functionality of all elements of mesh: triangles,..." alt="" coords="137,189,303,457"/>
+<area shape="rect" id="node3" title=" " alt="" coords="13,5,51,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="165,5,275,83"/>
 </map>

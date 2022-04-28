@@ -5,6 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "riversim",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/source/riversim",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/build/source/",
+            "environment": [],
+            "externalConsole": false,
+            "targetArchitecture": "x86_64",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "test tree",
             "type": "cppdbg",
             "request": "launch",

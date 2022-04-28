@@ -1,2 +1,6 @@
 <map id="triangulateio" name="triangulateio">
+<area shape="rect" id="node1" title="Used to pass data into and out of the triangulate() procedure." alt="" coords="97,292,255,428"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,56,83"/>
+<area shape="rect" id="node3" title=" " alt="" coords="143,5,209,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="325,5,363,83"/>
 </map>

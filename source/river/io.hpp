@@ -211,9 +211,7 @@
 
 #pragma once
 
-#include "boundary.hpp"
-#include "physmodel.hpp"
-#include "tree.hpp"
+#include "model.hpp"
 #include "cxxopts.hpp"
 #include "json.hpp"
 
@@ -233,21 +231,53 @@ namespace River
     ///Prints to console program Version.
     void print_version();
 
+    ///Prints logs depending of log configuration(quiet or verbose)
+    void print(const bool flag, const string str);
+
     /*! \brief Processing of program options.
         \details for full list of program options see `.\riversim -h` or River::Model.
     */
     cxxopts::ParseResult process_program_options(int argc, char* argv[]);
 
-    ///Initializes River::Model object by Program Options values.
-    void SetupModelParamsFromProgramOptions(const cxxopts::ParseResult& vm, Model& model);
+    /*! \brief Global program options. 
+        \details Program has some options that isn't part simulation itself but rather ease of use.
+        So this object is dedicated for such options.
+     */
+    class ProgramOptions
+    {
+        public:
+
+            ///Outputs VTK file of Deal.II solution
+            bool save_vtk = false;
+
+            bool save_each_step = false;
+
+            ///If true - then program will print to standard output.
+            bool verbose = true;
+
+            ///If true - then program will save additional output files for each stage of simulation.
+            bool debug = false;
+
+            string output_file_name = "simdata",
+                input_file_name = "";
+            
+            ///Prints program options structure to output stream.
+            friend ostream& operator <<(ostream& write, const ProgramOptions & po);
+
+            bool operator==(const ProgramOptions& po) const;
+    };
+
+    ///Initialize model values based on input(from console) program options.
+    Model getModel(const cxxopts::ParseResult& vm);
+
+    ///Initialize program options object values based on input(from console) program options.
+    ProgramOptions getProgramOptions(const cxxopts::ParseResult& vm);
 
     ///Save current state of program which includes Geometry(Rivers, Boundary), current model parameters(Model) and backward simulation data(GeometryDifference).
     void Save(const Model& model, const string file_name);
     
     ///Opens state of program from json file which includes Geometry(Rivers, Boundary) and current model parameters(Model).
-    void Open(Model& model);
-
-    Model InitializeModelObject(cxxopts::ParseResult & vm);
+    void Open(Model& model, const string file_name);
 
     void to_json(json& j, const Point& p);
     void from_json(const json& j, Point& p);
@@ -267,8 +297,8 @@ namespace River
     void to_json(json& j, const Boundary& boundary); 
     void from_json(const json& j, Boundary& boundary); 
 
-    void to_json(json& j, const Region& boundaries); 
-    void from_json(const json& j, Region& boundaries); 
+    void to_json(json& j, const Region& region); 
+    void from_json(const json& j, Region& region); 
 
     void to_json(json& j, const Sources& sources); 
     void from_json(const json& j, Sources& sources); 

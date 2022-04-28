@@ -30,7 +30,7 @@
 #include <map>
 ///\endcond
 
-#include "GeometryPrimitives.hpp"
+#include "point.hpp"
 
 using namespace std;
 
@@ -86,7 +86,7 @@ namespace River
     ///Vector of source point ids data type.
     typedef vector<t_source_id> t_sources_ids;
     ///Map structure which holds source id and its coordinates.
-    typedef map<t_source_id, t_source_coord> t_Sources;
+    typedef map<t_source_id/*or river id*/, t_source_coord> t_Sources;
     ///Map structure which holds source id and its source point coordinates.
     class Sources: public t_Sources
     {
@@ -143,71 +143,21 @@ namespace River
             t_PointList vertices;
             ///Connvections between boundaries.
             t_LineList lines;
-            ///Is inner boundary. It has consequences on holes evaluation.
-            bool inner_boundary = false;
-            ///Array of holes. Which will be eliminated by mesh generator.
-            t_PointList holes;
-            ///Name with description of boundary.
-            string name = "";
             ///Appends another simple boundary at the end of current boundary.
             void Append(const Boundary& simple_boundary);
             ///Replace on element of boundary with whole simple boundary structure.
             void ReplaceElement(t_vert_pos vertice_pos, const Boundary& simple_boundary);
-
+            /// Fixes line indices with correct one, like 0 1, 1 2, 2 3 etc.
+            void FixLinesIndices(const bool is_closed_boundary = false);
+            ///Generate smooth boundaries with removed some vertices. Coarsening is controlled by min_degree and also by ignored_distance. Smoothing starts from end.
+            Boundary generateSmoothBoundary(const double min_degree, const double ignored_distance) const;
             bool operator==(const Boundary& simple_boundary) const;
             friend ostream& operator <<(ostream& write, const Boundary & boundary);
     };
 
-    ///
-    typedef map<t_boundary_id, Boundary> t_Boundaries;
+    ///Source point of river holds coordinates and dirrection.
     typedef pair<Point, double> t_branch_source;
-    /*! \brief Structure which defines Region of region.
-        
-        \details It is a combination of simple boundaries which of each has  it own unique id.
-        \imageSize{Region.jpg, height:40%;width:40%;, }
-    */
-    class Region: public t_Boundaries
-    {
-        public:
-            ///Data structure - interface between boundary sources and source points of \ref Rivers
-            typedef map<t_source_id, t_branch_source> trees_interface_t;
-            
-            ///Constructor
-            Region(t_Boundaries simple_boundaries = {});
 
-            ///Initialize rectangular Region.
-            Sources MakeRectangular(double width = 1, double height = 1, double source_x_position = 0.25);
-            
-            ///Initialize rectangular with hole Region.
-            Sources MakeRectangularWithHole(double width = 1, double height = 1, double source_x_position = 0.25);
-
-            ///Some basic checks of data structure.
-            void Check();   
-
-            ///Return outer simple boundary(There should be only one such).
-            Boundary& GetOuterBoundary();
-
-            ///Returns vector of all holes.
-            t_PointList GetHolesList() const;
-
-            ///Returns map of source points ids and coresponding source point and angle of tree \ref Branch.
-            trees_interface_t GetSourcesIdsPointsAndAngles(const Sources& sources) const;
-
-            friend ostream& operator <<(ostream& write, const Region & boundary);
-
-        //private:fix me todo
-
-            ///Returns normal angle based on three points.
-            static double NormalAngle(const Point& left, const Point& center, const Point& right);
-
-            ///Returns andjancent vertice indexes.
-            static pair<t_vert_pos, t_vert_pos> GetAdjacentVerticesPositions(
-                const t_vert_pos vertices_size, 
-                const t_vert_pos vertice_pos);
-            
-            ///Returns normal angle at point with vertice_pos index.
-            static double GetVerticeNormalAngle(    
-                const t_PointList& vertices, 
-                const t_vert_pos vertice_pos);
-    };
-}
+    ///Data structure - interface between boundary sources and source points of \ref Rivers
+    typedef map<t_source_id, t_branch_source/*t_branch_source*/> t_rivers_interface;
+}//namespace River

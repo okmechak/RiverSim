@@ -1,3 +1,4 @@
 <map id="tethex::PhysPoint" name="tethex::PhysPoint">
-<area shape="rect" id="node2" href="$classtethex_1_1MeshElement.html" title="This class implements the most part of functionality of all elements of mesh: triangles, tetrahedra, quadrangles, hexahedra, etc. " alt="" coords="5,5,172,332"/>
+<area shape="rect" id="node1" title="PhysPoint keep 2 numbers &#45; the number of the vertex associated with the point, and the number of phys..." alt="" coords="21,395,157,531"/>
+<area shape="rect" id="node2" href="$classtethex_1_1MeshElement.html" title="This class implements the most part of functionality of all elements of mesh: triangles,..." alt="" coords="5,5,172,347"/>
 </map>

@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "RiverSim"
-PROJECT_NUMBER         = 2.6.0
+PROJECT_NUMBER         = 3.0.0
 PROJECT_BRIEF          = "River Simulation Program"
 PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docsrc/images/riversim_logo.jpg
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@
@@ -103,7 +103,7 @@ CITE_BIB_FILES         =
 #---------------------------------------------------------------------------
 QUIET                  = YES
 WARNINGS               = YES
-WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_UNDOCUMENTED   = NO
 WARN_IF_DOC_ERROR      = YES
 WARN_NO_PARAMDOC       = NO
 WARN_AS_ERROR          = NO

@@ -55,6 +55,7 @@
 #include <deal.II/numerics/matrix_tools.h>
 #include <deal.II/numerics/error_estimator.h>
 #include <deal.II/numerics/data_out.h>
+#include <deal.II/numerics/fe_field_function.h>
 
 #include <fstream>
 #include <iostream>
@@ -137,12 +138,12 @@ namespace River
         unsigned num_of_iterrations = 6000;
 
         /// Number of adaptive refinment steps.
-        unsigned adaptive_refinment_steps = 2;
+        unsigned adaptive_refinment_steps = 0;
 
         /*! \brief Number of mesh refinment steps used by Deal.II mesh functionality.
             \details Refinment means splitting one rectangular element into four rectagular elements.
         */
-        unsigned static_refinment_steps = 1;
+        unsigned static_refinment_steps = 0;
 
         /// Fraction of refined mesh elements.
         double refinment_fraction = 0.1;
@@ -171,15 +172,14 @@ namespace River
         /// Solver constructor
         Solver(
             const SolverParams& solver_params, 
-            const BoundaryConditions & boundary_conditions, 
-            const bool verbose) :
-                               dof_handler(triangulation),
-                               fe(solver_params.quadrature_degree),
-                               quadrature_formula(solver_params.quadrature_degree),
-                               face_quadrature_formula(solver_params.quadrature_degree),
-                               verbose(verbose),
-                               boundary_conditions(boundary_conditions)
+            const bool verb):
+            dof_handler{triangulation},
+            fe{solver_params.quadrature_degree},
+            quadrature_formula{solver_params.quadrature_degree},
+            face_quadrature_formula{solver_params.quadrature_degree}
+
         {
+            verbose = verb;
             tollerance = solver_params.tollerance;
             number_of_iterations = solver_params.num_of_iterrations;
             num_of_adaptive_refinments = solver_params.adaptive_refinment_steps;
@@ -196,9 +196,6 @@ namespace River
         /// Number of solver iterations.
         unsigned number_of_iterations = 6000;
 
-        /// If true, output will be produced to stadard output.
-        bool verbose = false;
-
         /// Number of adaptive mesh refinments. Splits mesh elements and resolves.
         unsigned num_of_adaptive_refinments = 0;
 
@@ -208,8 +205,14 @@ namespace River
         /// Open mesh data from file. Msh 2 format.
         void OpenMesh(const string fileName = "river.msh");
 
+        /// Open mesh data from object.
+        void OpenMesh(const tethex::Mesh &mesh);
+
+        ///Sets boundary conditions of solver.
+        void setBoundaryConditions(const BoundaryConditions &boundary_conds);
+
         /// Static adaptive mesh refinment.
-        void static_refine_grid(const IntegrationParams &integr, const t_PointList &tips_points);
+        void static_refine_grid(const double integration_radius, const t_PointList &tips_points);
 
         /// Number of refined by Deal.II mesh cells.
         unsigned long NumberOfRefinedCells()
@@ -231,8 +234,11 @@ namespace River
         /// Interation of series parameters around tips points.
         vector<double> integrate(const IntegrationParams &integ, const Point &point, const double angle);
 
+        /// Interation of series parameters around tips points using better values evaluation, but slower.
+        vector<double> integrate_new(const IntegrationParams &integ, const Point &point, const double angle);
+
         /// Integration used for test purpose.
-        double integration_test(const Point &point, const double dr);
+        double region_integral(const Point point = River::Point{0, 0}, const double dr = 100);
 
         /// Maximal value of solution, used for test purpose.
         double max_value();
@@ -261,19 +267,20 @@ namespace River
         /// Coarsening fraction. Used static mesh elements refinment.
         double coarsening_fraction = 0;
 
-        BoundaryConditions boundary_conditions;
-
     private:
 
         /// Dimension of problem.
         const static int dim = 2;
 
         Triangulation<dim> triangulation;
-        DoFHandler<dim> dof_handler;
 
+        DoFHandler<dim> dof_handler;
         FE_Q<dim> fe;
-        const QGauss<dim> quadrature_formula;
-        const QGauss<dim - 1> face_quadrature_formula;
+        QGauss<dim> quadrature_formula;
+        QGauss<dim - 1> face_quadrature_formula;
+        /// If true, output will be produced to stadard output.
+        bool verbose = false;
+        BoundaryConditions boundary_conditions;
 
         AffineConstraints<double> hanging_node_constraints;
 

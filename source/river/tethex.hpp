@@ -37,7 +37,6 @@
 #include <cstdlib>
 ///\endcond
 
-#include "GeometryPrimitives.hpp"
 #include "boundary.hpp"
 
 using namespace std;
@@ -220,7 +219,7 @@ namespace tethex
             /**
             * @brief outputs Point to stream
             * 
-            * @param out - out stream, usually cout 
+            * @param write - out stream, usually cout 
             * @param p  - point itself
             * @return ostream& - stream
             */
@@ -775,7 +774,7 @@ namespace tethex
             ///Asignment.
             Mesh &operator=(const Mesh &msh);
 
-            Mesh(const River::Boundary &boundaries);
+            Mesh(const River::Boundary &boundary, const River::t_PointList &boundary_holes);
 
             /**
             * Destructor - to clean the memory
@@ -962,6 +961,14 @@ namespace tethex
             inline const vector<MeshElement *> &get_lines() const
             {
                 return lines;
+            }
+
+            /**
+            * Get the mesh edges.
+            */
+            inline const vector<MeshElement *> &get_edges() const
+            {
+                return edges;
             }
 
             /**

@@ -1,0 +1,5 @@
+<map id="River::BoundaryCondition" name="River::BoundaryCondition">
+<area shape="rect" id="node1" title="Describes boudary condition type." alt="" coords="5,145,193,223"/>
+<area shape="rect" id="node2" title=" " alt="" coords="14,5,81,83"/>
+<area shape="rect" id="node3" title=" " alt="" coords="105,5,200,83"/>
+</map>

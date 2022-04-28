@@ -30,6 +30,8 @@
 
     \subsection v23 3.0.0
     
-
-    + multithreading and performance improve
+    + redone most of the program and ist class strucuture and relations between modules
+    + improved perfomance of tip point integration and as a result drastic performance improvment overal.
+    + Introduced smoothes of branches and also speed improvment becouse of smaler meshes.
+    + Beta release so few untested functionalities..
 */

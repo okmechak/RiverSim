@@ -1,3 +1,4 @@
 <map id="tethex::Line" name="tethex::Line">
-<area shape="rect" id="node2" href="$classtethex_1_1MeshElement.html" title="This class implements the most part of functionality of all elements of mesh: triangles, tetrahedra, quadrangles, hexahedra, etc. " alt="" coords="5,5,172,332"/>
+<area shape="rect" id="node1" title="Line keeps 3 numbers &#45; the number of beginning vertex, the number of the ending one,..." alt="" coords="12,395,165,575"/>
+<area shape="rect" id="node2" href="$classtethex_1_1MeshElement.html" title="This class implements the most part of functionality of all elements of mesh: triangles,..." alt="" coords="5,5,172,347"/>
 </map>

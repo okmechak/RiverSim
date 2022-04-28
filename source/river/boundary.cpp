@@ -113,8 +113,6 @@ namespace River
             lines.at(i).p1 += size;
             lines.at(i).p2 += size;
         }
-        
-        holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
     void Boundary::ReplaceElement(t_vert_pos vertice_pos, const Boundary& simple_boundary)
@@ -160,28 +158,108 @@ namespace River
             lines.at(i + vertice_pos).p2 += vertice_pos;
 
         }
-
-        holes.insert(end(holes), begin(simple_boundary.holes), end(simple_boundary.holes));
     }
 
-    bool Boundary::operator==(const Boundary &simple_boundary) const
+    Boundary Boundary::generateSmoothBoundary(const double min_degree, const double ignored_distance) const
     {
-        return vertices == simple_boundary.vertices 
-            && lines == simple_boundary.lines
-            && inner_boundary == simple_boundary.inner_boundary
-            && holes == simple_boundary.holes
-            && name == simple_boundary.name;
+        if(ignored_distance < 0)
+            throw Exception("Boundary::generateSmoothBoundary: ignored_distance smoothnes param should be greater or equal then zero.");
+
+        //just make a copy if min_degree is zero. Cos thats mean there is no     
+        if (abs(min_degree) < EPS || vertices.size() <= 4)
+            return Boundary{vertices, lines};
+
+        if(min_degree < 0)
+            throw Exception("Boundary::generateSmoothBoundary: min_degree smoothnes param should be greater or equal then zero.");
+
+        Boundary smooth_boundary;
+        
+        //first point is ancor..
+        smooth_boundary.vertices.push_back(vertices.back());
+        smooth_boundary.lines.push_back(lines.back());
+
+        double 
+            accum_degree = 0.,
+            accum_ds = 0.;
+        for(size_t i = vertices.size() - 2; i > 0; --i)
+        {
+            auto 
+                p0 = vertices[i + 1],
+                p1 = vertices[i],
+                p2 = vertices[i - 1],
+
+                v1 = p1 - p0,
+                v2 = p2 - p1;
+
+            auto 
+                n1 = v1.norm();
+
+            accum_degree += v1.angle(v2) * 180. / M_PI;
+            accum_ds += n1;
+
+            if (abs(accum_degree) >= min_degree - EPS/*reduce some numerical noise*/ || accum_ds <= ignored_distance)
+            {
+                accum_degree = 0.;
+                smooth_boundary.vertices.push_back(p1);
+                smooth_boundary.lines.push_back(lines[i]);
+            }
+        }
+
+        //and last point is also ancor..
+        smooth_boundary.vertices.push_back(vertices.front());
+        smooth_boundary.lines.push_back(lines.front());
+
+        //cos this function makes smoothnes from the end, now we need to reverse it
+        reverse(smooth_boundary.vertices.begin(), smooth_boundary.vertices.end());
+        reverse(smooth_boundary.lines.begin(), smooth_boundary.lines.end());
+        
+
+        smooth_boundary.FixLinesIndices(lines.back().p2 == 0);
+
+        return smooth_boundary;
+    }
+
+    void Boundary::FixLinesIndices(bool is_closed_boundary)
+    {
+        if (vertices.empty())
+        {
+            lines.clear();
+            return;
+        }
+
+        unsigned index = 0;
+        auto temp_lines = lines;
+        if(!is_closed_boundary)
+        {
+            lines.resize(vertices.size() - 1);
+            for(auto& line: lines)
+            {
+                line.boundary_id = temp_lines.at(index).boundary_id;
+                line.p1 = index;
+                line.p2 = ++index;
+            }
+        }
+        else
+        {
+            lines.resize(vertices.size());
+            for(auto& line: lines)
+            {
+                line.boundary_id = temp_lines.at(index).boundary_id;
+                line.p1 = index;
+                line.p2 = ++index;
+            }
+            lines.back().p2 = 0;
+        }
+    }
+
+    bool Boundary::operator==(const Boundary &boundary) const
+    {
+        return vertices == boundary.vertices 
+            && lines == boundary.lines;
     }
 
     ostream& operator <<(ostream& write, const Boundary & boundary)
     {
-        write << "Name: " << boundary.name << endl;
-
-        write << "inner boudary: " << boundary.inner_boundary << endl;
-        if(boundary.inner_boundary)
-            for(auto& h: boundary.holes)
-                write << h << endl;
-
         write << "Vertices:" << endl;
         for(const auto& v: boundary.vertices)
             write << v << endl;
@@ -189,252 +267,6 @@ namespace River
         write << "Lines:" << endl;
         for(const auto& l: boundary.lines)
             write << l << endl;
-
-        return write;
-    }
-
-    //Region
-    Region::Region(t_Boundaries simple_boundaries)
-    {
-        for(auto &[boundary_id, simple_boundary]: simple_boundaries)
-            this->at(boundary_id) = simple_boundary;
-    }
-
-    void Region::Check()
-    {
-        if (this->empty())
-            throw Exception("Boundary is empty.");
-        
-        t_vert_pos 
-            outer_boudaries = 0;
-        vector<t_boundary_id> boundary_ids;
-
-        for(const auto& [boundary_id, simple_boundary]: *this)
-        {
-            boundary_ids.push_back(boundary_id);
-
-            if(simple_boundary.vertices.size() != simple_boundary.lines.size())
-                throw Exception("Vertices and lines sizes, are different in boudary");
-
-            if(!simple_boundary.inner_boundary)
-                ++outer_boudaries;
-        }
-
-        if(outer_boudaries == 0)
-            throw Exception("There is no outer boudaries!");
-        else if(outer_boudaries > 1)
-            throw Exception("Only one outer boudary is allowed: " + to_string(outer_boudaries));
-
-        auto num_of_boundary_ids = boundary_ids.size();
-        sort( boundary_ids.begin(), boundary_ids.end() );
-        boundary_ids.erase( 
-            unique( boundary_ids.begin(), boundary_ids.end() ), boundary_ids.end() );
-        
-        if(num_of_boundary_ids != boundary_ids.size())
-            throw Exception("Boundary: Boundary ids should be unique numbers!");
-    }
-
-    t_PointList Region::GetHolesList() const
-    {
-        t_PointList holes;
-        for(const auto& [boundary_id, simple_boundary]: *this)
-            if(simple_boundary.inner_boundary)
-                for(auto& h: simple_boundary.holes)
-                    holes.push_back(h);
-
-        return holes;
-    }
-
-    Sources Region::MakeRectangular(double width, double height, double source_x_position)
-    {
-        (*this)[1] = 
-        {
-            {/*vertices(counterclockwise order)*/
-                {0, 0},
-                {source_x_position, 0}, 
-                {width, 0}, 
-                {width, height}, 
-                {0, height}
-            }, 
-            {/*lines*/
-                {0, 1, 1},
-                {1, 2, 2},
-                {2, 3, 3},
-                {3, 4, 4},
-                {4, 0, 5} 
-            },
-            false/*this is not inner boudary*/,
-            {}/*hole*/,
-            "outer rectangular boudary"
-        };/*Outer Boundary*/
-
-        Sources sources;
-        sources[1/*source_id*/] = {1/*boundary id*/, 1/*vertice position*/};
-            
-        return sources;
-    }
-
-    Sources Region::MakeRectangularWithHole(double width, double height, double source_x_position)
-    {
-        (*this)[1] = 
-        {/*Outer Boundary*/
-            {/*vertices(counterclockwise order)*/
-                {0, 0},
-                {source_x_position, 0}, 
-                {width, 0}, 
-                {width, height}, 
-                {0, height}
-            }, 
-            {/*lines*/
-                {0, 1, 1},
-                {1, 2, 2},
-                {2, 3, 3},
-                {3, 4, 4},
-                {4, 0, 5} 
-            }, 
-            false/*this is not inner boudary*/,
-            {}/*hole*/,
-            "outer boudary"/*just name*/
-        };
-
-        Sources sources;
-        sources[1] = {1, 1};
-
-        (*this)[2] =
-        {/*Hole Boundary*/
-            {/*vertices*/
-                {0.25*width, 0.75*height},
-                {0.75*width, 0.75*height}, 
-                {0.75*width, 0.25*height}, 
-                {0.25*width, 0.25*height}
-            }, 
-            {/*lines*/
-                {0, 1, 6},
-                {1, 2, 7},
-                {2, 3, 8},
-                {3, 0, 9} 
-            }, 
-            true/*this is inner boudary*/,
-            {{0.5*width, 0.5*height}}/*holes*/,
-            "hole"/*just name*/
-        };
-        sources[2] = {2, 1};
-
-        (*this)[3] =
-        {/*Hole Boundary*/
-            {/*vertices*/
-                {0.8*width, 0.9*height},
-                {0.9*width, 0.9*height}, 
-                {0.9*width, 0.8*height}, 
-                {0.8*width, 0.8*height}
-            }, 
-            {/*lines*/
-                {0, 1, 10},
-                {1, 2, 11},
-                {2, 3, 12},
-                {3, 0, 13} 
-            }, 
-            true/*this is inner boudary*/,
-            {{0.85*width, 0.85*height}}/*holes*/,
-            "hole"/*just name*/
-        };
-        sources[3] = {3, 3};
-        
-        return sources;
-    }
-
-    Boundary& Region::GetOuterBoundary()
-    {
-        for(auto& [boundary_id, simple_boundary]: *this)
-            if(!simple_boundary.inner_boundary)
-                return simple_boundary;
-
-        throw Exception("Boundary: There is no outer boundary");
-
-        return this->at(1);
-    }
-
-    pair<t_vert_pos, t_vert_pos> Region::GetAdjacentVerticesPositions(
-            const t_vert_pos vertices_size, 
-            const t_vert_pos vertice_pos)
-    {
-        if (vertice_pos >= vertices_size)
-            throw Exception("Vertice position is bigger then number of vertices: vertice pos " + to_string(vertice_pos));
-
-        t_vert_pos 
-            left_pos = vertice_pos - 1, 
-            right_pos = vertice_pos + 1;
-
-        if(vertice_pos == vertices_size - 1 )
-            right_pos = 0;
-        else if(vertice_pos == 0)
-            left_pos = vertices_size - 1;
-            
-        return {left_pos, right_pos};
-    }
-
-    double Region::NormalAngle(const Point& left, const Point& center, const Point& right)
-    {
-        const auto
-            left_vector = center - left,
-            right_vector = right - center;
-
-        const auto
-            angle_relative  = left_vector.angle(right_vector),
-            angle_absolute = left_vector.angle();
-        
-        auto normal_angle = (M_PI + angle_relative) / 2 + angle_absolute;
-
-        if(normal_angle >= 2*M_PI)
-            normal_angle -= 2*M_PI;
-        else if(normal_angle <= -2*M_PI)
-            normal_angle += 2*M_PI;
-
-        return normal_angle;
-    }
-
-    double Region::GetVerticeNormalAngle(const t_PointList& vertices, const t_vert_pos vertice_pos)
-    {
-        const auto vertices_size = vertices.size();
-        const auto [vertice_pos_left, vertice_pos_right] = GetAdjacentVerticesPositions(vertices_size, vertice_pos);
-
-        const auto& p_source = vertices.at(vertice_pos), 
-            p_left = vertices.at(vertice_pos_left), 
-            p_right = vertices.at(vertice_pos_right);
-        
-        auto normal_angle = NormalAngle(p_left, p_source, p_right);
-        
-        if(normal_angle >= 2*M_PI)
-            normal_angle -= 2*M_PI;
-        
-        return normal_angle;
-    }
-
-    Region::trees_interface_t Region::GetSourcesIdsPointsAndAngles(const Sources& sources) const
-    {
-        trees_interface_t sources_ids_points_and_angles;
-
-        for(const auto& [source_id, value]: sources)
-        {
-            auto boundary_id = value.first;
-            auto vertice_pos = value.second;
-            auto& simple_boundary = this->at(boundary_id);
-
-            sources_ids_points_and_angles[source_id] = {
-                simple_boundary.vertices.at(vertice_pos),
-                GetVerticeNormalAngle(
-                    simple_boundary.vertices,
-                    vertice_pos)
-                };
-        }
-
-        return sources_ids_points_and_angles;
-    }
-
-    ostream& operator <<(ostream& write, const Region& boundaries)
-    {
-        for(const auto& [boundary_id, simple_boundary]: boundaries)
-            write << "id = " << boundary_id << ", " << simple_boundary << endl;
 
         return write;
     }

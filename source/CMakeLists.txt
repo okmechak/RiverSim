@@ -18,26 +18,16 @@ if(BUILD_PROGRAM)
     message("River, Tethex, Triangle setup")
     add_subdirectory(river)
     include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/river
-        ${CMAKE_CURRENT_SOURCE_DIR}/river/tethex)
-
-    add_library(app app.hpp app.cpp)
-    deal_ii_setup_target(app)
-    target_link_libraries(app river)
-    install(TARGETS app DESTINATION riversim)
+        ${CMAKE_CURRENT_SOURCE_DIR}/river)
 
     set(SOURCE_FILES 
-        main.cpp)
+        riversim.cpp)
 
     add_executable(riversim ${SOURCE_FILES})
     deal_ii_setup_target(riversim)
-    target_link_libraries(riversim app)
-
-    add_executable(meshgen meshgen.cpp)
-    target_link_libraries(meshgen mesh io boundary_generator)
+    target_link_libraries(riversim riversolver)
 
     install(TARGETS riversim DESTINATION riversim)
-    install(TARGETS meshgen DESTINATION riversim)
 
     
     if(BUILD_PYTHON_API)
@@ -59,7 +49,7 @@ if(BUILD_PROGRAM)
         deal_ii_setup_target(riversimPY)
 
         # Set up the libraries and header search paths for this target
-        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} app)
+        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} riversolver)
         target_include_directories(riversimPY PRIVATE ${PYTHON_INCLUDE_DIRS})
         set_target_properties(riversimPY
             PROPERTIES OUTPUT_NAME riversim)

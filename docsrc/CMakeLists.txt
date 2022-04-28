@@ -20,7 +20,7 @@ if(BUILD_DOC)
             COMMENT "Generating API documentation with Doxygen"
             VERBATIM )
     else (DOXYGEN_FOUND)
-        message("Doxygen need to be installed to generate the doxygen documentation")
+        message(WARNING "Doxygen need to be installed to generate the doxygen documentation")
     endif (DOXYGEN_FOUND)
 
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION riversim)

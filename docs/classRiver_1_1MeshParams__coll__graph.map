@@ -1,2 +1,5 @@
 <map id="River::MeshParams" name="River::MeshParams">
+<area shape="rect" id="node1" title="Adaptive mesh area constraint function." alt="" coords="37,307,217,443"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,72,83"/>
+<area shape="rect" id="node3" title=" " alt="" coords="153,5,279,83"/>
 </map>

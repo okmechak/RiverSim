@@ -1,7 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtethex_1_1MeshElement.html" title="This class implements the most part of functionality of all elements of mesh: triangles, tetrahedra, quadrangles, hexahedra, etc. " alt="" coords="5,81,165,108"/>
-<area shape="rect" id="node2" href="$classtethex_1_1Line.html" title="Line keeps 3 numbers &#45; the number of beginning vertex, the number of the ending one, and a number of physical domain where this line takes place (material identificator &#45; in other words). " alt="" coords="237,5,336,32"/>
-<area shape="rect" id="node3" href="$classtethex_1_1PhysPoint.html" title="PhysPoint keep 2 numbers &#45; the number of the vertex associated with the point, and the number of phys..." alt="" coords="219,56,355,83"/>
-<area shape="rect" id="node4" href="$classtethex_1_1Quadrangle.html" title="Quadrangle &#45; 2&#45;dimensional shape with 4 straight edges. " alt="" coords="213,107,360,133"/>
-<area shape="rect" id="node5" href="$classtethex_1_1Triangle.html" title="Triangle &#45; 2&#45;dimensional simplex. " alt="" coords="225,157,348,184"/>
+<area shape="rect" id="node1" href="$classt__Rivers.html" title=" " alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node2" href="$classRiver_1_1Rivers.html" title="Combines BranchNew into river like structure." alt="" coords="128,5,233,32"/>
 </map>
