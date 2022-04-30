@@ -5,10 +5,10 @@
 namespace River
 {
     //Region
-    Region::Region(t_Boundaries simple_boundaries)
+    Region::Region(t_Region region)
     {
-        for(auto &[boundary_id, simple_boundary]: simple_boundaries)
-            this->at(boundary_id) = simple_boundary;
+        for(auto &[boundary_id, boundary]: region)
+            this->at(boundary_id) = boundary;
     }
 
     void Region::Check()

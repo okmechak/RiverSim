@@ -20,18 +20,18 @@
 namespace River
 {
     
-    typedef map<t_boundary_id, Boundary> t_Boundaries;
+    typedef map<t_boundary_id, Boundary> t_Region;
     /*! \brief Structure which defines Region of region.
         
         \details It is a combination of simple boundaries which of each has  it own unique id.
         \imageSize{GeometryClasses.jpg, height:40%;width:40%;, }
     */
-    class Region: public t_Boundaries
+    class Region: public t_Region
     {
         public:
             
             ///Constructor
-            Region(t_Boundaries simple_boundaries = {});
+            Region(t_Region region = {});
 
             ///Initialize rectangular Region.
             Sources MakeRectangular(double width = 1, double height = 1, double source_x_position = 0.25);
@@ -66,10 +66,13 @@ namespace River
                 const t_PointList& vertices, 
                 const t_vert_pos vertice_pos);
     };
-    ///Generates trees boundary
+
+    ///Generates trees boundary.
     void RiversBoundary(
         Boundary &rivers_boundary, const Rivers& rivers, const unsigned river_id, const double river_width, 
         const double smoothness_degree = 0, const double ignored_smoothness_length = 0);
+
+    ///Generates boundary from region and rivers.
     Boundary BoundaryGenerator(
         Sources& sources, const Region &region, const Rivers &rivers, const double river_width, 
         const double smoothness_degree = 0, const double ignored_smoothness_length = 0);
