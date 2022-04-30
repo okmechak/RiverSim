@@ -194,7 +194,7 @@ namespace River
 
     ostream &operator<<(ostream &write, const Point &p)
     {
-    	write << "point: " << p.x << ", " << p.y;
+    	write << "point: x = " << p.x << ", y = " << p.y;
     	return write;
     }
 } // namespace River

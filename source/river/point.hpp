@@ -97,11 +97,11 @@ namespace River
             {
                 return !(*this == p);
             }
-    
+
             ///Converts Polar Object \p to string and redirects it to stream object \p write.
             friend ostream& operator <<(ostream& write, const Polar & p)
             {
-                write << "Polar: " << p.r << " " << p.phi;
+                write << "Polar: " << p.r << ", " << p.phi << " rad";
                 return write;
             }
     };
@@ -114,7 +114,7 @@ namespace River
         vector and scalar, comparsion of two vectors, angle between vectors, rotations etc.
         \imageSize{PointClass.jpg, height:40%;width:40%;, }
     */
-     class Point
+    class Point
     {
         public:
             ///x coordinate.
@@ -193,7 +193,7 @@ namespace River
             ///Retrives cordinate using array syntaxis.
             double operator[](const int index) const;
             double operator()(const int index) const;
-
+            
             ///Converts object to string and redirects it to stream.
             friend ostream& operator <<(ostream& write, const Point & p);
   };
