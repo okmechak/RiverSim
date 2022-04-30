@@ -29,6 +29,7 @@ namespace River
     {
         return value == bc.value && type == bc.type;
     }
+
     ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition)
     {
         switch (boundary_condition.type)
@@ -93,20 +94,20 @@ namespace River
     }
 
     //Boundary
-    void Boundary::Append(const Boundary& simple_boundary)
+    void Boundary::Append(const Boundary& boundary)
     {
         auto size = vertices.size();
 
         vertices.insert(
             vertices.end(),  
-            simple_boundary.vertices.begin(), 
-            simple_boundary.vertices.end());
+            boundary.vertices.begin(), 
+            boundary.vertices.end());
         
         auto shift = lines.size();
         lines.insert(
             lines.end(),  
-            simple_boundary.lines.begin(), 
-            simple_boundary.lines.end());
+            boundary.lines.begin(), 
+            boundary.lines.end());
 
         for(auto i = shift; i < lines.size(); ++i)
         {
@@ -115,9 +116,9 @@ namespace River
         }
     }
 
-    void Boundary::ReplaceElement(t_vert_pos vertice_pos, const Boundary& simple_boundary)
+    void Boundary::ReplaceElement(t_vert_pos vertice_pos, const Boundary& boundary)
     {
-        if(simple_boundary.vertices.empty())
+        if(boundary.vertices.empty())
             return;
         
         if(vertice_pos > vertices.size())
@@ -129,10 +130,10 @@ namespace River
 
         vertices.insert(
             vertices.begin() + vertice_pos,  
-            simple_boundary.vertices.begin(), 
-            simple_boundary.vertices.end());
+            boundary.vertices.begin(), 
+            boundary.vertices.end());
 
-        auto shift = simple_boundary.vertices.size() - 1;
+        auto shift = boundary.vertices.size() - 1;
         for(auto& line: lines)
             //line is right to insertion point
             if (line.p1 >= vertice_pos && line.p2 > vertice_pos)
@@ -149,10 +150,10 @@ namespace River
 
         lines.insert(
             lines.begin() + vertice_pos,  
-            simple_boundary.lines.begin(), 
-            simple_boundary.lines.end());
+            boundary.lines.begin(), 
+            boundary.lines.end());
 
-        for(size_t i = 0; i < simple_boundary.lines.size(); ++i)
+        for(size_t i = 0; i < boundary.lines.size(); ++i)
         {
             lines.at(i + vertice_pos).p1 += vertice_pos;
             lines.at(i + vertice_pos).p2 += vertice_pos;

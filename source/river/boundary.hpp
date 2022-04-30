@@ -53,7 +53,6 @@ namespace River
     {
         t_boundary type = DIRICHLET;
         double value = 0;
-
         bool operator==(const BoundaryCondition& bc) const;
         friend ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition);
     };
@@ -144,9 +143,9 @@ namespace River
             ///Connvections between boundaries.
             t_LineList lines;
             ///Appends another simple boundary at the end of current boundary.
-            void Append(const Boundary& simple_boundary);
+            void Append(const Boundary& boundary);
             ///Replace on element of boundary with whole simple boundary structure.
-            void ReplaceElement(t_vert_pos vertice_pos, const Boundary& simple_boundary);
+            void ReplaceElement(t_vert_pos vertice_pos, const Boundary& boundary);
             /// Fixes line indices with correct one, like 0 1, 1 2, 2 3 etc.
             void FixLinesIndices(const bool is_closed_boundary = false);
             ///Generate smooth boundaries with removed some vertices. Coarsening is controlled by min_degree and also by ignored_distance. Smoothing starts from end.
