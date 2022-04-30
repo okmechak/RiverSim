@@ -99,9 +99,6 @@ namespace River
             ///Updates options bassing on interface flags.
             string update_options();
 
-            ///Outupts options with or without detailed description.
-            void print_options(bool qDetailedDescription = true);
-
             ///Get output geometry. e.g generated mesh.
             struct triangulateio* get_geometry();
 
@@ -117,6 +114,9 @@ namespace River
             void initialize_mesh_parameters(const MeshParams &mesh_params);
       
         public:
+
+            ///Outupts options with or without detailed description.
+            string print_options(bool qDetailedDescription = true);
       
             ///Outputs to consloe geometry.
             void print_geometry(const struct triangulateio &io) const;

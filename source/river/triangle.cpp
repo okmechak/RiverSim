@@ -373,50 +373,55 @@ namespace River{
         return options;
     }
 
-    void Triangle::print_options(bool qDetailedDescription)
+    string Triangle::print_options(bool qDetailedDescription)
     {
         update_options();
 
-        cout << "Triangle options command : " << options << endl;
+        std::ostringstream stream;
+        stream.precision(16);
 
-        if(!qDetailedDescription) return;
+        stream << "Triangle options command : " << options << endl;
 
-        cout << "Detailed description: " << endl << endl; 
+        if(!qDetailedDescription) return "";
 
-        if (ReadPSLG)        cout << "(p) read PSLG" << endl;
+        stream << "Detailed description: " << endl << endl; 
+
+        if (ReadPSLG)        stream << "(p) read PSLG" << endl;
         //if (StartNumberingFromZero)
-        //    cout << "(z) numbering starts from zero" << endl;
-        if (Refine)          cout << "(r) refine" << endl;
-        if (ConstrainAngle)  cout << "(q) quality min 20 degree" << endl;
-        if (MinAngle > 0)    cout << "                    value:" << MinAngle << endl;
-        if(AreaConstrain)    cout << "(a) area constrain: " << endl;
-        if (MaxTriaArea > 0) cout << "                  area constrain: " << MaxTriaArea << endl;
-        if (CustomConstraint) cout << "(u) imposes a user-defined constraint on triangle size" << endl;
-        if (DelaunayTriangles)cout << "(D) all traingles will be Delaunay" << endl;
-        if (EncloseConvexHull)cout << "(c) enclose convex hull" << endl;
-        if (CheckFinalMesh)  cout << "(C) check final mesh" << endl;
+        //    stream << "(z) numbering starts from zero" << endl;
+        if (Refine)          stream << "(r) refine" << endl;
+        if (ConstrainAngle)  stream << "(q) quality min 20 degree" << endl;
+        if (MinAngle > 0)    stream << "                    value:" << MinAngle << endl;
+        if(AreaConstrain)    stream << "(a) area constrain: " << endl;
+        if (MaxTriaArea > 0) stream << "                  area constrain: " << MaxTriaArea << endl;
+        if (CustomConstraint) stream << "(u) imposes a user-defined constraint on triangle size" << endl;
+        if (DelaunayTriangles)stream << "(D) all traingles will be Delaunay" << endl;
+        if (EncloseConvexHull)stream << "(c) enclose convex hull" << endl;
+        if (CheckFinalMesh)  stream << "(C) check final mesh" << endl;
         if (AssignRegionalAttributes)
-                             cout << "(A) assign additional attribute to each triangle which specifies segment which it belongs too" << endl;
-        if (OutputEdges)     cout << "(e) output list of edges" << endl;
-        if (VoronoiDiagram)  cout << "(v) outputs voronoi diagram" << endl;
-        if (ComputeNeighbours)cout << "(n) outputs neighboors" << endl;
-        if (SuppressBoundaryMarkers)cout << "(B) suppress boundary markers" << endl;
-        if (SuppressPolyFile)cout << "(P) suppress output poly file(either don't work)" << endl;
-        if (SuppressNodeFile)cout << "(N) suppress output nodes file(either don't work)" << endl;
-        if (SuppressEleFile) cout << "(E) suppress output elements file(either don't work)" << endl;
-        if (SuppressHoles)   cout << "(O) suppress holes" << endl;
+                             stream << "(A) assign additional attribute to each triangle which specifies segment which it belongs too" << endl;
+        if (OutputEdges)     stream << "(e) output list of edges" << endl;
+        if (VoronoiDiagram)  stream << "(v) outputs voronoi diagram" << endl;
+        if (ComputeNeighbours)stream << "(n) outputs neighboors" << endl;
+        if (SuppressBoundaryMarkers)stream << "(B) suppress boundary markers" << endl;
+        if (SuppressPolyFile)stream << "(P) suppress output poly file(either don't work)" << endl;
+        if (SuppressNodeFile)stream << "(N) suppress output nodes file(either don't work)" << endl;
+        if (SuppressEleFile) stream << "(E) suppress output elements file(either don't work)" << endl;
+        if (SuppressHoles)   stream << "(O) suppress holes" << endl;
         //if (SecondOrderMesh)
-        //    cout << "(o2) second order mesh" << endl;
+        //    stream << "(o2) second order mesh" << endl;
         if (SteinerPointsOnBoundary || SteinerPointsOnSegments)
-                            cout << "(Y) prohibits stainer points on boundary" << endl;
+                            stream << "(Y) prohibits stainer points on boundary" << endl;
         if (MaxNumOfSteinerPoints > 0)
-                            cout << "(S) specify max number off added Steiner points" << endl;
+                            stream << "(S) specify max number off added Steiner points" << endl;
         if (Algorithm == ITERATOR)
-                            cout << "(i) use incremental algorithm" << endl;
+                            stream << "(i) use incremental algorithm" << endl;
         if (Algorithm == FORTUNE)
-                            cout << "(F) use Fortune algorithm" << endl;
-        if (Quite)          cout << "(Q) quite" << endl;
-        if (Verbose)        cout << "(V) verbose" << endl;
+                            stream << "(F) use Fortune algorithm" << endl;
+        if (Quite)          stream << "(Q) quite" << endl;
+        if (Verbose)        stream << "(V) verbose" << endl;
+
+        return stream.str();
     }
 
     struct triangulateio* Triangle::get_geometry()
