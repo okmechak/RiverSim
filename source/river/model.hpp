@@ -69,7 +69,7 @@ namespace River
         friend ostream& operator <<(ostream& write, const BackwardData & data);
     };
 
-    typedef map<t_branch_id, BackwardData> t_GeometryDiffernceNew;
+    typedef map<t_branch_id, BackwardData> t_GeometryDiffernce;
 
 
     /*! \brief Physical model parameters.
@@ -139,7 +139,7 @@ namespace River
 
             SimulationData sim_data;
 
-            t_GeometryDiffernceNew backward_data;
+            t_GeometryDiffernce backward_data;
 
             //Geometrical parameters
             ///Simulation type: 0 - Forward linear, 1 - forward non linear, 2 - backward, 3 test purpose
