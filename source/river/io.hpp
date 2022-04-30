@@ -329,4 +329,16 @@ namespace River
 
     void to_json(json& j, const Model& data);
     void from_json(const json& j, Model& data);
+
+     ///Prints any object
+    template<typename T> string print(T object)
+    {
+        std::ostringstream stream;
+        stream.precision(16);
+
+        json j = object;
+
+        stream << setw(4) << j;
+        return stream.str();
+    }
 }//namespace River

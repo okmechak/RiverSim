@@ -455,16 +455,16 @@ namespace River
     }
 
     //Region
-    void to_json(json& j, const Region& boundary) 
+    void to_json(json& j, const Region& region) 
     {
-        j = json{{"boundaries", (t_Boundaries)boundary}};
+        j = json{{"boundaries", (t_Region)region}};
     }
-    void from_json(const json& j, Region& boundary) 
+    void from_json(const json& j, Region& region) 
     {
-        t_Boundaries b;
+        t_Region b;
         j.at("boundaries").get_to(b);
         for(const auto&[key, value]: b)
-            boundary[key] = value;
+            region[key] = value;
     }
 
     //Sources
@@ -573,8 +573,6 @@ namespace River
 
         j.at("branch_lenght_diff").get_to(data.branch_lenght_diff);
     }
-
-    //t_GeometryDiffernceNew
     
     //ProgramOptions
     void to_json(json& j, const ProgramOptions& data) 
