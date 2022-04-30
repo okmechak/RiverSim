@@ -160,6 +160,7 @@ namespace River
 
     typedef t_source_id t_branch_id;
     typedef pair<t_branch_id, t_branch_id> t_branch_id_pair;
+    typedef pair<Branch&, Branch&> t_sub_branches_ref;
     
     typedef map<t_branch_id, Branch> t_Rivers;
     /*! \brief Combines __BranchNew__ into river like structure.
@@ -220,15 +221,15 @@ namespace River
             t_branch_id_pair GetSubBranchesIds(t_branch_id branch_id) const;
 
             /// Returns reference to subbranches
-            pair<Branch&, Branch&> GetSubBranches(t_branch_id branch_id);
+            t_sub_branches_ref GetSubBranches(t_branch_id branch_id);
 
-            /*! \brief Returns id of adjacent branch to current \p sub_branch_id branch.
+            /*! \brief Returns id of adjacent branch to current \p branch_id branch.
                 \throw Exception if there is no adjacent branch.
             */
-            t_branch_id GetAdjacentBranchId(t_branch_id sub_branch_id) const;
+            t_branch_id GetAdjacentBranchId(t_branch_id branch_id) const;
 
-            ///Returns link to adjacent branch with \p id.
-            Branch& GetAdjacentBranch(t_branch_id sub_branch_id);
+            ///Returns link to adjacent branch with \p branch_id id.
+            Branch& GetAdjacentBranch(t_branch_id branch_id);
 
             //Growth
             ///Adds  relatively vector of \p points to Branches \p tips_id.

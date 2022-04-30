@@ -326,23 +326,23 @@ namespace River
         return 0;
     }
 
-    t_branch_id Rivers::GetAdjacentBranchId(t_branch_id sub_branch_id) const
+    t_branch_id Rivers::GetAdjacentBranchId(t_branch_id branch_id) const
     {
-        handle_non_existing_branch_id(sub_branch_id);
+        handle_non_existing_branch_id(branch_id);
 
-        auto [left_branch, right_branch] = GetSubBranchesIds(GetParentBranchId(sub_branch_id));
+        auto [left_branch, right_branch] = GetSubBranchesIds(GetParentBranchId(branch_id));
 
-        if(left_branch == sub_branch_id)
+        if(left_branch == branch_id)
             return right_branch;
-        else if(right_branch == sub_branch_id)
+        else if(right_branch == branch_id)
             return left_branch;
         else
             throw Exception("something wrong with GetAdjacentBranch");
     }
 
-    Branch& Rivers::GetAdjacentBranch(t_branch_id sub_branch_id)
+    Branch& Rivers::GetAdjacentBranch(t_branch_id branch_id)
     {
-        return this->at(GetAdjacentBranchId(sub_branch_id));
+        return this->at(GetAdjacentBranchId(branch_id));
     }
 
     //todo can input arguments be replaced by map?
@@ -510,7 +510,7 @@ namespace River
         return branches_relation.at(branch_id);
     }
 
-    pair<Branch&, Branch&> Rivers::GetSubBranches(t_branch_id branch_id)
+    t_sub_branches_ref Rivers::GetSubBranches(t_branch_id branch_id)
     {
         auto[left_branch, right_branch] = GetSubBranchesIds(branch_id);
         return {this->at(left_branch), this->at(right_branch)};
