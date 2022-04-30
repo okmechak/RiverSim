@@ -29,19 +29,16 @@ using namespace std;
 namespace River
 {
 
-    /*! \brief Physical model parameters.
-        \details 
-        Holds parameters related to model. Region, numerical preocessing, parameters of growth etc.
-    */
+    ///Algorithms of river evolution.
     class RiverSolver
     {   
         public:
-            RiverSolver(const cxxopts::ParseResult po):
-            model{getModel(po)},
-            prog_opt{getProgramOptions(po)},
-            verbose{prog_opt.verbose},
-            triangle{model.mesh_params},
-            solver{model.solver_params, prog_opt.verbose}
+            RiverSolver(const Model model_in, const ProgramOptions prog_opt): 
+                model{model_in}, 
+                prog_opt{prog_opt},
+                verbose{prog_opt.verbose},
+                triangle{model.mesh_params},
+                solver{model.solver_params, prog_opt.verbose}  
             {
                 if (model.region.empty())
                     model.InitializeLaplace();
@@ -50,12 +47,12 @@ namespace River
                     model.rivers.at(source_id).AddPoint(Polar{0.1, 0}, model.river_boundary_id);
             };
 
-            RiverSolver(const Model model_in, ProgramOptions prog_opt): 
-                model{model_in}, 
-                prog_opt{prog_opt},
+            RiverSolver(const cxxopts::ParseResult po):
+                model{getModel(po)},
+                prog_opt{getProgramOptions(po)},
                 verbose{prog_opt.verbose},
                 triangle{model.mesh_params},
-                solver{model.solver_params, prog_opt.verbose}  
+                solver{model.solver_params, prog_opt.verbose}
             {
                 if (model.region.empty())
                     model.InitializeLaplace();
@@ -73,9 +70,9 @@ namespace River
             map<t_branch_id, vector<double>> linearStep(
                 string output_file_name, double backwardforward_max_a1 = -1.);
             void nonLinearStep(string output_file_name, double max_a1_step1 = -1, double max_a1_step2 = -1);
-            map<t_branch_id, vector<double>> shrinkStep(string output_file_name);
             void backwardStep();
             
+            map<t_branch_id, vector<double>> shrinkStep(string output_file_name);
             map<t_branch_id, vector<double>> solve_and_evaluate_series_parameters(string output_file_name);
             double get_max_a1(const map<t_branch_id, vector<double>>& id_series_params);
 
