@@ -1,0 +1,3 @@
+[submodule "riversimpy"]
+	path = riversimpy
+	url = https://github.com/okmechak/riversimpy
