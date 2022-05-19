@@ -26,7 +26,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 endif()
 if(CMAKE_BUILD_TYPE MATCHES Release)
     message("============= speed optimized without compilation errors build =============")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -w")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -w -fPIC")
 endif()
 
 add_subdirectory(source)

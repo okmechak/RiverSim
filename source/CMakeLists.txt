@@ -45,11 +45,12 @@ if(BUILD_PROGRAM)
 
         # Add a shared module - modules are intended to be imported at runtime.
         # - This is where you add the source files
-        add_library(riversimPY MODULE pythonapi.cpp)
+        add_library(riversimPY SHARED pythonapi.cpp)
         deal_ii_setup_target(riversimPY)
 
         # Set up the libraries and header search paths for this target
-        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} riversolver)
+        target_link_libraries(riversimPY riversolver)
+        target_link_libraries(riversimPY ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
         target_include_directories(riversimPY PRIVATE ${PYTHON_INCLUDE_DIRS})
         set_target_properties(riversimPY
             PROPERTIES OUTPUT_NAME riversim)
