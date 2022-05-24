@@ -251,7 +251,7 @@ namespace River
         triangulation.execute_coarsening_and_refinement();
     }
 
-    void Solver::static_refine_grid(const double integration_radius, const t_PointList &tips_points)
+    void Solver::static_refine_grid(unsigned int num_of_static_refinments, const double integration_radius, const t_PointList &tips_points)
     {
         // iterating over refinment steps
         for (unsigned step = 0; step < num_of_static_refinments; ++step)
@@ -481,6 +481,22 @@ namespace River
             assemble_system(boundary_conditions);
             solve();
         }
+    }
+
+    Solver& Solver::operator=(const Solver& s)
+    {
+        tollerance = s.tollerance;
+        number_of_iterations = s.number_of_iterations;
+        num_of_adaptive_refinments = s.num_of_adaptive_refinments;
+        num_of_static_refinments = s.num_of_static_refinments;
+        field_value = s.field_value;
+        refinment_fraction = s.refinment_fraction;
+        coarsening_fraction = s.coarsening_fraction;
+
+        //dof_handler = DoFHandler<dim>{triangulation};
+        //fe = FE_Q<dim>{s.quadrature_degree};
+        //quadrature_formula = QGauss<dim>{solver_params.quadrature_degree};
+        //face_quadrature_formula = QGauss<dim - 1>{solver_params.quadrature_degree};
     }
 
 } // namespace River

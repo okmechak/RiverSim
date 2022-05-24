@@ -162,6 +162,7 @@ namespace River
 
         bool operator==(const SolverParams &sp) const;
     };
+    
     /*! \brief Deal.II Solver Wrapper
         \details
         For more details read [Deal.II ste-6 tutorial](https://www.dealii.org/current/doxygen/deal.II/step_6.html).
@@ -212,7 +213,7 @@ namespace River
         void setBoundaryConditions(const BoundaryConditions &boundary_conds);
 
         /// Static adaptive mesh refinment.
-        void static_refine_grid(const double integration_radius, const t_PointList &tips_points);
+        void static_refine_grid(unsigned int num_of_static_refinments, const double integration_radius, const t_PointList &tips_points);
 
         /// Number of refined by Deal.II mesh cells.
         unsigned long NumberOfRefinedCells()
@@ -255,8 +256,16 @@ namespace River
             triangulation.clear();
             hanging_node_constraints.clear();
             system_matrix.clear();
-            solution.reinit(0);
+            //solution.reinit(0);
         }
+
+        void setup_system();
+        void assemble_system(const BoundaryConditions & boundary_conditions);
+        void solve();
+        void refine_grid();
+
+        ///Equal operator
+        Solver& operator=(const Solver& s);
 
         /// Outer field value. See Puasson, Laplace equations.
         double field_value = 0.;
@@ -293,10 +302,5 @@ namespace River
         Vector<double> system_rhs;
 
         ConvergenceTable convergence_table;
-
-        void setup_system();
-        void assemble_system(const BoundaryConditions & boundary_conditions);
-        void solve();
-        void refine_grid();
     };
 } // namespace River
