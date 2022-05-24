@@ -91,7 +91,7 @@ namespace River
 
             void collect_backward_data(Rivers& init, Rivers& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params);
 
-            ///Checks by evaluating series params for bifuraction condition.
+            //Growth controll functions
             bool q_bifurcate(const vector<double>& a) const;
 
             bool q_bifurcate(const vector<double>& a, double branch_lenght) const;
@@ -182,7 +182,7 @@ namespace River
             ///Eta. Growth power of a1^eta
             double eta = 1.0;
 
-            ///Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.
+            ///Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions, 4 - a1 * p(random number) >= threshold.
             unsigned bifurcation_type = 1;
             
             ///Bifurcation threshold for "0" bifurcation type.

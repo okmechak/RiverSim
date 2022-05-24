@@ -15,6 +15,7 @@
 
 ///\cond
 #include <iostream>
+#include <random>
 ///\endcond
 
 #include "model.hpp"
@@ -266,6 +267,11 @@ namespace River
                      << " a1 = " <<  a.at(0) << ", bif thr = " << bifurcation_threshold << endl;
             return a.at(2)/a.at(0) <= bifurcation_threshold && a.at(0) >= bifurcation_threshold;
         }
+        else if(bifurcation_type == 4)
+        {
+            auto r = ((double) rand() / (RAND_MAX)) + 1;
+            return a.at(0) * r >= bifurcation_threshold;
+        }
         else if(bifurcation_type == 0)
             return false;
         else 
@@ -274,13 +280,13 @@ namespace River
 
     bool Model::q_bifurcate(const vector<double>& a, double branch_lenght) const
     {
-        cout << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
+        if(verbose) cout << " branch_lenght = " << branch_lenght << ", bifurcation_min_dist = " << bifurcation_min_dist << endl;
         return q_bifurcate(a) && branch_lenght >= bifurcation_min_dist;
     }
 
     bool Model::q_growth(const vector<double>& a) const
     {
-        cout << "a1 = " << a.at(0) << ", growth threshold = " << growth_threshold << endl;
+        if(verbose) cout << "a1 = " << a.at(0) << ", growth threshold = " << growth_threshold << endl;
         return a.at(0) >= growth_threshold;
     }
 
