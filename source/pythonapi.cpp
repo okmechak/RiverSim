@@ -419,6 +419,10 @@ BOOST_PYTHON_MODULE(riversim)
         .def("integrate_new", &River::Solver::integrate_new, args("integ", "point", "angle"), "Interation of series parameters around tips points.")
         .def("solved", &River::Solver::solved)
         .def("clear", &River::Solver::clear, "Clear Solver object.")
+        .def("setupSystem", &River::Solver::setup_system, "setup_system.")
+        .def("assembleSystem", &River::Solver::assemble_system, "assemble_system.")
+        .def("solve", &River::Solver::solve, "solve.")
+        .def("refineGrid", &River::Solver::refine_grid, "refine_grid.")
     ;
 
     //MODEL.hpp
@@ -543,25 +547,29 @@ BOOST_PYTHON_MODULE(riversim)
     def("open", Open, args("model", "file_name"), "Opens program state from file.");
 
     //RIVERSOLVER.hpp
-    class_<River::RiverSolver, boost::noncopyable>("RiverSolver", "Algorithms of river evolution.", init<const River::Model, const River::ProgramOptions>(args("model", "prog_opt")));
-    //class_<RiverSolver>("RiverSolver");
+    class_<t_ids_series_params>("t_ids_series_params", "Holds for each tip id its series parameters.")
+        .def(map_indexing_suite<t_ids_series_params>())
+    ;
+    
+    class_<River::RiverSolver, boost::noncopyable>("RiverSolver", "Algorithms of river evolution.", init<const River::Model, const River::ProgramOptions>(args("model", "prog_opt")))
     //    .def(init<const Model, const ProgramOptions>(args("model", "prog_opt")))
-    //    .def("run", &RiverSolver::run)
-    //    .def("linearSolver", &RiverSolver::linearSolver)
-    //    .def("nonLinearSolver", &RiverSolver::nonLinearSolver)
-    //    .def("backwardSolver", &RiverSolver::backwardSolver)
-    //    .def("linearStep", &RiverSolver::linearStep)
-    //    .def("nonLinearStep", &RiverSolver::nonLinearStep)
-    //    .def("shrinkStep", &RiverSolver::shrinkStep)
-    //    .def("backwardStep", &RiverSolver::backwardStep)
-    //    .def("solve_and_evaluate_series_parameters", &RiverSolver::solve_and_evaluate_series_parameters)
-    //    .def("get_max_a1", &RiverSolver::get_max_a1)
-    //    .def("growth_stop_condition", &RiverSolver::growth_stop_condition)
-    //    .def_readwrite("model", &RiverSolver::model)
-    //    .def_readwrite("prog_opt", &RiverSolver::prog_opt)
-    //    .def_readwrite("verbose", &RiverSolver::verbose)
-    //    .def_readwrite("triangle", &RiverSolver::triangle)
-    //    .def_readwrite("solver", &RiverSolver::solver)
-    //;
+        .def("run", &RiverSolver::run)
+        .def("linearSolver", &RiverSolver::linearSolver)
+        .def("nonLinearSolver", &RiverSolver::nonLinearSolver)
+        .def("backwardSolver", &RiverSolver::backwardSolver)
+        .def("linearStep", &RiverSolver::linearStep)
+        .def("nonLinearStep", &RiverSolver::nonLinearStep)
+        .def("backwardStep", &RiverSolver::backwardStep)
+        .def("shrinkStep", &RiverSolver::shrinkStep)
+        .def("solve_and_evaluate_series_parameters", &RiverSolver::solve_and_evaluate_series_parameters)
+        .def("get_max_a1", &RiverSolver::get_max_a1)
+        .def("growth_stop_condition", &RiverSolver::growth_stop_condition)
+        .def_readwrite("model", &RiverSolver::model)
+        .def_readwrite("prog_opt", &RiverSolver::prog_opt)
+        .def_readwrite("verbose", &RiverSolver::verbose)
+        .def_readwrite("triangle", &RiverSolver::triangle)
+        .def_readwrite("mesh", &RiverSolver::mesh)
+        .def_readwrite("solver", &RiverSolver::solver)
+    ;
 
 }
