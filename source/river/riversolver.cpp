@@ -97,7 +97,7 @@ namespace River
         return 0;
     }
 
-    map<t_branch_id, vector<double>> RiverSolver::solve_and_evaluate_series_parameters(string output_file_name)
+    t_ids_series_params RiverSolver::solve_and_evaluate_series_parameters(string output_file_name)
     {
         print(verbose, "Boundary generation...");
         model.boundary = BoundaryGenerator(
@@ -106,7 +106,7 @@ namespace River
 
         print(verbose, "Mesh generation...");
         triangle.mesh_params.tip_points = model.rivers.TipPoints();
-        auto mesh = triangle.generate_quadrangular_mesh(model.boundary, model.region.holes);
+        mesh = triangle.generate_quadrangular_mesh(model.boundary, model.region.holes);
         mesh.write(output_file_name + ".msh");
 
         print(verbose, "Solving...");
@@ -114,13 +114,13 @@ namespace River
         solver.OpenMesh(mesh);
         solver.setBoundaryConditions(model.boundary_conditions);
         //solver.OpenMesh(output_file_name + ".msh");
-        solver.static_refine_grid(model.integr.integration_radius, model.rivers.TipPoints());
+        solver.static_refine_grid(model.solver_params.static_refinment_steps, model.integr.integration_radius, model.rivers.TipPoints());
         solver.run();
         if (prog_opt.save_vtk || prog_opt.debug)
             solver.output_results(output_file_name);
 
         print(verbose, "Series parameters integration...");
-        map<t_branch_id, vector<double>> id_series_params;
+        t_ids_series_params id_series_params;
         for (const auto id : model.rivers.TipBranchesIds())
         {
             auto tip_point = model.rivers.at(id).TipPoint();
@@ -131,7 +131,7 @@ namespace River
         return id_series_params;
     }
 
-    double RiverSolver::get_max_a1(const map<t_branch_id, vector<double>> &id_series_params)
+    double RiverSolver::get_max_a1(const t_ids_series_params &id_series_params)
     {
         double max_a = 0.;
         for (const auto &[id, series_params] : id_series_params)
@@ -141,7 +141,7 @@ namespace River
         return max_a;
     }
 
-    map<t_branch_id, vector<double>> RiverSolver::linearStep(
+    t_ids_series_params RiverSolver::linearStep(
         string output_file_name, double backwardforward_max_a1)
     {
         auto id_series_params = solve_and_evaluate_series_parameters(output_file_name);
@@ -208,7 +208,7 @@ namespace River
             }
     }
 
-    map<t_branch_id, vector<double>> RiverSolver::shrinkStep(string output_file_name)
+    t_ids_series_params RiverSolver::shrinkStep(string output_file_name)
     {
         auto id_series_params = solve_and_evaluate_series_parameters(output_file_name);
 
@@ -241,7 +241,7 @@ namespace River
     {
         // save initial rivers
         auto initial_rivers = model.rivers;
-        map<t_branch_id, vector<double>> tip_id_series_params;
+        t_ids_series_params tip_id_series_params;
         vector<double> presaved_max_a1_parameters;
 
         for (unsigned step = 0; step < model.number_of_backward_steps; step++)

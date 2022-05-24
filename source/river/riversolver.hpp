@@ -29,6 +29,9 @@ using namespace std;
 namespace River
 {
 
+    ///Holds for each tip id its series parameters.
+    typedef map<t_branch_id, vector<double>> t_ids_series_params;
+
     ///Algorithms of river evolution.
     class RiverSolver
     {   
@@ -67,14 +70,14 @@ namespace River
             void nonLinearSolver();
             void backwardSolver();
 
-            map<t_branch_id, vector<double>> linearStep(
+            t_ids_series_params linearStep(
                 string output_file_name, double backwardforward_max_a1 = -1.);
             void nonLinearStep(string output_file_name, double max_a1_step1 = -1, double max_a1_step2 = -1);
             void backwardStep();
             
-            map<t_branch_id, vector<double>> shrinkStep(string output_file_name);
-            map<t_branch_id, vector<double>> solve_and_evaluate_series_parameters(string output_file_name);
-            double get_max_a1(const map<t_branch_id, vector<double>>& id_series_params);
+            t_ids_series_params shrinkStep(string output_file_name);
+            t_ids_series_params solve_and_evaluate_series_parameters(string output_file_name);
+            double get_max_a1(const t_ids_series_params& id_series_params);
 
             
             /*! Stop condition of river growth simulation.
@@ -105,6 +108,8 @@ namespace River
             bool verbose;
 
             Triangle triangle;
+
+            tethex::Mesh mesh;
             
             Solver solver;
     };
