@@ -51,6 +51,8 @@ namespace River
     */
     struct BoundaryCondition
     {
+        BoundaryCondition() = default;
+        BoundaryCondition(t_boundary t, double v): type(t), value(v) {};
         t_boundary type = DIRICHLET;
         double value = 0;
         bool operator==(const BoundaryCondition& bc) const;

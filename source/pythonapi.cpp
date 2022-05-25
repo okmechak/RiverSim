@@ -12,7 +12,7 @@ BOOST_PYTHON_MODULE(riversim)
     //POINT
     def("getNormalizedPoint", GetNormalizedPoint, args("p"), "Returns normalized vector of current Point");
 
-    def("ToPolar", ToPolar, args("p"), "Returns Polar representation of vector");
+    def("toPolar", ToPolar, args("p"), "Returns Polar representation of vector");
 
     class_<Polar>("Polar", "Point in polar coordinates")
         .def(init<>())
@@ -59,15 +59,17 @@ BOOST_PYTHON_MODULE(riversim)
 
     
     //BOUNDARY
-    enum_<t_boundary>("t_boundary", "Enumeration of different boundary conditions.")
+    enum_<t_boundary>("t_boundary_type", "Enumeration of different boundary conditions.")
         .value("DIRICHLET", DIRICHLET)
         .value("NEUMAN", NEUMAN)
         .export_values()
         ;
 
-    class_<BoundaryCondition>("BoundaryCondition", "Describes boudary condition type.")
-        .def_readwrite("value", &BoundaryCondition::value)
+    class_<BoundaryCondition>("BoundaryCondition", "Describes boudary conditions types for different boundary lines.")
+        .def(init<>())
+        .def(init<t_boundary, double>(args("type", "value")))
         .def_readwrite("type", &BoundaryCondition::type)
+        .def_readwrite("value", &BoundaryCondition::value)
         .def("__str__", &River::print<BoundaryCondition>)
         .def("__repr__", &River::print<BoundaryCondition>)
         .def(self == self) 
