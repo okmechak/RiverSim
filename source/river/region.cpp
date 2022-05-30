@@ -122,6 +122,8 @@ namespace River
             }
         };
         sources[3] = {3, 3};
+
+        holes = {{width/2, height/2}, {0.85*width, 0.85*height}};
         
         return sources;
     }
