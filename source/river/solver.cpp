@@ -497,6 +497,7 @@ namespace River
         //fe = FE_Q<dim>{s.quadrature_degree};
         //quadrature_formula = QGauss<dim>{solver_params.quadrature_degree};
         //face_quadrature_formula = QGauss<dim - 1>{solver_params.quadrature_degree};
+        return *this;
     }
 
 } // namespace River
