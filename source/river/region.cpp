@@ -279,10 +279,12 @@ namespace River
         rivers_boundary.FixLinesIndices();
     }
 
-    Boundary BoundaryGenerator(Sources& sources, const Region &region, const Rivers &rivers, const double river_width, 
+    Boundary BoundaryGenerator(const Sources& sources, const Region &region, const Rivers &rivers, const double river_width, 
         const double smoothness_degree, const double ignored_smoothness_length)
     {
         Boundary final_boundary;
+
+        auto sources_loc = sources;
 
         for(auto [boundary_id, boundary]: region)
         {
@@ -299,7 +301,7 @@ namespace River
                     boundary.ReplaceElement(vertice_pos, rivers_boundary);
 
                     //shifting absolute vertice position of source after addition
-                    for(auto&[source_id_m, source_coord_m]: sources)
+                    for(auto&[source_id_m, source_coord_m]: sources_loc)
                         if(source_coord_m.first == boundary_id && source_coord_m.second > vertice_pos && rivers_boundary.vertices.size() > 1)
                             source_coord_m.second += rivers_boundary.vertices.size() - 1;
                 }

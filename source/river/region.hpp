@@ -74,6 +74,6 @@ namespace River
 
     ///Generates boundary from region and rivers.
     Boundary BoundaryGenerator(
-        Sources& sources, const Region &region, const Rivers &rivers, const double river_width, 
+        const Sources& sources, const Region &region, const Rivers &rivers, const double river_width, 
         const double smoothness_degree = 0, const double ignored_smoothness_length = 0);
 }
