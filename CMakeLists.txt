@@ -22,7 +22,7 @@ set(DEALII_DIR "/usr/local" CACHE STRING "Deal.II release SDK directory location
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     message("=============pedantic build=============")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -g3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -g3 -fPIC")
 endif()
 if(CMAKE_BUILD_TYPE MATCHES Release)
     message("============= speed optimized without compilation errors build =============")
