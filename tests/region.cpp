@@ -1236,15 +1236,13 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_sdf,
     TEST_POINT(boundary.vertices.back(), River::Point{0.5 + 1e-3/2, 0});
 }
 
-/*
+
 BOOST_AUTO_TEST_CASE( debug_python_code_test, 
     *utf::tolerance(eps))
 {
     //initial condition setup
     auto river_width = 0.02;
-    auto ds = 0.01;
-    auto w = 1.;
-    auto h = 1.;
+    auto ds = 0.2;
     t_boundary_id r = 100;
 
     //every vertex is a source
@@ -1252,16 +1250,16 @@ BOOST_AUTO_TEST_CASE( debug_python_code_test,
     region[1] = 
     {
         {
-            {0, 0}, 
-            {w, 0}, 
-            {w, h}, 
-            {0, h}
+            {0., 0.}, 
+            {1., 0.}, 
+            {1., 1.}, 
+            {0., 1.}
         }, 
         {
             {0, 1, 1},
-            {1, 2, 2},
-            {2, 3, 3},
-            {3, 0, 4}
+            {1, 2, 1},
+            {2, 3, 1},
+            {3, 0, 1}
         }
     };
 
@@ -1273,7 +1271,7 @@ BOOST_AUTO_TEST_CASE( debug_python_code_test,
     rivers.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
     
     //grow each source point by one step
-    Polar p{ds, 0};
+    Polar p{ds, 0.};
     rivers.AddPolars(
         {1, 2},
         {p, p},
@@ -1285,87 +1283,63 @@ BOOST_AUTO_TEST_CASE( debug_python_code_test,
 
     //expected values
     t_PointList vertices;
-    Point left_shift{ds/2, 0}, rigth_shift{-ds/2, 0};
-    vertices.append(Point{})
-    t_PointList vertices = t_PointList{
-        //0
-        {0 - eps/sqrt(2)/2, 0 + eps/sqrt(2)/2},
-        {0 +  ds/sqrt(2),   0 +  ds/sqrt(2)},
-        {0 + eps/sqrt(2)/2, 0 - eps/sqrt(2)/2},
-        //1
-        {dx - eps/2, 0},
-        {dx,        ds},
-        {dx + eps/2, 0},
-        //2
-        {w - eps/sqrt(2)/2, - eps/sqrt(2)/2},
-        {w  - ds/sqrt(2),      ds/sqrt(2)},
-        {w + eps/sqrt(2)/2, + eps/sqrt(2)/2},
-        //3
-        {w + eps/sqrt(2)/2, h - eps/sqrt(2)/2},
-        {w -  ds/sqrt(2),   h -  ds/sqrt(2)},
-        {w - eps/sqrt(2)/2, h + eps/sqrt(2)/2},
-        //4
-        {+ eps/sqrt(2)/2, h + eps/sqrt(2)/2},
-        {+  ds/sqrt(2),   h -  ds/sqrt(2)},
-        {- eps/sqrt(2)/2, h - eps/sqrt(2)/2},
+    Point left_shift{river_width/2., 0.}, rigth_shift{river_width/2., 0.};
+    left_shift.rotate(3./4. * M_PI);
+    rigth_shift.rotate(- 1./4. * M_PI);
 
-    };
+    vertices.push_back(Point{0.,    0.} + left_shift);
+    vertices.push_back(Point{ds,    0.}.rotate(M_PI / 4.) + left_shift);
+    vertices.push_back(Point{2.*ds, 0.}.rotate(M_PI / 4.)); 
+    vertices.push_back(Point{ds,    0.}.rotate(M_PI / 4.) + rigth_shift);
+    vertices.push_back(Point{0.,    0.} + rigth_shift);
+    vertices.push_back(Point{1.,    0.});
+    vertices.push_back(Point{1.,    1.} + rigth_shift);
+    vertices.push_back(Point{1.,    1.} + Point{ds,    0.}.rotate(5. * M_PI / 4.) + rigth_shift);
+    vertices.push_back(Point{1.,    1.} + Point{2.*ds, 0.}.rotate(5. * M_PI / 4.)); 
+    vertices.push_back(Point{1.,    1.} + Point{ds,    0.}.rotate(5. * M_PI / 4.) + left_shift);
+    vertices.push_back(Point{1.,    1.} + left_shift);
+    vertices.push_back(Point{0.,    1.});
 
     auto lines = t_LineList{
         {0,   1,  r},
         {1,   2,  r},
-        {2,   3,  1},
+        {2,   3,  r},
         {3,   4,  r},
-        {4,   5,  r},
-        {5,   6,  2},
+        {4,   5,  1},
+        {5,   6,  1},
         {6,   7,  r},
         {7,   8,  r},
-        {8,   9,  3},
+        {8,   9,  r},
         {9,  10,  r},
-        {10, 11,  r},
-        {11, 12,  4},
-        {12, 13,  r},
-        {13, 14,  r},
-        {14,  0,  5},
-
-        {15,  16,  r},
-        {16,  17,  r},
-        {17,  18,  6},
-        {18,  19,  r},
-        {19,  20,  r},
-        {20,  21,  7},
-        {21,  22,  r},
-        {22,  23,  r},
-        {23,  24,  8},
-        {24,  25,  r},
-        {25,  26,  r},
-        {26,  15,  9},
-
-        {27,  28,  r},
-        {28,  29,  r},
-        {29,  30,  10},
-        {30,  31,  r},
-        {31,  32,  r},
-        {32,  33,  11},
-        {33,  34,  r},
-        {34,  35,  r},
-        {35,  36,  12},
-        {36,  37,  r},
-        {37,  38,  r},
-        {38,  27,  13},
-        
+        {10, 11,  1},
+        {11, 0,  1}
     };
 
     //generatre boundary
     auto boundary = BoundaryGenerator(sources, region, rivers, river_width);
 
-    for(size_t i = 0; i < boundary.vertices.size(); ++i)
-    {
-        BOOST_TEST_MESSAGE(to_string(i));
-        BOOST_TEST(final_boundary.vertices.at(i) == vertices.at(i));
-        BOOST_TEST(   final_boundary.lines.at(i) == lines.at(i));
-    }      
-
-    BOOST_TEST(final_boundary.holes == holes);
+    BOOST_TEST(boundary.vertices.at(0) == vertices.at(0));
+    BOOST_TEST(   boundary.lines.at(0) ==    lines.at(0));      
+    BOOST_TEST(boundary.vertices.at(1) == vertices.at(1));
+    BOOST_TEST(   boundary.lines.at(1) ==    lines.at(1));      
+    BOOST_TEST(boundary.vertices.at(2) == vertices.at(2));
+    BOOST_TEST(   boundary.lines.at(2) ==    lines.at(2));      
+    BOOST_TEST(boundary.vertices.at(3) == vertices.at(3));
+    BOOST_TEST(   boundary.lines.at(3) ==    lines.at(3));      
+    BOOST_TEST(boundary.vertices.at(4) == vertices.at(4));
+    BOOST_TEST(   boundary.lines.at(4) ==    lines.at(4));      
+    BOOST_TEST(boundary.vertices.at(5) == vertices.at(5));
+    BOOST_TEST(   boundary.lines.at(5) ==    lines.at(5));      
+    BOOST_TEST(boundary.vertices.at(6) == vertices.at(6));
+    BOOST_TEST(   boundary.lines.at(6) ==    lines.at(6));      
+    BOOST_TEST(boundary.vertices.at(7) == vertices.at(7));
+    BOOST_TEST(   boundary.lines.at(7) ==    lines.at(7));      
+    BOOST_TEST(boundary.vertices.at(8) == vertices.at(8));
+    BOOST_TEST(   boundary.lines.at(8) ==    lines.at(8));      
+    BOOST_TEST(boundary.vertices.at(9) == vertices.at(9));
+    BOOST_TEST(   boundary.lines.at(9) ==    lines.at(9));      
+    BOOST_TEST(boundary.vertices.at(10) == vertices.at(10));
+    BOOST_TEST(   boundary.lines.at(10) ==    lines.at(10));      
+    BOOST_TEST(boundary.vertices.at(11) == vertices.at(11));
+    BOOST_TEST(   boundary.lines.at(11) ==    lines.at(11));      
 }
-*/
