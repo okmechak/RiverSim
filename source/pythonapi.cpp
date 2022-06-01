@@ -201,7 +201,7 @@ BOOST_PYTHON_MODULE(riversim)
         //Problem with references
         //.def("getSubBranches", &Rivers::GetSubBranches, return_internal_reference<>())
         .def("getAdjacentBranchId", &Rivers::GetAdjacentBranchId, args("branch_id"), "Returns id of adjacent branch to current branch_id branch.")
-        .def("getAdjacentBranch", &Rivers::GetAdjacentBranch, return_internal_reference<>(), args("branch_id"), "Returns link to adjacent branch with \p id.")
+        .def("getAdjacentBranch", &Rivers::GetAdjacentBranch, return_internal_reference<>(), args("branch_id"), "Returns link to adjacent branch with id.")
         .def("addPoints", &Rivers::AddPoints, args("tips_id", "points", "boundary_ids"), "Adds  relatively vector of points to Branches tips_id.")
         .def("addPolars", &Rivers::AddPolars, args("tips_id", "polars", "boundary_ids"), "Adds  relatively points to Branches tips_id.")
         .def("addAbsolutePolars", &Rivers::AddAbsolutePolars, args("tips_id", "polars", "boundary_ids"), "Adds  absolute points to Branches tips_id.")
