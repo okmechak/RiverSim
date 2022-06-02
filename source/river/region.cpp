@@ -288,7 +288,7 @@ namespace River
 
         for(auto [boundary_id, boundary]: region)
         {
-            for(const auto&[source_id, source_coord]: sources)
+            for(const auto&[source_id, source_coord]: sources_loc)
             {
                 auto boundary_id_s = source_coord.first;
                 auto vertice_pos = source_coord.second;
