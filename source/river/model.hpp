@@ -195,12 +195,12 @@ namespace River
             double bifurcation_angle = M_PI/5;
 
             ///Growth type. 0 - arctan(a2/a1), 1 - {dx, dy}
-            unsigned growth_type = 0;
+            unsigned growth_type = 1;
 
             ///Growth of branch will be done only if a1 > growth-threshold.
             double growth_threshold = 0;
 
             ///Distance of constant tip growing after bifurcation point. Reduces numerical noise.
-            double growth_min_distance = 0.01;
+            double growth_min_distance = 0.005;
     };
 }
