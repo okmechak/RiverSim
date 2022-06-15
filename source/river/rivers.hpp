@@ -49,7 +49,7 @@ namespace River
     /*! \brief Holds all functionality that you need to work with single branch.
         \details
         Take a look on picture:
-        \imageSize{Branch.jpg, height:40%;width:40%;, }
+        \imageSize{BranchNewClass.jpg, height:40%;width:40%;, }
         \todo resolve problem with private members
     */
     class Branch: public Boundary
@@ -87,7 +87,7 @@ namespace River
             Branch& Shrink(double lenght);
 
             /*! \brief Remove tip point from branch(simply pops element from vector).
-                \imageSize{BranchShrink.jpg, height:30%;width:30%;, }
+                \imageSize{BranchNewShrink.jpg, height:30%;width:30%;, }
                 \throw Exception if trying to remove last point.
             */
             Branch& RemoveTipPoint();
@@ -166,7 +166,7 @@ namespace River
     /*! \brief Combines __BranchNew__ into river like structure.
         \details
         Rivers class represents next structure: 
-        \imageSize{RiversClass.jpg, height:40%;width:40%;, }
+        \imageSize{TreeClass.jpg, height:40%;width:40%;, }
 
         \todo resolve problem with private methods.
     */
