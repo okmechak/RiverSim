@@ -135,11 +135,13 @@ namespace River
     /*! \brief Structure which defines simple boundary data structure.
         
         \details Simple boundary means only one boundary.
-        \imageSize{Boundary.jpg, height:40%;width:40%;, }
+        \imageSize{BorderClass.jpg, height:40%;width:40%;, }
     */
     class Boundary
     {
         public:
+            Boundary(){};
+            Boundary(t_PointList v, t_LineList l): vertices{v}, lines{l} {};
             ///Vertices of boundary vector.
             t_PointList vertices;
             ///Connvections between boundaries.

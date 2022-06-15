@@ -59,7 +59,7 @@ BOOST_PYTHON_MODULE(riversim)
 
     
     //BOUNDARY
-    enum_<t_boundary>("t_boundary_type", "Enumeration of different boundary conditions.")
+    enum_<t_boundary>("t_boundary", "Enumeration of different boundary conditions.")
         .value("DIRICHLET", DIRICHLET)
         .value("NEUMAN", NEUMAN)
         .export_values()
@@ -77,6 +77,8 @@ BOOST_PYTHON_MODULE(riversim)
 
     class_<t_BoundaryConditions>("t_BoundaryConditions", "Map structure with boundary condition types.")
         .def(map_indexing_suite<t_BoundaryConditions>())
+        .def("__str__", &River::print<t_BoundaryConditions>)
+        .def("__repr__", &River::print<t_BoundaryConditions>)
     ;
 
     class_<BoundaryConditions, bases<t_BoundaryConditions>>("BoundaryConditions", "Map structure with boundary condition types.")
@@ -85,21 +87,29 @@ BOOST_PYTHON_MODULE(riversim)
         .def("__repr__", &River::print<BoundaryConditions>)
     ;
 
-    class_<t_source_coord >("t_source_coord", "Source point coordinate data type. Pair which holds boundary id and vertice position on this id.")
+    class_<t_source_coord>("t_source_coord", "Source point coordinate data type. Pair which holds boundary id and vertice position on this id.")
         .def_readwrite("boundary_id", &t_source_coord::first, "boundary id")
         .def_readwrite("vert_pos", &t_source_coord::second, "vertice position")
+        .def("__str__", &River::print<t_source_coord>)
+        .def("__repr__", &River::print<t_source_coord>)
     ;
 
     class_<t_sources_ids>("t_sources_ids", "Vector of source point ids data type.")
         .def(vector_indexing_suite<t_sources_ids>())
+        .def("__str__", &River::print<t_sources_ids>)
+        .def("__repr__", &River::print<t_sources_ids>)
     ;
 
-    class_<t_Sources >("t_Sources", "Map structure which holds source id and its source point coordinates.")
+    class_<t_Sources>("t_Sources", "Map structure which holds source id and its source point coordinates.")
         .def(map_indexing_suite<t_Sources>() )
+        .def("__str__", &River::print<t_Sources>)
+        .def("__repr__", &River::print<t_Sources>)
     ;
 
     class_<Sources, bases<t_Sources>>("Sources", "Map structure which holds source id and its source point coordinates.")
         .def("getSourcesIds", &Sources::GetSourcesIds, "Returns all sources ids.")
+        .def("__str__", &River::print<Sources>)
+        .def("__repr__", &River::print<Sources>)
         .def("__str__", &River::print<Sources>)
         .def("__repr__", &River::print<Sources>)
     ;
@@ -117,13 +127,18 @@ BOOST_PYTHON_MODULE(riversim)
 
     class_<t_PointList>("t_PointList", "Vector of points.")
         .def(vector_indexing_suite<t_PointList>())
+        .def("__str__", &River::print<t_PointList>)
+        .def("__repr__", &River::print<t_PointList>)
     ;
 
     class_<t_LineList>("t_LineList", "Vector of lines.")
         .def(vector_indexing_suite<t_LineList>())
+        .def("__str__", &River::print<t_LineList>)
+        .def("__repr__", &River::print<t_LineList>)
     ;
 
     class_<Boundary>("Boundary", "Structure which defines simple boundary data structure.")
+        .def(init<t_PointList, t_LineList>(args("vertices", "lines")))
         .def("append", &Boundary::Append, args("boundary"), "Appends another simple boundary at the end of current boundary.")
         .def("replaceElement", &Boundary::ReplaceElement, args("vertice_pos", "boundary"), "Replace on element of boundary with whole simple boundary structure.")
         .def("fixLinesIndices", &Boundary::FixLinesIndices, args("is_closed_boundary"), "Fixes line indices with correct one, like 0 1, 1 2, 2 3 etc.")
@@ -135,17 +150,17 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("lines", &Boundary::lines, "Connvections between boundaries.")
     ;
 
-    class_<t_Region>("t_Region", "Structure which defines Region of region.")
-        .def(map_indexing_suite<t_Region>())
-    ;
-
-    class_<t_branch_source >("t_branch_source")
+    class_<t_branch_source>("t_branch_source")
         .def_readwrite("point", &t_branch_source::first, "Source point of branche.")
         .def_readwrite("angle", &t_branch_source::second, "Angle of growth.")
+        .def("__str__", &River::print<t_branch_source>)
+        .def("__repr__", &River::print<t_branch_source>)
     ;
 
     class_<t_rivers_interface>("t_rivers_interface", "Interface between boundary sources and source points of Rivers.")
         .def(map_indexing_suite<t_rivers_interface>())
+        .def("__str__", &River::print<t_rivers_interface>)
+        .def("__repr__", &River::print<t_rivers_interface>)
     ;
     
     //RIVERS.hpp
@@ -171,13 +186,17 @@ BOOST_PYTHON_MODULE(riversim)
         .def(self == self)
     ;
 
-    class_<t_branch_id_pair >("t_branch_id_pair")
+    class_<t_branch_id_pair>("t_branch_id_pair")
         .def_readwrite("left", &t_branch_id_pair::first, "Left branch id.")
         .def_readwrite("right", &t_branch_id_pair::second, "Right branch id.")
+        .def("__str__", &River::print<t_branch_id_pair>)
+        .def("__repr__", &River::print<t_branch_id_pair>)
     ;
     
     class_<t_Rivers>("t_Rivers", "Combines branches into tree like structure.")
         .def(map_indexing_suite<t_Rivers>())
+        .def("__str__", &River::print<t_Rivers>)
+        .def("__repr__", &River::print<t_Rivers>)
     ;
 
     //Problem with reference...
@@ -224,6 +243,12 @@ BOOST_PYTHON_MODULE(riversim)
 
     
     //REGION.hpp
+    class_<t_Region>("t_Region", "Structure which defines Region of region.")
+        .def(map_indexing_suite<t_Region>())
+        .def("__str__", &River::print<t_Region>)
+        .def("__repr__", &River::print<t_Region>)
+    ;
+
     class_<Region, bases<t_Region> >("Region", "Structure which defines Region of region.")
         .def(init<t_Region>(args("boundaries"), "Constructor"))
         .def("makeRectangular", &Region::MakeRectangular, args("width", "height", "source_x_position"), "Initialize rectangular Region.")
@@ -239,7 +264,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("holes", &River::Region::holes, "Array of holes. Which will be eliminated by mesh generator.")
     ;
 
-    def("RiversBoundary", River::RiversBoundary, args("rivers_boundary", "rivers", "river_id", "river_width", "smoothness_degree", "ignored_smoothness_length"), "Generates trees boundary.");
+    def("RiversBoundary", River::RiversBoundary, args("rivers_boundary", "rivers", "river_id", "river_width", "smoothness_degree", "ignored_smoothness_length"), "Generates rivers boundary.");
     def("BoundaryGenerator", River::BoundaryGenerator, args("sources", "region", "rivers", "river_width", "smoothness_degree", "ignored_smoothness_length"), "Generates boundary from region and rivers.");
 
 
@@ -251,28 +276,80 @@ BOOST_PYTHON_MODULE(riversim)
         .def("getCoord", &tethex::Point::get_coord, args("number"))
         .def("setCoord", &tethex::Point::set_coord, args("number", "value"))
         .def(self == self)
+        //.def("__str__", &River::print<tethex::Point>)
+        //.def("__repr__", &River::print<tethex::Point>)
     ;
 
     class_<vector<tethex::Point>> ("t_Vector_of_TethexPoint")
         .def(vector_indexing_suite<vector<tethex::Point>>())
-        
+        //.def("__str__", &River::print<vector<tethex::Point>>)
+        //.def("__repr__", &River::print<vector<tethex::Point>>)
     ;
 
-    //class_<tethex::MeshElement>("MeshElement")
-    //    .def("get_n_vertices", &tethex::MeshElement::get_n_vertices)
-    //    .def("get_n_edges", &tethex::MeshElement::get_n_edges)
-    //    .def("get_vertex", &tethex::MeshElement::get_vertex, args("number"))
-    //    .def("set_vertex", &tethex::MeshElement::set_vertex, args("local_number", "global_number"))
-    //    .def("get_edge", &tethex::MeshElement::get_edge, args("number"))
-    //    .def("set_edge", &tethex::MeshElement::set_edge, args("local_number", "global_number"))
-    //    .def("contains", &tethex::MeshElement::contains, args("vertex"))
-    //    .def("measure", &tethex::MeshElement::measure, args("points"))
-    //    .def("min_angle", &tethex::MeshElement::min_angle, args("points"))
-    //    .def("max_angle", &tethex::MeshElement::max_angle, args("points"))
-    //    .def("min_edge", &tethex::MeshElement::min_edge, args("points"))
-    //    .def("max_edge", &tethex::MeshElement::max_edge, args("points"))
-    //    .def("quality", &tethex::MeshElement::quality, args("points"))
-    //;
+    class_<tethex::PhysPoint>("PhysPoint")
+        .def(init<>())
+        .def(init<const vector<int> &, int>(args("ver", "mat_id")))
+        .def(init<const int, int>(args("ver", "mat_id")))
+        .def("get_n_vertices", &tethex::MeshElement::get_n_vertices)
+        .def("get_n_edges", &tethex::MeshElement::get_n_edges)
+        .def("get_vertex", &tethex::MeshElement::get_vertex, args("number"))
+        .def("set_vertex", &tethex::MeshElement::set_vertex, args("local_number", "global_number"))
+        .def("get_edge", &tethex::MeshElement::get_edge, args("number"))
+        .def("get_gmsh_el_type", &tethex::MeshElement::get_gmsh_el_type)
+        .def("get_material_id", &tethex::MeshElement::get_material_id)
+        .def("set_edge", &tethex::MeshElement::set_edge, args("local_number", "global_number"))
+        .def("contains", &tethex::MeshElement::contains, args("vertex"))
+        .def("measure", &tethex::MeshElement::measure, args("points"))
+        .def("min_angle", &tethex::MeshElement::min_angle, args("points"))
+        .def("max_angle", &tethex::MeshElement::max_angle, args("points"))
+        .def("min_edge", &tethex::MeshElement::min_edge, args("points"))
+        .def("max_edge", &tethex::MeshElement::max_edge, args("points"))
+        .def("quality", &tethex::MeshElement::quality, args("points"))
+    ;
+
+    class_<tethex::Line>("PhysLine")
+        .def(init<>())
+        .def(init<const vector<int> &, int>(args("ver", "mat_id")))
+        .def(init<const int, int>(args("ver", "mat_id")))
+        .def(init<int, int, int>(args("v1", "v2", "mat_id")))
+        .def(init<const River::Line&>(args("line")))
+        .def("get_n_vertices", &tethex::MeshElement::get_n_vertices)
+        .def("get_n_edges", &tethex::MeshElement::get_n_edges)
+        .def("get_vertex", &tethex::MeshElement::get_vertex, args("number"))
+        .def("set_vertex", &tethex::MeshElement::set_vertex, args("local_number", "global_number"))
+        .def("get_edge", &tethex::MeshElement::get_edge, args("number"))
+        .def("get_gmsh_el_type", &tethex::MeshElement::get_gmsh_el_type)
+        .def("get_material_id", &tethex::MeshElement::get_material_id)
+        .def("set_edge", &tethex::MeshElement::set_edge, args("local_number", "global_number"))
+        .def("contains", &tethex::MeshElement::contains, args("vertex"))
+        .def("measure", &tethex::MeshElement::measure, args("points"))
+        .def("min_angle", &tethex::MeshElement::min_angle, args("points"))
+        .def("max_angle", &tethex::MeshElement::max_angle, args("points"))
+        .def("min_edge", &tethex::MeshElement::min_edge, args("points"))
+        .def("max_edge", &tethex::MeshElement::max_edge, args("points"))
+        .def("quality", &tethex::MeshElement::quality, args("points"))
+    ;
+
+    class_<tethex::Triangle>("PhysTriangle")
+        .def(init<>())
+        .def(init<const vector<int> &, int>(args("ver", "mat_id")))
+        .def(init<int, int, int, int>(args("v1", "v2", "v3", "mat_id")))
+        .def("get_n_vertices", &tethex::MeshElement::get_n_vertices)
+        .def("get_n_edges", &tethex::MeshElement::get_n_edges)
+        .def("get_vertex", &tethex::MeshElement::get_vertex, args("number"))
+        .def("set_vertex", &tethex::MeshElement::set_vertex, args("local_number", "global_number"))
+        .def("get_edge", &tethex::MeshElement::get_edge, args("number"))
+        .def("get_gmsh_el_type", &tethex::MeshElement::get_gmsh_el_type)
+        .def("get_material_id", &tethex::MeshElement::get_material_id)
+        .def("set_edge", &tethex::MeshElement::set_edge, args("local_number", "global_number"))
+        .def("contains", &tethex::MeshElement::contains, args("vertex"))
+        .def("measure", &tethex::MeshElement::measure, args("points"))
+        .def("min_angle", &tethex::MeshElement::min_angle, args("points"))
+        .def("max_angle", &tethex::MeshElement::max_angle, args("points"))
+        .def("min_edge", &tethex::MeshElement::min_edge, args("points"))
+        .def("max_edge", &tethex::MeshElement::max_edge, args("points"))
+        .def("quality", &tethex::MeshElement::quality, args("points"))
+    ;
 
     class_<tethex::Mesh>("TethexMesh")
         .def(init<>())
@@ -290,6 +367,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def("getNLines", &tethex::Mesh::get_n_lines)
         .def("getNTriangles", &tethex::Mesh::get_n_triangles)
         .def("getNQuadrangles", &tethex::Mesh::get_n_quadrangles)
+        //.def("__str__", &River::print<vector<tethex::Mesh>>)
+        //.def("__repr__", &River::print<vector<tethex::Mesh>>)
 
     //    .def("get_vertex", &tethex::Mesh::get_vertex, args("number"), return_internal_reference<>())
     //    .def("get_hole", &tethex::Mesh::get_hole, args("number"), return_internal_reference<>())
@@ -302,7 +381,7 @@ BOOST_PYTHON_MODULE(riversim)
 
 
     //TRIANGLE_C.hpp
-    class_<triangulateio >("triangulateio")
+    class_<triangulateio>("triangulateio")
         .def_readwrite("pointlist", &triangulateio::pointlist)
         .def_readwrite("pointattributelist", &triangulateio::pointattributelist)
         .def_readwrite("pointmarkerlist", &triangulateio::pointmarkerlist)
@@ -353,6 +432,7 @@ BOOST_PYTHON_MODULE(riversim)
     class_<Triangle>("Triangle", init<>())
         .def(init<MeshParams>(args("mesh_params")))
         .def("generate", &Triangle::generate_quadrangular_mesh, args("boundary", "holes"), "Generate mesh.")
+        .def("printOptions", &Triangle::print_options, args("qDetailedDescription"), "Outupts options with or without detailed description.")
         .def_readwrite("refine", &Triangle::Refine, "Refine previously generated mesh, with preserving of segments")
         .def_readwrite("constrain_angle", &Triangle::ConstrainAngle, "Sets minimum angle value.")
         .def_readwrite("min_angle", &Triangle::MinAngle, "Minimal angle of mesh element.")
@@ -371,8 +451,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("quite", &Triangle::Quite, "Quiet - without prints.")
         .def_readwrite("verbose", &Triangle::Verbose)
         .def_readwrite("mesh_params", &Triangle::mesh_params, "Mesh refinment object.")
-        .def("__str__", &Triangle::print_options, "Outupts options with or without detailed description.")
-        .def("__repr__", &Triangle::print_options, "Outupts options with or without detailed description.")
+        //.def("__str__", &Triangle::print_options, "Outupts options with or without detailed description.")
+        //.def("__repr__", &Triangle::print_options, "Outupts options with or without detailed description.")
     ;
 
     //SOLVER.hpp
@@ -414,7 +494,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def("openMeshFromFile", static_cast< void (River::Solver::*)(const string fileName)>( &River::Solver::OpenMesh), args("file_name"), "Open mesh data from file. Msh 2 format.")
         .def("staticRefineGrid", &River::Solver::static_refine_grid, "Static adaptive mesh refinment.")
         .def("setBoundaryConditions", &River::Solver::setBoundaryConditions, args("boundary_conditions"), "Set boundary conditions.")
-        .def("numberOfDOFs", &River::Solver::NumberOfDOFs, "Number of refined by Deal.II mesh cells.")
+        .def("numberOfDOFs", &River::Solver::NumberOfDOFs, "Number of degree of freedom.")
+        .def("numberOfCells", &River::Solver::NumberOfRefinedCells, "Number of refined by Deal.II mesh cells.")
         .def("run", &River::Solver::run, "Run fem solution.")
         .def("outputResults", &River::Solver::output_results, args("file_name"), "Save results to VTK file.")
         .def("integrate", &River::Solver::integrate, args("integ", "point", "angle"), "Interation of series parameters around tips points.")
@@ -424,7 +505,10 @@ BOOST_PYTHON_MODULE(riversim)
         .def("setupSystem", &River::Solver::setup_system, "setup_system.")
         .def("assembleSystem", &River::Solver::assemble_system, "assemble_system.")
         .def("solve", &River::Solver::solve, "solve.")
+        .def("value", &River::Solver::value, args("p"), "Returns value of solution at specific coord p.")
         .def("refineGrid", &River::Solver::refine_grid, "refine_grid.")
+        .def("maxCellError", &River::Solver::max_cell_error, "Returns maximal error over all cells.")
+        .def("averageCellError", &River::Solver::average_cell_error, "Returns maximal error over all cells.")
     ;
 
     //MODEL.hpp
@@ -471,7 +555,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def("__repr__", &River::print<BackwardData>)
     ;
 
-    class_<t_GeometryDiffernce >("t_GeometryDiffernce")
+    class_<t_GeometryDiffernce>("t_GeometryDiffernce")
         .def(map_indexing_suite<t_GeometryDiffernce>())
         .def("__str__", &River::print<t_GeometryDiffernce>)
         .def("__repr__", &River::print<t_GeometryDiffernce>)

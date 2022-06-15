@@ -262,7 +262,10 @@ namespace River
         void setup_system();
         void assemble_system(const BoundaryConditions & boundary_conditions);
         void solve();
+        double value(const River::Point &p) const;
         void refine_grid();
+        double max_cell_error();
+        double average_cell_error();
 
         ///Equal operator
         Solver& operator=(const Solver& s);
@@ -298,6 +301,7 @@ namespace River
 
         /// Holds solution of problem.
         Vector<double> solution;
+
         /// Holds right hand side values of linear system.
         Vector<double> system_rhs;
 

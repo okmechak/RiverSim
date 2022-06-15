@@ -14,8 +14,8 @@
  */
 #include "solver.hpp"
 #include <deal.II/grid/grid_tools.h>
-
 #include <string>
+#include <numeric>
 
 namespace River
 {
@@ -232,6 +232,14 @@ namespace River
             preconditioner);
 
         hanging_node_constraints.distribute(solution);
+
+        
+    }
+
+    double Solver::value(const River::Point &p) const
+    {
+        Functions::FEFieldFunction<dim> field_function(dof_handler, solution);
+        return field_function.value(dealii::Point<dim>{p.x, p.y});
     }
 
     void Solver::refine_grid()
@@ -249,6 +257,33 @@ namespace River
                                                         refinment_fraction, coarsening_fraction);
 
         triangulation.execute_coarsening_and_refinement();
+    }
+
+    double Solver::max_cell_error()
+    {
+        Vector<float> estimated_error_per_cell(triangulation.n_active_cells());
+
+        KellyErrorEstimator<dim>::estimate(dof_handler,
+                                           QGauss<dim - 1>(3),
+                                           map<types::boundary_id, const Function<dim> *>(),
+                                           solution,
+                                           estimated_error_per_cell);
+
+        return (double)*max_element(begin(estimated_error_per_cell), end(estimated_error_per_cell));
+    }
+
+    double Solver::average_cell_error()
+    {
+        Vector<float> estimated_error_per_cell(triangulation.n_active_cells());
+
+        KellyErrorEstimator<dim>::estimate(dof_handler,
+                                           QGauss<dim - 1>(3),
+                                           map<types::boundary_id, const Function<dim> *>(),
+                                           solution,
+                                           estimated_error_per_cell);
+
+        return (double)reduce(begin(estimated_error_per_cell), end(estimated_error_per_cell))
+            /static_cast<double>(estimated_error_per_cell.size());
     }
 
     void Solver::static_refine_grid(unsigned int num_of_static_refinments, const double integration_radius, const t_PointList &tips_points)

@@ -415,12 +415,13 @@ namespace River
     //boundary conditions
     void to_json(json& j, const BoundaryConditions& bc)
     {
-        j = json{{"boundary_conditions", t_BoundaryConditions(bc)}};
+        j = json{t_BoundaryConditions(bc)};
     }
+
     void from_json(const json& j, BoundaryConditions& bc)
     {
         t_BoundaryConditions bc_simple;
-        j.at("boundary_conditions").get_to(bc_simple);
+        j.get_to(bc_simple);
         for(const auto&[key, value]: bc_simple)
             bc[key] = value;
     }
@@ -457,12 +458,12 @@ namespace River
     //Region
     void to_json(json& j, const Region& region) 
     {
-        j = json{{"boundaries", (t_Region)region}};
+        j = json{(t_Region)region};
     }
     void from_json(const json& j, Region& region) 
     {
         t_Region b;
-        j.at("boundaries").get_to(b);
+        j.get_to(b);
         for(const auto&[key, value]: b)
             region[key] = value;
     }
@@ -470,12 +471,12 @@ namespace River
     //Sources
     void to_json(json& j, const Sources& sources) 
     {
-        j = json{{"sources", (t_Sources)sources}};
+        j = json{(t_Sources)sources};
     }
     void from_json(const json& j, Sources& sources) 
     {
         t_Sources s;
-        j.at("sources").get_to(s);
+        j.get_to(s);
         for(const auto&[key, value]: s)
             sources[key] = value;
     }
@@ -537,12 +538,12 @@ namespace River
     
     void to_json(json& j, const SeriesParameters& id_series_params) 
     {
-        j = json{{"series_params", (t_SeriesParameters)id_series_params}};
+        j = json{(t_SeriesParameters)id_series_params};
     }
     void from_json(const json& j, SeriesParameters& id_series_params) 
     {
         t_SeriesParameters sp;
-        j.at("series_params").get_to(sp);
+        j.get_to(sp);
         for(const auto&[key, value]: sp)
             id_series_params[key] = value;
     }
