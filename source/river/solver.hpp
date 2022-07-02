@@ -263,6 +263,7 @@ namespace River
         void assemble_system(const BoundaryConditions & boundary_conditions);
         void solve();
         double value(const River::Point &p) const;
+        double valueSafe(const double x, const double y) const;
         void refine_grid();
         double max_cell_error();
         double average_cell_error();

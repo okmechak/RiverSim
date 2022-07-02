@@ -242,6 +242,22 @@ namespace River
         return field_function.value(dealii::Point<dim>{p.x, p.y});
     }
 
+    double Solver::valueSafe(const double x, const double y) const
+    {
+        Functions::FEFieldFunction<dim> field_function(dof_handler, solution);
+        double value;
+        try 
+        {
+            value = field_function.value(dealii::Point<dim>{x, y});
+        }
+        catch(const VectorTools::ExcPointNotAvailableHere &error)
+        {
+            value = 0;
+        }
+        
+        return value;
+    }
+
     void Solver::refine_grid()
     {
         Vector<float> estimated_error_per_cell(triangulation.n_active_cells());
