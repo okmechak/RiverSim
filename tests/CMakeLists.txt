@@ -93,13 +93,13 @@ if(BUILD_TEST)
     #    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary_generator)
 
     #solver
-    #add_executable(tsolver solver.cpp)
-    #target_link_libraries(tsolver solver mesh boundary_generator ${Boost_LIBRARIES})
-    #deal_ii_setup_target(tsolver)
-    #add_test(
-    #    NAME tsolver
-    #    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    #    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tsolver)
+    add_executable(tsolver solver.cpp)
+    target_link_libraries(tsolver solver ${Boost_LIBRARIES})
+    deal_ii_setup_target(tsolver)
+    add_test(
+        NAME tsolver
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tsolver)
 
     #riversim
     #add_executable(triversim riversim.cpp)

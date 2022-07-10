@@ -64,6 +64,8 @@
 #include <unordered_map>
 #include <map>
 #include <utility>
+#include <functional>
+#include <math.h>
 ///\endcond
 
 #include "boundary.hpp"
@@ -92,6 +94,9 @@ namespace River
             \details Parameter is used in River::IntegrationParams::WeightFunction
         */
         double exponant = 2.;
+
+        ///Series parameters precision integration
+        double eps = 1e-10;
 
         /// Weight function used in computation of series parameters.
         inline double WeightFunction(const double r) const
@@ -122,6 +127,78 @@ namespace River
 
         bool operator==(const IntegrationParams &ip) const;
     };
+
+    class Quadrature
+    {
+        public:
+            size_t n = 0;
+            virtual double next() = 0;
+    };
+
+
+    template<typename T> class Trapzd: virtual public Quadrature
+    {
+        public:
+            T f;
+            double s = 0, a, b;
+
+            Trapzd(T func, double aa, double bb):
+                f{func},
+                a{aa},
+                b{bb}
+            {}
+
+            double next()
+            {
+                ++n;
+                if (n==1)
+                    s = (b - a) / 2. * (f(a) + f(b));
+                else if (n > 1)
+                {
+                    auto 
+                        tnm = pow(2., n - 2.),
+                        d = (b - a) / tnm,
+                        x = a + 0.5 * d,
+                        sum = 0.;
+                    for(size_t j = 0; j < tnm; ++j)
+                    {
+                        sum += f(x);
+                        x += d;
+                    }
+                    s = 0.5 * (s + (b - a) * sum / tnm);
+                }
+                return s;
+            }
+    };
+
+    //vector<double> operator+(vector<double>& a, vector<double>& b)
+    //{
+    //    vector<double> c;
+    //    c.resize(a.size());
+    //    for(size_t i = 0; i < c.size(); ++i)
+    //        c[i] = a[i] + b[i];
+    //    return c;
+    //};
+
+    template<typename T>
+    double qtrap(T func, double a, double b, double eps)
+    {
+        auto jmax = (size_t)30;
+        auto s = 0., olds = 0.;
+        auto t = Trapzd(func, a, b);
+        for (size_t i = 0; i < jmax; ++i)
+        {
+            s = t.next();
+            if ( i > 5)
+            {
+                auto cur_eps = abs(s - olds) / abs(olds);
+                if ((cur_eps) < eps || (s < EPS && olds < EPS))
+                    return s;
+            }
+            olds = s;
+        }
+        throw Exception("qtrap: Too many steps in routine.");
+    }
 
     /*! \brief Holds All parameters used in Deal.II solver.
      */
@@ -237,6 +314,14 @@ namespace River
 
         /// Interation of series parameters around tips points using better values evaluation, but slower.
         vector<double> integrate_new(const IntegrationParams &integ, const Point &point, const double angle);
+
+        /// Interation of series parameters around tips points using trapezoidal recursive integration.
+        vector<double> integrate_trap(const IntegrationParams &integ, const Point &point, const double angle);
+
+        /// Evaluate integral values.
+        vector<double> integral_value(const Functions::FEFieldFunction<2> &field_function, 
+            const double rho, const double phi, 
+            const River::Point &tip_coord, const double angle, const IntegrationParams &integ);
 
         /// Integration used for test purpose.
         double region_integral(const Point point = River::Point{0, 0}, const double dr = 100);

@@ -438,6 +438,168 @@ namespace River
         return series_params;
     }
 
+    vector<double> Solver::integral_value(const Functions::FEFieldFunction<2> &field_function, 
+        const double rho, double phi, const River::Point &tip_coord, const double angle,
+        const IntegrationParams &integ)
+    {
+        vector<double> I(6, 0);
+
+        River::Polar cylind_coord{rho, phi};
+        River::Point
+            abs_coord{tip_coord.x + rho * cos(phi + angle), tip_coord.y + rho * sin(phi + angle)},
+            rel_coord = abs_coord - tip_coord;
+        double value = 0;
+        try
+        {
+            value = field_function.value(dealii::Point<dim>{abs_coord.x, abs_coord.y});
+        }
+        catch (const VectorTools::ExcPointNotAvailableHere &error)
+        {}
+
+        // cycle over all series parameters order
+        for (unsigned param_index = 0; param_index < 3; ++param_index)
+        {
+            // preevaluate basevector value
+            auto base_vector_value = integ.BaseVectorFinal(param_index + 1, angle, rel_coord.x, rel_coord.y);
+
+            // integration of weighted integral..
+            I[param_index] += value * base_vector_value * rho;
+
+            //.. and its normalization integral
+            I[3 + param_index] += pow(base_vector_value, 2) * rho;
+        }
+
+        return I;
+    }
+
+    vector<double> operator*(const vector<double>& v, double alfa)
+    {
+        auto w{v};
+        for(auto & w_el: w)
+            w_el = w_el * alfa;
+        return w;
+    }
+
+    vector<double> operator/(const vector<double>& v, double alfa)
+    {
+        auto w{v};
+        for(auto & w_el: w)
+            w_el = w_el / alfa;
+        return w;
+    }
+
+    vector<double> operator+(const vector<double>& v1, const vector<double>& v2)
+    {
+        auto w{v1};
+
+        size_t n = 0;
+        for(auto & w_el: w)
+            w_el = w_el + v2[n++];
+        return w;
+    }
+
+    vector<double> operator-(const vector<double>& v1, const vector<double>& v2)
+    {
+        auto w{v1};
+
+        size_t n = 0;
+        for(auto & w_el: w)
+        {
+            w_el = w_el - v2[n];
+            n++;
+        }
+        return w;
+    }
+
+    vector<double> operator/(const vector<double>& v1, const vector<double>& v2)
+    {
+        auto w{v1};
+
+        size_t n = 0;
+        for(auto & w_el: w)
+        {
+            w_el = w_el / v2[n];
+            n++;
+        }
+        return w;
+    }
+
+    double max_v(const vector<double>& v)
+    {
+        auto m = v.at(0);
+
+        for(auto & v_el: v)
+            if (v_el > m)
+                m = v_el;
+        return m;
+    }
+
+    vector<double> abs_v(const vector<double>& v)
+    {
+        auto w{v};
+        for(auto & w_el: w)
+            if (w_el < 0)
+                w_el = -w_el;
+        return w;
+    }
+
+    vector<double> Solver::integrate_trap(const IntegrationParams &integ, const Point &tip_coord, const double angle)
+    {
+        Functions::FEFieldFunction<dim> field_function(dof_handler, solution);
+
+        // Parameters definition
+        vector<double>
+            integral(3, 0),
+            normalization_integral(3, 0),
+            series_params(3, 0);                  // Series params
+        auto drho = integ.integration_radius / 8; // 8 higher value gives better results
+
+        auto f = [&](double rho, double phi){return integral_value(field_function, rho, phi, tip_coord, angle, integ);};
+
+        auto jmax = (size_t)15;
+        vector<double> s(6, 0), olds(6, 0); 
+        auto a = 0., b = 2*M_PI;
+
+        for (double rho = drho; rho < integ.integration_radius; rho += drho)
+        {
+            auto w = integ.WeightFunction(rho);
+            for(size_t j = 0; j < jmax; ++j)
+            {
+                if (j == 0)
+                    s = (f(rho, b) - f(rho, a)) * (b - a) / 2.; 
+                else if (j > 0)
+                {
+                    auto 
+                        tnm = pow(2., j - 1.),
+                        d = (b - a) / tnm,
+                        x = a + 0.5 * d;
+                    vector<double> sum(6, 0);
+                    for(size_t k = 0; k < tnm; ++k)
+                    {
+                        sum = sum + f(rho, x);
+                        x += d;
+                    }
+                    s = (s + sum * w * d) / 2.;
+                }
+
+                if ( j > 5)
+                {
+                    auto cur_eps = max_v(abs_v(s - olds) / abs_v(olds));
+                    if ((cur_eps) < integ.eps || (max_v(s) < EPS && max_v(olds) < EPS))
+                        goto Finish;
+                }
+                olds = s;
+            }
+        }
+        Finish:
+
+        series_params[0] = s[0] / s[3];
+        series_params[1] = s[1] / s[4];
+        series_params[2] = s[2] / s[5];
+
+        return series_params;
+    }
+
     double Solver::region_integral(const Point point, const double dr)
     {
         FEValues<dim> fe_values(
