@@ -62,7 +62,7 @@ namespace River
     ///Vertice positionn index data type.
     typedef size_t t_vert_pos;
     ///Boundary id data type.
-    typedef size_t t_boundary_id;
+    typedef long int t_boundary_id;
     ///Source id data type.
     typedef size_t t_source_id;
     

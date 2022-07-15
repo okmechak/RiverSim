@@ -472,6 +472,42 @@ namespace River
         return I;
     }
 
+    vector<double> Solver::integral_value_res( 
+        const double rho, double phi, const River::Point &tip_coord, const double angle,
+        const IntegrationParams &integ)
+    {
+        Functions::FEFieldFunction<dim> field_function(dof_handler, solution);
+        
+        vector<double> I(6, 0);
+
+        River::Polar cylind_coord{rho, phi};
+        River::Point
+            abs_coord{tip_coord.x + rho * cos(phi + angle), tip_coord.y + rho * sin(phi + angle)},
+            rel_coord = abs_coord - tip_coord;
+        double value = 0;
+        try
+        {
+            value = field_function.value(dealii::Point<dim>{abs_coord.x, abs_coord.y});
+        }
+        catch (const VectorTools::ExcPointNotAvailableHere &error)
+        {}
+
+        // cycle over all series parameters order
+        for (unsigned param_index = 0; param_index < 3; ++param_index)
+        {
+            // preevaluate basevector value
+            auto base_vector_value = integ.BaseVectorFinal(param_index + 1, angle, rel_coord.x, rel_coord.y);
+
+            // integration of weighted integral..
+            I[param_index] += value * base_vector_value * rho;
+
+            //.. and its normalization integral
+            I[3 + param_index] += pow(base_vector_value, 2) * rho;
+        }
+
+        return I;
+    }
+
     vector<double> operator*(const vector<double>& v, double alfa)
     {
         auto w{v};
@@ -552,7 +588,7 @@ namespace River
             integral(3, 0),
             normalization_integral(3, 0),
             series_params(3, 0);                  // Series params
-        auto drho = integ.integration_radius / 8; // 8 higher value gives better results
+        auto drho = integ.integration_radius / integ.n_rho; // 8 higher value gives better results
 
         auto f = [&](double rho, double phi){return integral_value(field_function, rho, phi, tip_coord, angle, integ);};
 

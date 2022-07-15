@@ -71,7 +71,7 @@ namespace River
             ///e - outputs list of edges
             bool OutputEdges = false;
             ///n - outputs neighbours
-            bool ComputeNeighbours = true;
+            bool ComputeNeighbours = false;
             ///I - suppress file mesh iteration number
             bool SuppressMehsFileNumbering = false;
             ///O - suppress holes

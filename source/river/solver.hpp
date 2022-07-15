@@ -98,6 +98,9 @@ namespace River
         ///Series parameters precision integration
         double eps = 1e-10;
 
+        /// Rho integration step
+        double n_rho = 8;
+
         /// Weight function used in computation of series parameters.
         inline double WeightFunction(const double r) const
         {
@@ -320,6 +323,11 @@ namespace River
 
         /// Evaluate integral values.
         vector<double> integral_value(const Functions::FEFieldFunction<2> &field_function, 
+            const double rho, const double phi, 
+            const River::Point &tip_coord, const double angle, const IntegrationParams &integ);
+
+        /// Evaluate integral values.
+        vector<double> integral_value_res( 
             const double rho, const double phi, 
             const River::Point &tip_coord, const double angle, const IntegrationParams &integ);
 
