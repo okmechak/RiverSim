@@ -302,9 +302,8 @@ namespace River
         }
         else if(growth_type == 1)
         {
-            auto dy = 1 / pow(beta, 2) / 9 
-                * ( pow( 27 / 2 * dl / pow(beta, 2) + 1, 2./3.) - 1 ),
-                dx = 2*sqrt( pow(dy, 3) / pow(beta, 2) + pow(dy, 4) / pow(beta, 3));
+            auto dy = pow(beta, -2) / 9 * ( pow( 27 / 2 * dl / pow(beta, -2) + 1, 2./3.) - 1 ),
+                dx = 2 * sqrt( pow(dy, 3) / pow(beta, -2) + pow(dy, 4) / pow(beta, -3));
                 
             return ToPolar(Point{dx, dy}.rotate(-M_PI/2));
         }
