@@ -14,12 +14,10 @@ Program is written in C++ Language.  And contains few built-in  and external dep
 #### Built-in dependencies:
   * [__Triangle__](http://www.cs.cmu.edu/afs/cs/Web/People/quake/triangle.html) - robust and state of the art mesh generation tool.  
   * [__Tethex__](https://github.com/martemyev/tethex/wiki) - tool used for convertation from triangles to quadrangels.
-  * [__cxxopts__](https://github.com/jarro2783/cxxopts) - c++ header library used to process command line options. Has same syntaxys as Boost program options.
-
+  
 #### External dependencies:
 * [__Deal.II__](https://www.dealii.org/) - A C++ software library supporting the creation of finite element codes and an open community of users and developers.
 * [__Boost__](https://www.boost.org/doc/libs/1_66_0/libs/test/doc/html/index.html) - used for unit testing.
-* [__Doxygen__](https://www.doxygen.nl/index.html) - used for documentation and web page generation.
 
 
 ## 1. System setup
@@ -34,8 +32,6 @@ easiest way to install them all is:
 
 also _Cmake_ with curses gui(Terminal gui) is very handy:
 > sudo apt install cmake-curses-gui
-> sudo apt install doxygen
-> sudo apt install graphviz
 
 and call command is same as cmake, but:
 > ccmake <path-to-source> 
@@ -88,21 +84,7 @@ After compiling, simply type a command:
 
 ## 3. How to use RiverSim program
 
-As any Linux program, now just type in terminal from folder source(in your build folder) command:
-  > ./riversim
-
-More details about parameters you can find in __help__ of program:
-  > ./riversim -h
-or
-  > ./riversim --help
-  
-Typical forward river simulation command:
-> ./riversim -n 100 -o simdata
-
-And after that, typical backward simulation commnad:
-> ./riversim -n 130 -o revsim --simulation-type=1 simdata.json
-  
-add more details about workflow with program(TODO)..
+import riversimpy
 
 
 ## 4. References
