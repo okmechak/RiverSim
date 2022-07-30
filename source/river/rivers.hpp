@@ -1,33 +1,3 @@
-/*
-    riversim - river growth simulation.
-    Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues
-    
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
- */
-
-/*! \file rivers.hpp
-    \brief
-    Holds all functionality that you need to work with tree(network) of river, 
-    its separate branches and generation of final boundary geometry.
-
-    \details
-    File holds two classes: __River::BranchNew__ and __River::Tree__.
-    As you can see from picture - River::Branch is simple array joined points - piecewice line, 
-    aproximation of real river branch. River::Rivers on other hand consist from combination of Branches.
-    __Bifurcation point__ - where two rivers unions into one river. So each branch has its subbranches.
-    Structure of branches and sub branches is represented here in class River::Rivers.
-
-    \sa River::Rivers, River::Branch
- */
-
 #pragma once
 
 ///\cond
@@ -140,9 +110,6 @@ namespace River
             
             ///Generate smooth branch with removed some vertices. Coarsening is controlled by min_degree and also by ignored_distance. Smoothing starts from end.
             Branch generateSmoothBoundary(const double min_degree, const double ignored_distance) const;
-
-            ///Prints branch and all its parameters.
-            friend ostream& operator<<(ostream& write, const Branch & b);
 
             ///Comparison of branches.
             bool operator==(const Branch& br) const;
@@ -281,8 +248,5 @@ namespace River
 
             ///Holds realations between root branhces and its subbranches.
             map<t_branch_id, t_branch_id_pair> branches_relation;   
-
-            ///Prints tree to stream.
-            friend ostream& operator<<(ostream& write, const Rivers & b);
     };
 }//namespace River

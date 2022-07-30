@@ -1,27 +1,3 @@
-/*
-    riversim - river growth simulation.
-    Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues
-
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
-*/
-
-/*! \file boundary.hpp
-    \brief Generate initial predefinide boundary geometry and its source positions.
-    
-    \details First step at beginning of solving this problem is defining a region. It should be quite flexible, cos
-    for testing purposes we want to use simple rectangular region, but for real models we need almost any shape
-    with any source position on this boundary.
-    For additional information see \ref River::Boundary.
-*/
-
 #pragma once
 
 ///\cond
@@ -79,7 +55,6 @@ namespace River
         public:
             ///Returns map structure with boundary conditions of specific type(Neuman or Dirichlet).
             t_BoundaryConditions Get(t_boundary type) const;
-            friend ostream& operator <<(ostream& write, const BoundaryConditions & bcs);
     };
     
     ///Source point coordinate data type. Pair which holds boundary id and vertice position on this id.
@@ -122,7 +97,6 @@ namespace River
             ///Boundary condition id.
             t_boundary_id boundary_id = 0;
 
-            friend ostream& operator <<(ostream& write, const Line & line);
             bool operator==(const Line& line) const;
     };
 
@@ -155,7 +129,6 @@ namespace River
             ///Generate smooth boundaries with removed some vertices. Coarsening is controlled by min_degree and also by ignored_distance. Smoothing starts from end.
             Boundary generateSmoothBoundary(const double min_degree, const double ignored_distance) const;
             bool operator==(const Boundary& simple_boundary) const;
-            friend ostream& operator <<(ostream& write, const Boundary & boundary);
     };
 
     ///Source point of river holds coordinates and dirrection.

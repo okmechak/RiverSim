@@ -1,23 +1,5 @@
-/*! \file triangle.hpp
+#pragma once
 
-    \brief
-    Piece of Art Mesh Generation Tool,
-    Winner of the 2003 James Hardy Wilkinson Prize in Numerical Software.
-
-    \details
-    Include file for programs that call Triangle.
-
-    \version Accompanies Triangle Version 1.6
-    \date July 28, 2005
-
-    \copyright 1996, 2005
-    \author Jonathan Richard Shewchuk
-    2360 Woolsey \#H
-    Berkeley, California  94705-1927
-    jrs@cs.berkeley.edu
-*/
-
-///\cond
 typedef long double longdouble;
 #define REAL longdouble
 
@@ -25,7 +7,6 @@ typedef long double longdouble;
 #include <cmath>
 #include <float.h>
 
-///\endcond
 
 #include "boundary.hpp"
 
@@ -176,9 +157,6 @@ namespace River
 
       return result_area;
     }
-
-    /// Prints program options structure to output stream.
-    friend ostream &operator<<(ostream &write, const MeshParams &mp);
 
     bool operator==(const MeshParams &mp) const;
   };

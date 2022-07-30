@@ -46,11 +46,6 @@ target_link_libraries(model rivers solver region triangle)
 install(TARGETS model DESTINATION riversim)
 
 #io
-add_library(io STATIC io.hpp io.cpp json.hpp version.hpp)
+add_library(io STATIC io.hpp io.cpp json.hpp)
 target_link_libraries(io model)
 install(TARGETS io DESTINATION riversim)
-
-#riversolver
-add_library(riversolver STATIC riversolver.hpp riversolver.cpp) 
-target_link_libraries(riversolver io)
-install(TARGETS riversolver DESTINATION riversim)

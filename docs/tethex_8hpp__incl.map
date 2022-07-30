@@ -1,5 +1,0 @@
-<map id="tethex.hpp" name="tethex.hpp">
-<area shape="rect" id="node1" title="Classes for holding mesh and converting by splitting triangles to quadrangles." alt="" coords="14,5,106,32"/>
-<area shape="rect" id="node2" href="$boundary_8hpp.html" title="Generate initial predefinide boundary geometry and its source positions." alt="" coords="5,80,115,107"/>
-<area shape="rect" id="node3" href="$point_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program." alt="" coords="19,155,101,181"/>
-</map>

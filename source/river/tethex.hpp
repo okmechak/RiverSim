@@ -13,18 +13,6 @@
     GNU General Public License for more details.
 */
 
-/*! \file tethex.hpp
-    \brief Classes for holding mesh and converting by splitting triangles to quadrangles.
-    
-    \details
-    Here we have implemented several classes for holding mesh elements in one data structure.
-    Like vertices, physical points, lines, triangles and quadrangles as you can see all elements are 2D.
-    As Deal.II can work only with quadrangular elements, \ref tethex::Mesh class holds important function:
-    \ref tethex::Mesh::convert which converts triangular elements into quadragular by splitting
-    triangles.
-    \imageSize{TrianglesToQuadrangles.jpg, height:40%;width:40%;, }
-*/
-
 #pragma once
 
 ///\cond

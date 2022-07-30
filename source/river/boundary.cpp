@@ -1,18 +1,3 @@
-/*
-    riversim - river growth simulation.
-    Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues
-        
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
- */
-
 #include "boundary.hpp"
 ///\cond
 #define _USE_MATH_DEFINES
@@ -30,25 +15,6 @@ namespace River
         return value == bc.value && type == bc.type;
     }
 
-    ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition)
-    {
-        switch (boundary_condition.type)
-        {
-            case DIRICHLET:
-                write << "boudary type: Dirichlet, ";
-                break;
-            case NEUMAN:
-                write << "boudary type: Neuman, ";
-                break;
-            default:
-                write << "boudary type: Undefined(" <<boundary_condition.type << "), ";
-                break;
-        }
-        write << "value: " << boundary_condition.value;
-
-        return write;
-    }
-
     //BoundaryConditions
     t_BoundaryConditions BoundaryConditions::Get(t_boundary type) const
     {
@@ -61,13 +27,6 @@ namespace River
                 bd[boundary_id] = boundary_condition;
 
         return bd;
-    }
-
-    ostream& operator <<(ostream& write, const BoundaryConditions & bcs)
-    {
-        for(const auto&[id, value]: bcs)
-            write << "id = " << id << ", " << value << endl;
-        return write;
     }
 
     //Sources
@@ -84,13 +43,6 @@ namespace River
     bool Line::operator==(const Line& line) const
     {
         return p1 == line.p1 && p2 == line.p2 && boundary_id == line.boundary_id;
-    }
-    ostream& operator <<(ostream& write, const Line & line)
-    {
-        write << "line [ " << line.p1 << ", " << line.p2 
-            << "], boundary_id = " << line.boundary_id;
-
-        return write;
     }
 
     //Boundary
@@ -257,18 +209,5 @@ namespace River
     {
         return vertices == boundary.vertices 
             && lines == boundary.lines;
-    }
-
-    ostream& operator <<(ostream& write, const Boundary & boundary)
-    {
-        write << "Vertices:" << endl;
-        for(const auto& v: boundary.vertices)
-            write << v << endl;
-
-        write << "Lines:" << endl;
-        for(const auto& l: boundary.lines)
-            write << l << endl;
-
-        return write;
     }
 }

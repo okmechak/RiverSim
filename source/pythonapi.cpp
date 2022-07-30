@@ -2,7 +2,7 @@
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
-#include "riversolver.hpp"
+#include "io.hpp"
 
 using namespace boost::python;
 using namespace River;
@@ -529,56 +529,17 @@ BOOST_PYTHON_MODULE(riversim)
         .def("__repr__", &River::print<vector<vector<double>>>)
     ;
 
-    class_<t_SeriesParameters >("t_SeriesParameters")
-        .def(map_indexing_suite<t_SeriesParameters>())
-        .def("__str__", &River::print<t_SeriesParameters>)
-        .def("__repr__", &River::print<t_SeriesParameters>)
-    ;
-
-    class_<SeriesParameters, bases<t_SeriesParameters> >("t_SeriesParameters", "Used for collection of tip points series parameters.", init<>())
-        .def("record", &River::SeriesParameters::record, args("id_series_params"), "Clear Solver object.")
-        .def("__str__", &River::print<SeriesParameters>)
-        .def("__repr__", &River::print<SeriesParameters>)
-    ;
-
-    class_<SimulationData >("SimulationData")
-        .def(map_indexing_suite<SimulationData>())
-        .def("__str__", &River::print<SimulationData>)
-        .def("__repr__", &River::print<SimulationData>)
-    ;
-
-    class_<BackwardData >("BackwardData")
-        .def(self == self)
-        .def_readwrite("a1", &BackwardData::a1, "First series parameters.")
-        .def_readwrite("a2", &BackwardData::a2, "Second series parameters.")
-        .def_readwrite("a3", &BackwardData::a3, "Third series parameters.")
-        .def_readwrite("init", &BackwardData::init, "Initial points.")
-        .def_readwrite("backward", &BackwardData::backward, "Backward points.")
-        .def_readwrite("backward_forward", &BackwardData::backward_forward, "Backward forward points.")
-        .def_readwrite("branch_lenght_diff", &BackwardData::branch_lenght_diff, "Branch length difference.")
-        .def("__str__", &River::print<BackwardData>)
-        .def("__repr__", &River::print<BackwardData>)
-    ;
-
-    class_<t_GeometryDiffernce>("t_GeometryDiffernce")
-        .def(map_indexing_suite<t_GeometryDiffernce>())
-        .def("__str__", &River::print<t_GeometryDiffernce>)
-        .def("__repr__", &River::print<t_GeometryDiffernce>)
-    ;
-
     class_<Model>("Model")
         .def("initializeLaplace", &Model::InitializeLaplace, "Initialize problem to Laplacea boundary conditions.")
         .def("initializePoisson", &Model::InitializePoisson, "Initialize problem to Poisson boundary conditions.")
         .def("initializeDirichlet", &Model::InitializeDirichlet, "Initialize proble to Dirichlet boundary conditions.")
         .def("initializeDirichletWithHole", &Model::InitializeDirichletWithHole, "Intialize problem to Dirirchlet boundary conditions with hole.")
         .def("clear", &Model::clear, "Clear all data")
-        .def("revertLastSimulationStep", &Model::RevertLastSimulationStep, "Revert to last simulation step.")
         .def("qBifurcate", static_cast< bool (Model::*)(const vector<double>&) const>( &Model::q_bifurcate), "Checks by evaluating series params for bifuraction condition.")
         .def("qBifurcate", static_cast< bool (Model::*)(const vector<double>&, double branch_lenght) const>( &Model::q_bifurcate), "Checks by evaluating series params for bifuraction condition.")
         .def("qGrowth", &Model::q_growth, "Growth condition. Checks series parameters around river tip and evaluates if it is enough to grow.")
         .def("nextPoint", static_cast< Polar (Model::*)(const vector<double>&, double branch_lenght, double max_a)>(&Model::next_point), "Evaluate next point of simualtion based on series parameters around tip.")
         .def("nextPoint", static_cast< Polar (Model::*)(const vector<double>&) const>(&Model::next_point), "Evaluate next point of simualtion based on series parameters around tip.")
-        .def("checkParametersConsistency", &Model::CheckParametersConsistency, "Checks if values of parameters are in normal ranges.")   
         .def(self == self)
         .def_readwrite("region", &Model::region, "Region of simulation.")
         .def_readwrite("boundary", &Model::boundary, "Region converted to boundary of simulation.")
@@ -588,9 +549,6 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("boundary_conditions", &Model::boundary_conditions, "Boundary conditions data structure.")
         .def_readwrite("solver_params", &Model::solver_params, "Solver parameteres.")
         .def_readwrite("integr_params", &Model::integr, "Intergration around tip points parameters.")
-        .def_readwrite("series_parameters", &Model::series_parameters, "Series parameters data structure.")
-        .def_readwrite("sim_data", &Model::sim_data, "Simulation data.")
-        .def_readwrite("backward_data", &Model::backward_data, "Backward simulation data.")
         .def_readwrite("simulation_type", &Model::simulation_type, "Simulation type: 0 - Forward linear, 1 - Forward non linear, 2 - backward.")
         .def_readwrite("number_of_steps", &Model::number_of_steps, "Number of simulation steps.")
         .def_readwrite("maximal_river_height", &Model::maximal_river_height, "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.")
@@ -614,53 +572,6 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     //IO.hpp
-    def("programTitle", ProgramTitle, "Returns program title string.");
-
-    def("print_ascii_signature", print_ascii_signature);
-
-    def("version_string", version_string, "returns program version string");
-
-    def("print_version", print_version);
-
-    class_<ProgramOptions >("ProgramOptions")
-        .def(self == self)
-        .def_readwrite("save_vtk", &ProgramOptions::save_vtk, "Outputs VTK file of Deal.II solution.")
-        .def_readwrite("save_each_step", &ProgramOptions::save_each_step)
-        .def_readwrite("verbose", &ProgramOptions::verbose, "If true - then program will print to standard output.")
-        .def_readwrite("debug", &ProgramOptions::debug, "If true - then program will save additional output files for each stage of simulation.")
-        .def_readwrite("output_file_name", &ProgramOptions::output_file_name)
-        .def_readwrite("input_file_name", &ProgramOptions::input_file_name)
-        .def("__str__", &River::print<ProgramOptions>)
-        .def("__repr__", &River::print<ProgramOptions>)
-    ;
-
     def("save", Save, args("model", "file_name"), "Saves current program state to file.");
     def("open", Open, args("model", "file_name"), "Opens program state from file.");
-
-    //RIVERSOLVER.hpp
-    class_<t_ids_series_params>("t_ids_series_params", "Holds for each tip id its series parameters.")
-        .def(map_indexing_suite<t_ids_series_params>())
-    ;
-    
-    class_<River::RiverSolver, boost::noncopyable>("RiverSolver", "Algorithms of river evolution.", init<const River::Model, const River::ProgramOptions>(args("model", "prog_opt")))
-    //    .def(init<const Model, const ProgramOptions>(args("model", "prog_opt")))
-        .def("run", &RiverSolver::run)
-        .def("linearSolver", &RiverSolver::linearSolver)
-        .def("nonLinearSolver", &RiverSolver::nonLinearSolver)
-        .def("backwardSolver", &RiverSolver::backwardSolver)
-        .def("linearStep", &RiverSolver::linearStep)
-        .def("nonLinearStep", &RiverSolver::nonLinearStep)
-        .def("backwardStep", &RiverSolver::backwardStep)
-        .def("shrinkStep", &RiverSolver::shrinkStep)
-        .def("solve_and_evaluate_series_parameters", &RiverSolver::solve_and_evaluate_series_parameters)
-        .def("get_max_a1", &RiverSolver::get_max_a1)
-        .def("growth_stop_condition", &RiverSolver::growth_stop_condition)
-        .def_readwrite("model", &RiverSolver::model)
-        .def_readwrite("prog_opt", &RiverSolver::prog_opt)
-        .def_readwrite("verbose", &RiverSolver::verbose)
-        .def_readwrite("triangle", &RiverSolver::triangle)
-        .def_readwrite("mesh", &RiverSolver::mesh)
-        .def_readwrite("solver", &RiverSolver::solver)
-    ;
-
 }

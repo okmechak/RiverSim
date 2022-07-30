@@ -1,18 +1,3 @@
-/*
- * riversim - river growth simulation.
- * Copyright (c) 2019 Oleg Kmechak
- * Report issues: github.com/okmechak/RiverSim/issues
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- */
-
 #include "rivers.hpp"
 
 ///\cond
@@ -199,25 +184,6 @@ namespace River
         smooth_branch.lines = smooth_boundary.lines;
         
         return smooth_branch;
-    }
-
-    ostream& operator<<(ostream& write, const Branch & b)
-    {
-        
-        write << "Branch " << endl;
-        write << "  lenght - " << b.Lenght() << endl;
-        write << "  number of vertices - " << b.vertices.size() << endl;
-        write << "  source angle - " << b.source_angle << endl;
-
-        int i = 0;
-        for(auto & p: b.vertices)
-            write <<"   " << i++ << " ) " << p << endl;
-
-        i = 0;
-        for(auto & l: b.lines)
-            write <<"   " << i++ << " ) " << l << endl;
-
-        return write;
     }
 
     bool Branch::operator==(const Branch& br) const
@@ -635,19 +601,5 @@ namespace River
     {
         if (!this->count(id)) 
             throw Exception("Branch with id: " + to_string(id) + " do not exist");
-    }
-
-    ostream& operator<<(ostream& write, const Rivers & b)
-    {
-        write << "branches relations: " << endl;
-        for(auto key_val: b.branches_relation)
-            write << key_val.first << " left: " << key_val.second.first 
-                << " right: " << key_val.second.second << endl;
-
-        write << "branches: " << endl;
-        for(const auto& br: b)
-            write << br.second << endl;
-        
-        return write;
     }
 }

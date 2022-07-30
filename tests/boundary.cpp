@@ -1,7 +1,6 @@
 //Link to Boost
 //#define BOOST_TEST_DYN_LINK
 
-//Define our Module name (prints at testing)
 #define BOOST_TEST_MODULE "Boundary Class"
 
 //VERY IMPORTANT - include this last
@@ -63,7 +62,7 @@ BOOST_AUTO_TEST_CASE( Line_test,
     BOOST_TEST(l1.p1 == 1);
     BOOST_TEST(l1.p2 == 2);
     BOOST_TEST(l1.boundary_id == 3);
-    BOOST_TEST(l1 == l2);
+    BOOST_TEST((l1 == l2));
 }
 
 BOOST_AUTO_TEST_CASE( SimpleBoundary_ReplaceElement, 
@@ -138,11 +137,11 @@ BOOST_AUTO_TEST_CASE( SimpleBoundary_Append,
     
     auto expected_vertices_1 = vector<Point>{{0, 0}, {0, 1}};
     for(size_t i = 0; i < expected_vertices_1.size(); ++i)
-        BOOST_TEST(b_base.vertices.at(i) == expected_vertices_1.at(i));
+        BOOST_TEST((b_base.vertices.at(i) == expected_vertices_1.at(i)));
     
     auto expected_lines_1 = vector<Line>{{0, 1, 1}};
     for(size_t i = 0; i < expected_lines_1.size(); ++i)
-        BOOST_TEST(b_base.lines.at(i) == expected_lines_1.at(i));
+        BOOST_TEST((b_base.lines.at(i) == expected_lines_1.at(i)));
 
     b_insert_2.vertices = {{0.3, 0}, {0.3, 0.1}, {0.5, 0.1}, {0.5, 0}};
     b_insert_2.lines = {{0, 1, 0}, {1, 2, 0}, {2, 3, 0}};
@@ -151,9 +150,9 @@ BOOST_AUTO_TEST_CASE( SimpleBoundary_Append,
     
     auto expected_vertices_2 = vector<Point>{{0, 0}, {0, 1}, {0.3, 0}, {0.3, 0.1}, {0.5, 0.1}, {0.5, 0}};
     for(size_t i = 0; i < expected_vertices_2.size(); ++i)
-        BOOST_TEST(b_base.vertices.at(i) == expected_vertices_2.at(i));
+        BOOST_TEST((b_base.vertices.at(i) == expected_vertices_2.at(i)));
     
     auto expected_lines_2 = vector<Line>{{0, 1, 1}, {2, 3, 0}, {3, 4, 0}, {4, 5, 0}};
     for(size_t i = 0; i < expected_lines_2.size(); ++i)
-        BOOST_TEST(b_base.lines.at(i) == expected_lines_2.at(i));
+        BOOST_TEST((b_base.lines.at(i) == expected_lines_2.at(i)));
 }

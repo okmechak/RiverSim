@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     BOOST_TEST_CHECKPOINT("Check");
     BOOST_CHECK_THROW(region.Check(), Exception);
     BOOST_TEST_CHECKPOINT("GetHolesList");
-    BOOST_TEST(region.GetHolesList() == vector<Point>{});
+    BOOST_TEST((region.GetHolesList() == vector<Point>{}));
     BOOST_TEST_CHECKPOINT("GetSourcesIdsPointsAndAngles");
     Sources sources;
     BOOST_TEST(region.GetSourcesIdsPointsAndAngles(sources) == t_rivers_interface{});
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
 
     //non empty boudary checks
     BOOST_CHECK_NO_THROW(region.Check());
-    BOOST_TEST(region.GetHolesList() == vector<Point>{});
+    BOOST_TEST((region.GetHolesList() == vector<Point>{}));
     auto s = t_rivers_interface{{1,{{source_x_position, 0}, M_PI/2}}};
     BOOST_TEST(region.GetSourcesIdsPointsAndAngles(sources) == s);
 
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     //checks with inner boundaries
     BOOST_CHECK_NO_THROW(region.Check());
     auto holes_list = vector<Point>{{0.5*width, 0.5*height}};
-    BOOST_TEST(region.GetHolesList() == holes_list);
+    BOOST_TEST((region.GetHolesList() == holes_list));
     s = t_rivers_interface{
         {1, {{source_x_position, 0}, M_PI/2}},
         {2, {{0.75 * width, 0.75 * height}, M_PI/4}}
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     sources[8] = {2, 2};
     sources[9] = {2, 3};
    
-    BOOST_TEST(region.GetHolesList() == holes_list);
+    BOOST_TEST((region.GetHolesList() == holes_list));
     s = t_rivers_interface
     {
         {1, {{0, 0}, M_PI/4}},
@@ -140,8 +140,8 @@ BOOST_AUTO_TEST_CASE( Boundaries_some_methods,
     {
         BOOST_TEST_MESSAGE("source id: " + to_string(id));
         BOOST_TEST(s_2.count(id));
-        BOOST_TEST(s_2.at(id).first == p.first);
-        BOOST_TEST(s_2.at(id).second == p.second);
+        BOOST_TEST((s_2.at(id).first == p.first));
+        BOOST_TEST((s_2.at(id).second == p.second));
     }
 }
 
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE( MakeRectangular,
     BOOST_CHECK_THROW(region.Check(), Exception);
     auto sources = region.MakeRectangular();
     
-    BOOST_TEST(region.GetHolesList() == vector<Point>{});
+    BOOST_TEST((region.GetHolesList() == vector<Point>{}));
 
     auto sources_ids_points_and_angles_map = region.GetSourcesIdsPointsAndAngles(sources);
     BOOST_TEST(sources_ids_points_and_angles_map.count(1));
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     auto expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}};
     BOOST_TEST(boundary.lines.size() == 2);
     for(size_t i = 0; i < expected_lines.size(); ++i)
-        BOOST_TEST(boundary.lines.at(i) == expected_lines.at(i));
+        BOOST_TEST((boundary.lines.at(i) == expected_lines.at(i)));
 
     //tree with three points
     rivers.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}, {2, 3, 10}, {3, 4, 10}};
     BOOST_TEST(boundary.lines.size() == 4);
     for(size_t i = 0; i < expected_lines.size(); ++i)
-        BOOST_TEST(boundary.lines.at(i) == expected_lines.at(i));
+        BOOST_TEST((boundary.lines.at(i) == expected_lines.at(i)));
 }
 
 BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator, 
@@ -261,18 +261,18 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
         {11, 12, 10}, {12, 13, 11}, {13, 14, 12}, {14, 11, 13},
     };
 
-    BOOST_TEST(region.GetHolesList() == holes);
+    BOOST_TEST((region.GetHolesList() == holes));
     BOOST_TEST(boundary.vertices.size() == 15);
     for(size_t i = 0; i < vertices.size(); ++i)
     {
-        BOOST_TEST(boundary.vertices.at(i) == vertices.at(i));
-        BOOST_TEST(boundary.lines.at(i) == lines.at(i));
+        BOOST_TEST((boundary.vertices.at(i) == vertices.at(i)));
+        BOOST_TEST((boundary.lines.at(i) == lines.at(i)));
     }
 }
 
 inline void TEST_POINT(River::Point p1, River::Point p2)
 {
-    BOOST_TEST(p1 == p2);
+    BOOST_TEST((p1 == p2));
 }
 
 BOOST_AUTO_TEST_CASE( boundary_generator_new, 
@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     RiversBoundary(boundary, rivers, 1, 1e-3);
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
 
     t_boundary_id boundary_id = 0;
     auto& br = rivers.at(1);
@@ -299,11 +299,11 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     RiversBoundary(boundary, rivers, 1, 1e-3);
     BOOST_TEST(boundary.vertices.size() == 3);
     p = River::Point{0.5 - 1e-3/2, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
     p = River::Point{0.5, 0.1};
-    BOOST_TEST(boundary.vertices.at(1) == p);
+    BOOST_TEST((boundary.vertices.at(1) == p));
     p = River::Point{0.5 + 1e-3/2, 0};
-    BOOST_TEST(boundary.vertices.at(2) == p);
+    BOOST_TEST((boundary.vertices.at(2) == p));
 
     boundary = Boundary{};
     br.AddPoint(River::Polar{0.1, 0}, boundary_id);
@@ -369,7 +369,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     cout << i2;
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
 
     t_boundary_id boundary_id = 0;
     rivers.at(i1).AddPoint(Polar{0.1, 0}, boundary_id);
@@ -395,7 +395,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     RiversBoundary(boundary, rivers, 1, 1e-3);
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
 
     t_boundary_id boundary_id = 0;
     auto& br = rivers.at(1);
@@ -405,11 +405,11 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     RiversBoundary(boundary, rivers, 1, 1e-3);
     BOOST_TEST(boundary.vertices.size() == 3);
     p = River::Point{0.5 - 1e-3/2, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
     p = River::Point{0.5, 0.1};
-    BOOST_TEST(boundary.vertices.at(1) == p);
+    BOOST_TEST((boundary.vertices.at(1) == p));
     p = River::Point{0.5 + 1e-3/2, 0};
-    BOOST_TEST(boundary.vertices.at(2) == p);
+    BOOST_TEST((boundary.vertices.at(2) == p));
 
 
     boundary = Boundary{};
@@ -476,7 +476,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     cout << i2;
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
     
     t_boundary_id boundary_id = 0;
     rivers.at(i1).AddPoint(Polar{0.1, 0}, boundary_id);
@@ -1056,8 +1056,8 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
     for(size_t i = 0; i < boundary.vertices.size(); ++i)
     {
         BOOST_TEST_MESSAGE(to_string(i));
-        BOOST_TEST(boundary.vertices.at(i) == vertices.at(i));
-        BOOST_TEST(   boundary.lines.at(i) == lines.at(i));
+        BOOST_TEST((boundary.vertices.at(i) == vertices.at(i)));
+        BOOST_TEST(   (boundary.lines.at(i) == lines.at(i)));
     }      
 
     BOOST_TEST(region.holes == holes);
@@ -1100,7 +1100,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary__,
     auto expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}};
     BOOST_TEST(boundary.lines.size() == 2);
     for(size_t i = 0; i < expected_lines.size(); ++i)
-        BOOST_TEST(boundary.lines.at(i) == expected_lines.at(i));
+        BOOST_TEST((boundary.lines.at(i) == expected_lines.at(i)));
 
     //tree with three points
     tree.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
@@ -1110,7 +1110,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary__,
     expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}, {2, 3, 10}, {3, 4, 10}};
     BOOST_TEST(boundary.lines.size() == 4);
     for(size_t i = 0; i < expected_lines.size(); ++i)
-        BOOST_TEST(boundary.lines.at(i) == expected_lines.at(i));
+        BOOST_TEST((boundary.lines.at(i) == expected_lines.at(i)));
 }
 
 
@@ -1153,12 +1153,12 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generato_r,
         {11, 12, 10}, {12, 13, 11}, {13, 14, 12}, {14, 11, 13},
     };
 
-    BOOST_TEST(region.GetHolesList() == holes);
+    BOOST_TEST((region.GetHolesList() == holes));
     BOOST_TEST(boundary.vertices.size() == 15);
     for(size_t i = 0; i < vertices.size(); ++i)
     {
-        BOOST_TEST(boundary.vertices.at(i) == vertices.at(i));
-        BOOST_TEST(boundary.lines.at(i) == lines.at(i));
+        BOOST_TEST((boundary.vertices.at(i) == vertices.at(i)));
+        BOOST_TEST((boundary.lines.at(i) == lines.at(i)));
     }
 }
 
@@ -1178,7 +1178,7 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_sdf,
     RiversBoundary(boundary, rivers, 1, 1e-3);
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
 
     t_boundary_id boundary_id = 0;
     auto& br = rivers.at(1);
@@ -1188,11 +1188,11 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_sdf,
     RiversBoundary(boundary, rivers, 1, 1e-3);
     BOOST_TEST(boundary.vertices.size() == 3);
     p = River::Point{0.5 - 1e-3/2, 0};
-    BOOST_TEST(boundary.vertices.at(0) == p);
+    BOOST_TEST((boundary.vertices.at(0) == p));
     p = River::Point{0.5, 0.1};
-    BOOST_TEST(boundary.vertices.at(1) == p);
+    BOOST_TEST((boundary.vertices.at(1) == p));
     p = River::Point{0.5 + 1e-3/2, 0};
-    BOOST_TEST(boundary.vertices.at(2) == p);
+    BOOST_TEST((boundary.vertices.at(2) == p));
 
 
     boundary = Boundary{};
@@ -1318,28 +1318,28 @@ BOOST_AUTO_TEST_CASE( debug_python_code_test,
     //generatre boundary
     auto boundary = BoundaryGenerator(sources, region, rivers, river_width);
 
-    BOOST_TEST(boundary.vertices.at(0) == vertices.at(0));
-    BOOST_TEST(   boundary.lines.at(0) ==    lines.at(0));      
-    BOOST_TEST(boundary.vertices.at(1) == vertices.at(1));
-    BOOST_TEST(   boundary.lines.at(1) ==    lines.at(1));      
-    BOOST_TEST(boundary.vertices.at(2) == vertices.at(2));
-    BOOST_TEST(   boundary.lines.at(2) ==    lines.at(2));      
-    BOOST_TEST(boundary.vertices.at(3) == vertices.at(3));
-    BOOST_TEST(   boundary.lines.at(3) ==    lines.at(3));      
-    BOOST_TEST(boundary.vertices.at(4) == vertices.at(4));
-    BOOST_TEST(   boundary.lines.at(4) ==    lines.at(4));      
-    BOOST_TEST(boundary.vertices.at(5) == vertices.at(5));
-    BOOST_TEST(   boundary.lines.at(5) ==    lines.at(5));      
-    BOOST_TEST(boundary.vertices.at(6) == vertices.at(6));
-    BOOST_TEST(   boundary.lines.at(6) ==    lines.at(6));      
-    BOOST_TEST(boundary.vertices.at(7) == vertices.at(7));
-    BOOST_TEST(   boundary.lines.at(7) ==    lines.at(7));      
-    BOOST_TEST(boundary.vertices.at(8) == vertices.at(8));
-    BOOST_TEST(   boundary.lines.at(8) ==    lines.at(8));      
-    BOOST_TEST(boundary.vertices.at(9) == vertices.at(9));
-    BOOST_TEST(   boundary.lines.at(9) ==    lines.at(9));      
-    BOOST_TEST(boundary.vertices.at(10) == vertices.at(10));
-    BOOST_TEST(   boundary.lines.at(10) ==    lines.at(10));      
-    BOOST_TEST(boundary.vertices.at(11) == vertices.at(11));
-    BOOST_TEST(   boundary.lines.at(11) ==    lines.at(11));      
+    BOOST_TEST((boundary.vertices.at(0) == vertices.at(0)));
+    BOOST_TEST((   boundary.lines.at(0) ==    lines.at(0)));      
+    BOOST_TEST((boundary.vertices.at(1) == vertices.at(1)));
+    BOOST_TEST((   boundary.lines.at(1) ==    lines.at(1)));      
+    BOOST_TEST((boundary.vertices.at(2) == vertices.at(2)));
+    BOOST_TEST((   boundary.lines.at(2) ==    lines.at(2)));      
+    BOOST_TEST((boundary.vertices.at(3) == vertices.at(3)));
+    BOOST_TEST((   boundary.lines.at(3) ==    lines.at(3)));      
+    BOOST_TEST((boundary.vertices.at(4) == vertices.at(4)));
+    BOOST_TEST((   boundary.lines.at(4) ==    lines.at(4)));      
+    BOOST_TEST((boundary.vertices.at(5) == vertices.at(5)));
+    BOOST_TEST((   boundary.lines.at(5) ==    lines.at(5)));      
+    BOOST_TEST((boundary.vertices.at(6) == vertices.at(6)));
+    BOOST_TEST((   boundary.lines.at(6) ==    lines.at(6)));      
+    BOOST_TEST((boundary.vertices.at(7) == vertices.at(7)));
+    BOOST_TEST((   boundary.lines.at(7) ==    lines.at(7)));      
+    BOOST_TEST((boundary.vertices.at(8) == vertices.at(8)));
+    BOOST_TEST((   boundary.lines.at(8) ==    lines.at(8)));      
+    BOOST_TEST((boundary.vertices.at(9) == vertices.at(9)));
+    BOOST_TEST((   boundary.lines.at(9) ==    lines.at(9)));      
+    BOOST_TEST((boundary.vertices.at(10) == vertices.at(10)));
+    BOOST_TEST((   boundary.lines.at(10) ==    lines.at(10)));      
+    BOOST_TEST((boundary.vertices.at(11) == vertices.at(11)));
+    BOOST_TEST((   boundary.lines.at(11) ==    lines.at(11)));      
 }

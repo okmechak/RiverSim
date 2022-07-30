@@ -1,27 +1,3 @@
-/*
-    riversim - river growth simulation.
-    Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues
-
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
- */
-
-/*! \file point.hpp
-    \brief Common geometric entities like Vectors, Lines etc., to whole program.
-    \details
-    Program is higly depended on geometry which consist of Points, Vectors, Polar Vectors, Lines
-    and other which are implemented below.
-    Class River::Point is the most important and is basic class for rest geometrical classes like \ref River::Branch and \ref River::Boundary.
-
-    \see River::Point
- */
 #pragma once
 
 ///\cond
@@ -96,13 +72,6 @@ namespace River
             bool operator !=(const Polar & p) const
             {
                 return !(*this == p);
-            }
-
-            ///Converts Polar Object \p to string and redirects it to stream object \p write.
-            friend ostream& operator <<(ostream& write, const Polar & p)
-            {
-                write << "Polar: " << p.r << ", " << p.phi << " rad";
-                return write;
             }
     };
 
@@ -193,8 +162,5 @@ namespace River
             ///Retrives cordinate using array syntaxis.
             double operator[](const int index) const;
             double operator()(const int index) const;
-            
-            ///Converts object to string and redirects it to stream.
-            friend ostream& operator <<(ostream& write, const Point & p);
   };
 } // namespace River

@@ -1,7 +1,0 @@
-<map id="solver.hpp" name="solver.hpp">
-<area shape="rect" id="node1" title="PDE Solver and Integration tool." alt="" coords="68,5,159,32"/>
-<area shape="rect" id="node2" href="$model_8hpp.html" title="Contains all RiverSim program parameters." alt="" coords="68,80,159,107"/>
-<area shape="rect" id="node3" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options." alt="" coords="34,155,97,181"/>
-<area shape="rect" id="node5" href="$river_8hpp_source.html" title=" " alt="" coords="121,155,201,181"/>
-<area shape="rect" id="node4" href="$riversolver_8hpp_source.html" title=" " alt="" coords="5,229,125,256"/>
-</map>

@@ -1,25 +1,3 @@
-/*
-    riversim - river growth simulation.
-    Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
- */
-
-/*! \file model.hpp
-    \brief Contains all RiverSim program parameters.
-    \details RiverSim - is big program with a lot of parameters.
-    Program handles geometry, boudary conditions, mesh generation, FEM solvers etc. And each this module has
-    a lot of parameters. 
-
-    These parameters can be specified by JSON file(\ref io.hpp) or through program options(\ref River::process_program_options).
- */
 #pragma once
 
 ///\cond
@@ -44,34 +22,6 @@ using namespace std;
 namespace River
 {
 
-    class Parameter
-    {};
-
-    typedef map<t_branch_id, vector<vector<double>>> t_SeriesParameters;
-    ///Used for collection of tip points series parameters.
-    class SeriesParameters: public t_SeriesParameters
-    {
-        public:
-            void record(const map<t_branch_id, vector<double>>& id_series_params);
-    };
-    
-    typedef map<string, vector<double>> SimulationData;
-
-    ///Data strucuture used for collection of backward data.
-    struct BackwardData
-    {
-        vector<double> a1, a2, a3;
-        t_PointList init, backward, backward_forward;
-        double branch_lenght_diff = -1;
-
-        bool operator==(const BackwardData& data) const;
-
-        friend ostream& operator <<(ostream& write, const BackwardData & data);
-    };
-
-    typedef map<t_branch_id, BackwardData> t_GeometryDiffernce;
-
-
     /*! \brief Physical model parameters.
         \details 
         Holds parameters related to model. Region, numerical preocessing, parameters of growth etc.
@@ -87,9 +37,6 @@ namespace River
 
             //Simulation methods
             void clear();
-            void RevertLastSimulationStep();
-
-            void collect_backward_data(Rivers& init, Rivers& forwrdbackward, map<t_branch_id, vector<double>>& tip_id_series_params);
 
             //Growth controll functions
             bool q_bifurcate(const vector<double>& a) const;
@@ -105,16 +52,10 @@ namespace River
 
             Polar next_point(const vector<double>& series_params, double branch_lenght, double max_a);
 
-            ///Checks if values of parameters are in normal ranges.
-            void CheckParametersConsistency() const;
-
             ///Prints model structure and its subclasses
             friend ostream& operator <<(ostream& write, const Model & mdl);
 
             bool operator==(const Model& model) const;
-
-            ///Some global program options
-            bool verbose = false;
 
             Region region;
 
@@ -134,12 +75,6 @@ namespace River
 
             ///Series parameteres integral parameters
             IntegrationParams integr;
-
-            SeriesParameters series_parameters;
-
-            SimulationData sim_data;
-
-            t_GeometryDiffernce backward_data;
 
             //Geometrical parameters
             ///Simulation type: 0 - Forward linear, 1 - forward non linear, 2 - backward, 3 test purpose

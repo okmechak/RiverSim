@@ -1,8 +1,0 @@
-<map id="rivers.hpp" name="rivers.hpp">
-<area shape="rect" id="node1" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="77,5,163,32"/>
-<area shape="rect" id="node2" href="$model_8hpp.html" title="Contains all RiverSim program parameters." alt="" coords="33,155,124,181"/>
-<area shape="rect" id="node6" href="$region_8hpp_source.html" title=" " alt="" coords="116,80,207,107"/>
-<area shape="rect" id="node3" href="$io_8hpp.html" title="Contains functionality to read and write state of program(simulation data) and program options." alt="" coords="34,229,97,256"/>
-<area shape="rect" id="node5" href="$river_8hpp_source.html" title=" " alt="" coords="121,229,201,256"/>
-<area shape="rect" id="node4" href="$riversolver_8hpp_source.html" title=" " alt="" coords="5,304,125,331"/>
-</map>

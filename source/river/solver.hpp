@@ -1,22 +1,3 @@
-/*
-    riversim - river growth simulation.
-    Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues
-
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
-*/
-
-/*! \file solver.hpp
-    \brief PDE Solver and Integration tool.
-    \details Incapsulates all logic of Deal.II PDE solver library and postprocessing of its results.
-*/
 #pragma once
 
 ///\cond
@@ -242,6 +223,45 @@ namespace River
 
         bool operator==(const SolverParams &sp) const;
     };
+
+    enum Renumbering 
+    {
+        Renumbering_none,
+        Renumbering_cuthill_McKee, 
+        Renumbering_hierarchical,
+        Renumbering_random_renumbering,
+        Renumbering_block_wise,
+        Renumbering_clockwise_dg,
+        Renumbering_subdomain_wise
+    };
+
+    template <int dim = 2, int spacedim = dim>
+    void renumber(const Renumbering renumbering_type, DoFHandler<dim, spacedim> & dof_handler)
+    {
+        switch(renumbering_type)
+        {
+            case Renumbering_none:
+                break;
+            case Renumbering_cuthill_McKee:
+                DoFRenumbering::Cuthill_McKee(dof_handler);
+                break;
+            case Renumbering_hierarchical:
+                DoFRenumbering::hierarchical(dof_handler);
+                break;
+            case Renumbering_random_renumbering:
+                DoFRenumbering::random(dof_handler);
+                break;
+            case Renumbering_block_wise:
+                DoFRenumbering::block_wise(dof_handler);
+                break;
+            case Renumbering_clockwise_dg:
+                DoFRenumbering::clockwise_dg(dof_handler, dealii::Point<dim>(0, 0));
+                break;
+            case Renumbering_subdomain_wise:
+                DoFRenumbering::subdomain_wise(dof_handler);
+                break;
+        }
+    }
     
     /*! \brief Deal.II Solver Wrapper
         \details

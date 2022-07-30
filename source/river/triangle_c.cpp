@@ -342,24 +342,6 @@
 // MeshParams
 /// Prints program options structure to output stream.
 namespace River{
-  ostream &operator<<(ostream &write, const MeshParams &mp)
-  {
-    write << "\t tip_points:" << endl;
-    for (auto &p : mp.tip_points)
-      write << "\t\t" << p << endl;
-    if (mp.tip_points.empty())
-      write << "\t\t empty" << endl;
-    write << "\t refinment_radius = " << mp.refinment_radius << endl;
-    write << "\t exponant = " << mp.exponant << endl;
-    write << "\t min_area = " << mp.min_area << endl;
-    write << "\t max_area = " << mp.max_area << endl;
-    write << "\t min_angle = " << mp.min_angle << endl;
-    write << "\t max_edge = " << mp.max_edge << endl;
-    write << "\t min_edge = " << mp.min_edge << endl;
-    write << "\t ratio = " << mp.ratio << endl;
-    write << "\t sigma = " << mp.sigma << endl;
-    return write;
-  }
 
   bool MeshParams::operator==(const MeshParams &mp) const
   {

@@ -1,18 +1,3 @@
-/*
-    riversim - river growth simulation.
-    Copyright (c) 2019 Oleg Kmechak
-    Report issues: github.com/okmechak/RiverSim/issues
-      
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
-*/
-
 #pragma once
 
 #include "rivers.hpp"
@@ -40,15 +25,13 @@ namespace River
             Sources MakeRectangularWithHole(double width = 1, double height = 1, double source_x_position = 0.25);
 
             ///Some basic checks of data structure.
-            void Check();   
+            void Check();
 
             ///Returns vector of all holes.
             t_PointList GetHolesList() const;
 
             ///Returns map of source points ids and coresponding source point and angle of tree \ref Branch.
             t_rivers_interface GetSourcesIdsPointsAndAngles(const Sources& sources) const;
-
-            friend ostream& operator <<(ostream& write, const Region & boundary);
 
             ///Array of holes. Which will be eliminated by mesh generator.
             t_PointList holes;

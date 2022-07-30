@@ -30,25 +30,5 @@ if(CMAKE_BUILD_TYPE MATCHES Release)
 endif()
 
 add_subdirectory(source)
-add_subdirectory(docsrc)
-add_subdirectory(scripts)
 enable_testing()
 add_subdirectory(tests)
-
-install(
-    DIRECTORY 
-        sample_trees
-    DESTINATION 
-        riversim)
-
-install(
-    DIRECTORY 
-        examples
-    DESTINATION 
-        riversim)
-
-install(
-    FILES
-        examples/python_api.ipynb
-    DESTINATION 
-        riversim)

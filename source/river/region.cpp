@@ -205,14 +205,6 @@ namespace River
         return sources_ids_points_and_angles;
     }
 
-    ostream& operator <<(ostream& write, const Region& region)
-    {
-        for(const auto& [boundary_id, simple_boundary]: region)
-            write << "id = " << boundary_id << ", " << simple_boundary << endl;
-
-        return write;
-    }
-
     /**
         Rivers Vertices Generation
     */
@@ -308,14 +300,6 @@ namespace River
             }
             final_boundary.Append(boundary);
         }
-
-        //hotfix. first index of last line element isn't shifted by lenght of last added tree.
-        //if(!final_boundary.lines.empty())
-        //{
-        //    auto last_pos = final_boundary.lines.size() - 1;
-        //    if(last_pos >= 2)
-        //        final_boundary.lines.at(last_pos).p1 = final_boundary.lines.at(last_pos - 1).p2;
-        //}
 
         if (final_boundary.lines.size() != final_boundary.vertices.size())
             throw Exception("BoundaryGenerator: Size of lines and vertices are different.");

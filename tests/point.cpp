@@ -1,7 +1,6 @@
 //Link to Boost
 //#define BOOST_TEST_DYN_LINK
 
-//Define our Module name (prints at testing)
 #define BOOST_TEST_MODULE "Point and Polar"
 
 //VERY IMPORTANT - include this last
@@ -56,14 +55,14 @@ BOOST_AUTO_TEST_CASE( To_Polar,
         pk = {sqrt(2),  - M_PI/4};
         
 
-    BOOST_TEST(ToPolar(a) == pa);
-    BOOST_TEST(ToPolar(b) == pb);
-    BOOST_TEST(ToPolar(c) == pc);
-    BOOST_TEST(ToPolar(d) == pd);
-    BOOST_TEST(ToPolar(e) == pe);
-    BOOST_TEST(ToPolar(f) == pf);
-    BOOST_TEST(ToPolar(g) == pg);
-    BOOST_TEST(ToPolar(k) == pk);
+    BOOST_TEST((ToPolar(a) == pa));
+    BOOST_TEST((ToPolar(b) == pb));
+    BOOST_TEST((ToPolar(c) == pc));
+    BOOST_TEST((ToPolar(d) == pd));
+    BOOST_TEST((ToPolar(e) == pe));
+    BOOST_TEST((ToPolar(f) == pf));
+    BOOST_TEST((ToPolar(g) == pg));
+    BOOST_TEST((ToPolar(k) == pk));
     BOOST_CHECK_THROW(ToPolar(l), Exception);
 }
 
@@ -83,10 +82,10 @@ BOOST_AUTO_TEST_CASE( polar,
     BOOST_TEST(c.phi == 3);
 
     //equal and not equal operator
-    BOOST_TEST(a != c);
-    BOOST_TEST(a == a);
-    BOOST_TEST(c == c);
-    BOOST_TEST(b == c);
+    BOOST_TEST((a != c));
+    BOOST_TEST((a == a));
+    BOOST_TEST((c == c));
+    BOOST_TEST((b == c));
 }
 
 BOOST_AUTO_TEST_CASE( point_constructor, 
@@ -119,15 +118,15 @@ BOOST_AUTO_TEST_CASE( point_constructor,
         k = Polar{sqrt(2.), -M_PI/4.},
         keq = {1, -1};
     
-    BOOST_TEST(f == b);
+    BOOST_TEST((f == b));
     
     g = c;
-    BOOST_TEST(g == c);
+    BOOST_TEST((g == c));
     
-    BOOST_TEST(k == keq);
+    BOOST_TEST((k == keq));
 
     g = k;
-    BOOST_TEST(g == keq);
+    BOOST_TEST((g == keq));
 }
 
 BOOST_AUTO_TEST_CASE( point_methods, 
@@ -272,5 +271,5 @@ BOOST_AUTO_TEST_CASE(point_operators,
     //scalar product
     a = {1, 2};
     b = {3, 4};
-    BOOST_TEST(a*b == 1.*3. + 2.*4.);
+    BOOST_TEST((a*b == 1.*3. + 2.*4.));
 }

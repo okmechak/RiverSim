@@ -1,5 +1,0 @@
-<map id="rivers.hpp" name="rivers.hpp">
-<area shape="rect" id="node1" title="Holds all functionality that you need to work with tree(network) of river, its separate branches and ..." alt="" coords="17,5,103,32"/>
-<area shape="rect" id="node2" href="$boundary_8hpp.html" title="Generate initial predefinide boundary geometry and its source positions." alt="" coords="5,80,115,107"/>
-<area shape="rect" id="node3" href="$point_8hpp.html" title="Common geometric entities like Vectors, Lines etc., to whole program." alt="" coords="19,155,101,181"/>
-</map>
