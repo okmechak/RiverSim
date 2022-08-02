@@ -183,7 +183,9 @@ BOOST_AUTO_TEST_CASE( tree_vertices,
 {   
     Boundary tree_vertices;
     Rivers tr;
-    BOOST_CHECK_THROW(RiversBoundary(tree_vertices, tr, 1, 0.01), Exception);
+    RegionParams rp;
+    rp.smoothness_degree = 0.01;
+    BOOST_CHECK_THROW(RiversBoundary(tree_vertices, tr, 1, rp), Exception);
 }
 
 
@@ -193,7 +195,9 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     //empty tree
     Rivers rivers;
     Boundary boundary;
-    BOOST_CHECK_THROW(RiversBoundary(boundary, rivers, 1, 0.01), Exception);
+    RegionParams rp;
+    rp.smoothness_degree = 0.01;
+    BOOST_CHECK_THROW(RiversBoundary(boundary, rivers, 1, rp), Exception);
 
     //initiazlized tree
     Region region;
@@ -201,15 +205,17 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     auto source_id = 1;
 
     boundary = Boundary{};
+    rp.river_width = 0.1;
     rivers.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
-    RiversBoundary(boundary, rivers, source_id, 0.1);
+    RiversBoundary(boundary, rivers, source_id, rp);
     BOOST_TEST(boundary.lines.empty());
 
     //tree with two points
     t_boundary_id boundary_id = 10;
     rivers.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
     boundary = Boundary{};
-    RiversBoundary(boundary, rivers, source_id, 0.1);
+    
+    RiversBoundary(boundary, rivers, source_id, rp);
 
     auto expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}};
     BOOST_TEST(boundary.lines.size() == 2);
@@ -219,7 +225,8 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     //tree with three points
     rivers.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
     boundary = Boundary{};
-    RiversBoundary(boundary, rivers, source_id, 0.1);
+    rp.river_width = 0.1;
+    RiversBoundary(boundary, rivers, source_id, rp);
 
     expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}, {2, 3, 10}, {3, 4, 10}};
     BOOST_TEST(boundary.lines.size() == 4);
@@ -236,12 +243,14 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generator,
     Rivers rivers;
     rivers.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
 
-    auto boundary = BoundaryGenerator(sources, region, rivers, 0.01);
+    RegionParams rp;
+    rp.river_width = 0.01;
+    auto boundary = BoundaryGenerator(sources, region, rivers, rp);
 
     BOOST_TEST(boundary.lines.size() == 13);
 
     rivers.at(source_id).AddPoint(Polar{0.01, 0}, 100);
-    boundary = BoundaryGenerator(sources, region, rivers, 0.01);
+    boundary = BoundaryGenerator(sources, region, rivers, rp);
     BOOST_TEST(boundary.lines.size() == 15);
 
     auto vertices = t_PointList
@@ -286,7 +295,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
         region.GetSourcesIdsPointsAndAngles(sources));
     
     Boundary boundary;
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    RegionParams rp;
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
     BOOST_TEST((boundary.vertices.at(0) == p));
@@ -296,7 +307,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     br.AddPoint(River::Polar{0.1, 0}, boundary_id);
     boundary = Boundary{};
     
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 3);
     p = River::Point{0.5 - 1e-3/2, 0};
     BOOST_TEST((boundary.vertices.at(0) == p));
@@ -316,7 +328,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new,
     auto tip_ids = vector<t_branch_id> {2, 3};
     BOOST_TEST(rivers.TipBranchesIds() == tip_ids);
 
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 17);
 
     //left source branch
@@ -358,7 +371,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
         region.GetSourcesIdsPointsAndAngles(sources));
     
     Boundary boundary;
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    RegionParams rp;
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 1);
     
 
@@ -374,7 +389,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2,
     t_boundary_id boundary_id = 0;
     rivers.at(i1).AddPoint(Polar{0.1, 0}, boundary_id);
     boundary.vertices.clear();
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 3);
     TEST_POINT(boundary.vertices.at(0), River::Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
     TEST_POINT(boundary.vertices.at(1), River::Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
@@ -392,7 +408,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
         region.GetSourcesIdsPointsAndAngles(sources));
     
     Boundary boundary;
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    RegionParams rp;
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
     BOOST_TEST((boundary.vertices.at(0) == p));
@@ -402,7 +420,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     br.AddPoint(Polar{0.1, 0}, boundary_id);
     boundary.vertices.clear();
     
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 3);
     p = River::Point{0.5 - 1e-3/2, 0};
     BOOST_TEST((boundary.vertices.at(0) == p));
@@ -423,7 +442,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_new,
     auto tip_ids = vector<t_branch_id> {2, 3};
     BOOST_TEST(rivers.TipBranchesIds() == tip_ids);
 
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 17);
 
     //left source branch
@@ -465,7 +485,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
         region.GetSourcesIdsPointsAndAngles(sources));
     
     Boundary boundary;
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    RegionParams rp;
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 1);
 
 
@@ -481,7 +503,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_2_lala,
     t_boundary_id boundary_id = 0;
     rivers.at(i1).AddPoint(Polar{0.1, 0}, boundary_id);
     boundary = Boundary{};
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 3);
     TEST_POINT(boundary.vertices.at(0), River::Point{0.5 - 1e-3/2 * sqrt(2)/2, -1e-3/2 * sqrt(2)/2});
     TEST_POINT(boundary.vertices.at(1), River::Point{0.5 - sqrt(2)/2*0.1, sqrt(2)/2*0.1});
@@ -527,7 +550,9 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test,
     rivers.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
     
     BOOST_TEST_MESSAGE( "Boundary Generator start" );
-    auto border = BoundaryGenerator(sources, region, rivers, river_width);
+    RegionParams rp;
+    rp.river_width = river_width;
+    auto border = BoundaryGenerator(sources, region, rivers, rp);
 
     BOOST_TEST(border.vertices.size() == 8);
     //Vertices test
@@ -628,7 +653,9 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new,
     rivers.AddPolars(sources.GetSourcesIds(), {{1, 0}, {2, 0}, {3, 0}, {4, 0}}, 
         {(t_boundary_id)river_boundary_id, (t_boundary_id)river_boundary_id, (t_boundary_id)river_boundary_id, (t_boundary_id)river_boundary_id});
     
-    auto border = BoundaryGenerator(sources, region, rivers, river_width);
+    RegionParams rp;
+    rp.river_width = river_width;
+    auto border = BoundaryGenerator(sources, region, rivers, rp);
 
     BOOST_TEST(border.vertices.size() == 16);
     //Vertices test
@@ -777,7 +804,9 @@ BOOST_AUTO_TEST_CASE( BoundaryGenerator_test_new_new,
     rivers.AddPolars(sources.GetSourcesIds(), {{1, 0}, {2, 0}}, {(t_boundary_id)river_boundary_id, (t_boundary_id)river_boundary_id});
     rivers.AddPolars(sources.GetSourcesIds(), {{1, 0}, {2, 0}}, {(t_boundary_id)river_boundary_id, (t_boundary_id)river_boundary_id});
     
-    auto boundary = BoundaryGenerator(sources, region, rivers, river_width);
+    RegionParams rp;
+    rp.river_width = river_width;
+    auto boundary = BoundaryGenerator(sources, region, rivers, rp);
 
     BOOST_TEST(boundary.lines.size() == 14);
     BOOST_TEST(boundary.vertices.size() == 14);
@@ -1050,7 +1079,9 @@ BOOST_AUTO_TEST_CASE( full_test_of_boundary_generator_most_complicated,
     region.holes = holes;
 
     //generatre boundary
-    auto boundary = BoundaryGenerator(sources, region, rivers, river_width);
+    RegionParams rp;
+    rp.river_width = river_width;
+    auto boundary = BoundaryGenerator(sources, region, rivers, rp);
     BOOST_TEST(boundary.vertices.size() == vertices.size());
     BOOST_TEST(boundary.lines.size() == lines.size());
     for(size_t i = 0; i < boundary.vertices.size(); ++i)
@@ -1069,7 +1100,9 @@ BOOST_AUTO_TEST_CASE( tree_vertices__,
 {   
     Boundary boundary;
     Rivers tr;
-    BOOST_CHECK_THROW(RiversBoundary(boundary, tr, 1, 0.01), Exception);
+    RegionParams rp;
+    rp.river_width = 0.1;
+    BOOST_CHECK_THROW(RiversBoundary(boundary, tr, 1, rp), Exception);
 }
 
 BOOST_AUTO_TEST_CASE( tree_boundary__, 
@@ -1078,7 +1111,9 @@ BOOST_AUTO_TEST_CASE( tree_boundary__,
     //empty tree
     Boundary boundary;
     Rivers tree;
-    BOOST_CHECK_THROW(RiversBoundary(boundary, tree, 1, 0.01), Exception);
+    RegionParams rp;
+    rp.river_width = 0.1;
+    BOOST_CHECK_THROW(RiversBoundary(boundary, tree, 1, rp), Exception);
 
     //initiazlized tree
     Region region;
@@ -1088,14 +1123,16 @@ BOOST_AUTO_TEST_CASE( tree_boundary__,
 
     tree.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
     boundary = Boundary{};
-    RiversBoundary(boundary, tree, source_id, 0.1);
+    rp.river_width = 0.1;
+    RiversBoundary(boundary, tree, source_id, rp);
     BOOST_TEST(boundary.lines.empty());
 
     //tree with two points
     t_boundary_id boundary_id = 10;
     tree.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
     boundary = Boundary{};
-    RiversBoundary(boundary, tree, source_id, 0.1);
+    rp.river_width = 0.1;
+    RiversBoundary(boundary, tree, source_id, rp);
 
     auto expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}};
     BOOST_TEST(boundary.lines.size() == 2);
@@ -1105,7 +1142,8 @@ BOOST_AUTO_TEST_CASE( tree_boundary__,
     //tree with three points
     tree.at(source_id).AddPoint(Polar{0.01, 0}, boundary_id);
     boundary = Boundary{};
-    RiversBoundary(boundary, tree, source_id, 0.1);
+    rp.river_width = 0.1;
+    RiversBoundary(boundary, tree, source_id, rp);
 
     expected_lines = vector<Line>{{0, 1, 10}, {1, 2, 10}, {2, 3, 10}, {3, 4, 10}};
     BOOST_TEST(boundary.lines.size() == 4);
@@ -1117,7 +1155,8 @@ BOOST_AUTO_TEST_CASE( tree_boundary__,
 BOOST_AUTO_TEST_CASE( Simple_Boundary_Generato_r, 
     *utf::tolerance(eps))
 {
-    auto river_width = 0.01;
+    RegionParams rp;
+    rp.river_width = 0.01;
     t_boundary_id river_boundary_id = 100;
 
     //TODO setup source as separate structure!!!
@@ -1128,12 +1167,12 @@ BOOST_AUTO_TEST_CASE( Simple_Boundary_Generato_r,
     Rivers rivers;
     rivers.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
 
-    auto boundary = BoundaryGenerator(sources, region, rivers, river_width);
+    auto boundary = BoundaryGenerator(sources, region, rivers, rp);
 
     BOOST_TEST(boundary.lines.size() == 13);
 
     rivers.at(source_id).AddPoint(Polar{0.01, 0}, river_boundary_id);
-    boundary = BoundaryGenerator(sources, region, rivers, river_width);
+    boundary = BoundaryGenerator(sources, region, rivers, rp);
     BOOST_TEST(boundary.lines.size() == 15);
 
     auto vertices = t_PointList
@@ -1175,7 +1214,9 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_sdf,
         region.GetSourcesIdsPointsAndAngles(sources));
     
     Boundary boundary;
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    RegionParams rp;
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 1);
     auto p = River::Point{0.5, 0};
     BOOST_TEST((boundary.vertices.at(0) == p));
@@ -1185,7 +1226,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_sdf,
     br.AddPoint(River::Polar{0.1, 0}, boundary_id);
     boundary = Boundary{};
     
-    RiversBoundary(boundary, rivers, 1, 1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1, rp);
     BOOST_TEST(boundary.vertices.size() == 3);
     p = River::Point{0.5 - 1e-3/2, 0};
     BOOST_TEST((boundary.vertices.at(0) == p));
@@ -1206,7 +1248,8 @@ BOOST_AUTO_TEST_CASE( boundary_generator_new_sdf,
     auto tip_ids = vector<t_branch_id> {2, 3};
     BOOST_TEST(rivers.TipBranchesIds() == tip_ids);
 
-    RiversBoundary(boundary, rivers, 1,  1e-3);
+    rp.river_width = 1e-3;
+    RiversBoundary(boundary, rivers, 1,  rp);
     BOOST_TEST(boundary.vertices.size() == 17);
 
     //left source branch
@@ -1316,7 +1359,11 @@ BOOST_AUTO_TEST_CASE( debug_python_code_test,
     };
 
     //generatre boundary
-    auto boundary = BoundaryGenerator(sources, region, rivers, river_width);
+    RegionParams rp;
+    rp.ignored_smoothness_length = 0;
+    rp.smoothness_degree = 0;
+    rp.river_width = river_width;
+    auto boundary = BoundaryGenerator(sources, region, rivers, rp);
 
     BOOST_TEST((boundary.vertices.at(0) == vertices.at(0)));
     BOOST_TEST((   boundary.lines.at(0) ==    lines.at(0)));      

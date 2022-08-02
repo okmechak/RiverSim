@@ -53,8 +53,6 @@ namespace River
             Polar next_point(const vector<double>& series_params, double branch_lenght, double max_a);
 
             ///Prints model structure and its subclasses
-            friend ostream& operator <<(ostream& write, const Model & mdl);
-
             bool operator==(const Model& model) const;
 
             Region region;
@@ -64,6 +62,8 @@ namespace River
             Sources sources;
 
             Rivers rivers;
+
+            RegionParams region_params;
 
             ///Mesh and mesh refinment parameters
             MeshParams mesh_params;
@@ -77,17 +77,8 @@ namespace River
             IntegrationParams integr;
 
             //Geometrical parameters
-            ///Simulation type: 0 - Forward linear, 1 - forward non linear, 2 - backward, 3 test purpose
-            unsigned simulation_type = 0;
-
             ///Number of simulation steps.
             unsigned number_of_steps = 10;
-
-            ///This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.
-            double maximal_river_height = 100;
-
-            ///Number of backward steps simulations used in backward simulation type.
-            unsigned number_of_backward_steps = 1;
 
             ///Initial x position of source.
             ///Valid only for rectangular area.
@@ -98,17 +89,6 @@ namespace River
 
             ///Height of region
             double height = 1.;
-
-            ///river boundary id and bottom line
-            unsigned river_boundary_id = 100;
-
-            /*! \brief Width of river.
-                \details
-                    eps is width of splitting branch of tree into two lines, to make one border line.
-                    This is when tree and border is converted into one boundary line.
-                \todo eps should depend on elementary step size __ds__.
-            */
-            double river_width = 1e-8;
 
             //Numeriacal parameters
             ///Maximal length of one step of growth.

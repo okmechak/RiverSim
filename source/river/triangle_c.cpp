@@ -338,23 +338,6 @@
 
 #include "triangle_c.hpp"
 
-//
-// MeshParams
-/// Prints program options structure to output stream.
-namespace River{
-
-  bool MeshParams::operator==(const MeshParams &mp) const
-  {
-    return abs(refinment_radius - mp.refinment_radius) < EPS 
-      && abs(exponant - mp.exponant) < EPS 
-      && abs(min_area - mp.min_area) < EPS 
-      && abs(max_area - mp.max_area) < EPS 
-      && abs(min_angle - mp.min_angle) < EPS 
-      && abs(max_edge - mp.max_edge) < EPS 
-      && abs(min_edge - mp.min_edge) < EPS 
-      && abs(ratio - mp.ratio) < EPS;
-  }
-}
 
 /* Labels that signify the result of point location.  The result of a        */
 /*   search indicates that the point falls in the interior of a triangle, on */

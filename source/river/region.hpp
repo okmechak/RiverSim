@@ -6,6 +6,30 @@ namespace River
 {
     
     typedef map<t_boundary_id, Boundary> t_Region;
+
+    class RegionParams
+    {
+        public:
+            ///Smoothnes minimal degree. This value sets threshold for degree between adjacent points below which it should be ignored. This creates smaller mesh.
+            double smoothness_degree = 0.2;
+    
+            ///Smoothnes minimal length. This value sets threshold for length where smoothnest near tip will be ignored. Ideally it should be bigger then integration radius.
+            double ignored_smoothness_length = 0.01;
+    
+            double river_width = 1e-7;
+    
+            t_boundary_id river_boundary_id = 100;
+    
+            bool operator==(const RegionParams &rp) const
+            {
+                return 
+                       abs(smoothness_degree - rp.smoothness_degree) < EPS 
+                    && abs(ignored_smoothness_length - rp.ignored_smoothness_length) < EPS 
+                    && abs(river_width - rp.river_width) < EPS 
+                    && river_boundary_id == rp.river_boundary_id;
+            }
+    };
+
     /*! \brief Structure which defines Region of region.
         
         \details It is a combination of simple boundaries which of each has  it own unique id.
@@ -52,11 +76,9 @@ namespace River
 
     ///Generates trees boundary.
     void RiversBoundary(
-        Boundary &rivers_boundary, const Rivers& rivers, const unsigned river_id, const double river_width, 
-        const double smoothness_degree = 0, const double ignored_smoothness_length = 0);
+        Boundary &rivers_boundary, const Rivers& rivers, const unsigned river_id, const RegionParams& rp);
 
     ///Generates boundary from region and rivers.
     Boundary BoundaryGenerator(
-        const Sources& sources, const Region &region, const Rivers &rivers, const double river_width, 
-        const double smoothness_degree = 0, const double ignored_smoothness_length = 0);
+        const Sources& sources, const Region &region, const Rivers &rivers, const RegionParams& rp);
 }

@@ -35,7 +35,7 @@ namespace River
         boundary_conditions[1] = {DIRICHLET, 0};
         boundary_conditions[2] = {NEUMAN, 0};
         boundary_conditions[3] = {NEUMAN, 1};
-        boundary_conditions[river_boundary_id] = {DIRICHLET, 0};
+        boundary_conditions[region_params.river_boundary_id] = {DIRICHLET, 0};
             
         rivers.Initialize({{1, {{dx, 0}, M_PI/2.}}});
     }
@@ -69,7 +69,7 @@ namespace River
         boundary_conditions[3] = {NEUMAN, 0};
         boundary_conditions[4] = {NEUMAN, 0};
         boundary_conditions[5] = {NEUMAN, 0};
-        boundary_conditions[river_boundary_id] = {DIRICHLET, 0};
+        boundary_conditions[region_params.river_boundary_id] = {DIRICHLET, 0};
             
         rivers.Initialize({{1, {{dx, 0}, M_PI/2.}}});
     }
@@ -103,7 +103,7 @@ namespace River
         boundary_conditions[3] = {DIRICHLET, 0};
         boundary_conditions[4] = {DIRICHLET, 0};
         boundary_conditions[5] = {DIRICHLET, 0};
-        boundary_conditions[river_boundary_id] = {DIRICHLET, 0};
+        boundary_conditions[region_params.river_boundary_id] = {DIRICHLET, 0};
             
         rivers.Initialize({{1, {{dx, 0}, M_PI/2.}}});
     }
@@ -178,7 +178,7 @@ namespace River
         boundary_conditions[12] = {DIRICHLET, 1};
         boundary_conditions[13] = {DIRICHLET, 1};
 
-        boundary_conditions[river_boundary_id] = {DIRICHLET, 0}; 
+        boundary_conditions[region_params.river_boundary_id] = {DIRICHLET, 0}; 
 
         rivers.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
     }
@@ -251,10 +251,8 @@ namespace River
 
     bool Model::operator==(const Model& model) const
     {
-        return simulation_type == model.simulation_type 
-            && number_of_steps == model.number_of_steps
-            && abs(maximal_river_height - model.maximal_river_height) < EPS
-            && number_of_backward_steps == model.number_of_backward_steps
+        return 
+               number_of_steps == model.number_of_steps
             &&   abs(dx - model.dx) < EPS 
             && abs(width - model.width) < EPS 
             && abs(height - model.height) < EPS 
@@ -265,8 +263,6 @@ namespace River
             && abs(growth_threshold - model.growth_threshold) < EPS 
             && abs(growth_min_distance - model.growth_min_distance) < EPS 
             && abs(ds - model.ds) < EPS 
-            && abs(river_width - model.river_width) < EPS 
-            && river_boundary_id  == model.river_boundary_id
             && bifurcation_type == model.bifurcation_type
             && growth_type == model.growth_type;
     }

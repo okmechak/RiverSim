@@ -5,37 +5,6 @@
 
 namespace River
 {
-    // IntegrationParams
-    ostream &operator<<(ostream &write, const IntegrationParams &ip)
-    {
-        write << "\t weigth_func_radius = " << ip.weigth_func_radius << endl;
-        write << "\t integration_radius = " << ip.integration_radius << endl;
-        write << "\t exponant = " << ip.exponant << endl;
-        return write;
-    }
-
-    bool IntegrationParams::operator==(const IntegrationParams &ip) const
-    {
-        return abs(weigth_func_radius - ip.weigth_func_radius) < EPS && abs(integration_radius - ip.integration_radius) < EPS && abs(exponant - ip.exponant) < EPS;
-    }
-
-    // SolverParams
-    ostream &operator<<(ostream &write, const SolverParams &sp)
-    {
-        write << "\t field_value = " << sp.field_value << endl;
-        write << "\t quadrature_degree = " << sp.quadrature_degree << endl;
-        write << "\t refinment_fraction = " << sp.refinment_fraction << endl;
-        write << "\t adaptive_refinment_steps = " << sp.adaptive_refinment_steps << endl;
-        write << "\t tollerance = " << sp.tollerance << endl;
-        write << "\t number of iteration = " << sp.num_of_iterrations << endl;
-        return write;
-    }
-
-    bool SolverParams::operator==(const SolverParams &sp) const
-    {
-        return abs(field_value - sp.field_value) < EPS && abs(tollerance - sp.tollerance) < EPS && num_of_iterrations == sp.num_of_iterrations && adaptive_refinment_steps == sp.adaptive_refinment_steps && abs(refinment_fraction - sp.refinment_fraction) < EPS && quadrature_degree == sp.quadrature_degree && renumbering_type == sp.renumbering_type && abs(max_distance - sp.max_distance) < EPS;
-    }
-
     // Solver
     void Solver::OpenMesh(const string fileName)
     {
@@ -688,7 +657,7 @@ namespace River
         data_out.attach_dof_handler(dof_handler);
         data_out.add_data_vector(solution, "solution");
         data_out.build_patches();
-        ofstream output(file_name + ".vtk");
+        ofstream output(file_name);
         output.precision(20); // Fix for paraview
         data_out.write_vtk(output);
 
@@ -701,18 +670,9 @@ namespace River
     {
         for (unsigned cycle = 0; cycle <= num_of_adaptive_refinments; ++cycle)
         {
-            if (verbose) cout <<  "adaptive mesh solver cycle-#" + to_string(cycle) + "---------------------------" << endl;
 
             if (cycle > 0) refine_grid();
-
-            if (verbose) cout <<  "   Number of active cells:" << endl;
-            if (verbose) cout <<  "\t" + to_string(triangulation.n_active_cells()) << endl;
-
-            setup_system();
-
-            if (verbose) cout <<  "   Number of degrees of freedom:" << endl;
-            if (verbose) cout <<  "\t" + to_string(dof_handler.n_dofs()) << endl;
-            
+            setup_system();            
             assemble_system(boundary_conditions);
             solve();
         }

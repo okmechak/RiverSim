@@ -103,13 +103,17 @@ namespace River
         inline double BaseVectorFinal(const int nf, const double angle, const double dx, const double dy) const
         {
             return BaseVector(nf,
-                              exp(-complex<double>(0.0, 1.0) * angle) * (dx + complex<double>(0.0, 1.0) * dy));
+                exp(-complex<double>(0.0, 1.0) * angle) * (dx + complex<double>(0.0, 1.0) * dy));
         }
 
-        /// Prints options structure to output stream.
-        friend ostream &operator<<(ostream &write, const IntegrationParams &ip);
-
-        bool operator==(const IntegrationParams &ip) const;
+        bool operator==(const IntegrationParams &ip) const
+        {
+            return abs(weigth_func_radius - ip.weigth_func_radius) < EPS 
+                && abs(integration_radius - ip.integration_radius) < EPS 
+                && abs(exponant - ip.exponant) < EPS
+                && abs(eps - ip.eps) < EPS
+                && abs(n_rho - ip.n_rho) < EPS;
+        }
     };
 
     class Quadrature
@@ -215,13 +219,17 @@ namespace River
         /// Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.
         unsigned renumbering_type = 0;
 
-        /// Maximal distance between middle point and first solved point, used in non euler growth.
-        double max_distance = 0.002;
-
-        /// Prints program options structure to output stream.
-        friend ostream &operator<<(ostream &write, const SolverParams &mp);
-
-        bool operator==(const SolverParams &sp) const;
+        bool operator==(const SolverParams &sp) const
+        {
+            return abs(field_value - sp.field_value) < EPS 
+                && abs(tollerance - sp.tollerance) < EPS 
+                && num_of_iterrations == sp.num_of_iterrations 
+                && adaptive_refinment_steps == sp.adaptive_refinment_steps 
+                && static_refinment_steps == sp.static_refinment_steps 
+                && abs(refinment_fraction - sp.refinment_fraction) < EPS 
+                && quadrature_degree == sp.quadrature_degree 
+                && renumbering_type == sp.renumbering_type;
+        }
     };
 
     enum Renumbering 
@@ -272,15 +280,13 @@ namespace River
     public:
         /// Solver constructor
         Solver(
-            const SolverParams& solver_params, 
-            const bool verb):
+            const SolverParams& solver_params):
             dof_handler{triangulation},
             fe{solver_params.quadrature_degree},
             quadrature_formula{solver_params.quadrature_degree},
             face_quadrature_formula{solver_params.quadrature_degree}
 
         {
-            verbose = verb;
             tollerance = solver_params.tollerance;
             number_of_iterations = solver_params.num_of_iterrations;
             num_of_adaptive_refinments = solver_params.adaptive_refinment_steps;
@@ -404,8 +410,6 @@ namespace River
         FE_Q<dim> fe;
         QGauss<dim> quadrature_formula;
         QGauss<dim - 1> face_quadrature_formula;
-        /// If true, output will be produced to stadard output.
-        bool verbose = false;
         BoundaryConditions boundary_conditions;
 
         AffineConstraints<double> hanging_node_constraints;

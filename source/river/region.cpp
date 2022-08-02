@@ -208,14 +208,13 @@ namespace River
     /**
         Rivers Vertices Generation
     */
-    void RiversBoundary(Boundary &rivers_boundary, const Rivers& rivers, const unsigned river_id, const double river_width, 
-        const double smoothness_degree, const double ignored_smoothness_length)
+    void RiversBoundary(Boundary &rivers_boundary, const Rivers& rivers, const unsigned river_id, const RegionParams& rp)
     {
         if (rivers.empty())
             throw Exception("Boundary generator: trying to generate tree boundary from empty tree.");
 
         const auto& river_smooth_branch
-            = rivers.at(river_id).generateSmoothBoundary(smoothness_degree, ignored_smoothness_length);
+            = rivers.at(river_id).generateSmoothBoundary(rp.smoothness_degree, rp.ignored_smoothness_length);
         const auto source_angle = rivers.at(river_id).SourceAngle();
         
         Boundary left_boundary, right_boundary;
@@ -230,16 +229,16 @@ namespace River
             if(i == 0)
             {
                 left_boundary.vertices.at(i) = river_smooth_branch.vertices.at(i) 
-                    + Point{river_width / 2, 0}.rotate(source_angle + M_PI / 2);
+                    + Point{rp.river_width / 2, 0}.rotate(source_angle + M_PI / 2);
                 right_boundary.vertices.at(i) = river_smooth_branch.vertices.at(i) 
-                    + Point{river_width / 2, 0}.rotate(source_angle - M_PI / 2);
+                    + Point{rp.river_width / 2, 0}.rotate(source_angle - M_PI / 2);
             }
             else
             {
                 left_boundary.vertices.at(i) = river_smooth_branch.vertices.at(i) 
-                    + river_smooth_branch.Vector(i - 1).normalize().rotate(M_PI / 2) * river_width / 2;
+                    + river_smooth_branch.Vector(i - 1).normalize().rotate(M_PI / 2) * rp.river_width / 2;
                 right_boundary.vertices.at(i) = river_smooth_branch.vertices.at(i) 
-                    + river_smooth_branch.Vector(i - 1).normalize().rotate(-M_PI / 2) * river_width / 2;
+                    + river_smooth_branch.Vector(i - 1).normalize().rotate(-M_PI / 2) * rp.river_width / 2;
             }
         }
         reverse(right_boundary.vertices.begin(), right_boundary.vertices.end());
@@ -254,11 +253,11 @@ namespace River
 
             rivers_boundary.Append(left_boundary);
 
-            RiversBoundary(rivers_boundary, rivers, left_b_id, river_width);
+            RiversBoundary(rivers_boundary, rivers, left_b_id, rp);
 
             rivers_boundary.vertices.pop_back();
 
-            RiversBoundary(rivers_boundary, rivers, right_b_id, river_width);
+            RiversBoundary(rivers_boundary, rivers, right_b_id, rp);
 
             rivers_boundary.Append(right_boundary);
         }
@@ -271,8 +270,7 @@ namespace River
         rivers_boundary.FixLinesIndices();
     }
 
-    Boundary BoundaryGenerator(const Sources& sources, const Region &region, const Rivers &rivers, const double river_width, 
-        const double smoothness_degree, const double ignored_smoothness_length)
+    Boundary BoundaryGenerator(const Sources& sources, const Region &region, const Rivers &rivers, const RegionParams& rp)
     {
         Boundary final_boundary;
 
@@ -288,8 +286,7 @@ namespace River
                 {
                     Boundary rivers_boundary;
                     RiversBoundary(
-                        rivers_boundary, rivers, source_id, river_width, 
-                        smoothness_degree, ignored_smoothness_length);
+                        rivers_boundary, rivers, source_id, rp);
                     boundary.ReplaceElement(vertice_pos, rivers_boundary);
 
                     //shifting absolute vertice position of source after addition

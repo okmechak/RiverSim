@@ -52,12 +52,6 @@ namespace River
     /// Minimal edge size.
     double min_edge = 8.e-12;
 
-    ///Smoothnes minimal degree. This value sets threshold for degree between adjacent points below which it should be ignored. This creates smaller mesh.
-    double smoothness_degree = 0.5;
-
-    ///Smoothnes minimal length. This value sets threshold for length where smoothnest near tip will be ignored. Ideally it should be bigger then integration radius.
-    double ignored_smoothness_length = 0.05;
-
     /*! \brief Ratio of the triangles:
 
         \details
@@ -158,7 +152,19 @@ namespace River
       return result_area;
     }
 
-    bool operator==(const MeshParams &mp) const;
+    bool operator==(const MeshParams &mp) const
+    {
+      return 
+           abs(refinment_radius - mp.refinment_radius) < EPS 
+        && abs(exponant - mp.exponant) < EPS 
+        && abs(sigma - mp.sigma) < EPS 
+        && abs(min_area - mp.min_area) < EPS 
+        && abs(max_area - mp.max_area) < EPS 
+        && abs(min_angle - mp.min_angle) < EPS 
+        && abs(max_edge - mp.max_edge) < EPS 
+        && abs(min_edge - mp.min_edge) < EPS 
+        && abs(ratio - mp.ratio) < EPS;
+    }
   };
 }
 

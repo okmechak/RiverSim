@@ -243,6 +243,16 @@ BOOST_PYTHON_MODULE(riversim)
 
     
     //REGION.hpp
+    class_<RegionParams>("RegionParams")
+        .def_readwrite("smoothness_degree", &RegionParams::smoothness_degree, "Smoothnes minimal degree. This value sets threshold for degree between adjacent points below which it should be ignored. This creates smaller mesh.")
+        .def_readwrite("ignored_smoothness_length", &RegionParams::ignored_smoothness_length, "Smoothnes minimal length. This value sets threshold for length where smoothnest near tip will be ignored. Ideally it should be bigger then integration radius.")
+        .def_readwrite("river_width", &RegionParams::river_width)
+        .def_readwrite("river_boundary_id", &RegionParams::river_boundary_id, "Sigma is used in exponence formula of mesh refinment.")
+        .def(self == self)
+        .def("__str__", &River::print<MeshParams>)
+        .def("__repr__", &River::print<MeshParams>)
+    ;
+
     class_<t_Region>("t_Region", "Structure which defines Region of region.")
         .def(map_indexing_suite<t_Region>())
         .def("__str__", &River::print<t_Region>)
@@ -264,8 +274,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("holes", &River::Region::holes, "Array of holes. Which will be eliminated by mesh generator.")
     ;
 
-    def("RiversBoundary", River::RiversBoundary, args("rivers_boundary", "rivers", "river_id", "river_width", "smoothness_degree", "ignored_smoothness_length"), "Generates rivers boundary.");
-    def("BoundaryGenerator", River::BoundaryGenerator, args("sources", "region", "rivers", "river_width", "smoothness_degree", "ignored_smoothness_length"), "Generates boundary from region and rivers.");
+    def("RiversBoundary", River::RiversBoundary, args("rivers_boundary", "rivers", "river_id", "rp"), "Generates rivers boundary.");
+    def("BoundaryGenerator", River::BoundaryGenerator, args("sources", "region", "rivers", "rp"), "Generates boundary from region and rivers.");
 
 
     //TETHEX.hpp
@@ -418,8 +428,6 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("min_angle", &MeshParams::min_angle, "Minimal angle of mesh element.")
         .def_readwrite("max_edge", &MeshParams::max_edge, "Maximal edge size.")
         .def_readwrite("min_edge", &MeshParams::min_edge, "Minimal edge size.")
-        .def_readwrite("smoothness_degree", &MeshParams::smoothness_degree, "Smoothnes minimal degree. This value sets threshold for degree between adjacent points below which it should be ignored. This creates smaller mesh.")
-        .def_readwrite("ignored_smoothness_length", &MeshParams::ignored_smoothness_length, "Smoothnes minimal length. This value sets threshold for length where smoothnest near tip will be ignored. Ideally it should be bigger then integration radius.")
         .def_readwrite("ratio", &MeshParams::ratio, "Ratio of the triangles.")
         .def("meshAreaConstraint", &MeshParams::meshAreaConstraint, args("x", "y"), "Evaluates mesh area constraint at {x, y} point.")
         .def("refinementFunction", &MeshParams::refinementFunction, args("p1", "p2", "p3", "area"), "Specifies a function to indicate whether mesh cells should be refined or not.")
@@ -465,7 +473,6 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("refinment_fraction", &SolverParams::refinment_fraction, "Fraction of refined mesh elements.")
         .def_readwrite("quadrature_degree", &SolverParams::quadrature_degree, "Polynom degree of quadrature integration.")
         .def_readwrite("renumbering_type", &SolverParams::renumbering_type, "Renumbering algorithm(0 - none, 1 - cuthill McKee, 2 - hierarchical, 3 - random, ...) for the degrees of freedom on a triangulation.")
-        .def_readwrite("max_distance", &SolverParams::max_distance, "Maximal distance between middle point and first solved point, used in non euler growth.")
         .def_readwrite("field_value", &SolverParams::field_value, "Field value used for Poisson conditions.")
         .def("__str__", &River::print<SolverParams>)
         .def("__repr__", &River::print<SolverParams>)
@@ -484,7 +491,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def("__repr__", &River::print<IntegrationParams>)
     ;
 
-    class_<River::Solver, boost::noncopyable>("Solver", "Deal.II Solver Wrapper.", init<const River::SolverParams &, const bool>(args("solver_params", "verbose")))
+    class_<River::Solver, boost::noncopyable>("Solver", "Deal.II Solver Wrapper.", init<const River::SolverParams &>(args("solver_params")))
         .def_readwrite("tollerance", &River::Solver::tollerance, "Solver tollerance")
         .def_readwrite("number_of_iterations", &River::Solver::number_of_iterations, "Number of solver iterations.")
         .def_readwrite("num_of_adaptive_refinments", &River::Solver::num_of_adaptive_refinments, "Number of adaptive mesh refinments. Splits mesh elements and resolves.")
@@ -517,17 +524,17 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     //MODEL.hpp
-    class_<vector<double>> ("t_v_double")
-        .def(vector_indexing_suite<vector<double>>())
-        .def("__str__", &River::print<vector<double>>)
-        .def("__repr__", &River::print<vector<double>>)
-    ;
+    //class_<vector<double>> ("t_v_double")
+    //    .def(vector_indexing_suite<vector<double>>())
+    //    .def("__str__", &River::print<vector<double>>)
+    //    .def("__repr__", &River::print<vector<double>>)
+    //;
 
-    class_<vector<vector<double>>> ("t_v2_double")
-        .def(vector_indexing_suite<vector<vector<double>>>())
-        .def("__str__", &River::print<vector<vector<double>>>)
-        .def("__repr__", &River::print<vector<vector<double>>>)
-    ;
+    //class_<vector<vector<double>>> ("t_v2_double")
+    //    .def(vector_indexing_suite<vector<vector<double>>>())
+    //    .def("__str__", &River::print<vector<vector<double>>>)
+    //    .def("__repr__", &River::print<vector<vector<double>>>)
+    //;
 
     class_<Model>("Model")
         .def("initializeLaplace", &Model::InitializeLaplace, "Initialize problem to Laplacea boundary conditions.")
@@ -541,6 +548,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def("nextPoint", static_cast< Polar (Model::*)(const vector<double>&, double branch_lenght, double max_a)>(&Model::next_point), "Evaluate next point of simualtion based on series parameters around tip.")
         .def("nextPoint", static_cast< Polar (Model::*)(const vector<double>&) const>(&Model::next_point), "Evaluate next point of simualtion based on series parameters around tip.")
         .def(self == self)
+        .def_readwrite("region_params", &Model::region_params, "Region and geometry parameters.")
         .def_readwrite("region", &Model::region, "Region of simulation.")
         .def_readwrite("boundary", &Model::boundary, "Region converted to boundary of simulation.")
         .def_readwrite("sources", &Model::sources, "Source points of growth.")
@@ -549,15 +557,10 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("boundary_conditions", &Model::boundary_conditions, "Boundary conditions data structure.")
         .def_readwrite("solver_params", &Model::solver_params, "Solver parameteres.")
         .def_readwrite("integr_params", &Model::integr, "Intergration around tip points parameters.")
-        .def_readwrite("simulation_type", &Model::simulation_type, "Simulation type: 0 - Forward linear, 1 - Forward non linear, 2 - backward.")
         .def_readwrite("number_of_steps", &Model::number_of_steps, "Number of simulation steps.")
-        .def_readwrite("maximal_river_height", &Model::maximal_river_height, "This number is used to stop simulation if some tip point of river gets bigger y-coord then the parameter value.")
-        .def_readwrite("number_of_backward_steps", &Model::number_of_backward_steps, "Number of backward steps simulations used in backward simulation type.")
         .def_readwrite("dx", &Model::dx, "Initial x position of source.")
         .def_readwrite("width", &Model::width, "Width of region.")
         .def_readwrite("height", &Model::height, "Height of region.")
-        .def_readwrite("river_boundary_id", &Model::river_boundary_id, "River boundary condition id.")
-        .def_readwrite("river_width", &Model::river_width, "Width of branch.")
         .def_readwrite("ds", &Model::ds, "Maximal length of one step of growth.")
         .def_readwrite("eta", &Model::eta, "Eta. Growth power of a1^eta.")
         .def_readwrite("bifurcation_type", &Model::bifurcation_type, "Bifurcation method type, 0 - no bif, 1 - a(3)/a(1) > bifurcation_threshold, 2 - a1 > bifurcation_threshold, 3 - combines both conditions.")

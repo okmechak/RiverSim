@@ -31,6 +31,9 @@ namespace River
     void to_json(json& j, const Boundary& boundary); 
     void from_json(const json& j, Boundary& boundary); 
 
+    void to_json(json& j, const RegionParams& region_params); 
+    void from_json(const json& j, RegionParams& region_params); 
+
     void to_json(json& j, const Region& region); 
     void from_json(const json& j, Region& region); 
 

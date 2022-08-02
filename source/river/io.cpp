@@ -72,13 +72,13 @@ namespace River
     //boundary conditions
     void to_json(json& j, const BoundaryConditions& bc)
     {
-        j = json{t_BoundaryConditions(bc)};
+        j = json{{"boundary_conditions", t_BoundaryConditions(bc)}};
     }
 
     void from_json(const json& j, BoundaryConditions& bc)
     {
         t_BoundaryConditions bc_simple;
-        j.get_to(bc_simple);
+        j.at("boundary_conditions").get_to(bc_simple);
         for(const auto&[key, value]: bc_simple)
             bc[key] = value;
     }
@@ -113,27 +113,44 @@ namespace River
     }
 
     //Region
+    void to_json(json& j, const RegionParams& data) 
+    {
+        j = json{
+            {"smoothness_degree", data.smoothness_degree},
+            {"ignored_smoothness_length", data.ignored_smoothness_length},
+            {"river_width", data.river_width},
+            {"river_boundary_id", data.river_boundary_id}};
+    }
+    void from_json(const json& j, RegionParams& data) 
+    {
+        if(j.count("smoothness_degree")) j.at("smoothness_degree").get_to(data.smoothness_degree);
+        if(j.count("ignored_smoothness_length")) j.at("ignored_smoothness_length").get_to(data.ignored_smoothness_length);
+        if(j.count("river_width")) j.at("river_width").get_to(data.river_width);
+        if(j.count("river_boundary_id")) j.at("river_boundary_id").get_to(data.river_boundary_id);
+    }
+
     void to_json(json& j, const Region& region) 
     {
-        j = json{(t_Region)region};
+        j = json{{"region", (t_Region)region}};
+        
     }
     void from_json(const json& j, Region& region) 
     {
-        t_Region b;
-        j.get_to(b);
-        for(const auto&[key, value]: b)
+        t_Region r;
+        j.at("region").get_to(r);
+        for(const auto&[key, value]: r)
             region[key] = value;
     }
 
     //Sources
     void to_json(json& j, const Sources& sources) 
     {
-        j = json{(t_Sources)sources};
+        j = json{{"sources", (t_Sources)sources}};
     }
     void from_json(const json& j, Sources& sources) 
     {
         t_Sources s;
-        j.get_to(s);
+        j.at("sources").get_to(s);
         for(const auto&[key, value]: s)
             sources[key] = value;
     }
@@ -204,9 +221,7 @@ namespace River
             {"min_angle", data.min_angle},
             {"max_edge", data.max_edge},
             {"min_edge", data.min_edge},
-            {"ratio", data.ratio},
-            {"smoothness_degree", data.smoothness_degree},
-            {"ignored_smoothness_length", data.ignored_smoothness_length}};
+            {"ratio", data.ratio}};
     }
 
     void from_json(const json& j, MeshParams& data) 
@@ -220,8 +235,6 @@ namespace River
         if(j.count("max_edge")) j.at("max_edge").get_to(data.max_edge);
         if(j.count("min_edge")) j.at("min_edge").get_to(data.min_edge);
         if(j.count("ratio")) j.at("ratio").get_to(data.ratio);
-        if(j.count("smoothness_degree")) j.at("smoothness_degree").get_to(data.smoothness_degree);
-        if(j.count("ignored_smoothness_length")) j.at("ignored_smoothness_length").get_to(data.ignored_smoothness_length);
     }
 
     //IntegrationParams
@@ -230,32 +243,37 @@ namespace River
         j = json{
             {"weigth_func_radius", data.weigth_func_radius},
             {"integration_radius", data.integration_radius},
-            {"exponant", data.exponant}};
+            {"exponant", data.exponant},
+            {"eps", data.eps},
+            {"n_rho", data.n_rho}};
     }
     void from_json(const json& j, IntegrationParams& data) 
     {
         if(j.count("weigth_func_radius")) j.at("weigth_func_radius").get_to(data.weigth_func_radius);
         if(j.count("integration_radius")) j.at("integration_radius").get_to(data.integration_radius);
         if(j.count("exponant")) j.at("exponant").get_to(data.exponant);
+        if(j.count("eps")) j.at("eps").get_to(data.eps);
+        if(j.count("n_rho")) j.at("n_rho").get_to(data.n_rho);
     }
 
     //SolverParams
     void to_json(json& j, const SolverParams& data) 
     {
         j = json{
+            {"field_value", data.field_value},
             {"tollerance", data.tollerance},
             {"num_of_iterrations", data.num_of_iterrations},
             {"adaptive_refinment_steps", data.adaptive_refinment_steps},
             {"static_refinment_steps", data.static_refinment_steps},
             {"refinment_fraction", data.refinment_fraction},
             {"quadrature_degree", data.quadrature_degree},
-            {"renumbering_type", data.renumbering_type},
-            {"max_distance", data.max_distance},
-            {"field_value", data.field_value}};
+            {"renumbering_type", data.renumbering_type}
+            };
     }
     
     void from_json(const json& j, SolverParams& data) 
     {
+        if(j.count("field_value")) j.at("field_value").get_to(data.field_value);
         if(j.count("tollerance")) j.at("tollerance").get_to(data.tollerance);
         if(j.count("num_of_iterrations")) j.at("num_of_iterrations").get_to(data.num_of_iterrations);
         if(j.count("adaptive_refinment_steps")) j.at("adaptive_refinment_steps").get_to(data.adaptive_refinment_steps);
@@ -263,8 +281,6 @@ namespace River
         if(j.count("refinment_fraction")) j.at("refinment_fraction").get_to(data.refinment_fraction);
         if(j.count("quadrature_degree")) j.at("quadrature_degree").get_to(data.quadrature_degree);
         if(j.count("renumbering_type")) j.at("renumbering_type").get_to(data.renumbering_type);
-        if(j.count("max_distance")) j.at("max_distance").get_to(data.max_distance);
-        if(j.count("field_value")) j.at("field_value").get_to(data.field_value);
     }
 
     //Model
@@ -274,19 +290,17 @@ namespace River
             {"region", data.region},
             {"sources", data.sources},
             {"rivers", data.rivers},
-            {"boundary_conditions", data.boundary_conditions},
+            {"region_params", data.region_params},
             {"mesh_parameters", data.mesh_params},
-            {"integration_parameters", data.integr},
+            {"boundary_conditions", data.boundary_conditions},
             {"solver_parameters", data.solver_params},
-            {"simulation_type", data.simulation_type},
+            {"integration_parameters", data.integr},
+            
             {"number_of_steps", data.number_of_steps},
-            {"maximal_river_height", data.maximal_river_height},
-            {"number_of_backward_steps", data.number_of_backward_steps},
             {"dx", data.dx},
             {"width", data.width},
             {"height", data.height},
-            {"river_boundary_id", data.river_boundary_id},
-            {"river_width", data.river_width},
+            {"ds", data.ds},
             {"eta", data.eta},
             {"bifurcation_type", data.bifurcation_type},
             {"bifurcation_threshold", data.bifurcation_threshold},
@@ -294,31 +308,25 @@ namespace River
             {"bifurcation_angle", data.bifurcation_angle},
             {"growth_type", data.growth_type},
             {"growth_threshold", data.growth_threshold},
-            {"growth_min_distance", data.growth_min_distance},
-            {"ds", data.ds}};
+            {"growth_min_distance", data.growth_min_distance}};
     }
     void from_json(const json& j, Model& data) 
     {   
         if(j.count("region")) j.at("region").get_to(data.region);
         if(j.count("sources")) j.at("sources").get_to(data.sources);
         if(j.count("rivers")) j.at("rivers").get_to(data.rivers);
-        if(j.count("boundary_conditions")) j.at("boundary_conditions").get_to(data.boundary_conditions);
-
+        if(j.count("region_params")) j.at("region_params").get_to(data.region_params);
         if(j.count("mesh_parameters")) j.at("mesh_parameters").get_to(data.mesh_params);
-        if(j.count("integration_parameters")) j.at("integration_parameters").get_to(data.integr);
+        if(j.count("boundary_conditions")) j.at("boundary_conditions").get_to(data.boundary_conditions);
         if(j.count("solver_parameters")) j.at("solver_parameters").get_to(data.solver_params);
+        if(j.count("integration_parameters")) j.at("integration_parameters").get_to(data.integr);
         
-        if(j.count("simulation_type")) j.at("simulation_type").get_to(data.simulation_type);
         if(j.count("number_of_steps")) j.at("number_of_steps").get_to(data.number_of_steps);
-        if(j.count("maximal_river_height")) j.at("maximal_river_height").get_to(data.maximal_river_height);
-        if(j.count("number_of_backward_steps")) j.at("number_of_backward_steps").get_to(data.number_of_backward_steps);
         if(j.count("dx")) j.at("dx").get_to(data.dx);
         if(j.count("width")) j.at("width").get_to(data.width);
         if(j.count("height")) j.at("height").get_to(data.height);
-        if(j.count("river_boundary_id")) j.at("river_boundary_id").get_to(data.river_boundary_id);
-        if(j.count("river_width")) j.at("river_width").get_to(data.river_width);
-        if(j.count("eta")) j.at("eta").get_to(data.eta);
         if(j.count("ds")) j.at("ds").get_to(data.ds);
+        if(j.count("eta")) j.at("eta").get_to(data.eta);
         if(j.count("bifurcation_type")) j.at("bifurcation_type").get_to(data.bifurcation_type);
         if(j.count("bifurcation_threshold")) j.at("bifurcation_threshold").get_to(data.bifurcation_threshold);
         if(j.count("bifurcation_min_dist")) j.at("bifurcation_min_dist").get_to(data.bifurcation_min_dist);
