@@ -249,24 +249,6 @@ namespace River
         return p;
     }
 
-    bool Model::operator==(const Model& model) const
-    {
-        return 
-               number_of_steps == model.number_of_steps
-            &&   abs(dx - model.dx) < EPS 
-            && abs(width - model.width) < EPS 
-            && abs(height - model.height) < EPS 
-            && abs(eta - model.eta) < EPS 
-            && abs(bifurcation_threshold - model.bifurcation_threshold) < EPS 
-            && abs(bifurcation_min_dist - model.bifurcation_min_dist) < EPS 
-            && abs(bifurcation_angle - model.bifurcation_angle) < EPS 
-            && abs(growth_threshold - model.growth_threshold) < EPS 
-            && abs(growth_min_distance - model.growth_min_distance) < EPS 
-            && abs(ds - model.ds) < EPS 
-            && bifurcation_type == model.bifurcation_type
-            && growth_type == model.growth_type;
-    }
-
     void Model::clear()
     {
         region.clear();

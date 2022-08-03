@@ -346,7 +346,7 @@ namespace River
 
         out.precision(16);
 
-        json j = {"model", model};
+        json j = {{"model", model}};
 
         out << setw(4) << j;
 

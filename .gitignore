@@ -82,3 +82,4 @@ docsrc/master/*.run.xml
 docsrc/master/*.synctex.gz
 docsrc/master/*.fdb_latexmk
 docsrc/master/*.toc
+tests/*.json

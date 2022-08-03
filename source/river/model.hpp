@@ -53,7 +53,31 @@ namespace River
             Polar next_point(const vector<double>& series_params, double branch_lenght, double max_a);
 
             ///Prints model structure and its subclasses
-            bool operator==(const Model& model) const;
+            bool operator==(const Model& model) const
+            {
+                return 
+                    region == model.region
+                    && sources == model.sources
+                    && rivers == model.rivers
+                    && region_params == model.region_params
+                    && mesh_params == model.mesh_params
+                    && boundary_conditions == model.boundary_conditions
+                    && solver_params == model.solver_params
+                    && integr == model.integr
+                    && number_of_steps == model.number_of_steps
+                    &&   abs(dx - model.dx) < EPS 
+                    && abs(width - model.width) < EPS 
+                    && abs(height - model.height) < EPS 
+                    && abs(ds - model.ds) < EPS 
+                    && abs(eta - model.eta) < EPS 
+                    && bifurcation_type == model.bifurcation_type 
+                    && abs(bifurcation_threshold - model.bifurcation_threshold) < EPS 
+                    && abs(bifurcation_min_dist - model.bifurcation_min_dist) < EPS 
+                    && abs(bifurcation_angle - model.bifurcation_angle) < EPS 
+                    && growth_type == model.growth_type
+                    && abs(growth_threshold - model.growth_threshold) < EPS 
+                    && abs(growth_min_distance - model.growth_min_distance) < EPS;       
+            }
 
             Region region;
 
