@@ -249,8 +249,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def_readwrite("river_width", &RegionParams::river_width)
         .def_readwrite("river_boundary_id", &RegionParams::river_boundary_id, "Sigma is used in exponence formula of mesh refinment.")
         .def(self == self)
-        .def("__str__", &River::print<MeshParams>)
-        .def("__repr__", &River::print<MeshParams>)
+        .def("__str__", &River::print<RegionParams>)
+        .def("__repr__", &River::print<RegionParams>)
     ;
 
     class_<t_Region>("t_Region", "Structure which defines Region of region.")
@@ -467,7 +467,7 @@ BOOST_PYTHON_MODULE(riversim)
     class_<t_ids_series_params>("t_ids_series_params", "Holds for each tip id its series parameters.")
         .def(map_indexing_suite<t_ids_series_params>())
     ;
-    
+
     class_<SolverParams>("SolverParams")
         .def(self == self)
         .def_readwrite("tollerance", &SolverParams::tollerance, "Tollerarnce used by dealii Solver.")
