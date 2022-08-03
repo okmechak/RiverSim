@@ -524,11 +524,11 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     //MODEL.hpp
-    //class_<vector<double>> ("t_v_double")
-    //    .def(vector_indexing_suite<vector<double>>())
-    //    .def("__str__", &River::print<vector<double>>)
-    //    .def("__repr__", &River::print<vector<double>>)
-    //;
+    class_<vector<double>> ("t_v_double")
+        .def(vector_indexing_suite<vector<double>>())
+        .def("__str__", &River::print<vector<double>>)
+        .def("__repr__", &River::print<vector<double>>)
+    ;
 
     //class_<vector<vector<double>>> ("t_v2_double")
     //    .def(vector_indexing_suite<vector<vector<double>>>())
