@@ -7,6 +7,9 @@ using json = nlohmann::json;
 
 namespace River
 {
+    ///Holds for each tip id its series parameters.
+    typedef map<t_branch_id, vector<double>> t_ids_series_params;
+    
     ///Save current state of program which includes Geometry(Rivers, Boundary), current model parameters(Model) and backward simulation data(GeometryDifference).
     void Save(const Model& model, const string file_name);
     

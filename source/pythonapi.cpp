@@ -464,6 +464,10 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     //SOLVER.hpp
+    class_<t_ids_series_params>("t_ids_series_params", "Holds for each tip id its series parameters.")
+        .def(map_indexing_suite<t_ids_series_params>())
+    ;
+    
     class_<SolverParams>("SolverParams")
         .def(self == self)
         .def_readwrite("tollerance", &SolverParams::tollerance, "Tollerarnce used by dealii Solver.")
