@@ -33,13 +33,13 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tboundary)
 
-#tree
-#add_executable(ttree tree.cpp)
-#target_link_libraries(ttree tree ${Boost_LIBRARIES})
-#add_test(
-#    NAME ttree
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttree)
+#rivers
+add_executable(trivers rivers.cpp)
+target_link_libraries(trivers rivers ${Boost_LIBRARIES})
+add_test(
+    NAME trivers
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/trivers)
 
 #region
 add_executable(tregion region.cpp)

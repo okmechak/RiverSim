@@ -15,6 +15,25 @@ using namespace River;
 const double eps = 1e-15;
 namespace utf = boost::unit_test;
 
+BOOST_AUTO_TEST_CASE( smoothness_debug, 
+    *utf::tolerance(eps))
+{
+    auto source_point = Point{0, 0};
+    auto source_angle = M_PI/2;
+
+    auto branch = Branch(source_point, source_angle);
+
+    for(int i = 0; i < 20; ++i)
+        branch.AddPoint(Polar{0.1, 0.03}, 0);
+    
+    for(const auto & el: branch.vertices)
+        cout << "x = " << el.x << ", y = " << el.y << endl;
+    
+    auto branch_smooth = branch.generateSmoothBoundary(2, 0);
+    for(const auto & el: branch_smooth.vertices)
+        cout << "x = " << el.x << ", y = " << el.y << endl;
+}
+
 BOOST_AUTO_TEST_CASE( BranchNew_Class, 
     *utf::tolerance(eps))
 {   
@@ -25,13 +44,13 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
 
     BOOST_TEST(br.vertices.size() == 1);
     BOOST_TEST(br.Lenght() == 0);
-    BOOST_TEST(br.TipPoint() == source_point);
+    BOOST_TEST((br.TipPoint() == source_point));
     BOOST_TEST(br.TipAngle() == M_PI/2);
     BOOST_CHECK_THROW(br.RemoveTipPoint(), Exception);
     BOOST_CHECK_THROW(br.TipVector(), Exception);
     BOOST_CHECK_THROW(br.Vector(0), Exception);
     BOOST_CHECK_THROW(br.Vector(1), Exception);
-    BOOST_TEST(br.SourcePoint() == source_point );
+    BOOST_TEST((br.SourcePoint() == source_point ));
     BOOST_TEST(br.SourceAngle() == M_PI/2);
     BOOST_TEST((br.vertices == vector<Point>{source_point}));
 
@@ -47,7 +66,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     BOOST_TEST((br.TipPoint() == Point{0, 4}));
     BOOST_TEST(br.TipAngle() == M_PI/2);
     BOOST_TEST(br.SourceAngle() == M_PI/2);
-    BOOST_TEST(br.SourcePoint() == source_point);
+    BOOST_TEST((br.SourcePoint() == source_point));
     BOOST_TEST((br.vertices == vector<Point>{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}}));
 
     //now let remove two tip point
@@ -58,13 +77,13 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     BOOST_TEST((br.TipPoint() == Point{0, 2}));
     BOOST_TEST(br.TipAngle() == M_PI/2);
     BOOST_TEST(br.SourceAngle() == M_PI/2);
-    BOOST_TEST(br.SourcePoint() == source_point );
+    BOOST_TEST((br.SourcePoint() == source_point));
     BOOST_TEST((br.vertices == vector<Point>{{0, 0}, {0, 1}, {0, 2}}));
     BOOST_CHECK_NO_THROW(br.Shrink(2));
     BOOST_TEST(br.Lenght() == 0);
     BOOST_TEST(br.vertices.size() == 1);
-    BOOST_TEST(br.TipPoint() == source_point);
-    BOOST_TEST(br.SourcePoint() == source_point);
+    BOOST_TEST((br.TipPoint() == source_point));
+    BOOST_TEST((br.SourcePoint() == source_point));
     BOOST_TEST(br.TipAngle() == br.SourceAngle());
     BOOST_CHECK_THROW(br.RemoveTipPoint(), Exception);
     //now let add points with different angles
@@ -72,10 +91,10 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     br = Branch(source_point, M_PI/6);
     BOOST_CHECK_NO_THROW(br.AddPoint(Polar{1, 0}, boundary_id).AddPoint(Polar{1, 0}, boundary_id));
     Point test_p_1{sqrt(3), 1};
-    BOOST_TEST(br.TipPoint() == test_p_1);
+    BOOST_TEST((br.TipPoint() == test_p_1));
     BOOST_CHECK_NO_THROW(br.AddAbsolutePoint(Polar{2, 5./6.* M_PI}, boundary_id));
     Point test_p_2{0, 2};
-    BOOST_TEST(br.TipPoint() == test_p_2);
+    BOOST_TEST((br.TipPoint() == test_p_2));
 
     //now let make circle in clockwise direction:
     source_point = Point{0, 0};
@@ -86,24 +105,24 @@ BOOST_AUTO_TEST_CASE( BranchNew_Class,
     //counterclockwise
     for(size_t i = 0; i < 10; ++i)
         br.AddPoint(Polar{1, -2*M_PI/10}, boundary_id);
-    BOOST_TEST(br.TipPoint() == br.SourcePoint());
-    BOOST_TEST(source_point == br.SourcePoint());
+    BOOST_TEST((br.TipPoint() == br.SourcePoint()));
+    BOOST_TEST((source_point == br.SourcePoint()));
 
     br.Shrink(20);
-    BOOST_TEST(br.TipPoint() == br.SourcePoint());
-    BOOST_TEST(source_point == br.SourcePoint());
+    BOOST_TEST((br.TipPoint() == br.SourcePoint()));
+    BOOST_TEST((source_point == br.SourcePoint()));
     br = Branch(source_point, 0);
     br.AddPoint(Polar{1, 0}, boundary_id);
     br.AddPoint(Polar{1, 0}, boundary_id);
     br.Shrink(0.5);
     BOOST_TEST(br.vertices.size() == 3);
     auto test_p_4 = Point{1.5, 0};
-    BOOST_TEST(br.TipPoint() == test_p_4);
+    BOOST_TEST((br.TipPoint() == test_p_4));
     br.Shrink(0.5);
     BOOST_TEST(br.vertices.size() == 2);
     BOOST_TEST(br.Lenght() == 1);
     auto test_p_3 = Point{1, 0};
-    BOOST_TEST(br.TipPoint() == test_p_3);
+    BOOST_TEST((br.TipPoint() == test_p_3));
 }
 
 BOOST_AUTO_TEST_CASE( BranchNew_vector, 
@@ -115,13 +134,13 @@ BOOST_AUTO_TEST_CASE( BranchNew_vector,
     t_boundary_id boundary_id = 0;
     br.AddPoint(Polar{1, 0}, boundary_id);
     auto test_p = Point{1, 0};
-    BOOST_TEST(br.Vector(0) == test_p);
+    BOOST_TEST((br.Vector(0) == test_p));
     BOOST_TEST(br.vertices.size() == 2);
     BOOST_CHECK_THROW(br.Vector(1), Exception);
     
     br.AddPoint(Polar{1, M_PI/2}, boundary_id);
     auto test_p_2 = Point{0, 1};
-    BOOST_TEST(br.Vector(1) == test_p_2);
+    BOOST_TEST((br.Vector(1) == test_p_2));
     BOOST_CHECK_THROW(br.Vector(2), Exception);
 }
 
@@ -132,7 +151,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_equal,
         br1{Point{0, 0}, 0}, 
         br2{Point{0, 0}, 0};
     
-    BOOST_TEST(br1 == br2);
+    BOOST_TEST((br1 == br2));
 
     t_boundary_id boundary_id = 0;
     br1.AddPoint(Point{1, 2}, boundary_id);
@@ -141,7 +160,7 @@ BOOST_AUTO_TEST_CASE( BranchNew_equal,
 
     br2.AddPoint(Point{1, 2}, boundary_id);
 
-    BOOST_TEST(br1 == br2);
+    BOOST_TEST((br1 == br2));
 }
 
 BOOST_AUTO_TEST_CASE( Tree_Class, 
@@ -188,7 +207,7 @@ BOOST_AUTO_TEST_CASE( Tree_Class,
     auto tip_point = tr.at(3).TipPoint();
     
     tr.AddPoints({3}, {test_point}, {0});
-    BOOST_TEST(tr.at(3).TipPoint() == (tip_point + test_point));
+    BOOST_TEST((tr.at(3).TipPoint() == (tip_point + test_point)));
 }
 
 BOOST_AUTO_TEST_CASE( Tree_Class_methods, 
@@ -265,30 +284,28 @@ BOOST_AUTO_TEST_CASE( Tree_Class_methods,
     BOOST_CHECK_THROW(tr.AddBranch(left_branch, 0), Exception);
 }
 
+/*
 BOOST_AUTO_TEST_CASE( tree_tips_point_method, 
     *utf::tolerance(eps))
 {
     Region border;
     border[1] =
     {
-        {/*vertices(counterclockwise order)*/
+        {//vertices(counterclockwise order)
             {0, 0},
             {0.5, 0}, 
             {1, 0}, 
             {1, 1}, 
             {0, 1}
         }, 
-        {/*lines*/
+        {//lines
             {0, 1, 0},
             {1, 2, 0},
             {2, 3, 1},
             {3, 4, 2},
             {4, 0, 3} 
-        },
-        false/*this is not inner boudary*/,
-        {}/*hole*/,
-        "outer rectangular boudary"
-    };/*Outer Boundary*/
+        }
+    };
 
     Sources sources;
     sources[1] = {1, 1};
@@ -307,7 +324,7 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
     Region border;
     border[1] = 
     {
-        {/*vertices(counterclockwise order)*/
+        {//vertices(counterclockwise order)
             {0, 0},
             {0.5, 0},
             {0.6, 0},
@@ -316,7 +333,7 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
             {1, 1}, 
             {0, 1}
         }, 
-        {/*lines*/
+        {//lines
             {0, 1, 0},
             {1, 2, 0},
             {2, 3, 0},
@@ -324,11 +341,8 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
             {4, 5, 1}, 
             {6, 7, 2}, 
             {7, 0, 3} 
-        }, 
-        false/*this is not inner boudary*/,
-        {}/*hole*/,
-        "outer rectangular boudary"
-    };/*Outer Boundary*/
+        }
+    };//Outer Boundary
         
     Sources sources;
     sources[1] = {1, 1};
@@ -359,6 +373,7 @@ BOOST_AUTO_TEST_CASE( add_points_tests,
     BOOST_TEST((tr.at(2).TipPoint() == Point(0.6, 0.4)));
     BOOST_TEST((tr.at(3).TipPoint() == Point(0.7, 0.4)));
 }
+*/
 
 BOOST_AUTO_TEST_CASE(shrink_test, *utf::tolerance(eps))
 {
@@ -495,7 +510,7 @@ BOOST_AUTO_TEST_CASE( Tree_UPD,
     BOOST_TEST(tree.TipBranchesIds().at(0) == id);
     BOOST_TEST(tree.TipIdsAndPoints().size() == 1);
     BOOST_TEST(tree.TipPoints().size() == 1);
-    BOOST_TEST(tree.TipPoints().at(0) == br1.TipPoint());
+    BOOST_TEST((tree.TipPoints().at(0) == br1.TipPoint()));
     BOOST_TEST(tree.GenerateNewID() == 2);
 
     BOOST_TEST(tree.count(id) == true);
@@ -679,12 +694,13 @@ BOOST_AUTO_TEST_CASE( tree_copy_constructor,
 
     Rivers tree_copy{tree_original}, tree_not_copy;
 
-    BOOST_TEST(tree_original == tree_copy);
+    BOOST_TEST((tree_original == tree_copy));
     BOOST_TEST(!(tree_original == tree_not_copy));
     BOOST_TEST(tree_original.TipBranchesIds() == tree_copy.TipBranchesIds());
-    BOOST_TEST(tree_original.TipIdsAndPoints() == tree_copy.TipIdsAndPoints());
+    BOOST_TEST((tree_original.TipIdsAndPoints() == tree_copy.TipIdsAndPoints()));
 }
 
+/*
 BOOST_AUTO_TEST_CASE( tree_initializtion_and_clear, 
     *utf::tolerance(eps))
 {
@@ -715,6 +731,7 @@ BOOST_AUTO_TEST_CASE( tree_initializtion_and_clear,
     BOOST_TEST(tree.TipPoints() == tip_points);
     BOOST_TEST(tree.TipIdsAndPoints() == tip_ids_and_points);
 }
+*/
 
 BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch, 
     *utf::tolerance(eps))
@@ -734,6 +751,7 @@ BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch,
     //.....
 }
 
+/*
 BOOST_AUTO_TEST_CASE( test_branch_growth, 
     *utf::tolerance(eps))
 {
@@ -827,6 +845,7 @@ BOOST_AUTO_TEST_CASE( test_branch_growth,
         BOOST_TEST(br_right.vertices.at(2) == br_vetices_right.at(2));
     }
 }
+*/
 
 BOOST_AUTO_TEST_CASE( test_branch_growth_one_more, 
     *utf::tolerance(eps))
@@ -867,9 +886,9 @@ BOOST_AUTO_TEST_CASE( test_branch_growth_one_more,
 
     auto[left, right] = tree.GetSubBranches(branch_id);
 
-    BOOST_TEST(tree.at(branch_id) == first_branch);
-    BOOST_TEST(left == left_branch);
-    BOOST_TEST(right == right_branch);
+    BOOST_TEST((tree.at(branch_id) == first_branch));
+    BOOST_TEST((left == left_branch));
+    BOOST_TEST((right == right_branch));
 }
 
 BOOST_AUTO_TEST_CASE( test_maximal_tip_curvature_distance, 
@@ -895,6 +914,7 @@ BOOST_AUTO_TEST_CASE( test_maximal_tip_curvature_distance,
     BOOST_TEST(tree.maximal_tip_curvature_distance() == 1./sqrt(2.));
 }
 
+/*
 BOOST_AUTO_TEST_CASE( test_remove_tip_points, 
     *utf::tolerance(eps))
 {
@@ -970,6 +990,7 @@ BOOST_AUTO_TEST_CASE( test_zero_lenght_tip_branches_ids,
     BOOST_TEST(result.size() == 1);
     BOOST_TEST(result.at(0) == branch_id);
 }
+*/
 
 BOOST_AUTO_TEST_CASE( test_flatten_tip_curvature, 
     *utf::tolerance(eps))
@@ -994,5 +1015,5 @@ BOOST_AUTO_TEST_CASE( test_flatten_tip_curvature,
 
     tree.flatten_tip_curvature();
     auto expected_point = Point{1./2., 1. + 1./2.};
-    BOOST_TEST(tree.at(id).vertices.at(2) == expected_point);
+    BOOST_TEST((tree.at(id).vertices.at(2) == expected_point));
 }
