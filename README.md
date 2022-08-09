@@ -46,9 +46,13 @@ and call command is same as cmake, but:
 Or compile it but do not forget to use `-fPIC` compiler option.
 
 #### Boost:
-> ~sudo apt install libbost-all-dev~
-Install boost from gtihub.com/boostorg/boost.org 
-and while compiling do not forget to use -with=python option
+
+You should build from source(from github):
+
+```
+./bootstrap.sh --with-python=python3
+sudo ./b2 variant=release link=static cxxflags=-fPIC cflags=-fPIC install
+```
 
 ### CentOS
 Problem: Program uses c++ 17 standard features, but last prebuild gcc version for CentOS is 4.8 and it only supports c++ 11 standart. 
