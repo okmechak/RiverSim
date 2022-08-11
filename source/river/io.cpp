@@ -356,7 +356,7 @@ namespace River
     void Open(Model& model, const string file_name)
     {
         ifstream in(file_name);
-        if(!in) throw Exception("Open. Can't create file for read. : " + file_name);
+        if(!in) throw Exception("Open. Can't open file for read. : " + file_name);
 
         json j;
         in >> j;
