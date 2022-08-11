@@ -21,6 +21,18 @@ const double eps = EPS;
 namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
+BOOST_AUTO_TEST_CASE( Check_For_Boundary_Intersection_debug, 
+    *utf::tolerance(eps))
+{
+    Model model;
+    Open(model, "big_simulation_with_intersection.json");
+
+    auto region_boundary = BoundaryGenerator(model.sources, model.region, model.rivers, model.region_params);
+    auto tip_boundary = model.rivers.TipBoundary();
+
+    auto num_of_intersects = NumOfBoundaryIntersection(region_boundary, tip_boundary);
+    BOOST_TEST(num_of_intersects == 2);
+}
 
 
 BOOST_AUTO_TEST_CASE( model_io, 

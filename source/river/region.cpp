@@ -326,18 +326,27 @@ namespace River
     {
         // See https://www.geeksforgeeks.org/orientation-3-ordered-points/
         // for details of below formula.
-        int val = (q.y - p.y) * (r.x - q.x) -
+        double val = (q.y - p.y) * (r.x - q.x) -
                   (q.x - p.x) * (r.y - q.y);
     
-        if (val == 0) return 0;  // collinear
+        if (val == 0.) return 0;  // collinear
     
-        return (val > 0)? 1: 2; // clock or counterclock wise
+        return (val > 0) ? 1: 2; // clock or counterclock wise
     }
   
     // The main function that returns true if line segment 'p1q1'
     // and 'p2q2' intersect.
     bool doIntersect(Point p1, Point q1, Point p2, Point q2)
     {
+        auto 
+            r1 = q1 - p1,
+            r2 = q2 - p2;
+
+        p1 += r1 * 5e-6;
+        q1 -= r1 * 5e-6;
+        p2 += r2 * 5e-6;
+        q2 -= r2 * 5e-6;
+
         // Find the four orientations needed for general and
         // special cases
         int o1 = orientation(p1, q1, p2);
@@ -381,14 +390,14 @@ namespace River
                 
                 //Ommit cases with self intersection. Cos every boundary includes also tip line.
                 //UPD: becouse of spliting rivers there is no more self intersection.
-                // if (p1 == p2 && q1 == q2)
-                    // continue;
+                //But still it is good feature
+                if (p1 == p2 && q1 == q2)
+                    continue;
                 
-                intersection_detected += (size_t)doIntersect(p1, q1, p2, q2);
-
+                if (doIntersect(p1, q1, p2, q2))
+                    intersection_detected += 1;
             }
         }
-
         return intersection_detected;
     }
 }

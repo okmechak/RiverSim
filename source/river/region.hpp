@@ -82,6 +82,8 @@ namespace River
     Boundary BoundaryGenerator(
         const Sources& sources, const Region &region, const Rivers &rivers, const RegionParams& rp);
 
+    bool doIntersect(Point p1, Point q1, Point p2, Point q2);
+    
     ///Checks for intersections of region boundary with tips.
     size_t NumOfBoundaryIntersection(const Boundary &region_boundary, const Boundary &tip_boundary);
 }
