@@ -772,9 +772,9 @@ BOOST_AUTO_TEST_CASE( tree_add_and_delete_branch,
         branch_1_duplicate{Point{1, 2}, 3};
 
     BOOST_CHECK_THROW(tree.AddBranch(branch_1, 0), Exception);
-    t_branch_id id;
-    BOOST_CHECK_NO_THROW(id = tree.AddBranch(branch_1));
-    BOOST_CHECK_THROW(tree.AddBranch(branch_1, id), Exception);
+    t_branch_id id = -1;
+    BOOST_CHECK_NO_THROW((id = tree.AddBranch(branch_1)));
+    BOOST_CHECK_THROW((tree.AddBranch(branch_1, id)), Exception);
 
     //.....
 }
