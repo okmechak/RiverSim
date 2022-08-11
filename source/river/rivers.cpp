@@ -403,7 +403,8 @@ namespace River
 
     pair<t_branch_id, t_branch_id> Rivers::GrowTestTree(const t_boundary_id boundary_id, t_branch_id branch_id, double ds, unsigned n, double dalpha)
     {
-        handle_non_existing_branch_id(branch_id);
+        if (this->empty())
+            Initialize({{boundary_id, {Point{0, 0}, M_PI / 2}}});
         
         if(HasSubBranches(branch_id))
             throw Exception("GrowTestTree: This branch have subbranches.");
@@ -503,6 +504,32 @@ namespace River
             ids_points_map[ids.at(i)] = points.at(i);
                 
         return ids_points_map;
+    }
+
+    Boundary Rivers::TipBoundary() const
+    {
+        auto tip_branches_ids = TipBranchesIds();
+
+        Boundary tip_boundary;
+
+        int index = 0;
+        for(const auto tip_branch_id: tip_branches_ids)
+        {
+            auto boundary_id = this->at(tip_branch_id).lines.back().boundary_id;
+            auto br_vertices = this->at(tip_branch_id).vertices;
+            auto size = br_vertices.size();
+            if(size >= 2 )
+            {
+                tip_boundary.vertices.push_back(br_vertices[size - 2]);
+                tip_boundary.vertices.push_back(br_vertices[size - 1]);
+                
+                tip_boundary.lines.push_back(Line(index, index + 1, boundary_id));
+
+                index += 2;
+            }
+        }
+
+        return tip_boundary;
     }
 
     bool Rivers::IsSourceBranch(const t_branch_id branch_id) const

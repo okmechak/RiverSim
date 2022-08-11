@@ -222,6 +222,9 @@ namespace River
             ///Returns vector of tip branches Points.
             map<t_branch_id, Point> TipIdsAndPoints() const;
 
+            ///Return tip lines and vertices as boundary class.
+            Boundary TipBoundary() const;
+
             ///Checks if current id of branch is source or not.
             bool IsSourceBranch(const t_branch_id branch_id) const;
 

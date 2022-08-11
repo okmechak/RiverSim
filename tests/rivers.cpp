@@ -12,9 +12,36 @@
 
 using namespace River;
 
-const double eps = 1e-15;
+const double eps = EPS;
 namespace utf = boost::unit_test;
 
+BOOST_AUTO_TEST_CASE( tip_boundary, 
+    *utf::tolerance(eps))
+{
+    Rivers rivers;
+
+    auto boundary = rivers.TipBoundary();
+
+    BOOST_TEST(boundary.lines.empty());
+    BOOST_TEST(boundary.vertices.empty());
+
+    t_boundary_id boundary_id = 1;
+    t_branch_id branch_id = 1;
+    double ds = 1.,
+        dalpha = 0;
+    unsigned n = 1;
+    
+    rivers.GrowTestTree(boundary_id, branch_id, ds, n, dalpha);
+
+    boundary = rivers.TipBoundary();
+
+    auto expected_lines = t_LineList{{0, 1, boundary_id}, {2, 3, boundary_id}};
+    auto expected_vertices = t_PointList{{0, 1}, {-sqrt(2)/2, 1 + sqrt(2)/2}, {0, 1}, {sqrt(2)/2, 1 + sqrt(2)/2}};
+    BOOST_TEST((boundary.lines == expected_lines));
+    BOOST_TEST((boundary.vertices == expected_vertices));
+}
+
+/*
 BOOST_AUTO_TEST_CASE( smoothness_debug, 
     *utf::tolerance(eps))
 {
@@ -26,13 +53,14 @@ BOOST_AUTO_TEST_CASE( smoothness_debug,
     for(int i = 0; i < 20; ++i)
         branch.AddPoint(Polar{0.1, 0.03}, 0);
     
-    for(const auto & el: branch.vertices)
+    for(const auto & el: branch.vertices);
         cout << "x = " << el.x << ", y = " << el.y << endl;
     
     auto branch_smooth = branch.generateSmoothBoundary(2, 0);
-    for(const auto & el: branch_smooth.vertices)
+    for(const auto & el: branch_smooth.vertices);
         cout << "x = " << el.x << ", y = " << el.y << endl;
 }
+*/
 
 BOOST_AUTO_TEST_CASE( BranchNew_Class, 
     *utf::tolerance(eps))

@@ -229,6 +229,7 @@ BOOST_PYTHON_MODULE(riversim)
         .def("zeroLenghtTipBranchesIds", &Rivers::zero_lenght_tip_branches_ids, args("zero_lenght"))
         .def("tipPoints", &Rivers::TipPoints, "Returns vector of tip branches Points.")
         .def("tipIdsAndPoints", &Rivers::TipIdsAndPoints, "Returns vector of tip branches Points and its ids.")
+        .def("tipBoundary", &Rivers::TipBoundary, "Return tip lines and vertices as boundary class.")
         .def("isSourceBranch", &Rivers::IsSourceBranch, args("branch_id"), "Checks if current id of branch is source or not.")
         .def("maximalTipCurvatureDistance", &Rivers::maximal_tip_curvature_distance, "Evaluates curvature of tips. Used in non-euler growth.")
         .def("flattenTipCurvature", &Rivers::flatten_tip_curvature)
@@ -276,6 +277,7 @@ BOOST_PYTHON_MODULE(riversim)
 
     def("RiversBoundary", River::RiversBoundary, args("rivers_boundary", "rivers", "river_id", "rp"), "Generates rivers boundary.");
     def("BoundaryGenerator", River::BoundaryGenerator, args("sources", "region", "rivers", "rp"), "Generates boundary from region and rivers.");
+    def("NumOfBoundaryIntersection", River::NumOfBoundaryIntersection, args("region_boundary", "tip_boundary"), "Checks for intersections of region boundary with tips.");
 
 
     //TETHEX.hpp

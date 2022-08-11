@@ -12,10 +12,66 @@
 
 using namespace River;
 
-const double eps = 1e-13;
+const double eps = EPS;
 namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
+BOOST_AUTO_TEST_CASE( Check_For_Boundary_Intersection, 
+    *utf::tolerance(eps))
+{
+    //First case
+    Boundary region_boundary, tip_boundary;
+
+    BOOST_TEST(NumOfBoundaryIntersection(region_boundary, tip_boundary) == 0);
+
+    //One more case
+    tip_boundary.vertices = {{0, 0}, {1, 1}};
+    tip_boundary.lines = {{0, 1, 0}};
+    region_boundary.vertices = {{1, 1}, {2, 2}};
+    region_boundary.lines = {{0, 1, 0}};
+    BOOST_TEST(NumOfBoundaryIntersection(region_boundary, tip_boundary) == 0);
+
+    tip_boundary.vertices = {{0, 0}, {1, 1}};
+    tip_boundary.lines = {{0, 1, 0}};
+    region_boundary.vertices = {{1, 0}, {0, 1}};
+    region_boundary.lines = {{0, 1, 0}};
+    BOOST_TEST(NumOfBoundaryIntersection(region_boundary, tip_boundary) == 1);
+
+    tip_boundary.vertices = {{1, 1}, {2, 2}};
+    tip_boundary.lines = {{0, 1, 0}};
+    region_boundary.vertices = {{0, 0}, {1, 1}};
+    region_boundary.lines = {{0, 1, 0}};
+    BOOST_TEST(NumOfBoundaryIntersection(region_boundary, tip_boundary) == 0);
+
+    //Second case
+    Region region;
+    auto sources = region.MakeRectangular();
+
+    Rivers rivers;
+
+    RegionParams rp;
+    
+    region_boundary = BoundaryGenerator(sources, region, rivers, rp);
+    tip_boundary = rivers.TipBoundary();
+
+    BOOST_TEST(NumOfBoundaryIntersection(region_boundary, tip_boundary) == 0);
+
+    //Third case
+    rivers.Initialize(region.GetSourcesIdsPointsAndAngles(sources));
+    rivers.GrowTestTree(0, 1, 0.1, 2, 0);
+
+    region_boundary = BoundaryGenerator(sources, region, rivers, rp);
+    tip_boundary = rivers.TipBoundary();
+
+    BOOST_TEST(NumOfBoundaryIntersection(region_boundary, tip_boundary) == 0);
+
+    //Forth case
+    rivers.GrowTestTree(0, 3, 0.1, 7, 0);
+    region_boundary = BoundaryGenerator(sources, region, rivers, rp);
+    tip_boundary = rivers.TipBoundary();
+
+    BOOST_TEST(NumOfBoundaryIntersection(region_boundary, tip_boundary) == 2);
+}
 
 BOOST_AUTO_TEST_CASE( Boundaries_NormalAngle, 
     *utf::tolerance(eps))
@@ -185,7 +241,7 @@ BOOST_AUTO_TEST_CASE( tree_vertices,
     Rivers tr;
     RegionParams rp;
     rp.smoothness_degree = 0.01;
-    BOOST_CHECK_THROW(RiversBoundary(tree_vertices, tr, 1, rp), Exception);
+    BOOST_CHECK_NO_THROW(RiversBoundary(tree_vertices, tr, 1, rp));
 }
 
 
@@ -197,7 +253,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary,
     Boundary boundary;
     RegionParams rp;
     rp.smoothness_degree = 0.01;
-    BOOST_CHECK_THROW(RiversBoundary(boundary, rivers, 1, rp), Exception);
+    BOOST_CHECK_NO_THROW(RiversBoundary(boundary, rivers, 1, rp));
 
     //initiazlized tree
     Region region;
@@ -1102,7 +1158,7 @@ BOOST_AUTO_TEST_CASE( tree_vertices__,
     Rivers tr;
     RegionParams rp;
     rp.river_width = 0.1;
-    BOOST_CHECK_THROW(RiversBoundary(boundary, tr, 1, rp), Exception);
+    BOOST_CHECK_NO_THROW(RiversBoundary(boundary, tr, 1, rp));
 }
 
 BOOST_AUTO_TEST_CASE( tree_boundary__, 
@@ -1113,7 +1169,7 @@ BOOST_AUTO_TEST_CASE( tree_boundary__,
     Rivers tree;
     RegionParams rp;
     rp.river_width = 0.1;
-    BOOST_CHECK_THROW(RiversBoundary(boundary, tree, 1, rp), Exception);
+    BOOST_CHECK_NO_THROW(RiversBoundary(boundary, tree, 1, rp));
 
     //initiazlized tree
     Region region;

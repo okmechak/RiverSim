@@ -135,5 +135,5 @@ namespace River
     typedef pair<Point, double> t_branch_source;
 
     ///Data structure - interface between boundary sources and source points of \ref Rivers
-    typedef map<t_source_id, t_branch_source/*t_branch_source*/> t_rivers_interface;
+    typedef map<t_source_id/*same as branch id*/, t_branch_source/*t_branch_source*/> t_rivers_interface;
 }//namespace River
