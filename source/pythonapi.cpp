@@ -278,6 +278,8 @@ BOOST_PYTHON_MODULE(riversim)
     def("RiversBoundary", River::RiversBoundary, args("rivers_boundary", "rivers", "river_id", "rp"), "Generates rivers boundary.");
     def("BoundaryGenerator", River::BoundaryGenerator, args("sources", "region", "rivers", "rp"), "Generates boundary from region and rivers.");
     def("NumOfBoundaryIntersection", River::NumOfBoundaryIntersection, args("region_boundary", "tip_boundary"), "Checks for intersections of region boundary with tips.");
+    def("DistanceFromPointToBoundary", DistanceFromPointToBoundary, args("boundary", "point"), "Distance of point to boundary");
+    def("DistanceFromPointsToBoundary", DistanceFromPointsToBoundary, args("boundary", "points"), "Distance of points to boundary");
 
 
     //TETHEX.hpp

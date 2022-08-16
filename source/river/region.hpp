@@ -86,4 +86,10 @@ namespace River
     
     ///Checks for intersections of region boundary with tips.
     size_t NumOfBoundaryIntersection(const Boundary &region_boundary, const Boundary &tip_boundary);
+
+    ///Distance of point to boundary
+    double DistanceFromPointToBoundary(const Boundary &boundary, const Point& point);
+
+    ///Distance of points to boundary
+    double DistanceFromPointsToBoundary(const Boundary &boundary, const t_PointList& points);
 }

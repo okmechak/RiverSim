@@ -16,6 +16,57 @@ const double eps = EPS;
 namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
+BOOST_AUTO_TEST_CASE( Distance_From_Point_To_Boundary, 
+    *utf::tolerance(eps))
+{
+    Boundary boundary;
+    River::Point point;
+
+    t_PointList points;
+
+    //Test 1
+    auto dist = DistanceFromPointToBoundary(boundary, point);
+    BOOST_TEST(dist == __DBL_MAX__);
+
+    dist = DistanceFromPointsToBoundary(boundary, points);
+    BOOST_TEST(dist == __DBL_MAX__);
+
+    //Test 2
+    point = River::Point{0.5, 0.5};
+    points = {point};
+    boundary.lines = {{0, 1, 0}, {1, 2, 0}, {2, 3, 0}, {3, 0, 0}};
+    boundary.vertices = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
+
+    dist = DistanceFromPointToBoundary(boundary, point);
+    BOOST_TEST(dist == 0.5);
+
+    dist = DistanceFromPointsToBoundary(boundary, points);
+    BOOST_TEST(dist == 0.5);
+
+    //Test 3
+    point = River::Point{0.1, 0.1};
+    points = {point};
+    boundary.lines = {{0, 1, 0}, {1, 2, 0}, {2, 3, 0}, {3, 0, 0}};
+    boundary.vertices = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
+
+    dist = DistanceFromPointToBoundary(boundary, point);
+    BOOST_TEST(dist == 0.1);
+
+    dist = DistanceFromPointsToBoundary(boundary, points);
+    BOOST_TEST(dist == 0.1);
+
+    //Test 4
+    point = River::Point{0, 0.1};
+    points = {point};
+    boundary.lines = {{0, 1, 0}, {1, 2, 0}, {2, 3, 0}, {3, 0, 0}};
+    boundary.vertices = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
+
+    dist = DistanceFromPointToBoundary(boundary, point);
+    BOOST_TEST(dist == 0.);
+
+    dist = DistanceFromPointsToBoundary(boundary, points);
+    BOOST_TEST(dist == 0.);
+}
 BOOST_AUTO_TEST_CASE( do_intersect, 
     *utf::tolerance(eps))
 {

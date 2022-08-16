@@ -400,4 +400,41 @@ namespace River
         }
         return intersection_detected;
     }
+
+    inline double distance_from_a_point_to_a_segmen(double x1, double y1, double x2, double y2, double x, double y)
+    {
+        return abs((x2 - x1)*(y1 - y) - (x1 - x)*(y2 - y1))/sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+    }
+
+    ///Distance of point to boundary.
+    double DistanceFromPointToBoundary(const Boundary &boundary, const Point& point)
+    {
+        double distance = __DBL_MAX__;
+        auto & v = boundary.vertices;
+        for(auto const &l: boundary.lines)
+        {
+            auto cur_distance = distance_from_a_point_to_a_segmen(
+                v[l.p1].x, v[l.p1].y, v[l.p2].x, v[l.p2].y, 
+                point.x, point.y);
+            if (cur_distance < distance)
+                distance = cur_distance;
+        }
+
+        return distance;
+    }
+
+    ///Distance of points to boundary.
+    double DistanceFromPointsToBoundary(const Boundary &boundary, const t_PointList& points)
+    {
+        double distance = __DBL_MAX__;
+
+        for(auto const & p: points)
+        {
+            auto cur_distance = DistanceFromPointToBoundary(boundary, p);
+            if (cur_distance < distance)
+                distance = cur_distance;
+        }
+
+        return distance;
+    }
 }
