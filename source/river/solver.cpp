@@ -20,6 +20,8 @@ namespace River
     {
         auto n = mesh.get_vertices().size();
 
+        if (n == 0) return;
+
         //vertices conversion
         std::vector<dealii::Point<dim>> vertices(n);
         for(size_t i = 0; i < n; ++i)

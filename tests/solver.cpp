@@ -14,6 +14,17 @@ using namespace River;
 
 namespace utf = boost::unit_test;
 
+BOOST_AUTO_TEST_CASE( open_empty_mesh, 
+    *utf::tolerance(EPS))
+{   
+    SolverParams solver_params;
+    Solver solver(solver_params);
+
+    tethex::Mesh mesh;
+
+    BOOST_CHECK_NO_THROW(solver.OpenMesh(mesh));
+}
+
 BOOST_AUTO_TEST_CASE( Trapezoidal_Integration, 
     *utf::tolerance(EPS))
 {   

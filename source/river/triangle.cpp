@@ -419,6 +419,9 @@ namespace River{
 
     tethex::Mesh Triangle::generate_quadrangular_mesh(const Boundary &boundary, const t_PointList &holes)
     {
+        if (boundary.vertices.empty())
+            return tethex::Mesh();
+
         set_all_values_to_default();
 
         tethex::Mesh mesh_object(boundary, holes);

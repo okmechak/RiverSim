@@ -50,12 +50,12 @@ add_test(
     COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tregion)
     
 #triangle
-#add_executable(ttriangle triangle.cpp)
-#target_link_libraries(ttriangle mesh boundary_generator ${Boost_LIBRARIES})
-#add_test(
-#    NAME ttriangle
-#    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttriangle)
+add_executable(ttriangle triangle.cpp)
+target_link_libraries(ttriangle triangle ${Boost_LIBRARIES})
+add_test(
+    NAME ttriangle
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/ttriangle)
 
 #physmodel
 #add_executable(tphysmodel physmodel.cpp)
