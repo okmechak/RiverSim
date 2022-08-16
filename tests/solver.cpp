@@ -11,7 +11,6 @@
 #include "solver.hpp"
 
 using namespace River;
-
 namespace utf = boost::unit_test;
 
 BOOST_AUTO_TEST_CASE( open_empty_mesh, 

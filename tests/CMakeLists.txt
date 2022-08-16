@@ -64,14 +64,6 @@ add_test(
 #    NAME tphysmodel
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 #    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tphysmodel)
-
-#io
-add_executable(tio io.cpp)
-target_link_libraries(tio io ${Boost_LIBRARIES})
-add_test(
-    NAME tio
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tio)
     
 #solver
 add_executable(tsolver solver.cpp)
@@ -81,3 +73,20 @@ add_test(
     NAME tsolver
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tsolver)
+
+#io
+add_executable(tio io.cpp)
+target_link_libraries(tio io ${Boost_LIBRARIES})
+add_test(
+    NAME tio
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tio)
+
+#integration tests
+add_executable(tintegration_tests integration_tests.cpp)
+target_link_libraries(tintegration_tests io ${Boost_LIBRARIES})
+deal_ii_setup_target(tintegration_tests)
+add_test(
+    NAME tintegration_tests
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests/tintegration_tests)
