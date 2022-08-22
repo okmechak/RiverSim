@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 message(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/source/river)
+include_directories(${PROJECT_SOURCE_DIR}/source)
 
 message("========================================")
 message("Deal II setup")
