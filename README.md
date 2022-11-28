@@ -38,7 +38,7 @@ and call command is same as cmake, but:
 
 #### Deal.II setup:
 
-* Using ubuntu package system:
+* Using ubuntu package system(up to 9.3.0):
     > sudo apt install libdeal.ii-dev  
 * Download prebuild files from official site.
 * Build from repository(Read INSTALL instruction for details, static lib options shoud be turned ON).
@@ -87,7 +87,6 @@ After compiling, simply type a command:
 
 
 ## 3. How to use RiverSim program
-
 import riversimpy
 
 
