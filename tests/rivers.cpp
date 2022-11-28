@@ -15,6 +15,21 @@ using namespace River;
 const double eps = EPS;
 namespace utf = boost::unit_test;
 
+BOOST_AUTO_TEST_CASE( create_sub_branch, 
+    *utf::tolerance(eps))
+{
+    Rivers rivers_1;
+    auto parrent_branch = Branch(Point{0, 0}, 0);
+    auto p = Point{1, 0};
+    parrent_branch.AddPoint(p, 1);
+    rivers_1.AddBranch(parrent_branch, 1);
+    rivers_1.CreateSubBranches(1, -1., 1.);
+
+    BOOST_TEST(rivers_1[1].TipAngle() == 0.);
+    BOOST_TEST(rivers_1[2].TipAngle() == -1.);
+    BOOST_TEST(rivers_1[3].TipAngle() == 1.);
+}
+
 BOOST_AUTO_TEST_CASE( tip_boundary, 
     *utf::tolerance(eps))
 {

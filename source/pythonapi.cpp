@@ -65,6 +65,12 @@ BOOST_PYTHON_MODULE(riversim)
         .export_values()
         ;
 
+    class_<t_boundaries_ids>("t_boundaries_ids", "Vector of boundaries ids.")
+    .def(vector_indexing_suite<t_boundaries_ids>())
+        .def("__str__", &River::print<t_boundaries_ids>)
+        .def("__repr__", &River::print<t_boundaries_ids>)
+    ;
+
     class_<BoundaryCondition>("BoundaryCondition", "Describes boudary conditions types for different boundary lines.")
         .def(init<>())
         .def(init<t_boundary, double>(args("type", "value")))
@@ -88,6 +94,8 @@ BOOST_PYTHON_MODULE(riversim)
     ;
 
     class_<t_source_coord>("t_source_coord", "Source point coordinate data type. Pair which holds boundary id and vertice position on this id.")
+        .def(init<>())
+        .def(init<t_boundary_id, t_vert_pos>(args("boundary_id", "vert_pos")))
         .def_readwrite("boundary_id", &t_source_coord::first, "boundary id")
         .def_readwrite("vert_pos", &t_source_coord::second, "vertice position")
         .def("__str__", &River::print<t_source_coord>)
@@ -129,6 +137,12 @@ BOOST_PYTHON_MODULE(riversim)
         .def(vector_indexing_suite<t_PointList>())
         .def("__str__", &River::print<t_PointList>)
         .def("__repr__", &River::print<t_PointList>)
+    ;
+
+    class_<t_PolarList>("t_PolarList", "Vector of polars.")
+        .def(vector_indexing_suite<t_PolarList>())
+        .def("__str__", &River::print<t_PolarList>)
+        .def("__repr__", &River::print<t_PolarList>)
     ;
 
     class_<t_LineList>("t_LineList", "Vector of lines.")
@@ -210,7 +224,8 @@ BOOST_PYTHON_MODULE(riversim)
         .def(self == self)
         .def("initialize", &Rivers::Initialize, args("ids_points_angles"), "Initialize tree with source points vector and source angle vector.")
         .def("addBranch", &Rivers::AddBranch, args("branch", "branch_id"), "Adds new branch with id (id should be unique).")
-        .def("addSubBranches", &Rivers::AddSubBranches, args("root_branch_id", "left_branch", "right_branch"), "Returns root(or source) branch of branch (if there is no such - throw exception).")
+        .def("addSubBranches", &Rivers::AddSubBranches, args("root_branch_id", "left_branch", "right_branch"), "")
+        .def("createSubBranches", &Rivers::CreateSubBranches, args("root_branch_id", "left_angle", "right_angle"), "Creates sub branches with relative angle to tip angle of source branch.")
         .def("deleteBranch", &Rivers::DeleteBranch, args("branch_id"), "Delete branch.")
         .def("deleteSubBranches", &Rivers::DeleteSubBranches, args("root_branch_id"), "Delete sub branch of current branch")
         .def("clear", &Rivers::Clear, "Clear whole data from rivers.")

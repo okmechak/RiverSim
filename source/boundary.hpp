@@ -26,6 +26,8 @@ namespace River
     typedef pair<t_boundary_id, t_vert_pos> t_source_coord;
     ///Vector of source point ids data type.
     typedef vector<t_source_id> t_sources_ids;
+    ///Vector of boundaries ids.
+    typedef vector<t_boundary_id> t_boundaries_ids;
     ///Map structure which holds source id and its coordinates.
     typedef map<t_source_id/*or river id*/, t_source_coord> t_Sources;
     ///Map structure which holds source id and its source point coordinates.
@@ -67,6 +69,9 @@ namespace River
 
     ///Vector of points data type.
     typedef vector<Point> t_PointList;
+
+    ///Vector of Polars data type.
+    typedef vector<Polar> t_PolarList;
     
     ///Vector of lines data type.
     typedef vector<Line> t_LineList;

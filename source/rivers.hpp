@@ -161,9 +161,13 @@ namespace River
             /// Adds new \p branch with \p id (\p id should be unique).
             t_branch_id AddBranch(const Branch &branch, t_branch_id id = UINT_MAX);
             
-            /// Adds two subbranches with
+            /// Creates and add two subbranches with
             t_branch_id_pair AddSubBranches(t_branch_id root_branch_id, 
                 const Branch &left_branch, const Branch &right_branch);
+
+            /// Adds two subbranches with specific angle
+            t_branch_id_pair CreateSubBranches(t_branch_id root_branch_id, 
+                const double left_angle, const double right_angle);
             
             ///Delete branch.
             void DeleteBranch(t_branch_id branch_id);

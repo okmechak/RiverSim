@@ -270,6 +270,18 @@ namespace River
         return sub_branches_id;
     }
 
+    t_branch_id_pair Rivers::CreateSubBranches(t_branch_id root_branch_id, 
+                const double left_angle, const double right_angle)
+    {
+
+        auto tip_point = (*this)[root_branch_id].TipPoint();
+
+        auto left_branch = Branch(tip_point, left_angle),
+            right_branch = Branch(tip_point, right_angle);
+
+        return AddSubBranches(root_branch_id, left_branch, right_branch);
+    }
+
     void Rivers::DeleteBranch(t_branch_id branch_id)
     {
         handle_non_existing_branch_id(branch_id);
