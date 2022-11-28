@@ -56,6 +56,41 @@ using namespace dealii;
 
 namespace River
 {
+    ///Enumeration of different boundary conditions
+    enum t_boundary 
+    {
+        DIRICHLET = 0, 
+        NEUMAN
+    }; 
+
+    /*! \struct BoundaryCondition
+        \brief Describes boudary condition type.
+    */
+    struct BoundaryCondition
+    {
+        BoundaryCondition() = default;
+        BoundaryCondition(t_boundary t, double v): type(t), value(v) {};
+        t_boundary type = DIRICHLET;
+        double value = 0;
+        bool operator==(const BoundaryCondition& bc) const;
+        friend ostream& operator <<(ostream& write, const BoundaryCondition & boundary_condition);
+    };
+    
+    ///Map structure of boundary condition types.
+    typedef map<t_boundary_id, BoundaryCondition> t_BoundaryConditions;
+    
+    /*! \class BoundaryConditions
+        \brief Map structure of boundary condition types.
+        
+        \details Holds for each id its appropraite boundary condition.
+    */
+    class BoundaryConditions: public t_BoundaryConditions
+    {
+        public:
+            ///Returns map structure with boundary conditions of specific type(Neuman or Dirichlet).
+            t_BoundaryConditions Get(t_boundary type) const;
+    };
+    
     /*! \brief Holds parameters used by integration of series paramets functionality(see River::Solver::integrate())
      */
     class IntegrationParams

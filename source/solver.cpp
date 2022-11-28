@@ -5,6 +5,26 @@
 
 namespace River
 {
+    //BoundaryCondition
+    bool BoundaryCondition::operator==(const BoundaryCondition& bc) const
+    {
+        return value == bc.value && type == bc.type;
+    }
+
+    //BoundaryConditions
+    t_BoundaryConditions BoundaryConditions::Get(t_boundary type) const
+    {
+        t_BoundaryConditions bd;
+        if(type != DIRICHLET && type != NEUMAN)
+            throw Exception("BoundaryConditions:Get: unknown boundary type: " + to_string(type));
+            
+        for(const auto& [boundary_id, boundary_condition]:*this)
+            if(boundary_condition.type == type)
+                bd[boundary_id] = boundary_condition;
+
+        return bd;
+    }
+    
     // Solver
     void Solver::OpenMesh(const string fileName)
     {

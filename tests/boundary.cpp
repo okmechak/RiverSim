@@ -16,41 +16,6 @@ const double eps = EPS;
 namespace utf = boost::unit_test;
 
 // ------------- Tests Follow --------------
-BOOST_AUTO_TEST_CASE( Boundary_Condition, 
-    *utf::tolerance(eps)
-    *utf::description("Boundary_Condition class tests"))
-{   
-    BoundaryCondition bd;
-    BOOST_TEST(bd.type == DIRICHLET);
-    BOOST_TEST(bd.value == 0.);
-}
-
-BOOST_AUTO_TEST_CASE( Boundary_Condition_get_Method, 
-    *utf::tolerance(eps)
-    *utf::description("Boundary_Condition class Get method tests"))
-{
-    BoundaryConditions bd, db_neuman, bd_dirirchlet, bd_empty;
-
-    BOOST_TEST(bd.Get(DIRICHLET) == bd_empty);
-    BOOST_TEST(bd.Get(NEUMAN) == bd_empty);
-
-    bd[1] = {DIRICHLET, 10};
-    bd[2] = {NEUMAN, 11};
-    bd[3] = {DIRICHLET, 12};
-    bd[4] = {NEUMAN, 13};
-
-    db_neuman[2]={NEUMAN, 11};
-    db_neuman[4] = {NEUMAN, 13};
-    BOOST_TEST(bd.Get(NEUMAN) == db_neuman);
-    
-    bd_dirirchlet[1] = {DIRICHLET, 10};
-    bd_dirirchlet[3] = {DIRICHLET, 12};
-    BOOST_TEST(bd.Get(DIRICHLET) == bd_dirirchlet);
-
-    BOOST_CHECK_THROW(bd.Get((t_boundary)2), Exception);
-    BOOST_CHECK_THROW(bd.Get((t_boundary)3), Exception);
-}
-
 BOOST_AUTO_TEST_CASE( Line_test, 
     *utf::tolerance(eps)
     *utf::description("line class tests"))
