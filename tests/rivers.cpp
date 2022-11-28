@@ -16,10 +16,11 @@ const double eps = EPS;
 namespace utf = boost::unit_test;
 
 BOOST_AUTO_TEST_CASE( create_sub_branch, 
-    *utf::tolerance(eps))
+    *utf::tolerance(EPS))
 {
-    Rivers rivers_1;
-    auto parrent_branch = Branch(Point{0, 0}, 0);
+    Rivers rivers_1, rivers_2;
+    auto source_point = Point{0, 0};
+    auto parrent_branch = Branch(source_point, 0);
     auto p = Point{1, 0};
     parrent_branch.AddPoint(p, 1);
     rivers_1.AddBranch(parrent_branch, 1);
@@ -28,6 +29,24 @@ BOOST_AUTO_TEST_CASE( create_sub_branch,
     BOOST_TEST(rivers_1[1].TipAngle() == 0.);
     BOOST_TEST(rivers_1[2].TipAngle() == -1.);
     BOOST_TEST(rivers_1[3].TipAngle() == 1.);
+    BOOST_TEST((rivers_1[1].SourcePoint() == source_point));
+    BOOST_TEST((rivers_1[2].SourcePoint() == p));
+    BOOST_TEST((rivers_1[3].SourcePoint() == p));
+
+    source_point = Point{1, 1};
+    parrent_branch = Branch(source_point, 1);
+    p = Point{2, 2};
+    parrent_branch.AddPoint(p, 1);
+    rivers_2.AddBranch(parrent_branch, 1);
+    rivers_2.CreateSubBranches(1, -M_PI/4., M_PI/4);
+
+    BOOST_TEST(rivers_2[1].TipAngle() == M_PI/4);
+    BOOST_TEST(rivers_2[2].TipAngle() == 0);
+    BOOST_TEST(rivers_2[3].TipAngle() == M_PI/2);
+    BOOST_TEST((rivers_2[1].SourcePoint() == source_point));
+    BOOST_TEST((rivers_2[1].TipPoint() == p + source_point));
+    BOOST_TEST((rivers_2[2].SourcePoint() == p + source_point));
+    BOOST_TEST((rivers_2[3].SourcePoint() == p + source_point));
 }
 
 BOOST_AUTO_TEST_CASE( tip_boundary, 

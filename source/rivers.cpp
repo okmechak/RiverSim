@@ -275,9 +275,10 @@ namespace River
     {
 
         auto tip_point = (*this)[root_branch_id].TipPoint();
+        auto tip_angle = (*this)[root_branch_id].TipAngle();
 
-        auto left_branch = Branch(tip_point, left_angle),
-            right_branch = Branch(tip_point, right_angle);
+        auto left_branch = Branch(tip_point, tip_angle + left_angle),
+            right_branch = Branch(tip_point, tip_angle + right_angle);
 
         return AddSubBranches(root_branch_id, left_branch, right_branch);
     }
