@@ -595,7 +595,7 @@ namespace River
                     s = (s + sum * w * d) / 2.;
                 }
 
-                if ( j > 5)
+                if ( j >= 0)
                 {
                     auto cur_eps = max_v(abs_v(s - olds) / abs_v(olds));
                     if ((cur_eps) < integ.eps || (max_v(s) < EPS && max_v(olds) < EPS))

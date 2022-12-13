@@ -212,7 +212,7 @@ namespace River
         for (size_t i = 0; i < jmax; ++i)
         {
             s = t.next();
-            if ( i > 5)
+            if ( i > 2)
             {
                 auto cur_eps = abs(s - olds) / abs(olds);
                 if ((cur_eps) < eps || (s < EPS && olds < EPS))
